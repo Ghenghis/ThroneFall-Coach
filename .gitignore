@@ -1,0 +1,14 @@
+# Build output
+bin/
+obj/
+
+# Decompiled game source (regenerate with tools/decompile.ps1)
+decompiled/
+decompiled_fog/
+
+# Test screenshots / artifacts
+*.png
+
+# IDE
+.vs/
+.vscode/
