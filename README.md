@@ -4,6 +4,14 @@ An in-game trainer/overlay for **Thronefall** (Unity 2022.3 Mono build), impleme
 [BepInEx 5](https://github.com/BepInEx/BepInEx) plugin. All cheats are driven by the game's
 own managed APIs (found by decompiling `Assembly-CSharp.dll`), not fragile memory scanning.
 
+## Requirements
+
+- Thronefall, Windows x64. Developed and tested against **Unity 2022.3.62f2** —
+  the Mono build (game logic in `Thronefall_Data\Managed\Assembly-CSharp.dll`).
+- [BepInEx 5.x x64](https://github.com/BepInEx/BepInEx/releases) (tested: `5.4.23.5`).
+- To build from source: the .NET SDK (`dotnet` CLI) and `ilspycmd` for the
+  optional decompiled reference (`dotnet tool install -g ilspycmd`).
+
 ## Controls
 
 | Key | Action |
@@ -114,6 +122,10 @@ live while dragged. All toggles, theme, and opacity persist in
 - **Unlock achievements** — loops all 34 `AchievementManager.Achievements` values
   through `UnlockAchievement`.
 
+> **Save-file warning:** everything in the META section writes permanently to
+> `ThroneSave.sav`. Back it up first if you care about legitimate progress —
+> it lives under `%USERPROFILE%\AppData\LocalLow` in the game's save folder.
+
 ## How it works
 
 | Cheat | Mechanism |
@@ -160,6 +172,47 @@ plus `BepInEx/core` — no gameplay NuGet dependencies.
 To regenerate the decompiled reference source (needed after game updates):
 `.\tools\decompile.ps1` (requires `dotnet tool install -g ilspycmd`).
 
+## Project layout
+
+```
+Trainer\
+  README.md                  - this file
+  src\
+    Plugin.cs                - cheat state (Cheats), per-frame logic, IMGUI overlay,
+                               config binding, themes, actions
+    Patches.cs               - Harmony patches (TakeDamage, Spend*, AddFill,
+                               Hp.Start, SetState, Weapon.Attack)
+    ThronefallTrainer.csproj - net472; references the game's DLLs via $(GameDir)
+  tools\
+    build-and-deploy.ps1     - build + copy the DLL into BepInEx\plugins
+    decompile.ps1            - regenerate the decompiled reference (ilspycmd)
+  decompiled\                - gitignored ilspycmd output of Assembly-CSharp
+  decompiled_fog\            - gitignored ilspycmd output of KB.FogRTS.Runtime
+```
+
+## Troubleshooting
+
+| Symptom | Check |
+|---------|-------|
+| F1 does nothing | `BepInEx\LogOutput.log` — look for `Loading [Thronefall Trainer`/`Thronefall Trainer loaded`. Missing? The DLL isn't in `BepInEx\plugins`, or BepInEx isn't installed (`winhttp.dll` + `doorstop_config.ini` must sit next to `thronefall.exe`). Errors → look for exceptions from the plugin. |
+| `Gold: n/a` on the main menu | `PlayerInteraction` only exists on the map/in-match — open a level. |
+| Cheats toggle but nothing happens | You're on the world map — most cheats act on in-match singletons (`EnemySpawner`, `TagManager.instance`) that only exist during a match. |
+| Window won't resize | Drag the `=` grip in the bottom-right corner; moving is title-bar-only by design. |
+| Typing moves the hero | Shouldn't happen — the overlay freezes the player via `SetPlayerFreezeState`. If it does, the game's API changed; file an issue. |
+| Everything broke after a game update | Member names may have changed. Run `tools\decompile.ps1`, diff the classes listed in "Notes / maintenance", fix, rebuild. |
+
+## Known limitations
+
+- **Charm all enemies**: retagged enemies leave the enemy count — charming a wave
+  mid-spawn can end the night early. Charm after spawning finishes.
+- **Clone troops**: clones aren't in any building's respawn list — they won't
+  auto-revive at dawn (use F3). Experimental feature.
+- **Equip ALL perks mid-run**: dynamically-sampled effects apply instantly;
+  perks cached at scene start apply next run. Weapons can't be hot-swapped
+  (their components are destroyed at match start by design).
+- **Never lose** disables the resign button while enabled.
+- The META buttons permanently write your save (see warning above).
+
 ## Notes / maintenance
 
 - **Game updates**: if a patch renames members (`PlayerInteraction.balance`,
@@ -177,3 +230,21 @@ To regenerate the decompiled reference source (needed after game updates):
   leaves the window mid-drag.
 - `LocalGamestate.Instance.SetPlayerFreezeState` freezes the hero while the menu is
   open; without it, WASD/E keypresses in text fields move and attack.
+
+## Adding a new cheat
+
+1. Find the target in `decompiled\` (search the class/member, confirm it's
+   `public` or reachable via `instance`/`Instance` singletons).
+2. Pick the mechanism:
+   - **Harmony patch** in `Patches.cs` when the effect must cover things spawned
+     later (damage, spending, per-spawn scaling) or intercepts an event.
+   - **Direct call / field write** in `Plugin.cs` `Update()` when the game reads
+     the value every frame (speeds, timers, timescale).
+   - **One-shot action** (button) for discrete effects (kill, spawn, unlock).
+3. Add state to `Cheats`, bind a `ConfigEntry` in `BindConfig()` (section name +
+   default), add a `ConfigToggle`/`SliderRow`/button row in `DrawWindow()`.
+4. Cache original values and restore them when the toggle turns off or the
+   scene singleton changes (see the `cachedPM`/`origSpeed` pattern).
+5. Wrap one-shot actions in try/catch and `Log.LogWarning` on failure.
+6. `dotnet build -c Release`, deploy, test in-match (world-map-only checks are
+   misleading — most singletons are null there).
