@@ -32,6 +32,8 @@ namespace ThronefallTrainer
 
         public static BotMode Mode { get; private set; } = BotMode.Idle;
         public static string Status { get; private set; } = "off (F6)";
+        /// <summary>Active UI frame name ("" = none) — mailbox outbox reads it.</summary>
+        public static string UiFrame => uiFrame;
         public static int StuckStrikes { get; private set; }
 
         // ---- steering knobs ----
@@ -171,6 +173,8 @@ namespace ThronefallTrainer
         private static string polPath;
         private static long polStamp;
         private static float polScanAt;
+        private static readonly System.Collections.Generic.HashSet<string> prevRuleFires =
+            new System.Collections.Generic.HashSet<string>();
 
         private static readonly System.Collections.Generic.HashSet<Coin> coinIgnore =
             new System.Collections.Generic.HashSet<Coin>();
@@ -306,6 +310,10 @@ namespace ThronefallTrainer
 
             var sd = BotPerception.ToData(in s);
 
+            // Sidecar bridge (Phase 3): poll inbox orders (1 Hz), publish
+            // state.json for the external agent (0.2 Hz).
+            Mailbox.Poll(in s);
+
             // Hot reload: policy file mtime changed → re-validate; on any
             // error keep the last-good table and log a policy-reject event.
             if (Time.unscaledTime >= polScanAt)
@@ -333,6 +341,13 @@ namespace ThronefallTrainer
 
             var pres = pol.Resolved(in sd);
             var res = BotBrain.Decide(in sd, ref mem, Time.unscaledTime, Legit, in pres);
+            // Rule telemetry: fire-once events per rule id + a summary count.
+            if (res.RulesFired != null && res.RulesFired.Count > 0)
+                foreach (var rid in res.RulesFired)
+                {
+                    if (prevRuleFires.Add(rid)) LogLine(in s, "rule-fire:" + rid);
+                    Recorder.CountRuleFire(rid);
+                }
             Mode = res.Mode;
             // Pursuit ref for the cheat-steer path and attack diag — the pure
             // layer can't hold Unity refs, so it returns a flag and we resolve.
@@ -611,6 +626,15 @@ namespace ThronefallTrainer
         /// weapon — otherwise he spawns weaponless and literally cannot fight.
         /// A ranged weapon is preferred so the orbit-kite play style exists.
         /// </summary>
+        private static string requestedWeapon;   // sidecar mailbox loadout pin
+
+        /// <summary>Sidecar orders a specific weapon for the next seed
+        /// (name matched case-insensitively against allEquippables).</summary>
+        public static void RequestLoadout(string weapon)
+        {
+            requestedWeapon = weapon;
+        }
+
         private static void SeedLoadout(in BotPerception.Snapshot s)
         {
             var li = s.NearestLevel;
@@ -623,6 +647,25 @@ namespace ThronefallTrainer
             }
             if (pmgr.CurrentlyEquipped.Count == 0)
             {
+                // Sidecar-requested loadout takes precedence when it resolves.
+                if (!string.IsNullOrEmpty(requestedWeapon))
+                {
+                    Equippable req = null;
+                    foreach (var eq in pmgr.allEquippables)
+                        if (eq is EquippableWeapon && eq.IsUnlocked &&
+                            string.Equals(eq.displayName, requestedWeapon,
+                                System.StringComparison.OrdinalIgnoreCase))
+                        { req = eq; break; }
+                    if (req != null)
+                    {
+                        PerkManager.SetEquipped(req, true);
+                        Plugin.Log?.LogInfo($"[bot] loadout pinned by sidecar: '{req.displayName}'");
+                        requestedWeapon = null;
+                        return;
+                    }
+                    Plugin.Log?.LogWarning($"[bot] sidecar weapon '{requestedWeapon}' not found/locked — auto pick");
+                    requestedWeapon = null;
+                }
                 string[] rangedKw = { "bow", "cross", "wand", "staff",
                     "sling", "knife", "shuriken", "chakram", "javelin",
                     "boomerang", "pistol", "rifle", "dart", "throw" };
@@ -1020,7 +1063,7 @@ namespace ThronefallTrainer
                 s.HasHorn ? "true" : "false", s.HornDist, s.BuildCount, s.EnemiesNearHero, note);
         }
 
-        private static void LogLine(in BotPerception.Snapshot s, string note)
+        internal static void LogLine(in BotPerception.Snapshot s, string note)
         {
             EnsureLog();
             // Event stream + derived counters feed the recorder regardless of

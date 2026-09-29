@@ -2,6 +2,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using BepInEx;
 
@@ -138,6 +139,7 @@ namespace ThronefallTrainer
                 eventsPath = Path.Combine(runDir, "events.jsonl");
                 summaryPath = Path.Combine(runDir, "summary.json");
                 tickCount = dropped = heroDeaths = snaps = unsticks = stalls = 0;
+                ruleFires.Clear();
                 castleHpMinSeen = 1f;
                 lastScene = scene;
                 lastWave = 0;
@@ -189,6 +191,14 @@ namespace ThronefallTrainer
         public static void CountDeath() { heroDeaths++; }
         public static void SeeCastleHp(float pct) { if (pct < castleHpMinSeen) castleHpMinSeen = pct; }
 
+        // Policy rule telemetry: per-rule fire counts ride the summary.
+        private static readonly System.Collections.Generic.Dictionary<string, int> ruleFires =
+            new System.Collections.Generic.Dictionary<string, int>();
+        public static void CountRuleFire(string id)
+        {
+            ruleFires[id] = ruleFires.TryGetValue(id, out int n) ? n + 1 : 1;
+        }
+
         /// <summary>
         /// Final summary at AfterMatchVictory / AfterMatchDefeat / abandon.
         /// Writes summary.json once; subsequent calls merge over it (the file
@@ -210,6 +220,8 @@ namespace ThronefallTrainer
                     "\"heroDeaths\":" + heroDeaths + "," +
                     "\"goldLast\":" + F(lastGold) + "," +
                     "\"stalls\":" + stalls + ",\"unsticks\":" + unsticks + ",\"snaps\":" + snaps + "," +
+                    "\"rulesFired\":{" + string.Join(",", System.Linq.Enumerable.Select(
+                        ruleFires.ToArray(), kv => "\"" + J(kv.Key) + "\":" + kv.Value)) + "}," +
                     "\"recorder\":{\"ticks\":" + tickCount + ",\"dropped\":" + dropped +
                     ",\"ioErrors\":" + ioErrors + "}}";
                 File.WriteAllText(summaryPath, json);
@@ -276,5 +288,166 @@ namespace ThronefallTrainer
                     chars[i] = '_';
             return new string(chars);
         }
+    }
+
+    /// <summary>
+    /// tf-agent mailbox (v3 Phase 3): file-based bridge between the in-game
+    /// plugin and the external sidecar.
+    ///   agent/tf-agent/inbox/*.order  — line-JSON orders, processed then
+    ///     moved to inbox/done/ (ops: policy | note | report | loadout)
+    ///   agent/tf-agent/outbox/state.json — live run state every ~5 s
+    ///   agent/tf-agent/outbox/result-<ts>.json — end-of-run bundle
+    /// Bounded and fire-and-forget: bad orders are quarantined to done/
+    /// with a `mailbox-reject` event — the game loop never blocks.
+    /// </summary>
+    internal static class Mailbox
+    {
+        private static float nextPollAt;
+        private static float nextStateAt;
+
+        private static string InboxDir => Path.Combine(Recorder.AgentDir, "tf-agent", "inbox");
+        private static string OutboxDir => Path.Combine(Recorder.AgentDir, "tf-agent", "outbox");
+        private static string DoneDir => Path.Combine(InboxDir, "done");
+
+        /// <summary>Called every Tick — polls at 1 Hz; state write at 0.2 Hz.</summary>
+        public static void Poll(in BotPerception.Snapshot s)
+        {
+            float now = UnityEngine.Time.unscaledTime;
+            if (now >= nextPollAt)
+            {
+                nextPollAt = now + 1f;
+                ProcessInbox(s);
+            }
+            if (now >= nextStateAt && runDirKnown)
+            {
+                nextStateAt = now + 5f;
+                WriteState(s);
+            }
+        }
+
+        private static bool runDirKnown => Recorder.RunId != null;
+
+        private static void ProcessInbox(in BotPerception.Snapshot s)
+        {
+            try
+            {
+                if (!Directory.Exists(InboxDir)) return;
+                foreach (var f in Directory.GetFiles(InboxDir, "*.order"))
+                {
+                    try
+                    {
+                        var text = File.ReadAllText(f);
+                        Apply(text, in s);
+                    }
+                    catch (Exception ex)
+                    {
+                        Plugin.Log?.LogWarning($"[bot] mailbox order failed '{Path.GetFileName(f)}': {ex.Message}");
+                        Bot.LogLine(in s, "mailbox-reject");
+                    }
+                    finally
+                    {
+                        try
+                        {
+                            Directory.CreateDirectory(DoneDir);
+                            var dst = Path.Combine(DoneDir, Path.GetFileName(f));
+                            if (File.Exists(dst)) File.Delete(dst);
+                            File.Move(f, dst);
+                        }
+                        catch { }
+                    }
+                }
+            }
+            catch { }
+        }
+
+        private static void Apply(string order, in BotPerception.Snapshot s)
+        {
+            // Line-JSON, minimal key pulls — no serializer needed.
+            string op = JVal(order, "\"op\":");
+            if (op == null) throw new InvalidDataException("missing op");
+            switch (op)
+            {
+                case "policy":
+                {
+                    string text = JVal(order, "\"text\":", true);
+                    if (text == null) throw new InvalidDataException("policy op needs text");
+                    var p = Path.Combine(Recorder.AgentDir, "policy.txt");
+                    File.WriteAllText(p, text);
+                    Bot.LogLine(in s, "mailbox-policy");
+                    Plugin.Log?.LogInfo("[bot] mailbox: policy.txt replaced by sidecar");
+                    break;
+                }
+                case "note":
+                {
+                    string text = JVal(order, "\"text\":", true) ?? "sidecar-note";
+                    Recorder.Event("mailbox-note", "\"text\":\"" + text.Replace("\"", "'") + "\"");
+                    break;
+                }
+                case "report":
+                {
+                    // Drop the current summary-ish state bundle for the sidecar.
+                    WriteState(s, "report-" + DateTime.UtcNow.ToString("HHmmss"));
+                    Recorder.Event("mailbox-report");
+                    break;
+                }
+                case "loadout":
+                {
+                    string w = JVal(order, "\"weapon\":", true);
+                    if (!string.IsNullOrEmpty(w))
+                    {
+                        Bot.RequestLoadout(w);
+                        Recorder.Event("mailbox-loadout", "\"w\":\"" + w.Replace("\"", "'") + "\"");
+                    }
+                    break;
+                }
+                default:
+                    throw new InvalidDataException("unknown op '" + op + "'");
+            }
+        }
+
+        private static void WriteState(in BotPerception.Snapshot s, string name = null)
+        {
+            try
+            {
+                Directory.CreateDirectory(OutboxDir);
+                var file = Path.Combine(OutboxDir,
+                    name == null ? "state.json" : name + ".json");
+                string json =
+                    "{\"run\":\"" + J(Recorder.RunId ?? "") + "\"," +
+                    "\"scene\":\"" + J(s.SceneName) + "\"," +
+                    "\"state\":\"" + J(s.GameState) + "\"," +
+                    "\"mode\":\"" + J(Bot.Mode.ToString()) + "\"," +
+                    "\"wave\":" + s.Wave + ",\"waveTotal\":" + s.WaveTotal + "," +
+                    "\"night\":" + (s.IsNight ? "true" : "false") + "," +
+                    "\"foes\":" + s.EnemyCount + ",\"hp\":" + F(s.HeroHpPct) + "," +
+                    "\"gold\":" + s.Balance + ",\"core\":" + s.CoreBalance + "," +
+                    "\"army\":" + s.AllyCount + "," +
+                    "\"frame\":\"" + J(Bot.UiFrame) + "\"}";
+                File.WriteAllText(file, json);
+            }
+            catch { }
+        }
+
+        /// <summary>
+        /// Pull a JSON string value. When raw=false the value ends at the
+        /// next quote; raw=true consumes to the final quote so embedded
+        /// escaped text survives (multiline policy bodies).
+        /// </summary>
+        private static string JVal(string json, string key, bool raw = false)
+        {
+            int i = json.IndexOf(key, StringComparison.Ordinal);
+            if (i < 0) return null;
+            i += key.Length;
+            while (i < json.Length && (json[i] == ' ' || json[i] == ':')) i++;
+            if (i >= json.Length || json[i] != '"') return null;
+            i++;
+            int j = raw ? json.LastIndexOf('"') : i;
+            if (!raw) while (j < json.Length && json[j] != '"') j++;
+            if (j <= i) return null;
+            return json.Substring(i, j - i)
+                .Replace("\\n", "\n").Replace("\\\"", "\"").Replace("\\\\", "\\");
+        }
+        private static string J(string s) => s == null ? "" : s.Replace("\\", "\\\\").Replace("\"", "\\\"");
+        private static string F(float v) => v.ToString("0.###", CultureInfo.InvariantCulture);
     }
 }

@@ -324,6 +324,7 @@ namespace ThronefallTrainer
         public int Pursue;          // 0 none · 1 castle-threat · 2 nearest-hero
         public List<Intent> Intents;
         public List<string> Notes;
+        public List<string> RulesFired;
     }
 
     // =========================================================================
@@ -351,6 +352,7 @@ namespace ThronefallTrainer
         public Dictionary<string, float> knobs;
         public List<PolicyRule> rules;
         public int Version;         // bumped on every successful load
+        public List<string> firedIds;   // rule ids that fired this Resolve
 
         public static PolicyTable Default()
         {
@@ -393,8 +395,9 @@ namespace ThronefallTrainer
         /// </summary>
         public PolicyTable Resolved(in SnapshotData s)
         {
-            if (rules == null || rules.Count == 0) return this;
             var t = this;
+            t.firedIds = new List<string>();
+            if (rules == null || rules.Count == 0) return t;
             t.knobs = new Dictionary<string, float>(knobs);
             var ty = typeof(SnapshotData);
             foreach (var r in rules)
@@ -403,7 +406,11 @@ namespace ThronefallTrainer
                 if (f == null) continue;
                 object o = f.GetValue(s);
                 float cur = o is bool ? ((bool)o ? 1f : 0f) : Convert.ToSingle(o);
-                if (Cmp(cur, r.Op, r.Value)) t.knobs[r.Knob] = r.Set;
+                if (Cmp(cur, r.Op, r.Value))
+                {
+                    t.knobs[r.Knob] = r.Set;
+                    if (!t.firedIds.Contains(r.Id)) t.firedIds.Add(r.Id);
+                }
             }
             return t;
         }
@@ -508,6 +515,7 @@ namespace ThronefallTrainer
                 Mode = m.Mode,
                 Intents = new List<Intent>(),
                 Notes = new List<string>(),
+                RulesFired = pol.firedIds ?? new List<string>(),
             };
 
             // Held-build release guard (used to be ReleaseBuild() inline).
@@ -547,7 +555,10 @@ namespace ThronefallTrainer
             {
                 m.Mode = BotMode.HeroDead; r.Mode = m.Mode;
                 if (m.HeldBuild >= 0) { r.Intents.Add(Intent.Of(IntentKind.ReleaseHold)); m.HeldBuild = -1; }
-                if (s.HasCastle) Aim(ref r, s.CastlePos, ArriveHold); else r.HasAim = false;
+                // Drift toward the keep's EDGE, not its center — CastlePos
+                // is inside the keep collider and can never be arrived at.
+                if (s.HasCastle) Aim(ref r, Vec2.StandOff(s.CastlePos, s.HeroPos, 4f), ArriveHold);
+                else r.HasAim = false;
                 return r;
             }
 
@@ -664,7 +675,13 @@ namespace ThronefallTrainer
             if (s.HasBuild && (s.Balance > 0 || s.BuildHarvest))
             {
                 m.Mode = BotMode.SpendGold; r.Mode = m.Mode;
-                Aim(ref r, Vec2.StandOff(s.BuildPos, s.HeroPos, 1.6f), 1.0f);
+                // Wedge fix (refpack terrain data): inside the slot's interact
+                // gate already — the stand-off can land INSIDE the slot's
+                // collider, which no nav path can ever reach. Hold position
+                // instead of steering at a point in a box. Outside, approach
+                // a 3.0 m stand-off (interact radius) — still hero-side.
+                if (s.BuildDist <= 4f) Aim(ref r, s.HeroPos, 1.0f);
+                else Aim(ref r, Vec2.StandOff(s.BuildPos, s.HeroPos, 3.0f), 1.0f);
                 if (s.BuildDist <= 4f && now >= m.BuildInteractAt)
                 {
                     m.BuildInteractAt = now + 0.4f;
@@ -748,7 +765,7 @@ namespace ThronefallTrainer
             if (s.HasCastle && s.CastleDist > pol.K("home_radius"))
             {
                 m.Mode = BotMode.ReturnHome; r.Mode = m.Mode;
-                Aim(ref r, s.CastlePos, ArriveHold);
+                Aim(ref r, Vec2.StandOff(s.CastlePos, s.HeroPos, 4f), ArriveHold);
                 return r;
             }
             m.Mode = BotMode.Idle; r.Mode = m.Mode;
