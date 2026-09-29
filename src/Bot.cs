@@ -560,6 +560,19 @@ namespace ThronefallTrainer
                             Plugin.Log?.LogWarning($"[bot] stuck (no movement possible) → " +
                                 $"{(hasEscape ? "escape-snap" : "navmesh snap")} to {snap}");
                             LogLine(in s, hasEscape ? "snap-escape" : "snap");
+
+                            // If the aim itself is unreachable (nav island /
+                            // one-way drop — A* returns a 1-wp degenerate
+                            // path), park the pick like the coin stall does;
+                            // the next-best slot/coin takes over instead of
+                            // grinding the same wall forever.
+                            if (Mode == BotMode.SpendGold && s.NearestBuild != null)
+                            {
+                                BotPerception.IgnoreBuild(s.NearestBuild, 300f);
+                                ClearTarget();
+                                Plugin.Log?.LogWarning("[bot] slot unreachable — parked 5 min");
+                                LogLine(in s, "build-unreachable");
+                            }
                         }
                         else
                         {
