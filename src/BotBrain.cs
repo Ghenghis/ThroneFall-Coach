@@ -333,6 +333,7 @@ namespace ThronefallTrainer
         public float LastSquadAt;
         public float LastBreachAt;
         public float DayStartAt;
+        public string DayScene;
         public float SquadWalkAt;
         public float LastEscortAt;
 
@@ -584,6 +585,16 @@ namespace ThronefallTrainer
                 m.HeldBuild = -1;
             }
 
+            // Scene/retry change resets the day clock — after a defeat-retry
+            // DayStartAt was still ancient, so the budget read as instantly
+            // expired and night was called with zero army (ally=0, wave 1).
+            if (m.DayScene != s.SceneName)
+            {
+                m.DayScene = s.SceneName;
+                m.DayStartAt = now;
+                m.NightRequestAt = 0f;
+            }
+
             // Day/night edge → re-arm night request + army + coin park.
             if (m.LastNightState != s.IsNight)
             {
@@ -679,8 +690,11 @@ namespace ThronefallTrainer
                         r.Intents.Add(Intent.Of(IntentKind.RecallToBreach));
                         r.Notes.Add("breach-response");
                     }
-                    bool heroMust = s.AllyCount < 3
-                        || (s.HasNearEnemy && s.NearEnemyDist <=
+                    // Sissy rule: the hero NEVER substitutes for an army —
+                    // with zero troops he holds at the castle and lets the
+                    // walls/towers work. Fighting solo is how he keeps dying.
+                    // He only fights what's already ON him.
+                    bool heroMust = (s.HasNearEnemy && s.NearEnemyDist <=
                             (s.SelfDefendRange > 0f ? s.SelfDefendRange : 7f))
                         || s.NearFoeCount >= 2;
                     if (heroMust)
@@ -838,8 +852,12 @@ namespace ThronefallTrainer
             // army is up to target OR the day budget is spent — whichever
             // readiness signal arrives first.
             if (m.DayStartAt > 0f &&
-                ((s.CanSwitch && (s.AllyCount >= s.ArmyTarget ||
-                  (s.DoorCount > 0 && s.DoorsCovered >= s.DoorCount))) ||
+                ((s.CanSwitch &&
+                  // Ready = army target met AND someone actually manning the
+                  // perimeter (calling night with zero posts invites the
+                  // breach we saw at t≈90: 25 foes vs a lone hero).
+                  (s.AllyCount >= s.ArmyTarget && (s.DoorCount == 0 || s.DoorsCovered > 0) ||
+                   (s.DoorCount > 0 && s.DoorsCovered >= s.DoorCount))) ||
                  // Budget expiry forces the night even when the horn isn't
                  // visible — SwitchToNight is the game's own call and rejects
                  // harmlessly if the day is still locked.
@@ -865,6 +883,28 @@ namespace ThronefallTrainer
                     r.Intents.Add(Intent.Of(IntentKind.SwitchNight));
                 }
                 return r;
+            }
+
+            // ---- day: squads pre-stage on the perimeter ----
+            // Remote posts don't need the hero — emit them alongside economy
+            // work (this used to sit after SpendGold, which always returned
+            // first, so squads only ever posted at night).
+            if (legit)
+            {
+                if (s.HasUncoveredDoor &&
+                    s.FreeUnits >= (s.UncoveredDoorHot ? 2 : Math.Max(4, s.UncoveredDoorTarget))
+                    && now - m.LastSquadAt > 6f)
+                {
+                    m.LastSquadAt = now;
+                    r.Intents.Add(Intent.Of(IntentKind.PlaceSquad));
+                    r.Notes.Add("squad-door:" + s.UncoveredDoorLine);
+                }
+                if (s.FreeUnits > 0 && now - m.LastEscortAt > 20f)
+                {
+                    m.LastEscortAt = now;
+                    r.Intents.Add(Intent.Of(IntentKind.EscortHero));
+                    r.Notes.Add("escort-refresh");
+                }
             }
 
             // ---- day: coins ----
@@ -949,26 +989,6 @@ namespace ThronefallTrainer
                     }
                 }
                 return r;
-            }
-
-            // ---- remote strategy emits: squads post THEMSELVES at corridor
-            // doors; the escort slice FollowsPlayer — no hero trips at all.
-            if (legit)
-            {
-                if (s.HasUncoveredDoor &&
-                    s.FreeUnits >= (s.UncoveredDoorHot ? 2 : Math.Max(4, s.UncoveredDoorTarget))
-                    && now - m.LastSquadAt > 6f)
-                {
-                    m.LastSquadAt = now;
-                    r.Intents.Add(Intent.Of(IntentKind.PlaceSquad));
-                    r.Notes.Add("squad-door:" + s.UncoveredDoorLine);
-                }
-                if (s.FreeUnits > 0 && now - m.LastEscortAt > 20f)
-                {
-                    m.LastEscortAt = now;
-                    r.Intents.Add(Intent.Of(IntentKind.EscortHero));
-                    r.Notes.Add("escort-refresh");
-                }
             }
 
             // ---- army placement (first anchor: the next wave's corridor) ----

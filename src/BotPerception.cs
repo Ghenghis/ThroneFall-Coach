@@ -247,10 +247,25 @@ namespace ThronefallTrainer
         private static string armyAnchorLine;
         private static int[] doorUnit;
         private static bool[] doorBreach;
+        private static float[] doorClaim;   // squad placed, units en route
+
+        /// <summary>Stamp a door as just-posted (executor calls this after
+        /// PlaceSquad) so the uncovered-door scan doesn't re-pick the same
+        /// corridor while the squad is still walking there.</summary>
+        public static void MarkDoorClaim(Vector3 pos)
+        {
+            if (doorClaim == null || sceneDoorAnchors == null) return;
+            for (int i = 0; i < sceneDoorAnchors.Length; i++)
+                if ((sceneDoorAnchors[i] - pos).sqrMagnitude < 400f)
+                { doorClaim[i] = UnityEngine.Time.unscaledTime; return; }
+        }
         private static Vector3[] sceneDoorAnchors;
         private static string[] sceneDoorLines;
         private static string doorScene = "";
         private static int[] doorFoes;
+        private static float hornScanAt;   // last horn-interactor rescan
+        private static string hornDumpScene;  // interactor dump per scene
+        public static InteractorBase HornBi;   // fallback horn handle
         public static int BreachCount;
 
         /// <summary>M3 grandmaster playbook for the scene (tools/mm-coach.py
@@ -260,6 +275,129 @@ namespace ThronefallTrainer
         {
             public static int Squad, Reserve, Escort, ArmyTarget;
             public static string Focus = "";
+            public static string[] BuildOrder = new string[0];           // "cat:name - note"
+            public static System.Collections.Generic.Dictionary<string, int>
+                LineSquad = new System.Collections.Generic.Dictionary<string, int>();
+        }
+
+        /// <summary>Playbook build order — how many of each category must be
+        /// standing before the next entry unlocks. Consumed per scene.</summary>
+        public static readonly System.Collections.Generic.Dictionary<string, int>
+            CatBuilt = new System.Collections.Generic.Dictionary<string, int>();
+        private static string catBuiltScene;
+
+        /// <summary>Classify a buildable by name — the categories the
+        /// playbook's build_order speaks in.</summary>
+        public static string BuildCat(string name)
+        {
+            string n = (name ?? "").ToLowerInvariant();
+            if (n.Contains("wall") || n.Contains("palisade") || n.Contains("fortify")) return "wall";
+            if (n.Contains("gate")) return "gate";
+            if (n.Contains("tower") || n.Contains("ballista") || n.Contains("cannon") ||
+                n.Contains("watchtower")) return "tower";
+            if (n.Contains("barrack") || n.Contains("archery") || n.Contains("militia") ||
+                n.Contains("guard") || n.Contains("outpost")) return "military";
+            if (n.Contains("house") || n.Contains("mill") || n.Contains("farm") ||
+                n.Contains("mine") || n.Contains("market")) return "income";
+            if (n.Contains("castle")) return "upgrade";
+            return "other";
+        }
+
+        /// <summary>Called when a hold-to-pay completes — advances the
+        /// playbook build order by counting built categories per scene.</summary>
+        public static void BuildDone(string buildingName)
+        {
+            if (catBuiltScene != slotPackScene)
+            {
+                catBuiltScene = slotPackScene;
+                CatBuilt.Clear();
+            }
+            string cat = BuildCat(buildingName);
+            CatBuilt[cat] = (CatBuilt.TryGetValue(cat, out int c) ? c : 0) + 1;
+            Plugin.Log?.LogInfo($"[bot] playbook: built '{buildingName}' (cat {cat} #{CatBuilt[cat]})");
+        }
+
+        /// <summary>Next playbook build categories not yet satisfied —
+        /// [0] = the current build target, [1..2] = soon.</summary>
+        public static string[] OpenBuildOrder()
+        {
+            var order = Strat.BuildOrder;
+            var need = new System.Collections.Generic.Dictionary<string, int>();
+            var open = new System.Collections.Generic.List<string>();
+            for (int i = 0; i < order.Length; i++)
+            {
+                string cat = order[i].Split(':')[0].Trim();
+                need.TryGetValue(cat, out int seen);
+                need[cat] = seen + 1;
+                CatBuilt.TryGetValue(cat, out int have);
+                if (have < need[cat]) open.Add(cat);
+                if (open.Count >= 3) break;
+            }
+            return open.ToArray();
+        }
+
+        /// <summary>Full playbook checklist for the audit UI: every build_order
+        /// entry with its done/pending status against CatBuilt.</summary>
+        public static string AuditJson(ref Snapshot s, string mode, float modeSince, float now)
+        {
+            var sb = new System.Text.StringBuilder(900);
+            sb.Append("{\"scene\":").Append(JsonStr(s.SceneName))
+              .Append(",\"t\":").Append(Mathf.RoundToInt(now))
+              .Append(",\"mode\":").Append(JsonStr(mode))
+              .Append(",\"mode_since\":").Append(Mathf.RoundToInt(now - modeSince))
+              .Append(",\"gold\":").Append(Mathf.RoundToInt(s.Balance))
+              .Append(",\"ally\":").Append(s.AllyCount)
+              .Append(",\"free\":").Append(s.FreeUnits)
+              .Append(",\"foes\":").Append(s.NextWaveCount)
+              .Append(",\"night\":").Append(s.IsNight ? "true" : "false")
+              .Append(",\"wave\":").Append(s.Wave)
+              .Append(",\"wave_total\":").Append(s.WaveTotal)
+              .Append(",\"doors_cov\":").Append(s.DoorsCovered)
+              .Append(",\"doors\":").Append(s.DoorCount)
+              .Append(",\"red\":").Append(s.RedAlert ? "true" : "false")
+              .Append(",\"breaches\":").Append(BreachCount)
+              .Append(",\"bld\":").Append(s.BuildCount)
+              .Append(",\"cur_build\":").Append(JsonStr(s.NearestBuildName))
+              .Append(",\"open_order\":[");
+            var open = OpenBuildOrder();
+            for (int i = 0; i < open.Length; i++)
+            { if (i > 0) sb.Append(','); sb.Append(JsonStr(open[i])); }
+            sb.Append("],\"cat_built\":{");
+            bool first = true;
+            foreach (var kv in CatBuilt)
+            { if (!first) sb.Append(','); first = false;
+              sb.Append(JsonStr(kv.Key)).Append(':').Append(kv.Value); }
+            sb.Append("},\"door_units\":[");
+            if (doorUnit != null)
+                for (int i = 0; i < doorUnit.Length; i++)
+                { if (i > 0) sb.Append(','); sb.Append(doorUnit[i]); }
+            sb.Append("],\"door_lines\":[");
+            if (sceneDoorLines != null)
+                for (int i = 0; i < sceneDoorLines.Length; i++)
+                { if (i > 0) sb.Append(','); sb.Append(JsonStr(sceneDoorLines[i])); }
+            sb.Append("],\"checklist\":[");
+            // Every playbook entry, in order, marked done or pending — this
+            // is what "following the playbook" means on screen.
+            var cnt = new System.Collections.Generic.Dictionary<string, int>();
+            for (int i = 0; i < Strat.BuildOrder.Length; i++)
+            {
+                string entry = Strat.BuildOrder[i];
+                string cat = entry.Split(':')[0].Trim();
+                cnt.TryGetValue(cat, out int k); cnt[cat] = k + 1;
+                CatBuilt.TryGetValue(cat, out int have);
+                if (i > 0) sb.Append(',');
+                sb.Append("{\"n\":").Append(JsonStr(entry))
+                  .Append(",\"done\":").Append(have >= cnt[cat] ? "true" : "false")
+                  .Append('}');
+            }
+            sb.Append("]}");
+            return sb.ToString();
+        }
+
+        private static string JsonStr(string v)
+        {
+            if (v == null) return "null";
+            return "\"" + v.Replace("\\", "\\\\").Replace("\"", "\\\"") + "\"";
         }
 
         private static void LoadStrategy(string scene)
@@ -276,11 +414,37 @@ namespace ThronefallTrainer
                 Strat.Reserve = JInt(j, "reserve_size");
                 Strat.Escort = JInt(j, "escort_size");
                 Strat.ArmyTarget = JInt(j, "army_target");
+                // build_order: ["cat:name - note", ...] — the playbook's
+                // literal sequence the scoring bonus below follows.
+                var bom = System.Text.RegularExpressions.Regex.Match(
+                    j, "\"build_order\"\\s*:\\s*\\[(.*?)\\]",
+                    System.Text.RegularExpressions.RegexOptions.Singleline);
+                var bo = new System.Collections.Generic.List<string>();
+                if (bom.Success)
+                    foreach (System.Text.RegularExpressions.Match mm in
+                        System.Text.RegularExpressions.Regex.Matches(
+                            bom.Groups[1].Value, "\"([^\"]+)\""))
+                        bo.Add(mm.Groups[1].Value);
+                Strat.BuildOrder = bo.ToArray();
+                // wave_priority: [{line, squad, note}] → per-door squad sizes.
+                Strat.LineSquad.Clear();
+                var wpm = System.Text.RegularExpressions.Regex.Match(
+                    j, "\"wave_priority\"\\s*:\\s*\\[(.*?)\\]",
+                    System.Text.RegularExpressions.RegexOptions.Singleline);
+                if (wpm.Success)
+                    foreach (System.Text.RegularExpressions.Match wm in
+                        System.Text.RegularExpressions.Regex.Matches(
+                            wpm.Groups[1].Value,
+                            "\"line\"\\s*:\\s*\"([^\"]+)\"[^{}]*?\"squad\"\\s*:\\s*(\\d+)",
+                            System.Text.RegularExpressions.RegexOptions.Singleline))
+                        Strat.LineSquad[wm.Groups[1].Value.Trim()] =
+                            int.Parse(wm.Groups[2].Value);
                 var fm = System.Text.RegularExpressions.Regex.Match(
                     j, "\"build_focus\"\\s*:\\s*\"([^\"]*)\"");
                 if (fm.Success) Strat.Focus = fm.Groups[1].Value;
                 Plugin.Log?.LogInfo($"[bot] strategy '{scene}': squad={Strat.Squad} " +
-                    $"reserve={Strat.Reserve} escort={Strat.Escort} army>={Strat.ArmyTarget}");
+                    $"reserve={Strat.Reserve} escort={Strat.Escort} army>={Strat.ArmyTarget} " +
+                    $"order={Strat.BuildOrder.Length} linesquad={Strat.LineSquad.Count}");
             }
             catch (System.Exception ex) { Plugin.Log?.LogWarning($"[bot] strategy load: {ex.Message}"); }
         }
@@ -888,6 +1052,13 @@ namespace ThronefallTrainer
                     for (int d = 0; d < s.DoorAnchors.Length; d++)
                     {
                         if (doorUnit[d] >= DoorTarget(d, pk)) { if (hot == 1) s.DoorsCovered++; continue; }
+                        // Claimed + walking — skip re-posting for 25 s.
+                        if (doorClaim != null && d < doorClaim.Length &&
+                            UnityEngine.Time.unscaledTime - doorClaim[d] < 25f)
+                        {
+                            if (hot == 1) s.DoorsCovered++;   // en route counts
+                            continue;
+                        }
                         if ((doorFoes != null && doorFoes[d] > 0) != (hot == 1)) continue;
                         float dc = FlatDist(s.DoorAnchors[d], s.CastlePos);
                         if (hot == 1 || dc < leakD)
@@ -1050,11 +1221,97 @@ namespace ThronefallTrainer
             // instance is set in Awake and goes stale when deactivated at dusk —
             // the isActiveAndEnabled check covers both cases.
             var horn = Nighthorn.instance;
+            // Fallback: singleton goes stale on some scenes — find the horn
+            // interactable directly (there's at most one per level).
+            if (horn == null)
+            {
+                try
+                {
+                    var horns = UnityEngine.Object.FindObjectsOfType<Nighthorn>();
+                    if (horns != null && horns.Length > 0) horn = horns[0];
+                }
+                catch { }
+            }
             if (horn != null && horn.isActiveAndEnabled)
             {
                 s.HasHorn = true;
                 s.Horn = horn;
                 s.HornPos = horn.transform.position;
+                s.HornDist = FlatDist(s.HornPos, s.HeroPos);
+            }
+            // Second fallback: horns expose themselves as a BuildingInteractor
+            // too — look for a non-building interactor near the castle whose
+            // name smells like the horn.
+            // Scan even when a disabled Nighthorn exists — an inactive
+            // singleton found by FindObjectsOfType blocks the scan forever
+            // otherwise (was the day-never-ends root cause).
+            if (!s.HasHorn &&
+                UnityEngine.Time.unscaledTime - hornScanAt > 15f)
+            {
+                hornScanAt = UnityEngine.Time.unscaledTime;
+                try
+                {
+                    // InteractorBase is the real interactable supertype —
+                    // BuildingInteractor never matched (0 hits) because the
+                    // horn/buildings ride on InteractorBase subclasses.
+                    var scan = UnityEngine.Object.FindObjectsOfType<InteractorBase>(true);
+                    // Dump once per scene — the campaign map has none of the
+                    // level's interactables, so a single global dump misses
+                    // the horn entirely.
+                    bool firstDump = hornDumpScene != (s.SceneName ?? "");
+                    hornDumpScene = s.SceneName ?? "";
+                    if (firstDump)
+                        Plugin.Log?.LogInfo(
+                            $"[bot] horn scan '{s.SceneName}': {scan?.Length ?? -1} interactors");
+                    foreach (var bi in scan)
+                    {
+                        if (bi == null || !bi.isActiveAndEnabled) continue;
+                        var nm = bi.name ?? "";
+                        // The horn is a BuildingInteractor like every slot —
+                        // only its targetBuilding distinguishes it.
+                        string bn = "";
+                        try
+                        {
+                            const System.Reflection.BindingFlags BF =
+                                System.Reflection.BindingFlags.Instance |
+                                System.Reflection.BindingFlags.Public |
+                                System.Reflection.BindingFlags.NonPublic;
+                            var t = bi.GetType();
+                            object tb = t.GetField("targetBuilding", BF)?.GetValue(bi)
+                                     ?? t.GetProperty("targetBuilding", BF)?.GetValue(bi)
+                                     ?? t.GetField("building", BF)?.GetValue(bi)
+                                     ?? t.GetProperty("building", BF)?.GetValue(bi);
+                            bn = tb is UnityEngine.Component c ? (c.name ?? c.GetType().Name)
+                               : tb != null ? tb.GetType().Name : "";
+                        }
+                        catch { }
+                        if (firstDump && bn != "")
+                            Plugin.Log?.LogInfo(
+                                $"[bot] interactor: '{bi.GetType().Name}/{nm}' b='{bn}' at {bi.transform.position}");
+                        if (nm.IndexOf("horn", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+                            nm.IndexOf("night", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+                            bn.IndexOf("horn", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+                            bn.IndexOf("night", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+                            bn.IndexOf("bell", System.StringComparison.OrdinalIgnoreCase) >= 0)
+                        {
+                            Plugin.Log?.LogInfo($"[bot] horn found via interactor '{nm}'");
+                            s.HasHorn = true;
+                            s.HornPos = bi.transform.position;
+                            s.HornDist = FlatDist(s.HornPos, s.HeroPos);
+                            HornBi = bi;
+                            break;
+                        }
+                    }
+                }
+                catch (System.Exception ex)
+                {
+                    Plugin.Log?.LogWarning($"[bot] horn scan failed: {ex.Message}");
+                }
+            }
+            if (HornBi != null && !s.HasHorn && HornBi.isActiveAndEnabled)
+            {
+                s.HasHorn = true;
+                s.HornPos = HornBi.transform.position;
                 s.HornDist = FlatDist(s.HornPos, s.HeroPos);
             }
 
@@ -1194,6 +1451,17 @@ namespace ThronefallTrainer
                     if (military > 0 && (s.FinalWaveNext || s.NextWaveCount >= 30))
                         score += military * 100;
                     if (incomeDelta > 0) score += 30 + Mathf.Min(incomeDelta, 10) * 3;
+                    // PLAYBOOK ORDER: the M3 plan's literal build sequence —
+                    // the next unsatisfied category gets a heavy bonus so
+                    // walls/gates/barracks go up in the playbook's order,
+                    // not whenever scoring happens to favor them.
+                    var open = OpenBuildOrder();
+                    if (open.Length > 0)
+                    {
+                        string scat = BuildCat(bs.buildingName);
+                        int oi = System.Array.IndexOf(open, scat);
+                        if (oi >= 0) score += 150 - oi * 40;
+                    }
                 }
                 s.BuildCount++;
                 float d = (bi.transform.position - s.HeroPos).sqrMagnitude;
@@ -1438,9 +1706,12 @@ namespace ThronefallTrainer
 
         private static int DoorTarget(int d, string pkey)
         {
-            // Coach override > M3 playbook > learned/default.
+            // Coach override > M3 playbook per-line > playbook global > learned.
             int baseSz;
+            string line = (sceneDoorLines != null && d < sceneDoorLines.Length)
+                ? sceneDoorLines[d] : null;
             if (Coach.SquadSize > 0) baseSz = Coach.SquadSize;
+            else if (line != null && Strat.LineSquad.TryGetValue(line, out int ls)) baseSz = ls;
             else if (Strat.Squad > 0) baseSz = Strat.Squad;
             else
             {
@@ -1528,6 +1799,7 @@ namespace ThronefallTrainer
                 doorUnit = new int[sceneDoorAnchors?.Length ?? 0];
                 doorBreach = new bool[sceneDoorAnchors?.Length ?? 0];
                 doorFoes = new int[sceneDoorAnchors?.Length ?? 0];
+                doorClaim = new float[sceneDoorAnchors?.Length ?? 0];
             }
         }
 

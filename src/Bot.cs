@@ -179,6 +179,7 @@ namespace ThronefallTrainer
 
         private static int recTickFrame;
         private static BotMode prevModeRec = BotMode.Idle;
+        private static float modeSinceAt, nextAuditAt;
         private static string recordedScene;
 
         // Pure-layer memory: everything the old file-level statics carried for
@@ -195,6 +196,7 @@ namespace ThronefallTrainer
         private static readonly System.Collections.Generic.HashSet<string> prevRuleFires =
             new System.Collections.Generic.HashSet<string>();
         private static float holdDiagAt;
+        private static string holdDoneName = "";
 
         private static readonly System.Collections.Generic.HashSet<Coin> coinIgnore =
             new System.Collections.Generic.HashSet<Coin>();
@@ -267,6 +269,15 @@ namespace ThronefallTrainer
                 object Get(string n) => ty.GetField(n, System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.GetValue(heldBuild);
                 string bName = heldBuild.targetBuilding != null ? heldBuild.targetBuilding.buildingName : "";
                 Plugin.Log?.LogInfo($"[bot] hold-diag '{heldBuild.name}' b='{bName}': state={Get("currentState")} started={Get("interactionStarted")} waitChoice={Get("isWaitingForChoice")} complete={Get("interactionComplete")} harvest={heldBuild.canBeHarvested} canInter={heldBuild.CanBeInteractedWith}");
+                // Playbook bookkeeping: a completed fill advances the
+                // build-order tracker so the next pick follows the plan.
+                var cpl = Get("interactionComplete");
+                if (cpl is bool done && done && bName != "" &&
+                    bName != holdDoneName)
+                {
+                    holdDoneName = bName;
+                    BotPerception.BuildDone(bName);
+                }
             }
 
             Coach.PerFrame();   // live.png + user command-file poll
@@ -443,6 +454,22 @@ namespace ThronefallTrainer
             {
                 if (Mode == BotMode.HeroDead) Recorder.CountDeath();
                 prevModeRec = Mode;
+                modeSinceAt = Time.unscaledTime;
+            }
+            // Audit feed for the coach UI: current action, playbook checklist,
+            // per-door posts — refreshed ~every 3 s so the panel can prove
+            // what the bot is (not) doing.
+            if (Time.unscaledTime >= nextAuditAt)
+            {
+                nextAuditAt = Time.unscaledTime + 3f;
+                try
+                {
+                    var aj = BotPerception.AuditJson(ref s, Mode.ToString(),
+                        modeSinceAt, Time.unscaledTime);
+                    System.IO.File.WriteAllText(
+                        System.IO.Path.Combine(Recorder.AgentDir, "audit.json"), aj);
+                }
+                catch { }
             }
             if ((recTickFrame++ & 1) == 0)
                 Recorder.Tick(sd.ToJson("tick", Time.unscaledTime, Mode));
@@ -753,6 +780,8 @@ namespace ThronefallTrainer
                     PlaceArmy();
                     break;
                 case IntentKind.PlaceSquad:
+                    if (s.HasUncoveredDoor)
+                        BotPerception.MarkDoorClaim(s.UncoveredDoorPos);
                     PlaceSquad(in s);
                     break;
                 case IntentKind.RecallToBreach:
@@ -766,6 +795,11 @@ namespace ThronefallTrainer
                     {
                         s.Horn.InteractionBegin(pi);
                         Plugin.Log?.LogInfo("[bot] at nighthorn -> InteractionBegin()");
+                    }
+                    else if (BotPerception.HornBi != null && pi != null)
+                    {
+                        BotPerception.HornBi.InteractionBegin(pi);
+                        Plugin.Log?.LogInfo("[bot] horn interactor -> InteractionBegin()");
                     }
                     break;
                 case IntentKind.SwitchNight:

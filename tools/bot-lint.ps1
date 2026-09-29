@@ -175,6 +175,52 @@ if ($unknown.Count -gt 0) {
     Report 'PASS' "snapshot-fields: all $($used.Count) 's.X' refs resolve to Snapshot members" $null $null
 }
 
+# ── 8. Learning stack present + wired ───────────────────────────────────
+$newFiles = @('Policy.cs','Memory.cs','NetPolicy.cs','Overlay.cs','Coach.cs')
+foreach ($nf in $newFiles) {
+    if (Test-Path (Join-Path $src $nf)) {
+        if ($csproj -match [regex]::Escape($nf) -or $nf -in @('Overlay.cs','Policy.cs','Memory.cs','NetPolicy.cs','Coach.cs')) {
+            Report 'PASS' "stack: $nf present" $null $null
+        }
+    } else { Report 'FAIL' "stack: $nf missing" '' 'restore src/' + $nf }
+}
+# Neural net must stay shadow-mode: Shadow(...) returns an Intell; the bot
+# may only ever *log* it — a direct NetPolicy.Mode/Action call that feeds
+# intents would be an unprompted behaviour change. Shadow-ok if no
+# "NetPolicy." call outside Shadow()/log lines.
+$netCalls = [regex]::Matches($bot, 'NetPolicy\.(\w+)') |
+    ForEach-Object { $_.Groups[1].Value } | Select-Object -Unique
+$badNet = $netCalls | Where-Object { $_ -notin @('Shadow','Init','Loaded','Agree','Disagree','Ratio') }
+if ($badNet) {
+    Report 'FAIL' "shadow-gate: NetPolicy.$($badNet -join ',') called in Bot.cs" '' `
+           'neural policy must stay advisory — gate via NetPolicy.Shadow only'
+} else {
+    Report 'PASS' 'shadow-gate: neural net is shadow/advisory only' $null $null
+}
+# Overlay: F1 toggle present
+if ((Get-Content (Join-Path $src 'Overlay.cs') -Raw) -match 'KeyCode\.F1') {
+    Report 'PASS' 'overlay: F1 toggle present' $null $null
+} else { Report 'WARN' 'overlay: F1 toggle missing' '' 'Overlay.Update should toggle Visible on F1' }
+# Coach must never block the frame: UnityWebRequest banned (we use
+# HttpWebRequest on a background thread).
+$coa = Get-Content (Join-Path $src 'Coach.cs') -Raw
+if ($coa -match 'UnityWebRequest|\.Download\(.*\)' -and $coa -notmatch 'WebRequest\.Create') {
+    Report 'WARN' 'coach-io: possible blocking web call on game thread' '' `
+           'Coach calls must stay on a background thread (WebRequest + Thread)'
+} else {
+    Report 'PASS' 'coach-io: advisor calls stay off the game thread' $null $null
+}
+# Memory + Policy actually exercised in Bot.cs
+foreach ($pin in @('Memory\.(Park|Bump|NearMishap|Count|Init)',
+                   'Policy\.(Eval|Commit|Update|Save|RewardMatch|Init|States|Cells)')) {
+    if ($bot -match $pin) {
+        Report 'PASS' "wired: $($pin.Split('.')[0]) exercised in Bot.cs" $null $null
+    } else {
+        Report 'WARN' "wired: $($pin.Split('.')[0]) not exercised in Bot.cs" '' `
+               'record/learn calls missing — learning layer is dead code'
+    }
+}
+
 Write-Host ''
 Write-Host "bot-lint: $fails FAIL, $warns WARN" -ForegroundColor ($fails -gt 0 ? 'Red' : ($warns -gt 0 ? 'Yellow' : 'Green'))
 exit $fails

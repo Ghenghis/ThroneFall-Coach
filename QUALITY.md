@@ -43,13 +43,15 @@ inline rationale comments added with the navigation work).
 
 | Tool | What it catches | Run |
 |---|---|---|
-| `tools\bot-lint.ps1` | ungated cheat calls, >4-char log fields, `Time.time` misuse, missing csproj refs, dead enum values, unresolved `s.X` refs | after every `src/` edit; exit code = #FAIL |
+| `tools\bot-lint.ps1` | ungated cheat calls, >4-char log fields, `Time.time` misuse, missing csproj refs, dead enum values, unresolved `s.X` refs, learning-stack wiring (Policy/Memory/NetPolicy/Overlay/Coach present, net shadow-only, coach off-thread, F1 toggle) | after every `src/` edit; exit code = #FAIL |
+| `tools\verify.ps1` | one-shot: lint + build + replay fixture + coach-server `/state` + `/metrics` | before claiming a deploy works; `-ReplayTol N` for memory-drift ticks, `-NoBuild` to skip compile |
 | `tools\bot-diagnose.ps1` | live-state defects: hero parked in travel mode, unstick storms, day-never-ends, wave grind, UI churn, cheat leaks vs config, log stall | any time the run looks wrong; `-Lines N` for window size, `-Fix` for config repair |
 | `tools\build-and-deploy.ps1` | builds Release, stops the game (DLL locks while running), copies to plugins, relaunches | standard deploy path |
+| `dotnet run --project tests\Replay` | replays recorded `ticks.jsonl` through `BotBrain.Decide` — catches decision regressions offline | after changing decide logic; `--tol N` for memory-dependent drift |
 | `dotnet build -c Release` | compile errors | before deploy |
 
 Pre-deploy checklist: `bot-lint` → build → `build-and-deploy` →
-`bot-diagnose` ~60 s into the run.
+`bot-diagnose` ~60 s into the run → `verify` for the full gate.
 
 ## 3. Debugging workflow
 
@@ -85,6 +87,36 @@ Pre-deploy checklist: `bot-lint` → build → `build-and-deploy` →
 - **Day-never-ends** — parked-slot list expired too fast (20 s parks
   re-entered the scan). Fix: park-for-day, clears at dusk. Verified: pool
   drains → `switch-night` fires.
+- **Phantom doors (12 for 6 corridors)** — `A.Count == L.Count` in
+  `BuildDoors` was always true, adding a midpoint door *as well as* the
+  40 m anchor for every corridor. Squads split across fake posts, coverage
+  stayed 0. Fix: explicit `added` flag; verified `squad doors: 6` matches
+  the unique ground lines in `botpack/*.json`.
+- **Silent night-call** — `DayNightCycle.SwitchToNight()` no-ops unless the
+  game considers the day ready; `Nighthorn.instance` is null on several
+  scenes. Fix: horn fallback via `FindObjectsOfType<Nighthorn>()` then a
+  name-scan over `BuildingInteractor`s (15 s rescan), budget-expiry forces
+  the call regardless of `CanSwitch`.
+- **Replay drift on memory fields** — `m.DayStartAt`/`m.LastSquadAt` aren't
+  in `ticks.jsonl`, so exact replay can't reproduce memory-timing decisions.
+  Fix: `--tol N` allows bounded drift ticks; new fields are added to
+  `SnapshotData.ToJson`/`Parse` in lockstep so future fields stay replayable.
+
+## 6. Learning-stack quality gates
+
+| Check | Catches |
+|---|---|
+| `shadow-gate` | `NetPolicy.*` called anywhere but `Shadow()`/status — the neural policy is advisory until promoted |
+| `coach-io` | blocking web calls in `Coach.cs` (must stay on background threads — `WebRequest.Create` + `Thread`) |
+| `wired` | `Memory.*`/`Policy.*` absent from `Bot.cs` — dead learning layer |
+| `stack` | missing `Policy.cs`/`Memory.cs`/`NetPolicy.cs`/`Overlay.cs`/`Coach.cs` |
+| `overlay` | F1 toggle removed from `Overlay.Update` |
+
+Promotion rule: the neural policy graduates from shadow to active only
+after the in-log agreement ratio (`[net] shadow: N agree / M disagree`)
+holds >70 % over a full session AND the replay + live outcome metrics
+(`metrics()` → grades) don't regress. Keep `Policy` (tabular) as the
+fallback whenever the net is disagreeing.
 
 ## 5. Maintenance
 
