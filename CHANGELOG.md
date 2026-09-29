@@ -1,5 +1,44 @@
 # Changelog
 
+## Unreleased — legit autopilot mode + navigation (2026-09-29)
+
+`Bot.BotSurvivalCheats = false` now means **fully legit play**, not just
+"bundle off":
+
+- **Legit mode (`Bot.Legit`)**: attacks via `TryToAttack()` only (the old
+  `Attack()` pump was a hidden ~4× fire-rate cheat); no `Hp.TakeDamage`
+  fallback; no movement teleports — A* `ABPath` waypoint steering +
+  escalating sidestep detours + navmesh `GetNearest` snap only when
+  physically embedded (`moved<0.05`); army through the player's
+  `CommandUnits` path (select-all → place → hold); session defeat counter
+  rotates node selection (−45 score per loss, cleared on win).
+- **Defensive play**: castle-threat target priority, threat-axis anchors from
+  `EnemySpawner` spawn lines (day) / live centroid (night), ranged stand-off
+  at ~70 % weapon range, kite on nearest-foe proximity, <5 m danger zone
+  retreats inside the keep, hp<0.5 retreat to castle, melee holds the army
+  line. Army anchored castle+11, ranged hero behind at castle−4 — hero no
+  longer stands ahead of his own troops.
+- **Day economy scoring**: harvest +1000, military production +100/branch,
+  income +30+Δ; core-cost and broke slots pre-filtered (no 7 s park);
+  stand-off build target (no collider-center wedge).
+- **Transition guards**: `sceneTransitionIsRunning` via reflection kills the
+  double-fire; `InteractionBegin` removed from `EnterLevel` (map interact is
+  distance-free anyway); `_`-scene night-switch guard; `AfterMatch*`-gated
+  frame escalation (pause can no longer exit a run); night-switch re-arms on
+  day edges only.
+- **Navigation**: `NavSteerPoint`/`MaybeRequestPath` — `ABPath` via
+  `AstarPath.StartPath` ~1 Hz; paths that can't reach the goal (>2.5 m from
+  last waypoint) or degenerate at the hero position fall back to
+  straight-line steering — the `moved 0.00` Nordfels trap root cause.
+- **Quality tooling**: `tools\bot-lint.ps1` (legit-gating, log fields,
+  unscaled time, references, enum coverage), `tools\bot-diagnose.ps1`
+  (parked hero, unstick storms, day-never-ends, wave grind, config drift
+  `-Fix`), `build-and-deploy.ps1` auto-stops the game first.
+- **Verified live**: fresh save, all cheats off — `Neuland(Tutorial)` beaten,
+  campaign map toured, Nordfels entered, real nights with real hp loss,
+  hero knockout + army-cleared wave, `army-placed`, `snap`/`unstick`
+  recoveries, single `transition-level` per visit.
+
 ## Unreleased — campaign autopilot (2026-09)
 
 Full campaign autopilot, verified end-to-end live (30k+ telemetry lines):

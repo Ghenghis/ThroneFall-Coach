@@ -1,8 +1,8 @@
 # Thronefall Campaign Autopilot — Status, Known Issues & Handoff
 
-Status: **working end-to-end, verified live** (2026-09-28)
+Status: **legit mode working, verified live on fresh save** (2026-09-29)
 Component: `ThronefallTrainer.dll` → `K:\Downloads-IDM\Thronefall\BepInEx\plugins\`
-Toggle: **F6** (persisted in `BepInEx\config\...\ThronefallTrainer.cfg` as `Bot.AutopilotEnabled`)
+Toggle: **F6** (persisted in `BepInEx\config\dev.thronefall.trainer.cfg` as `Bot.AutopilotEnabled`)
 Telemetry: `BepInEx\plugins\bot-log.jsonl` (~4 Hz JSONL + event notes)
 
 ---
@@ -12,9 +12,34 @@ Telemetry: `BepInEx\plugins\bot-log.jsonl` (~4 Hz JSONL + event notes)
 A full campaign autopilot for Thronefall (BepInEx + Harmony, net472):
 
 `title screen → level-select map → pick unbeaten level → play match`
-`  day: collect coins → spend gold on builds/upgrades → start night`
-`  night: engage/clear waves (cheat-assisted) → repeat`
+`  day: collect coins → harvest → spend gold (scored slots) → position army`
+`      → start night`
+`  night: hold defensive anchor → castle-threat priority → kite ranged`
+`      → retreat at low hp → repeat`
 `→ victory frame → back to map → next unbeaten level`
+
+Two operation modes, driven by `Bot.BotSurvivalCheats`:
+
+- **`BotSurvivalCheats = true`** — bundle ON: god/survival cheats plus the
+  bot's own power shortcuts (direct `Attack()` calls that bypass weapon
+  cooldown, `Hp.TakeDamage` fallback on the engaged enemy, teleport-nudge
+  recovery, straight-line steering).
+- **`BotSurvivalCheats = false` → `Bot.Legit = true`** — no survival bundle
+  AND the bot stays inside player rules:
+  - attacks only via `ManualAttack.TryToAttack()` (respects `cooldownTime`;
+    `autoAttack` weapons fire on their own — the bot never calls `Attack()`
+    directly, which skipped cooldown for a hidden ~4× attack-speed cheat);
+  - never calls `Hp.TakeDamage` — kills come from the hero's real weapon and
+    allied units;
+  - never teleports to move — A* navmesh steering (`ABPath` via
+    `AstarPath.StartPath`) plus escalating sidestep detours for wall-wedges;
+    a navmesh `SnapToNavmesh`-style snap is allowed **only** when the hero
+    cannot move at all (embedded in geometry — a spawn defect a player
+    couldn't escape either);
+  - army goes through the player's own command path (`OnUnitAdd` →
+    `PlaceCommandedUnitsAndCalculateTargetPositions` → `MakeUnitsInBufferHoldPosition`);
+  - takes real defeats — each loss is counted per scene; after ~3 the node
+    is deprioritised so the campaign rotates instead of grinding a loss loop.
 
 It also auto-resolves every blocking UI frame that would otherwise freeze input:
 upgrade choices, perk/level-up selections, reward frames, escapable menus.
@@ -23,12 +48,12 @@ upgrade choices, perk/level-up selections, reward frames, escapable menus.
 
 | File | Role |
 |---|---|
-| `src/Plugin.cs` | BepInEx entry. Overlay menu (F1), hotkeys, config bindings, bot enable + survival-cheat bundle, `Bot.Tick()` pump |
-| `src/Bot.cs` | FSM (`BotMode`), steering targets, watchdog, UI resolver, build holds, JSONL log |
-| `src/BotPerception.cs` | `Snapshot` — one read of game state per decision tick (hero, coins, enemies, buildings, horn, map nodes, balances) |
+| `src/Plugin.cs` | BepInEx entry. Overlay menu (F1), hotkeys, config bindings, bot enable + survival-cheat bundle, sets `Bot.Legit = !cfgBotCheats`, `Bot.Tick()` pump |
+| `src/Bot.cs` | FSM (`BotMode`), steering targets, nav steering, watchdog, UI resolver, build holds, army command, session defeat tracking, JSONL log |
+| `src/BotPerception.cs` | `Snapshot` — one read of game state per decision tick (hero, coins, enemies incl. **castle-threat enemy**, allies, buildings incl. **build scoring**, horn, map nodes, **threat anchor** from `EnemySpawner` spawn lines, balances) |
 | `src/BotPatches.cs` | Harmony prefix on `PlayerMovement.MoveScript` + `PlayerBallMovement.MoveScript` — rewrites `inputVector` from `Bot.DesiredDir` (camera-relative). Bot off = passthrough |
 | `src/Patches.cs` | Cheat patches: `Hp.TakeDamage` (god/instant-kill), `PlayerInteraction.SpendCoins`/`SpendEnergyCores` (FreeBuild), `Coinslot.AddFill` (InstantBuild), `Hp.Start` (enemy HP mult), `LocalGamestate.SetState` (NeverLose), `Weapon.Attack` (MultiShot) |
-| `src/ThronefallTrainer.csproj` | net472, `GameDir=..\..`, references game's Managed DLLs. **No auto-deploy** — manual copy |
+| `src/ThronefallTrainer.csproj` | net472, `GameDir=..\..`, references game's Managed DLLs (incl. `AstarPathfindingProject`, `PackageTools`, `Drawing` for A* types). **No auto-deploy** — manual copy |
 | `decompiled/` | Reference dumps of game classes the bot calls — verify against these before touching API usage |
 
 Hotkeys (from overlay footer): `F1 menu | F2 kill | F3 revive | F4 +100g | F5 tp | F6 bot`
@@ -36,20 +61,21 @@ Hotkeys (from overlay footer): `F1 menu | F2 kill | F3 revive | F4 +100g | F5 tp
 ### Bot survival bundle (`Bot.BotSurvivalCheats`, default **true**)
 Applied on enable, restored on disable: `GodHero`, `GodAll`, `InstantRevive`,
 `NeverLose`, `RegenEnabled`+`RegenMult=20`, `CoinMagnet`+`MagnetRadius=500`,
-`InstantKill`, `NoCooldown`. **The autopilot is cheat-dependent by design** —
-night clears rely on InstantKill; without it the bot fights greedily and dies.
+`InstantKill`, `NoCooldown`. Bundle ON also unlocks the bot's internal power
+shortcuts (`Legit=false`); bundle OFF = `Legit=true` — full player-rule play.
 
 ## 3. FSM modes (`BotMode`)
 
 | Mode | Trigger → Action |
 |---|---|
 | `ResolveUI` | Blocking UI present → resolves it (see §4). Runs before everything else |
-| `EnterLevel` | `_LevelSelect` scene → nearest **unbeaten** `LevelInteractor` (`beatenBest` via `LevelProgressManager`; all beaten → nearest playable for coin farming) → `InteractionBegin` + `TransitionFromLevelSelectToLevel`; seeds `fixedLoadout` into `PerkManager` first |
+| `EnterLevel` | `_LevelSelect` scene → best-scoring playable `LevelInteractor` (unbeaten+unplayed preferred, −45 per session defeat, distance tie-break via `BotPerception.LevelScore`) → **transition directly** via `TransitionFromLevelSelectToLevel` gated on `sceneTransitionIsRunning` (no `InteractionBegin` — killed the double-fire and the wasted frame close); fires from ≤9 m since the calls carry no range gate; seeds `fixedLoadout`/best unlocked weapon into `PerkManager` first |
 | `CollectCoin` | Day, coins on ground → nearest `TagManager.freeCoins` entry |
-| `SpendGold` | Day, `NearestBuild` interactable (`CanBeInteractedWith`) and gold>0 or harvestable → walk, `Focus` (harvest) + `InteractionBegin`, pump `InteractionHold` at 0.4 s |
-| `Engage` | Night / enemies present → pursue nearest enemy, `ManualAttack.TryToAttack()` every tick |
-| `StartNight` | Nothing left to spend/collect → `Nighthorn.instance.InteractionBegin` (auto-harvests + starts wave); horn inactive/missing → `DayNightCycle.SwitchToNight()` throttled 15 s |
-| `ReturnHome` / `HoldCastle` | Strayed >14 m from castle → drift back / hold |
+| `SpendGold` | Day, best-scoring `NearestBuild` (`CanBeInteractedWith` + harvest +1000, military production +100/branch, income +30+Δ; core-cost slots pre-filtered when `CoreBalance==0`; broke + nothing harvestable → skip) → stand-off target ~1.6 m out of the collider → `Focus` (harvest) + `InteractionBegin`, `InteractionHold` at 0.4 s, 7 s stall watch → park |
+| `PositionArmy` | Day, after economy, allies exist → `CommandUnits.OnUnitAdd` every `TagManager.PlayerUnits` entry (player's select-all path) → hero walks to threat anchor → `PlaceCommandedUnitsAndCalculateTargetPositions` (units teleport there in day, walk at night) → `MakeUnitsInBufferHoldPosition` → `commanding=false`. 8 s failsafe places wherever the hero is |
+| `Engage` | Night / enemies present → target = **enemy nearest the castle** (`CastleThreat`, not nearest to hero) → ranged weapons hold a stand-off on the castle side of the threat at ~70 % weapon range, step back when it closes past min(4, 0.45×range); melee holds the anchor line |
+| `ReturnHome` / `HoldCastle` | Legit: `HeroHpPct < 0.5` → retreat to castle while army works. Strayed >14 m from castle → drift back / hold at threat anchor |
+| `StartNight` | Nothing left to spend/collect/position → `Nighthorn.instance.InteractionBegin` (auto-harvests + starts wave); horn inactive/missing → `DayNightCycle.SwitchToNight()` throttled 15 s, gated off `_`-prefixed scenes |
 | `Idle` | No valid snapshot (loads, menus) |
 
 Decisions run at `DecisionInterval = 0.25 s`.
@@ -66,13 +92,16 @@ Order matters — top to bottom:
 2. **Freeze gate** — `frame == null || !frame.freezePlayer` → done. The
    non-freezing campaign-map UI is never touched.
 3. **End-of-match** — frame contains `BackToLevelSelectHelper` AND
-   (`canNotBeEscaped` OR `frameSeen ≥ 2`) → `SceneTransitionManager.TransitionToLevelSelect()`.
+   (`canNotBeEscaped` OR (`frameSeen ≥ 2` AND `GameState` starts with
+   `AfterMatch`)) → `SceneTransitionManager.TransitionToLevelSelect()`.
+   The AfterMatch gate closes the old mid-run-exit risk: a stubborn escapable
+   frame can no longer trigger the transition outside victory/defeat states.
 4. **Perk frame** — `PerkSelectionItem` children → select first unselected
-   (via its `PerkSelectionGroup`), close.
+   (via its `PerkSelectionGroup`), close. NOTE: these items only exist in the
+   map loadout UI, which the bot bypasses — the branch is effectively dormant;
+   post-match 'Level Up Frame' screens are notifications closed by step 5.
 5. **Generic** — `CloseActiveFrame()` if escapable, else `frame.Apply()`,
-   2 s throttle. `frameSeen` counts how often the same frame survives a close —
-   an escapable frame that keeps coming back *and* has a back-to-map helper is
-   treated as end-of-match (this is how Frostsee's victory frame works).
+   2 s throttle. `frameSeen` counts how often the same frame survives a close.
 
 ## 5. Day economy & the stall fix
 
@@ -80,9 +109,19 @@ Order matters — top to bottom:
 
 - `TagManager.playerBuildingInteractors` filtered by `CanBeInteractedWith`
   (true only while the slot has work: build/upgrade to pay, or harvest payout).
+- **Candidate scoring** (legit buys what wins nights): `canBeHarvested` +1000
+  (free income first); each `upgradeBranches` object containing
+  `AutoAttack*`/`UnitRespawnerForBuildings` components +100 (towers/unit
+  producers = military); `goldIncomeChange`/`energyCoreIncomeChange` +30+Δ
+  (economy); base +10. Cached per `BuildSlot` per scene.
+- **Core-cost pre-filter** — `NextUpgradeOrBuildEnergyCoreCost > 0` with
+  `CoreBalance == 0` is skipped in the scan (no 7 s park needed). Broke +
+  non-harvestable slots are skipped the same way.
 - Pickup: `Focus()` (income buildings pay out on focus) + `InteractionBegin`.
 - Hold: `InteractionHold` pumps one coin at a time — any `Balance > 0` works.
 - Retarget/mode change → `Unfocus` + `InteractionEnd` (`ReleaseBuild`).
+- **Stand-off aim** — the target is `pos + (pos→hero).normalized × 1.6 m`,
+  not the slot's transform center (which sits inside its collider).
 
 **Stall fix (the reason this doc exists):** `InteractionHold` early-outs when
 the slot deny-loops — e.g. a Craaghelm upgrade costing **energy cores** the
@@ -99,16 +138,50 @@ so the bot used to glue to that slot forever.
   never reached → **the day could never end**. With park-for-day the pool
   drains → night starts. This was verified live.
 
-## 6. Stuck watchdog
+## 6. Stuck watchdog & legit navigation
 
-Three strikes → teleport nudge toward `AimPos`. A strike requires, per ~2 s
-window: `DesiredDir ≠ 0`, hero moved <0.35 m, **and** aim distance *not
-decreasing* (closing-guard — a healthy pursuit that's closing range is never
-nudged). Resets on Idle/no target.
+Three strikes → recovery. A strike requires, per ~2 s window: `DesiredDir ≠ 0`,
+hero moved <0.35 m, **and** aim distance *not decreasing* (closing-guard — a
+healthy pursuit that's closing range is never struck). Resets on Idle/no
+target or any healthy window.
 
-## 7. Verified live (bot-log.jsonl, all-time)
+**Legit mode recovery ladder** (no teleports):
 
-30,276 lines since first deploy — full campaign loop confirmed:
+1. **A* navmesh steering** — goals move through `ABPath.Construct` on
+   `AstarPath.StartPath` (~1 Hz, same cadence as the game's own units); the
+   hero follows `vectorPath` waypoints instead of straight-lining into walls.
+   A path whose last waypoint is >2.5 m from the goal (navmesh isn't world-
+   complete: keep interiors, node rings, the campaign map's coarse mesh) is
+   treated as no-path → straight-line + sidesteps take over.
+2. **Sidestep detour** — perpendicular wall-slide (player wall-slides).
+   Reach escalates on the same side 3→12 m across consecutive strikes so big
+   obstacles get skirted instead of re-wedged; flips side after a full cycle.
+3. **Navmesh snap** — only when displacement is <0.05 m (physically embedded
+   in a collider — no direction can move it, so sliding is pointless).
+   `AstarPath.GetNearest` onto the navmesh, ~1.5 m toward the aim — the same
+   `SnapToNavmesh` recovery spawned units get.
+
+Cheat mode keeps the original 2.5 m teleport nudge.
+
+## 7. Verified live
+
+### Legit mode (2026-09-29, fresh save, all cheats off)
+
+- `Neuland(Tutorial)` **beaten** start-to-victory: day economy, `switch-night`
+  ×7, real kills (`foes` draining without InstantKill), `AfterMatchVictory`
+  frames resolved.
+- Campaign map toured → `transition-level` → `Nordfels` entered.
+- Nordfels: castle upgrade attempted (build-hold → build-stall → night),
+  wave 0 cleared at full hp; wave 1 took real damage (hp 0.7); wave 2 killed
+  the hero (hp −0.2) — and the allied army cleared the remaining 10 foes
+  without him (real knockout behavior), dawn respawned, campaign continued.
+- `ManualAttack` seeding works: `Bow & Dagger`, autoAttack, 37.5 m range.
+- `unstick:n`/`snap` notes replace `teleport-nudge` entirely; `frozen=False,
+  ts=1` diagnostics confirmed no hidden freeze.
+
+### Cheat mode (bot-log.jsonl, all-time historical)
+
+30,276 lines from the 2026-09-28 verification — full campaign loop:
 
 | Note | Count | Meaning |
 |---|---|---|
@@ -122,70 +195,62 @@ nudged). Resets on Idle/no target.
 | `stuck:1/2/3` + `teleport-nudge` | 435 / 123 | wedge → recovery, self-resolves |
 | `invalid` | 10890 | ticks during scene loads (noise — see §8) |
 
-Observed end-to-end: `AfterMatchVictory` → `_LevelSelect` (`lvln:10` nodes) →
-`level-interact` → `transition-level` → new Frostsee run → day economy →
-`switch-night` → night `Engage` → victory → repeat.
-
 ## 8. Known issues / problems
 
-Real defects or sharp edges, ranked by impact:
+**Fixed this round** (2026-09-29):
 
-1. **Wall-wedges (functional but noisy).** Steering is straight-line;
-   `NearestBuildPos` is the *building transform center*, i.e. inside its
-   collider. The hero rubs walls → `stuck` strikes → `teleport-nudge`. 123
-   nudges all-time; every one self-recovered but it's ugly and costs seconds.
-   → Fix idea: stand-off target (offset `NearestBuildPos` toward the hero by
-   the interact radius ~1.5 m) or real pathing.
-2. **Parked slots burn 7 s each.** A fully dead pool takes `n × 7 s` to drain
-   (Frostsee: ~35 slots ≈ 4 min). Tolerable, but could be O(1) — pre-filter
-   core-cost upgrades when `CoreBalance == 0` (needs a public cost probe —
-   `BuildingInteractor` doesn't expose `nextUpgradeCost`; check decompiled
-   `Buildable`/cost fields before attempting).
-3. **`frameSeen` escalation risk.** An *escapable* frame surviving two closes
-   that contains `BackToLevelSelectHelper` → treated as end-of-match →
-   `TransitionToLevelSelect` = **mid-run exit**. If a pause/settings frame
-   ever embeds that helper, the bot abandons the run. Mitigation today:
-   don't pause while the bot runs. Proper fix: restrict escalation to
-   AfterMatch* game states or the known victory frame name.
-4. **Cheat dependency.** Wave clearing assumes `InstantKill`+`GodAll`. Disable
-   `Bot.BotSurvivalCheats` and the autopilot is a demo, not a player.
-5. **`inter` field flickers 0↔75.** `InteractorCount` is sampled inside the
-   1 Hz level-scan block, so alternating ticks read 0 — cosmetic.
-6. **`wave` semantics.** `Wavenumber` reports the *upcoming* night index
-   (`11/13` during day = night 11 is next). Correct but reads oddly.
-7. **`transition-level` fires twice per cycle.** First interact opens the
-   pre-level frame → `ResolveUI` closes it → second interact transitions.
-   Works; slightly clunky.
-8. **`buildIgnore` isn't scene-scoped.** Keys are per-instance so stale
-   entries can't collide with a new scene's interactors, but for hygiene it
-   could clear on scene change, not just on night.
-9. **`invalid` log spam.** ~36 % of lines are load-ticks. Could suppress or
-   group into `loading` notes.
-10. **Greedy combat.** `Engage` pursues nearest enemy in a straight line — no
-    kiting, spacing, or target priority. Only viable thanks to cheats.
-11. **Deploy friction.** DLL is locked while `thronefall.exe` runs — must
-    stop the process before copying. No build-time deploy step.
+- ~~Wall-wedges~~ — nav steering + stand-off aims + escalating sidesteps.
+- ~~Parked slots burn 7 s~~ — core-cost/broke slots pre-filtered in the scan.
+- ~~`frameSeen` mid-run-exit risk~~ — escalation gated on `AfterMatch*` state.
+- ~~`transition-level` double-fire~~ — gated on `sceneTransitionIsRunning`;
+  `InteractionBegin` (and its wasted frame open/close) removed entirely.
+- ~~Cheat dependency~~ — `Bot.Legit` exists; see §1/§7.
+- ~~Greedy combat~~ — castle-threat targeting, ranged kiting, anchor defense,
+  low-hp retreat, army placed at the threat axis.
+- `Nighthorn.instance` never resolves on Frostsee/Nordfels/Neuland — horn GO
+  is inactive or null on those builds; `SwitchToNight()` fallback is the
+  normal path, documented not a defect.
+- Hero `moved 0.00` traps — root-caused: stale 1-waypoint paths steering to
+  where the hero already stood (`DesiredDir=0`); handled by the reach-goal
+  and degenerate-path fallbacks in `NavSteerPoint`, plus the snap rescue for
+  genuine embeds.
+
+Remaining, ranked by impact:
+
+1. **`inter` field flickers 0↔75.** `InteractorCount` sampled inside the 1 Hz
+   level-scan block — cosmetic.
+2. **`wave` semantics.** `Wavenumber` = upcoming night index (`11/13` during
+   day = night 11 next). Correct but reads oddly.
+3. **`buildIgnore` isn't scene-scoped** — instance keys can't collide across
+   scenes, but it could clear on scene change for hygiene.
+4. **`invalid` log spam** — ~36 % of lines are load-ticks. Could group into
+   `loading` notes. (`build-hold`/`ui` already tapered.)
+5. **Deploy friction** — DLL locked while `thronefall.exe` runs; stop the
+   process before copying. No build-time deploy step.
+6. **Slow legit waves** — nights take minutes while the army works; that's
+   the honest cost of real cooldowns vs InstantKill, not a bug.
+7. **Hero sometimes still wedges** on mid-size obstacles where sidesteps see
+   movement → detour counter resets; may re-wedge a few times before clearing.
+   Watch `unstick` counts per level.
+8. **`HeroDead` shows `Idle` mode**, not `ReturnHome` — cosmetic label while
+   knocked out; the army holds.
 
 ## 9. Future improvements / enhancements
 
-- **Nav-aware steering** — the game ships `AstarPathfindingProject` (already a
-  csproj reference). Query a path instead of straight-line + nudges.
-- **Stand-off interaction point** — cheapest wedge fix: aim at
-  `pos + (hero→pos).normalized * -1.5 m` for build targets.
-- **Choice/perk heuristics** — currently first-`CanBePicked`. Add scoring:
-  economy picks early, damage/defense for `FinalWaveComingUp`.
-- **Core-cost pre-filter** — skip parking cost entirely by probing upgrade
-  cost type when `CoreBalance == 0`.
+- **Choice/perk heuristics** — currently first-`CanBePicked`. Score choices:
+  economy picks early, damage/defense before `FinalWaveComingUp`.
+- **Smarter build scoring** — walls currently classify as "other"; consider
+  keep-interior / chokepoint weighting, activator-root prioritisation.
+- **Ranged-enemy kiting refinement** — use enemy `targetPriorities[].range`
+  to hold spacing outside *their* reach, not just hero-side distance.
 - **Bot status overlay** — extend the F1 window: mode, target name, gold,
-  `bld` remaining, stall/nudge counters.
+  `bld` remaining, stall/unstick/defeat counters.
 - **Config-ify timings** — `DecisionInterval`, 7 s stall watch, nudge
   distance, hold throttle → `BepInEx` config entries.
-- **Run metrics** — append a per-run summary line (waves, gold spent, stalls,
-  nudges) on each `AfterMatchVictory`.
-- **Pause-frame safety** — gate the `BackToLevelSelectHelper` escalation on
-  `AfterMatch*` states only.
+- **Run metrics** — per-run summary line (waves, gold spent, stalls, snaps,
+  defeats) on each match end.
 - **Noise control** — collapse `invalid` ticks into one `scene-load` note.
-- **Auto-deploy** — csproj post-build copy, guarded by a `game running` check.
+- **Auto-deploy** — csproj post-build copy guarded by a `game running` check.
 - **Tests** — none exist. Perception/decide logic could go behind interfaces
   for a mock harness; Harmony surface stays manual-verified against
   `decompiled/`.
@@ -218,10 +283,13 @@ $l = Get-Content K:\Downloads-IDM\Thronefall\BepInEx\plugins\bot-log.jsonl -Tail
 $l | % { ($_ -replace '.*"note":"','' -replace '".*','') } | Group | Sort Count -Desc
 ```
 
-Healthy signs: `build-hold`/`build-stall` cycling by day, `switch-night` before
-waves, `choice-pick` near slots, `level-interact`+`transition-level` on the
-map, `frame-close`/`match-end` after victory. Stuck signs: `bld` frozen with
-`build-hold` spam and no `build-stall`, or `wave`/`night` never advancing.
+Healthy signs (legit): `build-hold`/`build-stall` cycling by day,
+`army-placed` before night, `switch-night` before waves, `choice-pick` near
+slots, `unstick`/`snap` recoveries (never `teleport-nudge`), `hp` dipping and
+recovering, `defeat` + node rotation on losses, `transition-level` once per
+map visit. Stuck signs: `bld` frozen with `build-hold` spam and no
+`build-stall`, or `wave`/`night` never advancing, or unbroken
+`stuck:1→3`/`snap` cycles at one position.
 
 ### Log fields
 `t`(unscaled s) `mode` `state`(`LocalGamestate`) `scene` `night` `wave`(next/total)
@@ -230,19 +298,40 @@ map, `frame-close`/`match-end` after victory. Stuck signs: `bld` frozen with
 
 ### Key game APIs (all verified against `Trainer\decompiled\`)
 `TagManager.instance.playerBuildingInteractors` / `.freeCoins` /
-`.enemies` · `BuildingInteractor.{CanBeInteractedWith,Focus,Unfocus,InteractionBegin,InteractionHold,InteractionEnd,canBeHarvested}` · `UIFrameManager.instance.ActiveFrame`, `UIFrame.{freezePlayer,canNotBeEscaped,Apply}` · `ChoiceManager.instance.{ChoiceCoroutineRunning,ChoiceCoroutineWaiting,availableChoices,choiceToReturn}` · `Nighthorn.instance` · `DayNightCycle.Instance.{CurrentTimestate,RemainingAutoDayTime,SwitchToNight}` · `LevelInteractor.{CanBePlayed,PlayerTeleportPosition,levelInfo}` · `LevelProgressManager.instance.GetLevelDataForScene(scene).beatenBest` · `SceneTransitionManager.instance.{TransitionToLevelSelect,TransitionFromLevelSelectToLevel,TransitionFromNullToLevelSelect}` · `PlayerInteraction.instance.{Balance,EnergyCoreBalance}`
+`.EnemyUnits` / `.PlayerUnits` ·
+`BuildingInteractor.{CanBeInteractedWith,Focus,Unfocus,InteractionBegin,InteractionHold,InteractionEnd,canBeHarvested}` ·
+`UIFrameManager.instance.ActiveFrame`, `UIFrame.{freezePlayer,canNotBeEscaped,Apply}` ·
+`ChoiceManager.instance.{ChoiceCoroutineRunning,ChoiceCoroutineWaiting,availableChoices,choiceToReturn}` ·
+`Nighthorn.instance` · `DayNightCycle.Instance.{CurrentTimestate,SwitchToNight}` ·
+`LevelInteractor.{CanBePlayed,PlayerTeleportPosition,levelInfo}` ·
+`LevelProgressManager.instance.GetLevelDataForScene(scene).beatenBest` ·
+`SceneTransitionManager.instance.{TransitionToLevelSelect,TransitionFromLevelSelectToLevel}` +
+private `sceneTransitionIsRunning` (reflection) ·
+`PlayerInteraction.instance.{Balance,EnergyCoreBalance}` ·
+`ManualAttack.{autoAttack,TryToAttack,targetPriorities[i].range}` (cooldown-
+respecting fire; direct `Attack()` bypasses `cooldownTime`) ·
+`EnemySpawner.instance.{waves[i].spawns[].spawnLine,Wavenumber}` (next-wave
+spawn geometry for the threat anchor) ·
+`CommandUnits.instance.{OnUnitAdd,PlaceCommandedUnitsAndCalculateTargetPositions,MakeUnitsInBufferHoldPosition,commanding}` ·
+`BuildSlot.{NextUpgradeOrBuildCost,NextUpgradeOrBuildEnergyCoreCost,Upgrades[Level].upgradeBranches[].{objectsToActivate,goldIncomeChange,energyCoreIncomeChange}}` ·
+`AstarPath.{active,StartPath}`, `ABPath.Construct`, `AstarPath.active.GetNearest` (A* Pathfinding Project, `AstarPath` is global-namespace in this build)
 
 ### Pitfalls
-- **Don't pause** while the bot runs (see §8.3 — escalation can exit the run).
 - `decompiled/` dumps go stale after game updates — re-verify API names if the
   game patched.
 - `spendWatch`/`frameAction`/`buildInteractAt` all use `Time.unscaledTime` —
   safe across pauses, which is deliberate.
 - `bot-log.jsonl` grows ~10 MB/hr of play; rotate/delete freely, it's append-only.
+- `Bot.Legit` follows `!BotSurvivalCheats` — re-enabling the bundle also
+  re-enables the bot's internal shortcuts.
+- `AstarPath` is global-namespace; its `nnConstraint` is get-only (paths pick
+  the best graph via nearest node). `Pathfinding.*` types for constraints.
+- `inter`/`lvld`/`hd`/`bld` stay ≤4 chars per the log-field convention.
 
 ### Next actions (priority order)
-1. Stand-off build target (kill the nudge noise) — smallest diff, biggest win.
-2. Core-cost pre-filter (skip 7 s-per-dead-slot drain cost).
-3. Pause-safety gate on `BackToLevelSelectHelper` escalation.
-4. `invalid` log suppression + per-run metrics.
-5. Choice scoring.
+1. Extended legit validation — full Nordfels clear + defeat-rotation proof
+   (`defeat` notes → different node) + second-map campaign progression.
+2. `invalid` log suppression + per-run metrics.
+3. Choice scoring (economy early, defense pre-final-wave).
+4. Ranged-enemy spacing using their `targetPriorities` ranges.
+5. Automated mock/decide harness + lint pass (project global expectations).

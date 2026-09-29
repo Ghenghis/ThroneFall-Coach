@@ -42,6 +42,14 @@
       <HintPath>$(GameDir)\Thronefall_Data\Managed\AstarPathfindingProject.dll</HintPath>
       <Private>false</Private>
     </Reference>
+    <Reference Include="PackageTools">
+      <HintPath>$(GameDir)\Thronefall_Data\Managed\PackageTools.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Drawing">
+      <HintPath>$(GameDir)\Thronefall_Data\Managed\Drawing.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
     <Reference Include="KB.FogRTS.Runtime">
       <HintPath>$(GameDir)\Thronefall_Data\Managed\KB.FogRTS.Runtime.dll</HintPath>
       <Private>false</Private>

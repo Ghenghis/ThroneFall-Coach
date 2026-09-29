@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace ThronefallTrainer
 {
-    internal enum BotMode { Idle, CollectCoin, ReturnHome, HoldCastle, Engage, EnterLevel, StartNight, SpendGold, ResolveUI }
+    internal enum BotMode { Idle, CollectCoin, ReturnHome, HoldCastle, Engage, EnterLevel, StartNight, SpendGold, ResolveUI, PositionArmy }
 
     /// <summary>
     /// Tier-1 autopilot. Plugin.Update() calls <see cref="Tick"/> every frame;
@@ -17,6 +17,15 @@ namespace ThronefallTrainer
     internal static class Bot
     {
         public static bool Enabled { get; private set; }
+
+        /// <summary>
+        /// Legit play: no survival bundle applied AND the bot refuses
+        /// cheat-adjacent mechanics of its own — no teleport nudges (sidestep
+        /// unstick instead), no direct-damage fallback, no direct Attack()
+        /// calls that bypass weapon cooldown. Driven by Plugin from
+        /// cfgBotCheats: bundle OFF = legit.
+        /// </summary>
+        public static bool Legit;
 
         /// <summary>World-space run direction for this frame (zero = stand still).</summary>
         public static Vector3 DesiredDir { get; private set; }
@@ -63,9 +72,11 @@ namespace ThronefallTrainer
 
         /// <summary>World pos the bot steers toward — live enemy transform when engaging.</summary>
         private static Vector3 AimPos =>
-            (Mode == BotMode.Engage && engageTarget != null)
-                ? engageTarget.transform.position
-                : targetPos;
+            (Legit && Time.unscaledTime < detourUntil)
+                ? detourPos
+                : (Mode == BotMode.Engage && engageTarget != null && !Legit)
+                    ? engageTarget.transform.position
+                    : targetPos;
 
         // level-select entry: interact throttle
         private static float levelInteractAt;
@@ -83,9 +94,12 @@ namespace ThronefallTrainer
         // end-of-match, pause) freeze the player — resolved before the FSM.
         private static float frameActionAt;
         private static string uiFrame = "";
+        private static string lastUiNoteFrame = "";
+        private static float nextUiNoteAt;
         // Day economy: building slot the bot currently holds interaction on.
         private static BuildingInteractor heldBuild;
         private static float buildInteractAt;
+        private static float nextHoldNoteAt;
         // Spend-stall watch: if the held slot produced no payment for 7 s the
         // interactor is dead for now (deny-loop on an unaffordable upgrade,
         // stuck harvest/choice state) — park it for the day and move on.
@@ -98,6 +112,42 @@ namespace ThronefallTrainer
         private static float lastWatchDist = float.MaxValue;
         // Diag taper: log on change or every 15 s instead of every 5 s.
         private static string lastDiagKey;
+        // Legit unstick: instead of teleporting, steer to a perpendicular
+        // detour point briefly — the wall-slide a player would do.
+        private static float detourUntil;
+        private static Vector3 detourPos;
+        private static int detourSide = 1;
+        private static int detourCount;
+
+        // Legit nav steering: follow the game's own A* navmesh to the goal
+        // instead of a straight line. Straight-line steering wedges on any
+        // obstacle (map props, building colliders, water); a sidestep detour
+        // can't route around them — this can. Path requests run at ~1 Hz
+        // (same cadence as PathfindMovementPlayerunit.recalculatePathInterval)
+        // and only while the target changed or the path ran out.
+        private static Pathfinding.Path navPath;
+        private static int navIndex;
+        private static Vector3 navGoal;
+        private static float navRepathAt;
+        private static bool navInFlight;
+        private static float navSteerArrive = 0.5f;
+        private static int navDiagCount;
+        private static float nextMoveDiagAt;
+
+        // Legit combat state.
+        private static float weaponRange;          // hero weapon's max priority range
+        private static bool weaponFiresWhileMoving = true;
+        private static int armyPhase;              // 0 none, 1 walking to anchor, 2 placed today
+        private static float armyWalkAt;           // failsafe: place wherever we are after this
+
+        // Session memory: which scenes we've played and how often we lost
+        // each, so a too-hard node rotates out instead of looping forever.
+        private static readonly System.Collections.Generic.Dictionary<string, int> sessionDefeats =
+            new System.Collections.Generic.Dictionary<string, int>();
+        private static readonly System.Collections.Generic.HashSet<string> playedThisSession =
+            new System.Collections.Generic.HashSet<string>();
+        private static string lastMatchScene;
+        private static string lastGameState = "";
         // Frame tracking: how many times the same blocking frame survived a
         // close — a stubborn one with a back-to-map button gets followed.
         private static string lastFrameName = "";
@@ -105,6 +155,21 @@ namespace ThronefallTrainer
 
         private static StreamWriter botLog;
         private static bool logFailed;
+
+        // Campaign-map node scorer: unbeaten-first, then prefer nodes not yet
+        // toured this session, then penalise scenes we've repeatedly lost
+        // (each defeat −45, so 3 losses drops any node below everything else).
+        static Bot()
+        {
+            BotPerception.LevelScore = (li, beaten) =>
+            {
+                string scene = li.levelInfo != null ? li.levelInfo.sceneName : null;
+                int defeats = scene != null && sessionDefeats.TryGetValue(scene, out int d) ? d : 0;
+                float sc = beaten ? 0f : 100f;
+                if (scene == null || !playedThisSession.Contains(scene)) sc += 15f;
+                return sc - defeats * 45f;
+            };
+        }
 
         /// <summary>F6 / overlay entry point. Persists via cfgBotEnabled in Plugin.</summary>
         public static void SetEnabled(bool v)
@@ -120,6 +185,15 @@ namespace ThronefallTrainer
             decisionClock = 0f;
             nightRequestAt = 0f;
             lastNightState = false;
+            armyPhase = 0;
+            detourUntil = 0f;
+            detourCount = 0;
+            weaponRange = 0f;
+            heroAttack = null;
+            navPath = null;
+            navIndex = 0;
+            navInFlight = false;
+            navGoal = Vector3.zero;
             Plugin.Log?.LogInfo($"[bot] autopilot {(v ? "ENABLED" : "disabled")} (F6)");
             LogRaw(v ? "enabled" : "disabled");
             if (!v) CloseLog();
@@ -135,7 +209,12 @@ namespace ThronefallTrainer
             // Re-steer every frame so moving targets (coins/arrows/enemies) are tracked.
             var pm = PlayerMovement.instance;
             if (hasTarget && pm != null)
-                DesiredDir = DirTo(pm.transform.position, AimPos, arriveDist);
+            {
+                if (Legit)
+                    DesiredDir = DirTo(pm.transform.position, NavSteerPoint(pm.transform.position, AimPos), navSteerArrive);
+                else
+                    DesiredDir = DirTo(pm.transform.position, AimPos, arriveDist);
+            }
             else
                 DesiredDir = Vector3.zero;
 
@@ -148,6 +227,28 @@ namespace ThronefallTrainer
         private static void TickInner()
         {
             var s = BotPerception.Capture();
+
+            // Session memory edges: a victory clears the level's defeat count
+            // and marks it toured; a defeat counts toward rotating the node
+            // out of the unbeaten pool (LevelScore penalises it).
+            if (s.GameState != lastGameState)
+            {
+                if (s.GameState == "AfterMatchVictory" && lastMatchScene != null)
+                {
+                    playedThisSession.Add(lastMatchScene);
+                    sessionDefeats.Remove(lastMatchScene);
+                }
+                else if (s.GameState == "AfterMatchDefeat" && lastMatchScene != null)
+                {
+                    sessionDefeats[lastMatchScene] =
+                        sessionDefeats.TryGetValue(lastMatchScene, out int d) ? d + 1 : 1;
+                    Plugin.Log?.LogInfo($"[bot] defeat on '{lastMatchScene}' (x{sessionDefeats[lastMatchScene]} this session)");
+                    LogLine(in s, "defeat");
+                }
+                lastGameState = s.GameState;
+            }
+            if (s.Valid && !s.SceneName.StartsWith("_")) lastMatchScene = s.SceneName;
+
             if (!s.Valid)
             {
                 Mode = BotMode.Idle;
@@ -182,7 +283,12 @@ namespace ThronefallTrainer
                 Mode = BotMode.ResolveUI;
                 ClearTarget();
                 Status = "ui: " + uiFrame;
-                LogLine(in s, "ui");
+                if (uiFrame != lastUiNoteFrame || Time.unscaledTime >= nextUiNoteAt)
+                {
+                    lastUiNoteFrame = uiFrame;
+                    nextUiNoteAt = Time.unscaledTime + 5f;
+                    LogLine(in s, "ui");
+                }
                 return;
             }
 
@@ -190,6 +296,21 @@ namespace ThronefallTrainer
             RunWatchdog(in s);
             Status = FormatStatus(in s);
             LogLine(in s, "tick");
+
+            // Movement diag while the watchdog is grinding: is the input even
+            // reaching the character, and is something freezing it?
+            if (StuckStrikes > 0 && Time.unscaledTime >= nextMoveDiagAt)
+            {
+                nextMoveDiagAt = Time.unscaledTime + 2f;
+                var pmD = PlayerMovement.instance;
+                int wpCount = navPath?.vectorPath != null ? navPath.vectorPath.Count : -1;
+                string wpInfo = wpCount > 0 ? string.Join(";", navPath.vectorPath) : "-";
+                Plugin.Log?.LogWarning($"[bot] move-diag: hasTgt={hasTarget} desired={DesiredDir} " +
+                    $"vel={(pmD != null ? pmD.Velocity.ToString() : "null")} " +
+                    $"frozen={LocalGamestate.Instance != null && LocalGamestate.Instance.PlayerFrozen} " +
+                    $"mode={Mode} aim={AimPos} hero={(pmD != null ? pmD.transform.position.ToString() : "null")} " +
+                    $"navIdx={navIndex} wpCount={wpCount} inFlight={navInFlight} navGoal={navGoal} wp=[{wpInfo}] steer={NavSteerPoint(pmD.transform.position, AimPos)}");
+            }
         }
 
         /// <summary>Score-free FSM: pick the mode + a world-space move target.</summary>
@@ -204,11 +325,12 @@ namespace ThronefallTrainer
                 ReleaseBuild();
 
             // Day/night flip → re-arm the single-shot night request so a fresh
-            // day can trigger the next night.
+            // day can trigger the next night, and re-arm army positioning.
             if (lastNightState != s.IsNight)
             {
                 nightRequestAt = 0f;
                 lastNightState = s.IsNight;
+                if (!s.IsNight) armyPhase = 0;
             }
 
             // Campaign map is itself an InMatch scene: walk to the nearest
@@ -219,18 +341,27 @@ namespace ThronefallTrainer
             if (s.NearestLevel != null)
             {
                 Mode = BotMode.EnterLevel;
-                SetTarget(s.NearestLevelPos, 2f);
-                if (s.NearestLevelDist <= 2.8f && Time.unscaledTime >= levelInteractAt)
+                // Aim a couple metres in front of the node collider rather
+                // than at its transform — same stand-off trick as buildings.
+                SetTarget(StandOff(s.NearestLevelPos, s.HeroPos, 2.5f), 1.5f);
+                // InteractionBegin + TransitionFromLevelSelectToLevel are
+                // direct calls with no internal range gate — nodes' teleport
+                // spots can sit inside collider rings the navmesh can't reach,
+                // so fire from whatever distance the hero manages (map travel
+                // is cosmetic anyway, players click nodes from anywhere).
+                if (s.NearestLevelDist <= 9f && Time.unscaledTime >= levelInteractAt)
                 {
-                    levelInteractAt = Time.unscaledTime + 2f;
                     var li = s.NearestLevel;
-                    li.InteractionBegin(PlayerInteraction.instance);
-                    Plugin.Log?.LogInfo("[bot] at level node -> InteractionBegin()");
-                    LogLine(in s, "level-interact");
-
                     var stm = SceneTransitionManager.instance;
-                    if (stm != null && li.levelInfo != null)
+                    // Skip InteractionBegin: it only opens the pre-level frame
+                    // (which ResolveUI then wastes a close on) and sets
+                    // lastActiveLevelInfo for the loadout UI we bypass anyway.
+                    // The old double-fire came from TransitionToScene silently
+                    // dropping calls while sceneTransitionIsRunning — gate on it.
+                    if (stm != null && li.levelInfo != null && !SceneTransitionBusy(stm))
                     {
+                        levelInteractAt = Time.unscaledTime + 2f;
+                        LogLine(in s, "level-interact");
                         // Mirror LevelSelectManager.PlayButtonPressed: apply
                         // fixedLoadout when the level has one, and if the
                         // loadout was never seeded this session (the bot
@@ -279,17 +410,97 @@ namespace ThronefallTrainer
 
             if (s.IsNight)
             {
-                if (s.NearestEnemy != null)
+                // Defense priority: the enemy nearest the CASTLE is the run's
+                // actual threat, not the one nearest the hero.
+                var threat = s.CastleThreat != null ? s.CastleThreat : s.NearestEnemy;
+                Vector3 axisDir = s.HasThreatAnchor
+                    ? s.ThreatAnchor - s.CastlePos : Vector3.zero;
+                axisDir.y = 0f;
+                if (threat != null)
                 {
+                    // Legit retreat: badly hurt hero pulls back behind the
+                    // castle and lets the army work. 0.5 not 0.33 — wave
+                    // bursts kill from ~0.7 in about a second, so the exit
+                    // has to start before the danger zone, not inside it.
+                    if (Legit && s.HeroHpPct < 0.5f && s.HasCastle)
+                    {
+                        Mode = BotMode.ReturnHome;
+                        engageTarget = threat;
+                        // Stand next to the keep, not inside its collider.
+                        SetTarget(StandOff(s.CastlePos, s.HeroPos, 3f), ArriveHold);
+                        PumpAttack();
+                        return;
+                    }
                     Mode = BotMode.Engage;
-                    engageTarget = s.NearestEnemy;
-                    SetTarget(s.NearestEnemyPos, ArriveEngage);
+                    engageTarget = threat;
+                    Vector3 tp = threat.transform.position;
+                    bool ranged = weaponRange >= 6f;
+                    // Ranged hero parks DEEP inside the keep — on the far side
+                    // of the castle from the threat axis. Every forward hold
+                    // (anchor line, army flank) still put him where the swarm
+                    // converges; once melee encircles him no kite escapes.
+                    // Behind the keep he's a poor melee target yet the bow's
+                    // reach still covers the wall line. Melee holds the line.
+                    Vector3 anchor = s.CastlePos;
+                    if (axisDir.sqrMagnitude > 0.01f)
+                        anchor = ranged
+                            ? s.CastlePos - axisDir.normalized * 4f
+                            : s.CastlePos + axisDir.normalized * 9f;
+                    if (ranged && s.HasCastle)
+                    {
+                        // Kite on the foe nearest the HERO, not the threat
+                        // target — bursts swarm him at the anchor while the
+                        // castle-threat is being fought elsewhere, and that's
+                        // exactly how he died on waves 2 and 4. Bow fires
+                        // while moving, so stepping back costs no damage.
+                        float heroNear = s.NearestEnemy != null ? s.NearestEnemyDist : float.MaxValue;
+                        float kiteR = weaponFiresWhileMoving
+                            ? Mathf.Min(weaponRange * 0.5f, 10f) : 4f;
+                        if (heroNear < 5f)
+                        {
+                            // Danger zone: a swarm at melee range always wins
+                            // a stand-up fight. Fall back behind the keep —
+                            // castle + away-from-foe, a 37 m bow still reaches
+                            // the wall-line from inside the yard.
+                            Vector3 awayFromFoe = s.CastlePos - s.NearestEnemyPos;
+                            awayFromFoe.y = 0f;
+                            SetTarget(s.CastlePos + awayFromFoe.normalized * 4f, 1.2f);
+                        }
+                        else if (heroNear < kiteR)
+                        {
+                            // Kite: step away from the closest foe, biased
+                            // toward the keep so the run doesn't orbit out.
+                            Vector3 away = s.HeroPos - s.NearestEnemyPos; away.y = 0f;
+                            if (away.sqrMagnitude < 0.01f) away = s.HeroPos - tp;
+                            Vector3 toCastle = s.CastlePos - s.HeroPos; toCastle.y = 0f;
+                            Vector3 kiteDir = (away.normalized * 0.7f +
+                                (toCastle.sqrMagnitude > 0.01f ? toCastle.normalized : Vector3.zero) * 0.3f).normalized;
+                            SetTarget(s.HeroPos + kiteDir * 6f, 1.2f);
+                        }
+                        else
+                        {
+                            // Stand-off on the castle side of the threat at
+                            // ~70% of weapon range — intercept it before the
+                            // keep, not after.
+                            float stand = Mathf.Clamp(weaponRange * 0.7f, 4f, 14f);
+                            Vector3 toAnchor = anchor - tp; toAnchor.y = 0f;
+                            SetTarget(tp + toAnchor.normalized * Mathf.Min(stand, toAnchor.magnitude), 1.2f);
+                        }
+                    }
+                    else
+                    {
+                        // Melee/no weapon: hold at the army line with the
+                        // troops — charging mobs loses legit runs.
+                        SetTarget(axisDir.sqrMagnitude > 0.01f
+                            ? s.CastlePos + axisDir.normalized * 9f : anchor, 2f);
+                    }
                     PumpAttack();
                 }
                 else if (s.HasCastle)
                 {
                     Mode = BotMode.HoldCastle;
-                    SetTarget(s.CastlePos, ArriveHold);
+                    SetTarget(axisDir.sqrMagnitude > 0.01f
+                        ? s.CastlePos + axisDir.normalized * 4.5f : s.CastlePos, ArriveHold);
                 }
                 else { Mode = BotMode.Idle; ClearTarget(); }
                 return;
@@ -312,7 +523,15 @@ namespace ThronefallTrainer
             if (s.NearestBuild != null && (s.Balance > 0 || s.NearestBuild.canBeHarvested))
             {
                 Mode = BotMode.SpendGold;
-                SetTarget(s.NearestBuildPos, 1.2f);
+                // Aim at a stand-off point on the hero's side of the slot, not
+                // the transform center — that's inside the collider and is what
+                // the hero used to rub walls against until the watchdog nudged.
+                SetTarget(StandOff(s.NearestBuildPos, s.HeroPos, 1.6f), 1.0f);
+                var nbName = s.NearestBuild.targetBuilding != null
+                    ? s.NearestBuild.targetBuilding.buildingName : s.NearestBuild.name;
+                DiagLog("nb:" + nbName + s.NearestBuildScore + s.NearestBuildPos,
+                    $"[bot] spend target '{nbName}' score={s.NearestBuildScore} " +
+                    $"at {s.NearestBuildPos} dist={s.NearestBuildDist:0.#} hero={s.HeroPos} bal={s.Balance}", false);
                 if (s.NearestBuildDist <= 4f && Time.unscaledTime >= buildInteractAt)
                 {
                     buildInteractAt = Time.unscaledTime + 0.4f;
@@ -348,7 +567,53 @@ namespace ThronefallTrainer
                         return;
                     }
                     bi.InteractionHold(PlayerInteraction.instance);
-                    LogLine(in s, "build-hold");
+                    if (Time.unscaledTime >= nextHoldNoteAt)
+                    {
+                        nextHoldNoteAt = Time.unscaledTime + 3f;
+                        LogLine(in s, "build-hold");
+                    }
+                }
+                return;
+            }
+
+            // ---- army placement (legit) ----
+            // Economy done: park the troops at the defensive anchor through the
+            // game's own command path (select-all → place at hero → hold) —
+            // the exact sequence a player does before blowing the horn.
+            if (Legit && armyPhase < 2 && s.AllyCount > 0 && s.HasCastle &&
+                CommandUnits.instance != null)
+            {
+                if (armyPhase == 0)
+                {
+                    var cu = CommandUnits.instance;
+                    int added = 0;
+                    foreach (var u in TagManager.instance.PlayerUnits)
+                    {
+                        if (u == null || u.Hp == null || !u.Hp.Alive) continue;
+                        cu.OnUnitAdd(u, false); added++;
+                    }
+                    cu.commanding = added > 0;
+                    armyPhase = 1;
+                    armyWalkAt = Time.unscaledTime + 8f;
+                    Plugin.Log?.LogInfo($"[bot] commanding {added} allied unit(s) to anchor");
+                }
+                Mode = BotMode.PositionArmy;
+                // Army line sits at castle+11 — troops meet the wave BEFORE
+                // it reaches the keep; the ranged hero holds behind at +4.5.
+                Vector3 aAxis = s.HasThreatAnchor ? s.ThreatAnchor - s.CastlePos : Vector3.zero;
+                aAxis.y = 0f;
+                Vector3 anchor = aAxis.sqrMagnitude > 0.01f
+                    ? s.CastlePos + aAxis.normalized * 11f : s.CastlePos;
+                SetTarget(anchor, 3f);
+                if (FlatDist(s.HeroPos, anchor) <= 4f || Time.unscaledTime >= armyWalkAt)
+                {
+                    var cu = CommandUnits.instance;
+                    cu.PlaceCommandedUnitsAndCalculateTargetPositions(false);
+                    cu.MakeUnitsInBufferHoldPosition();
+                    cu.commanding = false; // TryToSelectUnits semantics: placed units leave the commanding set
+                    armyPhase = 2;
+                    Plugin.Log?.LogInfo("[bot] army placed at anchor, holding");
+                    LogLine(in s, "army-placed");
                 }
                 return;
             }
@@ -375,7 +640,8 @@ namespace ThronefallTrainer
             // StartSpawning on every call, so spamming it before IsNight flips
             // stacks multiple waves on top of each other. 15 s is enough for the
             // transition; if it never flips we retry on the next window.
-            if (DayNightCycle.Instance != null && Time.unscaledTime >= nightRequestAt)
+            if (DayNightCycle.Instance != null && Time.unscaledTime >= nightRequestAt &&
+                !s.SceneName.StartsWith("_"))
             {
                 nightRequestAt = Time.unscaledTime + 15f;
                 Plugin.Log?.LogInfo("[bot] no horn detected -> DayNightCycle.SwitchToNight()");
@@ -396,8 +662,9 @@ namespace ThronefallTrainer
 
         /// <summary>
         /// Stuck watchdog: while steering toward a target, if the hero hasn't
-        /// moved ~0.35 m within 2 s (three strikes) we teleport-nudge toward the
-        /// target — the same recovery the game itself uses for spawned units.
+        /// moved ~0.35 m within 2 s (three strikes) we recover — teleport-nudge
+        /// in cheat mode; a sidestep detour under legit rules (players can't
+        /// teleport, they strafe around the obstacle).
         /// </summary>
         private static void RunWatchdog(in BotPerception.Snapshot s)
         {
@@ -436,7 +703,51 @@ namespace ThronefallTrainer
                 {
                     StuckStrikes = 0;
                     var pm = PlayerMovement.instance;
-                    if (pm != null)
+                    if (Legit)
+                    {
+                        Vector3 toAim = AimPos - s.HeroPos; toAim.y = 0f;
+                        if (moved < 0.05f && pm != null && AstarPath.active != null)
+                        {
+                            var ctrl = pm.GetComponent<CharacterController>();
+                            Plugin.Log?.LogWarning($"[bot] hard-stuck diag: type={pm.GetType().Name} " +
+                                $"ctrlEnabled={ctrl != null && ctrl.enabled} grounded={ctrl != null && ctrl.isGrounded} " +
+                                $"vel={pm.Velocity} dead={pm.Dead} scene={s.SceneName}");
+                            // Zero displacement = embedded inside a collider or
+                            // otherwise physically trapped — a real player
+                            // could not even move here, so the wall-slide is
+                            // pointless. Snap to the nearest walkable navmesh
+                            // node, the game's own SnapToNavmesh recovery that
+                            // spawned units get. Still a teleport, but limited
+                            // to a can't-move-at-all trap, never a shortcut.
+                            Vector3 snap = AstarPath.active.GetNearest(
+                                s.HeroPos + (toAim.sqrMagnitude > 0.01f ? toAim.normalized : Vector3.forward) * 1.5f,
+                                new Pathfinding.NNConstraint()).position;
+                            pm.TeleportTo(snap);
+                            Plugin.Log?.LogWarning($"[bot] stuck (no movement possible) → navmesh snap to {snap}");
+                            LogLine(in s, "snap");
+                        }
+                        else
+                        {
+                            // Players can't teleport — wall-slide instead. Detour
+                            // reach escalates on the same side (3→12 m) so a big
+                            // obstacle gets skirted instead of re-wedged after a
+                            // token 3 m nudge; flips side only after a full cycle.
+                            detourCount++;
+                            if (detourCount > 4) { detourCount = 1; detourSide = -detourSide; }
+                            float reach = 3f * detourCount;
+                            Vector3 fwd = toAim.sqrMagnitude > 0.01f ? toAim.normalized : Vector3.forward;
+                            detourPos = s.HeroPos + fwd * 2f +
+                                Vector3.Cross(Vector3.up, fwd) * (reach * detourSide);
+                            detourUntil = Time.unscaledTime + 1.2f + 0.6f * detourCount;
+                            var af = UIFrameManager.instance != null ? UIFrameManager.instance.ActiveFrame : null;
+                            Plugin.Log?.LogWarning($"[bot] stuck → sidestep detour x{detourCount} to {detourPos} " +
+                                $"(frozen={LocalGamestate.Instance != null && LocalGamestate.Instance.PlayerFrozen}, " +
+                                $"ts={Time.timeScale:0.##}, frame={(af != null ? af.name : "null")}, " +
+                                $"choiceWait={ChoiceManager.instance != null && ChoiceManager.instance.ChoiceCoroutineWaiting})");
+                            LogLine(in s, $"unstick:{detourCount}");
+                        }
+                    }
+                    else if (pm != null)
                     {
                         Vector3 dir = AimPos - s.HeroPos;
                         dir.y = 0f;
@@ -448,11 +759,14 @@ namespace ThronefallTrainer
                     }
                 }
             }
-            else StuckStrikes = 0;
+            else { StuckStrikes = 0; detourCount = 0; }
         }
 
         private static void SetTarget(Vector3 pos, float arrive)
         {
+            // A materially different goal invalidates the detour escalation —
+            // fresh obstacles deserve a fresh wall-slide attempt.
+            if (FlatDist(pos, targetPos) > 2f) detourCount = 0;
             targetPos = pos;
             arriveDist = arrive;
             hasTarget = true;
@@ -503,6 +817,26 @@ namespace ThronefallTrainer
             if (frame == null || !frame.freezePlayer) { lastFrameName = ""; frameSeen = 0; return false; }
             if (frame.name != lastFrameName) { lastFrameName = frame.name; frameSeen = 0; }
 
+            // End-of-match screens carry a BackToLevelSelectHelper button and
+            // are unescapable — follow it to return to the campaign map where
+            // EnterLevel picks the next unbeaten node. Pause menus carry the
+            // same button but ARE escapable, so they take the plain-close path
+            // below instead. The frameSeen>=2 escalation is gated on AfterMatch*
+            // states so a stubborn mid-run frame can never nuke the run.
+            var backHelper = frame.GetComponentInChildren<BackToLevelSelectHelper>(true);
+            if (backHelper != null && (frame.canNotBeEscaped ||
+                (frameSeen >= 2 && s.GameState.StartsWith("AfterMatch"))))
+            {
+                if (Time.unscaledTime >= frameActionAt && SceneTransitionManager.instance != null)
+                {
+                    frameActionAt = Time.unscaledTime + 2f;
+                    Plugin.Log?.LogInfo("[bot] end-of-match -> TransitionToLevelSelect()");
+                    LogLine(in s, "match-end");
+                    SceneTransitionManager.instance.TransitionToLevelSelect();
+                }
+                return true;
+            }
+
             var items = frame.GetComponentsInChildren<PerkSelectionItem>(true);
             if (items != null && items.Length > 0)
             {
@@ -522,24 +856,6 @@ namespace ThronefallTrainer
                     LogLine(in s, "perk-pick");
                     if (!frame.canNotBeEscaped) fm.CloseActiveFrame();
                     else frame.Apply();
-                }
-                return true;
-            }
-
-            // End-of-match screens carry a BackToLevelSelectHelper button and
-            // are unescapable — follow it to return to the campaign map where
-            // EnterLevel picks the next unbeaten node. Pause menus carry the
-            // same button but ARE escapable, so they take the plain-close path
-            // below instead; frameSeen>=2 escalates a stubborn escapable frame.
-            var backHelper = frame.GetComponentInChildren<BackToLevelSelectHelper>(true);
-            if (backHelper != null && (frame.canNotBeEscaped || frameSeen >= 2))
-            {
-                if (Time.unscaledTime >= frameActionAt && SceneTransitionManager.instance != null)
-                {
-                    frameActionAt = Time.unscaledTime + 2f;
-                    Plugin.Log?.LogInfo("[bot] end-of-match -> TransitionToLevelSelect()");
-                    LogLine(in s, "match-end");
-                    SceneTransitionManager.instance.TransitionToLevelSelect();
                 }
                 return true;
             }
@@ -616,10 +932,21 @@ namespace ThronefallTrainer
                     }
                 }
                 if (heroAttack != null)
-                    Plugin.Log?.LogInfo($"[bot] ManualAttack found on '{heroAttack.name}' (autoAttack={heroAttack.autoAttack})");
+                {
+                    // Capture the weapon's real reach for the ranged/melee and
+                    // kite decisions, and whether it can fire on the move.
+                    weaponRange = 0f;
+                    foreach (var p in heroAttack.targetPriorities)
+                        weaponRange = Mathf.Max(weaponRange, p.range);
+                    weaponFiresWhileMoving =
+                        heroAttack.GetComponent<DelayManualAttackWhileMoving>() == null;
+                    Plugin.Log?.LogInfo($"[bot] ManualAttack found on '{heroAttack.name}' (autoAttack={heroAttack.autoAttack}, range={weaponRange:0.#}, firesWhileMoving={weaponFiresWhileMoving})");
+                }
             }
             if (heroAttack == null)
             {
+                if (Legit)
+                    return;   // no direct-damage fallback under legit rules
                 // Weaponless hero: no ManualAttack exists to pump. Strike the
                 // engaged enemy through Hp — the InstantKill patch turns every
                 // player-caused hit into a kill; even without it, 4 strikes/s
@@ -645,7 +972,13 @@ namespace ThronefallTrainer
             DiagLog("wt:" + (t != null ? t.name : "null"),
                 $"[bot] engage diag: weaponTarget={(t != null ? t.name : "null")} pursueDist={dist:0.0}", false);
             if (t != null)
-                heroAttack.Attack(); // direct fire — bypasses buffer/cooldown gates
+            {
+                // Legit: TryToAttack goes through cooldown + input-buffer like
+                // a real button press. Direct Attack() fires every decide tick
+                // regardless of cooldownTime — a hidden attack-speed cheat.
+                if (Legit) heroAttack.TryToAttack();
+                else heroAttack.Attack();
+            }
             else
                 heroAttack.TryToAttack(); // still arm a press in case a target appears
         }
@@ -657,6 +990,102 @@ namespace ThronefallTrainer
             if (d.magnitude <= arrive) return Vector3.zero;
             return d.normalized;
         }
+
+        /// <summary>Point on the hero's side of a target, `radius` m out —
+        /// stops the steering from aiming inside a building's collider.</summary>
+        private static Vector3 StandOff(Vector3 target, Vector3 hero, float radius)
+        {
+            Vector3 d = hero - target; d.y = 0f;
+            if (d.magnitude <= radius) return target;
+            return target + d.normalized * radius;
+        }
+
+        /// <summary>
+        /// Legit steering point: next waypoint of the navmesh path to the goal,
+        /// or the goal itself when no path is available (menus, off-graph).
+        /// Also sets navSteerArrive — small for mid-path waypoints so the hero
+        /// doesn't park at a bend, the real arriveDist at the path's end.
+        /// </summary>
+        private static Vector3 NavSteerPoint(Vector3 hero, Vector3 goal)
+        {
+            navSteerArrive = arriveDist;
+            if (hasTarget) MaybeRequestPath(hero, goal);
+
+            var p = navPath;
+            if (p == null || p.vectorPath == null || p.vectorPath.Count == 0)
+                return goal;
+            var wp = p.vectorPath;
+            while (navIndex < wp.Count - 1 && FlatDist(hero, wp[navIndex]) < 1.4f) navIndex++;
+            navIndex = Mathf.Min(navIndex, wp.Count - 1);
+            var last = wp[wp.Count - 1];
+            // Path doesn't actually reach the goal: the navmesh isn't world-
+            // complete (keep interiors, node spawn rings, coarse map meshes)
+            // and the last waypoint just marks "closest I got". The hero's
+            // CharacterController doesn't care about navmesh — steer straight
+            // at the goal and let sidesteps handle any real wall.
+            if (FlatDist(last, goal) > 2.5f) return goal;
+            // Degenerate path: the navmesh snapped the whole route onto where
+            // the hero already stands — steering at it gives DesiredDir≈0 →
+            // standing still forever. Fall back to the raw goal.
+            if (navIndex == wp.Count - 1 && FlatDist(hero, last) < 0.8f)
+                return goal;
+            navSteerArrive = navIndex == wp.Count - 1 ? arriveDist : 0.5f;
+            return wp[navIndex];
+        }
+
+        /// <summary>
+        /// Throttled A* request. Re-paths when the goal moved materially, when
+        /// the current path is consumed, or when none exists. Path requests
+        /// run ~1 Hz — the same cadence the game's own units recalculate.
+        /// </summary>
+        private static void MaybeRequestPath(Vector3 hero, Vector3 goal)
+        {
+            var astar = AstarPath.active;
+            if (astar == null) return;
+            if (navInFlight || Time.unscaledTime < navRepathAt) return;
+
+            bool consumed = false;
+            if (navPath != null && navPath.vectorPath != null && navPath.vectorPath.Count > 0)
+            {
+                var last = navPath.vectorPath[navPath.vectorPath.Count - 1];
+                consumed = navIndex >= navPath.vectorPath.Count - 1 &&
+                           FlatDist(hero, last) < 1.4f;
+            }
+            bool goalMoved = FlatDist(goal, navGoal) > 2.5f;
+            if (navPath != null && !consumed && !goalMoved) return;
+
+            navRepathAt = Time.unscaledTime + 1.1f;
+            navGoal = goal;
+            navInFlight = true;
+            var p = Pathfinding.ABPath.Construct(hero, goal, done =>
+            {
+                navInFlight = false;
+                if (!done.error && done.vectorPath != null && done.vectorPath.Count > 0)
+                {
+                    navPath = done;
+                    navIndex = 0;
+                    navDiagCount++;
+                    if (navDiagCount <= 20)
+                        Plugin.Log?.LogInfo($"[bot] nav-path ok: {done.vectorPath.Count} wp -> {goal}");
+                }
+                else
+                {
+                    navPath = null;
+                    Plugin.Log?.LogWarning($"[bot] nav-path error -> {goal} ({done.errorLog})");
+                }
+            });
+            AstarPath.StartPath(p);
+        }
+
+        // SceneTransitionManager keeps its busy flag private — same FieldInfo
+        // trick Plugin uses for PlayerInteraction.balance. Gating the
+        // transition call on it kills the old swallow-and-retry double-fire.
+        private static readonly System.Reflection.FieldInfo StmRunningField =
+            typeof(SceneTransitionManager).GetField("sceneTransitionIsRunning",
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+
+        private static bool SceneTransitionBusy(SceneTransitionManager stm) =>
+            StmRunningField != null && (bool)StmRunningField.GetValue(stm);
 
         private static float FlatDist(Vector3 a, Vector3 b)
         {

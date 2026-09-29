@@ -13,13 +13,18 @@ while the game is **closed**, or via the F1 overlay which writes back live).
 - `Bot.BotSurvivalCheats` (default `true`) controls whether enabling the bot
   force-applies the survival bundle (god, regen, magnet, instant-kill,
   no-cooldown). Previous cheat states are snapshotted and **restored on F6-off**.
+  It also drives `Bot.Legit` (`= !BotSurvivalCheats`): bundle ON unlocks the
+  bot's own power shortcuts (direct `Attack()` calls, `TakeDamage` fallbacks,
+  teleport nudges); bundle OFF means the bot plays by player rules —
+  `TryToAttack()` cooldowns, navmesh/sidestep movement, army via
+  `CommandUnits`. See `AUTOPILOT.md §1`.
 
 ## Bot
 
 | Key | Default | Effect |
 |---|---|---|
 | `Bot.AutopilotEnabled` | `false` | Bot active at launch (same as pressing F6) |
-| `Bot.BotSurvivalCheats` | `true` | Apply/restore the survival cheat bundle with the bot |
+| `Bot.BotSurvivalCheats` | `true` | Survival bundle on bot enable; `false` = `Bot.Legit` — bot obeys player rules (see AUTOPILOT §1) |
 
 ## Protection
 

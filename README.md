@@ -121,11 +121,18 @@ live while dragged. All toggles, theme, and opacity persist in
   enemies, castle) and `LocalGamestate` / `DayNightCycle` — plus a cached 1 Hz
   `LevelInteractor`/`InteractorBase` scan for the campaign map.
 - **Modes:** `Idle`, `CollectCoin` (nearest `TagManager.freeCoins` entry within
-  seek range), `ReturnHome` / `HoldCastle` (castle proximity), `Engage` (pursues
-  the *live* nearest-enemy transform each frame — stale position snapshots made
-  the hero stand still next to foes that had walked off), `EnterLevel` (campaign
-  map → nearest playable `LevelInteractor` → `InteractionBegin` +
-  `SceneTransitionManager.TransitionFromLevelSelectToLevel`), `StartNight`
+  seek range), `ReturnHome` / `HoldCastle` (castle proximity / low-hp retreat),
+  `Engage` (targets the enemy nearest the **castle** — the defense priority —
+  holding a stand-off on the castle side at ~70 % of weapon range for ranged
+  weapons and stepping back when it closes; melee weapons hold the defensive
+  anchor instead), `EnterLevel` (campaign map → best-scoring playable
+  `LevelInteractor` — unbeaten first, then unplayed-this-session, minus a
+  −45 score penalty per session defeat so a too-hard node rotates out →
+  `SceneTransitionManager.TransitionFromLevelSelectToLevel` gated on the
+  manager's busy flag — no `InteractionBegin`, which used to double-fire),
+  `PositionArmy` (legit only — `CommandUnits.OnUnitAdd` on all allied units,
+  walk to the threat anchor, `PlaceCommandedUnits` + `MakeUnitsInBufferHoldPosition`,
+  the exact select-all→place→hold a player does), `StartNight`
   (walk to `Nighthorn` and interact to auto-harvest + start the wave;
   falls back to `DayNightCycle.SwitchToNight()` when the horn isn't spawned),
   `SpendGold` (day economy, below) and `ResolveUI` (blocking frames, below).
@@ -143,23 +150,25 @@ live while dragged. All toggles, theme, and opacity persist in
   then closes; other frames `CloseActiveFrame()` when escapable or `Apply()`
   when not. An escapable frame that survives two closes with a
   `BackToLevelSelectHelper` inside is treated as the end-of-match screen.
-- **Day economy** (`SpendGold`) — during the day the bot walks to the nearest
+- **Day economy** (`SpendGold`) — during the day the bot walks to the best
   interactable `BuildingInteractor` (perception: the
   `TagManager.playerBuildingInteractors` registry filtered by
-  `CanBeInteractedWith`), pumps `Focus()` (harvests
-  income buildings) + `InteractionBegin`/`InteractionHold` (hold-to-pay
-  builds/upgrades) until `BuildComplete`, then releases via `Unfocus` +
-  `InteractionEnd`. Choice upgrades route through `ChoiceManager` and are
-  auto-picked by `ResolveUI`. A slot that shows no payment for 7 s
-  (deny-looping on an unaffordable core-cost upgrade, stuck harvest/choice
-  state) is parked on an ignore list for the rest of the day — the ignore
-  list clears at dusk — so the candidate pool drains and the bot eventually
-  walks to the Nighthorn (or fires `DayNightCycle.SwitchToNight()` on maps
-  where the horn stays inactive).
-- **Stuck watchdog** — teleport-nudges only when the bot truly isn't moving:
-  the strike window now also requires the distance to the aim point to be
-  *not decreasing* across two consecutive 2.5 s samples, so a healthy pursuit
-  that is actively closing range never gets teleport-jerked.
+  `CanBeInteractedWith`), where "best" is scored: harvestable slots first
+  (+1000 — free income), military production next (each `upgradeBranches`
+  object that activates `AutoAttack*`/`UnitRespawnerForBuildings` +100),
+  then income-generating upgrades (+30 + Δincome). Slots whose next upgrade
+  needs energy cores the hero doesn't have are filtered in the scan itself,
+  as are non-harvestable slots while broke — neither eats the 7 s stall
+  watch. At the slot it aims at a stand-off point ~1.6 m from the collider,
+  pumps `Focus()` (harvests income buildings) +
+  `InteractionBegin`/`InteractionHold` (hold-to-pay builds/upgrades) until
+  `BuildComplete`, then releases via `Unfocus` + `InteractionEnd`. Choice
+  upgrades route through `ChoiceManager` and are auto-picked by `ResolveUI`.
+  A slot that still shows no payment for 7 s (deny-looping on an unaffordable
+  core-cost upgrade, stuck harvest/choice state) is parked on an ignore list
+  for the rest of the day — the ignore list clears at dusk — so the candidate
+  pool drains and the bot eventually walks to the Nighthorn (or fires
+  `DayNightCycle.SwitchToNight()` on maps where the horn stays inactive).
 - **Auto-advance** — on `_StartMenu` the bot calls
   `SceneTransitionManager.TransitionFromNullToLevelSelect()` directly (same path
   as `TitleScreenUIHelper.ClickPlay`), throttled while the map scene loads, so a
@@ -172,13 +181,21 @@ live while dragged. All toggles, theme, and opacity persist in
 - **Combat** — while `Engage`d the bot pumps the hero's `ManualAttack` each
   decide tick: the component is located via `WeaponEquipper.activeWeapon`
   (the equipped weapon lives on a sibling branch of the pawn, not under
-  `PlayerMovement`), `FindAttackTarget` is checked, and `Attack()` fires the
-  weapon directly — bypassing the input-buffer/`PlayerFrozen` gates that block
-  `PlayerInteraction` while the trainer menu is open. If the hero is still
-  weaponless the engaged enemy's `Hp.TakeDamage` is invoked directly as a
-  fallback strike.
-- **Stuck watchdog** — when the desired direction is non-zero but the pawn's
-  position hasn't moved for a few seconds, the target is cleared and re-picked.
+  `PlayerMovement`), `FindAttackTarget` is checked. In **legit mode** it
+  calls `TryToAttack()` — the real button press that respects `cooldownTime`
+  (`autoAttack` weapons also fire on their own). Direct `Attack()` calls are
+  a cheat-mode shortcut that bypasses cooldown entirely (~4× real fire rate).
+  If the hero is still weaponless in cheat mode the engaged enemy's
+  `Hp.TakeDamage` is invoked as a fallback strike; legit mode has no fallback.
+- **Stuck watchdog** — three strikes → recovery. A strike requires a non-zero
+  desired direction, <0.35 m moved in ~2 s, and aim distance *not decreasing*
+  (a closing pursuit never counts). Cheat mode teleport-nudges. **Legit mode
+  never teleports**: steering follows real A* `ABPath` waypoints via
+  `AstarPath.StartPath` (~1 Hz re-path), falls back to escalating sidestep
+  detours (3→12 m perpendicular wall-slides) when the navmesh can't reach the
+  goal — and a `GetNearest` navmesh snap only when the hero cannot move at
+  all (the `SnapToNavmesh` rescue spawned units get, for spawn-embeds a
+  player couldn't escape either).
 - **Telemetry** — every tick appends one JSON line to
   `BepInEx\plugins\bot-log.jsonl`: mode, game-state, scene, night flag, wave,
   foe/coin counts, gold, hero HP, position, and diagnostic counters — used to
@@ -265,6 +282,7 @@ Trainer\
   CONFIG.md                  - every BepInEx config key + persistence semantics
   BOT-DEV.md                 - extending the bot (snapshot fields, modes, frames)
   TESTING.md                 - manual e2e acceptance checklist
+  QUALITY.md                 - coding standards, lint/diagnose tools, debugging
   CHANGELOG.md               - release/feature history
   src\
     Plugin.cs                - cheat state (Cheats), per-frame logic, IMGUI overlay,
@@ -279,7 +297,11 @@ Trainer\
                                injecting the bot's DesiredDir as inputVector
     ThronefallTrainer.csproj - net472; references the game's DLLs via $(GameDir)
   tools\
-    build-and-deploy.ps1     - build + copy the DLL into BepInEx\plugins
+    build-and-deploy.ps1     - build + stop game + copy DLL + relaunch
+    bot-lint.ps1             - static quality checks (legit-gating, log fields,
+                               unscaled time, references, enum coverage)
+    bot-diagnose.ps1         - live log diagnoser (parked hero, unstick storms,
+                               day-never-ends, wave grind, config drift; -Fix)
     decompile.ps1            - regenerate the decompiled reference (ilspycmd)
   decompiled\                - gitignored ilspycmd output of Assembly-CSharp
   decompiled_fog\            - gitignored ilspycmd output of KB.FogRTS.Runtime

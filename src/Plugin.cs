@@ -694,6 +694,10 @@ namespace ThronefallTrainer
         /// <summary>F6 / overlay toggle: turn the autopilot on or off and persist it.</summary>
         private void SetBotEnabled(bool v)
         {
+            // Bundle ON  → bot may use cheat-adjacent mechanics (teleport
+            // nudges, direct Attack() calls, damage fallback). Bundle OFF →
+            // Bot.Legit: the autopilot stays inside player rules.
+            Bot.Legit = !cfgBotCheats.Value;
             Bot.SetEnabled(v);
             cfgBotEnabled.Value = v;
             ApplyBotSurvivalCheats(v);
