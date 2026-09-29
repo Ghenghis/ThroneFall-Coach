@@ -59,6 +59,7 @@ namespace ThronefallTrainer
         SwitchNight,      // DayNightCycle.SwitchToNight()
         SeedLoadout,      // fixedLoadout / best-unlocked-weapon seeding
         TransitionLevel,  // SceneTransitionManager to the picked node
+        InteractLevel,    // LevelInteractor.InteractionBegin — opens its frame
         ClearCoinPark,    // drop the parked-coin set (day edge)
     }
 
@@ -171,6 +172,13 @@ namespace ThronefallTrainer
         public int BuildMil;
         public int BuildInc;
 
+        // extracted terrain stand-points (agent/slots/<scene>.json)
+        public bool HasBuildStand;
+        public Vec2 BuildStandPos;
+        public float BuildStandDist;
+        public bool HasCastleStand;
+        public Vec2 CastleStandPos;
+
         /// <summary>
         /// Compact-DTO serialization for ticks.jsonl — every Decide input,
         /// so a recorded tick replays the full snapshot faithfully. Keys are
@@ -246,6 +254,11 @@ namespace ThronefallTrainer
             Append(sb, ",\"shd\":", ShrineDist, ci);
             Append(sb, ",\"bmil\":", BuildMil);
             Append(sb, ",\"binc\":", BuildInc);
+            Append(sb, ",\"bst\":", HasBuildStand);
+            Append(sb, ",\"bsp\":", BuildStandPos, HasBuildStand, ci);
+            Append(sb, ",\"bsd\":", BuildStandDist, ci);
+            Append(sb, ",\"cst\":", HasCastleStand);
+            Append(sb, ",\"csp\":", CastleStandPos, HasCastleStand, ci);
             return sb.Append('}').ToString();
         }
 
@@ -291,6 +304,9 @@ namespace ThronefallTrainer
         // army two-step
         public int ArmyPhase;
         public float ArmyWalkAt;
+
+        // level-select transition hang detector
+        public float BusySince;
         public float LastArmyCmdAt;   // solver: night re-command cadence
 
         // orbit-kite sweep
@@ -308,6 +324,7 @@ namespace ThronefallTrainer
             {
                 Mode = BotMode.Idle,
                 HeldBuild = -1,
+            BusySince = -1f,
                 OrbitDir = 1f,
                 LastNightState = true,   // assume night so the first day-edge fires cleanly
                 ArmyPhase = 0,
@@ -520,8 +537,12 @@ namespace ThronefallTrainer
             };
 
             // Held-build release guard (used to be ReleaseBuild() inline).
+            // Release only on a REAL invalidation — not a 4 m drift that can
+            // happen mid-fill, and not "far from slot origin" while parked at
+            // its stand-point. Every release refunds paid coins.
             if (m.HeldBuild >= 0 && (m.Mode != BotMode.SpendGold ||
-                !s.HasBuild || s.BuildKey != m.HeldBuild || s.BuildDist > 4f))
+                !s.HasBuild || s.BuildKey != m.HeldBuild ||
+                (s.BuildDist > 5.5f && !(s.HasBuildStand && s.BuildStandDist <= 3f))))
             {
                 r.Intents.Add(Intent.Of(IntentKind.ReleaseHold));
                 m.HeldBuild = -1;
@@ -536,16 +557,29 @@ namespace ThronefallTrainer
             }
 
             // ---- campaign map: enter a level ----
+            // The map hero never needs to walk to the node — the game's own
+            // flow is click-node → level-select frame → Start button, and
+            // TransitionFromLevelSelectToLevel IS that button. Walking the
+            // map was an artificial requirement that wedged the hero on map
+            // colliders for entire sessions.
             if (s.HasLevel)
             {
                 m.Mode = BotMode.EnterLevel; r.Mode = m.Mode;
-                Aim(ref r, Vec2.StandOff(s.LevelPos, s.HeroPos, 2.5f), 1.5f);
-                if (s.LevelDist <= 9f && now >= m.LevelInteractAt && !s.SceneBusy)
+                r.HasAim = false;   // stand still on the map
+                if (!s.SceneBusy) m.BusySince = -1f;
+                else if (m.BusySince < 0f) m.BusySince = now;
+                // sceneTransitionIsRunning hung (cloud coroutine never
+                // finished, or currentSceneState drifted) — after 30 s open
+                // the node's level-select frame for real; the frame resolver
+                // clicks its Start button.
+                bool busyHung = m.BusySince >= 0f && now - m.BusySince > 30f;
+                if (now >= m.LevelInteractAt && (!s.SceneBusy || busyHung))
                 {
                     m.LevelInteractAt = now + 2f;
                     r.Notes.Add("level-interact");
                     r.Intents.Add(Intent.Of(IntentKind.SeedLoadout));
-                    r.Intents.Add(Intent.Of(IntentKind.TransitionLevel));
+                    if (busyHung) { r.Intents.Add(Intent.Of(IntentKind.InteractLevel)); r.Notes.Add("busy-hung"); }
+                    else r.Intents.Add(Intent.Of(IntentKind.TransitionLevel));
                     r.Notes.Add("transition-level");
                 }
                 return r;
@@ -556,9 +590,10 @@ namespace ThronefallTrainer
             {
                 m.Mode = BotMode.HeroDead; r.Mode = m.Mode;
                 if (m.HeldBuild >= 0) { r.Intents.Add(Intent.Of(IntentKind.ReleaseHold)); m.HeldBuild = -1; }
-                // Drift toward the keep's EDGE, not its center — CastlePos
-                // is inside the keep collider and can never be arrived at.
-                if (s.HasCastle) Aim(ref r, Vec2.StandOff(s.CastlePos, s.HeroPos, 4f), ArriveHold);
+                // Drift to the keep's extracted stand-point (a proven free
+                // cell); CastlePos itself is inside the keep collider.
+                if (s.HasCastleStand) Aim(ref r, s.CastleStandPos, ArriveHold);
+                else if (s.HasCastle) Aim(ref r, Vec2.StandOff(s.CastlePos, s.HeroPos, 4f), ArriveHold);
                 else r.HasAim = false;
                 return r;
             }
@@ -684,14 +719,19 @@ namespace ThronefallTrainer
             if (s.HasBuild && (s.Balance > 0 || s.BuildHarvest))
             {
                 m.Mode = BotMode.SpendGold; r.Mode = m.Mode;
-                // Wedge fix (refpack terrain data): inside the slot's interact
-                // gate already — the stand-off can land INSIDE the slot's
-                // collider, which no nav path can ever reach. Hold position
-                // instead of steering at a point in a box. Outside, approach
-                // a 3.0 m stand-off (interact radius) — still hero-side.
-                if (s.BuildDist <= 4f) Aim(ref r, s.HeroPos, 1.0f);
+                // Approach the extracted stand-point when known (a proven
+                // free cell beside the slot) — never a geometric stand-off
+                // that may land inside the slot's collider. Hold once inside
+                // the interact gate or at the stand-point.
+                bool inGate = s.BuildDist <= 4f ||
+                    (s.HasBuildStand && s.BuildStandDist <= 1.2f);
+                if (inGate) Aim(ref r, s.HeroPos, 1.0f);
+                else if (s.HasBuildStand) Aim(ref r, s.BuildStandPos, 0.8f);
                 else Aim(ref r, Vec2.StandOff(s.BuildPos, s.HeroPos, 3.0f), 1.0f);
-                if (s.BuildDist <= 4f && now >= m.BuildInteractAt)
+                // Interact from the same gate as the aim — the slot origin
+                // can sit 5+ m inside its own collider while the interactor
+                // polygon/stand-point is within range.
+                if (inGate && now >= m.BuildInteractAt)
                 {
                     m.BuildInteractAt = now + 0.4f;
                     if (m.HeldBuild != s.BuildKey)
@@ -705,6 +745,9 @@ namespace ThronefallTrainer
                     }
                     else if (s.Balance != m.SpendWatchGold || s.CoreBalance != m.SpendWatchCores)
                     {
+                        // Real spend progress — mark it so events prove
+                        // coins actually land (the analyzer counts these).
+                        r.Notes.Add("pay");
                         m.SpendWatchGold = s.Balance;
                         m.SpendWatchCores = s.CoreBalance;
                         m.SpendWatchAt = now + 7f;
@@ -774,7 +817,8 @@ namespace ThronefallTrainer
             if (s.HasCastle && s.CastleDist > pol.K("home_radius"))
             {
                 m.Mode = BotMode.ReturnHome; r.Mode = m.Mode;
-                Aim(ref r, Vec2.StandOff(s.CastlePos, s.HeroPos, 4f), ArriveHold);
+                if (s.HasCastleStand) Aim(ref r, s.CastleStandPos, ArriveHold);
+                else Aim(ref r, Vec2.StandOff(s.CastlePos, s.HeroPos, 4f), ArriveHold);
                 return r;
             }
             m.Mode = BotMode.Idle; r.Mode = m.Mode;

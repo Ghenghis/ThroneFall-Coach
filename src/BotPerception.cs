@@ -3,6 +3,12 @@ using UnityEngine;
 
 namespace ThronefallTrainer
 {
+    // Extracted slot-pack records — top-level public [Serializable] types:
+    // JsonUtility silently drops fields of private/nested classes.
+    [System.Serializable] public class StandPtRec { public float x, y, z, cl, dInt; }
+    [System.Serializable] public class SlotPackRec { public int id; public string name; public float[] pos; public StandPtRec[] stands; }
+    [System.Serializable] public class SlotPackFile { public string scene; public SlotPackRec[] slots; }
+
     /// <summary>
     /// Read-only world-state snapshot for the autopilot. Captured once per
     /// decision tick (4 Hz) by <see cref="Bot.Tick"/>; every field derives from
@@ -81,6 +87,15 @@ namespace ThronefallTrainer
             public float ActiveRange;          // active weapon max target-priority range
             public bool ActiveFiresMoving;     // no DelayManualAttackWhileMoving
 
+                // Slot stand-points from the extracted terrain pack (refpack):
+            // known-reachable free cells beside each slot — kills the whole
+            // "stand-off point inside the collider" wedge class.
+            public bool HasBuildStand;       // nearest stand-point for the pick
+            public Vector3 BuildStandPos;    // world pos to navigate to
+            public float BuildStandDist;
+            public Vector3 CastleStandPos;   // castle slot's stand-point
+            public bool HasCastleStand;
+
             // ---- Phase 1 awareness (v3 design §P1/P3/P4/P5/P7) ----
             // P1 next-wave intel via EnemySpawner.GetWaveInfoForNextWave()
             public int NextWaveCount;          // total foes in the upcoming wave
@@ -153,6 +168,9 @@ namespace ThronefallTrainer
                 ShrineCount = s.ShrineCount, ShrinePos = V(s.ShrinePos),
                 ShrineDist = s.ShrineDist,
                 BuildMil = s.BuildMil, BuildInc = s.BuildInc,
+                HasBuildStand = s.HasBuildStand, BuildStandPos = V(s.BuildStandPos),
+                BuildStandDist = s.BuildStandDist,
+                HasCastleStand = s.HasCastleStand, CastleStandPos = V(s.CastleStandPos),
             };
         }
 
@@ -166,6 +184,158 @@ namespace ThronefallTrainer
         private static Shrine[] shrineCache;
         private static float shrineScanAt;
         private static bool castleHpLogged;
+
+        // ---- extracted terrain pack (claude-refpack): per-scene slot
+        // stand-points. Loaded lazily by scene name from agent/slots/.
+        // Records are top-level public classes — JsonUtility silently drops
+        // fields of private nested types. ----
+
+        private static SlotPackRec[] slotPack;
+        private static string slotPackScene = "";
+
+        private static SlotPackRec[] LoadSlotPack(string scene)
+        {
+            if (slotPackScene == scene) return slotPack;
+            slotPackScene = scene; slotPack = null;
+            try
+            {
+                var p = System.IO.Path.Combine(Recorder.AgentDir, "slots", scene + ".json");
+                bool exists = System.IO.File.Exists(p);
+                Plugin.Log?.LogInfo($"[bot] slot-pack probe '{scene}': exists={exists} path='{p}'");
+                if (!exists) return null;
+                slotPack = ParseSlotPack(System.IO.File.ReadAllText(p));
+                Plugin.Log?.LogInfo($"[bot] slot-pack '{scene}': {(slotPack != null ? slotPack.Length : -1)} slots parsed");
+            }
+            catch (System.Exception ex) { Plugin.Log?.LogWarning($"[bot] slot-pack load: {ex.Message}"); }
+            return slotPack;
+        }
+
+        /// <summary>Nearest extracted slot record to a live interactor —
+        /// matched by world position (extracted ids don't map to runtime).</summary>
+        private static SlotPackRec FindSlot(Vector3 pos)
+        {
+            if (slotPack == null) return null;
+            SlotPackRec best = null; float bd = 4f;
+            foreach (var sl in slotPack)
+            {
+                if (sl.pos == null || sl.pos.Length < 3) continue;
+                float dx = sl.pos[0] - pos.x, dz = sl.pos[2] - pos.z;
+                float d = dx * dx + dz * dz;
+                if (d < bd) { bd = d; best = sl; }
+            }
+            return best;   // within ~2 m of the extracted record
+        }
+
+        /// <summary>Best stand-point for a slot: nearest to the hero among
+        /// stands that exist; clearanceM &gt;= 0.5 preferred.</summary>
+        private static Vector3 BestStand(SlotPackRec sl, Vector3 hero)
+        {
+            if (sl == null || sl.stands == null || sl.stands.Length == 0)
+                return Vector3.zero;
+            StandPtRec best = null; float bd = float.MaxValue;
+            foreach (var p in sl.stands)
+            {
+                if (p.cl < 0.5f) continue;                    // unpathable cell
+                float dx = p.x - hero.x, dz = p.z - hero.z;
+                float d = dx * dx + dz * dz;
+                if (d < bd) { bd = d; best = p; }
+            }
+            if (best == null) best = sl.stands[0];
+            return new Vector3(best.x, best.y, best.z);
+        }
+
+        /// <summary>
+        /// Minimal deterministic parser for agent/slots/&lt;scene&gt;.json —
+        /// JsonUtility dropped the array fields on this Unity version, and the
+        /// file is machine-generated in one fixed shape:
+        /// {"scene":"X","slots":[{"id":N,"name":"..","pos":[x,y,z],
+        ///   "stands":[{"x":..,"y":..,"z":..,"cl":..,"dInt":..},..]},..]}
+        /// </summary>
+        private static SlotPackRec[] ParseSlotPack(string json)
+        {
+            var list = new System.Collections.Generic.List<SlotPackRec>();
+            var ci = System.Globalization.CultureInfo.InvariantCulture;
+            int i = 0;
+            while (true)
+            {
+                i = json.IndexOf("\"pos\"", i, System.StringComparison.Ordinal);
+                if (i < 0) break;
+                var sl = new SlotPackRec { name = "" };
+                // id sits a few chars before pos
+                int h = json.LastIndexOf("\"id\"", i);
+                if (h > 0) { var m = System.Text.RegularExpressions.Regex.Match(json.Substring(h, 32), "\"id\"\\s*:\\s*(-?\\d+)"); if (m.Success) sl.id = int.Parse(m.Groups[1].Value, ci); }
+                var pm = System.Text.RegularExpressions.Regex.Match(json.Substring(i, 120),
+                    "\"pos\"\\s*:\\s*\\[\\s*(-?[\\d.eE+-]+)\\s*,\\s*(-?[\\d.eE+-]+)\\s*,\\s*(-?[\\d.eE+-]+)\\s*\\]");
+                if (pm.Success) sl.pos = new float[] {
+                    float.Parse(pm.Groups[1].Value, ci),
+                    float.Parse(pm.Groups[2].Value, ci),
+                    float.Parse(pm.Groups[3].Value, ci) };
+                int st = json.IndexOf("\"stands\"", i, System.StringComparison.Ordinal);
+                if (st > 0)
+                {
+                    int open = json.IndexOf('[', st);
+                    int close = MatchBracket(json, open);
+                    if (close > open)
+                    {
+                        var stands = new System.Collections.Generic.List<StandPtRec>();
+                        foreach (System.Text.RegularExpressions.Match sm in
+                            System.Text.RegularExpressions.Regex.Matches(
+                                json.Substring(open, close - open),
+                                "\"x\"\\s*:\\s*(-?[\\d.eE+-]+)\\s*,\\s*\"y\"\\s*:\\s*(-?[\\d.eE+-]+)\\s*,\\s*\"z\"\\s*:\\s*(-?[\\d.eE+-]+)\\s*,\\s*\"cl\"\\s*:\\s*(-?[\\d.eE+-]+)\\s*,\\s*\"dInt\"\\s*:\\s*(-?[\\d.eE+-]+)"))
+                        {
+                            stands.Add(new StandPtRec
+                            {
+                                x = float.Parse(sm.Groups[1].Value, ci),
+                                y = float.Parse(sm.Groups[2].Value, ci),
+                                z = float.Parse(sm.Groups[3].Value, ci),
+                                cl = float.Parse(sm.Groups[4].Value, ci),
+                                dInt = float.Parse(sm.Groups[5].Value, ci),
+                            });
+                        }
+                        sl.stands = stands.ToArray();
+                    }
+                }
+                list.Add(sl);
+                i += 5;
+            }
+            return list.Count == 0 ? null : list.ToArray();
+        }
+
+        // interactionComplete / isWaitingForChoice are private — reflect once
+        // and cache the FieldInfo (the scan hits ~20 slots at 4 Hz).
+        private static System.Reflection.FieldInfo fiComplete, fiWaiting;
+        private static bool fiLooked;
+        private static bool IsInteractorFinished(BuildingInteractor bi)
+        {
+            if (!fiLooked)
+            {
+                fiLooked = true;
+                var ty = typeof(BuildingInteractor);
+                fiComplete = ty.GetField("interactionComplete",
+                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                fiWaiting = ty.GetField("isWaitingForChoice",
+                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            }
+            try
+            {
+                if (fiComplete != null && (bool)fiComplete.GetValue(bi)) return true;
+                if (fiWaiting != null && (bool)fiWaiting.GetValue(bi)) return true;
+            }
+            catch { }
+            return false;
+        }
+
+        private static int MatchBracket(string s, int open)
+        {
+            if (open < 0) return -1;
+            int depth = 0;
+            for (int i = open; i < s.Length; i++)
+            {
+                if (s[i] == '[') depth++;
+                else if (s[i] == ']') { if (--depth == 0) return i; }
+            }
+            return -1;
+        }
 
         // Slots that refused progress (deny-loop, stuck harvest/choice state)
         // are parked here until their timestamp expires — keeps SpendGold from
@@ -190,10 +360,15 @@ namespace ThronefallTrainer
         /// <summary>Coins the bot gave up on (unreachable / behind walls).</summary>
         public static System.Func<Coin, bool> CoinSkip;
 
-        public static Snapshot Capture()
+        /// <param name="preferBuildKey">Held-hold stickiness: an interactor
+        /// whose InstanceID matches keeps its pick even if another slot scores
+        /// higher — flip-flopping the pick mid-hold refunds every paid coin
+        /// (CostDisplay.CancelFill respawns them).</param>
+        public static Snapshot Capture(int preferBuildKey = -1)
         {
             var s = new Snapshot { GameState = "unknown" };
             s.SceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+            LoadSlotPack(s.SceneName);
 
             var gs = LocalGamestate.Instance;
             if (gs == null) { s.GameState = "no-gamestate"; return s; }
@@ -240,6 +415,9 @@ namespace ThronefallTrainer
                 s.HasCastle = true;
                 s.CastlePos = castlePos;
                 s.CastleDist = FlatDist(s.CastlePos, s.HeroPos);
+                var csp = BestStand(FindSlot(castlePos), s.HeroPos);
+                s.HasCastleStand = csp != Vector3.zero;
+                if (s.HasCastleStand) s.CastleStandPos = csp;
 
                 // P5: castle HP — the run's actual loss meter. Hp can sit on
                 // the keep's TaggedObject or the BuildSlot's building parent.
@@ -531,6 +709,11 @@ namespace ThronefallTrainer
             {
                 var bi = builds[i];
                 if (bi == null || !bi.isActiveAndEnabled || !bi.CanBeInteractedWith) continue;
+                // "Complete" or choice-wedged interactors still report
+                // CanBeInteractedWith — their InteractionHold early-returns
+                // forever (diag: state=Upgrade complete=True on the Castle
+                // Center). Skip them in the scan instead of stalling on them.
+                if (IsInteractorFinished(bi)) continue;
                 if (buildIgnore.Count > 0 && buildIgnore.TryGetValue(bi, out float until))
                 {
                     if (until > Time.unscaledTime) continue;   // still parked
@@ -560,6 +743,18 @@ namespace ThronefallTrainer
                 }
                 s.BuildCount++;
                 float d = (bi.transform.position - s.HeroPos).sqrMagnitude;
+                // Held-hold stickiness: the slot we're mid-pay on wins
+                // outright while it's still interactable and near — prevents
+                // per-tick pick flips that refund the partial fill.
+                bool heldMatch = preferBuildKey >= 0 && bi.GetInstanceID() == preferBuildKey;
+                if (heldMatch && d <= 6f * 6f)
+                {
+                    s.NearestBuildDist = d;
+                    s.NearestBuild = bi;
+                    s.NearestBuildScore = score + 100000;
+                    bestBuildScore = int.MaxValue;   // no later pick can beat it
+                    continue;
+                }
                 if (score > bestBuildScore || (score == bestBuildScore && d < s.NearestBuildDist))
                 {
                     bestBuildScore = score;
@@ -578,6 +773,16 @@ namespace ThronefallTrainer
                     ? s.NearestBuild.targetBuilding.buildingName : s.NearestBuild.name;
                 if (s.NearestBuild.targetBuilding != null)
                     GetBuildClass(s.NearestBuild.targetBuilding, out s.BuildMil, out s.BuildInc);
+                // Terrain pack: known-reachable stand cell for this slot —
+                // navigating to a stand-point can't wedge inside the slot's
+                // collider (the spend-stall bug's travel side).
+                var bsp = BestStand(FindSlot(s.NearestBuildPos), s.HeroPos);
+                s.HasBuildStand = bsp != Vector3.zero;
+                if (s.HasBuildStand)
+                {
+                    s.BuildStandPos = bsp;
+                    s.BuildStandDist = FlatDist(s.BuildStandPos, s.HeroPos);
+                }
             }
             else s.NearestBuildDist = 0f;
 
@@ -690,3 +895,7 @@ namespace ThronefallTrainer
         }
     }
 }
+
+
+
+

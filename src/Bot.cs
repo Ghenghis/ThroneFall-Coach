@@ -57,6 +57,7 @@ namespace ThronefallTrainer
         private static float watchClock;
         private static Vector3 watchAnchor;
         private static bool hasAnchor;
+        private static Vector3 lastFreePos; private static float lastFreeAt = -999f;
 
         private static bool hasTarget;
         private static Vector3 targetPos;
@@ -175,6 +176,7 @@ namespace ThronefallTrainer
         private static float polScanAt;
         private static readonly System.Collections.Generic.HashSet<string> prevRuleFires =
             new System.Collections.Generic.HashSet<string>();
+        private static float holdDiagAt;
 
         private static readonly System.Collections.Generic.HashSet<Coin> coinIgnore =
             new System.Collections.Generic.HashSet<Coin>();
@@ -224,6 +226,25 @@ namespace ThronefallTrainer
             else
                 DesiredDir = Vector3.zero;
 
+            // Hold-to-pay at FRAME rate: CostDisplay.FillUp advances by
+            // Time.deltaTime PER CALL — a 4 Hz decide-tick pump starves the
+            // fill ~15x and any release refunds every filled coin back to
+            // pickup form. This is the "gold never spends" bug (refpack
+            // finding). The hold runs here, once per Update.
+            var piHold = PlayerInteraction.instance;
+            if (heldBuild != null && piHold != null && pm != null)
+                heldBuild.InteractionHold(piHold);
+
+            // 1 Hz hold diagnostic while paying — the private fill flags tell
+            // us which early-return starves the fill.
+            if (heldBuild != null && Time.unscaledTime >= holdDiagAt)
+            {
+                holdDiagAt = Time.unscaledTime + 1f;
+                var ty = heldBuild.GetType();
+                object Get(string n) => ty.GetField(n, System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.GetValue(heldBuild);
+                Plugin.Log?.LogInfo($"[bot] hold-diag '{heldBuild.name}': state={Get("currentState")} started={Get("interactionStarted")} waitChoice={Get("isWaitingForChoice")} complete={Get("interactionComplete")} harvest={heldBuild.canBeHarvested} canInter={heldBuild.CanBeInteractedWith}");
+            }
+
             decisionClock += Time.unscaledDeltaTime;
             if (decisionClock < DecisionInterval) return;
             decisionClock = 0f;
@@ -232,7 +253,12 @@ namespace ThronefallTrainer
 
         private static void TickInner()
         {
-            var s = BotPerception.Capture();
+            // Held-hold stickiness: while paying, perception re-selects the
+            // same slot so BuildKey can't flip mid-fill (a flip releases the
+            // hold and refunds every partially-paid coin — see refpack
+            // CostDisplay.CancelFill respawn mechanic).
+            int heldKey = heldBuild != null ? heldBuild.GetInstanceID() : -1;
+            var s = BotPerception.Capture(heldKey);
 
             // Session memory edges: a victory clears the level's defeat count
             // and marks it toured; a defeat counts toward rotating the node
@@ -471,6 +497,9 @@ namespace ThronefallTrainer
             watchClock = 0f;
 
             float moved = Vector3.Distance(s.HeroPos, watchAnchor);
+            // Track the last position the hero provably MOVED through — the
+            // escape point when the hard-stuck path proves he's caged.
+            if (moved >= StuckEpsilon) { lastFreePos = watchAnchor; lastFreeAt = Time.unscaledTime; }
             watchAnchor = s.HeroPos;
             float aimDist = FlatDist(s.HeroPos, AimPos);
             // Still closing on the aim point = healthy pursuit even when the
@@ -513,19 +542,24 @@ namespace ThronefallTrainer
                             Plugin.Log?.LogWarning($"[bot] hard-stuck diag: type={pm.GetType().Name} " +
                                 $"ctrlEnabled={ctrl != null && ctrl.enabled} grounded={ctrl != null && ctrl.isGrounded} " +
                                 $"vel={pm.Velocity} dead={pm.Dead} scene={s.SceneName}");
-                            // Zero displacement = embedded inside a collider or
-                            // otherwise physically trapped — a real player
-                            // could not even move here, so the wall-slide is
-                            // pointless. Snap to the nearest walkable navmesh
-                            // node, the game's own SnapToNavmesh recovery that
-                            // spawned units get. Still a teleport, but limited
-                            // to a can't-move-at-all trap, never a shortcut.
+                            // Zero displacement = embedded inside a collider
+                            // cage (vel reads ~30 m/s, pos never changes).
+                            // Escape BACKWARD to the last provably-free spot —
+                            // snapping toward the aim re-drops him in the same
+                            // cage 0.2 m away, the snap-loop the runs showed.
+                            bool hasEscape = Time.unscaledTime - lastFreeAt < 60f &&
+                                             FlatDist(lastFreePos, s.HeroPos) > 2.5f;
                             Vector3 snap = AstarPath.active.GetNearest(
-                                s.HeroPos + (toAim.sqrMagnitude > 0.01f ? toAim.normalized : Vector3.forward) * 1.5f,
+                                hasEscape ? lastFreePos
+                                          : s.HeroPos + (toAim.sqrMagnitude > 0.01f ? toAim.normalized : Vector3.forward) * 1.5f,
                                 new Pathfinding.NNConstraint()).position;
                             pm.TeleportTo(snap);
-                            Plugin.Log?.LogWarning($"[bot] stuck (no movement possible) → navmesh snap to {snap}");
-                            LogLine(in s, "snap");
+                            // Drop any stale path — its origin no longer matches
+                            // where the hero stands after the escape.
+                            navPath = null; navIndex = 0; navInFlight = false; navGoal = Vector3.zero;
+                            Plugin.Log?.LogWarning($"[bot] stuck (no movement possible) → " +
+                                $"{(hasEscape ? "escape-snap" : "navmesh snap")} to {snap}");
+                            LogLine(in s, hasEscape ? "snap-escape" : "snap");
                         }
                         else
                         {
@@ -607,6 +641,36 @@ namespace ThronefallTrainer
                         heldBuild.InteractionHold(pi);
                     break;
                 case IntentKind.ParkSlot:
+                    // Diagnostic: WHY is this slot not filling? Reflection
+                    // into the interactor's private fill state — the refpack
+                    // finding says FillUp only advances while InteractionHold
+                    // runs and early-returns on state/choice/started gates.
+                    if (s.NearestBuild != null)
+                    {
+                        var ty = s.NearestBuild.GetType();
+                        string st = "?"; object started = "?", waiting = "?", complete = "?";
+                        var f1 = ty.GetField("currentState", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                        if (f1 != null) st = f1.GetValue(s.NearestBuild)?.ToString();
+                        var f2 = ty.GetField("interactionStarted", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                        if (f2 != null) started = f2.GetValue(s.NearestBuild);
+                        var f3 = ty.GetField("isWaitingForChoice", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                        if (f3 != null) waiting = f3.GetValue(s.NearestBuild);
+                        var f4 = ty.GetField("interactionComplete", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                        if (f4 != null) complete = f4.GetValue(s.NearestBuild);
+                        var bf = ty.GetField("costDisplay", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                        object filled = "?";
+                        if (bf != null)
+                        {
+                            var cd = bf.GetValue(s.NearestBuild);
+                            var cf = cd?.GetType().GetField("currentlyFilledCoins",
+                                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                            if (cf != null) filled = cf.GetValue(cd);
+                        }
+                        Plugin.Log?.LogWarning($"[bot] build-stall diag '{s.NearestBuildName}': " +
+                            $"state={st} started={started} waitChoice={waiting} complete={complete} filled={filled} " +
+                            $"dist={s.NearestBuildDist:0.#} balance={s.Balance} harvest={s.NearestBuild.canBeHarvested} " +
+                            $"canInteract={s.NearestBuild.CanBeInteractedWith}");
+                    }
                     BotPerception.IgnoreBuild(s.NearestBuild, 600f);
                     break;
                 case IntentKind.PumpAttack:
@@ -638,9 +702,23 @@ namespace ThronefallTrainer
                         if (stm != null && li != null && li.levelInfo != null &&
                             !BotPerception.SceneTransitionBusy(stm))
                         {
+                            // Mark the pick like the game's own interact path
+                            // does (LevelInteractor.InteractionBegin sets it)
+                            // so after-match return + quest tracking stay sane.
+                            LevelInteractor.lastActiveLevelInfo = li.levelInfo;
                             Plugin.Log?.LogInfo($"[bot] transitioning to level '{li.levelInfo.sceneName}'");
                             stm.TransitionFromLevelSelectToLevel(li.levelInfo.sceneName);
                         }
+                    }
+                    break;
+                case IntentKind.InteractLevel:
+                    // The node's own interact path — opens its level-select
+                    // frame (same as a player click); the frame resolver then
+                    // clicks Start. Fallback for a hung sceneTransitionIsRunning.
+                    if (s.NearestLevel != null && pi != null)
+                    {
+                        s.NearestLevel.InteractionBegin(pi);
+                        Plugin.Log?.LogInfo($"[bot] level '{s.NearestLevel.name}' -> InteractionBegin (frame)");
                     }
                     break;
                 case IntentKind.ClearCoinPark:
@@ -992,22 +1070,34 @@ namespace ThronefallTrainer
             if (p == null || p.vectorPath == null || p.vectorPath.Count == 0)
                 return goal;
             var wp = p.vectorPath;
+            // Stale path: a cached result whose first waypoint sits >15 m from
+            // the hero was built for a different origin (post-snap, scene
+            // edge). Following it steers the hero backward into geometry —
+            // discard and let the next tick re-path from the real position.
+            if (wp.Count > 0 && FlatDist(hero, wp[0]) > 15f)
+            {
+                navPath = null; navIndex = 0; navGoal = Vector3.zero;
+                return goal;
+            }
             while (navIndex < wp.Count - 1 && FlatDist(hero, wp[navIndex]) < 1.4f) navIndex++;
             navIndex = Mathf.Min(navIndex, wp.Count - 1);
             var last = wp[wp.Count - 1];
-            // Path doesn't actually reach the goal: the navmesh isn't world-
-            // complete (keep interiors, node spawn rings, coarse map meshes)
-            // and the last waypoint just marks "closest I got". The hero's
-            // CharacterController doesn't care about navmesh — steer straight
-            // at the goal and let sidesteps handle any real wall.
-            if (FlatDist(last, goal) > 2.5f) return goal;
             // Degenerate path: the navmesh snapped the whole route onto where
             // the hero already stands — steering at it gives DesiredDir≈0 →
             // standing still forever. Fall back to the raw goal.
             if (navIndex == wp.Count - 1 && FlatDist(hero, last) < 0.8f)
                 return goal;
+            // FOLLOW the routed path even when its tail stops short of the
+            // goal — the old "last wp >2.5 m from goal → beeline" skipped the
+            // entire route and steered the hero straight into the cliff/wall
+            // the path had routed around (the pin-the-building bug). Only the
+            // final waypoint's gap gets a straight finish.
             navSteerArrive = navIndex == wp.Count - 1 ? arriveDist : 0.5f;
-            return wp[navIndex];
+            if (navIndex < wp.Count - 1) return wp[navIndex];
+            // At the last waypoint: if it lands on the goal, hold arrive-dist;
+            // else it's the navmesh's "closest reachable" — beeline the small
+            // remaining gap.
+            return FlatDist(last, goal) <= 2.5f ? last : goal;
         }
 
         /// <summary>
