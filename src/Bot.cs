@@ -165,6 +165,13 @@ namespace ThronefallTrainer
         // by ref so Decide stays testable.
         private static BotMemory mem = BotMemory.Fresh();
 
+        // Phase 2 policy: hot-loaded line-DSL retuning the FSM's numeric
+        // knobs. Last-good table wins on any parse error.
+        private static PolicyTable pol = PolicyTable.Default();
+        private static string polPath;
+        private static long polStamp;
+        private static float polScanAt;
+
         private static readonly System.Collections.Generic.HashSet<Coin> coinIgnore =
             new System.Collections.Generic.HashSet<Coin>();
 
@@ -298,7 +305,34 @@ namespace ThronefallTrainer
             }
 
             var sd = BotPerception.ToData(in s);
-            var res = BotBrain.Decide(in sd, ref mem, Time.unscaledTime, Legit);
+
+            // Hot reload: policy file mtime changed → re-validate; on any
+            // error keep the last-good table and log a policy-reject event.
+            if (Time.unscaledTime >= polScanAt)
+            {
+                polScanAt = Time.unscaledTime + 1f;
+                if (polPath == null) polPath = System.IO.Path.Combine(Recorder.AgentDir, "policy.txt");
+                try
+                {
+                    if (System.IO.File.Exists(polPath) &&
+                        System.IO.File.GetLastWriteTimeUtc(polPath).Ticks != polStamp)
+                    {
+                        polStamp = System.IO.File.GetLastWriteTimeUtc(polPath).Ticks;
+                        var errors = new System.Collections.Generic.List<string>();
+                        if (PolicyTable.Parse(System.IO.File.ReadAllText(polPath), ref pol, out errors))
+                            Plugin.Log?.LogInfo($"[bot] policy v{pol.Version} loaded ({pol.rules.Count} rule(s))");
+                        else
+                        {
+                            LogLine(in s, "policy-reject");
+                            Plugin.Log?.LogWarning($"[bot] policy REJECTED (kept v{pol.Version}): {string.Join("; ", errors)}");
+                        }
+                    }
+                }
+                catch (System.Exception ex) { Plugin.Log?.LogWarning($"[bot] policy read: {ex.Message}"); }
+            }
+
+            var pres = pol.Resolved(in sd);
+            var res = BotBrain.Decide(in sd, ref mem, Time.unscaledTime, Legit, in pres);
             Mode = res.Mode;
             // Pursuit ref for the cheat-steer path and attack diag — the pure
             // layer can't hold Unity refs, so it returns a flag and we resolve.
@@ -993,7 +1027,11 @@ namespace ThronefallTrainer
             // the main log being available. "tick" is the 4 Hz heartbeat —
             // it belongs in ticks.jsonl, not the event stream.
             if (note != "tick") Recorder.Event(note);
-            if (note == "snap") Recorder.CountSnap();
+            if (note == "snap")
+            {
+                Recorder.CountSnap();
+                Recorder.NoteAnchor(s.SceneName, s.HeroPos.x, s.HeroPos.z, "wedge");
+            }
             else if (note.StartsWith("unstick")) Recorder.CountUnstick();
             else if (note == "build-stall" || note == "coin-stall") Recorder.CountStall();
             if (botLog == null) return;

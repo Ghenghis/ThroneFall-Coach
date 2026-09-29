@@ -70,6 +70,57 @@ namespace ThronefallTrainer
         }
 
         /// <summary>
+        /// Persistent learned navigation anchors (v3 §B2): every snap/wedge
+        /// rescue records the scene + spot so steering/policy can avoid or
+        /// exploit it later. Written straight through to agent/anchors.json
+        /// (small file, low rate — snap events are rare).
+        /// </summary>
+        public static void NoteAnchor(string scene, float x, float z, string kind)
+        {
+            try
+            {
+                var path = Path.Combine(AgentDir, "anchors.json");
+                Directory.CreateDirectory(AgentDir);
+                var lines = File.Exists(path) ? File.ReadAllLines(path) : new string[0];
+                var list = new System.Collections.Generic.List<string>(lines);
+                // merge on (scene,kind,~1m bucket): bump hit count if a near
+                // identical anchor already exists
+                var ci = CultureInfo.InvariantCulture;
+                string bx = x.ToString("0.#", ci), bz = z.ToString("0.#", ci);
+                for (int i = list.Count - 1; i >= 0; i--)
+                {
+                    var e = list[i];
+                    if (!e.Contains("\"s\":\"" + scene + "\"") || !e.Contains("\"k\":\"" + kind + "\"")) continue;
+                    float ex = JFloat(e, "\"x\":"), ez = JFloat(e, "\"z\":");
+                    if (Math.Abs(ex - x) > 3f || Math.Abs(ez - z) > 3f) continue;
+                    int hits = (int)JFloat(e, "\"hits\":") + 1;
+                    list[i] = string.Format(ci,
+                        "{{\"s\":\"{0}\",\"k\":\"{1}\",\"x\":{2},\"z\":{3},\"hits\":{4}}}",
+                        scene, kind, bx, bz, hits);
+                    File.WriteAllLines(path, list);
+                    return;
+                }
+                list.Add(string.Format(ci,
+                    "{{\"s\":\"{0}\",\"k\":\"{1}\",\"x\":{2},\"z\":{3},\"hits\":1}}",
+                    scene, kind, bx, bz));
+                File.WriteAllLines(path, list);
+            }
+            catch { }
+        }
+
+        private static float JFloat(string json, string key)
+        {
+            int i = json.IndexOf(key, StringComparison.Ordinal);
+            if (i < 0) return 0f;
+            i += key.Length;
+            int j = i;
+            while (j < json.Length && (char.IsDigit(json[j]) || json[j] == '.' || json[j] == '-')) j++;
+            float.TryParse(json.Substring(i, j - i), NumberStyles.Float,
+                CultureInfo.InvariantCulture, out float v);
+            return v;
+        }
+
+        /// <summary>
         /// Begin a new run file set. Called at level EnterLevel/gamestate
         /// transitions; safe to call repeatedly — identical runId is a no-op.
         /// </summary>

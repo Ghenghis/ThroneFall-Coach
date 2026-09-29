@@ -44,6 +44,7 @@ namespace ThronefallTrainer
                 string firstDiff = "";
                 float now = 0f;
                 bool legit = ReadLegit(dir);
+                var pol = ReadPolicy(dir);
 
                 foreach (var line in File.ReadLines(ticks))
                 {
@@ -51,7 +52,8 @@ namespace ThronefallTrainer
                     var sd = Parse(line);
                     // Recorded tick time drives `now` so clocks/watches behave identically.
                     now = sd.T;
-                    var res = BotBrain.Decide(in sd.Data, ref mem, now, legit);
+                    var p = pol.Resolved(in sd.Data);
+                    var res = BotBrain.Decide(in sd.Data, ref mem, now, legit, in p);
                     n++;
                     string want = sd.Mode, got = res.Mode.ToString();
                     if (!string.Equals(want, got, StringComparison.OrdinalIgnoreCase))
@@ -87,6 +89,19 @@ namespace ThronefallTrainer
             if (!Directory.Exists(root))
                 root = Path.Combine(Directory.GetCurrentDirectory(), "tests", "fixtures", "runs");
             return Directory.Exists(root) ? Directory.GetDirectories(root) : new string[0];
+        }
+
+        // Fixture-local policy.txt overrides the default table; a parse
+        // failure is a hard error (the fixture is deliberately broken).
+        private static PolicyTable ReadPolicy(string dir)
+        {
+            var pol = PolicyTable.Default();
+            var p = Path.Combine(dir, "policy.txt");
+            if (!File.Exists(p)) return pol;
+            var errs = new System.Collections.Generic.List<string>();
+            if (!PolicyTable.Parse(File.ReadAllText(p), ref pol, out errs))
+                throw new InvalidOperationException($"policy.txt invalid: {string.Join("; ", errs)}");
+            return pol;
         }
 
         private static bool ReadLegit(string dir)

@@ -326,22 +326,182 @@ namespace ThronefallTrainer
         public List<string> Notes;
     }
 
+    // =========================================================================
+    // Phase 2: bounded policy table (design §P9). A hot-loadable line-DSL of
+    //   knob NAME = VALUE
+    //   id | FIELD OP V -> NAME = VALUE
+    // rules — evaluated each Decide against SnapshotData fields via reflection.
+    // Bounds: ≤32 rules, known fields only, |value| ≤ 1e6, knob names ≤ 24
+    // chars, no code execution — a policy can only retune numbers the FSM
+    // already reads. Last-good table wins on any validation error.
+    // =========================================================================
+
+    internal struct PolicyRule
+    {
+        public string Id;
+        public string Field;   // SnapshotData field name
+        public string Op;      // > >= < <= == !=
+        public float Value;
+        public string Knob;
+        public float Set;
+    }
+
+    internal struct PolicyTable
+    {
+        public Dictionary<string, float> knobs;
+        public List<PolicyRule> rules;
+        public int Version;         // bumped on every successful load
+
+        public static PolicyTable Default()
+        {
+            return new PolicyTable
+            {
+                Version = 0,
+                knobs = new Dictionary<string, float>
+                {
+                    ["coin_seek"] = 80f,
+                    ["coin_seek_big"] = 40f,     // big/final-wave day coin range
+                    ["big_wave_nwc"] = 30f,      // "big wave" NextWaveCount gate
+                    ["kite_r_min"] = 9f,
+                    ["kite_r_max"] = 14f,
+                    ["kite_foe_pad"] = 2f,       // orbit radius = foe range + this
+                    ["pull_near"] = 4.5f,        // deep-pull when foe closer than this
+                    ["pull_foe_pad"] = 1f,       // or inside its attack range + this
+                    ["pull_swarm"] = 2f,         // or this many foes within 8 m
+                    ["retreat_hp"] = 0.5f,       // hurt-hero retreat threshold
+                    ["orbit_spin"] = 0.7f,
+                    ["orbit_arc"] = 1.9f,
+                    ["home_radius"] = 14f,
+                    ["army_anchor"] = 11f,
+                    ["melee_pull"] = 5f,
+                },
+                rules = new List<PolicyRule>(),
+            };
+        }
+
+        /// <summary>Knob value — rules may have overlaid the base.</summary>
+        public float K(string name)
+        {
+            float v;
+            return knobs != null && knobs.TryGetValue(name, out v) ? v : 0f;
+        }
+
+        /// <summary>
+        /// Evaluate rules against the snapshot and return a copy with hits
+        /// folded into knobs — the base table stays untouched (Dictionary is
+        /// a reference type; a plain Apply would permanently clobber bases).
+        /// </summary>
+        public PolicyTable Resolved(in SnapshotData s)
+        {
+            if (rules == null || rules.Count == 0) return this;
+            var t = this;
+            t.knobs = new Dictionary<string, float>(knobs);
+            var ty = typeof(SnapshotData);
+            foreach (var r in rules)
+            {
+                var f = ty.GetField(r.Field);
+                if (f == null) continue;
+                object o = f.GetValue(s);
+                float cur = o is bool ? ((bool)o ? 1f : 0f) : Convert.ToSingle(o);
+                if (Cmp(cur, r.Op, r.Value)) t.knobs[r.Knob] = r.Set;
+            }
+            return t;
+        }
+
+        static bool Cmp(float a, string op, float b)
+        {
+            switch (op)
+            {
+                case ">": return a > b;
+                case ">=": return a >= b;
+                case "<": return a < b;
+                case "<=": return a <= b;
+                case "==": return Math.Abs(a - b) < 1e-6f;
+                case "!=": return Math.Abs(a - b) >= 1e-6f;
+                default: return false;
+            }
+        }
+
+        /// <summary>
+        /// Parse + validate a policy file. Returns false (and fills errors)
+        /// when ANY line is invalid — callers keep the last-good table.
+        /// </summary>
+        public static bool Parse(string text, ref PolicyTable table, out List<string> errors)
+        {
+            errors = new List<string>();
+            var t = Default();
+            t.Version = table.Version + 1;
+            var fields = new HashSet<string>(
+                Array.ConvertAll(typeof(SnapshotData).GetFields(), x => x.Name));
+            int n = 0;
+            foreach (var raw in text.Split('\n'))
+            {
+                var line = raw.Trim();
+                if (line.Length == 0 || line.StartsWith("#")) continue;
+                n++;
+                if (line.StartsWith("knob "))
+                {
+                    var p = line.Substring(5).Split('=');
+                    if (p.Length != 2 || !IsKnob(p[0].Trim()) || !float.TryParse(p[1].Trim(),
+                        System.Globalization.NumberStyles.Float,
+                        System.Globalization.CultureInfo.InvariantCulture, out float v))
+                        errors.Add($"line {n}: bad knob '{line}'");
+                    else t.knobs[p[0].Trim()] = v;
+                    continue;
+                }
+                // id | FIELD OP V -> KNOB = V
+                var arrow = line.IndexOf("->", StringComparison.Ordinal);
+                var bar = line.IndexOf('|');
+                if (bar <= 0 || arrow <= bar) { errors.Add($"line {n}: expected 'id | FIELD op v -> knob = v'"); continue; }
+                string id = line.Substring(0, bar).Trim();
+                string cond = line.Substring(bar + 1, arrow - bar - 1).Trim();
+                string eff = line.Substring(arrow + 2).Trim();
+                var cp = cond.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                var ep = eff.Split('=');
+                if (id.Length == 0 || id.Length > 32)
+                    errors.Add($"line {n}: bad rule id");
+                else if (t.rules.Count >= 32)
+                    errors.Add($"line {n}: rule limit 32");
+                else if (cp.Length != 3 || !fields.Contains(cp[0]) ||
+                         !(cp[1] == ">" || cp[1] == ">=" || cp[1] == "<" || cp[1] == "<=" || cp[1] == "==" || cp[1] == "!=") ||
+                         !float.TryParse(cp[2], System.Globalization.NumberStyles.Float,
+                             System.Globalization.CultureInfo.InvariantCulture, out float cv) ||
+                         Math.Abs(cv) > 1e6f)
+                    errors.Add($"line {n}: bad condition '{cond}'");
+                else if (ep.Length != 2 || !IsKnob(ep[0].Trim()) ||
+                         !float.TryParse(ep[1].Trim(), System.Globalization.NumberStyles.Float,
+                             System.Globalization.CultureInfo.InvariantCulture, out float sv) ||
+                         Math.Abs(sv) > 1e6f)
+                    errors.Add($"line {n}: bad effect '{eff}'");
+                else
+                    t.rules.Add(new PolicyRule { Id = id, Field = cp[0], Op = cp[1], Value = cv, Knob = ep[0].Trim(), Set = sv });
+            }
+            if (errors.Count > 0) return false;
+            table = t;
+            return true;
+        }
+
+        static bool IsKnob(string k)
+        {
+            if (k.Length == 0 || k.Length > 24) return false;
+            foreach (char c in k)
+                if (!(char.IsLetterOrDigit(c) || c == '_')) return false;
+            return true;
+        }
+    }
+
     internal static class BotBrain
     {
         // Geometry constants mirrored from Bot.cs (kept identical by contract).
         const float ArriveCoin = 0.6f;
         const float ArriveHold = 2.5f;
-        const float HomeRadius = 14f;
-        const float CoinSeekRange = 80f;
-        const float OrbitSpin = 0.7f;
-        const float OrbitArc = 1.9f;
 
         /// <summary>
         /// The full FSM, ported pure: reads SnapshotData + BotMemory only,
         /// returns Mode/AimPos/Intents/Notes. Every world-side call the old
         //  Decide made inline is now an Intent the Tick executes against refs.
         /// </summary>
-        public static DecideResult Decide(in SnapshotData s, ref BotMemory m, float now, bool legit)
+        public static DecideResult Decide(in SnapshotData s, ref BotMemory m, float now, bool legit, in PolicyTable pol)
         {
             var r = new DecideResult
             {
@@ -394,7 +554,7 @@ namespace ThronefallTrainer
             // ---- safe night coin-run ----
             if (s.IsNight && s.NearFoeCount == 0
                 && (!s.HasNearEnemy || s.NearEnemyDist > 12f)
-                && s.HasCoin && s.CoinDist <= CoinSeekRange)
+                && s.HasCoin && s.CoinDist <= pol.K("coin_seek"))
             {
                 m.Mode = BotMode.CollectCoin; r.Mode = m.Mode;
                 Aim(ref r, s.CoinPos, ArriveCoin);
@@ -410,7 +570,7 @@ namespace ThronefallTrainer
                 if (hasThreat)
                 {
                     // Legit retreat: badly hurt hero pulls behind the castle.
-                    if (legit && s.HeroHpPct < 0.5f && s.HasCastle)
+                    if (legit && s.HeroHpPct < pol.K("retreat_hp") && s.HasCastle)
                     {
                         m.Mode = BotMode.ReturnHome; r.Mode = m.Mode;
                         m.Pursue = r.Pursue = s.HasCastleThreat ? 1 : 2;
@@ -429,8 +589,8 @@ namespace ThronefallTrainer
                         // A foe inside its own attack range (or a pile
                         // forming) pulls him deep — ranged foes trigger this
                         // earlier than melee reach.
-                        float tooNear = Math.Max(4.5f, s.NearEnemyRange + 1f);
-                        if (heroNear < tooNear || s.NearFoeCount >= 2)
+                        float tooNear = Math.Max(pol.K("pull_near"), s.NearEnemyRange + pol.K("pull_foe_pad"));
+                        if (heroNear < tooNear || s.NearFoeCount >= (int)pol.K("pull_swarm"))
                         {
                             Vec2 away = s.CastlePos - s.NearEnemyPos;
                             Aim(ref r, s.CastlePos + away.Norm * 4f, 1.2f);
@@ -440,16 +600,17 @@ namespace ThronefallTrainer
                             // perpetual orbit on the defended-side arc
                             float dt = m.LastOrbitAt > 0f ? now - m.LastOrbitAt : 0.25f;
                             m.LastOrbitAt = now;
-                            m.OrbitAngle += OrbitSpin * m.OrbitDir * dt;
-                            if (m.OrbitAngle > OrbitArc) { m.OrbitAngle = OrbitArc; m.OrbitDir = -1f; }
-                            else if (m.OrbitAngle < -OrbitArc) { m.OrbitAngle = -OrbitArc; m.OrbitDir = 1f; }
+                            m.OrbitAngle += pol.K("orbit_spin") * m.OrbitDir * dt;
+                            float arc = pol.K("orbit_arc");
+                            if (m.OrbitAngle > arc) { m.OrbitAngle = arc; m.OrbitDir = -1f; }
+                            else if (m.OrbitAngle < -arc) { m.OrbitAngle = -arc; m.OrbitDir = 1f; }
                             Vec2 fwd = axisDir.SqrMag > 0.01f ? axisDir.Norm : new Vec2(0f, 1f);
                             Vec2 oc = s.CastlePos - fwd * 3f;
                             // P3: the orbit radius outranges the THREAT's own
                             // attack range +2 m — a ranged foe forces a wider
                             // arc, melee-only threats keep the tight one.
                             float rr = Clamp(Math.Max(s.ActiveRange * 0.3f,
-                                s.NearEnemyRange + 2f), 9f, 14f);
+                                s.NearEnemyRange + pol.K("kite_foe_pad")), pol.K("kite_r_min"), pol.K("kite_r_max"));
                             Vec2 ring = oc + (fwd * -(float)Math.Cos(m.OrbitAngle) +
                                               Vec2.Perp(fwd) * (float)Math.Sin(m.OrbitAngle)) * rr;
                             Aim(ref r, ring, 1.5f);
@@ -465,7 +626,7 @@ namespace ThronefallTrainer
                             if (away.SqrMag < 0.01f) away = s.HeroPos - threatPos;
                             Vec2 toC = s.HasCastle ? s.CastlePos - s.HeroPos : Vec2.Zero;
                             Vec2 pull = (away.Norm * 0.7f + toC.Norm * 0.3f).Norm;
-                            Aim(ref r, s.HeroPos + pull * 5f, 1.2f);
+                            Aim(ref r, s.HeroPos + pull * pol.K("melee_pull"), 1.2f);
                         }
                         else
                         {
@@ -490,8 +651,8 @@ namespace ThronefallTrainer
             // ---- day: coins ----
             // P1 use: a huge or final wave coming up tightens the seek range —
             // no long-range coin runs when the run is on the line.
-            float coinRange = (s.FinalWaveNext || s.NextWaveCount >= 30)
-                ? 40f : CoinSeekRange;
+            float coinRange = (s.FinalWaveNext || s.NextWaveCount >= pol.K("big_wave_nwc"))
+                ? pol.K("coin_seek_big") : pol.K("coin_seek");
             if (s.HasCoin && s.CoinDist <= coinRange)
             {
                 m.Mode = BotMode.CollectCoin; r.Mode = m.Mode;
@@ -551,7 +712,7 @@ namespace ThronefallTrainer
                 }
                 m.Mode = BotMode.PositionArmy; r.Mode = m.Mode;
                 Vec2 aAxis = s.HasThreatAnchor ? s.ThreatAnchor - s.CastlePos : Vec2.Zero;
-                Vec2 anchor = aAxis.SqrMag > 0.01f ? s.CastlePos + aAxis.Norm * 11f : s.CastlePos;
+                Vec2 anchor = aAxis.SqrMag > 0.01f ? s.CastlePos + aAxis.Norm * pol.K("army_anchor") : s.CastlePos;
                 Aim(ref r, anchor, 3f);
                 if (Vec2.Dist(s.HeroPos, anchor) <= 4f || now >= m.ArmyWalkAt)
                 {
@@ -584,7 +745,7 @@ namespace ThronefallTrainer
                 m.Mode = BotMode.StartNight; r.Mode = m.Mode;
                 return r;
             }
-            if (s.HasCastle && s.CastleDist > HomeRadius)
+            if (s.HasCastle && s.CastleDist > pol.K("home_radius"))
             {
                 m.Mode = BotMode.ReturnHome; r.Mode = m.Mode;
                 Aim(ref r, s.CastlePos, ArriveHold);
@@ -612,3 +773,6 @@ namespace ThronefallTrainer
     /// </summary>
     internal enum BotMode { Idle, CollectCoin, ReturnHome, HoldCastle, Engage, EnterLevel, StartNight, SpendGold, ResolveUI, PositionArmy, HeroDead }
 }
+
+
+
