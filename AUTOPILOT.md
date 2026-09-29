@@ -77,6 +77,7 @@ shortcuts (`Legit=false`); bundle OFF = `Legit=true` — full player-rule play.
 | `ReturnHome` / `HoldCastle` | Legit: `HeroHpPct < 0.5` → retreat to castle while army works. Strayed >14 m from castle → drift back / hold at threat anchor |
 | `StartNight` | Nothing left to spend/collect/position → `Nighthorn.instance.InteractionBegin` (auto-harvests + starts wave); horn inactive/missing → `DayNightCycle.SwitchToNight()` throttled 15 s, gated off `_`-prefixed scenes |
 | `Idle` | No valid snapshot (loads, menus) |
+| `HeroDead` | `pm.Dead` OR `hp<=0` (covers the pre-flag window) → releases any build hold, ghost drifts to the castle and waits out the respawn timer; normal modes resume on revive |
 
 Decisions run at `DecisionInterval = 0.25 s`.
 
@@ -214,6 +215,14 @@ Cheat mode keeps the original 2.5 m teleport nudge.
   where the hero already stood (`DesiredDir=0`); handled by the reach-goal
   and degenerate-path fallbacks in `NavSteerPoint`, plus the snap rescue for
   genuine embeds.
+- ~~`HeroDead` shows `Idle`~~ — now a dedicated mode; ghost releases the
+  build hold, drifts to the keep, and `hp<=0` covers the window before
+  `pm.Dead` flips (v2.1-dev).
+- ~~Encirclement deaths~~ — new `EnemiesNearHero` count; a 3+ pile within
+  8 m (or any foe <5 m) retreats the hero deep behind the keep BEFORE the
+  ring closes; kiting only fires when there's still room to step (v2.1-dev).
+- ~~`bot-lint` snapshot-fields false positives~~ — word-boundary lookbehind
+  on the `s.X` pattern; 0 FAIL/0 WARN (v2.1-dev).
 
 Remaining, ranked by impact:
 
@@ -232,8 +241,10 @@ Remaining, ranked by impact:
 7. **Hero sometimes still wedges** on mid-size obstacles where sidesteps see
    movement → detour counter resets; may re-wedge a few times before clearing.
    Watch `unstick` counts per level.
-8. **`HeroDead` shows `Idle` mode**, not `ReturnHome` — cosmetic label while
-   knocked out; the army holds.
+8. **`army-placed` never observed live** — the `PositionArmy` → `army-placed`
+   path exists and is gate-correct, but Nordfels/Durststein defenses are
+   towers (buildings), not `PlayerUnits`; the branch waits for a map that
+   actually fields mobile allies. Untested end-to-end.
 
 ## 9. Future improvements / enhancements
 

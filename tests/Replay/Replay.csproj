@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <AssemblyName>tf-replay</AssemblyName>
+    <RootNamespace>ThronefallTrainer</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- The pure layer compiles standalone — this is the whole point. -->
+    <Compile Include="..\..\src\BotBrain.cs" Link="BotBrain.cs" />
+  </ItemGroup>
+</Project>

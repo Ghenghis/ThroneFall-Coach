@@ -1,6 +1,30 @@
 # Changelog
 
-## Unreleased — legit autopilot mode + navigation (2026-09-29)
+## v2.1-dev — hero dead-state + swarm pre-emption (2026-09-29)
+
+- **`BotMode.HeroDead`**: knocked-out hero gets a named mode instead of
+  `Idle` (or `ReturnHome`) — telemetry now explains the dead window; the
+  ghost releases any build hold and drifts home while `pm.Dead` OR
+  `hp<=0` (covers the window before the Dead flag flips). Respawn
+  auto-resumes normal modes.
+- **Pre-emptive swarm retreat**: new `Snapshot.EnemiesNearHero` counts
+  live foes within 8 m of the hero; a 3+ pile (or any foe <5 m) pulls
+  the hero deep behind the keep BEFORE the encirclement closes —
+  `CharacterController` can't displace out of a closed ring, so the
+  only surviving move is an early one.
+- **Telemetry**: tick JSONL gains `"nf"` (foes near hero).
+- **`bot-lint.ps1`**: snapshot-fields regex gets a word-boundary
+  lookbehind — `sessionDefeats.TryGetValue`, `BindingFlags.*`,
+  `Paths.PluginPath`, `Collections.Generic`, `items.Length` no longer
+  false-positive. **0 FAIL, 0 WARN.**
+
+## v2.0.0 — design/research docs packet
+
+`docs/` tracked in the repo and shipped in the Source zip
+(AGENTIC-DESIGN, AGENTIC-RESEARCH, AUDIT-LOG, IDEAS, UNDERSTANDING,
+v3 design PDF). Binaries identical to v1.0.0.
+
+## v1.0.0 — legit autopilot mode + navigation (2026-09-29)
 
 `Bot.BotSurvivalCheats = false` now means **fully legit play**, not just
 "bundle off":

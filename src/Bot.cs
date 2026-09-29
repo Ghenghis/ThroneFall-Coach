@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace ThronefallTrainer
 {
-    internal enum BotMode { Idle, CollectCoin, ReturnHome, HoldCastle, Engage, EnterLevel, StartNight, SpendGold, ResolveUI, PositionArmy }
+    // BotMode lives in BotBrain.cs (pure layer — replay tests compile it alone).
 
     /// <summary>
     /// Tier-1 autopilot. Plugin.Update() calls <see cref="Tick"/> every frame;
@@ -40,6 +40,7 @@ namespace ThronefallTrainer
         // Park basically on top of the target — 4 m left the hero outside
         // melee/swing range, so it stood in a mob never attacking.
         private const float ArriveEngage = 1.5f;
+    // Orbit sweep constants/state live in BotBrain.cs (pure layer).
         private const float HomeRadius   = 14f;   // drift back to castle past this
         private const float CoinSeekRange = 80f;
 
@@ -78,17 +79,8 @@ namespace ThronefallTrainer
                     ? engageTarget.transform.position
                     : targetPos;
 
-        // level-select entry: interact throttle
-        private static float levelInteractAt;
         // title-screen advance: throttle while the level-select scene loads
         private static float menuAdvanceAt;
-        // nighthorn: interact throttle (harvest, then start-night)
-        private static float hornInteractAt;
-        // SwitchToNight fallback: single-shot window so repeated calls can't
-        // stack multiple wave spawns before IsNight flips; 15 s covers the
-        // transition and still retries if a start silently fails.
-        private static float nightRequestAt;
-        private static bool lastNightState;
 
         // Blocking UI frames (level-up reward, perk select, upgrade choice,
         // end-of-match, pause) freeze the player — resolved before the FSM.
@@ -98,14 +90,7 @@ namespace ThronefallTrainer
         private static float nextUiNoteAt;
         // Day economy: building slot the bot currently holds interaction on.
         private static BuildingInteractor heldBuild;
-        private static float buildInteractAt;
-        private static float nextHoldNoteAt;
-        // Spend-stall watch: if the held slot produced no payment for 7 s the
-        // interactor is dead for now (deny-loop on an unaffordable upgrade,
-        // stuck harvest/choice state) — park it for the day and move on.
-        private static float spendWatchAt;
-        private static int spendWatchGold = -1;
-        private static int spendWatchCores = -1;
+        // (Clocks/watch state moved into BotMemory — the pure layer.)
         // ManualAttack scene scan: FindObjectsOfType at 4 Hz is wasteful — 1 s.
         private static float maScanAt;
         // Watchdog: aim distance last window — still closing = healthy pursuit.
@@ -134,11 +119,9 @@ namespace ThronefallTrainer
         private static int navDiagCount;
         private static float nextMoveDiagAt;
 
-        // Legit combat state.
+        // Legit combat state (army phase/clocks moved into BotMemory).
         private static float weaponRange;          // hero weapon's max priority range
         private static bool weaponFiresWhileMoving = true;
-        private static int armyPhase;              // 0 none, 1 walking to anchor, 2 placed today
-        private static float armyWalkAt;           // failsafe: place wherever we are after this
 
         // Session memory: which scenes we've played and how often we lost
         // each, so a too-hard node rotates out instead of looping forever.
@@ -169,7 +152,21 @@ namespace ThronefallTrainer
                 if (scene == null || !playedThisSession.Contains(scene)) sc += 15f;
                 return sc - defeats * 45f;
             };
+            BotPerception.CoinSkip = c => coinIgnore.Contains(c);
+            Recorder.Start();
         }
+
+        private static int recTickFrame;
+        private static BotMode prevModeRec = BotMode.Idle;
+        private static string recordedScene;
+
+        // Pure-layer memory: everything the old file-level statics carried for
+        // the FSM (clocks, phases, held-slot key, orbit sweep) — Tick passes it
+        // by ref so Decide stays testable.
+        private static BotMemory mem = BotMemory.Fresh();
+
+        private static readonly System.Collections.Generic.HashSet<Coin> coinIgnore =
+            new System.Collections.Generic.HashSet<Coin>();
 
         /// <summary>F6 / overlay entry point. Persists via cfgBotEnabled in Plugin.</summary>
         public static void SetEnabled(bool v)
@@ -183,9 +180,7 @@ namespace ThronefallTrainer
             hasAnchor = false;
             StuckStrikes = 0;
             decisionClock = 0f;
-            nightRequestAt = 0f;
-            lastNightState = false;
-            armyPhase = 0;
+            mem = BotMemory.Fresh();
             detourUntil = 0f;
             detourCount = 0;
             weaponRange = 0f;
@@ -237,6 +232,7 @@ namespace ThronefallTrainer
                 {
                     playedThisSession.Add(lastMatchScene);
                     sessionDefeats.Remove(lastMatchScene);
+                    Recorder.MatchEnd("victory", Legit);
                 }
                 else if (s.GameState == "AfterMatchDefeat" && lastMatchScene != null)
                 {
@@ -244,6 +240,7 @@ namespace ThronefallTrainer
                         sessionDefeats.TryGetValue(lastMatchScene, out int d) ? d + 1 : 1;
                     Plugin.Log?.LogInfo($"[bot] defeat on '{lastMatchScene}' (x{sessionDefeats[lastMatchScene]} this session)");
                     LogLine(in s, "defeat");
+                    Recorder.MatchEnd("defeat", Legit);
                 }
                 lastGameState = s.GameState;
             }
@@ -292,10 +289,39 @@ namespace ThronefallTrainer
                 return;
             }
 
-            Decide(in s);
+            // Run bookkeeping: a fresh level scene begins a recorder run.
+            if (!s.SceneName.StartsWith("_") && !s.OnLevelSelect &&
+                recordedScene != s.SceneName)
+            {
+                recordedScene = s.SceneName;
+                Recorder.BeginRun(s.SceneName);
+            }
+
+            var sd = BotPerception.ToData(in s);
+            var res = BotBrain.Decide(in sd, ref mem, Time.unscaledTime, Legit);
+            Mode = res.Mode;
+            // Pursuit ref for the cheat-steer path and attack diag — the pure
+            // layer can't hold Unity refs, so it returns a flag and we resolve.
+            engageTarget = res.Pursue == 2
+                ? s.NearestEnemy
+                : (s.CastleThreat != null ? s.CastleThreat : s.NearestEnemy);
+            if (res.HasAim) SetTarget(new Vector3(res.AimPos.X, 0f, res.AimPos.Z), res.Arrive, res.ProjectToNav);
+            else ClearTarget();
+            foreach (var note in res.Notes) LogLine(in s, note);
+            foreach (var it in res.Intents) Execute(in s, it);
             RunWatchdog(in s);
             Status = FormatStatus(in s);
             LogLine(in s, "tick");
+
+            // v3 recorder: 2 Hz compact DTO + run facts + mode edges.
+            Recorder.NoteGameFacts(in s);
+            if (Mode != prevModeRec)
+            {
+                if (Mode == BotMode.HeroDead) Recorder.CountDeath();
+                prevModeRec = Mode;
+            }
+            if ((recTickFrame++ & 1) == 0)
+                Recorder.Tick(sd.ToJson("tick", Time.unscaledTime, Mode));
 
             // Movement diag while the watchdog is grinding: is the input even
             // reaching the character, and is something freezing it?
@@ -313,352 +339,6 @@ namespace ThronefallTrainer
             }
         }
 
-        /// <summary>Score-free FSM: pick the mode + a world-space move target.</summary>
-        private static void Decide(in BotPerception.Snapshot s)
-        {
-            // Release a building hold that outlived its moment — mode switched,
-            // target retargeted, or hero nudged out of range. InteractionEnd
-            // cancels the partial fill and refunds the coins (CancelFill).
-            if (heldBuild != null && (Mode != BotMode.SpendGold ||
-                s.NearestBuild != heldBuild ||
-                FlatDist(s.HeroPos, heldBuild.transform.position) > 4f))
-                ReleaseBuild();
-
-            // Day/night flip → re-arm the single-shot night request so a fresh
-            // day can trigger the next night, and re-arm army positioning.
-            if (lastNightState != s.IsNight)
-            {
-                nightRequestAt = 0f;
-                lastNightState = s.IsNight;
-                if (!s.IsNight) armyPhase = 0;
-            }
-
-            // Campaign map is itself an InMatch scene: walk to the nearest
-            // playable level node, fire its interactor (sets lastActiveLevelInfo
-            // and opens the select frame), then jump straight into the level via
-            // SceneTransitionManager — bypasses PlayButtonPressed, whose manager
-            // singleton is null on some map variants (Craaghelm/Fangmore).
-            if (s.NearestLevel != null)
-            {
-                Mode = BotMode.EnterLevel;
-                // Aim a couple metres in front of the node collider rather
-                // than at its transform — same stand-off trick as buildings.
-                SetTarget(StandOff(s.NearestLevelPos, s.HeroPos, 2.5f), 1.5f);
-                // InteractionBegin + TransitionFromLevelSelectToLevel are
-                // direct calls with no internal range gate — nodes' teleport
-                // spots can sit inside collider rings the navmesh can't reach,
-                // so fire from whatever distance the hero manages (map travel
-                // is cosmetic anyway, players click nodes from anywhere).
-                if (s.NearestLevelDist <= 9f && Time.unscaledTime >= levelInteractAt)
-                {
-                    var li = s.NearestLevel;
-                    var stm = SceneTransitionManager.instance;
-                    // Skip InteractionBegin: it only opens the pre-level frame
-                    // (which ResolveUI then wastes a close on) and sets
-                    // lastActiveLevelInfo for the loadout UI we bypass anyway.
-                    // The old double-fire came from TransitionToScene silently
-                    // dropping calls while sceneTransitionIsRunning — gate on it.
-                    if (stm != null && li.levelInfo != null && !SceneTransitionBusy(stm))
-                    {
-                        levelInteractAt = Time.unscaledTime + 2f;
-                        LogLine(in s, "level-interact");
-                        // Mirror LevelSelectManager.PlayButtonPressed: apply
-                        // fixedLoadout when the level has one, and if the
-                        // loadout was never seeded this session (the bot
-                        // skips the loadout UI) arm the hero with the best
-                        // unlocked weapon — otherwise he spawns weaponless
-                        // and literally cannot fight.
-                        var pmgr = PerkManager.instance;
-                        if (pmgr != null)
-                        {
-                            if (li.levelInfo.fixedLoadout != null && li.levelInfo.fixedLoadout.Count > 0)
-                            {
-                                pmgr.CurrentlyEquipped.Clear();
-                                pmgr.CurrentlyEquipped.AddRange(li.levelInfo.fixedLoadout);
-                            }
-                            if (pmgr.CurrentlyEquipped.Count == 0)
-                            {
-                                Equippable best = null;
-                                foreach (var eq in pmgr.allEquippables)
-                                {
-                                    if (eq is EquippableWeapon && eq.IsUnlocked &&
-                                        (best == null || eq.sortingValue > best.sortingValue))
-                                        best = eq;
-                                }
-                                if (best != null)
-                                {
-                                    PerkManager.SetEquipped(best, true);
-                                    Plugin.Log?.LogInfo($"[bot] loadout seeded: '{best.displayName}'");
-                                }
-                            }
-                        }
-                        Plugin.Log?.LogInfo($"[bot] transitioning to level '{li.levelInfo.sceneName}'");
-                        LogLine(in s, "transition-level");
-                        stm.TransitionFromLevelSelectToLevel(li.levelInfo.sceneName);
-                    }
-                }
-                return;
-            }
-
-            // Knocked-out hero is a ghost: drift home regardless of phase.
-            if (s.HeroDead)
-            {
-                Mode = s.HasCastle ? BotMode.ReturnHome : BotMode.Idle;
-                if (s.HasCastle) SetTarget(s.CastlePos, ArriveHold); else ClearTarget();
-                return;
-            }
-
-            if (s.IsNight)
-            {
-                // Defense priority: the enemy nearest the CASTLE is the run's
-                // actual threat, not the one nearest the hero.
-                var threat = s.CastleThreat != null ? s.CastleThreat : s.NearestEnemy;
-                Vector3 axisDir = s.HasThreatAnchor
-                    ? s.ThreatAnchor - s.CastlePos : Vector3.zero;
-                axisDir.y = 0f;
-                if (threat != null)
-                {
-                    // Legit retreat: badly hurt hero pulls back behind the
-                    // castle and lets the army work. 0.5 not 0.33 — wave
-                    // bursts kill from ~0.7 in about a second, so the exit
-                    // has to start before the danger zone, not inside it.
-                    if (Legit && s.HeroHpPct < 0.5f && s.HasCastle)
-                    {
-                        Mode = BotMode.ReturnHome;
-                        engageTarget = threat;
-                        // Stand next to the keep, not inside its collider.
-                        SetTarget(StandOff(s.CastlePos, s.HeroPos, 3f), ArriveHold);
-                        PumpAttack();
-                        return;
-                    }
-                    Mode = BotMode.Engage;
-                    engageTarget = threat;
-                    Vector3 tp = threat.transform.position;
-                    bool ranged = weaponRange >= 6f;
-                    // Ranged hero parks DEEP inside the keep — on the far side
-                    // of the castle from the threat axis. Every forward hold
-                    // (anchor line, army flank) still put him where the swarm
-                    // converges; once melee encircles him no kite escapes.
-                    // Behind the keep he's a poor melee target yet the bow's
-                    // reach still covers the wall line. Melee holds the line.
-                    Vector3 anchor = s.CastlePos;
-                    if (axisDir.sqrMagnitude > 0.01f)
-                        anchor = ranged
-                            ? s.CastlePos - axisDir.normalized * 4f
-                            : s.CastlePos + axisDir.normalized * 9f;
-                    if (ranged && s.HasCastle)
-                    {
-                        // Kite on the foe nearest the HERO, not the threat
-                        // target — bursts swarm him at the anchor while the
-                        // castle-threat is being fought elsewhere, and that's
-                        // exactly how he died on waves 2 and 4. Bow fires
-                        // while moving, so stepping back costs no damage.
-                        float heroNear = s.NearestEnemy != null ? s.NearestEnemyDist : float.MaxValue;
-                        float kiteR = weaponFiresWhileMoving
-                            ? Mathf.Min(weaponRange * 0.5f, 10f) : 4f;
-                        if (heroNear < 5f)
-                        {
-                            // Danger zone: a swarm at melee range always wins
-                            // a stand-up fight. Fall back behind the keep —
-                            // castle + away-from-foe, a 37 m bow still reaches
-                            // the wall-line from inside the yard.
-                            Vector3 awayFromFoe = s.CastlePos - s.NearestEnemyPos;
-                            awayFromFoe.y = 0f;
-                            SetTarget(s.CastlePos + awayFromFoe.normalized * 4f, 1.2f);
-                        }
-                        else if (heroNear < kiteR)
-                        {
-                            // Kite: step away from the closest foe, biased
-                            // toward the keep so the run doesn't orbit out.
-                            Vector3 away = s.HeroPos - s.NearestEnemyPos; away.y = 0f;
-                            if (away.sqrMagnitude < 0.01f) away = s.HeroPos - tp;
-                            Vector3 toCastle = s.CastlePos - s.HeroPos; toCastle.y = 0f;
-                            Vector3 kiteDir = (away.normalized * 0.7f +
-                                (toCastle.sqrMagnitude > 0.01f ? toCastle.normalized : Vector3.zero) * 0.3f).normalized;
-                            SetTarget(s.HeroPos + kiteDir * 6f, 1.2f);
-                        }
-                        else
-                        {
-                            // Stand-off on the castle side of the threat at
-                            // ~70% of weapon range — intercept it before the
-                            // keep, not after.
-                            float stand = Mathf.Clamp(weaponRange * 0.7f, 4f, 14f);
-                            Vector3 toAnchor = anchor - tp; toAnchor.y = 0f;
-                            SetTarget(tp + toAnchor.normalized * Mathf.Min(stand, toAnchor.magnitude), 1.2f);
-                        }
-                    }
-                    else
-                    {
-                        // Melee/no weapon: hold at the army line with the
-                        // troops — charging mobs loses legit runs.
-                        SetTarget(axisDir.sqrMagnitude > 0.01f
-                            ? s.CastlePos + axisDir.normalized * 9f : anchor, 2f);
-                    }
-                    PumpAttack();
-                }
-                else if (s.HasCastle)
-                {
-                    Mode = BotMode.HoldCastle;
-                    SetTarget(axisDir.sqrMagnitude > 0.01f
-                        ? s.CastlePos + axisDir.normalized * 4.5f : s.CastlePos, ArriveHold);
-                }
-                else { Mode = BotMode.Idle; ClearTarget(); }
-                return;
-            }
-
-            // ---- day ----
-            if (s.NearestCoin != null && s.NearestCoinDist <= CoinSeekRange)
-            {
-                Mode = BotMode.CollectCoin;
-                SetTarget(s.NearestCoinPos, ArriveCoin);
-                return;
-            }
-
-            // ---- day economy ----
-            // Unspent coins buy buildings/upgrades: InteractionHold pumps one
-            // coin per call through costDisplay.FillUp, and the instant-build
-            // cheat makes every fill complete a whole slot — a short hold
-            // erects or upgrades the building. Harvest-state slots pay out
-            // income on InteractionBegin, worth the trip even at zero balance.
-            if (s.NearestBuild != null && (s.Balance > 0 || s.NearestBuild.canBeHarvested))
-            {
-                Mode = BotMode.SpendGold;
-                // Aim at a stand-off point on the hero's side of the slot, not
-                // the transform center — that's inside the collider and is what
-                // the hero used to rub walls against until the watchdog nudged.
-                SetTarget(StandOff(s.NearestBuildPos, s.HeroPos, 1.6f), 1.0f);
-                var nbName = s.NearestBuild.targetBuilding != null
-                    ? s.NearestBuild.targetBuilding.buildingName : s.NearestBuild.name;
-                DiagLog("nb:" + nbName + s.NearestBuildScore + s.NearestBuildPos,
-                    $"[bot] spend target '{nbName}' score={s.NearestBuildScore} " +
-                    $"at {s.NearestBuildPos} dist={s.NearestBuildDist:0.#} hero={s.HeroPos} bal={s.Balance}", false);
-                if (s.NearestBuildDist <= 4f && Time.unscaledTime >= buildInteractAt)
-                {
-                    buildInteractAt = Time.unscaledTime + 0.4f;
-                    var bi = s.NearestBuild;
-                    if (heldBuild != bi)
-                    {
-                        ReleaseBuild();
-                        bi.Focus(PlayerInteraction.instance);   // harvest pays out on focus
-                        bi.InteractionBegin(PlayerInteraction.instance);
-                        heldBuild = bi;
-                        spendWatchGold = s.Balance;
-                        spendWatchCores = s.CoreBalance;
-                        spendWatchAt = Time.unscaledTime + 7f;
-                        Plugin.Log?.LogInfo($"[bot] building '{bi.name}' -> hold-to-pay");
-                    }
-                    else if (s.Balance != spendWatchGold || s.CoreBalance != spendWatchCores)
-                    {
-                        // A payment landed — reset the stall clock.
-                        spendWatchGold = s.Balance;
-                        spendWatchCores = s.CoreBalance;
-                        spendWatchAt = Time.unscaledTime + 7f;
-                    }
-                    else if (Time.unscaledTime >= spendWatchAt)
-                    {
-                        Plugin.Log?.LogInfo($"[bot] build '{bi.name}' no progress -> parked for the day");
-                        LogLine(in s, "build-stall");
-                        // Park till dusk (the ignore list clears on night).
-                        // Dead slots drop out of the candidate pool for good
-                        // today, so NearestBuild drains to null and the
-                        // horn/SwitchToNight path below finally runs.
-                        BotPerception.IgnoreBuild(bi, 600f);
-                        ReleaseBuild();
-                        return;
-                    }
-                    bi.InteractionHold(PlayerInteraction.instance);
-                    if (Time.unscaledTime >= nextHoldNoteAt)
-                    {
-                        nextHoldNoteAt = Time.unscaledTime + 3f;
-                        LogLine(in s, "build-hold");
-                    }
-                }
-                return;
-            }
-
-            // ---- army placement (legit) ----
-            // Economy done: park the troops at the defensive anchor through the
-            // game's own command path (select-all → place at hero → hold) —
-            // the exact sequence a player does before blowing the horn.
-            if (Legit && armyPhase < 2 && s.AllyCount > 0 && s.HasCastle &&
-                CommandUnits.instance != null)
-            {
-                if (armyPhase == 0)
-                {
-                    var cu = CommandUnits.instance;
-                    int added = 0;
-                    foreach (var u in TagManager.instance.PlayerUnits)
-                    {
-                        if (u == null || u.Hp == null || !u.Hp.Alive) continue;
-                        cu.OnUnitAdd(u, false); added++;
-                    }
-                    cu.commanding = added > 0;
-                    armyPhase = 1;
-                    armyWalkAt = Time.unscaledTime + 8f;
-                    Plugin.Log?.LogInfo($"[bot] commanding {added} allied unit(s) to anchor");
-                }
-                Mode = BotMode.PositionArmy;
-                // Army line sits at castle+11 — troops meet the wave BEFORE
-                // it reaches the keep; the ranged hero holds behind at +4.5.
-                Vector3 aAxis = s.HasThreatAnchor ? s.ThreatAnchor - s.CastlePos : Vector3.zero;
-                aAxis.y = 0f;
-                Vector3 anchor = aAxis.sqrMagnitude > 0.01f
-                    ? s.CastlePos + aAxis.normalized * 11f : s.CastlePos;
-                SetTarget(anchor, 3f);
-                if (FlatDist(s.HeroPos, anchor) <= 4f || Time.unscaledTime >= armyWalkAt)
-                {
-                    var cu = CommandUnits.instance;
-                    cu.PlaceCommandedUnitsAndCalculateTargetPositions(false);
-                    cu.MakeUnitsInBufferHoldPosition();
-                    cu.commanding = false; // TryToSelectUnits semantics: placed units leave the commanding set
-                    armyPhase = 2;
-                    Plugin.Log?.LogInfo("[bot] army placed at anchor, holding");
-                    LogLine(in s, "army-placed");
-                }
-                return;
-            }
-
-            // Nothing left to pick up or pay for: walk to the Nighthorn. Its InteractionBegin
-            // auto-harvests every building and loose coin on first press, then
-            // starts the night wave on the next — which is when enemies drop coins.
-            if (s.HasHorn)
-            {
-                Mode = BotMode.StartNight;
-                SetTarget(s.HornPos, 2f);
-                if (s.HornDist <= 2.8f && Time.unscaledTime >= hornInteractAt)
-                {
-                    hornInteractAt = Time.unscaledTime + 2f;
-                    s.Horn.InteractionBegin(PlayerInteraction.instance);
-                    Plugin.Log?.LogInfo("[bot] at nighthorn -> InteractionBegin()");
-                    LogLine(in s, "horn-interact");
-                }
-                return;
-            }
-            // Fallback: horn not detectable this phase (inactive GO, intro state) —
-            // flip to night directly through the persistent DayNightCycle
-            // singleton. Single-shot per window: SwitchToNight re-fires OnDusk /
-            // StartSpawning on every call, so spamming it before IsNight flips
-            // stacks multiple waves on top of each other. 15 s is enough for the
-            // transition; if it never flips we retry on the next window.
-            if (DayNightCycle.Instance != null && Time.unscaledTime >= nightRequestAt &&
-                !s.SceneName.StartsWith("_"))
-            {
-                nightRequestAt = Time.unscaledTime + 15f;
-                Plugin.Log?.LogInfo("[bot] no horn detected -> DayNightCycle.SwitchToNight()");
-                LogLine(in s, "switch-night");
-                DayNightCycle.Instance.SwitchToNight();
-                Mode = BotMode.StartNight;
-                return;
-            }
-            if (s.HasCastle && s.CastleDist > HomeRadius)
-            {
-                Mode = BotMode.ReturnHome;
-                SetTarget(s.CastlePos, ArriveHold);
-                return;
-            }
-            Mode = BotMode.Idle;
-            ClearTarget();
-        }
 
         /// <summary>
         /// Stuck watchdog: while steering toward a target, if the hero hasn't
@@ -702,6 +382,22 @@ namespace ThronefallTrainer
                 if (StuckStrikes >= MaxStrikesBeforeTeleport)
                 {
                     StuckStrikes = 0;
+                    // Wedged mid-orbit (ring segment inside geometry): jump
+                    // the sweep past this arc so the next ring point is a
+                    // different spot, not the same wall.
+                    if (Mode == BotMode.Engage) mem.OrbitAngle += mem.OrbitDir * 0.9f;
+                    // A coin the hero can't reach after 3 recoveries is behind
+                    // geometry or off-navmesh — park it for the rest of the
+                    // scene instead of grinding snaps forever (observed: 4
+                    // snap cycles ~30 s chasing a walled coin on Durststein).
+                    if (Mode == BotMode.CollectCoin && s.NearestCoin != null)
+                    {
+                        coinIgnore.Add(s.NearestCoin);
+                        ClearTarget();
+                        Plugin.Log?.LogWarning("[bot] coin unreachable — parked");
+                        LogLine(in s, "coin-stall");
+                        return;
+                    }
                     var pm = PlayerMovement.instance;
                     if (Legit)
                     {
@@ -762,14 +458,162 @@ namespace ThronefallTrainer
             else { StuckStrikes = 0; detourCount = 0; }
         }
 
-        private static void SetTarget(Vector3 pos, float arrive)
+        private static void SetTarget(Vector3 pos, float arrive, bool projectToNav = false)
         {
+            // Navmesh projection: sweep targets (orbit ring) can land inside
+            // geometry — aim at the nearest walkable point instead.
+            if (projectToNav && AstarPath.active != null)
+                pos = AstarPath.active.GetNearest(pos, new Pathfinding.NNConstraint()).position;
             // A materially different goal invalidates the detour escalation —
             // fresh obstacles deserve a fresh wall-slide attempt.
             if (FlatDist(pos, targetPos) > 2f) detourCount = 0;
             targetPos = pos;
             arriveDist = arrive;
             hasTarget = true;
+        }
+
+        /// <summary>
+        /// Executes a pure-layer Intent against the live refs in the snapshot.
+        /// Every world-side call the old inline Decide made lives here — the
+        /// Brain only emits intent kind + index.
+        /// </summary>
+        private static void Execute(in BotPerception.Snapshot s, Intent it)
+        {
+            if (it.CheatOnly && Legit) return;   // legit gate: never fire cheat intents
+            var pi = PlayerInteraction.instance;
+            switch (it.Kind)
+            {
+                case IntentKind.ReleaseHold:
+                    ReleaseBuild();
+                    break;
+                case IntentKind.BeginHold:
+                    if (s.NearestBuild != null && pi != null)
+                    {
+                        ReleaseBuild();
+                        var bi = s.NearestBuild;
+                        bi.Focus(pi);            // harvest pays out on focus
+                        bi.InteractionBegin(pi);
+                        heldBuild = bi;
+                        Plugin.Log?.LogInfo($"[bot] building '{bi.name}' -> hold-to-pay");
+                    }
+                    break;
+                case IntentKind.PumpHold:
+                    if (heldBuild != null && pi != null)
+                        heldBuild.InteractionHold(pi);
+                    break;
+                case IntentKind.ParkSlot:
+                    BotPerception.IgnoreBuild(s.NearestBuild, 600f);
+                    break;
+                case IntentKind.PumpAttack:
+                    PumpAttack();
+                    break;
+                case IntentKind.CommandArmy:
+                    CommandArmyAll();
+                    break;
+                case IntentKind.PlaceArmy:
+                    PlaceArmy();
+                    break;
+                case IntentKind.HornInteract:
+                    if (s.Horn != null && pi != null)
+                    {
+                        s.Horn.InteractionBegin(pi);
+                        Plugin.Log?.LogInfo("[bot] at nighthorn -> InteractionBegin()");
+                    }
+                    break;
+                case IntentKind.SwitchNight:
+                    DayNightCycle.Instance?.SwitchToNight();
+                    break;
+                case IntentKind.SeedLoadout:
+                    SeedLoadout(in s);
+                    break;
+                case IntentKind.TransitionLevel:
+                    {
+                        var li = s.NearestLevel;
+                        var stm = SceneTransitionManager.instance;
+                        if (stm != null && li != null && li.levelInfo != null &&
+                            !BotPerception.SceneTransitionBusy(stm))
+                        {
+                            Plugin.Log?.LogInfo($"[bot] transitioning to level '{li.levelInfo.sceneName}'");
+                            stm.TransitionFromLevelSelectToLevel(li.levelInfo.sceneName);
+                        }
+                    }
+                    break;
+                case IntentKind.ClearCoinPark:
+                    coinIgnore.Clear();
+                    break;
+            }
+        }
+
+        /// <summary>Army step 1: select every live allied unit into the command set.</summary>
+        private static void CommandArmyAll()
+        {
+            var cu = CommandUnits.instance;
+            if (cu == null) return;
+            int added = 0;
+            foreach (var u in TagManager.instance.PlayerUnits)
+            {
+                if (u == null || u.Hp == null || !u.Hp.Alive) continue;
+                cu.OnUnitAdd(u, false); added++;
+            }
+            cu.commanding = added > 0;
+            Plugin.Log?.LogInfo($"[bot] commanding {added} allied unit(s) to anchor");
+        }
+
+        /// <summary>Army step 2: place the command set at the hero + hold.</summary>
+        private static void PlaceArmy()
+        {
+            var cu = CommandUnits.instance;
+            if (cu == null) return;
+            cu.PlaceCommandedUnitsAndCalculateTargetPositions(false);
+            cu.MakeUnitsInBufferHoldPosition();
+            cu.commanding = false;
+            Plugin.Log?.LogInfo("[bot] army placed at anchor, holding");
+        }
+
+        /// <summary>
+        /// Mirror LevelSelectManager.PlayButtonPressed: apply fixedLoadout when
+        /// the level has one; if the loadout was never seeded this session (the
+        /// bot skips the loadout UI) arm the hero with the best unlocked
+        /// weapon — otherwise he spawns weaponless and literally cannot fight.
+        /// A ranged weapon is preferred so the orbit-kite play style exists.
+        /// </summary>
+        private static void SeedLoadout(in BotPerception.Snapshot s)
+        {
+            var li = s.NearestLevel;
+            var pmgr = PerkManager.instance;
+            if (pmgr == null || li == null || li.levelInfo == null) return;
+            if (li.levelInfo.fixedLoadout != null && li.levelInfo.fixedLoadout.Count > 0)
+            {
+                pmgr.CurrentlyEquipped.Clear();
+                pmgr.CurrentlyEquipped.AddRange(li.levelInfo.fixedLoadout);
+            }
+            if (pmgr.CurrentlyEquipped.Count == 0)
+            {
+                string[] rangedKw = { "bow", "cross", "wand", "staff",
+                    "sling", "knife", "shuriken", "chakram", "javelin",
+                    "boomerang", "pistol", "rifle", "dart", "throw" };
+                Equippable best = null, bestRanged = null;
+                foreach (var eq in pmgr.allEquippables)
+                {
+                    if (!(eq is EquippableWeapon) || !eq.IsUnlocked) continue;
+                    if (best == null || eq.sortingValue > best.sortingValue)
+                        best = eq;
+                    string nm = (eq.displayName ?? "").ToLowerInvariant();
+                    bool isRanged = false;
+                    foreach (var kw in rangedKw)
+                        if (nm.Contains(kw)) { isRanged = true; break; }
+                    if (isRanged && (bestRanged == null ||
+                        eq.sortingValue > bestRanged.sortingValue))
+                        bestRanged = eq;
+                }
+                var pick = bestRanged != null ? bestRanged : best;
+                if (pick != null)
+                {
+                    PerkManager.SetEquipped(pick, true);
+                    Plugin.Log?.LogInfo($"[bot] loadout seeded: '{pick.displayName}'" +
+                        (pick == bestRanged ? " (ranged preferred)" : ""));
+                }
+            }
         }
 
         private static void ClearTarget() { hasTarget = false; engageTarget = null; ReleaseBuild(); }
@@ -1130,20 +974,32 @@ namespace ThronefallTrainer
             catch { }
         }
 
+        private static string FormatTickJson(in BotPerception.Snapshot s, string note)
+        {
+            return string.Format(CultureInfo.InvariantCulture,
+                "{{\"t\":{0:0.00},\"mode\":\"{1}\",\"state\":\"{2}\",\"scene\":\"{3}\",\"night\":{4},\"wave\":\"{5}/{6}\",\"foes\":{7},\"coins\":{8},\"gold\":{9},\"hp\":{10:0.###},\"pos\":[{11:0.#},{12:0.#}],\"ls\":{13},\"lvln\":{14},\"inter\":{15},\"lvld\":{16:0.#},\"horn\":{17},\"hd\":{18:0.#},\"bld\":{19},\"nf\":{20},\"note\":\"{21}\"}}",
+                Time.unscaledTime, Mode, s.GameState, s.SceneName,
+                s.IsNight ? "true" : "false",
+                s.Wave, s.WaveTotal, s.EnemyCount, s.CoinCount, s.Balance,
+                s.HeroHpPct, s.HeroPos.x, s.HeroPos.z,
+                s.OnLevelSelect ? "true" : "false", s.LevelCount, s.InteractorCount, s.NearestLevelDist,
+                s.HasHorn ? "true" : "false", s.HornDist, s.BuildCount, s.EnemiesNearHero, note);
+        }
+
         private static void LogLine(in BotPerception.Snapshot s, string note)
         {
             EnsureLog();
+            // Event stream + derived counters feed the recorder regardless of
+            // the main log being available. "tick" is the 4 Hz heartbeat —
+            // it belongs in ticks.jsonl, not the event stream.
+            if (note != "tick") Recorder.Event(note);
+            if (note == "snap") Recorder.CountSnap();
+            else if (note.StartsWith("unstick")) Recorder.CountUnstick();
+            else if (note == "build-stall" || note == "coin-stall") Recorder.CountStall();
             if (botLog == null) return;
             try
             {
-                botLog.WriteLine(string.Format(CultureInfo.InvariantCulture,
-                    "{{\"t\":{0:0.00},\"mode\":\"{1}\",\"state\":\"{2}\",\"scene\":\"{3}\",\"night\":{4},\"wave\":\"{5}/{6}\",\"foes\":{7},\"coins\":{8},\"gold\":{9},\"hp\":{10:0.###},\"pos\":[{11:0.#},{12:0.#}],\"ls\":{13},\"lvln\":{14},\"inter\":{15},\"lvld\":{16:0.#},\"horn\":{17},\"hd\":{18:0.#},\"bld\":{19},\"note\":\"{20}\"}}",
-                    Time.unscaledTime, Mode, s.GameState, s.SceneName,
-                    s.IsNight ? "true" : "false",
-                    s.Wave, s.WaveTotal, s.EnemyCount, s.CoinCount, s.Balance,
-                    s.HeroHpPct, s.HeroPos.x, s.HeroPos.z,
-                    s.OnLevelSelect ? "true" : "false", s.LevelCount, s.InteractorCount, s.NearestLevelDist,
-                    s.HasHorn ? "true" : "false", s.HornDist, s.BuildCount, note));
+                botLog.WriteLine(FormatTickJson(in s, note));
             }
             catch { }
         }

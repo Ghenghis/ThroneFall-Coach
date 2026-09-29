@@ -35,6 +35,7 @@ namespace ThronefallTrainer
             public TaggedObject NearestEnemy;
             public Vector3 NearestEnemyPos;
             public float NearestEnemyDist;
+            public int EnemiesNearHero; // live foes within 8 m of the hero
 
             public bool HasCastle;
             public Vector3 CastlePos;
@@ -68,11 +69,62 @@ namespace ThronefallTrainer
 
             public bool HasThreatAnchor;
             public Vector3 ThreatAnchor;       // castle shifted ~9 m toward the threat side
+
+            // ---- v3 seam fields (feed SnapshotData / pure Decide) ----
+            public bool SceneBusy;             // sceneTransitionIsRunning
+            public bool CanCommand;            // CommandUnits.instance != null
+            public bool CanSwitch;             // DayNightCycle.Instance != null
+            public int NearestBuildKey;        // GetInstanceID — held-slot match
+            public string NearestBuildName;    // display/diag name
+            public bool NearestBuildHarvest;   // canBeHarvested
+            public bool HasWeapon;
+            public float ActiveRange;          // active weapon max target-priority range
+            public bool ActiveFiresMoving;     // no DelayManualAttackWhileMoving
         }
+
+        /// <summary>Plain-value projection for the pure layer (BotBrain).</summary>
+        internal static SnapshotData ToData(in Snapshot s)
+        {
+            return new SnapshotData
+            {
+                Valid = s.Valid, GameState = s.GameState, SceneName = s.SceneName,
+                HeroPos = V(s.HeroPos), HeroHpPct = s.HeroHpPct, HeroDead = s.HeroDead,
+                Balance = s.Balance, CoreBalance = s.CoreBalance,
+                IsNight = s.IsNight, DayTimeLeft = s.DayTimeLeft,
+                Wave = s.Wave, WaveTotal = s.WaveTotal, EnemyCount = s.EnemyCount,
+                HasCoin = s.NearestCoin != null, CoinPos = V(s.NearestCoinPos),
+                CoinDist = s.NearestCoinDist, CoinCount = s.CoinCount,
+                HasNearEnemy = s.NearestEnemy != null, NearEnemyPos = V(s.NearestEnemyPos),
+                NearEnemyDist = s.NearestEnemyDist, NearFoeCount = s.EnemiesNearHero,
+                HasCastle = s.HasCastle, CastlePos = V(s.CastlePos), CastleDist = s.CastleDist,
+                HasCastleThreat = s.CastleThreat != null,
+                CastleThreatPos = s.CastleThreat != null ? V(s.CastleThreat.transform.position) : Vec2.Zero,
+                CastleThreatDist = s.CastleThreatDist,
+                HasThreatAnchor = s.HasThreatAnchor, ThreatAnchor = V(s.ThreatAnchor),
+                OnLevelSelect = s.OnLevelSelect, InteractorCount = s.InteractorCount,
+                LevelCount = s.LevelCount, HasLevel = s.NearestLevel != null,
+                LevelPos = V(s.NearestLevelPos), LevelDist = s.NearestLevelDist,
+                SceneBusy = s.SceneBusy,
+                HasHorn = s.HasHorn, HornPos = V(s.HornPos), HornDist = s.HornDist,
+                BuildCount = s.BuildCount, HasBuild = s.NearestBuild != null,
+                BuildKey = s.NearestBuild != null ? s.NearestBuild.GetInstanceID() : -1,
+                BuildName = s.NearestBuildName, BuildPos = V(s.NearestBuildPos),
+                BuildDist = s.NearestBuildDist, BuildScore = s.NearestBuildScore,
+                BuildHarvest = s.NearestBuildHarvest,
+                AllyCount = s.AllyCount, AllyCentroid = V(s.AllyCentroid),
+                CanCommand = s.CanCommand, CanSwitch = s.CanSwitch,
+                HasWeapon = s.HasWeapon, ActiveRange = s.ActiveRange,
+                ActiveFiresMoving = s.ActiveFiresMoving,
+            };
+        }
+
+        private static Vec2 V(Vector3 v) { return new Vec2(v.x, v.z); }
 
         private static readonly List<TaggedObject> castleBuf = new List<TaggedObject>();
         private static LevelInteractor[] levelCache;
         private static float levelScanAt;
+        private static ManualAttack maCache;
+        private static float weScanAt;
 
         // Slots that refused progress (deny-loop, stuck harvest/choice state)
         // are parked here until their timestamp expires — keeps SpendGold from
@@ -93,6 +145,9 @@ namespace ThronefallTrainer
         /// tours the map instead of grinding one node.
         /// </summary>
         public static System.Func<LevelInteractor, bool, float> LevelScore;
+
+        /// <summary>Coins the bot gave up on (unreachable / behind walls).</summary>
+        public static System.Func<Coin, bool> CoinSkip;
 
         public static Snapshot Capture()
         {
@@ -127,12 +182,22 @@ namespace ThronefallTrainer
             var tm = TagManager.instance;
             if (tm == null) { s.GameState = "no-tagmanager"; return s; }
 
-            // Home anchor for hold/return behaviour.
-            tm.FindAllTaggedObjectsWithTag(castleBuf, TagManager.ETag.CastleCenter);
-            if (castleBuf.Count > 0 && castleBuf[0] != null)
+            // Home anchor for hold/return behaviour. CastleCenter.instance is
+            // authoritative; CastleCenterPosition is a plain static set in
+            // Start so it survives component-disabled weirdness; the ETag
+            // scan is the last resort (the tag isn't on every level's keep).
+            var cc = CastleCenter.instance;
+            Vector3 castlePos = cc != null ? cc.transform.position : CastleCenter.CastleCenterPosition;
+            if (cc == null && castlePos == Vector3.zero)
+            {
+                tm.FindAllTaggedObjectsWithTag(castleBuf, TagManager.ETag.CastleCenter);
+                if (castleBuf.Count > 0 && castleBuf[0] != null)
+                    castlePos = castleBuf[0].transform.position;
+            }
+            if (castlePos != Vector3.zero)
             {
                 s.HasCastle = true;
-                s.CastlePos = castleBuf[0].transform.position;
+                s.CastlePos = castlePos;
                 s.CastleDist = FlatDist(s.CastlePos, s.HeroPos);
             }
 
@@ -155,6 +220,7 @@ namespace ThronefallTrainer
             float castleThreatSq = float.MaxValue;
             Vector3 enemySum = Vector3.zero;
             int enemyN = 0;
+            int foesNear = 0;
             foreach (var e in tm.EnemyUnits)
             {
                 if (e == null) continue;
@@ -165,6 +231,7 @@ namespace ThronefallTrainer
                     s.NearestEnemyDist = d;
                     s.NearestEnemy = e;
                 }
+                if (d < 64f) foesNear++;          // <8 m of the hero
                 if (s.HasCastle)
                 {
                     float dc = (ep - s.CastlePos).sqrMagnitude;
@@ -172,6 +239,7 @@ namespace ThronefallTrainer
                 }
                 enemySum += ep; enemyN++;
             }
+            s.EnemiesNearHero = foesNear;
             if (s.NearestEnemy != null)
             {
                 s.NearestEnemyPos = s.NearestEnemy.transform.position;
@@ -204,6 +272,7 @@ namespace ThronefallTrainer
                 Coin c = tm.freeCoins[i];
                 if (c == null || !c.IsFree) continue;
                 s.CoinCount++;
+                if (CoinSkip != null && CoinSkip(c)) continue;
                 float d = (c.transform.position - s.HeroPos).sqrMagnitude;
                 if (d < s.NearestCoinDist)
                 {
@@ -376,12 +445,63 @@ namespace ThronefallTrainer
             {
                 s.NearestBuildPos = s.NearestBuild.transform.position;
                 s.NearestBuildDist = Mathf.Sqrt(s.NearestBuildDist);
+                s.NearestBuildKey = s.NearestBuild.GetInstanceID();
+                s.NearestBuildHarvest = s.NearestBuild.canBeHarvested;
+                s.NearestBuildName = s.NearestBuild.targetBuilding != null
+                    ? s.NearestBuild.targetBuilding.buildingName : s.NearestBuild.name;
             }
             else s.NearestBuildDist = 0f;
+
+            // v3 seam fields: singleton presence + busy + weapon state (P6).
+            s.CanCommand = CommandUnits.instance != null;
+            s.CanSwitch = DayNightCycle.Instance != null;
+            var stm = SceneTransitionManager.instance;
+            s.SceneBusy = stm != null && SceneTransitionBusy(stm);
+            // Active weapon (P6): same discovery chain as PumpAttack —
+            // WeaponEquipper on the hero root, else a ManualAttack tagged
+            // Player. 1 Hz re-scan so a weapon switch gets noticed.
+            if (Time.unscaledTime >= weScanAt)
+            {
+                weScanAt = Time.unscaledTime + 1f;
+                var weTag = pm.GetComponentInParent<TaggedObject>();
+                ManualAttack w = null;
+                var weq = weTag != null
+                    ? weTag.GetComponentInChildren<WeaponEquipper>(true) : null;
+                if (weq != null)
+                    w = weq.activeWeapon != null ? weq.activeWeapon : weq.passiveWeapon;
+                if (w == null && weTag != null)
+                    w = weTag.GetComponentInChildren<ManualAttack>(true);
+                if (w == null)
+                {
+                    foreach (var ma in Object.FindObjectsOfType<ManualAttack>(true))
+                    {
+                        var mt = ma.GetComponentInParent<TaggedObject>();
+                        if (mt != null && mt.Contains(TagManager.ETag.Player)) { w = ma; break; }
+                    }
+                }
+                maCache = w;
+            }
+            if (maCache != null)
+            {
+                var w = maCache;
+                s.HasWeapon = true;
+                s.ActiveRange = 0f;
+                foreach (var p in w.targetPriorities)
+                    if (p != null && p.range > s.ActiveRange) s.ActiveRange = p.range;
+                s.ActiveFiresMoving = w.GetComponent<DelayManualAttackWhileMoving>() == null;
+            }
 
             s.Valid = true;
             return s;
         }
+
+        // SceneTransitionManager keeps its busy flag private — FieldInfo trick.
+        private static readonly System.Reflection.FieldInfo StmRunningField =
+            typeof(SceneTransitionManager).GetField("sceneTransitionIsRunning",
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+
+        public static bool SceneTransitionBusy(SceneTransitionManager stm) =>
+            StmRunningField != null && (bool)StmRunningField.GetValue(stm);
 
         // Classification cache: what a slot's NEXT upgrade yields — military
         // weight (towers/unit spawners in objectsToActivate) and income delta.

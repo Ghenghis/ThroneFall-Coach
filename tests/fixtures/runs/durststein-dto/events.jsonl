@@ -1,0 +1,15 @@
+{"t":0,"note":"run-start","scene":"Durststein"}
+{"t":0.517,"note":"build-hold"}
+{"t":3.617,"note":"build-hold"}
+{"t":6.717,"note":"build-hold"}
+{"t":7.767,"note":"build-stall"}
+{"t":8.017,"note":"switch-night"}
+{"t":90.1,"note":"stuck:1"}
+{"t":92.216,"note":"stuck:2"}
+{"t":94.3,"note":"stuck:3"}
+{"t":94.3,"note":"coin-stall"}
+{"t":106.883,"note":"stuck:1"}
+{"t":108.983,"note":"stuck:2"}
+{"t":111.066,"note":"stuck:3"}
+{"t":111.066,"note":"coin-stall"}
+{"t":140.816,"note":"switch-night"}

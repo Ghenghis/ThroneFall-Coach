@@ -26,6 +26,7 @@ $bot = Get-Content (Join-Path $src 'Bot.cs') -Raw
 $per = Get-Content (Join-Path $src 'BotPerception.cs') -Raw
 $pat = Get-Content (Join-Path $src 'BotPatches.cs') -Raw
 $plg = Get-Content (Join-Path $src 'Plugin.cs') -Raw
+$brain = Get-Content (Join-Path $src 'BotBrain.cs') -Raw
 $csproj = Get-Content (Join-Path $src 'ThronefallTrainer.csproj') -Raw
 
 # ── 1. Legit-mode cheat gating ──────────────────────────────────────────────
@@ -116,12 +117,14 @@ foreach ($k in $needs.Keys) {
     }
 }
 
-# ── 6. Mode enum coverage — every BotMode must have a Decide branch ─────────
-$modeNames = [regex]::Match($bot, 'enum\s+BotMode\s*\{([^}]+)\}').Groups[1].Value `
+# ── 6. Mode enum coverage — every BotMode must be referenced by the brain ───
+$modeNames = [regex]::Match($brain, 'enum\s+BotMode\s*\{([^}]+)\}').Groups[1].Value `
              -split ',' | ForEach-Object { $_.Trim() } | Where-Object { $_ -match '^\w+$' }
 $missing = @()
+# ResolveUI is a Tick-level mode (blocking frames) — either file may hold it.
+$modeScope = $brain + "`n" + $bot
 foreach ($m in $modeNames) {
-    if ($bot -notmatch "BotMode\.$m") { $missing += $m }
+    if ($modeScope -notmatch "BotMode\.$m") { $missing += $m }
 }
 if ($missing.Count -gt 0) {
     Report 'FAIL' 'mode-coverage' "BotMode value(s) never referenced: $($missing -join ', ')" `
@@ -130,11 +133,40 @@ if ($missing.Count -gt 0) {
     Report 'PASS' "mode-coverage: all $($modeNames.Count) BotMode values referenced" $null $null
 }
 
+# ── 6b. Pure-layer purity: BotBrain.cs must stay Unity-free (replay tests
+# compile it standalone — see v3 design §3.1). Forbidden: engine/game types
+# and the singleton/side-effect surface the Intent executor owns. ────────────
+$pureForbidden = 'UnityEngine', 'AstarPath', 'Pathfinding', '\.instance\b', '\bTime\.',
+                 'LocalGamestate', 'EnemySpawner', 'TagManager', 'PlayerInteraction',
+                 'SceneTransitionManager', 'PerkManager', 'ChoiceManager', 'UIFrameManager',
+                 'TaggedObject', 'BuildingInteractor', 'ManualAttack', 'Vector3',
+                 '\.InteractionBegin\s*\(', '\.SwitchToNight\s*\(', '\bPumpAttack\s*\(', 'Plugin\.'
+$pureHits = @()
+for ($i = 0; $i -lt ($brain -split "`n").Count; $i++) {
+    $l = ($brain -split "`n")[$i]
+    if ($l -match '^\s*//') { continue }
+    $l = $l -replace '//.*$', ''                       # strip inline comments
+    if ($l -match '^\s*$') { continue }
+    foreach ($f in $pureForbidden) {
+        if ($l -match $f) { $pureHits += "$($i + 1):$($l.Trim())"; break }
+    }
+}
+if ($pureHits.Count -gt 0) {
+    Report 'FAIL' 'pure-layer: forbidden token(s) in BotBrain.cs' ($pureHits -join ' | ') `
+           'decisions are pure — push the world call into an Intent + Tick executor'
+} else {
+    Report 'PASS' 'pure-layer: BotBrain.cs contains no Unity/game-singleton tokens' $null $null
+}
+
 # ── 7. Snapshot fields used by Decide exist in Snapshot ─────────────────────
 $snFields = ($per -split "`n") | ForEach-Object { $_.Trim() } |
     Where-Object { $_ -match '^public\s+\S+\s+(\w+)\s*;' } |
     ForEach-Object { ($_ -split '\s+')[2] -replace ';', '' }
-$used = [regex]::Matches($bot, 's\.([A-Z]\w+)') | ForEach-Object { $_.Groups[1].Value } | Select-Object -Unique
+# 's' must be a standalone identifier — without the lookbehind the pattern
+# also matches the tail of sessionDefeats.TryGetValue, BindingFlags.X,
+# Paths.PluginPath, System.Collections.Generic, items.Length, ...
+$used = [regex]::Matches($bot, '(?<![A-Za-z0-9_])s\.([A-Z]\w+)') |
+    ForEach-Object { $_.Groups[1].Value } | Select-Object -Unique
 $unknown = $used | Where-Object { $_ -notin $snFields -and $_ -notin @('Null') }
 if ($unknown.Count -gt 0) {
     Report 'WARN' "snapshot-fields: 's.X' with no Snapshot member: $($unknown -join ', ')" `
