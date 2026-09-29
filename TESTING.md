@@ -1,7 +1,34 @@
 # Testing & Verification
 
-Manual e2e acceptance checklist — no automated tests exist (AUTOPILOT §9).
+Manual e2e acceptance checklist + the automated v3 gates.
 Run after any `dotnet build` + deploy, and after any game update.
+
+## 0. Automated gates (run every change)
+
+| Gate | Command | Pass |
+|---|---|---|
+| Lint | `.\tools\bot-lint.ps1` | `0 FAIL` — incl. `pure-layer` (BotBrain has no Unity/game tokens) + `mode-coverage` |
+| Replay | `dotnet run -c Release --project tests\Replay` | `all N fixture(s) PASS` — mode sequence identical |
+| Build | `dotnet build src\ThronefallTrainer.csproj -c Release` | 0 errors |
+
+Replay fixtures live in `tests\fixtures\runs\<name>\{ticks.jsonl,events.jsonl,
+expected.json,policy.txt?}`; copy a dir from `BepInEx\plugins\agent\runs\*`
+and write `expected.json` (`{"legit":true}`) to add one. `policy.txt` beside
+the fixture overrides the default table for that replay.
+
+## 0.5 v3 live checkpoints
+
+| Check | Path | Expected |
+|---|---|---|
+| Recorder | `agent\runs\<runId>\` | ticks.jsonl (~2 Hz), events.jsonl, summary.json at match end |
+| Faithful DTO | latest `ticks.jsonl` | all field keys non-empty (`nwc`,`weap`,`cast`,…) |
+| Policy | `agent\policy.txt` | `policy vN loaded` in BepInEx log on edit; `policy-reject` events on bad rules |
+| Mailbox | `agent\tf-agent\inbox\*.order` | moved to `inbox\done\` within ~1 s; `outbox\state.json` refreshes ~5 s |
+| Wedge | `stuck:*` event rate | rare bursts only (was 316 at one castle wall) |
+| Castle | tick `cast`+`ta` | non-zero positions in-match |
+
+Log: `BepInEx\plugins\bot-log.jsonl` (~4 Hz JSONL). Tail it with
+`Get-Content …\bot-log.jsonl -Tail 20 -Wait`. Field legend: AUTOPILOT §10.
 
 Log: `BepInEx\plugins\bot-log.jsonl` (~4 Hz JSONL). Tail it with
 `Get-Content …\bot-log.jsonl -Tail 20 -Wait`. Field legend: AUTOPILOT §10.
