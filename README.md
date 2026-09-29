@@ -4,6 +4,8 @@ An in-game trainer/overlay for **Thronefall** (Unity 2022.3 Mono build), impleme
 [BepInEx 5](https://github.com/BepInEx/BepInEx) plugin. All cheats are driven by the game's
 own managed APIs (found by decompiling `Assembly-CSharp.dll`), not fragile memory scanning.
 
+> **Autopilot status, known issues & handoff: see [AUTOPILOT.md](AUTOPILOT.md).**
+
 ## Requirements
 
 - Thronefall, Windows x64. Developed and tested against **Unity 2022.3.62f2** —
@@ -21,6 +23,7 @@ own managed APIs (found by decompiling `Assembly-CSharp.dll`), not fragile memor
 | `F3` | Revive all units & buildings |
 | `F4` | +100 gold |
 | `F5` | Teleport hero to the mouse cursor |
+| `F6` | Toggle the autopilot bot (level select → night → coin collection) |
 
 **Overlay window:** drag the **title bar** to move it, drag the `=` grip in the
 bottom-right corner to resize, `[-]` collapses it to a title bar, `[x]` or `F1`
@@ -108,6 +111,87 @@ live while dragged. All toggles, theme, and opacity persist in
   **Win level** (`SetState(AfterMatchVictory)` — legit transition: marks the level
   beaten, banks the run, and shows the victory screen).
 
+### Autopilot bot (`F6`)
+- **How it steers:** a Harmony prefix on `PlayerMovement.MoveScript` rewrites the
+  `inputVector` parameter with a world-space `DesiredDir` produced by a 4 Hz
+  decision tick — the same hook the hero's own input flows through, so camera
+  transforms, speed modifiers, and collisions all stay intact.
+- **Perception** (`BotPerception.Capture`): a `Snapshot` struct sampled from
+  `PlayerMovement.instance`, `PlayerInteraction`, `TagManager` (free coins,
+  enemies, castle) and `LocalGamestate` / `DayNightCycle` — plus a cached 1 Hz
+  `LevelInteractor`/`InteractorBase` scan for the campaign map.
+- **Modes:** `Idle`, `CollectCoin` (nearest `TagManager.freeCoins` entry within
+  seek range), `ReturnHome` / `HoldCastle` (castle proximity), `Engage` (pursues
+  the *live* nearest-enemy transform each frame — stale position snapshots made
+  the hero stand still next to foes that had walked off), `EnterLevel` (campaign
+  map → nearest playable `LevelInteractor` → `InteractionBegin` +
+  `SceneTransitionManager.TransitionFromLevelSelectToLevel`), `StartNight`
+  (walk to `Nighthorn` and interact to auto-harvest + start the wave;
+  falls back to `DayNightCycle.SwitchToNight()` when the horn isn't spawned),
+  `SpendGold` (day economy, below) and `ResolveUI` (blocking frames, below).
+- **Campaign loop** — when the victory screen's `BackToLevelSelectHelper`
+  appears, the bot calls `SceneTransitionManager.TransitionToLevelSelect()` and
+  re-enters `EnterLevel` on the map — preferring the nearest **unbeaten**
+  `LevelInteractor` (beaten nodes are skipped unless everything visible is
+  already beaten, in which case the nearest playable node is re-run for coins).
+- **Blocking-frame auto-resolve** (`ResolveUI`) — a running `ChoiceManager`
+  coroutine is resolved *first* (`choiceToReturn` = first `CanBePicked`
+  choice) because a pending choice freezes building holds even when its frame
+  doesn't `freezePlayer`. Then any active `UIFrame` with `freezePlayer` is
+  handled without touching the non-freezing map UI: a
+  `PerkSelectionGroup` frame selects the first unselected `PerkSelectionItem`
+  then closes; other frames `CloseActiveFrame()` when escapable or `Apply()`
+  when not. An escapable frame that survives two closes with a
+  `BackToLevelSelectHelper` inside is treated as the end-of-match screen.
+- **Day economy** (`SpendGold`) — during the day the bot walks to the nearest
+  interactable `BuildingInteractor` (perception: the
+  `TagManager.playerBuildingInteractors` registry filtered by
+  `CanBeInteractedWith`), pumps `Focus()` (harvests
+  income buildings) + `InteractionBegin`/`InteractionHold` (hold-to-pay
+  builds/upgrades) until `BuildComplete`, then releases via `Unfocus` +
+  `InteractionEnd`. Choice upgrades route through `ChoiceManager` and are
+  auto-picked by `ResolveUI`. A slot that shows no payment for 7 s
+  (deny-looping on an unaffordable core-cost upgrade, stuck harvest/choice
+  state) is parked on an ignore list for the rest of the day — the ignore
+  list clears at dusk — so the candidate pool drains and the bot eventually
+  walks to the Nighthorn (or fires `DayNightCycle.SwitchToNight()` on maps
+  where the horn stays inactive).
+- **Stuck watchdog** — teleport-nudges only when the bot truly isn't moving:
+  the strike window now also requires the distance to the aim point to be
+  *not decreasing* across two consecutive 2.5 s samples, so a healthy pursuit
+  that is actively closing range never gets teleport-jerked.
+- **Auto-advance** — on `_StartMenu` the bot calls
+  `SceneTransitionManager.TransitionFromNullToLevelSelect()` directly (same path
+  as `TitleScreenUIHelper.ClickPlay`), throttled while the map scene loads, so a
+  relaunch never waits for a manual click.
+- **Loadout seeding** — before entering a level the bot mirrors
+  `LevelSelectManager.PlayButtonPressed`: applies `levelInfo.fixedLoadout` when
+  present, otherwise equips the best unlocked `EquippableWeapon` from
+  `PerkManager.allEquippables`. The loadout UI is skipped by design — without
+  this the hero spawns weaponless and physically cannot fight.
+- **Combat** — while `Engage`d the bot pumps the hero's `ManualAttack` each
+  decide tick: the component is located via `WeaponEquipper.activeWeapon`
+  (the equipped weapon lives on a sibling branch of the pawn, not under
+  `PlayerMovement`), `FindAttackTarget` is checked, and `Attack()` fires the
+  weapon directly — bypassing the input-buffer/`PlayerFrozen` gates that block
+  `PlayerInteraction` while the trainer menu is open. If the hero is still
+  weaponless the engaged enemy's `Hp.TakeDamage` is invoked directly as a
+  fallback strike.
+- **Stuck watchdog** — when the desired direction is non-zero but the pawn's
+  position hasn't moved for a few seconds, the target is cleared and re-picked.
+- **Telemetry** — every tick appends one JSON line to
+  `BepInEx\plugins\bot-log.jsonl`: mode, game-state, scene, night flag, wave,
+  foe/coin counts, gold, hero HP, position, and diagnostic counters — used to
+  verify a full run: level select → `EnterLevel` → `StartNight` → `Engage` →
+  coins collected (gold rising during the wave).
+- **Survival cheats (auto)** — enabling the bot snapshots your current cheat
+  states and forces the survival bundle: god hero + god player-owned
+  (castle/units/buildings), instant revive, never-lose, HP regen ×20, a
+  500 m coin magnet, **instant kill** and **no cooldown** — so the autopilot
+  can't die or lose the run and clears waves instead of tanking them one swing
+  at a time. Disabling the bot restores whatever you had toggled. Opt out with
+  `Bot/BotSurvivalCheats = false` in the BepInEx config.
+
 ### Meta / progression — writes the save file
 - **Unlock all levels & crowns** — sets `beatenBest`, maxes `highscoreBest`, and fabricates
   `levelHasBeenBeatenWith` entries satisfying `BeatTheLevelWith`/`BeatTheLevelWithout` quests
@@ -176,12 +260,23 @@ To regenerate the decompiled reference source (needed after game updates):
 
 ```
 Trainer\
-  README.md                  - this file
+  README.md                  - this file (cheats, install, troubleshooting)
+  AUTOPILOT.md               - bot status, verified evidence, known issues, handoff
+  CONFIG.md                  - every BepInEx config key + persistence semantics
+  BOT-DEV.md                 - extending the bot (snapshot fields, modes, frames)
+  TESTING.md                 - manual e2e acceptance checklist
+  CHANGELOG.md               - release/feature history
   src\
     Plugin.cs                - cheat state (Cheats), per-frame logic, IMGUI overlay,
                                config binding, themes, actions
     Patches.cs               - Harmony patches (TakeDamage, Spend*, AddFill,
                                Hp.Start, SetState, Weapon.Attack)
+    Bot.cs                   - autopilot FSM: 4 Hz tick, modes, steering targets,
+                               stuck watchdog, JSONL telemetry
+    BotPerception.cs         - Snapshot struct + Capture() over game singletons
+                               (TagManager, DayNightCycle, LevelInteractor scan)
+    BotPatches.cs            - Harmony prefix on PlayerMovement.MoveScript
+                               injecting the bot's DesiredDir as inputVector
     ThronefallTrainer.csproj - net472; references the game's DLLs via $(GameDir)
   tools\
     build-and-deploy.ps1     - build + copy the DLL into BepInEx\plugins

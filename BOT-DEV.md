@@ -1,0 +1,104 @@
+# Extending the Autopilot
+
+Developer guide for `Bot.cs` / `BotPerception.cs` / `BotPatches.cs`. Read
+`AUTOPILOT.md` first for architecture and known issues; this file is the
+"how do I add X" companion to the README's "Adding a new cheat".
+
+## Pipeline recap
+
+```
+Plugin.Update (every frame)
+ └─ Bot.Tick()
+     ├─ BotPerception.Capture() → Snapshot        (read game state)
+     ├─ Bot.Decide(in s)        → mode + target   (every DecisionInterval=0.25s)
+     ├─ steering: DesiredDir ← DirTo(hero, AimPos)
+     └─ watchdog / build holds / UI resolve / logging
+BotPatches.MoveScript prefix: inputVector := DesiredDir (camera-relative)
+```
+
+Two contracts keep it simple: **perception is read-only** (Capture must never
+mutate the game) and **decide is stateless between ticks** except through the
+explicit static fields listed below.
+
+## Add a Snapshot field (`BotPerception.cs`)
+
+1. Add `public T Field;` to `Snapshot`.
+2. Set it inside `Capture()` — null-guard every singleton
+   (`instance?.Prop ?? default`), fields are read on the menu scene too where
+   most singletons are null.
+3. Add it to `Bot.FormatStatus` if it belongs in the overlay/log tick —
+   **keep the log field ≤4 chars** (`bld`, `horn`, `lvln`…) or the histogram
+   tooling and log width suffer.
+4. Expensive scans (`Resources.FindObjectsOfTypeAll`, LINQ over big lists):
+   put them behind a throttle clock — see the 1 Hz `levelScanAt` map scan for
+   the existing pattern. `Capture` runs at ~4 Hz.
+
+## Add a mode
+
+1. Extend `enum BotMode` (order in the enum is cosmetic only).
+2. Add the branch in `Decide()` **in priority order** — top wins. Current order:
+   `ResolveUI` > `EnterLevel` (map scene) > day phases (`CollectCoin` →
+   `SpendGold` → `StartNight`/`ReturnHome`) > night `Engage`/`HoldCastle`.
+   New modes go above or below existing branches *deliberately* — e.g.
+   `ResolveUI` is first because a stuck frame blocks every other mode.
+3. `SetTarget(pos, arriveDist)` + set `Status`; every non-Idle mode must give
+   the watchdog a target or it will reset.
+4. If the mode can hold a build interactor, ensure `ReleaseBuild()` is called
+   when leaving it — the existing release check in `Tick` covers
+   `Mode != SpendGold` automatically if you use `heldBuild`.
+5. Log a one-shot `note` on transitions (`LogLine(in s, "my-note")`), not per
+   tick — follow the on-change/tapered convention so the JSONL stays greppable.
+
+## Add a ResolveUI frame handler
+
+In `HandleBlockingFrame`, order is the feature:
+
+1. `ChoiceManager` pre-gate — anything that blocks `InteractionHold` **must**
+   stay above the `freezePlayer` check.
+2. Non-freezing frames are never touched (the map UI must survive).
+3. `BackToLevelSelectHelper` + `canNotBeEscaped`/escalation = end-of-match.
+4. Specific interactive frames (perk pick) before the generic close.
+
+To handle a new frame type: insert a branch between 3 and 4 that finds its
+component (`frame.GetComponentInChildren<T>()`), picks/solves it, and
+**throttle via `frameActionAt`** (existing: 1 s for choice, 2 s for closes).
+If the frame can carry a back-to-map helper, decide whether it counts toward
+`frameSeen` escalation — see AUTOPILOT §8.3 for the risk.
+
+## Throttles & timers (all `Time.unscaledTime` — pause-safe)
+
+| Field | Interval | Guards |
+|---|---|---|
+| `DecisionInterval` | 0.25 s | Decide cadence |
+| `buildInteractAt` | 0.4 s | `InteractionHold` pump |
+| `frameActionAt` | 1–2 s | UI resolve actions |
+| `spendWatchAt` | 7 s | Dead-slot stall window |
+| `switchNightAt` | 15 s | `SwitchToNight` fallback |
+| `levelScanAt` | 1 s | Map node rescan |
+| watchdog window | ~2 s | `stuck` strike accumulation |
+
+Hardcoded today — AUTOPILOT §9 tracks the plan to move these into config.
+
+## Telemetry conventions
+
+- One JSON object per line: `{"t":…,"mode":"…",…,"note":"…"}`.
+- Tick lines carry the full field set; `note` is omitted when empty.
+- `note` values are kebab-case one-shots: `build-stall`, `choice-pick`,
+  `frame-close`, `level-interact`, `transition-level`, `switch-night`,
+  `teleport-nudge`, `match-end`, `invalid`. New notes get logged only on the
+  event, never per tick.
+- `invalid` = snapshot not valid this tick (loads) — 36 % of lines; see
+  AUTOPILOT §8.9 before adding similar noise.
+
+## Pitfalls for bot edits
+
+- `InteractionHold` early-outs silently — if your new flow isn't making
+  progress, add a stall-style watch rather than assuming the call landed.
+- `CanBeInteractedWith` can be true for slots that will never accept payment
+  (core-cost upgrades) — filter at the scan or park at the hold.
+- Don't `Unfocus` a slot you're still holding; `ReleaseBuild()` does
+  `Unfocus`+`InteractionEnd` in the right order.
+- The bot shares the hero with the overlay — freeze state (`F1` menu) and
+  cheats both affect it. Test with the menu closed.
+- Verify every game-API name against `decompiled\` after updates; the dumps
+  are regenerated by `tools\decompile.ps1`.
