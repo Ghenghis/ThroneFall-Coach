@@ -80,6 +80,34 @@ namespace ThronefallTrainer
             public bool HasWeapon;
             public float ActiveRange;          // active weapon max target-priority range
             public bool ActiveFiresMoving;     // no DelayManualAttackWhileMoving
+
+            // ---- Phase 1 awareness (v3 design §P1/P3/P4/P5/P7) ----
+            // P1 next-wave intel via EnemySpawner.GetWaveInfoForNextWave()
+            public int NextWaveCount;          // total foes in the upcoming wave
+            public int NextWaveElites;         // elite foes in it
+            public float NextWaveMaxHp;        // toughest foe hp
+            public float NextWaveSpeed;        // fastest foe speed
+            public float NextWaveFoeRange;     // longest foe attack range
+            public int NextWaveGold;           // goldReward for beating it
+            public bool FinalWaveNext;         // the NEXT wave ends the level
+
+            // P3 live-threat metadata (nearest foe to the hero)
+            public float NearEnemyRange;       // its attack range (0 melee unknown)
+            public float NearEnemyHp;          // its current hp
+            public bool NearEnemyElite;        // elite flag on it
+
+            // P5 castle + match framing
+            public float CastleHpPct;          // -1 = unknown
+            public bool WaveBeforeFinalNext;   // WaveBeforeFinalWaveComingUp
+
+            // P4 shrines (unactivated only — activated ones are inert)
+            public int ShrineCount;
+            public Vector3 ShrinePos;
+            public float ShrineDist;
+
+            // P7 slot classes for the picked interactor
+            public int BuildMil;               // military weight of its next upgrade
+            public int BuildInc;               // income delta of its next upgrade
         }
 
         /// <summary>Plain-value projection for the pure layer (BotBrain).</summary>
@@ -115,6 +143,16 @@ namespace ThronefallTrainer
                 CanCommand = s.CanCommand, CanSwitch = s.CanSwitch,
                 HasWeapon = s.HasWeapon, ActiveRange = s.ActiveRange,
                 ActiveFiresMoving = s.ActiveFiresMoving,
+                NextWaveCount = s.NextWaveCount, NextWaveElites = s.NextWaveElites,
+                NextWaveMaxHp = s.NextWaveMaxHp, NextWaveSpeed = s.NextWaveSpeed,
+                NextWaveFoeRange = s.NextWaveFoeRange, NextWaveGold = s.NextWaveGold,
+                FinalWaveNext = s.FinalWaveNext,
+                NearEnemyRange = s.NearEnemyRange, NearEnemyHp = s.NearEnemyHp,
+                NearEnemyElite = s.NearEnemyElite,
+                CastleHpPct = s.CastleHpPct, WaveBeforeFinalNext = s.WaveBeforeFinalNext,
+                ShrineCount = s.ShrineCount, ShrinePos = V(s.ShrinePos),
+                ShrineDist = s.ShrineDist,
+                BuildMil = s.BuildMil, BuildInc = s.BuildInc,
             };
         }
 
@@ -125,6 +163,9 @@ namespace ThronefallTrainer
         private static float levelScanAt;
         private static ManualAttack maCache;
         private static float weScanAt;
+        private static Shrine[] shrineCache;
+        private static float shrineScanAt;
+        private static bool castleHpLogged;
 
         // Slots that refused progress (deny-loop, stuck harvest/choice state)
         // are parked here until their timestamp expires — keeps SpendGold from
@@ -199,6 +240,53 @@ namespace ThronefallTrainer
                 s.HasCastle = true;
                 s.CastlePos = castlePos;
                 s.CastleDist = FlatDist(s.CastlePos, s.HeroPos);
+
+                // P5: castle HP — the run's actual loss meter. Hp can sit on
+                // the keep's TaggedObject or the BuildSlot's building parent.
+                s.CastleHpPct = -1f;
+                if (cc != null)
+                {
+                    var cto = cc.GetComponentInParent<TaggedObject>();
+                    var chp = cto != null ? cto.Hp : cc.GetComponentInParent<Hp>(true);
+                    if (chp == null) chp = cc.GetComponentInChildren<Hp>(true);
+                    if (chp != null) s.CastleHpPct = chp.HpPercentage;
+                    if (!castleHpLogged)
+                    {
+                        castleHpLogged = true;
+                        Plugin.Log?.LogWarning(chp != null
+                            ? $"[bot] castle-hp: found on '{chp.gameObject.name}' " +
+                              $"hp={chp.HpValue}/{chp.maxHp} pct={chp.HpPercentage:0.###} alive={chp.Alive}"
+                            : $"[bot] castle-hp: no Hp on CastleCenter chain " +
+                              $"(up={cc.GetComponentsInParent<Hp>(true).Length} " +
+                              $"down={cc.GetComponentsInChildren<Hp>(true).Length})");
+                    }
+                }
+            }
+
+            // P4: unactivated shrines — interactables worth a daytime visit
+            // (income buffs). 1 Hz scan; they're static map objects.
+            if (Time.unscaledTime >= shrineScanAt)
+            {
+                shrineScanAt = Time.unscaledTime + 1f;
+                shrineCache = Object.FindObjectsOfType<Shrine>(true);
+            }
+            if (shrineCache != null)
+            {
+                s.ShrineCount = 0;
+                s.ShrineDist = float.MaxValue;
+                foreach (var sh in shrineCache)
+                {
+                    if (sh == null || sh.ShrineHasBeenActivated) continue;
+                    s.ShrineCount++;
+                    float d = (sh.transform.position - s.HeroPos).sqrMagnitude;
+                    if (d < s.ShrineDist)
+                    {
+                        s.ShrineDist = d;
+                        s.ShrinePos = sh.transform.position;
+                    }
+                }
+                if (s.ShrineCount == 0) s.ShrineDist = 0f;
+                else s.ShrineDist = Mathf.Sqrt(s.ShrineDist);
             }
 
             var spawner = EnemySpawner.instance;
@@ -207,6 +295,26 @@ namespace ThronefallTrainer
                 s.Wave = spawner.Wavenumber;
                 s.WaveTotal = spawner.WaveCount;
                 s.EnemyCount = spawner.NumberOfEnemiesOnTheMap;
+
+                // P1: next-wave intel — same WaveInfo the game shows players.
+                var wi = EnemySpawner.GetWaveInfoForNextWave();
+                if (wi != null && wi.enemies != null)
+                {
+                    s.NextWaveGold = wi.goldReward;
+                    foreach (var en in wi.enemies)
+                    {
+                        if (en == null) continue;
+                        s.NextWaveCount += en.enemyCount;
+                        if (en.eliteEnemy) s.NextWaveElites += en.enemyCount;
+                        if (en.maxHP > s.NextWaveMaxHp) s.NextWaveMaxHp = en.maxHP;
+                        if (en.speed > s.NextWaveSpeed) s.NextWaveSpeed = en.speed;
+                        if (en.range > s.NextWaveFoeRange) s.NextWaveFoeRange = en.range;
+                    }
+                }
+                // P5: wave framing — final wave vs the one before it.
+                int w = spawner.Wavenumber;
+                s.FinalWaveNext = spawner.FinalWaveComingUp(w) || w >= spawner.WaveCount - 1;
+                s.WaveBeforeFinalNext = spawner.WaveBeforeFinalWaveComingUp(w);
             }
             else
             {
@@ -249,6 +357,20 @@ namespace ThronefallTrainer
             if (s.CastleThreat != null)
                 s.CastleThreatDist = Mathf.Sqrt(castleThreatSq);
             else { s.CastleThreatDist = 0f; s.CastleThreat = s.NearestEnemy; }
+
+            // P3: live-threat metadata — the foe we're about to fight decides
+            // the kite distance, so read its own attack range + hp + elite.
+            if (s.NearestEnemy != null)
+            {
+                var fhp = s.NearestEnemy.GetComponentInChildren<Hp>(true);
+                if (fhp == null) fhp = s.NearestEnemy.GetComponentInParent<Hp>();
+                if (fhp != null) { s.NearEnemyHp = fhp.HpValue; s.NearEnemyElite = fhp.Elite; }
+                var aa = s.NearestEnemy.GetComponentInChildren<AutoAttack>(true);
+                if (aa == null) aa = s.NearestEnemy.GetComponentInParent<AutoAttack>();
+                if (aa != null)
+                    foreach (var p in aa.targetPriorities)
+                        if (p != null && p.range > s.NearEnemyRange) s.NearEnemyRange = p.range;
+            }
 
             // Allied army (troop buildings / heroes). Used to anchor the hero
             // behind the meatshield line for legit defense.
@@ -429,6 +551,11 @@ namespace ThronefallTrainer
                 {
                     GetBuildClass(bs, out int military, out int incomeDelta);
                     score += military * 100;
+                    // P1 use: big incoming or final wave → military weight
+                    // doubles; towers/unit spawners beat income when the run
+                    // is on the line (v3 Phase 1 acceptance).
+                    if (military > 0 && (s.FinalWaveNext || s.NextWaveCount >= 30))
+                        score += military * 100;
                     if (incomeDelta > 0) score += 30 + Mathf.Min(incomeDelta, 10) * 3;
                 }
                 s.BuildCount++;
@@ -449,6 +576,8 @@ namespace ThronefallTrainer
                 s.NearestBuildHarvest = s.NearestBuild.canBeHarvested;
                 s.NearestBuildName = s.NearestBuild.targetBuilding != null
                     ? s.NearestBuild.targetBuilding.buildingName : s.NearestBuild.name;
+                if (s.NearestBuild.targetBuilding != null)
+                    GetBuildClass(s.NearestBuild.targetBuilding, out s.BuildMil, out s.BuildInc);
             }
             else s.NearestBuildDist = 0f;
 

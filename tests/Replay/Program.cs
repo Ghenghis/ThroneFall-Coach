@@ -145,6 +145,24 @@ namespace ThronefallTrainer
                 HasWeapon = B(e, "weap"),
                 ActiveRange = F(e, "wrng"),
                 ActiveFiresMoving = B(e, "wfm"),
+                // Phase 1 awareness fields
+                NextWaveCount = I(e, "nwc"),
+                NextWaveElites = I(e, "nwe"),
+                NextWaveMaxHp = F(e, "nwh"),
+                NextWaveSpeed = F(e, "nws"),
+                NextWaveFoeRange = F(e, "nwr"),
+                NextWaveGold = I(e, "nwg"),
+                FinalWaveNext = B(e, "fw"),
+                NearEnemyRange = F(e, "erng"),
+                NearEnemyHp = F(e, "ehp"),
+                NearEnemyElite = B(e, "eel"),
+                CastleHpPct = e.TryGetProperty("chp", out var chp) &&
+                    chp.ValueKind == JsonValueKind.Number ? chp.GetSingle() : -1f,
+                WaveBeforeFinalNext = B(e, "wbf"),
+                ShrineCount = I(e, "shr"),
+                ShrineDist = F(e, "shd"),
+                BuildMil = I(e, "bmil"),
+                BuildInc = I(e, "binc"),
             };
             var w = S(e, "wave");
             int slash = w.IndexOf('/');
@@ -161,6 +179,7 @@ namespace ThronefallTrainer
             d.HornPos = P(e, "hpos", out d.HasHorn);
             d.BuildPos = P(e, "bpos", out d.HasBuild);
             d.AllyCentroid = P(e, "acen", out _);
+            d.ShrinePos = P(e, "shp", out _);
             if (e.TryGetProperty("pos", out var _unused)) { }
             return new Parsed { T = F(e, "t"), Mode = S(e, "mode"), Data = d };
         }

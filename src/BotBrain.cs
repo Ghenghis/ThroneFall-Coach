@@ -148,6 +148,29 @@ namespace ThronefallTrainer
         public float ActiveRange;
         public bool ActiveFiresMoving;
 
+        // ---- Phase 1 awareness (design §P1/P3/P4/P5/P7) ----
+        public int NextWaveCount;
+        public int NextWaveElites;
+        public float NextWaveMaxHp;
+        public float NextWaveSpeed;
+        public float NextWaveFoeRange;
+        public int NextWaveGold;
+        public bool FinalWaveNext;
+
+        public float NearEnemyRange;
+        public float NearEnemyHp;
+        public bool NearEnemyElite;
+
+        public float CastleHpPct;      // -1 unknown
+        public bool WaveBeforeFinalNext;
+
+        public int ShrineCount;
+        public Vec2 ShrinePos;
+        public float ShrineDist;
+
+        public int BuildMil;
+        public int BuildInc;
+
         /// <summary>
         /// Compact-DTO serialization for ticks.jsonl — every Decide input,
         /// so a recorded tick replays the full snapshot faithfully. Keys are
@@ -206,6 +229,23 @@ namespace ThronefallTrainer
             Append(sb, ",\"weap\":", HasWeapon);
             Append(sb, ",\"wrng\":", ActiveRange, ci);
             Append(sb, ",\"wfm\":", ActiveFiresMoving);
+            Append(sb, ",\"nwc\":", NextWaveCount);
+            Append(sb, ",\"nwe\":", NextWaveElites);
+            Append(sb, ",\"nwh\":", NextWaveMaxHp, ci);
+            Append(sb, ",\"nws\":", NextWaveSpeed, ci);
+            Append(sb, ",\"nwr\":", NextWaveFoeRange, ci);
+            Append(sb, ",\"nwg\":", NextWaveGold);
+            Append(sb, ",\"fw\":", FinalWaveNext);
+            Append(sb, ",\"erng\":", NearEnemyRange, ci);
+            Append(sb, ",\"ehp\":", NearEnemyHp, ci);
+            Append(sb, ",\"eel\":", NearEnemyElite);
+            Append(sb, ",\"chp\":", CastleHpPct, ci);
+            Append(sb, ",\"wbf\":", WaveBeforeFinalNext);
+            Append(sb, ",\"shr\":", ShrineCount);
+            Append(sb, ",\"shp\":", ShrinePos, ShrineCount > 0, ci);
+            Append(sb, ",\"shd\":", ShrineDist, ci);
+            Append(sb, ",\"bmil\":", BuildMil);
+            Append(sb, ",\"binc\":", BuildInc);
             return sb.Append('}').ToString();
         }
 
@@ -386,7 +426,11 @@ namespace ThronefallTrainer
 
                     if (ranged && s.HasCastle)
                     {
-                        if (heroNear < 4.5f || s.NearFoeCount >= 2)
+                        // A foe inside its own attack range (or a pile
+                        // forming) pulls him deep — ranged foes trigger this
+                        // earlier than melee reach.
+                        float tooNear = Math.Max(4.5f, s.NearEnemyRange + 1f);
+                        if (heroNear < tooNear || s.NearFoeCount >= 2)
                         {
                             Vec2 away = s.CastlePos - s.NearEnemyPos;
                             Aim(ref r, s.CastlePos + away.Norm * 4f, 1.2f);
@@ -401,7 +445,11 @@ namespace ThronefallTrainer
                             else if (m.OrbitAngle < -OrbitArc) { m.OrbitAngle = -OrbitArc; m.OrbitDir = 1f; }
                             Vec2 fwd = axisDir.SqrMag > 0.01f ? axisDir.Norm : new Vec2(0f, 1f);
                             Vec2 oc = s.CastlePos - fwd * 3f;
-                            float rr = Clamp(s.ActiveRange * 0.3f, 9f, 12f);
+                            // P3: the orbit radius outranges the THREAT's own
+                            // attack range +2 m — a ranged foe forces a wider
+                            // arc, melee-only threats keep the tight one.
+                            float rr = Clamp(Math.Max(s.ActiveRange * 0.3f,
+                                s.NearEnemyRange + 2f), 9f, 14f);
                             Vec2 ring = oc + (fwd * -(float)Math.Cos(m.OrbitAngle) +
                                               Vec2.Perp(fwd) * (float)Math.Sin(m.OrbitAngle)) * rr;
                             Aim(ref r, ring, 1.5f);
@@ -440,7 +488,11 @@ namespace ThronefallTrainer
             }
 
             // ---- day: coins ----
-            if (s.HasCoin && s.CoinDist <= CoinSeekRange)
+            // P1 use: a huge or final wave coming up tightens the seek range —
+            // no long-range coin runs when the run is on the line.
+            float coinRange = (s.FinalWaveNext || s.NextWaveCount >= 30)
+                ? 40f : CoinSeekRange;
+            if (s.HasCoin && s.CoinDist <= coinRange)
             {
                 m.Mode = BotMode.CollectCoin; r.Mode = m.Mode;
                 Aim(ref r, s.CoinPos, ArriveCoin);
