@@ -291,6 +291,7 @@ namespace ThronefallTrainer
         // army two-step
         public int ArmyPhase;
         public float ArmyWalkAt;
+        public float LastArmyCmdAt;   // solver: night re-command cadence
 
         // orbit-kite sweep
         public float OrbitAngle;
@@ -654,6 +655,14 @@ namespace ThronefallTrainer
                 {
                     m.Mode = BotMode.HoldCastle; r.Mode = m.Mode;
                     Aim(ref r, s.HasThreatAnchor ? s.ThreatAnchor : s.CastlePos, ArriveHold);
+                    // Solver: allied units wander between commands — re-issue
+                    // the army command every ~60 s at night (no-op inside
+                    // the game's own command cooldown).
+                    if (s.AllyCount > 0 && s.CanCommand && now - m.LastArmyCmdAt > 60f)
+                    {
+                        m.LastArmyCmdAt = now;
+                        r.Intents.Add(Intent.Of(IntentKind.CommandArmy));
+                    }
                 }
                 else { m.Mode = BotMode.Idle; r.Mode = m.Mode; r.HasAim = false; }
                 return r;

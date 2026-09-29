@@ -372,6 +372,10 @@ namespace ThronefallTrainer
             if ((recTickFrame++ & 1) == 0)
                 Recorder.Tick(sd.ToJson("tick", Time.unscaledTime, Mode));
 
+            // Phase-5 anomaly detectors — cheap pass/fail checks that emit
+            // `anomaly:*` events; the critic/evaluator consumes the rates.
+            CheckAnomalies(in s);
+
             // Movement diag while the watchdog is grinding: is the input even
             // reaching the character, and is something freezing it?
             if (StuckStrikes > 0 && Time.unscaledTime >= nextMoveDiagAt)
@@ -388,6 +392,58 @@ namespace ThronefallTrainer
             }
         }
 
+
+        // Phase-5 anomaly state: detectors emit once-per-cooldown so the
+        // event stream gets a signal rate, not a flood.
+        private static float stuckSpamWindow = -1f;
+        private static int stuckSpamCount;
+        private static float nightParkSince = -1f;
+        private static float lastAnomalyAt;
+        private static Vector3 nightParkPos;
+
+        /// <summary>
+        /// Bounded anomaly checks (v3 Phase 5 detectors). Events only —
+        /// correction stays with the watchdog/brain; these prove the run
+        /// health signal for the critic and future action-menu solver.
+        /// </summary>
+        private static void CheckAnomalies(in BotPerception.Snapshot s)
+        {
+            float now = Time.unscaledTime;
+            if (now < lastAnomalyAt + 10f) return;   // ≥10 s between anomaly events
+
+            // D1 stuck-spam: ≥3 strikes inside a 30 s window.
+            if (StuckStrikes > 0)
+            {
+                if (now > stuckSpamWindow) { stuckSpamWindow = now + 30f; stuckSpamCount = 0; }
+                if (++stuckSpamCount >= 3)
+                {
+                    stuckSpamCount = 0; lastAnomalyAt = now;
+                    LogLine(in s, "anomaly:stuck-spam");
+                    Plugin.Log?.LogWarning($"[bot] anomaly stuck-spam at {s.HeroPos} mode={Mode}");
+                    return;
+                }
+            }
+
+            // D2 night-park: Engage mode, foes live, hero effectively parked
+            // >15 s (watchdog's arrival-freeze window) — the encirclement
+            // case that used to end runs.
+            if (s.IsNight && s.EnemyCount > 0 && Mode == BotMode.Engage)
+            {
+                if (nightParkSince < 0f) { nightParkSince = now; nightParkPos = s.HeroPos; }
+                else if ((s.HeroPos - nightParkPos).sqrMagnitude > 1.5f)
+                {
+                    nightParkSince = now; nightParkPos = s.HeroPos;
+                }
+                else if (now - nightParkSince > 15f)
+                {
+                    nightParkSince = -1f; lastAnomalyAt = now;
+                    LogLine(in s, "anomaly:night-park");
+                    Plugin.Log?.LogWarning($"[bot] anomaly night-park at {s.HeroPos} foes={s.EnemyCount}");
+                    return;
+                }
+            }
+            else nightParkSince = -1f;
+        }
 
         /// <summary>
         /// Stuck watchdog: while steering toward a target, if the hero hasn't
