@@ -3,11 +3,25 @@ using UnityEngine;
 
 namespace ThronefallTrainer
 {
-    // Extracted slot-pack records — top-level public [Serializable] types:
-    // JsonUtility silently drops fields of private/nested classes.
+    // Extracted botpack records — top-level public types; the pack is
+    // hand-parsed anyway (JsonUtility dropped nested arrays on this Unity
+    // version). Flat shape agreed with claude-refpack.
     [System.Serializable] public class StandPtRec { public float x, y, z, cl, dInt; }
     [System.Serializable] public class SlotPackRec { public int id; public string name; public float[] pos; public StandPtRec[] stands; }
-    [System.Serializable] public class SlotPackFile { public string scene; public SlotPackRec[] slots; }
+    public class SpawnRouteRec
+    {
+        public string line;         // "Left Front Road"
+        public float[] spawn;       // spawn center [x,z]
+        public float[][] wp;        // route waypoints [[x,z],..] ending at castle
+        public float lenM;
+        public bool fly, ground;    // which spawn types this route accepts
+        public float narrowM;       // narrowest clearance on the route
+        public float[] narrowAt;    // where (choke point)
+    }
+    public class WaveRec
+    {
+        public int wave, count, gold; public string enemy, disp, line; public bool elite; public float hp;
+    }
 
     /// <summary>
     /// Read-only world-state snapshot for the autopilot. Captured once per
@@ -75,6 +89,28 @@ namespace ThronefallTrainer
 
             public bool HasThreatAnchor;
             public Vector3 ThreatAnchor;       // castle shifted ~9 m toward the threat side
+            public bool HasArmyAnchor;         // botpack: corridor point for army placement
+            public Vector3 ArmyAnchor;
+            public string ArmyAnchorLine;
+
+            // Squad/defense coverage (botpack spawn doors)
+            public Vector3[] DoorAnchors;
+            public string[] DoorLines;
+            public int DoorCount;
+            public int DoorsCovered;   // doors with >=2 manned units
+            public int FreeUnits;      // units not within 10 m of a door
+            public Vector3 UncoveredDoorPos;
+            public string UncoveredDoorLine;
+            public int UncoveredDoorTarget;
+            public bool UncoveredDoorHot;
+            public bool HasUncoveredDoor;
+            public int ArmyTarget;
+            public float SelfDefendRange;   // hero fights inside this radius
+            public float DayBudget;         // learned night-call timing (sec)
+            public string PolicyKey;        // RL state key for commits
+            public string PolicyFocus;      // RL build_focus pick this tick
+            public bool RedAlert;          // enemy inside the protected ring
+            public float RedAlertRadius;
 
             // ---- v3 seam fields (feed SnapshotData / pure Decide) ----
             public bool SceneBusy;             // sceneTransitionIsRunning
@@ -144,6 +180,19 @@ namespace ThronefallTrainer
                 CastleThreatPos = s.CastleThreat != null ? V(s.CastleThreat.transform.position) : Vec2.Zero,
                 CastleThreatDist = s.CastleThreatDist,
                 HasThreatAnchor = s.HasThreatAnchor, ThreatAnchor = V(s.ThreatAnchor),
+                HasArmyAnchor = s.HasArmyAnchor, ArmyAnchor = V(s.ArmyAnchor),
+                ArmyAnchorLine = s.ArmyAnchorLine ?? "",
+                DoorCount = s.DoorCount, DoorsCovered = s.DoorsCovered,
+                FreeUnits = s.FreeUnits,
+                HasUncoveredDoor = s.HasUncoveredDoor,
+                UncoveredDoorPos = V(s.UncoveredDoorPos),
+                UncoveredDoorLine = s.UncoveredDoorLine ?? "",
+                UncoveredDoorTarget = s.UncoveredDoorTarget,
+                UncoveredDoorHot = s.UncoveredDoorHot,
+                ArmyTarget = s.ArmyTarget,
+                SelfDefendRange = s.SelfDefendRange,
+                DayBudget = s.DayBudget,
+                RedAlert = s.RedAlert, RedAlertRadius = s.RedAlertRadius,
                 OnLevelSelect = s.OnLevelSelect, InteractorCount = s.InteractorCount,
                 LevelCount = s.LevelCount, HasLevel = s.NearestLevel != null,
                 LevelPos = V(s.NearestLevelPos), LevelDist = s.NearestLevelDist,
@@ -191,22 +240,101 @@ namespace ThronefallTrainer
         // fields of private nested types. ----
 
         private static SlotPackRec[] slotPack;
+        private static SpawnRouteRec[] spawnRoutes;
+        private static WaveRec[] wavePack;
+        private static StandPtRec[] castleStands;
         private static string slotPackScene = "";
+        private static string armyAnchorLine;
+        private static int[] doorUnit;
+        private static bool[] doorBreach;
+        private static Vector3[] sceneDoorAnchors;
+        private static string[] sceneDoorLines;
+        private static string doorScene = "";
+        private static int[] doorFoes;
+        public static int BreachCount;
+
+        /// <summary>M3 grandmaster playbook for the scene (tools/mm-coach.py
+        /// writes botpack/strategy_&lt;scene&gt;.json). Hand-parsed like the
+        /// botpack itself — JsonUtility is not trusted on this runtime.</summary>
+        private static class Strat
+        {
+            public static int Squad, Reserve, Escort, ArmyTarget;
+            public static string Focus = "";
+        }
+
+        private static void LoadStrategy(string scene)
+        {
+            Strat.Squad = Strat.Reserve = Strat.Escort = Strat.ArmyTarget = 0;
+            Strat.Focus = "";
+            try
+            {
+                var p = System.IO.Path.Combine(Recorder.AgentDir, "botpack",
+                    "strategy_" + scene.ToLowerInvariant() + ".json");
+                if (!System.IO.File.Exists(p)) return;
+                string j = System.IO.File.ReadAllText(p);
+                Strat.Squad = JInt(j, "squad_size");
+                Strat.Reserve = JInt(j, "reserve_size");
+                Strat.Escort = JInt(j, "escort_size");
+                Strat.ArmyTarget = JInt(j, "army_target");
+                var fm = System.Text.RegularExpressions.Regex.Match(
+                    j, "\"build_focus\"\\s*:\\s*\"([^\"]*)\"");
+                if (fm.Success) Strat.Focus = fm.Groups[1].Value;
+                Plugin.Log?.LogInfo($"[bot] strategy '{scene}': squad={Strat.Squad} " +
+                    $"reserve={Strat.Reserve} escort={Strat.Escort} army>={Strat.ArmyTarget}");
+            }
+            catch (System.Exception ex) { Plugin.Log?.LogWarning($"[bot] strategy load: {ex.Message}"); }
+        }
+
+        /// <summary>One-line playbook summary for the overlay.</summary>
+        public static string StrategySummary()
+        {
+            return $"squad={Strat.Squad} reserve={Strat.Reserve} " +
+                   $"escort={Strat.Escort} army>={Strat.ArmyTarget} " +
+                   $"focus={Strat.Focus}";
+        }
+
+        /// <summary>Raw playbook JSON text for the overlay's playbook page.</summary>
+        public static string StrategyText(string scene)
+        {
+            try
+            {
+                var p = System.IO.Path.Combine(Recorder.AgentDir, "botpack",
+                    "strategy_" + (scene ?? "").ToLowerInvariant() + ".json");
+                return System.IO.File.Exists(p) ? System.IO.File.ReadAllText(p) : "";
+            }
+            catch { return ""; }
+        }
+
+        private static int JInt(string j, string key)
+        {
+            var m = System.Text.RegularExpressions.Regex.Match(
+                j, "\"" + key + "\"\\s*:\\s*(-?\\d+)");
+            return m.Success ? int.Parse(m.Groups[1].Value) : 0;
+        }
 
         private static SlotPackRec[] LoadSlotPack(string scene)
         {
             if (slotPackScene == scene) return slotPack;
-            slotPackScene = scene; slotPack = null;
+            slotPackScene = scene; slotPack = null; spawnRoutes = null; wavePack = null; castleStands = null;
+            LoadStrategy(scene);
             try
             {
-                var p = System.IO.Path.Combine(Recorder.AgentDir, "slots", scene + ".json");
+                var p = System.IO.Path.Combine(Recorder.AgentDir, "botpack", scene + ".json");
+                if (!System.IO.File.Exists(p))
+                    p = System.IO.Path.Combine(Recorder.AgentDir, "slots", scene + ".json");   // legacy fallback
                 bool exists = System.IO.File.Exists(p);
-                Plugin.Log?.LogInfo($"[bot] slot-pack probe '{scene}': exists={exists} path='{p}'");
+                Plugin.Log?.LogInfo($"[bot] botpack probe '{scene}': exists={exists} path='{p}'");
                 if (!exists) return null;
-                slotPack = ParseSlotPack(System.IO.File.ReadAllText(p));
-                Plugin.Log?.LogInfo($"[bot] slot-pack '{scene}': {(slotPack != null ? slotPack.Length : -1)} slots parsed");
+                string json = System.IO.File.ReadAllText(p);
+                slotPack = ParseSlotPack(json);
+                spawnRoutes = ParseSpawnRoutes(json);
+                wavePack = ParseWaves(json);
+                castleStands = ParseCastleStands(json);
+                Plugin.Log?.LogInfo($"[bot] botpack '{scene}': {(slotPack != null ? slotPack.Length : -1)} slots, " +
+                    $"{(spawnRoutes != null ? spawnRoutes.Length : -1)} routes, " +
+                    $"{(wavePack != null ? wavePack.Length : -1)} waves");
             }
-            catch (System.Exception ex) { Plugin.Log?.LogWarning($"[bot] slot-pack load: {ex.Message}"); }
+            catch (System.Exception ex) { Plugin.Log?.LogWarning($"[bot] botpack load: {ex}"); }
             return slotPack;
         }
 
@@ -255,16 +383,27 @@ namespace ThronefallTrainer
         {
             var list = new System.Collections.Generic.List<SlotPackRec>();
             var ci = System.Globalization.CultureInfo.InvariantCulture;
+            // Bound the scan to the "slots" section — botpack files carry
+            // gates/spawns/level objects with their own "pos" keys that would
+            // both shadow real slots and push the substrings out of range.
+            int scopeEnd = json.Length;
+            int si = json.IndexOf("\"slots\"", System.StringComparison.Ordinal);
+            if (si >= 0)
+            {
+                int so = json.IndexOf('[', si);
+                int sc = MatchBracket(json, so);
+                if (sc > so) scopeEnd = sc;
+            }
             int i = 0;
             while (true)
             {
                 i = json.IndexOf("\"pos\"", i, System.StringComparison.Ordinal);
-                if (i < 0) break;
+                if (i < 0 || i >= scopeEnd) break;
                 var sl = new SlotPackRec { name = "" };
                 // id sits a few chars before pos
                 int h = json.LastIndexOf("\"id\"", i);
-                if (h > 0) { var m = System.Text.RegularExpressions.Regex.Match(json.Substring(h, 32), "\"id\"\\s*:\\s*(-?\\d+)"); if (m.Success) sl.id = int.Parse(m.Groups[1].Value, ci); }
-                var pm = System.Text.RegularExpressions.Regex.Match(json.Substring(i, 120),
+                if (h > 0 && i - h < 400) { var m = System.Text.RegularExpressions.Regex.Match(json.Substring(h, System.Math.Min(32, json.Length - h)), "\"id\"\\s*:\\s*(-?\\d+)"); if (m.Success) sl.id = int.Parse(m.Groups[1].Value, ci); }
+                var pm = System.Text.RegularExpressions.Regex.Match(json.Substring(i, System.Math.Min(120, json.Length - i)),
                     "\"pos\"\\s*:\\s*\\[\\s*(-?[\\d.eE+-]+)\\s*,\\s*(-?[\\d.eE+-]+)\\s*,\\s*(-?[\\d.eE+-]+)\\s*\\]");
                 if (pm.Success) sl.pos = new float[] {
                     float.Parse(pm.Groups[1].Value, ci),
@@ -337,6 +476,138 @@ namespace ThronefallTrainer
             return -1;
         }
 
+        /// <summary>"castle":{...,"stands":[{x,y,z,cl,dInt},..]} — the keep's
+        /// proven-free stand cells; same shape as a slot record.</summary>
+        private static StandPtRec[] ParseCastleStands(string json)
+        {
+            int i = json.IndexOf("\"castle\"", System.StringComparison.Ordinal);
+            if (i < 0) return null;
+            int st = json.IndexOf("\"stands\"", i, System.StringComparison.Ordinal);
+            if (st < 0 || st - i > 4000) return null;
+            int open = json.IndexOf('[', st);
+            int close = MatchBracket(json, open);
+            if (close <= open) return null;
+            var ci = System.Globalization.CultureInfo.InvariantCulture;
+            var list = new System.Collections.Generic.List<StandPtRec>();
+            foreach (System.Text.RegularExpressions.Match m in
+                System.Text.RegularExpressions.Regex.Matches(
+                    json.Substring(open, close - open),
+                    "\"x\"\\s*:\\s*(-?[\\d.eE+-]+)\\s*,\\s*\"y\"\\s*:\\s*(-?[\\d.eE+-]+)\\s*,\\s*\"z\"\\s*:\\s*(-?[\\d.eE+-]+)\\s*,\\s*\"cl\"\\s*:\\s*(-?[\\d.eE+-]+)\\s*,\\s*\"dInt\"\\s*:\\s*(-?[\\d.eE+-]+)"))
+                list.Add(new StandPtRec
+                {
+                    x = float.Parse(m.Groups[1].Value, ci),
+                    y = float.Parse(m.Groups[2].Value, ci),
+                    z = float.Parse(m.Groups[3].Value, ci),
+                    cl = float.Parse(m.Groups[4].Value, ci),
+                    dInt = float.Parse(m.Groups[5].Value, ci),
+                });
+            return list.Count == 0 ? null : list.ToArray();
+        }
+
+        /// <summary>"spawns":[{line,spawn,wp,lenM,fly,ground,narrowM,narrowAt}]
+        /// — enemy corridors; wp polylines end at the castle.</summary>
+        private static SpawnRouteRec[] ParseSpawnRoutes(string json)
+        {
+            int i = json.IndexOf("\"spawns\"", System.StringComparison.Ordinal);
+            if (i < 0) return null;
+            int open = json.IndexOf('[', i);
+            int close = MatchBracket(json, open);
+            if (close <= open) return null;
+            var ci = System.Globalization.CultureInfo.InvariantCulture;
+            var list = new System.Collections.Generic.List<SpawnRouteRec>();
+            string body = json.Substring(open + 1, close - open - 1);
+            // split top-level route objects
+            int depth = 0, start = -1;
+            for (int k = 0; k < body.Length; k++)
+            {
+                char c = body[k];
+                if (c == '{') { if (depth == 0) start = k; depth++; }
+                else if (c == '}')
+                {
+                    depth--;
+                    if (depth == 0 && start >= 0)
+                    {
+                        var seg = body.Substring(start, k - start + 1);
+                        var r = new SpawnRouteRec();
+                        var lm = System.Text.RegularExpressions.Regex.Match(seg, "\"line\"\\s*:\\s*\"([^\"]*)\"");
+                        r.line = lm.Success ? lm.Groups[1].Value : "";
+                        var sm = System.Text.RegularExpressions.Regex.Match(seg, "\"spawn\"\\s*:\\s*\\[\\s*(-?[\\d.eE+-]+)\\s*,\\s*(-?[\\d.eE+-]+)\\s*\\]");
+                        if (sm.Success) r.spawn = new float[] { float.Parse(sm.Groups[1].Value, ci), float.Parse(sm.Groups[2].Value, ci) };
+                        var wm = System.Text.RegularExpressions.Regex.Match(seg, "\"wp\"\\s*:\\s*(\\[.*\\])", System.Text.RegularExpressions.RegexOptions.Singleline);
+                        if (wm.Success)
+                        {
+                            var wps = new System.Collections.Generic.List<float[]>();
+                            foreach (System.Text.RegularExpressions.Match pm in
+                                System.Text.RegularExpressions.Regex.Matches(wm.Groups[1].Value, "\\[\\s*(-?[\\d.eE+-]+)\\s*,\\s*(-?[\\d.eE+-]+)\\s*\\]"))
+                                wps.Add(new float[] { float.Parse(pm.Groups[1].Value, ci), float.Parse(pm.Groups[2].Value, ci) });
+                            r.wp = wps.ToArray();
+                        }
+                        var nm = System.Text.RegularExpressions.Regex.Match(seg, "\"lenM\"\\s*:\\s*(-?[\\d.eE+-]+)");
+                        if (nm.Success) r.lenM = float.Parse(nm.Groups[1].Value, ci);
+                        var nrm = System.Text.RegularExpressions.Regex.Match(seg, "\"narrowM\"\\s*:\\s*(-?[\\d.eE+-]+)");
+                        if (nrm.Success) r.narrowM = float.Parse(nrm.Groups[1].Value, ci);
+                        var nam = System.Text.RegularExpressions.Regex.Match(seg, "\"narrowAt\"\\s*:\\s*\\[\\s*(-?[\\d.eE+-]+)\\s*,\\s*(-?[\\d.eE+-]+)\\s*\\]");
+                        if (nam.Success) r.narrowAt = new float[] { float.Parse(nam.Groups[1].Value, ci), float.Parse(nam.Groups[2].Value, ci) };
+                        r.fly = seg.IndexOf("\"fly\": true", System.StringComparison.Ordinal) >= 0 ||
+                                seg.IndexOf("\"fly\":true", System.StringComparison.Ordinal) >= 0;
+                        r.ground = seg.IndexOf("\"ground\": true", System.StringComparison.Ordinal) >= 0 ||
+                                   seg.IndexOf("\"ground\":true", System.StringComparison.Ordinal) >= 0;
+                        list.Add(r);
+                        start = -1;
+                    }
+                }
+            }
+            return list.Count == 0 ? null : list.ToArray();
+        }
+
+        /// <summary>"waves":[{wave,count,enemy,disp,elite,gold,line,hp}] —
+        /// which line the Nth night comes through (pre-positioning).</summary>
+        private static WaveRec[] ParseWaves(string json)
+        {
+            int i = json.IndexOf("\"waves\"", System.StringComparison.Ordinal);
+            if (i < 0) return null;
+            int open = json.IndexOf('[', i);
+            int close = MatchBracket(json, open);
+            if (close <= open) return null;
+            var ci = System.Globalization.CultureInfo.InvariantCulture;
+            var list = new System.Collections.Generic.List<WaveRec>();
+            string body = json.Substring(open + 1, close - open - 1);
+            int depth = 0, start = -1;
+            for (int k = 0; k < body.Length; k++)
+            {
+                char c = body[k];
+                if (c == '{') { if (depth == 0) start = k; depth++; }
+                else if (c == '}')
+                {
+                    depth--;
+                    if (depth == 0 && start >= 0)
+                    {
+                        var seg = body.Substring(start, k - start + 1);
+                        var w = new WaveRec();
+                        var m1 = System.Text.RegularExpressions.Regex.Match(seg, "\"wave\"\\s*:\\s*(-?\\d+)");
+                        if (m1.Success) w.wave = int.Parse(m1.Groups[1].Value, ci);
+                        var m2 = System.Text.RegularExpressions.Regex.Match(seg, "\"count\"\\s*:\\s*(-?\\d+)");
+                        if (m2.Success) w.count = int.Parse(m2.Groups[1].Value, ci);
+                        var m3 = System.Text.RegularExpressions.Regex.Match(seg, "\"enemy\"\\s*:\\s*\"([^\"]*)\"");
+                        if (m3.Success) w.enemy = m3.Groups[1].Value;
+                        var m4 = System.Text.RegularExpressions.Regex.Match(seg, "\"line\"\\s*:\\s*\"([^\"]*)\"");
+                        if (m4.Success) w.line = m4.Groups[1].Value;
+                        var m5 = System.Text.RegularExpressions.Regex.Match(seg, "\"gold\"\\s*:\\s*(-?\\d+)");
+                        if (m5.Success) w.gold = int.Parse(m5.Groups[1].Value, ci);
+                        var m6 = System.Text.RegularExpressions.Regex.Match(seg, "\"hp\"\\s*:\\s*(-?[\\d.eE+-]+)");
+                        if (m6.Success) w.hp = float.Parse(m6.Groups[1].Value, ci);
+                        var m7 = System.Text.RegularExpressions.Regex.Match(seg, "\"disp\"\\s*:\\s*\"([^\"]*)\"");
+                        if (m7.Success) w.disp = m7.Groups[1].Value;
+                        w.elite = seg.IndexOf("\"elite\": true", System.StringComparison.Ordinal) >= 0 ||
+                                  seg.IndexOf("\"elite\":true", System.StringComparison.Ordinal) >= 0;
+                        list.Add(w);
+                        start = -1;
+                    }
+                }
+            }
+            return list.Count == 0 ? null : list.ToArray();
+        }
+
         // Slots that refused progress (deny-loop, stuck harvest/choice state)
         // are parked here until their timestamp expires — keeps SpendGold from
         // glueing to one dead interactor while others are affordable.
@@ -364,6 +635,9 @@ namespace ThronefallTrainer
         /// whose InstanceID matches keeps its pick even if another slot scores
         /// higher — flip-flopping the pick mid-hold refunds every paid coin
         /// (CostDisplay.CancelFill respawns them).</param>
+        public static Snapshot Last;               // newest capture (overlay)
+        public static bool LastValid;
+
         public static Snapshot Capture(int preferBuildKey = -1)
         {
             var s = new Snapshot { GameState = "unknown" };
@@ -502,6 +776,8 @@ namespace ThronefallTrainer
             // Nearest live enemy to the hero AND nearest to the castle — the
             // castle-proximate one is what actually loses the run, so it wins
             // target priority for legit defense play.
+            if (sceneDoorAnchors != null && doorFoes != null)
+                for (int d = 0; d < doorFoes.Length; d++) doorFoes[d] = 0;
             s.NearestEnemyDist = float.MaxValue;
             float castleThreatSq = float.MaxValue;
             Vector3 enemySum = Vector3.zero;
@@ -523,6 +799,12 @@ namespace ThronefallTrainer
                     float dc = (ep - s.CastlePos).sqrMagnitude;
                     if (dc < castleThreatSq) { castleThreatSq = dc; s.CastleThreat = e; }
                 }
+                if (sceneDoorAnchors != null && doorFoes != null)
+                    for (int dd = 0; dd < sceneDoorAnchors.Length && dd < doorFoes.Length; dd++)
+                    {
+                        float fx = sceneDoorAnchors[dd].x - ep.x, fz = sceneDoorAnchors[dd].z - ep.z;
+                        if (fx * fx + fz * fz < 900f) { doorFoes[dd]++; break; }   // <30 m of the anchor
+                    }
                 enemySum += ep; enemyN++;
             }
             s.EnemiesNearHero = foesNear;
@@ -550,6 +832,16 @@ namespace ThronefallTrainer
                         if (p != null && p.range > s.NearEnemyRange) s.NearEnemyRange = p.range;
             }
 
+            // Squad doors: cached corridor anchors — built BEFORE the unit
+            // scan so manned/free accounting works this capture.
+            if (s.DoorAnchors == null) BuildDoors(ref s);
+            if (s.DoorAnchors != null)
+            {
+                for (int d = 0; d < doorUnit.Length; d++) doorUnit[d] = 0;
+                s.DoorsCovered = 0; s.FreeUnits = 0;
+                s.UncoveredDoorPos = Vector3.zero; s.UncoveredDoorLine = null;
+            }
+
             // Allied army (troop buildings / heroes). Used to anchor the hero
             // behind the meatshield line for legit defense.
             if (tm.PlayerUnits != null)
@@ -559,9 +851,132 @@ namespace ThronefallTrainer
                 {
                     if (u == null || u.Hp == null || !u.Hp.Alive) continue;
                     allySum += u.transform.position; s.AllyCount++;
+                    // Squad accounting: a unit is "manned" when it stands
+                    // within 25 m of a door anchor — units still WALKING the
+                    // corridor count so a door isn't re-posted while its
+                    // squad is en route. Everything else is free.
+                    bool nearDoor = false;
+                    if (s.DoorAnchors != null)
+                    {
+                        for (int d = 0; d < s.DoorAnchors.Length; d++)
+                        {
+                            float dx = s.DoorAnchors[d].x - u.transform.position.x;
+                            float dz = s.DoorAnchors[d].z - u.transform.position.z;
+                            if (dx * dx + dz * dz < 625f) { nearDoor = true; if (doorUnit != null && d < doorUnit.Length) doorUnit[d]++; break; }
+                        }
+                    }
+                    if (!nearDoor) s.FreeUnits++;
                 }
                 if (s.AllyCount > 0) s.AllyCentroid = allySum / s.AllyCount;
             }
+            // Door coverage summary for the strategy layer. Each door's
+            // target squad size rises after a breach on that corridor —
+            // the perimeter "learns" which doors leak. Uncovered-door pick
+            // runs two passes: corridors with live foes on them first (hot),
+            // then the rest by distance-to-castle (the most dangerous leak).
+            if (s.DoorAnchors != null)
+            {
+                string pk = PKey(ref s);
+                s.PolicyKey = pk;
+                s.DoorCount = s.DoorAnchors.Length;
+                s.DoorsCovered = 0;
+                s.UncoveredDoorPos = Vector3.zero; s.UncoveredDoorLine = null;
+                s.UncoveredDoorHot = false;
+                float leakD = float.MaxValue;
+                for (int hot = 1; hot >= 0; hot--)
+                {
+                    for (int d = 0; d < s.DoorAnchors.Length; d++)
+                    {
+                        if (doorUnit[d] >= DoorTarget(d, pk)) { if (hot == 1) s.DoorsCovered++; continue; }
+                        if ((doorFoes != null && doorFoes[d] > 0) != (hot == 1)) continue;
+                        float dc = FlatDist(s.DoorAnchors[d], s.CastlePos);
+                        if (hot == 1 || dc < leakD)
+                        {
+                            if (hot == 0) leakD = dc;
+                            s.UncoveredDoorPos = s.DoorAnchors[d];
+                            s.UncoveredDoorLine = d < s.DoorLines.Length ? s.DoorLines[d] : "";
+                            s.UncoveredDoorTarget = DoorTarget(d, pk);
+                            s.UncoveredDoorHot = hot == 1;
+                            if (hot == 1) break;   // first hot door wins
+                        }
+                    }
+                }
+                s.HasUncoveredDoor = s.UncoveredDoorPos != Vector3.zero;
+                // Army target: squad-size per door (breach doubles), at least
+                // 16, plus headroom for the incoming wave — production runs
+                // until met.
+                int at = 16;
+                if (s.DoorAnchors != null)
+                {
+                    int doorNeed = 0;
+                    for (int d = 0; d < s.DoorAnchors.Length; d++) doorNeed += DoorTarget(d, pk);
+                    at = Mathf.Min(Mathf.Max(doorNeed, 16), 60);
+                }
+                if (s.NextWaveCount > 0) at = Mathf.Max(at, (int)(s.NextWaveCount * 1.2f));
+                if (Strat.ArmyTarget > at) at = Strat.ArmyTarget;          // M3 playbook floor
+                if (Coach.ArmyTargetFloor > at) at = Coach.ArmyTargetFloor; // live advisor floor
+                s.ArmyTarget = at;
+            }
+            // Coach posture: "fighter" widens the hero's self-defense bubble.
+            s.SelfDefendRange = Coach.HeroPosture == "fighter" ? 12f : 7f;
+            // Learned night-call timing — the Q-table tunes how long the day
+            // build phase runs before the horn (150/240/330 s budgets).
+            {
+                string pk0 = PKey(ref s);
+                var nb = Policy.Eval("night",
+                    new[] { "150", "240", "330" }, pk0);
+                s.DayBudget = float.TryParse(nb, out float v) ? v : 240f;
+            }
+
+            // RED ALERT: an enemy is PAST its own corridor's door post —
+            // closer to the castle than the squad anchor on its line — or
+            // deep inside the building ring. (The funded building sprawl makes
+            // a raw radius useless: spawners pop "inside" it instantly.)
+            if (s.CastleThreat != null && s.HasCastle)
+            {
+                float pr = ProtectedRadius(ref s);
+                s.RedAlertRadius = pr;
+                float lineDoor = float.MaxValue;
+                var tp = s.CastleThreat.transform.position;
+                if (s.DoorAnchors != null)
+                {
+                    for (int d = 0; d < s.DoorAnchors.Length; d++)
+                    {
+                        float dx = s.DoorAnchors[d].x - tp.x, dz = s.DoorAnchors[d].z - tp.z;
+                        if (dx * dx + dz * dz < 1600f)   // threat on this door's corridor
+                        {
+                            float dd = FlatDist(s.DoorAnchors[d], s.CastlePos);
+                            if (dd < lineDoor) lineDoor = dd;
+                        }
+                    }
+                }
+                bool pastDoor = lineDoor < float.MaxValue &&
+                    s.CastleThreatDist < lineDoor - 6f;
+                bool deepInside = s.CastleThreatDist < Mathf.Min(pr, 30f);
+                if (pastDoor || deepInside)
+                {
+                    s.RedAlert = true;
+                    if (s.DoorAnchors != null)
+                    {
+                        // mark the breach source: door nearest the threat
+                        float bd = float.MaxValue; int bi = -1;
+                        for (int d = 0; d < s.DoorAnchors.Length; d++)
+                        {
+                            float dx = s.DoorAnchors[d].x - tp.x, dz = s.DoorAnchors[d].z - tp.z;
+                            float dd = dx * dx + dz * dz;
+                            if (dd < bd) { bd = dd; bi = d; }
+                        }
+                        if (bi >= 0 && !doorBreach[bi])
+                        {
+                            doorBreach[bi] = true;
+                            BreachCount++;
+                            Policy.Pulse(-0.4f);   // RL: breaches cost
+                            Plugin.Log?.LogWarning($"[bot] BREACH on door '{s.DoorLines[bi]}' — squad target raised");
+                        }
+                    }
+                }
+            }
+            else s.RedAlert = false;
 
             // Nearest unclaimed coin. freeCoins is maintained by TagManager via
             // Coin.OnEnable/OnDestroy, so it should always be accurate.
@@ -683,12 +1098,29 @@ namespace ThronefallTrainer
                     s.ThreatAnchor = s.CastlePos + axis.normalized * 9f;
                     s.HasThreatAnchor = true;
                 }
+                // Botpack upgrade: intercept ON the corridor — the route
+                // waypoint ~10 m out from the castle that sits on the line
+                // the threat is actually walking (not just radial push-out).
+                var ip = InterceptAnchor(tc, s.CastlePos);
+                if (ip != Vector3.zero)
+                {
+                    s.ThreatAnchor = ip;
+                    s.HasThreatAnchor = true;
+                }
             }
 
             // Night resets the dead-slot park list: dusk forces every
             // interactor's state to None anyway, so parked slots get a fresh
             // retry on the next day rather than expiring mid-day.
             if (s.IsNight && buildIgnore.Count > 0) buildIgnore.Clear();
+
+            // ArmyAnchor: day-time pre-positioning on the incoming wave's
+            // corridor (botpack waves -> spawnRoutes -> a waypoint ~12 m out
+            // from the castle on that line). PositionArmy parks the banner
+            // on the door the next wave actually walks.
+            s.ArmyAnchor = NextWaveAnchor(s.Wave, s.CastlePos);
+            s.HasArmyAnchor = s.ArmyAnchor != Vector3.zero;
+            s.ArmyAnchorLine = armyAnchorLine;
 
             // Day economy: TagManager maintains playerBuildingInteractors (each
             // slot registers/unregisters itself). CanBeInteractedWith is true
@@ -719,6 +1151,9 @@ namespace ThronefallTrainer
                     if (until > Time.unscaledTime) continue;   // still parked
                     buildIgnore.Remove(bi);                    // expired -> retry
                 }
+                // Episodic memory: this slot failed before — never retry.
+                if (Memory.IsParked(s.SceneName ?? "", bi.transform.position))
+                    continue;
                 var bs = bi.targetBuilding;
                 if (bs != null)
                 {
@@ -733,16 +1168,39 @@ namespace ThronefallTrainer
                 if (bs != null)
                 {
                     GetBuildClass(bs, out int military, out int incomeDelta);
-                    score += military * 100;
-                    // P1 use: big incoming or final wave → military weight
-                    // doubles; towers/unit spawners beat income when the run
-                    // is on the line (v3 Phase 1 acceptance).
+                    // Defense-first: while the perimeter is uncovered or red
+                    // alert is active, military slots dominate the pick —
+                    // walls/towers/barracks before income houses. But when
+                    // the wallet is empty, income IS the defense — the next
+                    // military purchase needs funding first.
+                    bool broke = s.Balance < 10;
+                    // Army shortage is the TOP build driver: more troop
+                    // production before anything else — the war machine is
+                    // what covers the doors. Broke still funds first.
+                    bool armyShort = s.ArmyTarget > 0 && s.AllyCount < s.ArmyTarget;
+                    bool defenseFirst = !broke && (s.RedAlert || s.DoorsCovered < s.DoorCount);
+                    score += military * (armyShort ? 600 : defenseFirst ? 400 : 100 + Mathf.Min(s.NextWaveCount * 15, 300));
+                    // Coach/playbook/RL focus bias on top of the situation bias.
+                    string focus = !string.IsNullOrEmpty(Coach.BuildFocus) ? Coach.BuildFocus
+                        : (!string.IsNullOrEmpty(Strat.Focus) ? Strat.Focus
+                        : Policy.Eval("build_focus",
+                            new[] { "military", "income", "defense", "balanced" },
+                            s.PolicyKey ?? ""));
+                    s.PolicyFocus = focus;
+                    if (focus == "military") score += military * 200;
+                    else if (focus == "income" && incomeDelta > 0) score += incomeDelta * 60;
+                    else if (focus == "defense") score += military * 120;
+                    if (broke && incomeDelta > 0) score += Mathf.Min(incomeDelta, 15) * 40;
                     if (military > 0 && (s.FinalWaveNext || s.NextWaveCount >= 30))
                         score += military * 100;
                     if (incomeDelta > 0) score += 30 + Mathf.Min(incomeDelta, 10) * 3;
                 }
                 s.BuildCount++;
                 float d = (bi.transform.position - s.HeroPos).sqrMagnitude;
+                // Efficiency: closer work wins ties AND beats slightly better
+                // far work — walking 60 m to a marginally-better slot is how
+                // the bot used to spend the whole day traveling.
+                score += Mathf.Max(0, 40 - (int)Mathf.Sqrt(d)) * 3;
                 // Held-hold stickiness: the slot we're mid-pay on wins
                 // outright while it's still interactable and near — prevents
                 // per-tick pick flips that refund the partial fill.
@@ -870,6 +1328,26 @@ namespace ThronefallTrainer
                     {
                         if (br == null) continue;
                         cls.inc += br.goldIncomeChange + br.energyCoreIncomeChange;
+                        // Keyword fallback: walls/gates/towers carry no
+                        // AutoAttack object, so the component check alone
+                        // never flagged defensive upgrades — the bot skipped
+                        // every wall it was told to build.
+                        string nm = (br.choiceDetails != null ? (br.choiceDetails.name ?? "") : "") + " " + (bs.buildingName ?? "");
+                        if (nm.IndexOf("wall", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+                            nm.IndexOf("gate", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+                            nm.IndexOf("tower", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+                            nm.IndexOf("barrack", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+                            nm.IndexOf("archer", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+                            nm.IndexOf("ballista", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+                            nm.IndexOf("militia", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+                            nm.IndexOf("guard", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+                            nm.IndexOf("cannon", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+                            nm.IndexOf("trap", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+                            nm.IndexOf("spike", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+                            nm.IndexOf("watchtower", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+                            nm.IndexOf("outpost", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+                            nm.IndexOf("defense", System.StringComparison.OrdinalIgnoreCase) >= 0)
+                            cls.mil++;
                         if (br.objectsToActivate == null) continue;
                         foreach (var go in br.objectsToActivate)
                         {
@@ -886,6 +1364,171 @@ namespace ThronefallTrainer
             }
             buildClassCache[bs] = cls;
             military = cls.mil; income = cls.inc;
+        }
+
+        /// <summary>Intercept point on the corridor a threat is walking —
+        /// the route waypoint ~10 m out from the castle on the line nearest
+        /// the threat's current position.</summary>
+        private static Vector3 InterceptAnchor(Vector3 threat, Vector3 castle)
+        {
+            if (spawnRoutes == null || castle == Vector3.zero) return Vector3.zero;
+            SpawnRouteRec best = null; float bd = float.MaxValue;
+            foreach (var r in spawnRoutes)
+            {
+                if (r.wp == null || r.wp.Length < 2) continue;
+                for (int i = 0; i < r.wp.Length; i++)
+                {
+                    float dx = r.wp[i][0] - threat.x, dz = r.wp[i][1] - threat.z;
+                    float d = dx * dx + dz * dz;
+                    if (d < bd) { bd = d; best = r; }
+                }
+            }
+            if (best == null || bd > 40f * 40f) return Vector3.zero;
+            for (int i = best.wp.Length - 1; i >= 0; i--)
+            {
+                float dx = best.wp[i][0] - castle.x, dz = best.wp[i][1] - castle.z;
+                if (dx * dx + dz * dz >= 100f)
+                    return new Vector3(best.wp[i][0], castle.y, best.wp[i][1]);
+            }
+            var last = best.wp[best.wp.Length - 1];
+            return new Vector3(last[0], castle.y, last[1]);
+        }
+
+        /// <summary>Day-time army anchor: the corridor the NEXT wave spawns
+        /// down (wave table -> line -> route), ~12 m out from the castle.</summary>
+        private static Vector3 NextWaveAnchor(int currentWave, Vector3 castle)
+        {
+            armyAnchorLine = null;
+            if (wavePack == null || spawnRoutes == null || castle == Vector3.zero)
+                return Vector3.zero;
+            int next = currentWave + 1;
+            WaveRec w = null;
+            foreach (var e in wavePack)
+                if (e.wave >= next && (w == null || e.wave < w.wave)) w = e;
+            if (w == null || string.IsNullOrEmpty(w.line)) return Vector3.zero;
+            SpawnRouteRec r = null;
+            foreach (var c in spawnRoutes)
+                if (c.line == w.line && c.wp != null && c.wp.Length > 0) { r = c; break; }
+            if (r == null) return Vector3.zero;
+            armyAnchorLine = w.line;
+            for (int i = r.wp.Length - 1; i >= 0; i--)
+            {
+                float dx = r.wp[i][0] - castle.x, dz = r.wp[i][1] - castle.z;
+                if (dx * dx + dz * dz >= 144f)
+                    return new Vector3(r.wp[i][0], castle.y, r.wp[i][1]);
+            }
+            var last = r.wp[r.wp.Length - 1];
+            return new Vector3(last[0], castle.y, last[1]);
+        }
+
+        /// <summary>Perimeter doors: for every ground-capable corridor, the
+        /// waypoint ~15 m out from the castle end — where a 4-unit squad can
+        /// hold the door while the hero works elsewhere.</summary>
+        /// <summary>Squad target per door: 4 base, 8 after that corridor
+        /// leaked once (breach memory survives the match).</summary>
+        /// <summary>RL state key — discrete buckets the Q-table can learn
+        /// against (scene/wave/army/coverage/alert/wallet).</summary>
+        private static string PKey(ref Snapshot s)
+        {
+            int ab = s.AllyCount < 10 ? 0 : s.AllyCount < 20 ? 1 : s.AllyCount < 40 ? 2 : 3;
+            int cb = s.DoorCount <= 0 ? 0 : Mathf.Min(3, (int)(4f * s.DoorsCovered / s.DoorCount));
+            return (s.SceneName ?? "?") + "|w" + s.Wave + "|a" + ab + "|c" + cb +
+                   "|r" + (s.RedAlert ? 1 : 0) + "|b" + (s.Balance < 10 ? 1 : 0);
+        }
+
+        private static int DoorTarget(int d, string pkey)
+        {
+            // Coach override > M3 playbook > learned/default.
+            int baseSz;
+            if (Coach.SquadSize > 0) baseSz = Coach.SquadSize;
+            else if (Strat.Squad > 0) baseSz = Strat.Squad;
+            else
+            {
+                var pick = Policy.Eval("squad",
+                    new[] { "3", "4", "5", "6", "8" }, pkey);
+                baseSz = int.TryParse(pick, out int v) ? v : 4;
+            }
+            if (doorBreach == null || d >= doorBreach.Length) return baseSz;
+            return doorBreach[d] ? baseSz * 2 : baseSz;
+        }
+
+        /// <summary>The building ring: farthest owned structure's distance
+        /// from the castle + margin. Enemies inside it are red alert.</summary>
+        private static float ProtectedRadius(ref Snapshot s)
+        {
+            var builds = TagManager.instance != null ? TagManager.instance.playerBuildingInteractors : null;
+            float best = 14f;   // bare castle keep radius
+            if (builds != null)
+            {
+                for (int i = 0; i < builds.Count; i++)
+                {
+                    var bi = builds[i];
+                    if (bi == null || bi.transform == null) continue;
+                    float d = FlatDist(bi.transform.position, s.CastlePos);
+                    if (d > best) best = d;
+                }
+            }
+            return best + 4f;
+        }
+
+        private static void BuildDoors(ref Snapshot s)
+        {
+            // Cached per scene — the corridor list is static map data; the
+            // Snapshot is recreated every capture so this must not rebuild.
+            if (doorScene != s.SceneName || sceneDoorAnchors == null)
+            {
+                doorScene = s.SceneName;
+                sceneDoorAnchors = null; sceneDoorLines = null;
+                doorBreach = null; doorUnit = null;
+                if (spawnRoutes != null && s.CastlePos != Vector3.zero)
+                {
+                    var A = new System.Collections.Generic.List<Vector3>();
+                    var L = new System.Collections.Generic.List<string>();
+                    var seen = new System.Collections.Generic.HashSet<string>(
+                        System.StringComparer.OrdinalIgnoreCase);
+                    foreach (var r in spawnRoutes)
+                    {
+                        if (r == null || r.wp == null || r.wp.Length < 3 || !r.ground) continue;
+                        // ONE door per spawn line — parallel routes into the
+                        // same choke are covered by the same posted squad.
+                        // Trim+ignore-case: extracted names carry whitespace.
+                        string key = r.line == null ? null : r.line.Trim();
+                        if (key != null && !seen.Add(key)) continue;
+                        if (key == null && seen.Contains("")) continue;
+                        if (key == null) seen.Add("");
+                        var last = r.wp[r.wp.Length - 1];
+                        // perimeter anchor ~40 m out (outer line — squads meet
+                        // the wave early, not at the doorstep)
+                        bool added = false;
+                        for (int i = r.wp.Length - 1; i >= 0; i--)
+                        {
+                            float dx = r.wp[i][0] - last[0], dz = r.wp[i][1] - last[1];
+                            if (dx * dx + dz * dz >= 1600f)
+                            {
+                                A.Add(new Vector3(r.wp[i][0], s.CastlePos.y, r.wp[i][1]));
+                                L.Add(key ?? "");
+                                added = true;
+                                break;
+                            }
+                        }
+                        if (!added)   // corridor <40 m: midpoint post instead
+                        {
+                            var mid = r.wp[r.wp.Length / 2];
+                            A.Add(new Vector3(mid[0], s.CastlePos.y, mid[1]));
+                            L.Add(key ?? "");
+                        }
+                    }
+                    sceneDoorAnchors = A.ToArray(); sceneDoorLines = L.ToArray();
+                    Plugin.Log?.LogInfo($"[bot] squad doors: {sceneDoorAnchors.Length} ({string.Join(", ", L)})");
+                }
+            }
+            s.DoorAnchors = sceneDoorAnchors; s.DoorLines = sceneDoorLines;
+            if (doorUnit == null || doorUnit.Length != (sceneDoorAnchors?.Length ?? 0))
+            {
+                doorUnit = new int[sceneDoorAnchors?.Length ?? 0];
+                doorBreach = new bool[sceneDoorAnchors?.Length ?? 0];
+                doorFoes = new int[sceneDoorAnchors?.Length ?? 0];
+            }
         }
 
         private static float FlatDist(Vector3 a, Vector3 b)

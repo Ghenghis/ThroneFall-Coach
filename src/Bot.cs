@@ -128,6 +128,24 @@ namespace ThronefallTrainer
 
         // Session memory: which scenes we've played and how often we lost
         // each, so a too-hard node rotates out instead of looping forever.
+        private static bool lastNightTick = true;   // first tick IS a day-start — coach plans it
+
+        /// <summary>Compact telemetry digest for the coach — ~200 tokens.</summary>
+        private static string Digest(in BotPerception.Snapshot s)
+        {
+            return "{\"scene\":\"" + (s.SceneName ?? "") + "\"," +
+                "\"wave\":" + s.Wave + ",\"wave_max\":" + s.WaveTotal +
+                ",\"gold\":" + s.Balance + ",\"cores\":" + s.CoreBalance +
+                ",\"allies\":" + s.AllyCount + ",\"free_units\":" + s.FreeUnits +
+                ",\"doors_covered\":" + s.DoorsCovered + ",\"doors\":" + s.DoorCount +
+                ",\"foes\":" + s.EnemyCount + ",\"red_alert\":" + (s.RedAlert ? "true" : "false") +
+                ",\"buildings\":" + s.BuildCount +
+                ",\"hero_hp\":" + s.HeroHpPct.ToString("0.##",
+                    System.Globalization.CultureInfo.InvariantCulture) +
+                ",\"defeats\":" + (sessionDefeats.TryGetValue(s.SceneName ?? "", out int dd) ? dd : 0) +
+                ",\"policy\":" + Policy.Stats() + "}";
+        }
+
         private static readonly System.Collections.Generic.Dictionary<string, int> sessionDefeats =
             new System.Collections.Generic.Dictionary<string, int>();
         private static readonly System.Collections.Generic.HashSet<string> playedThisSession =
@@ -215,16 +233,21 @@ namespace ThronefallTrainer
             if (!Enabled) return;
 
             // Re-steer every frame so moving targets (coins/arrows/enemies) are tracked.
+            // Exponential smoothing — frame-rate lerp of the desired direction
+            // turns the hero like a human instead of snapping at 4 Hz decision
+            // boundaries. Retarget pops become smooth arcs.
             var pm = PlayerMovement.instance;
+            Vector3 want = Vector3.zero;
             if (hasTarget && pm != null)
             {
                 if (Legit)
-                    DesiredDir = DirTo(pm.transform.position, NavSteerPoint(pm.transform.position, AimPos), navSteerArrive);
+                    want = DirTo(pm.transform.position, NavSteerPoint(pm.transform.position, AimPos), navSteerArrive);
                 else
-                    DesiredDir = DirTo(pm.transform.position, AimPos, arriveDist);
+                    want = DirTo(pm.transform.position, AimPos, arriveDist);
             }
-            else
-                DesiredDir = Vector3.zero;
+            float k = 1f - Mathf.Exp(-10f * Time.unscaledDeltaTime);
+            DesiredDir = Vector3.Lerp(DesiredDir, want, k);
+            if (DesiredDir.sqrMagnitude < 0.0001f) DesiredDir = Vector3.zero;
 
             // Hold-to-pay at FRAME rate: CostDisplay.FillUp advances by
             // Time.deltaTime PER CALL — a 4 Hz decide-tick pump starves the
@@ -242,8 +265,11 @@ namespace ThronefallTrainer
                 holdDiagAt = Time.unscaledTime + 1f;
                 var ty = heldBuild.GetType();
                 object Get(string n) => ty.GetField(n, System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.GetValue(heldBuild);
-                Plugin.Log?.LogInfo($"[bot] hold-diag '{heldBuild.name}': state={Get("currentState")} started={Get("interactionStarted")} waitChoice={Get("isWaitingForChoice")} complete={Get("interactionComplete")} harvest={heldBuild.canBeHarvested} canInter={heldBuild.CanBeInteractedWith}");
+                string bName = heldBuild.targetBuilding != null ? heldBuild.targetBuilding.buildingName : "";
+                Plugin.Log?.LogInfo($"[bot] hold-diag '{heldBuild.name}' b='{bName}': state={Get("currentState")} started={Get("interactionStarted")} waitChoice={Get("isWaitingForChoice")} complete={Get("interactionComplete")} harvest={heldBuild.canBeHarvested} canInter={heldBuild.CanBeInteractedWith}");
             }
+
+            Coach.PerFrame();   // live.png + user command-file poll
 
             decisionClock += Time.unscaledDeltaTime;
             if (decisionClock < DecisionInterval) return;
@@ -259,6 +285,7 @@ namespace ThronefallTrainer
             // CostDisplay.CancelFill respawn mechanic).
             int heldKey = heldBuild != null ? heldBuild.GetInstanceID() : -1;
             var s = BotPerception.Capture(heldKey);
+            BotPerception.Last = s; BotPerception.LastValid = true;
 
             // Session memory edges: a victory clears the level's defeat count
             // and marks it toured; a defeat counts toward rotating the node
@@ -270,6 +297,7 @@ namespace ThronefallTrainer
                     playedThisSession.Add(lastMatchScene);
                     sessionDefeats.Remove(lastMatchScene);
                     Recorder.MatchEnd("victory", Legit);
+                    Policy.MatchEnd(true, Mathf.Max(0f, s.CastleHpPct), BotPerception.BreachCount);
                 }
                 else if (s.GameState == "AfterMatchDefeat" && lastMatchScene != null)
                 {
@@ -278,9 +306,29 @@ namespace ThronefallTrainer
                     Plugin.Log?.LogInfo($"[bot] defeat on '{lastMatchScene}' (x{sessionDefeats[lastMatchScene]} this session)");
                     LogLine(in s, "defeat");
                     Recorder.MatchEnd("defeat", Legit);
+                    Policy.MatchEnd(false, Mathf.Max(0f, s.CastleHpPct), BotPerception.BreachCount);
+                    Coach.Advise("defeat", Digest(in s));
+                    if (Coach.VisionEnabled)
+                    {
+                        var shot = ScreenCapture.CaptureScreenshotAsTexture();
+                        if (shot != null)
+                        {
+                            Coach.AnalyzeScreenshot(shot.EncodeToPNG(),
+                                "scene=" + (s.SceneName ?? ""));
+                            UnityEngine.Object.Destroy(shot);
+                        }
+                    }
                 }
                 lastGameState = s.GameState;
             }
+            // Day-start edge: night survived (+0.2 reward pulse) and the
+            // coach plans the build order for the day.
+            if (lastNightTick && !s.IsNight && s.Valid)
+                Policy.Pulse(0.2f);
+            if (lastNightTick && !s.IsNight && s.Valid &&
+                !(s.SceneName != null && s.SceneName.StartsWith("_")))
+                Coach.Advise("day-start", Digest(in s));
+            if (s.Valid) lastNightTick = s.IsNight;
             if (s.Valid && !s.SceneName.StartsWith("_")) lastMatchScene = s.SceneName;
 
             if (!s.Valid)
@@ -375,6 +423,7 @@ namespace ThronefallTrainer
                     Recorder.CountRuleFire(rid);
                 }
             Mode = res.Mode;
+            NetPolicy.Shadow(in s, res.Mode.ToString());   // learned-net agreement
             // Pursuit ref for the cheat-steer path and attack diag — the pure
             // layer can't hold Unity refs, so it returns a flag and we resolve.
             engageTarget = res.Pursue == 2
@@ -646,6 +695,11 @@ namespace ThronefallTrainer
                         bi.Focus(pi);            // harvest pays out on focus
                         bi.InteractionBegin(pi);
                         heldBuild = bi;
+                        // RL: the build-focus choice is now a USED decision.
+                        if (!string.IsNullOrEmpty(s.PolicyFocus))
+                            Policy.Commit("build_focus", s.PolicyFocus,
+                                s.PolicyKey ?? "",
+                                new[] { "military", "income", "defense", "balanced" });
                         Plugin.Log?.LogInfo($"[bot] building '{bi.name}' -> hold-to-pay");
                     }
                     break;
@@ -685,15 +739,27 @@ namespace ThronefallTrainer
                             $"canInteract={s.NearestBuild.CanBeInteractedWith}");
                     }
                     BotPerception.IgnoreBuild(s.NearestBuild, 600f);
+                    if (s.NearestBuild != null)
+                        Memory.Park(s.SceneName,
+                            s.NearestBuild.transform.position, "build-stall");
                     break;
                 case IntentKind.PumpAttack:
                     PumpAttack();
                     break;
                 case IntentKind.CommandArmy:
-                    CommandArmyAll();
+                    CommandArmyAll(in s);
                     break;
                 case IntentKind.PlaceArmy:
                     PlaceArmy();
+                    break;
+                case IntentKind.PlaceSquad:
+                    PlaceSquad(in s);
+                    break;
+                case IntentKind.RecallToBreach:
+                    RecallToBreach(in s);
+                    break;
+                case IntentKind.EscortHero:
+                    EscortHero(in s);
                     break;
                 case IntentKind.HornInteract:
                     if (s.Horn != null && pi != null)
@@ -703,6 +769,8 @@ namespace ThronefallTrainer
                     }
                     break;
                 case IntentKind.SwitchNight:
+                    Policy.Commit("night", ((int)s.DayBudget).ToString(),
+                        s.PolicyKey ?? "", new[] { "150", "240", "330" });
                     DayNightCycle.Instance?.SwitchToNight();
                     break;
                 case IntentKind.SeedLoadout:
@@ -740,19 +808,118 @@ namespace ThronefallTrainer
             }
         }
 
-        /// <summary>Army step 1: select every live allied unit into the command set.</summary>
-        private static void CommandArmyAll()
+        private static bool NearDoor(Vector3 p, Vector3[] doors, float r)
+        {
+            if (doors == null) return false;
+            for (int i = 0; i < doors.Length; i++)
+            {
+                float dx = doors[i].x - p.x, dz = doors[i].z - p.z;
+                if (dx * dx + dz * dz < r * r) return true;
+            }
+            return false;
+        }
+
+        /// <summary>Army step 1: select every FREE allied unit (door squads
+        /// stay posted — their HomePosition is their door anchor).</summary>
+        private static void CommandArmyAll(in BotPerception.Snapshot s)
         {
             var cu = CommandUnits.instance;
             if (cu == null) return;
+            var doors = s.DoorAnchors;
             int added = 0;
             foreach (var u in TagManager.instance.PlayerUnits)
             {
                 if (u == null || u.Hp == null || !u.Hp.Alive) continue;
+                if (NearDoor(u.transform.position, doors, 25f)) continue;   // posted/en-route squad — leave it
                 cu.OnUnitAdd(u, false); added++;
             }
             cu.commanding = added > 0;
-            Plugin.Log?.LogInfo($"[bot] commanding {added} allied unit(s) to anchor");
+            Plugin.Log?.LogInfo($"[bot] commanding {added} free unit(s) (squads stay posted)");
+        }
+
+        /// <summary>Post a squad at the current door anchor REMOTELY — set
+        /// each free unit's HomePosition + hold and let its own AI walk the
+        /// corridor. The hero never leaves the build loop for posting trips.
+        /// HoldPosition makes them engage anything within ~7 m of the door.</summary>
+        private static void PlaceSquad(in BotPerception.Snapshot s)
+        {
+            int target = s.UncoveredDoorTarget > 0 ? s.UncoveredDoorTarget : 4;
+            int posted = 0;
+            var units = TagManager.instance.PlayerUnits;
+            for (int i = 0; i < units.Count && posted < target; i++)
+            {
+                var t = units[i];
+                if (t == null || t.Hp == null || !t.Hp.Alive) continue;
+                var u = t.GetComponent<PathfindMovementPlayerunit>();
+                if (u == null) continue;
+                if (NearDoor(u.transform.position, s.DoorAnchors, 25f)) continue;
+                if (u.FollowingPlayer) continue;                       // escort stays
+                float a = posted * 1.571f;
+                Vector3 off = new Vector3(Mathf.Cos(a), 0f, Mathf.Sin(a)) * (1.2f + 0.4f * posted);
+                u.HomePosition = s.UncoveredDoorPos + off;
+                u.HasReachedHomePositionAlready = false;
+                u.FollowPlayer(false);
+                u.HoldPosition = true;
+                posted++;
+            }
+            if (posted > 0)
+            {
+                // RL: the squad-size choice is now a USED decision.
+                Policy.Commit("squad", target.ToString(),
+                    s.PolicyKey ?? "", new[] { "3", "4", "5", "6", "8" });
+                Plugin.Log?.LogInfo($"[bot] posted squad {posted}/{target} remotely at door '{s.UncoveredDoorLine}'");
+            }
+        }
+
+        /// <summary>RED ALERT: an enemy is inside the ring — EVERY unit
+        /// converges on the threat anchor (door squads abandon their posts,
+        /// escorts drop follow). The city-line takes priority over any door.</summary>
+        private static void RecallToBreach(in BotPerception.Snapshot s)
+        {
+            var units = TagManager.instance.PlayerUnits;
+            int sent = 0;
+            for (int i = 0; i < units.Count; i++)
+            {
+                var t = units[i];
+                if (t == null || t.Hp == null || !t.Hp.Alive) continue;
+                var u = t.GetComponent<PathfindMovementPlayerunit>();
+                if (u == null) continue;
+                float a = sent * 0.785f;
+                Vector3 off = new Vector3(Mathf.Cos(a), 0f, Mathf.Sin(a)) * (1.5f + 0.3f * sent);
+                u.FollowPlayer(false);
+                u.HomePosition = s.ThreatAnchor + off;
+                u.HasReachedHomePositionAlready = false;
+                u.HoldPosition = true;
+                sent++;
+            }
+            Plugin.Log?.LogWarning($"[bot] BREACH-RESPONSE: {sent} unit(s) converging on threat");
+        }
+
+        /// <summary>Escort: a slice of free units follows the hero through
+        /// his build route — FollowPlayer, not hold — so he never fights
+        /// alone inside the ring.</summary>
+        private static void EscortHero(in BotPerception.Snapshot s)
+        {
+            int want = Coach.EscortSize > 0 ? Coach.EscortSize
+                     : (s.AllyCount >= 12 ? 4 : 3);   // bigger army -> bigger bodyguard
+            int escorts = 0;
+            var units = TagManager.instance.PlayerUnits;
+            for (int i = 0; i < units.Count; i++)
+            {
+                var t = units[i];
+                if (t == null || t.Hp == null || !t.Hp.Alive) continue;
+                var u = t.GetComponent<PathfindMovementPlayerunit>();
+                if (u == null) continue;
+                if (NearDoor(u.transform.position, s.DoorAnchors, 25f)) continue;
+                bool following = u.FollowingPlayer;
+                if (escorts < want && !following)
+                {
+                    u.HoldPosition = false;
+                    u.FollowPlayer(true);
+                    following = true;
+                }
+                if (following) escorts++;
+            }
         }
 
         /// <summary>Army step 2: place the command set at the hero + hold.</summary>
@@ -872,10 +1039,28 @@ namespace ThronefallTrainer
                 if (Time.unscaledTime >= frameActionAt)
                 {
                     frameActionAt = Time.unscaledTime + 1f;
-                    Choice pick = null;
+                    // Military-first choice: troops/defense branches win over
+                    // economy/cosmetic ones when both are pickable.
+                    Choice pick = null, milPick = null;
                     foreach (var c in cm.availableChoices)
-                        if (c != null && c.CanBePicked) { pick = c; break; }
-                    cm.choiceToReturn = pick;
+                    {
+                        if (c == null || !c.CanBePicked) continue;
+                        if (pick == null) pick = c;
+                        string cn = c.name ?? "";
+                        if (milPick == null && (
+                            cn.IndexOf("barrack", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+                            cn.IndexOf("archer", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+                            cn.IndexOf("militia", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+                            cn.IndexOf("guard", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+                            cn.IndexOf("tower", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+                            cn.IndexOf("wall", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+                            cn.IndexOf("knight", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+                            cn.IndexOf("squad", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+                            cn.IndexOf("troop", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+                            cn.IndexOf("soldier", System.StringComparison.OrdinalIgnoreCase) >= 0))
+                            milPick = c;
+                    }
+                    cm.choiceToReturn = milPick ?? pick;
                     Plugin.Log?.LogInfo($"[bot] choice frame -> '{(cm.choiceToReturn != null ? cm.choiceToReturn.name : "none")}'");
                     LogLine(in s, "choice-pick");
                 }

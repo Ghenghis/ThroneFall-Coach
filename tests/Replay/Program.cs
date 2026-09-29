@@ -21,8 +21,17 @@ namespace ThronefallTrainer
     {
         private static int Main(string[] args)
         {
+            // --tol N: allowed mismatches per fixture (memory-dependent
+            // decisions like DayStartAt can't be reconstructed from ticks).
+            int tol = 0;
+            var dirs = new List<string>();
+            for (int i = 0; i < args.Length; i++)
+            {
+                if (args[i] == "--tol" && i + 1 < args.Length) { tol = int.Parse(args[++i]); continue; }
+                dirs.Add(args[i]);
+            }
             int fail = 0, total = 0;
-            var fixtures = args.Length > 0 ? args : FindFixtures();
+            var fixtures = dirs.Count > 0 ? dirs.ToArray() : FindFixtures();
             if (fixtures.Length == 0)
             {
                 Console.WriteLine("replay: no fixtures (pass tests/fixtures/runs/<name> or run from repo root)");
@@ -66,8 +75,8 @@ namespace ThronefallTrainer
 
                 total++;
                 string name = Path.GetFileName(dir.TrimEnd('/', '\\'));
-                if (mismatch == 0)
-                    Console.WriteLine($"replay: {name} — {n} ticks PASS (mode sequence identical)");
+                if (mismatch <= tol)
+                    Console.WriteLine($"replay: {name} — {n} ticks PASS ({mismatch} within tol {tol})");
                 else
                 {
                     Console.WriteLine($"replay: {name} — {mismatch}/{n} mode mismatches FAIL, first: {firstDiff}");
@@ -178,6 +187,13 @@ namespace ThronefallTrainer
                 ShrineDist = F(e, "shd"),
                 BuildMil = I(e, "bmil"),
                 BuildInc = I(e, "binc"),
+                FreeUnits = I(e, "free"),
+                DoorCount = I(e, "drn"),
+                DoorsCovered = I(e, "drc"),
+                ArmyTarget = I(e, "at"),
+                RedAlert = B(e, "ra"),
+                UncoveredDoorHot = B(e, "hot"),
+                DayBudget = F(e, "dbg"),
             };
             var w = S(e, "wave");
             int slash = w.IndexOf('/');

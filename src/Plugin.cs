@@ -22,6 +22,7 @@ namespace ThronefallTrainer
 
         // Economy
         public static bool FreeBuild;
+        public static bool GoldDrip;
         public static bool InstantBuild;
         public static bool CoinMagnet;
         public static float MagnetRadius = 250f;
@@ -78,13 +79,15 @@ namespace ThronefallTrainer
 
         // ---- persisted settings ----
         private ConfigEntry<bool> cfgGodHero, cfgGodAll, cfgInstantRevive,
-            cfgFreeBuild, cfgInstantBuild, cfgMagnet,
+            cfgFreeBuild, cfgGoldDrip, cfgInstantBuild, cfgMagnet,
             cfgInstantKill, cfgDmgEnabled, cfgNoCooldown, cfgAtkSpdEnabled, cfgRegenEnabled,
             cfgMultiShot, cfgAllyDmgEnabled, cfgAllyAspdEnabled,
             cfgEnemySpdEnabled, cfgEnemyDmgEnabled, cfgEnemyHpEnabled, cfgEndlessWaves,
             cfgCmdRangeEnabled, cfgFastRespawn,
             cfgMoveEnabled, cfgSpeedEnabled, cfgEndlessDay, cfgZoomEnabled,
             cfgNeverLose, cfgRevealMap, cfgBotEnabled, cfgBotCheats;
+        private ConfigEntry<bool> cfgCoach, cfgCoachVision, cfgCoachLive;
+        private ConfigEntry<string> cfgCoachUrl, cfgCoachModel, cfgCoachKey, cfgCoachVModel;
         private ConfigEntry<float> cfgMagnetRadius, cfgDmgMult, cfgAtkSpdMult, cfgRegenMult,
             cfgEnemySpdMult, cfgEnemyDmgMult, cfgEnemyHpMult, cfgCmdRange,
             cfgMoveMult, cfgSpeedMult, cfgZoomMult,
@@ -207,6 +210,14 @@ namespace ThronefallTrainer
             cfgInstantRevive  = Config.Bind("Protection", "InstantRevive",    false);
 
             cfgFreeBuild      = Config.Bind("Economy",    "FreeBuild",        false);
+        cfgGoldDrip       = Config.Bind("Economy",    "GoldDrip",         false);
+        cfgCoach          = Config.Bind("Coach",      "Enabled",          true);
+        cfgCoachVision    = Config.Bind("Coach",      "VisionEnabled",    false);
+        cfgCoachLive      = Config.Bind("Coach",      "LiveShot",         true);
+        cfgCoachVModel    = Config.Bind("Coach",      "VisionModel",      "qwen3-vl-2b-thinking-abliterated");
+        cfgCoachUrl       = Config.Bind("Coach",      "Url",              "http://127.0.0.1:1234/v1/chat/completions");
+        cfgCoachModel     = Config.Bind("Coach",      "Model",            "kat-coder-v2.5-dev-apex");
+        cfgCoachKey       = Config.Bind("Coach",      "ApiKey",           "");
             cfgInstantBuild   = Config.Bind("Economy",    "InstantBuild",     false);
             cfgMagnet         = Config.Bind("Economy",    "CoinMagnet",       false);
             cfgMagnetRadius   = Config.Bind("Economy",    "MagnetRadius",     250f);
@@ -254,7 +265,14 @@ namespace ThronefallTrainer
 
             Cheats.GodHero = cfgGodHero.Value;             Cheats.GodAll = cfgGodAll.Value;
             Cheats.InstantRevive = cfgInstantRevive.Value;
-            Cheats.FreeBuild = cfgFreeBuild.Value;         Cheats.InstantBuild = cfgInstantBuild.Value;
+            Cheats.FreeBuild = cfgFreeBuild.Value;         Cheats.GoldDrip = cfgGoldDrip.Value;
+        Coach.Enabled = cfgCoach.Value; Coach.Url = cfgCoachUrl.Value;
+        Coach.Model = cfgCoachModel.Value; Coach.ApiKey = cfgCoachKey.Value;
+        Coach.VisionEnabled = cfgCoachVision.Value; Coach.VisionModel = cfgCoachVModel.Value;
+        Coach.LiveShot = cfgCoachLive.Value;
+        Coach.Init(this);
+        gameObject.AddComponent<Overlay>();          // F1 in-game panel
+        Cheats.InstantBuild = cfgInstantBuild.Value;
             Cheats.CoinMagnet = cfgMagnet.Value;           Cheats.MagnetRadius = cfgMagnetRadius.Value;
             magnetText = Fmt(Cheats.MagnetRadius);
             Cheats.InstantKill = cfgInstantKill.Value;     Cheats.DamageMultEnabled = cfgDmgEnabled.Value;
@@ -320,6 +338,15 @@ namespace ThronefallTrainer
                     BalanceField.SetValue(pi, 1);
                 if (pi.EnergyCoreBalance < 1)
                     CoresField.SetValue(pi, 1);
+            }
+
+            // ---- Gold drip (bot-tuning aid): pin the wallet so the strategy
+            // loop can be validated without the economy bottleneck. OFF by
+            // default — legit autopilot never enables it.
+            if (Cheats.GoldDrip && pi != null)
+            {
+                if (pi.Balance < 500) SetGold(500);
+                if (pi.EnergyCoreBalance < 20) SetCores(20);
             }
 
             // ---- Move speed (re-derive originals when the instance changes).
@@ -1324,6 +1351,7 @@ namespace ThronefallTrainer
                 // ---------------- Economy ----------------
                 Section("-- ECONOMY --");
                 ConfigToggle(cfgFreeBuild, "Free build (no coin/core cost)", ref Cheats.FreeBuild);
+                ConfigToggle(cfgGoldDrip, "Gold drip (pin wallet 500 — bot tuning)", ref Cheats.GoldDrip);
                 ConfigToggle(cfgInstantBuild, "Instant build (fast pay fill)", ref Cheats.InstantBuild);
                 ConfigToggle(cfgMagnet, "Coin magnet", ref Cheats.CoinMagnet);
                 SliderRow("magnetField", "   radius", ref magnetText, 10f, 2000f, Cheats.MagnetRadius,

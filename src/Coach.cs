@@ -1,0 +1,266 @@
+using System;
+using System.IO;
+using System.Net;
+using System.Text;
+using UnityEngine;
+
+namespace ThronefallTrainer
+{
+    /// <summary>
+    /// LLM coach ("Grandmaster") — an event-driven advisor, not a per-tick
+    /// controller. Fires on day-start and defeat with a compact telemetry
+    /// digest, gets back a small JSON strategy patch, and applies it to the
+    /// live policy knobs. Default backend is the LOCAL LM Studio endpoint
+    /// (free, unlimited); MiniMax cloud is config-selectable for deep passes.
+    /// Never blocks the game thread; every failure is logged and skipped.
+    /// </summary>
+    internal static class Coach
+    {
+        // ---- config (wired from Plugin.BindConfig) ----
+        public static bool Enabled;
+        public static string Url = "http://127.0.0.1:1234/v1/chat/completions";
+        public static string Model = "kat-coder-v2.5-dev-apex";
+        public static string ApiKey = "";          // empty for local LM Studio
+        public static float MinIntervalS = 45f;    // hard throttle between calls
+        public static int MaxTokens = 900;
+        // Vision seam (defeat screenshots -> local VL model). Local = free;
+        // MiniMax vision has quota so it stays opt-in via config.
+        public static bool VisionEnabled;
+        public static string VisionModel = "qwen3-vl-2b-thinking-abliterated";
+
+        // ---- live overrides the policy layer reads ----
+        public static int SquadSize;        // 0 = use built-in default
+        public static int ReserveSize;
+        public static int EscortSize;
+        public static int ArmyTargetFloor;
+        public static string BuildFocus = "";   // military|income|defense|balanced
+        public static string HeroPosture = "";  // builder|fighter
+        public static string LastAdvice = "";
+        public static float LastAdviceAt;
+        public static int CallsMade, TokensUsed;
+        public static bool Busy;
+        public static bool LiveShot;             // dump agent/live.png for the chat UI
+        public static float LiveShotEvery = 2f;
+        private static float nextLiveShot;
+
+        private static float lastCallAt = -999f;
+        private static UnityEngine.Object hostRef;
+
+        /// <summary>Host is only needed to check the plugin is still alive —
+        /// calls run on a worker thread, not a Unity coroutine.</summary>
+        public static void Init(MonoBehaviour h) { hostRef = h; }
+
+        private const string SysPrompt =
+            "You are Grandmaster, the strategy advisor for a Thronefall autopilot " +
+            "bot. The bot fights with UNITS, not the hero: it posts squads on " +
+            "enemy corridors outside the walls, keeps a castle reserve, and the " +
+            "hero builds/farms and only fights as last resort. No cheats. " +
+            "Given the telemetry digest, return ONLY a JSON object: " +
+            "{\"squad_size\":int,\"reserve_size\":int,\"escort_size\":int," +
+            "\"army_target\":int,\"build_focus\":\"military|income|defense|balanced\"," +
+            "\"hero_posture\":\"builder|fighter\",\"note\":\"<one sentence>\"}.";
+
+        /// <summary>Called from Bot's per-frame Update: periodic live.png for
+        /// the chat UI + poll the user command file the chat server writes.</summary>
+        public static void PerFrame()
+        {
+            if (LiveShot && Time.unscaledTime >= nextLiveShot)
+            {
+                nextLiveShot = Time.unscaledTime + LiveShotEvery;
+                try
+                {
+                    var tex = ScreenCapture.CaptureScreenshotAsTexture();
+                    if (tex != null)
+                    {
+                        File.WriteAllBytes(
+                            Path.Combine(Recorder.AgentDir, "live.png"),
+                            tex.EncodeToPNG());
+                        UnityEngine.Object.Destroy(tex);
+                    }
+                }
+                catch (Exception) { }
+            }
+            if (Time.unscaledTime >= nextCmdPoll)
+            {
+                nextCmdPoll = Time.unscaledTime + 4f;
+                PollCommands();
+            }
+        }
+
+        private static float nextCmdPoll;
+        private static string lastCmdHash = "";
+
+        /// <summary>tools/coach-server.py writes agent/coach-commands.json
+        /// whenever the user (via chat) issues a strategy override. Same
+        /// schema as the advisor reply — apply it like a coach answer.</summary>
+        private static void PollCommands()
+        {
+            try
+            {
+                var p = Path.Combine(Recorder.AgentDir, "coach-commands.json");
+                if (!File.Exists(p)) return;
+                string j = File.ReadAllText(p);
+                string h = j.GetHashCode().ToString();
+                if (h == lastCmdHash) return;
+                lastCmdHash = h;
+                Apply(j, "user-cmd");
+            }
+            catch (Exception ex)
+            { Plugin.Log?.LogWarning($"[coach] cmd poll: {ex.Message}"); }
+        }
+
+        /// <summary>Fire an advisory call if the throttle allows. Runs on a
+        /// worker thread — the game thread never waits on the LLM.</summary>
+        public static void Advise(string trigger, string digestJson)
+        {
+            if (!Enabled || hostRef == null || Busy) return;
+            if (Time.unscaledTime - lastCallAt < MinIntervalS) return;
+            lastCallAt = Time.unscaledTime; Busy = true;
+            var t = new System.Threading.Thread(() => Call(trigger, digestJson));
+            t.IsBackground = true;
+            t.Start();
+        }
+
+        private static void Call(string trigger, string digest)
+        {
+            try
+            {
+                string body =
+                    "{\"model\":\"" + Model + "\",\"stream\":false," +
+                    "\"max_tokens\":" + MaxTokens + ",\"temperature\":0.3," +
+                    "\"messages\":[" +
+                    "{\"role\":\"system\",\"content\":\"" + Esc(SysPrompt) + "\"}," +
+                    "{\"role\":\"user\",\"content\":\"" +
+                        Esc("trigger=" + trigger + "\n" + digest) + "\"}]}";
+                var req = (HttpWebRequest)WebRequest.Create(Url);
+                req.Method = "POST";
+                req.ContentType = "application/json";
+                req.Timeout = 60000;
+                if (!string.IsNullOrEmpty(ApiKey))
+                    req.Headers["Authorization"] = "Bearer " + ApiKey;
+                byte[] bytes = Encoding.UTF8.GetBytes(body);
+                req.ContentLength = bytes.Length;
+                using (var st = req.GetRequestStream()) st.Write(bytes, 0, bytes.Length);
+                string resp;
+                using (var r = (HttpWebResponse)req.GetResponse())
+                using (var rd = new StreamReader(r.GetResponseStream()))
+                    resp = rd.ReadToEnd();
+                CallsMade++;
+                var um = System.Text.RegularExpressions.Regex.Match(
+                    resp, "\"total_tokens\"\\s*:\\s*(\\d+)");
+                if (um.Success) TokensUsed += int.Parse(um.Groups[1].Value);
+                var cm = System.Text.RegularExpressions.Regex.Match(
+                    resp, "\"content\"\\s*:\\s*\"((?:[^\"\\\\]|\\\\.)*)\"");
+                if (cm.Success) Apply(Unesc(cm.Groups[1].Value), trigger);
+                else Plugin.Log?.LogWarning("[coach] no content in response");
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log?.LogWarning($"[coach] {trigger} call failed: {ex.Message}");
+            }
+            Busy = false;
+        }
+
+        /// <summary>Parse the JSON patch and apply overrides (clamped sane).</summary>
+        private static void Apply(string content, string trigger)
+        {
+            int i0 = content.IndexOf('{'), i1 = content.LastIndexOf('}');
+            if (i0 < 0 || i1 <= i0) { Plugin.Log?.LogWarning("[coach] advice not JSON"); return; }
+            string j = content.Substring(i0, i1 - i0 + 1);
+            SquadSize = ClampInt(Num(j, "squad_size"), 0, 12);
+            ReserveSize = ClampInt(Num(j, "reserve_size"), 0, 16);
+            EscortSize = ClampInt(Num(j, "escort_size"), 0, 8);
+            ArmyTargetFloor = ClampInt(Num(j, "army_target"), 0, 120);
+            BuildFocus = Str(j, "build_focus");
+            HeroPosture = Str(j, "hero_posture");
+            LastAdvice = Str(j, "note");
+            LastAdviceAt = Time.unscaledTime;
+            Plugin.Log?.LogInfo(
+                $"[coach] {trigger} -> squad={SquadSize} reserve={ReserveSize} " +
+                $"escort={EscortSize} army>={ArmyTargetFloor} focus={BuildFocus} " +
+                $"posture={HeroPosture} :: {LastAdvice}");
+        }
+
+        private static int Num(string j, string key)
+        {
+            var m = System.Text.RegularExpressions.Regex.Match(
+                j, "\"" + key + "\"\\s*:\\s*(-?\\d+)");
+            return m.Success ? int.Parse(m.Groups[1].Value) : 0;
+        }
+
+        private static string Str(string j, string key)
+        {
+            var m = System.Text.RegularExpressions.Regex.Match(
+                j, "\"" + key + "\"\\s*:\\s*\"([^\"]*)\"");
+            return m.Success ? m.Groups[1].Value : "";
+        }
+
+        /// <summary>Defeat screenshot -> local vision model. One call per
+        /// defeat only (bounded); writes the analysis as an advisor note.</summary>
+        public static void AnalyzeScreenshot(byte[] png, string context)
+        {
+            if (!VisionEnabled || Busy) return;
+            Busy = true;
+            string b64 = Convert.ToBase64String(png);
+            var t = new System.Threading.Thread(() => VisionCall(b64, context));
+            t.IsBackground = true;
+            t.Start();
+        }
+
+        private static void VisionCall(string b64png, string context)
+        {
+            try
+            {
+                string body =
+                    "{\"model\":\"" + VisionModel + "\",\"stream\":false," +
+                    "\"max_tokens\":600,\"temperature\":0.3,\"messages\":[{" +
+                    "\"role\":\"user\",\"content\":[{" +
+                    "{\"type\":\"text\",\"text\":\"" + Esc(
+                        "Thronefall autopilot just failed/survived a wave. " +
+                        "Describe: where enemies are, where units are posted, " +
+                        "what the hero is doing, what went wrong, one fix. " +
+                        context) + "\"}," +
+                    "{\"type\":\"image_url\",\"image_url\":{\"url\":" +
+                    "\"data:image/png;base64," + b64png + "\"}}]}]}";
+                var req = (HttpWebRequest)WebRequest.Create(Url);
+                req.Method = "POST";
+                req.ContentType = "application/json";
+                req.Timeout = 90000;
+                if (!string.IsNullOrEmpty(ApiKey))
+                    req.Headers["Authorization"] = "Bearer " + ApiKey;
+                byte[] bytes = Encoding.UTF8.GetBytes(body);
+                req.ContentLength = bytes.Length;
+                using (var st = req.GetRequestStream()) st.Write(bytes, 0, bytes.Length);
+                string resp;
+                using (var r = (HttpWebResponse)req.GetResponse())
+                using (var rd = new StreamReader(r.GetResponseStream()))
+                    resp = rd.ReadToEnd();
+                var cm = System.Text.RegularExpressions.Regex.Match(
+                    resp, "\"content\"\\s*:\\s*\"((?:[^\"\\\\]|\\\\.)*)\"");
+                if (cm.Success)
+                {
+                    LastAdvice = Unesc(cm.Groups[1].Value);
+                    Plugin.Log?.LogInfo("[coach-vision] " + LastAdvice);
+                }
+            }
+            catch (Exception ex)
+            { Plugin.Log?.LogWarning($"[coach-vision] failed: {ex.Message}"); }
+            Busy = false;
+        }
+
+        private static int ClampInt(int v, int lo, int hi)
+        { return v < lo ? lo : (v > hi ? hi : v); }
+
+        private static string Esc(string s)
+        {
+            return s.Replace("\\", "\\\\").Replace("\"", "\\\"")
+                    .Replace("\n", "\\n").Replace("\r", "");
+        }
+
+        private static string Unesc(string s)
+        {
+            return s.Replace("\\n", "\n").Replace("\\\"", "\"")
+                    .Replace("\\\\", "\\");
+        }
+    }
+}

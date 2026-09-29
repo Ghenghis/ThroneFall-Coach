@@ -302,6 +302,57 @@ Remaining, ranked by impact:
    towers (buildings), not `PlayerUnits`; the branch waits for a map that
    actually fields mobile allies. Untested end-to-end.
 
+## 8.5 v4 — perimeter defense + LLM coach (2026-09-29)
+
+**Perimeter squads.** `BotPerception` builds one *door anchor* per unique
+spawn line from the botpack routes (~40 m out from the castle end, midpoint on
+short corridors). Squads are posted **remotely** — `HomePosition` +
+`HoldPosition` set per unit, `posted squad n/target` logged — the hero never
+walks out to drop them off. A unit within 25 m of an anchor counts as manned
+(en-route included, so a door isn't re-posted while its squad walks).
+Uncovered-door pick runs hot-first (foes within 30 m of the anchor), then
+nearest-to-castle. A breached door's target doubles (`BREACH on door 'x'`).
+
+**Red alert = past-the-post.** An enemy counts as a breach only when closer
+to the castle than its own corridor's door (or <30 m/deep inside the ring).
+On alert, `RecallToBreach` converges every live unit on the threat anchor —
+city-line > any door. The hero fights only when the army can't respond
+(`ally < 3`, foe within `SelfDefendRange`, or 2+ pile on him); otherwise he
+holds the far side of the castle (`red-hold`).
+
+**Night call.** The horn/night-switch is now evaluated *above* SpendGold:
+funded money made the build queue infinite and the day never ended. The bot
+rings when `AllyCount >= ArmyTarget`, all doors are covered, or a 240 s day
+budget expires.
+
+**Army target.** `ArmyTarget = max(door targets, 1.2× next wave, playbook
+floor, coach floor)` — build scoring gives military +600 while `AllyCount <
+ArmyTarget`; broke still funds income first; nearer slots get a proximity
+bonus (up to +120) so he stops crossing the map for marginal picks.
+
+**LLM coach (`Coach.cs`).** Two layers:
+- *Playbook*: `tools/mm-coach.py` asks MiniMax M3 (or any OpenAI-compatible
+  endpoint) for a per-scene JSON strategy — squad/reserve/escort sizes,
+  army floor, build order, wave priorities — saved to
+  `botpack/strategy_<scene>.json`, loaded with the botpack.
+- *Runtime advisor*: local LM Studio (`Coach.Url`, default
+  `kat-coder-v2.5-dev-apex` @ `127.0.0.1:1234`) gets a ~200-token telemetry
+  digest on **day-start** and **defeat** only (45 s throttle, worker thread,
+  never blocks the game). Replies patch squad/reserve/escort/army-target,
+  build focus and hero posture live. Token spend is trivial: ~2 calls/min
+  worst case, all local-free; MiniMax used ~60 k total for all 8 playbooks.
+- *Vision seam*: `Coach.VisionEnabled` (default off) sends a defeat
+  screenshot to a local VL model (`qwen3-vl-*`, `phi-3.5-vision`, …) once
+  per defeat for a postmortem note.
+
+**Gold drip (tuning scaffold).** `[Economy] GoldDrip=true` pins the wallet
+at 500 so the build/strategy loop can be validated without the income
+bottleneck. OFF for legit runs; remove once the economy layer is proven.
+
+**Windowed mode.** Unity honors `HKCU\Software\Grizzly Games\Thronefall`:
+`Screenmanager Fullscreen mode=3`, `Resolution Use Native=0`,
+Width/Height=1920×1440 — set before launch for a desktop window.
+
 ## 9. Future improvements / enhancements
 
 - **Choice/perk heuristics** — currently first-`CanBePicked`. Score choices:
