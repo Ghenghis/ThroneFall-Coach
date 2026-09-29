@@ -84,7 +84,7 @@ namespace ThronefallTrainer
             cfgEnemySpdEnabled, cfgEnemyDmgEnabled, cfgEnemyHpEnabled, cfgEndlessWaves,
             cfgCmdRangeEnabled, cfgFastRespawn,
             cfgMoveEnabled, cfgSpeedEnabled, cfgEndlessDay, cfgZoomEnabled,
-            cfgNeverLose, cfgRevealMap;
+            cfgNeverLose, cfgRevealMap, cfgBotEnabled, cfgBotCheats;
         private ConfigEntry<float> cfgMagnetRadius, cfgDmgMult, cfgAtkSpdMult, cfgRegenMult,
             cfgEnemySpdMult, cfgEnemyDmgMult, cfgEnemyHpMult, cfgCmdRange,
             cfgMoveMult, cfgSpeedMult, cfgZoomMult,
@@ -239,6 +239,8 @@ namespace ThronefallTrainer
             cfgAllyAspdMult     = Config.Bind("Army",     "AllyAspdMult",     3f);
             cfgNeverLose        = Config.Bind("Protection","NeverLose",       false);
             cfgRevealMap        = Config.Bind("Camera",   "RevealMap",        false);
+            cfgBotEnabled       = Config.Bind("Bot",      "AutopilotEnabled", false);
+            cfgBotCheats        = Config.Bind("Bot",      "BotSurvivalCheats", true);
             cfgOpacity          = Config.Bind("Overlay",  "Opacity",          1f);
             cfgTheme            = Config.Bind("Overlay",  "ThemeIndex",       0);
 
@@ -287,6 +289,7 @@ namespace ThronefallTrainer
             Cheats.ZoomMult = cfgZoomMult.Value;           zoomText = Fmt(Cheats.ZoomMult);
             Cheats.NeverLose = cfgNeverLose.Value;
             Cheats.RevealMap = cfgRevealMap.Value;
+            SetBotEnabled(cfgBotEnabled.Value);
             uiOpacity = Mathf.Clamp(cfgOpacity.Value, 0.2f, 1f);
             themeIndex = Mathf.Clamp(cfgTheme.Value, 0, Themes.Length - 1);
             alphaText = Fmt(uiOpacity);
@@ -304,6 +307,7 @@ namespace ThronefallTrainer
             if (Input.GetKeyDown(KeyCode.F3)) ReviveAll();
             if (Input.GetKeyDown(KeyCode.F4)) AddGold(100);
             if (Input.GetKeyDown(KeyCode.F5)) TeleportToMouse();
+            if (Input.GetKeyDown(KeyCode.F6)) SetBotEnabled(!Bot.Enabled);
 
             var pi = PlayerInteraction.instance;
             var pm = PlayerMovement.instance;
@@ -557,6 +561,10 @@ namespace ThronefallTrainer
                 ApplyRevealMap();
                 ApplyAllyAttackSpeed();
             }
+
+            // ---- Autopilot: decides + steers at 4 Hz; movement is injected
+            // via the MoveScript prefix in BotPatches.cs.
+            Bot.Tick();
         }
 
         /// <summary>Scale cooldownDuration on every PlayerOwned AutoAttack (troops + towers).</summary>
@@ -683,8 +691,67 @@ namespace ThronefallTrainer
                 ToggleMenu();
         }
 
+        /// <summary>F6 / overlay toggle: turn the autopilot on or off and persist it.</summary>
+        private void SetBotEnabled(bool v)
+        {
+            Bot.SetEnabled(v);
+            cfgBotEnabled.Value = v;
+            ApplyBotSurvivalCheats(v);
+        }
+
+        // ---- bot survival-cheat snapshot ----
+        private bool botCheatsActive;
+        private bool svGodHero, svGodAll, svInstantRevive, svNeverLose, svRegen, svMagnet, svInstantKill, svNoCooldown;
+        private float svRegenMult, svMagnetRadius;
+
+        /// <summary>
+        /// While the autopilot runs, force the survival cheat set so the bot
+        /// can't die: god hero + god player-owned (castle/units/buildings),
+        /// instant revive as backup, never-lose so the run can't end, strong HP
+        /// regen, and a wide coin magnet to boost collection. Prior states are
+        /// restored when the bot is switched off. Disable via Bot/BotSurvivalCheats.
+        /// </summary>
+        private void ApplyBotSurvivalCheats(bool on)
+        {
+            if (!cfgBotCheats.Value) return;
+            if (on)
+            {
+                svGodHero = Cheats.GodHero;             svGodAll = Cheats.GodAll;
+                svInstantRevive = Cheats.InstantRevive; svNeverLose = Cheats.NeverLose;
+                svRegen = Cheats.RegenEnabled;          svRegenMult = Cheats.RegenMult;
+                svMagnet = Cheats.CoinMagnet;           svMagnetRadius = Cheats.MagnetRadius;
+                svInstantKill = Cheats.InstantKill;     svNoCooldown = Cheats.NoCooldown;
+                botCheatsActive = true;
+
+                Cheats.GodHero = true; Cheats.GodAll = true;
+                Cheats.InstantRevive = true; Cheats.NeverLose = true;
+                Cheats.RegenEnabled = true; Cheats.RegenMult = 20f;
+                Cheats.CoinMagnet = true;
+                Cheats.MagnetRadius = Mathf.Max(Cheats.MagnetRadius, 500f);
+                // Instant-kill so the bot clears waves instead of tanking 40+
+                // foes one swing at a time — otherwise nights stall with the
+                // hero standing in melee range looking idle.
+                Cheats.InstantKill = true;
+                // No-cooldown so every pumped attack press lands immediately —
+                // paired with InstantKill the hero clears a whole mob per swing.
+                Cheats.NoCooldown = true;
+                Log?.LogInfo("[bot] survival cheats ON: god hero+all, instant revive, never-lose, regen x20, magnet 500, instant-kill, no-cooldown");
+            }
+            else if (botCheatsActive)
+            {
+                botCheatsActive = false;
+                Cheats.GodHero = svGodHero; Cheats.GodAll = svGodAll;
+                Cheats.InstantRevive = svInstantRevive; Cheats.NeverLose = svNeverLose;
+                Cheats.RegenEnabled = svRegen; Cheats.RegenMult = svRegenMult;
+                Cheats.CoinMagnet = svMagnet; Cheats.MagnetRadius = svMagnetRadius;
+                Cheats.InstantKill = svInstantKill; Cheats.NoCooldown = svNoCooldown;
+                Log?.LogInfo("[bot] survival cheats restored to previous state");
+            }
+        }
+
         private void OnDestroy()
         {
+            Bot.Shutdown();
             if (playerFrozenByUs && LocalGamestate.Instance != null)
                 LocalGamestate.Instance.SetPlayerFreezeState(false);
             if (gameSpeedWasOn)
@@ -1351,8 +1418,13 @@ namespace ThronefallTrainer
                 GUILayout.EndHorizontal();
                 if (GUILayout.Button("+1,000,000 score")) AddScore(1000000);
 
-                GUILayout.Space(8);
-                GUILayout.Label("F1 menu | F2 kill | F3 revive | F4 +100g | F5 teleport");
+                Section("Bot");
+                bool botOn = GUILayout.Toggle(Bot.Enabled, " Autopilot (F6)");
+                if (botOn != Bot.Enabled) SetBotEnabled(botOn);
+                GUILayout.Label("  " + Bot.Status);
+
+                GUILayout.FlexibleSpace();
+                GUILayout.Label($"F1 menu | F2 kill | F3 revive | F4 +100g | F5 tp | F6 bot  v{Version}");
 
                 GUILayout.EndScrollView();
             }
