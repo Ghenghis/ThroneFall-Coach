@@ -12,3 +12,7 @@ decompiled_fog/
 # IDE
 .vs/
 .vscode/
+
+# Release packaging
+dist/
+
