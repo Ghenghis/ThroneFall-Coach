@@ -120,6 +120,8 @@ namespace ThronefallTrainer
         private static Vector3 navGoal;
         private static bool navWrongLayer;   // path resolved on elevated navmesh
         private static float navDirectUntil; // beeline window — navmesh lies, feet don't
+        private static float interZeroSince = -1f;  // no-interactables timer
+        private static float interVacuumAt;         // vacuum exit cooldown
         private static float navRepathAt;
         private static bool navInFlight;
         private static float navSteerArrive = 0.5f;
@@ -425,6 +427,34 @@ namespace ThronefallTrainer
             }
 
             var sd = BotPerception.ToData(in s);
+
+            // Interactor vacuum: a same-scene retry can load a Durststein
+            // with ZERO spawned interactables (inter=0, bld=0, coins=0 for
+            // minutes — observed run 044014Z, hero frozen at the castle
+            // doing hero-door all day). No bot action can fix it; the match
+            // is corrupt. Reload via level select — EnterLevel re-picks.
+            // inter=0 alone is NOT proof — the metric itself is unreliable
+            // (healthy runs show inter:0 while building). Require the real
+            // signals: nothing buildable AND nothing collectible AND no army
+            // for a sustained day stretch.
+            if (s.GameState == "InMatch" && !s.IsNight && s.AllyCount == 0 &&
+                s.CoinCount == 0 && s.NearestBuild == null && s.InteractorCount == 0)
+            {
+                if (interZeroSince < 0) interZeroSince = Time.unscaledTime;
+                else if (Time.unscaledTime - interZeroSince > 40f &&
+                         Time.unscaledTime >= interVacuumAt)
+                {
+                    interVacuumAt = Time.unscaledTime + 120f;   // one try/2min
+                    interZeroSince = -1f;
+                    Plugin.Log?.LogWarning(
+                        "[bot] interactor vacuum — no interactables/coins 40 s " +
+                        "into day; match is corrupt → TransitionToLevelSelect()");
+                    LogLine(in s, "inter-vacuum");
+                    if (SceneTransitionManager.instance != null)
+                        SceneTransitionManager.instance.TransitionToLevelSelect();
+                }
+            }
+            else interZeroSince = -1f;
 
             // Sidecar bridge (Phase 3): poll inbox orders (1 Hz), publish
             // state.json for the external agent (0.2 Hz).
