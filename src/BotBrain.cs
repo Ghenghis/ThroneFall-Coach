@@ -1019,7 +1019,15 @@ namespace ThronefallTrainer
             }
 
             // ---- horn / night start ----
-            if (s.HasHorn)
+            // Same readiness gate as the primary night call — this block was
+            // UNGATED: the horn scan fix made HasHorn true and the bot rang
+            // night at t=13 with ally=0 before a single day build. Ring only
+            // when the army is up or the day budget expired.
+            bool readyForNight = m.DayStartAt > 0f &&
+                ((s.AllyCount >= s.ArmyTarget && (s.DoorCount == 0 || s.DoorsCovered > 0)) ||
+                 (s.DoorCount > 0 && s.DoorsCovered >= s.DoorCount) ||
+                 now - m.DayStartAt > (s.DayBudget > 0f ? s.DayBudget : 240f));
+            if (readyForNight && s.HasHorn)
             {
                 m.Mode = BotMode.StartNight; r.Mode = m.Mode;
                 Aim(ref r, s.HornPos, 2f);

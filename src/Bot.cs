@@ -1109,6 +1109,22 @@ namespace ThronefallTrainer
             // the frame shut cancels the hold and refunds the fill (the
             // "never finishes upgrades" bug). Wait for the coroutine to end.
             if (cm != null && cm.ChoiceCoroutineRunning) return true;
+            // And when the coroutine IS done, the frame must be CONFIRMED,
+            // not closed — CloseActiveFrame() is the Escape/cancel path and
+            // refunds the fill (evidence: Archery Range + Barracks never
+            // completed while Gold Mine/Wall/Tower did). Apply() commits
+            // the picked choice so the interactor finishes the upgrade.
+            if (frame.name.IndexOf("Choice", System.StringComparison.OrdinalIgnoreCase) >= 0)
+            {
+                if (Time.unscaledTime >= frameActionAt)
+                {
+                    frameActionAt = Time.unscaledTime + 1f;
+                    Plugin.Log?.LogInfo("[bot] choice frame -> Apply() (confirm)");
+                    frame.Apply();
+                    LogLine(in s, "choice-confirm");
+                }
+                return true;
+            }
 
             // End-of-match screens carry a BackToLevelSelectHelper button and
             // are unescapable — follow it to return to the campaign map where

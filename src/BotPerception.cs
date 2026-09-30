@@ -1481,7 +1481,12 @@ namespace ThronefallTrainer
                     {
                         string scat = BuildCat(bs.buildingName);
                         int oi = System.Array.IndexOf(open, scat);
-                        if (oi >= 0) score += 150 - oi * 40;
+                        if (oi >= 0)
+                            // The playbook IS the default policy: the NEXT
+                            // required category outbids even a harvest (+1000)
+                            // — with gold on hand the plan is followed, not
+                            // merely preferred. Broke still funds first.
+                            score += oi == 0 && !broke ? 1200 : 150 - oi * 40;
                     }
                 }
                 s.BuildCount++;

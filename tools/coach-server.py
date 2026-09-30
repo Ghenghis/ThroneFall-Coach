@@ -255,6 +255,16 @@ def mm_watch_loop():
         time.sleep(WATCH_EVERY)
 
 
+def health_watch_loop():
+    """Ping /health's checks every ~20 s; transitions land in chatlog."""
+    while True:
+        try:
+            health()
+        except Exception:
+            pass
+        time.sleep(20)
+
+
 SYS = """You are Grandmaster, the live coach wired INTO a Thronefall autopilot.
 You see its real telemetry every message. You can ORDER the bot by ending
 your reply with a JSON block tagged <cmd>...</cmd> — only when the user
@@ -354,7 +364,22 @@ def health():
         pass
     h["checks"].append({"name": "MiniMax", "ok": mm_ok, "detail": mm_det})
     h["ok"] = all(c["ok"] for c in h["checks"])
+    # Edge detector: post link transitions INTO the chat log so a dead
+    # link is a red error line, not a silent banner. Runs once per call —
+    # health_watch_loop drives it every ~20 s.
+    sig = tuple(c["ok"] for c in h["checks"])
+    if health.prev_sig is not None and sig != health.prev_sig:
+        for c, now in zip(h["checks"], sig):
+            was = health.prev_sig[h["checks"].index(c)] if \
+                  len(health.prev_sig) > h["checks"].index(c) else True
+            hhmm = time.strftime("%H:%M")
+            if was and not now:
+                append_log("err", f"[{hhmm} LINK DOWN] {c['name']} — {c['detail']}")
+            elif now and not was:
+                append_log("err", f"[{hhmm} LINK UP] {c['name']} — {c['detail']}")
+    health.prev_sig = sig
     return h
+health.prev_sig = None
 
 def audit_alerts(a):
     """Derive alerts from the audit dict — the 'not doing its job' flags the
@@ -377,6 +402,9 @@ def audit_alerts(a):
     if a.get("breaches", 0) > 0:
         out.append({"sev": "info", "msg": f"{a['breaches']} door breach(es) this run"})
     return out
+
+_activity = []           # [(tick_t, mode)] mode-edge timeline, capped 12
+_lastcats = {"sum": 0, "since": time.time()}
 
 def append_log(role, text):
     CHATLOG.parent.mkdir(parents=True, exist_ok=True)
@@ -458,12 +486,61 @@ class H(BaseHTTPRequestHandler):
             self._send(200, json.dumps(out), "application/json")
         elif self.path == "/health":
             self._send(200, json.dumps(health()), "application/json")
+        elif self.path == "/ping":
+            # Round-trip proof: write a no-op command, then watch the game
+            # log for the plugin's own apply line. Returns the truth.
+            out = {"ok": False, "stage": "write"}
+            try:
+                tag = f"ui-ping-{int(time.time())}"
+                log = pathlib.Path(
+                    r"K:\Downloads-IDM\Thronefall\BepInEx\LogOutput.log")
+                before = log.read_text(errors="replace")[-80000:].count(
+                    "[coach] user-cmd") if log.exists() else 0
+                CMDFILE.write_text(json.dumps({"note": tag}))
+                out["stage"] = "wait-apply"
+                ok = False
+                for _ in range(20):          # ~10 s window
+                    time.sleep(0.5)
+                    if log.exists() and log.read_text(
+                            errors="replace")[-80000:].count(
+                            "[coach] user-cmd") > before:
+                        ok = True
+                        break
+                out["ok"] = ok
+                out["stage"] = "applied" if ok else "no-apply"
+                append_log("err" if not ok else "c",
+                           f"[PING {'OK' if ok else 'FAILED'}] command round-trip "
+                           f"{'confirmed' if ok else 'not confirmed by game log'}")
+            except Exception as ex:
+                out["error"] = str(ex)
+            self._send(200, json.dumps(out), "application/json")
         elif self.path == "/audit":
             p = AGENT / "audit.json"
             if p.exists():
                 try:
                     a = json.loads(p.read_text(errors="replace"))
+                    # Merge army_target from the tick stream — the audit
+                    # writer doesn't carry it, and the strip needs it.
+                    st0 = live_state()
+                    a["army_target"] = st0.get("army_target")
+                    # Activity timeline: mode edges, newest first, capped.
+                    global _activity, _lastcats
+                    if not _activity or _activity[-1][1] != a.get("mode"):
+                        _activity.append((a.get("t"), a.get("mode")))
+                        _activity = _activity[-12:]
+                    a["activity"] = list(reversed(_activity))
+                    # Build-stall tracker: how long since a build completed
+                    # (cat_built sum) while the bot claims to be spending.
+                    cat_sum = sum((a.get("cat_built") or {}).values())
+                    if cat_sum != _lastcats["sum"]:
+                        _lastcats = {"sum": cat_sum, "since": time.time()}
+                    a["build_stale_s"] = round(time.time() - _lastcats["since"])
                     a["alerts"] = audit_alerts(a)
+                    if a["build_stale_s"] > 120 and a.get("mode") in \
+                            ("SpendGold", "Idle", "HoldCastle"):
+                        a["alerts"].insert(0,
+                            {"sev": "warn", "msg":
+                             f"no build completed in {a['build_stale_s']}s while spending"})
                     a["age_s"] = round(time.time() - p.stat().st_mtime, 1)
                     self._send(200, json.dumps(a), "application/json")
                 except Exception as e:
@@ -523,6 +600,42 @@ class H(BaseHTTPRequestHandler):
             self._send(404, "?")
 
     def do_POST(self):
+        if self.path == "/order":
+            # Direct command — writes the coach file, waits for the plugin's
+            # own apply line in the game log. Proof, not assumption.
+            n = int(self.headers.get("Content-Length", 0))
+            try:
+                data = json.loads(self.rfile.read(n) or b"{}")
+            except Exception:
+                self._send(400, "bad json"); return
+            allowed = {"squad_size", "reserve_size", "escort_size",
+                       "army_target", "build_focus", "hero_posture", "note"}
+            cmd = {k: v for k, v in data.items() if k in allowed}
+            if not cmd:
+                self._send(400, "no allowed fields"); return
+            cmd.setdefault("note", "ui-order")
+            out = {"ok": False, "cmd": cmd}
+            try:
+                log = pathlib.Path(
+                    r"K:\Downloads-IDM\Thronefall\BepInEx\LogOutput.log")
+                before = log.read_text(errors="replace")[-80000:].count(
+                    "[coach] user-cmd") if log.exists() else 0
+                CMDFILE.write_text(json.dumps(cmd))
+                ok = False
+                for _ in range(20):
+                    time.sleep(0.5)
+                    if log.exists() and log.read_text(
+                            errors="replace")[-80000:].count(
+                            "[coach] user-cmd") > before:
+                        ok = True
+                        break
+                out["ok"] = ok
+                append_log("c" if ok else "err",
+                    f"[ORDER {'APPLIED' if ok else 'FAILED'}] {json.dumps(cmd)}")
+            except Exception as ex:
+                out["error"] = str(ex)
+            self._send(200, json.dumps(out), "application/json")
+            return
         if self.path == "/regen":
             n = int(self.headers.get("Content-Length", 0))
             try:
@@ -659,6 +772,18 @@ def metrics():
         curve.append({"run": rd.name, "scene": scene, "outcome": outcome,
                       "wave": wave_max, "ticks": n, "transit": transit,
                       "score": round((e_g + d_g + a_g + h_g + s_g) / 5)})
+    # MiniMax command apply-rate — % of last 20 steers the plugin confirmed.
+    mm_applied = mm_total = 0
+    try:
+        for ln in MMWATCH.read_text(errors="replace").strip().splitlines()[-40:]:
+            e = json.loads(ln)
+            if e.get("kind") == "proof":
+                mm_total += 1
+                if e.get("applied"): mm_applied += 1
+    except Exception:
+        pass
+    m["mm_rate"] = round(mm_applied / mm_total * 100) if mm_total else 0
+    m["mm_total"] = mm_total
     m["curve"] = curve
     m["grades"] = {k: round(sum(v) / len(v)) if v else 0
                    for k, v in cat.items()}
@@ -734,6 +859,12 @@ button{background:none;border:0;color:var(--txt);cursor:pointer;font-family:inhe
 #side .sh input{flex:1;background:#150e0a;border:1px solid var(--bord);border-radius:8px;
  padding:6px 9px;color:var(--txt);font-size:12px;outline:0;min-width:0}
 #runlist{flex:1;overflow-y:auto;padding:4px 6px}
+.rf{font-size:10px;color:var(--dim);padding:2px 8px;border-radius:10px;
+ border:1px solid var(--bord)}
+.rf.on{color:var(--acc);border-color:rgba(240,179,94,.5)}
+#jump{position:fixed;bottom:130px;left:50%;transform:translateX(-50%);
+ display:none;background:#3a2b1c;border:1px solid var(--acc);border-radius:16px;
+ padding:4px 14px;font-size:11px;color:var(--acc);z-index:5;box-shadow:0 3px 10px rgba(0,0,0,.5)}
 .rl{display:flex;flex-direction:column;gap:2px;padding:8px 9px;border-radius:8px;
  cursor:pointer;margin-bottom:2px;border:1px solid transparent}
 .rl:hover{background:#2a1f16}
@@ -765,6 +896,9 @@ button{background:none;border:0;color:var(--txt);cursor:pointer;font-family:inhe
 .st .v{font-size:16px;font-weight:700;color:var(--txt);line-height:1.1}
 .st .v.gold{color:var(--acc)}.st .v.red{color:var(--bad)}.st .v.ok{color:var(--ok)}
 .st .v.small{font-size:12px;line-height:1.5}
+.bar-mini{height:4px;border-radius:2px;background:#150e0a;overflow:hidden;width:70px;margin-top:2px}
+.bar-mini div{height:100%;background:var(--acc2)}
+.bar-mini div.ok{background:var(--ok)}.bar-mini div.bad{background:var(--bad)}
 #alertbar{display:none;flex:none;padding:5px 14px;font-size:11.5px;font-weight:700}
 #alertbar.crit{display:block;background:rgba(224,96,79,.18);color:#ff9d8f;
  border-bottom:1px solid rgba(224,96,79,.4)}
@@ -787,6 +921,8 @@ button{background:none;border:0;color:var(--txt);cursor:pointer;font-family:inhe
  font-size:11px;color:#c9b088}
 .m.mm{align-self:flex-start;background:#1a1f2e;border-left:3px solid var(--teal);
  font-size:11px;color:#9ec8c4}
+.m.err{align-self:stretch;background:rgba(224,80,64,.13);border:1px solid rgba(224,80,64,.45);
+ border-left:4px solid var(--bad);font-size:11.5px;color:#ff9d8f;font-weight:600}
 .m .who{display:block;font-size:9px;color:var(--dim);margin-bottom:2px;
  text-transform:uppercase;letter-spacing:.6px}
 .m .tm{float:right;font-size:9px;color:var(--dim);margin-left:10px}
@@ -863,6 +999,12 @@ pre.book{background:#150e0a;border:1px solid var(--bord);border-radius:9px;
 <div id="side">
  <div class="sh"><input id="rq" placeholder="Search runs" oninput="runs()">
  <button class="cb" onclick="hideSide()" title="hide" style="color:var(--dim)">&#10094;</button></div>
+ <div class="sh" style="padding-top:0">
+  <button class="cb rf on" onclick="rf(this,'all')">all</button>
+  <button class="cb rf" onclick="rf(this,'defeat')">defeats</button>
+  <button class="cb rf" onclick="rf(this,'victory')">wins</button>
+  <button class="cb rf" onclick="rf(this,'running')">running</button>
+  <button class="cb rf" onclick="rf(this,'tr')">transit</button></div>
  <div id="runlist"></div>
  <div class="ft" id="sideft">…</div>
 </div>
@@ -880,6 +1022,7 @@ pre.book{background:#150e0a;border:1px solid var(--bord);border-radius:9px;
  <div id="alertbar"></div>
  <div id="healthbar"></div>
  <div id="feed"></div>
+ <button id="jump" onclick="jumpBottom()">▼ new</button>
  <div id="cmp">
   <textarea id="txt" rows="2" placeholder="Command the realm… (Enter sends · Shift+Enter newline · drag corner to grow)"></textarea>
   <div class="bar">
@@ -888,6 +1031,12 @@ pre.book{background:#150e0a;border:1px solid var(--bord);border-radius:9px;
    <button class="cb" id="mic" title="voice — auto-sends after a pause">&#127908;</button>
    <button class="cb" id="tts" title="speak replies" onclick="ttsOn=!ttsOn;this.classList.toggle('on',ttsOn)">&#128266;</button>
    <button class="cb" id="lock" title="lock textbox size" onclick="lockBox=this.classList.toggle('on')">&#128274;</button>
+   <button class="cb" title="round-trip test: web→bot→game" onclick="ping()">&#128268;</button>
+   <button class="cb" title="ORDER: military now" onclick="order({build_focus:'military',note:'ui-military'})">&#9876;</button>
+   <button class="cb" title="ORDER: defense now" onclick="order({build_focus:'defense',note:'ui-defense'})">&#128737;</button>
+   <button class="cb" title="ORDER: income now" onclick="order({build_focus:'income',note:'ui-income'})">&#128176;</button>
+   <button class="cb" title="ORDER: hero builds" onclick="order({hero_posture:'builder',note:'ui-builder'})">&#128296;</button>
+   <button class="cb" title="ORDER: hero fights" onclick="order({hero_posture:'fighter',note:'ui-fighter'})">&#9876;</button>
    <span id="vst"></span>
    <button id="send" onclick="send()">Send</button>
   </div>
@@ -923,6 +1072,7 @@ pre.book{background:#150e0a;border:1px solid var(--bord);border-radius:9px;
    <div class="card"><h4>Playbook checklist</h4><div id="auCheck"></div></div>
    <div class="card"><h4>Door posts</h4><div id="auDoor"></div></div>
    <div class="card"><h4>Built so far</h4><div id="auCat"></div></div>
+   <div class="card"><h4>Action timeline</h4><div id="auAct"></div></div>
    <div class="card"><h4>Last MiniMax command</h4><div id="auMm" class="hint"></div></div>
   </div>
  </div>
@@ -934,9 +1084,12 @@ const feed=document.getElementById('feed'),txt=document.getElementById('txt');
 const shot=document.getElementById('shot'),cv=document.getElementById('draw');
 function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
 function add(role,text,who,tm){
- const d=document.createElement('div');d.className='m '+(role=='mm'?'mm':role);
+ const d=document.createElement('div');d.className='m '+(role=='mm'?'mm':role=='err'?'err':role);
  d.innerHTML=(who?`<span class="who">${who}<span class="tm">${tm||''}</span></span>`:'')+esc(text);
- feed.appendChild(d);feed.scrollTop=feed.scrollHeight;
+ feed.appendChild(d);
+ if(scrolledUp){newCount++;
+  document.getElementById('jump').textContent='▼ '+newCount+' new'}
+ else feed.scrollTop=feed.scrollHeight;
  if(role=='a'&&ttsOn){const u=new SpeechSynthesisUtterance(text);u.rate=1.05;speechSynthesis.speak(u)}}
 async function j(u,o){const r=await fetch(u,o);return r.json()}
 /* ── THE ONE LIVE LOOP: audit.json every 1 s drives EVERYTHING ── */
@@ -954,7 +1107,10 @@ function paint(){
   cell('action',a.mode+(a.mode_since>60?` <span style="font-size:10px;color:var(--bad)">${a.mode_since}s</span>`:`<span style="font-size:10px;color:var(--dim)">${a.mode_since}s</span>`),'small')
   +cell('building',a.cur_build||'—','small')
   +cell('gold',a.gold,'gold')
-  +cell('army',a.ally+(a.free!=null?` <span style="font-size:10px;color:var(--dim)">+${a.free}free</span>`:''))
+  +`<div class="st"><div class="k">army</div><div class="v">${a.ally}
+   <span style="font-size:10px;color:var(--dim)">+${a.free||0}free</span></div>
+   <div class="bar-mini"><div class="${(a.ally/(a.army_target||1))>0.7?'ok':(a.ally/(a.army_target||1))>0.3?'':'bad'}"
+   style="width:${Math.min(100,(a.ally/(a.army_target||1))*100)}%"></div></div></div>`
   +cell('wave',a.wave+'/'+a.wave_total)
   +cell('doors',`${a.doors_cov}/${a.doors}`,a.doors_cov>0?'ok':'red')
   +cell('foes',a.foes)
@@ -970,6 +1126,13 @@ function paint(){
   ||'<div class="hint">no playbook</div>';
  document.getElementById('auCat').innerHTML=Object.entries(a.cat_built||{}).map(([k,v])=>
   `<div class="kv"><span>${k}</span><b>${v}</b></div>`).join('')||'<div class="hint">nothing built yet</div>';
+ document.getElementById('auAct').innerHTML=(a.activity||[]).map(([t,m])=>
+  `<div class="kv"><span>t=${t}s</span><b>${m}</b></div>`).join('')||'<div class="hint">—</div>';
+ document.getElementById('auMm').textContent=a.mm_note||'—';
+ const done=(a.checklist||[]).filter(c=>c.done).length,tot=(a.checklist||[]).length;
+ document.getElementById('auCheck').insertAdjacentHTML('afterbegin',
+  tot?`<div class="hint" style="margin-bottom:4px">${done}/${tot} complete
+   ${a.build_stale_s>120?`· <b style="color:#e5534b">stall ${a.build_stale_s}s</b>`:''}</div>`:'');
  // alert bar — highest severity wins
  const al=(a.alerts||[]);
  const bar=document.getElementById('alertbar');
@@ -1003,6 +1166,15 @@ async function verifyCmd(cmd){
  if(A.mode)add('c',`VERIFIED: mode=${A.mode} ally=${A.ally} doors=${A.doors_cov}/${A.doors} built=${JSON.stringify(A.cat_built||{})}`,'proof')}
 txt.addEventListener('input',()=>{if(!lockBox){txt.style.height='auto';txt.style.height=Math.min(txt.scrollHeight,window.innerHeight*0.45)+'px'}});
 txt.addEventListener('keydown',e=>{if(e.key=='Enter'&&!e.shiftKey){e.preventDefault();send()}});
+function rf(el,f){runFilter=f;
+ document.querySelectorAll('.rf').forEach(b=>b.classList.toggle('on',b==el));runs()}
+/* scroll-lock: reading up = no autoscroll; jump button on new msgs */
+let scrolledUp=false,newCount=0;
+feed.addEventListener('scroll',()=>{scrolledUp=feed.scrollHeight-feed.scrollTop-feed.clientHeight>80;
+ if(!scrolledUp)newCount=0;
+ document.getElementById('jump').style.display=scrolledUp?'block':'none';
+ document.getElementById('jump').textContent='▼ '+newCount+' new'});
+function jumpBottom(){feed.scrollTop=feed.scrollHeight;scrolledUp=false}
 function hideSide(){sideHidden=!sideHidden;
  document.getElementById('side').classList.toggle('hide',sideHidden);
  document.getElementById('showSide').style.display=sideHidden?'flex':'none'}
@@ -1030,15 +1202,16 @@ setInterval(async()=>{try{const l=await j('/live.json');
   (frameCt/((now-lastFpsT)/1000)).toFixed(1)+' fps';frameCt=0;lastFpsT=now}}catch(e){}},800);
 /* history — last 30 only, mm entries get their time */
 (async()=>{const h=await j('/history');h.slice(-30).forEach(x=>{
- const r=x.role=='user'?'u':x.role=='assistant'?'a':x.role=='mm'?'mm':'c';
- const w=x.role=='user'?'you':x.role=='assistant'?'Grandmaster':x.role=='mm'?'MiniMax Watch':'system';
+ const r=x.role=='user'?'u':x.role=='assistant'?'a':x.role=='mm'?'mm':x.role=='err'?'err':'c';
+ const w=x.role=='user'?'you':x.role=='assistant'?'Grandmaster':x.role=='mm'?'MiniMax Watch':x.role=='err'?'LINK':'system';
  add(r,x.text,w,x.t?new Date(x.t*1000).toLocaleTimeString():'')})})();
 /* runs — preserve selection+expansion across refreshes */
-let selRun=-1;
+let selRun=-1,runFilter='all';
 async function runs(){
  try{const m=await j('/metrics');runRows=(m.curve||[]).slice(-40).reverse();
  const q=document.getElementById('rq').value.toLowerCase();
  document.getElementById('runlist').innerHTML=runRows
+  .filter(r=>runFilter=='all'||(runFilter=='tr' ? r.transit : !r.transit && r.outcome==runFilter))
   .filter(r=>!q||(r.scene||'').toLowerCase().includes(q))
   .map((r,i)=>`<div class="rl ${r.transit?'tr':''} ${i==selRun?'on':''}" onclick="pickRun(${i})">
    <span class="rn"><span class="dot ${r.outcome=='victory'?'win':r.outcome=='defeat'?'lose':'run'}"></span>
@@ -1068,7 +1241,8 @@ async function refresh(){try{const m=await j('/metrics');
   ['dataset rows',D.rows??0],['wins / defeats',`${D.wins??0} / ${D.defeats??0}`],
   ['policy states',P.states??0],['Q cells',P.cells??0],['decisions',P.decisions??0],
   ['mean |Q|',P.mean_abs_q??0],['ε',P.epsilon??'—'],
-  ['net agree',N.ratio!==undefined?(N.ratio*100).toFixed(0)+'%':'—']]
+  ['net agree',N.ratio!==undefined?(N.ratio*100).toFixed(0)+'%':'—'],
+  ['mm apply-rate',m.mm_rate+'% of '+m.mm_total]]
   .map(([k,v])=>`<div class="kv"><span>${k}</span><b>${v}</b></div>`).join('');
  document.getElementById('trendline').textContent=
   `trend ${m.trend>=0?'+':''}${m.trend} · net: ${N.last_net||'—'} vs bot ${N.last_bot||'—'} conf ${N.conf||0}`;
@@ -1118,6 +1292,16 @@ function sendShot(){const c=document.createElement('canvas');
 function attach(f){const r=new FileReader();
  r.onload=()=>{pending=r.result.split(',')[1];add('c','file attached — write your order & hit Send','attach')};
  if(f.files[0])r.readAsDataURL(f.files[0]);f.value=''}
+async function order(cmd){
+ add('c','ORDER sent: '+JSON.stringify(cmd),'you');
+ try{const r=await j('/order',{method:'POST',body:JSON.stringify(cmd)});
+  add(r.ok?'c':'err',r.ok?'ORDER APPLIED — game confirmed':'ORDER FAILED — game never confirmed','proof')}catch(e){add('err','ORDER failed: '+e,'proof')}}
+async function ping(){
+ add('c','PING: writing test command, waiting for the game to confirm…','proof');
+ try{const r=await j('/ping');
+  add(r.ok?'c':'err',r.ok?'PING OK — the bot received and applied a live command':
+   'PING FAILED at '+r.stage+' — '+(r.error||'game log never showed the apply'),
+   'proof')}catch(e){add('err','PING failed: '+e,'proof')}}
 /* voice */
 let rec,recOn=false;const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
 if(SR){rec=new SR();rec.continuous=true;rec.interimResults=true;rec.lang='en-US';
@@ -1146,6 +1330,8 @@ runs();refresh();tick();
 
 
 
+
+
 if __name__ == "__main__":
     import threading
     print(f"[coach-server] agent dir: {AGENT}")
@@ -1155,4 +1341,5 @@ if __name__ == "__main__":
     if MM_ENABLED:
         threading.Thread(target=mm_watch_loop, daemon=True).start()
         print(f"[coach-server] MiniMax watch loop ON every {WATCH_EVERY}s")
+    threading.Thread(target=health_watch_loop, daemon=True).start()
     ThreadingHTTPServer(("127.0.0.1", PORT), H).serve_forever()
