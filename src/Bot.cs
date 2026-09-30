@@ -457,9 +457,15 @@ namespace ThronefallTrainer
                     interZeroSince = -1f;
                     Plugin.Log?.LogWarning(
                         "[bot] interactor vacuum — no interactables/coins 40 s " +
-                        "into day; match is corrupt → TransitionToLevelSelect()");
+                        "into day; match is corrupt → level select via frame");
                     LogLine(in s, "inter-vacuum");
-                    if (SceneTransitionManager.instance != null)
+                    // Same lesson as the match-end path: go through the pause
+                    // frame's own back-button, not a raw scene transition.
+                    var fm2 = UIFrameManager.instance;
+                    var frame2 = fm2 != null ? fm2.ActiveFrame : null;
+                    if (frame2 != null) frame2.Apply();
+                    else if (fm2 != null && PlayerInteraction.instance != null &&
+                             SceneTransitionManager.instance != null)
                         SceneTransitionManager.instance.TransitionToLevelSelect();
                 }
             }
@@ -1351,12 +1357,19 @@ namespace ThronefallTrainer
                 (frameSeen >= 2 && (s.GameState.StartsWith("AfterMatch") ||
                                     frame.name.IndexOf("After Match") >= 0))))
             {
-                if (Time.unscaledTime >= frameActionAt && SceneTransitionManager.instance != null)
+                if (Time.unscaledTime >= frameActionAt)
                 {
                     frameActionAt = Time.unscaledTime + 2f;
-                    Plugin.Log?.LogInfo("[bot] end-of-match -> TransitionToLevelSelect()");
+                    // Click the game's OWN back-to-map path — Apply() fires
+                    // the frame's primary action (the BackToLevelSelectHelper
+                    // button), which runs the game's match-cleanup before
+                    // transitioning. A raw SceneTransitionManager call
+                    // skipped that cleanup: the next Durststein inherited
+                    // the dead match — interactables never respawned
+                    // (the inter-vacuum loop).
+                    Plugin.Log?.LogInfo("[bot] end-of-match -> Apply() (back-to-map)");
                     LogLine(in s, "match-end");
-                    SceneTransitionManager.instance.TransitionToLevelSelect();
+                    frame.Apply();
                 }
                 return true;
             }
