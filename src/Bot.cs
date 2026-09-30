@@ -1291,8 +1291,12 @@ namespace ThronefallTrainer
             // below instead. The frameSeen>=2 escalation is gated on AfterMatch*
             // states so a stubborn mid-run frame can never nuke the run.
             var backHelper = frame.GetComponentInChildren<BackToLevelSelectHelper>(true);
+            // 'After Match Frame' survived 7+ plain closes while GameState had
+            // already rolled past AfterMatch* into transition — gate on the
+            // frame NAME too, not only the state string.
             if (backHelper != null && (frame.canNotBeEscaped ||
-                (frameSeen >= 2 && s.GameState.StartsWith("AfterMatch"))))
+                (frameSeen >= 2 && (s.GameState.StartsWith("AfterMatch") ||
+                                    frame.name.IndexOf("After Match") >= 0))))
             {
                 if (Time.unscaledTime >= frameActionAt && SceneTransitionManager.instance != null)
                 {
