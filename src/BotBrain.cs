@@ -1039,7 +1039,11 @@ namespace ThronefallTrainer
                 }
                 return r;
             }
-            if (s.CanSwitch && now >= m.NightRequestAt &&
+            // Same gate — the horn-less fallback was firing switch-night on
+            // the FIRST tick of a fresh run (NightRequestAt starts at 0 →
+            // now >= 0 → instant night, ally=0, wave 1 wipe). Readiness
+            // required here too.
+            if (readyForNight && s.CanSwitch && now >= m.NightRequestAt &&
                 !(s.SceneName != null && s.SceneName.StartsWith("_")))
             {
                 m.NightRequestAt = now + 15f;
