@@ -341,6 +341,10 @@ namespace ThronefallTrainer
             for (int i = 0; i < order.Length; i++)
             {
                 string cat = order[i].Split(':')[0].Trim();
+                // Wedged categories advance instead of deadlocking the plan —
+                // a wall slot behind unwalkable geometry used to freeze open[0]
+                // while towers/houses absorbed every pick for 6+ min.
+                if (catStuck.TryGetValue(cat, out int st) && st >= 4) continue;
                 need.TryGetValue(cat, out int seen);
                 need[cat] = seen + 1;
                 CatBuilt.TryGetValue(cat, out int have);
@@ -348,6 +352,19 @@ namespace ThronefallTrainer
                 if (open.Count >= 3) break;
             }
             return open.ToArray();
+        }
+
+        private static readonly System.Collections.Generic.Dictionary<string, int> catStuck =
+            new System.Collections.Generic.Dictionary<string, int>();
+
+        /// <summary>Count a failure against a build category (unreachable park,
+        /// wrong-layer retry, stall). At 4+ the playbook skips it — the plan
+        /// degrades to the next category instead of starving.</summary>
+        public static void NoteBuildFail(string cat)
+        {
+            if (string.IsNullOrEmpty(cat)) return;
+            catStuck.TryGetValue(cat, out int n);
+            catStuck[cat] = n + 1;
         }
 
         /// <summary>Full playbook checklist for the audit UI: every build_order
@@ -431,6 +448,7 @@ namespace ThronefallTrainer
             // scene's counts (playbook categories pre-satisfied, wrong
             // army-starved timers). Reset here where scene context changes.
             CatBuilt.Clear();
+            catStuck.Clear();
             milFirstAt = -1f;
             catBuiltScene = null;
             try

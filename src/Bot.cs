@@ -775,6 +775,8 @@ namespace ThronefallTrainer
                                     // what A* can't route). Stand cells die
                                     // too so the aim comes off the bad cell.
                                     BotPerception.IgnoreStand(s.NearestBuildPos);
+                                    BotPerception.NoteBuildFail(
+                                        BotPerception.BuildCat(s.NearestBuildName));
                                     navDirectUntil = Time.unscaledTime + 9f;
                                     navPath = null; navIndex = 0;
                                     navWrongLayer = false;
@@ -784,6 +786,8 @@ namespace ThronefallTrainer
                                 else
                                 {
                                     BotPerception.IgnoreBuild(s.NearestBuild, 300f);
+                                    BotPerception.NoteBuildFail(
+                                        BotPerception.BuildCat(s.NearestBuildName));
                                     ClearTarget();
                                     Plugin.Log?.LogWarning("[bot] slot unreachable — parked 5 min" +
                                         (navWrongLayer ? " [layer]" : ""));
@@ -935,8 +939,12 @@ namespace ThronefallTrainer
                     }
                     BotPerception.IgnoreBuild(s.NearestBuild, 600f);
                     if (s.NearestBuild != null)
+                    {
                         Memory.Park(s.SceneName,
                             s.NearestBuild.transform.position, "build-stall");
+                        BotPerception.NoteBuildFail(
+                            BotPerception.BuildCat(s.NearestBuildName));
+                    }
                     break;
                 case IntentKind.PumpAttack:
                     PumpAttack();
