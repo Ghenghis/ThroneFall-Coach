@@ -119,6 +119,7 @@ namespace ThronefallTrainer
         private static int navIndex;
         private static Vector3 navGoal;
         private static bool navWrongLayer;   // path resolved on elevated navmesh
+        private static float navDirectUntil; // beeline window — navmesh lies, feet don't
         private static float navRepathAt;
         private static bool navInFlight;
         private static float navSteerArrive = 0.5f;
@@ -736,17 +737,19 @@ namespace ThronefallTrainer
                                     Plugin.Log?.LogWarning("[bot] hero on wall top → descending via castle");
                                     LogLine(in s, "hero-descend");
                                 }
-                                else if (navWrongLayer && s.HasBuildStand)
+                                else if (navWrongLayer)
                                 {
-                                    // Wrong-layer stand cell — discard just
-                                    // the stand-point (brain falls back to
-                                    // the hero-side standoff approach) and
-                                    // give the slot ONE retry before parking.
+                                    // Wrong-layer path — try WALKING IT
+                                    // (players don't use navmesh; a 30m
+                                    // straight steer + wall-slide reaches
+                                    // what A* can't route). Stand cells die
+                                    // too so the aim comes off the bad cell.
                                     BotPerception.IgnoreStand(s.NearestBuildPos);
-                                    ClearTarget();
+                                    navDirectUntil = Time.unscaledTime + 9f;
+                                    navPath = null; navIndex = 0;
                                     navWrongLayer = false;
-                                    Plugin.Log?.LogWarning("[bot] stand-point wrong-layer → standoff retry");
-                                    LogLine(in s, "stand-bad");
+                                    Plugin.Log?.LogWarning("[bot] wrong-layer path → direct steer 9s");
+                                    LogLine(in s, "direct-steer");
                                 }
                                 else
                                 {
@@ -1473,6 +1476,11 @@ namespace ThronefallTrainer
         private static Vector3 NavSteerPoint(Vector3 hero, Vector3 goal)
         {
             navSteerArrive = arriveDist;
+            // Direct-steer window: a wrong-layer path flagged the navmesh —
+            // but the hero walks FREELY (navmesh is only our helper). Steer
+            // straight for the goal; hard-stuck detours handle obstacles.
+            if (Time.unscaledTime < navDirectUntil)
+                return goal;
             if (hasTarget) MaybeRequestPath(hero, goal);
 
             var p = navPath;
