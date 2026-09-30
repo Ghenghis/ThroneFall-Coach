@@ -118,6 +118,7 @@ namespace ThronefallTrainer
         private static Pathfinding.Path navPath;
         private static int navIndex;
         private static Vector3 navGoal;
+        private static bool navWrongLayer;   // path resolved on elevated navmesh
         private static float navRepathAt;
         private static bool navInFlight;
         private static float navSteerArrive = 0.5f;
@@ -716,12 +717,17 @@ namespace ThronefallTrainer
                             // one-way drop — A* returns a 1-wp degenerate
                             // path), park the pick like the coin stall does;
                             // the next-best slot/coin takes over instead of
-                            // grinding the same wall forever.
-                            if (Mode == BotMode.SpendGold && s.NearestBuild != null)
+                            // grinding the same wall forever. A wrong-layer
+                            // path (elevated navmesh, wall-top hero to ground
+                            // slot) can NEVER descend — park instantly.
+                            if (Mode == BotMode.SpendGold && s.NearestBuild != null &&
+                                (navWrongLayer || StuckStrikes >= 3))
                             {
                                 BotPerception.IgnoreBuild(s.NearestBuild, 300f);
                                 ClearTarget();
-                                Plugin.Log?.LogWarning("[bot] slot unreachable — parked 5 min");
+                                Plugin.Log?.LogWarning("[bot] slot unreachable — parked 5 min" +
+                                    (navWrongLayer ? " [layer]" : ""));
+                                navWrongLayer = false;
                                 LogLine(in s, "build-unreachable");
                             }
                         }
@@ -1504,11 +1510,18 @@ namespace ThronefallTrainer
                 navInFlight = false;
                 if (!done.error && done.vectorPath != null && done.vectorPath.Count > 0)
                 {
+                    var last = done.vectorPath[done.vectorPath.Count - 1];
+                    // Wrong-layer path: the navmesh resolved to an elevated
+                    // route (hero on a wall top, slot below — move-diag showed
+                    // y=13.49 paths to y≈0 goals). Grinding produced only
+                    // stuck-strikes; flag it so the watchdog parks instantly.
+                    navWrongLayer = Mathf.Abs(last.y - goal.y) > 2.5f;
                     navPath = done;
                     navIndex = 0;
                     navDiagCount++;
                     if (navDiagCount <= 20)
-                        Plugin.Log?.LogInfo($"[bot] nav-path ok: {done.vectorPath.Count} wp -> {goal}");
+                        Plugin.Log?.LogInfo($"[bot] nav-path ok: {done.vectorPath.Count} wp -> {goal}" +
+                            (navWrongLayer ? " [wrong-layer]" : ""));
                 }
                 else
                 {
