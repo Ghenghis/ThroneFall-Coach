@@ -723,12 +723,28 @@ namespace ThronefallTrainer
                             if (Mode == BotMode.SpendGold && s.NearestBuild != null &&
                                 (navWrongLayer || StuckStrikes >= 3))
                             {
-                                BotPerception.IgnoreBuild(s.NearestBuild, 300f);
-                                ClearTarget();
-                                Plugin.Log?.LogWarning("[bot] slot unreachable — parked 5 min" +
-                                    (navWrongLayer ? " [layer]" : ""));
-                                navWrongLayer = false;
-                                LogLine(in s, "build-unreachable");
+                                // HERO is the wrong layer (standing on a wall
+                                // top, all waypoints at y≈13): parking the slot
+                                // is wrong — the slot is fine, WE can't descend.
+                                // Aim at the castle (always ground level) — the
+                                // route the hero climbed up routes back down.
+                                if (s.HeroPos.y > s.NearestBuildPos.y + 2.5f)
+                                {
+                                    ClearTarget();
+                                    navWrongLayer = false;
+                                    SetTarget(s.CastlePos, 1.5f);
+                                    Plugin.Log?.LogWarning("[bot] hero on wall top → descending via castle");
+                                    LogLine(in s, "hero-descend");
+                                }
+                                else
+                                {
+                                    BotPerception.IgnoreBuild(s.NearestBuild, 300f);
+                                    ClearTarget();
+                                    Plugin.Log?.LogWarning("[bot] slot unreachable — parked 5 min" +
+                                        (navWrongLayer ? " [layer]" : ""));
+                                    navWrongLayer = false;
+                                    LogLine(in s, "build-unreachable");
+                                }
                             }
                         }
                         else
