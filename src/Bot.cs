@@ -736,6 +736,18 @@ namespace ThronefallTrainer
                                     Plugin.Log?.LogWarning("[bot] hero on wall top → descending via castle");
                                     LogLine(in s, "hero-descend");
                                 }
+                                else if (navWrongLayer && s.HasBuildStand)
+                                {
+                                    // Wrong-layer stand cell — discard just
+                                    // the stand-point (brain falls back to
+                                    // the hero-side standoff approach) and
+                                    // give the slot ONE retry before parking.
+                                    BotPerception.IgnoreStand(s.NearestBuildPos);
+                                    ClearTarget();
+                                    navWrongLayer = false;
+                                    Plugin.Log?.LogWarning("[bot] stand-point wrong-layer → standoff retry");
+                                    LogLine(in s, "stand-bad");
+                                }
                                 else
                                 {
                                     BotPerception.IgnoreBuild(s.NearestBuild, 300f);

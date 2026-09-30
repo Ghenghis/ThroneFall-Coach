@@ -547,6 +547,19 @@ namespace ThronefallTrainer
             return best;   // within ~2 m of the extracted record
         }
 
+        private static readonly System.Collections.Generic.HashSet<string> badStands =
+            new System.Collections.Generic.HashSet<string>();
+
+        /// <summary>Forget a slot's pack stands after nav proved them
+        /// unreachable — the next capture offers the standoff fallback.</summary>
+        public static void IgnoreStand(Vector3 slotPos)
+        {
+            badStands.Add(PosKey(slotPos));
+        }
+
+        private static string PosKey(Vector3 p) =>
+            ((int)(p.x / 4f)).ToString() + "," + ((int)(p.z / 4f)).ToString();
+
         /// <summary>Best stand-point for a slot: nearest to the hero among
         /// stands that exist; clearanceM &gt;= 0.5 preferred.</summary>
         private static Vector3 BestStand(SlotPackRec sl, Vector3 hero)
@@ -1582,8 +1595,16 @@ namespace ThronefallTrainer
                     GetBuildClass(s.NearestBuild.targetBuilding, out s.BuildMil, out s.BuildInc);
                 // Terrain pack: known-reachable stand cell for this slot —
                 // navigating to a stand-point can't wedge inside the slot's
-                // collider (the spend-stall bug's travel side).
-                var bsp = BestStand(FindSlot(s.NearestBuildPos), s.HeroPos);
+                // collider (the spend-stall bug's travel side). Cells whose
+                // nav path resolves to the WRONG LAYER (wall-top navmesh
+                // snap — the whole east-perimeter ring showed this) get
+                // discarded: the brain then falls back to the hero-side
+                // standoff approach instead of aiming at an unreachable
+                // precomputed cell.
+                var sl = FindSlot(s.NearestBuildPos);
+                var bsp = sl != null && badStands.Contains(PosKey(s.NearestBuildPos))
+                    ? Vector3.zero
+                    : BestStand(sl, s.HeroPos);
                 s.HasBuildStand = bsp != Vector3.zero;
                 if (s.HasBuildStand)
                 {
