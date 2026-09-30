@@ -1537,11 +1537,11 @@ namespace ThronefallTrainer
                         string scat = BuildCat(bs.buildingName);
                         int oi = System.Array.IndexOf(open, scat);
                         if (oi >= 0)
-                            // The playbook IS the default policy: the NEXT
-                            // required category outbids even a harvest (+1000)
-                            // — with gold on hand the plan is followed, not
-                            // merely preferred. Broke still funds first.
-                            score += oi == 0 && !broke ? 1200 : 150 - oi * 40;
+                            // The playbook IS the default policy: open[0]
+                            // outbids even a harvest; open[1..2] still beat
+                            // any non-plan pick (tower spam at +600 used to
+                            // swallow the plan's wall→gate→military order).
+                            score += broke ? 0 : (oi == 0 ? 1200 : 600 - oi * 150);
                     }
                 }
                 s.BuildCount++;
