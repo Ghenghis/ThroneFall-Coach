@@ -161,11 +161,15 @@ namespace ThronefallTrainer
             // NaN poison: a single non-finite reward wrote "NaN" into the
             // file (unparseable on reload → cell vanished) AND made every
             // future Best() compare false → policy degenerated to options[0].
-            if (!!float.IsNaN(target) && !float.IsInfinity(target)) return;
+            if (float.IsNaN(target) || float.IsInfinity(target)) return;
             if (!Q.TryGetValue(key, out var row))
                 Q[key] = row = new Dictionary<string, float>();
             float old = row.TryGetValue(action, out float v) ? v : 0f;
-            row[action] = old + LearningRate * (target - old);
+            float next = old + LearningRate * (target - old);
+            // Finite input can still overflow in the update (Q-learning with
+            // a huge target) — a written Infinity poisons the cell on save.
+            if (float.IsNaN(next) || float.IsInfinity(next)) return;
+            row[action] = next;
             Updates++;
             if (Time.unscaledTime > saveAt)
             { saveAt = Time.unscaledTime + 15f; Save(); DumpStats(); }
@@ -217,6 +221,28 @@ namespace ThronefallTrainer
             return sb.ToString();
         }
 
+        // JSON string escape/unescape for keys — state keys are composed of
+        // scene names and tags; a raw " or \\ wrote corrupt JSON that the
+        // loader regex then silently skipped (cell loss per write).
+        private static string Js(string s) =>
+            string.IsNullOrEmpty(s) ? "" :
+            s.Replace("\\", "\\\\").Replace("\"", "\\\"");
+        private static string UnJs(string s)
+        {
+            if (string.IsNullOrEmpty(s) || s.IndexOf('\\') < 0) return s;
+            var b = new System.Text.StringBuilder(s.Length);
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (s[i] == '\\' && i + 1 < s.Length)
+                {
+                    char e = s[++i];
+                    b.Append(e == 'n' ? '\n' : e == 't' ? '\t' : e == 'r' ? '\r' : e);
+                }
+                else b.Append(s[i]);
+            }
+            return b.ToString();
+        }
+
         private static void Save()
         {
             try
@@ -227,13 +253,13 @@ namespace ThronefallTrainer
                 {
                     if (!first) sb.Append(',');
                     first = false;
-                    sb.Append('\n').Append('"').Append(kv.Key).Append("\":{");
+                    sb.Append('\n').Append('"').Append(Js(kv.Key)).Append("\":{");
                     bool f2 = true;
                     foreach (var a in kv.Value)
                     {
                         if (!f2) sb.Append(',');
                         f2 = false;
-                        sb.Append('"').Append(a.Key).Append("\":")
+                        sb.Append('"').Append(Js(a.Key)).Append("\":")
                           .Append(a.Value.ToString("0.####",
                               System.Globalization.CultureInfo.InvariantCulture));
                     }
@@ -267,9 +293,9 @@ namespace ThronefallTrainer
                                 System.Globalization.NumberStyles.Float,
                                 System.Globalization.CultureInfo.InvariantCulture,
                                 out float av) && !float.IsNaN(av) && !float.IsInfinity(av))
-                            row[a.Groups[1].Value] = av;
+                            row[UnJs(a.Groups[1].Value)] = av;
                     }
-                    Q[m.Groups[1].Value] = row;
+                    Q[UnJs(m.Groups[1].Value)] = row;
                 }
                 Plugin.Log?.LogInfo($"[policy] loaded {Q.Count} learned states");
             }

@@ -222,5 +222,8 @@ foreach ($pin in @('Memory\.(Park|Bump|NearMishap|Count|Init)',
 }
 
 Write-Host ''
-Write-Host "bot-lint: $fails FAIL, $warns WARN" -ForegroundColor ($fails -gt 0 ? 'Red' : ($warns -gt 0 ? 'Yellow' : 'Green'))
+# PS 5.1-safe: the ternary `? :` is PS7-only and made the whole script a
+# parse error (every lint check silently never ran — audit round 7).
+$lc = if ($fails -gt 0) { 'Red' } elseif ($warns -gt 0) { 'Yellow' } else { 'Green' }
+Write-Host "bot-lint: $fails FAIL, $warns WARN" -ForegroundColor $lc
 exit $fails

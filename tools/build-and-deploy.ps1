@@ -59,10 +59,20 @@ if ($NoRelaunch) {
     foreach ($i in 1..30) {
         Start-Sleep -Seconds 1
         if (Test-Path $logPath) {
-            $tail = Get-Content $logPath -Raw -ErrorAction SilentlyContinue
-            if ($tail -and $tail.Substring([Math]::Max(0, $tail.Length - 4000)) -match 'Thronefall Trainer|trainer\.dll|BepInEx.*loaded') {
-                $loaded = $true; break
-            }
+            # Only scan bytes APPENDED after launch — a stale 'loaded' line
+            # from the previous session used to produce a false PASS.
+            $fs = [IO.File]::Open($logPath, 'Open', 'Read', 'ReadWrite')
+            try {
+                if ($fs.Length -gt $logLen) {
+                    $fs.Seek($logLen, 'Begin') | Out-Null
+                    $buf = New-Object byte[] ($fs.Length - $logLen)
+                    $fs.Read($buf, 0, $buf.Length) | Out-Null
+                    $tail = [Text.Encoding]::UTF8.GetString($buf)
+                    if ($tail -match 'Thronefall Trainer|trainer\.dll|BepInEx.*loaded') {
+                        $loaded = $true; break
+                    }
+                }
+            } finally { $fs.Close() }
         }
     }
     Write-Host ($(if ($loaded) { 'Relaunched — plugin load line present in log.' }

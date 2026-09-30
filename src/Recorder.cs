@@ -68,6 +68,9 @@ namespace ThronefallTrainer
         public static void Stop()
         {
             lock (writerLock) { running = false; }
+            // Flush the tail — Stop() at plugin unload used to lose the last
+            // summary/episodic-index lines when the process exited fast.
+            try { writer?.Join(2000); } catch { }
         }
 
         /// <summary>
@@ -180,11 +183,13 @@ namespace ThronefallTrainer
         {
             // Half-second bucket: whole-second dedupe threw away ~half the
             // real 2 Hz ticks (tickCount/summary underreported).
+            if (ticksPath == null) return;   // Tick before BeginRun — don't
+            // count a phantom tick into summary.recorder.ticks.
             int bucket = (int)((UnityEngine.Time.unscaledTime - tStart) * 2f);
             if (bucket == lastTickSecond) return;
             lastTickSecond = bucket;
-            Enq(ticksPath, compactLine);
-            tickCount++;
+            if (Enq(ticksPath, compactLine)) tickCount++;   // dropped ticks
+            // no longer inflate the tick counter (dropped is tracked by Enq)
         }
 
         public static void NoteGameFacts(in BotPerception.Snapshot s)
@@ -236,21 +241,25 @@ namespace ThronefallTrainer
                 WriteAtomic(summaryPath, json);
                 Event("match-end", "\"result\":\"" + J(result) + "\"");
                 // Index line into episodic memory (spec §5: one line per run).
-                Enq(Path.Combine(AgentDir, Path.Combine("memory", "episodic"), "index.jsonl"), json);
+                Enq(Path.Combine(AgentDir, "memory", "episodic", "index.jsonl"), json);
             }
             catch { ioErrors++; }
         }
 
-        private static void Enq(string path, string line)
+        private static bool Enq(string path, string line)
         {
+            // Post-Stop() enqueues sit in a queue nobody drains — silent
+            // unbounded grow. Also reject null paths (pre-BeginRun callers).
+            if (!running || path == null) return false;
             if (q.Count >= QueueCap)
             {
                 dropped++;
-                return;
+                return false;
             }
             // One queue item carries its target file — one writer thread can
             // service ticks + events + index with a single handle set.
             q.Enqueue(path + "\u0001" + line);
+            return true;
         }
 
         private static void Drain()
@@ -277,7 +286,12 @@ namespace ThronefallTrainer
                     }
                     else Thread.Sleep(250);   // spec: flush every 250 ms
                 }
-                catch { ioErrors++; Thread.Sleep(250); }
+                catch
+                {
+                    ioErrors++;
+                    dropped++;     // the dequeued item is LOST — count it;
+                    Thread.Sleep(250);   // re-enqueue risks an error loop
+                }
             }
         }
 
@@ -487,8 +501,23 @@ namespace ThronefallTrainer
                 j++;
             }
             if (j <= i) return null;
-            return json.Substring(i, j - i)
-                .Replace("\\n", "\n").Replace("\\\"", "\"").Replace("\\\\", "\\");
+            // Single-pass unescape — chained Replace corrupts \\\\n (literal
+            // backslash + n, e.g. "C:\\new") by rewriting \\n inside \\\\n.
+            var sub = json.Substring(i, j - i);
+            var sb = new System.Text.StringBuilder(sub.Length);
+            for (int k = 0; k < sub.Length; k++)
+            {
+                if (sub[k] == '\\' && k + 1 < sub.Length)
+                {
+                    char e = sub[++k];
+                    if (e == 'n') sb.Append('\n');
+                    else if (e == 't') sb.Append('\t');
+                    else if (e == 'r') sb.Append('\r');
+                    else sb.Append(e);      // \" \\ \/ etc pass the char
+                }
+                else sb.Append(sub[k]);
+            }
+            return sb.ToString();
         }
         private static string J(string s) => s == null ? "" : s.Replace("\\", "\\\\").Replace("\"", "\\\"");
         private static string F(float v) => v.ToString("0.###", CultureInfo.InvariantCulture);

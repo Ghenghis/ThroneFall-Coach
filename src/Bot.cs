@@ -1,1880 +1,2749 @@
+using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Text;
 using BepInEx;
+using BepInEx.Logging;
+using Pathfinding;
 using UnityEngine;
 
-namespace ThronefallTrainer
+namespace ThronefallTrainer;
+
+internal static class Bot
 {
-    // BotMode lives in BotBrain.cs (pure layer — replay tests compile it alone).
-
-    /// <summary>
-    /// Tier-1 autopilot. Plugin.Update() calls <see cref="Tick"/> every frame;
-    /// decisions run at 4 Hz while <see cref="DesiredDir"/> (world-space unit
-    /// vector) is refreshed per frame so moving targets are tracked smoothly.
-    /// The Harmony prefix in BotPatches.cs converts DesiredDir into the
-    /// camera-relative input vector that MoveScript expects.
-    /// </summary>
-    internal static class Bot
-    {
-        public static bool Enabled { get; private set; }
-
-        /// <summary>
-        /// Legit play: no survival bundle applied AND the bot refuses
-        /// cheat-adjacent mechanics of its own — no teleport nudges (sidestep
-        /// unstick instead), no direct-damage fallback, no direct Attack()
-        /// calls that bypass weapon cooldown. Driven by Plugin from
-        /// cfgBotCheats: bundle OFF = legit.
-        /// </summary>
-        public static bool Legit;
-
-        /// <summary>World-space run direction for this frame (zero = stand still).</summary>
-        public static Vector3 DesiredDir { get; private set; }
-
-        public static BotMode Mode { get; private set; } = BotMode.Idle;
-        public static string Status { get; private set; } = "off (F6)";
-        /// <summary>Active UI frame name ("" = none) — mailbox outbox reads it.</summary>
-        public static string UiFrame => uiFrame;
-        public static int StuckStrikes { get; private set; }
-
-        // ---- steering knobs ----
-        private const float ArriveCoin   = 0.8f;
-        private const float ArriveHold   = 6f;
-        // Park basically on top of the target — 4 m left the hero outside
-        // melee/swing range, so it stood in a mob never attacking.
-        private const float ArriveEngage = 1.5f;
-    // Orbit sweep constants/state live in BotBrain.cs (pure layer).
-        private const float HomeRadius   = 14f;   // drift back to castle past this
-        private const float CoinSeekRange = 80f;
-
-        // ---- cadence / watchdog ----
-        private const float DecisionInterval = 0.25f;
-        private const float StuckWatchWindow = 2f;
-        private const float StuckEpsilon     = 0.35f; // moved less than this = stuck
-        private const int    MaxStrikesBeforeTeleport = 3;
-        private const float  TeleportNudge   = 2.5f;
-
-        private static float decisionClock;
-        private static float watchClock;
-        private static float arriveSince;   // arrived-but-failing timer
-        private static int stuckStrikeTotal;  // per-run cap (log flood)
-        private static Vector3 watchAnchor;
-        private static bool hasAnchor;
-        private static Vector3 lastFreePos; private static float lastFreeAt = -999f;
-
-        private static bool hasTarget;
-        private static Vector3 targetPos;
-        private static float arriveDist = 1f;
-        // Live pursuit: Engage stores the enemy itself so each frame steers at
-        // its current position — a stale position snapshot made the hero stand
-        // still next to foes that had already walked off.
-        private static TaggedObject engageTarget;
-
-        // Attack pump: the hero only swings when ManualAttack.inputBuffer is
-        // armed by a press (TryToAttack). Auto-attack is marker-gated and the
-        // interact path is blocked while the trainer menu freezes the player,
-        // so the bot buffers presses itself while engaged.
-        private static ManualAttack heroAttack;
-        private static float weRevalAt;     // weapon-swap revalidation clock
-        private static float attackDiagAt;
-
-        /// <summary>World pos the bot steers toward — live enemy transform when engaging.</summary>
-        private static Vector3 AimPos =>
-            (Legit && Time.unscaledTime < detourUntil)
-                ? detourPos
-                : (Mode == BotMode.Engage && engageTarget != null)
-                    ? engageTarget.transform.position   // live tracking — legit
-                    // mode used to steer at a stale 4 Hz snapshot while the
-                    // fast-fallback (!Legit) tracked the real transform.
-                    : targetPos;
-
-        // title-screen advance: throttle while the level-select scene loads
-        private static float menuAdvanceAt;
-
-        // Blocking UI frames (level-up reward, perk select, upgrade choice,
-        // end-of-match, pause) freeze the player — resolved before the FSM.
-        private static float frameActionAt;
-        private static string uiFrame = "";
-        private static string lastUiNoteFrame = "";
-        private static float nextUiNoteAt;
-        // Day economy: building slot the bot currently holds interaction on.
-        private static BuildingInteractor heldBuild;
-        // (Clocks/watch state moved into BotMemory — the pure layer.)
-        // ManualAttack scene scan: FindObjectsOfType at 4 Hz is wasteful — 1 s.
-        private static float maScanAt;
-        // Watchdog: aim distance last window — still closing = healthy pursuit.
-        private static float lastWatchDist = float.MaxValue;
-        // Diag taper: log on change or every 15 s instead of every 5 s.
-        private static string lastDiagKey;
-        // Legit unstick: instead of teleporting, steer to a perpendicular
-        // detour point briefly — the wall-slide a player would do.
-        private static float detourUntil;
-        private static Vector3 detourPos;
-        private static int detourSide = 1;
-        private static int detourCount;
-
-        // Legit nav steering: follow the game's own A* navmesh to the goal
-        // instead of a straight line. Straight-line steering wedges on any
-        // obstacle (map props, building colliders, water); a sidestep detour
-        // can't route around them — this can. Path requests run at ~1 Hz
-        // (same cadence as PathfindMovementPlayerunit.recalculatePathInterval)
-        // and only while the target changed or the path ran out.
-        private static Pathfinding.Path navPath;
-        private static int navIndex;
-        private static Vector3 navGoal;
-        private static bool navWrongLayer;   // path resolved on elevated navmesh
-        private static float navDirectUntil; // beeline window — navmesh lies, feet don't
-        private static float interZeroSince = -1f;  // no-interactables timer
-        private static float interVacuumAt;         // vacuum exit cooldown
-        private static float nonVacSince = -1f;     // sustained-healthy window
-        private static bool sawInteractables;       // ever-seen interactables this match
-        private static float navRepathAt;
-        private static bool navInFlight;
-        private static int navRequestId;      // stale async path guard
-        private static bool beganRunThisTick; // BeginRun dedupe (edge+scene)
-        private static float navSteerArrive = 0.5f;
-        private static int navDiagCount;
-        private static float nextMoveDiagAt;
-
-        // Legit combat state (army phase/clocks moved into BotMemory).
-        private static float weaponRange;          // hero weapon's max priority range
-        private static bool weaponFiresWhileMoving = true;
-
-        // Session memory: which scenes we've played and how often we lost
-        // each, so a too-hard node rotates out instead of looping forever.
-        private static bool lastNightTick = true;   // first tick IS a day-start — coach plans it
-
-        /// <summary>Compact telemetry digest for the coach — ~200 tokens.</summary>
-        private static string Digest(in BotPerception.Snapshot s)
-        {
-            return "{\"scene\":\"" + (s.SceneName ?? "") + "\"," +
-                "\"wave\":" + s.Wave + ",\"wave_max\":" + s.WaveTotal +
-                ",\"gold\":" + s.Balance + ",\"cores\":" + s.CoreBalance +
-                ",\"allies\":" + s.AllyCount + ",\"free_units\":" + s.FreeUnits +
-                ",\"doors_covered\":" + s.DoorsCovered + ",\"doors\":" + s.DoorCount +
-                ",\"foes\":" + s.EnemyCount + ",\"red_alert\":" + (s.RedAlert ? "true" : "false") +
-                ",\"buildings\":" + s.BuildCount +
-                ",\"hero_hp\":" + s.HeroHpPct.ToString("0.##",
-                    System.Globalization.CultureInfo.InvariantCulture) +
-                ",\"defeats\":" + (sessionDefeats.TryGetValue(s.SceneName ?? "", out int dd) ? dd : 0) +
-                ",\"policy\":" + Policy.Stats() + "}";
-        }
-
-        private static readonly System.Collections.Generic.Dictionary<string, int> sessionDefeats =
-            new System.Collections.Generic.Dictionary<string, int>();
-        private static readonly System.Collections.Generic.HashSet<string> playedThisSession =
-            new System.Collections.Generic.HashSet<string>();
-        private static string lastMatchScene;
-        private static string lastGameState = "";
-        // Frame tracking: how many times the same blocking frame survived a
-        // close — a stubborn one with a back-to-map button gets followed.
-        private static string lastFrameName = "";
-        private static int frameSeen;
-        private static float lastFrameAt;   // sticky across close/re-open flicker
-
-        private static StreamWriter botLog;
-        private static bool logFailed;
-
-        // Campaign-map node scorer: unbeaten-first, then prefer nodes not yet
-        // toured this session, then penalise scenes we've repeatedly lost
-        // (each defeat −45, so 3 losses drops any node below everything else).
-        static Bot()
-        {
-            // One-shot API discovery: which FrameManager methods can open a
-            // pause frame? The vacuum exit needs the game's own abandon path
-            // (pause menu's BackToLevelSelectHelper) — a raw scene transition
-            // leaves the dead match 'resumable'.
-            try
-            {
-                var meths = typeof(UIFrameManager).GetMethods(
-                    System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
-                var names = new System.Text.StringBuilder();
-                foreach (var mi in meths)
-                    if (mi.GetParameters().Length <= 1 &&
-                        (mi.Name.IndexOf("Escape", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
-                         mi.Name.IndexOf("Pause", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
-                         mi.Name.IndexOf("Open", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
-                         mi.Name.IndexOf("Level", System.StringComparison.OrdinalIgnoreCase) >= 0))
-                        names.Append(mi.Name).Append("; ");
-                Plugin.Log?.LogInfo("[bot] uiframe api: " + names);
-            }
-            catch { }
-
-            BotPerception.LevelScore = (li, beaten) =>
-            {
-                string scene = li.levelInfo != null ? li.levelInfo.sceneName : null;
-                int defeats = scene != null && sessionDefeats.TryGetValue(scene, out int d) ? d : 0;
-                float sc = beaten ? 0f : 100f;
-                if (scene == null || !playedThisSession.Contains(scene)) sc += 15f;
-                // Persisted quarantine: a scene whose match-state save is
-                // corrupt (inter-vacuum) is never re-entered — session and
-                // process restarts don't heal it.
-                if (Memory.IsBadScene(scene)) sc -= 1000f;
-                return sc - defeats * 45f;
-            };
-            BotPerception.CoinSkip = c => coinIgnore.Contains(c);
-            Recorder.Start();
-        }
-
-        private static int recTickFrame;
-        private static BotMode prevModeRec = BotMode.Idle;
-        private static float modeSinceAt, nextAuditAt;
-        private static string recordedScene;
-
-        // Pure-layer memory: everything the old file-level statics carried for
-        // the FSM (clocks, phases, held-slot key, orbit sweep) — Tick passes it
-        // by ref so Decide stays testable.
-        private static BotMemory mem = BotMemory.Fresh();
-
-        // Phase 2 policy: hot-loaded line-DSL retuning the FSM's numeric
-        // knobs. Last-good table wins on any parse error.
-        private static PolicyTable pol = PolicyTable.Default();
-        private static string polPath;
-        private static long polStamp;
-        private static float polScanAt;
-        private static readonly System.Collections.Generic.HashSet<string> prevRuleFires =
-            new System.Collections.Generic.HashSet<string>();
-        private static float holdDiagAt;
-        private static string holdDoneName = "";
-
-        private static readonly System.Collections.Generic.HashSet<Coin> coinIgnore =
-            new System.Collections.Generic.HashSet<Coin>();
-
-        /// <summary>F6 / overlay entry point. Persists via cfgBotEnabled in Plugin.</summary>
-        public static void SetEnabled(bool v)
-        {
-            if (v == Enabled) return;
-            Enabled = v;
-            DesiredDir = Vector3.zero;
-            ClearTarget();
-            Mode = BotMode.Idle;
-            Status = v ? "starting" : "off (F6)";
-            hasAnchor = false;
-            StuckStrikes = 0;
-            stuckStrikeTotal = 0;
-            ReleaseBuild();              // mid-hold disable left InteractionBegin open
-            decisionClock = 0f;
-            mem = BotMemory.Fresh();
-            detourUntil = 0f;
-            detourCount = 0;
-            weaponRange = 0f;
-            heroAttack = null;
-            navPath = null;
-            navIndex = 0;
-            navInFlight = false;
-            navGoal = Vector3.zero;
-            navWrongLayer = false;
-            navDirectUntil = 0f;
-            navRepathAt = 0f;
-            navRequestId++;          // discard any in-flight path result
-            // Full run/vacuum/frame state — a disable+enable mid-match must
-            // not skip the InMatch edge resets (vacuum timer, frame names,
-            // coin parks, watchdogs all belonged to the old session).
-            lastGameState = "";
-            recordedScene = null;
-            lastNightTick = true;
-            uiFrame = "";
-            lastFrameName = ""; frameSeen = 0; lastFrameAt = 0f;
-            sawInteractables = false;
-            interZeroSince = -1f; nonVacSince = -1f; interVacuumAt = 0f;
-            arriveSince = 0f; lastWatchDist = float.MaxValue;
-            coinIgnore.Clear();
-            Plugin.Log?.LogInfo($"[bot] autopilot {(v ? "ENABLED" : "disabled")} (F6)");
-            LogRaw(v ? "enabled" : "disabled");
-            if (!v) CloseLog();
-        }
-
-        public static void Shutdown() => SetEnabled(false);
-
-        /// <summary>Per-frame driver, called from Plugin.Update().</summary>
-        public static void Tick()
-        {
-            if (!Enabled) return;
-
-            // Re-steer every frame so moving targets (coins/arrows/enemies) are tracked.
-            // Exponential smoothing — frame-rate lerp of the desired direction
-            // turns the hero like a human instead of snapping at 4 Hz decision
-            // boundaries. Retarget pops become smooth arcs.
-            var pm = PlayerMovement.instance;
-            Vector3 want = Vector3.zero;
-            if (hasTarget && pm != null)
-            {
-                if (Legit)
-                    want = DirTo(pm.transform.position, NavSteerPoint(pm.transform.position, AimPos), navSteerArrive);
-                else
-                    want = DirTo(pm.transform.position, AimPos, arriveDist);
-            }
-            float k = 1f - Mathf.Exp(-10f * Time.unscaledDeltaTime);
-            DesiredDir = Vector3.Lerp(DesiredDir, want, k);
-            if (DesiredDir.sqrMagnitude < 0.0001f) DesiredDir = Vector3.zero;
-
-            // Hold-to-pay at FRAME rate: CostDisplay.FillUp advances by
-            // Time.deltaTime PER CALL — a 4 Hz decide-tick pump starves the
-            // fill ~15x and any release refunds every filled coin back to
-            // pickup form. This is the "gold never spends" bug (refpack
-            // finding). The hold runs here, once per Update.
-            var piHold = PlayerInteraction.instance;
-            if (heldBuild != null && piHold != null && pm != null)
-                heldBuild.InteractionHold(piHold);
-
-            // 1 Hz hold diagnostic while paying — the private fill flags tell
-            // us which early-return starves the fill.
-            if (heldBuild != null && Time.unscaledTime >= holdDiagAt)
-            {
-                holdDiagAt = Time.unscaledTime + 1f;
-                var ty = heldBuild.GetType();
-                object Get(string n) => ty.GetField(n, System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.GetValue(heldBuild);
-                string bName = heldBuild.targetBuilding != null ? heldBuild.targetBuilding.buildingName : "";
-                Plugin.Log?.LogInfo($"[bot] hold-diag '{heldBuild.name}' b='{bName}': state={Get("currentState")} started={Get("interactionStarted")} waitChoice={Get("isWaitingForChoice")} complete={Get("interactionComplete")} harvest={heldBuild.canBeHarvested} canInter={heldBuild.CanBeInteractedWith}");
-                // Playbook bookkeeping: a completed fill advances the
-                // build-order tracker so the next pick follows the plan.
-                var cpl = Get("interactionComplete");
-                if (cpl is bool done && done && bName != "" &&
-                    bName != holdDoneName)
-                {
-                    holdDoneName = bName;
-                    BotPerception.BuildDone(bName,
-                        heldBuild.transform.position);
-                }
-            }
-
-            Coach.PerFrame();   // live.png + user command-file poll
-
-            decisionClock += Time.unscaledDeltaTime;
-            if (decisionClock < DecisionInterval) return;
-            decisionClock = 0f;
-            TickInner();
-        }
-
-        private static void TickInner()
-        {
-            // Held-hold stickiness: while paying, perception re-selects the
-            // same slot so BuildKey can't flip mid-fill (a flip releases the
-            // hold and refunds every partially-paid coin — see refpack
-            // CostDisplay.CancelFill respawn mechanic).
-            int heldKey = heldBuild != null ? heldBuild.GetInstanceID() : -1;
-            var s = BotPerception.Capture(heldKey);
-            BotPerception.Last = s; BotPerception.LastValid = true;
-
-            // Session memory edges: a victory clears the level's defeat count
-            // and marks it toured; a defeat counts toward rotating the node
-            // out of the unbeaten pool (LevelScore penalises it).
-            if (s.GameState != lastGameState)
-            {
-                // InMatch edge = a fresh match for bookkeeping AND runtime
-                // state — same-scene retries (defeat → retry loads the same
-                // scene name) skipped the scene-name check and leaked coach
-                // overrides, parked strikes, and policy traj into the retry.
-                if (s.GameState == "InMatch")
-                {
-                    Recorder.BeginRun(s.SceneName);
-                    Policy.BeginRun();
-                    Coach.ResetRun();
-                    stuckStrikeTotal = 0;
-                    sawInteractables = false;   // new match: vacuum detector re-arms
-                    interZeroSince = -1f;
-                    nonVacSince = -1f;
-                    lastNightTick = true;   // next dawn fires day-start hooks
-                    coinIgnore.Clear();     // parked coins die with the match
-                    navWrongLayer = false;  // no carried-over path verdicts
-                    navPath = null; navIndex = 0; navInFlight = false;
-                    navRequestId++;         // invalidate in-flight path results
-                    heroAttack = null;      // re-resolve the live weapon
-                    beganRunThisTick = true;
-                }
-                if (s.GameState == "AfterMatchVictory" && lastMatchScene != null)
-                {
-                    playedThisSession.Add(lastMatchScene);
-                    sessionDefeats.Remove(lastMatchScene);
-                    Recorder.MatchEnd("victory", Legit);
-                    Policy.MatchEnd(true, Mathf.Max(0f, s.CastleHpPct), BotPerception.BreachCount);
-                }
-                else if (s.GameState == "AfterMatchDefeat" && lastMatchScene != null)
-                {
-                    sessionDefeats[lastMatchScene] =
-                        sessionDefeats.TryGetValue(lastMatchScene, out int d) ? d + 1 : 1;
-                    Plugin.Log?.LogInfo($"[bot] defeat on '{lastMatchScene}' (x{sessionDefeats[lastMatchScene]} this session)");
-                    LogLine(in s, "defeat");
-                    Recorder.MatchEnd("defeat", Legit);
-                    Policy.MatchEnd(false, Mathf.Max(0f, s.CastleHpPct), BotPerception.BreachCount);
-                    Coach.Advise("defeat", Digest(in s));
-                    if (Coach.VisionEnabled)
-                    {
-                        var shot = ScreenCapture.CaptureScreenshotAsTexture();
-                        if (shot != null)
-                        {
-                            Coach.AnalyzeScreenshot(shot.EncodeToPNG(),
-                                "scene=" + (s.SceneName ?? ""));
-                            UnityEngine.Object.Destroy(shot);
-                        }
-                    }
-                }
-                lastGameState = s.GameState;
-            }
-            // Day-start edge: night survived (+0.2 reward pulse) and the
-            // coach plans the build order for the day.
-            if (lastNightTick && !s.IsNight && s.Valid)
-                Policy.Pulse(0.2f);
-            if (lastNightTick && !s.IsNight && s.Valid &&
-                !(s.SceneName != null && s.SceneName.StartsWith("_")))
-                Coach.Advise("day-start", Digest(in s));
-            if (s.Valid) lastNightTick = s.IsNight;
-            if (s.Valid && !s.SceneName.StartsWith("_")) lastMatchScene = s.SceneName;
-
-            if (!s.Valid)
-            {
-                Mode = BotMode.Idle;
-                ClearTarget();
-                Status = "waiting (" + s.GameState + ")";
-                LogLine(in s, "invalid");
-                // Title screen: the Play button routes through
-                // TitleScreenUIHelper.ClickPlay -> SceneTransitionManager.
-                // TransitionFromNullToLevelSelect — call it ourselves so the
-                // bot never waits for a manual click (throttled while the
-                // level-select scene loads).
-                if (s.SceneName == "_StartMenu" &&
-                    SceneTransitionManager.instance != null &&
-                    Time.unscaledTime >= menuAdvanceAt)
-                {
-                    menuAdvanceAt = Time.unscaledTime + 8f;
-                    Plugin.Log?.LogInfo("[bot] start menu -> TransitionFromNullToLevelSelect()");
-                    SceneTransitionManager.instance.TransitionFromNullToLevelSelect();
-                }
-                // A blocking frame can outlive the match state (end-of-match
-                // shows before/while the scene flips) — resolve it here too.
-                HandleBlockingFrame(in s);
-                WriteAuditStub(in s, "menu");
-                return;
-            }
-
-            // Any frame that freezes the player (level-up reward, perk/upgrade
-            // pick, victory or defeat screen, pause) blocks all in-world
-            // interaction — resolve it before the FSM picks a mode. Non-freezing
-            // frames like the level-select map UI are deliberately untouched.
-            if (HandleBlockingFrame(in s))
-            {
-                Mode = BotMode.ResolveUI;
-                // Don't ClearTarget→ReleaseBuild while a CHOICE coroutine is
-                // live — releasing mid-fill refunds the payment (the exact
-                // refund loop the trace found). Movement target still clears.
-                if (!(ChoiceManager.instance != null &&
-                      ChoiceManager.instance.ChoiceCoroutineRunning))
-                    ClearTarget();
-                WriteAuditStub(in s, "ui:" + uiFrame);
-                Status = "ui: " + uiFrame;
-                if (uiFrame != lastUiNoteFrame || Time.unscaledTime >= nextUiNoteAt)
-                {
-                    lastUiNoteFrame = uiFrame;
-                    nextUiNoteAt = Time.unscaledTime + 5f;
-                    LogLine(in s, "ui");
-                }
-                return;
-            }
-
-            // Run bookkeeping: scene transitions begin a recorder run.
-            // Same-scene retries are covered by the InMatch edge above —
-            // and must not run AGAIN here (BeginRun would create a second
-            // empty run dir + double run-start every fresh match).
-            if (!s.SceneName.StartsWith("_") && !s.OnLevelSelect &&
-                recordedScene != s.SceneName && !beganRunThisTick)
-            {
-                recordedScene = s.SceneName;
-                Recorder.BeginRun(s.SceneName);
-                Policy.BeginRun();   // abandoned trajectories must not leak
-                // Coach overrides must not leak across matches — a squad_size
-                // issued hours ago silently steered later runs. Fresh slate.
-                Coach.ResetRun();
-                stuckStrikeTotal = 0;   // per-run strike-log cap
-            }
-            beganRunThisTick = false;
-
-            var sd = BotPerception.ToData(in s);
-
-            // Interactor vacuum: a same-scene retry can load a Durststein
-            // with ZERO spawned interactables (inter=0, bld=0, coins=0 for
-            // minutes — observed run 044014Z, hero frozen at the castle
-            // doing hero-door all day). No bot action can fix it; the match
-            // is corrupt. Reload via level select — EnterLevel re-picks.
-            // inter=0 alone is NOT proof — the metric itself is unreliable
-            // (healthy runs show inter:0 while building). Require the real
-            // signals: nothing buildable AND nothing collectible AND no army
-            // for a sustained day stretch — and ONLY before wave 1: a
-            // running wave count means a live match (Nordfels built 7
-            // structures then idled into the same field pattern mid-plan;
-            // waves progressing = alive).
-            // and ONLY when the match NEVER spawned interactables — a dead
-            // Durststein has none from t=0 (and waves still pass!). Any
-            // build/coin ever observed proves the scene is alive, and an
-            // idle stretch mid-plan must NOT be mistaken for corruption.
-            // Coins/allies do NOT prove life — the dead Durststein still
-            // drops coins and runs waves while every slot stays gone. Only
-            // a live buildable slot (or a finished building) marks a match.
-            if (s.NearestBuild != null || s.BuildCount > 0 ||
-                BotPerception.CatBuilt.Count > 0)
-                sawInteractables = true;
-            if (s.GameState == "InMatch" && !s.IsNight && !sawInteractables &&
-                s.NearestBuild == null && s.InteractorCount == 0)
-            {
-                nonVacSince = -1f;
-                if (interZeroSince < 0)
-                {
-                    interZeroSince = Time.unscaledTime;
-                    Plugin.Log?.LogWarning(
-                        $"[bot] vacuum-diag ARMED: gs={s.GameState} night={s.IsNight} " +
-                        $"ally={s.AllyCount} coins={s.CoinCount} nb={(s.NearestBuild == null ? "null" : s.NearestBuildName)} " +
-                        $"inter={s.InteractorCount}");
-                }
-                else if (Time.unscaledTime - interZeroSince > 40f &&
-                         Time.unscaledTime >= interVacuumAt)
-                {
-                    interVacuumAt = Time.unscaledTime + 120f;   // one try/2min
-                    interZeroSince = -1f;
-                    // A vacuum costs the node like a defeat would — the map
-                    // scorer then picks a DIFFERENT unbeaten node with fresh
-                    // interactables instead of resuming this dead match
-                    // forever (observed: vacuum→reload→vacuum loop).
-                    if (s.SceneName != null)
-                    {
-                        sessionDefeats[s.SceneName] =
-                            sessionDefeats.TryGetValue(s.SceneName, out int vd) ? vd + 1 : 1;
-                        Memory.MarkBadScene(s.SceneName);   // persists across restarts —
-                        // the corrupt save reloads itself forever otherwise
-                    }
-                    Plugin.Log?.LogWarning(
-                        "[bot] interactor vacuum — no interactables/coins 40 s " +
-                        "into day; match is corrupt → level select via frame");
-                    LogLine(in s, "inter-vacuum");
-                    // Same lesson as the match-end path: go through the pause
-                    // frame's own back-button, not a raw scene transition.
-                    var fm2 = UIFrameManager.instance;
-                    var frame2 = fm2 != null ? fm2.ActiveFrame : null;
-                    if (frame2 != null) frame2.Apply();
-                    else if (fm2 != null && PlayerInteraction.instance != null &&
-                             SceneTransitionManager.instance != null)
-                        SceneTransitionManager.instance.TransitionToLevelSelect();
-                }
-            }
-            else if (!s.IsNight)
-            {
-                // Fields flicker (ally/coin/gs bounce between captures) —
-                // only a SUSTAINED healthy window disarms the vacuum timer.
-                // NIGHT is exempt: a dead match still cycles days — the
-                // night pause must not reset the accumulated void time.
-                if (nonVacSince < 0) nonVacSince = Time.unscaledTime;
-                if (Time.unscaledTime - nonVacSince > 3f) interZeroSince = -1f;
-            }
-
-            // Sidecar bridge (Phase 3): poll inbox orders (1 Hz), publish
-            // state.json for the external agent (0.2 Hz).
-            Mailbox.Poll(in s);
-
-            // Hot reload: policy file mtime changed → re-validate; on any
-            // error keep the last-good table and log a policy-reject event.
-            if (Time.unscaledTime >= polScanAt)
-            {
-                polScanAt = Time.unscaledTime + 1f;
-                if (polPath == null) polPath = System.IO.Path.Combine(Recorder.AgentDir, "policy.txt");
-                try
-                {
-                    if (System.IO.File.Exists(polPath) &&
-                        System.IO.File.GetLastWriteTimeUtc(polPath).Ticks != polStamp)
-                    {
-                        polStamp = System.IO.File.GetLastWriteTimeUtc(polPath).Ticks;
-                        var errors = new System.Collections.Generic.List<string>();
-                        if (PolicyTable.Parse(System.IO.File.ReadAllText(polPath), ref pol, out errors))
-                            Plugin.Log?.LogInfo($"[bot] policy v{pol.Version} loaded ({pol.rules.Count} rule(s))");
-                        else
-                        {
-                            LogLine(in s, "policy-reject");
-                            Plugin.Log?.LogWarning($"[bot] policy REJECTED (kept v{pol.Version}): {string.Join("; ", errors)}");
-                        }
-                    }
-                }
-                catch (System.Exception ex) { Plugin.Log?.LogWarning($"[bot] policy read: {ex.Message}"); }
-            }
-
-            var pres = pol.Resolved(in sd);
-            var res = BotBrain.Decide(in sd, ref mem, Time.unscaledTime, Legit, in pres);
-            // Rule telemetry: fire-once events per rule id + a summary count.
-            if (res.RulesFired != null && res.RulesFired.Count > 0)
-                foreach (var rid in res.RulesFired)
-                {
-                    if (prevRuleFires.Add(rid)) LogLine(in s, "rule-fire:" + rid);
-                    Recorder.CountRuleFire(rid);
-                }
-            Mode = res.Mode;
-            NetPolicy.Shadow(in s, res.Mode.ToString());   // learned-net agreement
-            // Pursuit ref for the cheat-steer path and attack diag — the pure
-            // layer can't hold Unity refs, so it returns a flag and we resolve.
-            engageTarget = res.Pursue == 2
-                ? s.NearestEnemy
-                : res.Pursue == 1
-                    ? (s.CastleThreat != null ? s.CastleThreat : s.NearestEnemy)
-                    : null;   // Pursue==0 → no target: stale refs fed the
-                              // weaponless TakeDamage fallback + move-diag
-            if (res.HasAim) SetTarget(new Vector3(res.AimPos.X, 0f, res.AimPos.Z), res.Arrive, res.ProjectToNav);
-            else ClearTarget();
-            foreach (var note in res.Notes) LogLine(in s, note);
-            foreach (var it in res.Intents) Execute(in s, it);
-            RunWatchdog(in s);
-            Status = FormatStatus(in s);
-            LogLine(in s, "tick");
-
-            // v3 recorder: 2 Hz compact DTO + run facts + mode edges.
-            Recorder.NoteGameFacts(in s);
-            if (Mode != prevModeRec)
-            {
-                if (Mode == BotMode.HeroDead) Recorder.CountDeath();
-                prevModeRec = Mode;
-                modeSinceAt = Time.unscaledTime;
-            }
-            // Audit feed for the coach UI: current action, playbook checklist,
-            // per-door posts — refreshed ~every 3 s so the panel can prove
-            // what the bot is (not) doing. Atomic tmp+move: the server reads
-            // this every second — a torn write would poison the feed.
-            if (Time.unscaledTime >= nextAuditAt)
-            {
-                nextAuditAt = Time.unscaledTime + 3f;
-                try
-                {
-                    var ap = System.IO.Path.Combine(Recorder.AgentDir, "audit.json");
-                    var tmp = ap + ".tmp";
-                    System.IO.File.WriteAllText(tmp,
-                        BotPerception.AuditJson(ref s, Mode.ToString(),
-                            modeSinceAt, Time.unscaledTime));
-                    if (System.IO.File.Exists(ap)) System.IO.File.Delete(ap);
-                    System.IO.File.Move(tmp, ap);
-                }
-                catch { }
-            }
-            if ((recTickFrame++ & 1) == 0)
-                Recorder.Tick(sd.ToJson("tick", Time.unscaledTime, Mode));
-
-            // Phase-5 anomaly detectors — cheap pass/fail checks that emit
-            // `anomaly:*` events; the critic/evaluator consumes the rates.
-            CheckAnomalies(in s);
-
-            // Movement diag while the watchdog is grinding: is the input even
-            // reaching the character, and is something freezing it?
-            if (StuckStrikes > 0 && Time.unscaledTime >= nextMoveDiagAt)
-            {
-                nextMoveDiagAt = Time.unscaledTime + 2f;
-                var pmD = PlayerMovement.instance;
-                if (pmD == null) { nextMoveDiagAt = Time.unscaledTime + 2f; return; }
-                int wpCount = navPath?.vectorPath != null ? navPath.vectorPath.Count : -1;
-                string wpInfo = wpCount > 0 ? string.Join(";", navPath.vectorPath) : "-";
-                Plugin.Log?.LogWarning($"[bot] move-diag: hasTgt={hasTarget} desired={DesiredDir} " +
-                    $"vel={pmD.Velocity} " +
-                    $"frozen={LocalGamestate.Instance != null && LocalGamestate.Instance.PlayerFrozen} " +
-                    $"mode={Mode} aim={AimPos} hero={pmD.transform.position} " +
-                    $"navIdx={navIndex} wpCount={wpCount} inFlight={navInFlight} navGoal={navGoal} wp=[{wpInfo}] steer={NavSteerPoint(pmD.transform.position, AimPos)}");
-            }
-        }
-
-
-        // Phase-5 anomaly state: detectors emit once-per-cooldown so the
-        // event stream gets a signal rate, not a flood.
-        private static float stuckSpamWindow = -1f;
-        private static int stuckSpamCount;
-        private static float nightParkSince = -1f;
-        private static float lastAnomalyAt;
-        private static Vector3 nightParkPos;
-
-        /// <summary>
-        /// Bounded anomaly checks (v3 Phase 5 detectors). Events only —
-        /// correction stays with the watchdog/brain; these prove the run
-        /// health signal for the critic and future action-menu solver.
-        /// </summary>
-        private static void CheckAnomalies(in BotPerception.Snapshot s)
-        {
-            float now = Time.unscaledTime;
-            if (now < lastAnomalyAt + 10f) return;   // ≥10 s between anomaly events
-
-            // D1 stuck-spam: ≥3 strikes inside a 30 s window.
-            if (StuckStrikes > 0)
-            {
-                if (now > stuckSpamWindow) { stuckSpamWindow = now + 30f; stuckSpamCount = 0; }
-                if (++stuckSpamCount >= 3)
-                {
-                    stuckSpamCount = 0; lastAnomalyAt = now;
-                    LogLine(in s, "anomaly:stuck-spam");
-                    Plugin.Log?.LogWarning($"[bot] anomaly stuck-spam at {s.HeroPos} mode={Mode}");
-                    return;
-                }
-            }
-
-            // D2 night-park: Engage mode, foes live, hero effectively parked
-            // >15 s (watchdog's arrival-freeze window) — the encirclement
-            // case that used to end runs.
-            if (s.IsNight && s.EnemyCount > 0 && Mode == BotMode.Engage)
-            {
-                if (nightParkSince < 0f) { nightParkSince = now; nightParkPos = s.HeroPos; }
-                else if ((s.HeroPos - nightParkPos).sqrMagnitude > 1.5f)
-                {
-                    nightParkSince = now; nightParkPos = s.HeroPos;
-                }
-                else if (now - nightParkSince > 15f)
-                {
-                    nightParkSince = -1f; lastAnomalyAt = now;
-                    LogLine(in s, "anomaly:night-park");
-                    Plugin.Log?.LogWarning($"[bot] anomaly night-park at {s.HeroPos} foes={s.EnemyCount}");
-                    return;
-                }
-            }
-            else nightParkSince = -1f;
-
-            // D3 army-starved: a military building stood >90 s yet zero
-            // units ever came out — production stall that used to die
-            // silently (mm-watch could only see ally=0, not the cause).
-            if (BotPerception.MilitaryFirstAt > 0f && s.AllyCount == 0 &&
-                now - BotPerception.MilitaryFirstAt > 90f)
-            {
-                lastAnomalyAt = now;
-                LogLine(in s, "anomaly:army-starved");
-                Plugin.Log?.LogWarning(
-                    "[bot] anomaly army-starved: military building 90s, ally=0");
-                return;
-            }
-        }
-
-        /// <summary>
-        /// Stuck watchdog: while steering toward a target, if the hero hasn't
-        /// moved ~0.35 m within 2 s (three strikes) we recover — teleport-nudge
-        /// in cheat mode; a sidestep detour under legit rules (players can't
-        /// teleport, they strafe around the obstacle).
-        /// </summary>
-        private static void RunWatchdog(in BotPerception.Snapshot s)
-        {
-            if (!hasTarget || Mode == BotMode.Idle || s.HeroDead)
-            {
-                // Dead hero: no movement is expected — strikes would stack
-                // forever and fire teleport attempts on a corpse.
-                hasAnchor = false; StuckStrikes = 0; watchClock = 0f;
-                lastWatchDist = float.MaxValue;
-                return;
-            }
-            if (!hasAnchor)
-            {
-                watchAnchor = s.HeroPos; hasAnchor = true; watchClock = 0f;
-                lastWatchDist = FlatDist(s.HeroPos, AimPos);
-                return;
-            }
-
-            watchClock += DecisionInterval;
-            if (watchClock < StuckWatchWindow) return;
-            watchClock = 0f;
-
-            float moved = Vector3.Distance(s.HeroPos, watchAnchor);
-            // Track the last position the hero provably MOVED through — the
-            // escape point when the hard-stuck path proves he's caged.
-            if (moved >= StuckEpsilon) { lastFreePos = watchAnchor; lastFreeAt = Time.unscaledTime; }
-            watchAnchor = s.HeroPos;
-            float aimDist = FlatDist(s.HeroPos, AimPos);
-            // Still closing on the aim point = healthy pursuit even when the
-            // hero itself stayed put (a melee target walking toward us).
-            bool closing = aimDist < lastWatchDist - 0.3f;
-            lastWatchDist = aimDist;
-            bool stillFar = aimDist > arriveDist + 0.5f;
-
-            // Arrived-but-failing watchdog: reached the aim radius yet the
-            // interaction never completes (coin on a collider, slot behind a
-            // wall edge, unreachable horn). stillFar is false so strikes
-            // never accrue — the hero used to stand there forever. Give an
-            // arrived aim 20 s to resolve, then park it like a stall.
-            if (!stillFar)
-            {
-                if (arriveSince <= 0f) arriveSince = Time.unscaledTime;
-                if (Time.unscaledTime - arriveSince > 20f)
-                {
-                    arriveSince = 0f;
-                    Plugin.Log?.LogWarning($"[bot] aim-stall in {Mode} — parked aim");
-                    LogLine(in s, "aim-stall");
-                    if (Mode == BotMode.CollectCoin && s.NearestCoin != null)
-                        coinIgnore.Add(s.NearestCoin);
-                    else if (Mode == BotMode.SpendGold && s.NearestBuild != null)
-                        BotPerception.IgnoreBuild(s.NearestBuild, 300f);
-                    else if (Mode == BotMode.PositionArmy && s.HasUncoveredDoor)
-                        // Hero-door aims at terrain-unwalkable door anchors
-                        // wedge into an endless stall/re-aim loop — park that
-                        // door like a dead slot; the next-uncovered takes over.
-                        BotPerception.ParkDoorAnchor(s.UncoveredDoorPos);
-                    ClearTarget();
-                    return;
-                }
-            }
-            else arriveSince = 0f;
-
-            if (moved < StuckEpsilon && stillFar && !closing)
-            {
-                StuckStrikes++;
-                stuckStrikeTotal++;
-                if (stuckStrikeTotal == 60)
-                    Plugin.Log?.LogWarning("[bot] 60 stuck strikes — per-strike logging capped this run");
-                else if (stuckStrikeTotal < 60)
-                    Plugin.Log?.LogWarning($"[bot] stuck strike {StuckStrikes} (mode={Mode}, moved {moved:0.00} m)");
-                LogLine(in s, $"stuck:{StuckStrikes}");
-                if (StuckStrikes >= MaxStrikesBeforeTeleport)
-                {
-                    StuckStrikes = 0;
-                    // Wedged mid-orbit (ring segment inside geometry): jump
-                    // the sweep past this arc so the next ring point is a
-                    // different spot, not the same wall.
-                    if (Mode == BotMode.Engage) mem.OrbitAngle += mem.OrbitDir * 0.9f;
-                    // A coin the hero can't reach after 3 recoveries is behind
-                    // geometry or off-navmesh — park it for the rest of the
-                    // scene instead of grinding snaps forever (observed: 4
-                    // snap cycles ~30 s chasing a walled coin on Durststein).
-                    if (Mode == BotMode.CollectCoin && s.NearestCoin != null)
-                    {
-                        coinIgnore.Add(s.NearestCoin);
-                        ClearTarget();
-                        Plugin.Log?.LogWarning("[bot] coin unreachable — parked");
-                        LogLine(in s, "coin-stall");
-                        return;
-                    }
-                    var pm = PlayerMovement.instance;
-                    if (Legit)
-                    {
-                        Vector3 toAim = AimPos - s.HeroPos; toAim.y = 0f;
-                        if (moved < 0.05f && pm != null)
-                        {
-                            // LEGIT MODE: no teleport — players can't warp out
-                            // of a collider cage. Escalate the detour reach
-                            // instead (3→12 m) and park the aim if it stays
-                            // unreachable; teleport nudges violated the
-                            // legit-mode contract (audit finding).
-                            var ctrl = pm.GetComponent<CharacterController>();
-                            Plugin.Log?.LogWarning($"[bot] hard-stuck diag: type={pm.GetType().Name} " +
-                                $"ctrlEnabled={ctrl != null && ctrl.enabled} grounded={ctrl != null && ctrl.isGrounded} " +
-                                $"vel={pm.Velocity} dead={pm.Dead} scene={s.SceneName}");
-                            detourCount++;
-                            if (detourCount > 4) { detourCount = 1; detourSide = -detourSide; }
-                            float reach = 3f * detourCount;
-                            Vector3 fwd = toAim.sqrMagnitude > 0.01f ? toAim.normalized : Vector3.forward;
-                            detourPos = s.HeroPos + fwd * 2f +
-                                Vector3.Cross(Vector3.up, fwd) * (reach * detourSide);
-                            detourUntil = Time.unscaledTime + 1.2f + 0.6f * detourCount;
-                            Plugin.Log?.LogWarning($"[bot] hard-stuck (legit) → detour x{detourCount} to {detourPos}");
-                            LogLine(in s, $"unstick:{detourCount}");
-
-                            // If the aim itself is unreachable (nav island /
-                            // one-way drop — A* returns a 1-wp degenerate
-                            // path), park the pick like the coin stall does;
-                            // the next-best slot/coin takes over instead of
-                            // grinding the same wall forever. A wrong-layer
-                            // path (elevated navmesh, wall-top hero to ground
-                            // slot) can NEVER descend — park instantly.
-                            // detourStrikes counts THIS recovery burst —
-                            // StuckStrikes was reset to 0 above so testing it
-                            // here could never be true (dead escalation).
-                            if (Mode == BotMode.SpendGold && s.NearestBuild != null &&
-                                (navWrongLayer || detourCount >= 3))
-                            {
-                                // HERO is the wrong layer (standing on a wall
-                                // top, all waypoints at y≈13): parking the slot
-                                // is wrong — the slot is fine, WE can't descend.
-                                // Aim at the castle (always ground level) — the
-                                // route the hero climbed up routes back down.
-                                if (s.HeroPos.y > s.NearestBuildPos.y + 2.5f)
-                                {
-                                    ClearTarget();
-                                    navWrongLayer = false;
-                                    SetTarget(s.CastlePos, 1.5f);
-                                    Plugin.Log?.LogWarning("[bot] hero on wall top → descending via castle");
-                                    LogLine(in s, "hero-descend");
-                                }
-                                else if (navWrongLayer)
-                                {
-                                    // Wrong-layer path — try WALKING IT
-                                    // (players don't use navmesh; a 30m
-                                    // straight steer + wall-slide reaches
-                                    // what A* can't route). Stand cells die
-                                    // too so the aim comes off the bad cell.
-                                    BotPerception.IgnoreStand(s.NearestBuildPos);
-                                    BotPerception.NoteBuildFail(
-                                        BotPerception.BuildCat(s.NearestBuildName));
-                                    navDirectUntil = Time.unscaledTime + 9f;
-                                    navPath = null; navIndex = 0;
-                                    navWrongLayer = false;
-                                    Plugin.Log?.LogWarning("[bot] wrong-layer path → direct steer 9s");
-                                    LogLine(in s, "direct-steer");
-                                }
-                                else
-                                {
-                                    BotPerception.IgnoreBuild(s.NearestBuild, 300f);
-                                    BotPerception.NoteBuildFail(
-                                        BotPerception.BuildCat(s.NearestBuildName));
-                                    ClearTarget();
-                                    Plugin.Log?.LogWarning("[bot] slot unreachable — parked 5 min" +
-                                        (navWrongLayer ? " [layer]" : ""));
-                                    navWrongLayer = false;
-                                    LogLine(in s, "build-unreachable");
-                                }
-                            }
-                        }
-                        else
-                        {
-                            // Players can't teleport — wall-slide instead. Detour
-                            // reach escalates on the same side (3→12 m) so a big
-                            // obstacle gets skirted instead of re-wedged after a
-                            // token 3 m nudge; flips side only after a full cycle.
-                            detourCount++;
-                            if (detourCount > 4) { detourCount = 1; detourSide = -detourSide; }
-                            float reach = 3f * detourCount;
-                            Vector3 fwd = toAim.sqrMagnitude > 0.01f ? toAim.normalized : Vector3.forward;
-                            detourPos = s.HeroPos + fwd * 2f +
-                                Vector3.Cross(Vector3.up, fwd) * (reach * detourSide);
-                            detourUntil = Time.unscaledTime + 1.2f + 0.6f * detourCount;
-                            var af = UIFrameManager.instance != null ? UIFrameManager.instance.ActiveFrame : null;
-                            Plugin.Log?.LogWarning($"[bot] stuck → sidestep detour x{detourCount} to {detourPos} " +
-                                $"(frozen={LocalGamestate.Instance != null && LocalGamestate.Instance.PlayerFrozen}, " +
-                                $"ts={Time.timeScale:0.##}, frame={(af != null ? af.name : "null")}, " +
-                                $"choiceWait={ChoiceManager.instance != null && ChoiceManager.instance.ChoiceCoroutineWaiting})");
-                            LogLine(in s, $"unstick:{detourCount}");
-                        }
-                    }
-                    else if (pm != null)
-                    {
-                        Vector3 dir = AimPos - s.HeroPos;
-                        dir.y = 0f;
-                        Vector3 nudge = s.HeroPos +
-                            (dir.sqrMagnitude > 0.01f ? dir.normalized : Vector3.forward) * TeleportNudge;
-                        pm.TeleportTo(nudge);
-                        Plugin.Log?.LogWarning($"[bot] stuck → teleport nudge to {nudge}");
-                        LogLine(in s, "teleport-nudge");
-                    }
-                }
-            }
-            else { StuckStrikes = 0; detourCount = 0; }
-        }
-
-        /// <summary>Outside InMatch (menus, frames) the normal audit writer
-        /// never runs — the server then shows the LAST mode for minutes
-        /// ("Engage" while sitting at level select = the 'rogue bot' look).
-        /// Write a minimal honest audit here: mode=ui/menu, real scene.</summary>
-        private static void WriteAuditStub(in BotPerception.Snapshot s, string label)
-        {
-            if (Time.unscaledTime < nextAuditAt) return;
-            nextAuditAt = Time.unscaledTime + 3f;
-            try
-            {
-                var ap = System.IO.Path.Combine(Recorder.AgentDir, "audit.json");
-                var tmp = ap + ".tmp";
-                // J()-escape: uiFrame/SceneName come from the game — a quote
-                // in a frame name used to tear the whole audit document.
-                System.IO.File.WriteAllText(tmp,
-                    "{\"scene\":" + BotPerception.JsonStr(s.SceneName ?? "?") + ",\"t\":0," +
-                    "\"mode\":" + BotPerception.JsonStr(label) + ",\"mode_since\":0,\"gold\":0," +
-                    "\"ally\":0,\"free\":0,\"foes\":0,\"night\":false," +
-                    "\"wave\":0,\"wave_total\":0,\"doors_cov\":0,\"doors\":0," +
-                    "\"red\":false,\"breaches\":0,\"bld\":0,\"cur_build\":\"\"," +
-                    "\"checklist\":[],\"door_units\":[],\"door_lines\":[]," +
-                    "\"cat_built\":{},\"alerts\":[]}");
-                if (System.IO.File.Exists(ap)) System.IO.File.Delete(ap);
-                System.IO.File.Move(tmp, ap);
-            }
-            catch { }
-        }
-
-        private static void SetTarget(Vector3 pos, float arrive, bool projectToNav = false)
-        {
-            // Navmesh projection: sweep targets (orbit ring) can land inside
-            // geometry — aim at the nearest walkable point instead.
-            if (projectToNav && AstarPath.active != null)
-                pos = AstarPath.active.GetNearest(pos, new Pathfinding.NNConstraint()).position;
-            // A materially different goal invalidates the detour escalation —
-            // fresh obstacles deserve a fresh wall-slide attempt.
-            if (FlatDist(pos, targetPos) > 2f) detourCount = 0;
-            targetPos = pos;
-            arriveDist = arrive;
-            hasTarget = true;
-        }
-
-        /// <summary>
-        /// Executes a pure-layer Intent against the live refs in the snapshot.
-        /// Every world-side call the old inline Decide made lives here — the
-        /// Brain only emits intent kind + index.
-        /// </summary>
-        private static void Execute(in BotPerception.Snapshot s, Intent it)
-        {
-            if (it.CheatOnly && Legit) return;   // legit gate: never fire cheat intents
-            var pi = PlayerInteraction.instance;
-            switch (it.Kind)
-            {
-                case IntentKind.ReleaseHold:
-                    ReleaseBuild();
-                    break;
-                case IntentKind.BeginHold:
-                    if (s.NearestBuild != null && pi != null)
-                    {
-                        ReleaseBuild();
-                        var bi = s.NearestBuild;
-                        bi.Focus(pi);            // harvest pays out on focus
-                        bi.InteractionBegin(pi);
-                        heldBuild = bi;
-                        // RL: the build-focus choice is now a USED decision.
-                        if (!string.IsNullOrEmpty(s.PolicyFocus))
-                            Policy.Commit("build_focus", s.PolicyFocus,
-                                s.PolicyKey ?? "",
-                                new[] { "military", "income", "defense", "balanced" });
-                        Plugin.Log?.LogInfo($"[bot] building '{bi.name}' -> hold-to-pay");
-                    }
-                    break;
-                case IntentKind.PumpHold:
-                    if (heldBuild != null && pi != null)
-                        heldBuild.InteractionHold(pi);
-                    break;
-                case IntentKind.ParkSlot:
-                    // Diagnostic: WHY is this slot not filling? Reflection
-                    // into the interactor's private fill state — the refpack
-                    // finding says FillUp only advances while InteractionHold
-                    // runs and early-returns on state/choice/started gates.
-                    if (s.NearestBuild != null)
-                    {
-                        var ty = s.NearestBuild.GetType();
-                        string st = "?"; object started = "?", waiting = "?", complete = "?";
-                        var f1 = ty.GetField("currentState", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                        if (f1 != null) st = f1.GetValue(s.NearestBuild)?.ToString();
-                        var f2 = ty.GetField("interactionStarted", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                        if (f2 != null) started = f2.GetValue(s.NearestBuild);
-                        var f3 = ty.GetField("isWaitingForChoice", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                        if (f3 != null) waiting = f3.GetValue(s.NearestBuild);
-                        var f4 = ty.GetField("interactionComplete", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                        if (f4 != null) complete = f4.GetValue(s.NearestBuild);
-                        var bf = ty.GetField("costDisplay", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                        object filled = "?";
-                        if (bf != null)
-                        {
-                            var cd = bf.GetValue(s.NearestBuild);
-                            var cf = cd?.GetType().GetField("currentlyFilledCoins",
-                                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                            if (cf != null) filled = cf.GetValue(cd);
-                        }
-                        Plugin.Log?.LogWarning($"[bot] build-stall diag '{s.NearestBuildName}': " +
-                            $"state={st} started={started} waitChoice={waiting} complete={complete} filled={filled} " +
-                            $"dist={s.NearestBuildDist:0.#} balance={s.Balance} harvest={s.NearestBuild.canBeHarvested} " +
-                            $"canInteract={s.NearestBuild.CanBeInteractedWith}");
-                    }
-                    BotPerception.IgnoreBuild(s.NearestBuild, 600f);
-                    if (s.NearestBuild != null)
-                    {
-                        Memory.Park(s.SceneName,
-                            s.NearestBuild.transform.position, "build-stall");
-                        BotPerception.NoteBuildFail(
-                            BotPerception.BuildCat(s.NearestBuildName));
-                    }
-                    break;
-                case IntentKind.PumpAttack:
-                    PumpAttack();
-                    break;
-                case IntentKind.CommandArmy:
-                    CommandArmyAll(in s);
-                    break;
-                case IntentKind.PlaceArmy:
-                    PlaceArmy();
-                    break;
-                case IntentKind.PlaceSquad:
-                    // Claim only AFTER units actually post — a 0-unit post
-                    // used to stamp the door "en route" for 25 s while the
-                    // perimeter stayed open.
-                    if (PlaceSquad(in s) > 0 && s.HasUncoveredDoor)
-                        BotPerception.MarkDoorClaim(s.UncoveredDoorPos);
-                    break;
-                case IntentKind.RecallToBreach:
-                    RecallToBreach(in s);
-                    break;
-                case IntentKind.EscortHero:
-                    EscortHero(in s);
-                    break;
-                case IntentKind.HornInteract:
-                    if (s.Horn != null && pi != null)
-                    {
-                        s.Horn.InteractionBegin(pi);
-                        Plugin.Log?.LogInfo("[bot] at nighthorn -> InteractionBegin()");
-                    }
-                    else if (BotPerception.HornBi != null && pi != null)
-                    {
-                        BotPerception.HornBi.InteractionBegin(pi);
-                        Plugin.Log?.LogInfo("[bot] horn interactor -> InteractionBegin()");
-                    }
-                    break;
-                case IntentKind.SwitchNight:
-                    Policy.Commit("night", ((int)s.DayBudget).ToString(),
-                        s.PolicyKey ?? "", new[] { "150", "240", "330" });
-                    DayNightCycle.Instance?.SwitchToNight();
-                    break;
-                case IntentKind.SeedLoadout:
-                    SeedLoadout(in s);
-                    break;
-                case IntentKind.TransitionLevel:
-                    {
-                        var li = s.NearestLevel;
-                        var stm = SceneTransitionManager.instance;
-                        if (stm != null && li != null && li.levelInfo != null &&
-                            !BotPerception.SceneTransitionBusy(stm))
-                        {
-                            // Mark the pick like the game's own interact path
-                            // does (LevelInteractor.InteractionBegin sets it)
-                            // so after-match return + quest tracking stay sane.
-                            LevelInteractor.lastActiveLevelInfo = li.levelInfo;
-                            Plugin.Log?.LogInfo($"[bot] transitioning to level '{li.levelInfo.sceneName}'");
-                            stm.TransitionFromLevelSelectToLevel(li.levelInfo.sceneName);
-                        }
-                    }
-                    break;
-                case IntentKind.InteractLevel:
-                    // The node's own interact path — opens its level-select
-                    // frame (same as a player click); the frame resolver then
-                    // clicks Start. Fallback for a hung sceneTransitionIsRunning.
-                    if (s.NearestLevel != null && pi != null)
-                    {
-                        s.NearestLevel.InteractionBegin(pi);
-                        Plugin.Log?.LogInfo($"[bot] level '{s.NearestLevel.name}' -> InteractionBegin (frame)");
-                    }
-                    break;
-                case IntentKind.ClearCoinPark:
-                    coinIgnore.Clear();
-                    break;
-            }
-        }
-
-        private static bool NearDoor(Vector3 p, Vector3[] doors, float r)
-        {
-            if (doors == null) return false;
-            for (int i = 0; i < doors.Length; i++)
-            {
-                float dx = doors[i].x - p.x, dz = doors[i].z - p.z;
-                if (dx * dx + dz * dz < r * r) return true;
-            }
-            return false;
-        }
-
-        /// <summary>Army step 1: select every FREE allied unit (door squads
-        /// stay posted — their HomePosition is their door anchor).</summary>
-        private static void CommandArmyAll(in BotPerception.Snapshot s)
-        {
-            var cu = CommandUnits.instance;
-            if (cu == null) return;
-            var doors = s.DoorAnchors;
-            int added = 0;
-            foreach (var u in TagManager.instance.PlayerUnits)
-            {
-                if (u == null || u.Hp == null || !u.Hp.Alive) continue;
-                if (NearDoor(u.transform.position, doors, 25f)) continue;   // posted/en-route squad — leave it
-                var pu0 = u.GetComponent<PathfindMovementPlayerunit>();
-                if (pu0 != null && pu0.FollowingPlayer) continue;   // escorts stay on the hero —
-                // the sweep kept re-holding them into churn with EscortHero
-                cu.OnUnitAdd(u, false); added++;
-            }
-            cu.commanding = added > 0;
-            Plugin.Log?.LogInfo($"[bot] commanding {added} free unit(s) (squads stay posted)");
-        }
-
-        /// <summary>Post a squad at the current door anchor REMOTELY — set
-        /// each free unit's HomePosition + hold and let its own AI walk the
-        /// corridor. The hero never leaves the build loop for posting trips.
-        /// HoldPosition makes them engage anything within ~7 m of the door.</summary>
-        private static int PlaceSquad(in BotPerception.Snapshot s)
-        {
-            int target = s.UncoveredDoorTarget > 0 ? s.UncoveredDoorTarget : 4;
-            int posted = 0;
-            // Coach/playbook RESERVE: never post the last N units — they stay
-            // at the castle as the emergency garrison (field was previously
-            // parsed but never consumed).
-            int reserve = Mathf.Max(Coach.ReserveSize, BotPerception.Strat.Reserve);
-            // FreeUnits excludes door-posted + escort units — AllyCount didn't,
-            // so repeated posts could drain the reserve by re-counting squads
-            // already standing at doors as available.
-            int postable = Mathf.Max(0, s.FreeUnits - reserve);
-            var units = TagManager.instance.PlayerUnits;
-            for (int i = 0; i < units.Count && posted < target && posted < postable; i++)
-            {
-                var t = units[i];
-                if (t == null || t.Hp == null || !t.Hp.Alive) continue;
-                var u = t.GetComponent<PathfindMovementPlayerunit>();
-                if (u == null) continue;
-                if (NearDoor(u.transform.position, s.DoorAnchors, 25f)) continue;
-                if (u.FollowingPlayer) continue;                       // escort stays
-                float a = posted * 1.571f;
-                Vector3 off = new Vector3(Mathf.Cos(a), 0f, Mathf.Sin(a)) * (1.2f + 0.4f * posted);
-                u.HomePosition = s.UncoveredDoorPos + off;
-                u.HasReachedHomePositionAlready = false;
-                u.FollowPlayer(false);
-                u.HoldPosition = true;
-                posted++;
-            }
-            if (posted > 0)
-            {
-                // RL: the squad-size choice is now a USED decision.
-                Policy.Commit("squad", target.ToString(),
-                    s.PolicyKey ?? "", new[] { "3", "4", "5", "6", "8" });
-                Plugin.Log?.LogInfo($"[bot] posted squad {posted}/{target} remotely at door '{s.UncoveredDoorLine}'");
-            }
-            return posted;
-        }
-
-        /// <summary>RED ALERT: an enemy is inside the ring — EVERY unit
-        /// converges on the threat anchor (door squads abandon their posts,
-        /// escorts drop follow). The city-line takes priority over any door.</summary>
-        private static void RecallToBreach(in BotPerception.Snapshot s)
-        {
-            var units = TagManager.instance.PlayerUnits;
-            int sent = 0;
-            for (int i = 0; i < units.Count; i++)
-            {
-                var t = units[i];
-                if (t == null || t.Hp == null || !t.Hp.Alive) continue;
-                var u = t.GetComponent<PathfindMovementPlayerunit>();
-                if (u == null) continue;
-                float a = sent * 0.785f;
-                Vector3 off = new Vector3(Mathf.Cos(a), 0f, Mathf.Sin(a)) * (1.5f + 0.3f * sent);
-                u.FollowPlayer(false);
-                u.HomePosition = s.ThreatAnchor + off;
-                u.HasReachedHomePositionAlready = false;
-                u.HoldPosition = true;
-                sent++;
-            }
-            Plugin.Log?.LogWarning($"[bot] BREACH-RESPONSE: {sent} unit(s) converging on threat");
-        }
-
-        /// <summary>Escort: a slice of free units follows the hero through
-        /// his build route — FollowPlayer, not hold — so he never fights
-        /// alone inside the ring.</summary>
-        private static void EscortHero(in BotPerception.Snapshot s)
-        {
-            int want = Coach.EscortSize > 0 ? Coach.EscortSize
-                     : BotPerception.Strat.Escort > 0 ? BotPerception.Strat.Escort
-                     : (s.AllyCount >= 12 ? 4 : 3);   // playbook escort honored too
-            int escorts = 0;
-            var units = TagManager.instance.PlayerUnits;
-            for (int i = 0; i < units.Count; i++)
-            {
-                var t = units[i];
-                if (t == null || t.Hp == null || !t.Hp.Alive) continue;
-                var u = t.GetComponent<PathfindMovementPlayerunit>();
-                if (u == null) continue;
-                if (NearDoor(u.transform.position, s.DoorAnchors, 25f)) continue;
-                bool following = u.FollowingPlayer;
-                if (escorts < want && !following)
-                {
-                    u.HoldPosition = false;
-                    u.FollowPlayer(true);
-                    following = true;
-                }
-                if (following) escorts++;
-            }
-        }
-
-        /// <summary>Army step 2: place the command set at the hero + hold.</summary>
-        private static void PlaceArmy()
-        {
-            var cu = CommandUnits.instance;
-            if (cu == null) return;
-            cu.PlaceCommandedUnitsAndCalculateTargetPositions(false);
-            cu.MakeUnitsInBufferHoldPosition();
-            cu.commanding = false;
-            Plugin.Log?.LogInfo("[bot] army placed at anchor, holding");
-        }
-
-        /// <summary>
-        /// Mirror LevelSelectManager.PlayButtonPressed: apply fixedLoadout when
-        /// the level has one; if the loadout was never seeded this session (the
-        /// bot skips the loadout UI) arm the hero with the best unlocked
-        /// weapon — otherwise he spawns weaponless and literally cannot fight.
-        /// A ranged weapon is preferred so the orbit-kite play style exists.
-        /// </summary>
-        private static string requestedWeapon;   // sidecar mailbox loadout pin
-
-        /// <summary>Sidecar orders a specific weapon for the next seed
-        /// (name matched case-insensitively against allEquippables).</summary>
-        public static void RequestLoadout(string weapon)
-        {
-            requestedWeapon = weapon;
-        }
-
-        private static void SeedLoadout(in BotPerception.Snapshot s)
-        {
-            var li = s.NearestLevel;
-            var pmgr = PerkManager.instance;
-            if (pmgr == null || li == null || li.levelInfo == null) return;
-            if (li.levelInfo.fixedLoadout != null && li.levelInfo.fixedLoadout.Count > 0)
-            {
-                pmgr.CurrentlyEquipped.Clear();
-                pmgr.CurrentlyEquipped.AddRange(li.levelInfo.fixedLoadout);
-            }
-            if (pmgr.CurrentlyEquipped.Count == 0)
-            {
-                // Sidecar-requested loadout takes precedence when it resolves.
-                if (!string.IsNullOrEmpty(requestedWeapon))
-                {
-                    Equippable req = null;
-                    foreach (var eq in pmgr.allEquippables)
-                        if (eq is EquippableWeapon && eq.IsUnlocked &&
-                            string.Equals(eq.displayName, requestedWeapon,
-                                System.StringComparison.OrdinalIgnoreCase))
-                        { req = eq; break; }
-                    if (req != null)
-                    {
-                        PerkManager.SetEquipped(req, true);
-                        Plugin.Log?.LogInfo($"[bot] loadout pinned by sidecar: '{req.displayName}'");
-                        requestedWeapon = null;
-                        return;
-                    }
-                    Plugin.Log?.LogWarning($"[bot] sidecar weapon '{requestedWeapon}' not found/locked — auto pick");
-                    requestedWeapon = null;
-                }
-                string[] rangedKw = { "bow", "cross", "wand", "staff",
-                    "sling", "knife", "shuriken", "chakram", "javelin",
-                    "boomerang", "pistol", "rifle", "dart", "throw" };
-                Equippable best = null, bestRanged = null;
-                foreach (var eq in pmgr.allEquippables)
-                {
-                    if (!(eq is EquippableWeapon) || !eq.IsUnlocked) continue;
-                    if (best == null || eq.sortingValue > best.sortingValue)
-                        best = eq;
-                    string nm = (eq.displayName ?? "").ToLowerInvariant();
-                    bool isRanged = false;
-                    foreach (var kw in rangedKw)
-                        if (nm.Contains(kw)) { isRanged = true; break; }
-                    if (isRanged && (bestRanged == null ||
-                        eq.sortingValue > bestRanged.sortingValue))
-                        bestRanged = eq;
-                }
-                var pick = bestRanged != null ? bestRanged : best;
-                if (pick != null)
-                {
-                    PerkManager.SetEquipped(pick, true);
-                    Plugin.Log?.LogInfo($"[bot] loadout seeded: '{pick.displayName}'" +
-                        (pick == bestRanged ? " (ranged preferred)" : ""));
-                }
-            }
-        }
-
-        private static void ClearTarget() { hasTarget = false; engageTarget = null; ReleaseBuild(); }
-
-        private static void ReleaseBuild()
-        {
-            if (heldBuild == null) return;
-            // Silent releases hid the refund loop for a whole session —
-            // log every release with the fill state so it's auditable.
-            var pi = PlayerInteraction.instance;
-            Plugin.Log?.LogInfo(
-                $"[bot] hold-release '{heldBuild.name}' " +
-                $"waitChoice={ChoiceManager.instance != null && ChoiceManager.instance.ChoiceCoroutineRunning}");
-            if (pi != null) { heldBuild.Unfocus(pi); heldBuild.InteractionEnd(pi); }
-            heldBuild = null;
-            holdDoneName = "";   // reset dedup — the next same-named
-                                 // building (more_barracks, wall #2) must
-                                 // count too; stale name made it invisible
-        }
-
-        /// <summary>
-        /// Resolve whichever UI frame is freezing the player. Order matters:
-        /// a running choice coroutine wins (the frame is just its view), then
-        /// end-of-match (BackToLevelSelectHelper inside), then perk selection,
-        /// then any generic escapable frame (reward, pause). Non-freezing
-        /// frames — the campaign map's level-select UI among them — return
-        /// false so we never hide the UI the bot actually uses.
-        /// </summary>
-        private static bool HandleBlockingFrame(in BotPerception.Snapshot s)
-        {
-            var fm = UIFrameManager.instance;
-            var frame = fm != null ? fm.ActiveFrame : null;
-            uiFrame = frame != null ? frame.name : "";
-            // A pending choice blocks BuildingInteractor holds whether or not
-            // its frame currently freezes the player — resolve it before the
-            // frame gate so SpendGold can't deadlock on an unframed choice.
-            var cm = ChoiceManager.instance;
-            if (cm != null && cm.ChoiceCoroutineRunning && cm.ChoiceCoroutineWaiting)
-            {
-                if (Time.unscaledTime >= frameActionAt)
-                {
-                    frameActionAt = Time.unscaledTime + 1f;
-                    // Military-first choice: troops/defense branches win over
-                    // economy/cosmetic ones when both are pickable.
-                    Choice pick = null, milPick = null;
-                    foreach (var c in cm.availableChoices)
-                    {
-                        if (c == null || !c.CanBePicked) continue;
-                        if (pick == null) pick = c;
-                        string cn = c.name ?? "";
-                        if (milPick == null && (
-                            cn.IndexOf("barrack", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
-                            cn.IndexOf("archer", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
-                            cn.IndexOf("militia", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
-                            cn.IndexOf("guard", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
-                            cn.IndexOf("tower", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
-                            cn.IndexOf("wall", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
-                            cn.IndexOf("knight", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
-                            cn.IndexOf("squad", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
-                            cn.IndexOf("troop", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
-                            cn.IndexOf("soldier", System.StringComparison.OrdinalIgnoreCase) >= 0))
-                            milPick = c;
-                    }
-                    cm.choiceToReturn = milPick ?? pick;
-                    Plugin.Log?.LogInfo($"[bot] choice frame -> '{(cm.choiceToReturn != null ? cm.choiceToReturn.name : "none")}'");
-                    LogLine(in s, "choice-pick");
-                }
-                return true;
-            }
-
-            // Frame-name tracking is STICKY: the 'After Match Frame' closes
-            // and instantly re-opens (the game re-shows the match summary)
-            // — resetting on every null frame kept frameSeen at 0 forever,
-            // so the AfterMatch->level-select gate could never escalate.
-            if (frame == null || !frame.freezePlayer)
-            {
-                if (Time.unscaledTime - lastFrameAt > 3f)
-                { lastFrameName = ""; frameSeen = 0; }
-                return false;
-            }
-            lastFrameAt = Time.unscaledTime;
-            if (frame.name != lastFrameName) { lastFrameName = frame.name; frameSeen = 0; }
-
-            // A Choice frame mid-resolution must NOT be closed — the pick is
-            // already set but the coroutine needs a beat to resume; slamming
-            // the frame shut cancels the hold and refunds the fill (the
-            // "never finishes upgrades" bug). Wait for the coroutine to end.
-            if (cm != null && cm.ChoiceCoroutineRunning) return true;
-            // And when the coroutine IS done, the frame must be CONFIRMED,
-            // not closed — CloseActiveFrame() is the Escape/cancel path and
-            // refunds the fill (evidence: Archery Range + Barracks never
-            // completed while Gold Mine/Wall/Tower did). Apply() commits
-            // the picked choice so the interactor finishes the upgrade.
-            if (frame.name.IndexOf("Choice", System.StringComparison.OrdinalIgnoreCase) >= 0)
-            {
-                if (Time.unscaledTime >= frameActionAt)
-                {
-                    frameActionAt = Time.unscaledTime + 1f;
-                    Plugin.Log?.LogInfo("[bot] choice frame -> Apply() (confirm)");
-                    frame.Apply();
-                    LogLine(in s, "choice-confirm");
-                }
-                return true;
-            }
-
-            // End-of-match screens carry a BackToLevelSelectHelper button and
-            // are unescapable — follow it to return to the campaign map where
-            // EnterLevel picks the next unbeaten node. Pause menus carry the
-            // same button but ARE escapable, so they take the plain-close path
-            // below instead. The frameSeen>=2 escalation is gated on AfterMatch*
-            // states so a stubborn mid-run frame can never nuke the run.
-            var backHelper = frame.GetComponentInChildren<BackToLevelSelectHelper>(true);
-            // 'After Match Frame' survived 7+ plain closes while GameState had
-            // already rolled past AfterMatch* into transition — gate on the
-            // frame NAME too, not only the state string.
-            if (backHelper != null && (frame.canNotBeEscaped ||
-                (frameSeen >= 2 && (s.GameState.StartsWith("AfterMatch") ||
-                                    frame.name.IndexOf("After Match") >= 0))))
-            {
-                if (Time.unscaledTime >= frameActionAt)
-                {
-                    frameActionAt = Time.unscaledTime + 2f;
-                    // Click the game's OWN back-to-map path — Apply() fires
-                    // the frame's primary action (the BackToLevelSelectHelper
-                    // button), which runs the game's match-cleanup before
-                    // transitioning. A raw SceneTransitionManager call
-                    // skipped that cleanup: the next Durststein inherited
-                    // the dead match — interactables never respawned
-                    // (the inter-vacuum loop).
-                    Plugin.Log?.LogInfo("[bot] end-of-match -> Apply() (back-to-map)");
-                    LogLine(in s, "match-end");
-                    frame.Apply();
-                }
-                return true;
-            }
-
-            var items = frame.GetComponentsInChildren<PerkSelectionItem>(true);
-            if (items != null && items.Length > 0)
-            {
-                if (Time.unscaledTime >= frameActionAt)
-                {
-                    frameActionAt = Time.unscaledTime + 1.5f;
-                    int picked = 0;
-                    foreach (var item in items)
-                    {
-                        var g = item.GetComponentInParent<PerkSelectionGroup>();
-                        if (g == null || item.Selected || item.Equippable == null || !item.Equippable.IsUnlocked)
-                            continue;
-                        g.SelectPerk(item);
-                        picked++;
-                    }
-                    Plugin.Log?.LogInfo($"[bot] perk frame '{frame.name}' -> picked {picked} item(s), closing");
-                    LogLine(in s, "perk-pick");
-                    if (!frame.canNotBeEscaped) fm.CloseActiveFrame();
-                    else frame.Apply();
-                }
-                return true;
-            }
-
-            if (Time.unscaledTime >= frameActionAt)
-            {
-                frameActionAt = Time.unscaledTime + 2f;
-                frameSeen++;
-                Plugin.Log?.LogInfo($"[bot] blocking frame '{frame.name}' -> close");
-                LogLine(in s, "frame-close");
-                if (!frame.canNotBeEscaped) fm.CloseActiveFrame();
-                else frame.Apply();
-            }
-            return true;
-        }
-
-        /// <summary>Change-detecting diag logger: same key → next emit in 15 s.</summary>
-        private static void DiagLog(string key, string msg, bool warn)
-        {
-            if (key == lastDiagKey && Time.unscaledTime < attackDiagAt) return;
-            lastDiagKey = key;
-            attackDiagAt = Time.unscaledTime + 15f;
-            if (warn) Plugin.Log?.LogWarning(msg); else Plugin.Log?.LogInfo(msg);
-        }
-
-        /// <summary>
-        /// Force the hero to swing. TryToAttack only arms an input buffer that
-        /// still has to pass cooldown + marker gates, so when it proves deaf we
-        /// call Attack() directly — that runs FindAttackTarget and fires the
-        /// weapon immediately. Logs a 5 s diagnostic so we can see whether the
-        /// weapon ever finds a target and how far the pursuit enemy is.
-        /// </summary>
-        private static void PumpAttack()
-        {
-            var pm = PlayerMovement.instance;
-            if (pm == null) return;
-            if (heroAttack == null)
-            {
-                // WeaponEquipper (a child of the hero root) exposes the hero's
-                // ManualAttack refs as public fields — the direct handle.
-                // Searching children for ManualAttack misses it when the
-                // weapon object isn't parented under the pawn node.
-                var tagged = pm.GetComponentInParent<TaggedObject>();
-                var we = tagged != null
-                    ? tagged.GetComponentInChildren<WeaponEquipper>(true)
-                    : UnityEngine.Object.FindObjectOfType<WeaponEquipper>();
-                if (we != null)
-                    heroAttack = we.activeWeapon != null ? we.activeWeapon : we.passiveWeapon;
-
-                if (heroAttack == null && tagged != null)
-                    heroAttack = tagged.GetComponentInChildren<ManualAttack>(true);
-
-                if (heroAttack == null && Time.unscaledTime >= maScanAt)
-                {
-                    maScanAt = Time.unscaledTime + 1f; // FindObjectsOfType: 1 Hz, not 4
-                    var all = UnityEngine.Object.FindObjectsOfType<ManualAttack>(true);
-                    foreach (var ma in all)
-                    {
-                        var maTag = ma.GetComponentInParent<TaggedObject>();
-                        if (maTag != null && maTag.Contains(TagManager.ETag.Player))
-                        {
-                            heroAttack = ma;
-                            break;
-                        }
-                    }
-                    if (heroAttack == null)
-                    {
-                        string names = "";
-                        for (int i = 0; i < all.Length && i < 6; i++)
-                            names += (i > 0 ? "," : "") + all[i].name;
-                        var wes = UnityEngine.Object.FindObjectsOfType<WeaponEquipper>(true);
-                        int equipped = PerkManager.instance != null ? PerkManager.instance.CurrentlyEquipped.Count : -1;
-                        DiagLog("no-manual-attack", $"[bot] no player ManualAttack: scene has {all.Length} [{names}], {wes.Length} WeaponEquipper, {equipped} equipped perks", true);
-                    }
-                }
-                if (heroAttack != null)
-                {
-                    // Capture the weapon's real reach for the ranged/melee and
-                    // kite decisions, and whether it can fire on the move.
-                    weaponRange = 0f;
-                    foreach (var p in heroAttack.targetPriorities)
-                        weaponRange = Mathf.Max(weaponRange, p.range);
-                    weaponFiresWhileMoving =
-                        heroAttack.GetComponent<DelayManualAttackWhileMoving>() == null;
-                    Plugin.Log?.LogInfo($"[bot] ManualAttack found on '{heroAttack.name}' (autoAttack={heroAttack.autoAttack}, range={weaponRange:0.#}, firesWhileMoving={weaponFiresWhileMoving})");
-                }
-            }
-            else if (Time.unscaledTime >= weRevalAt)
-            {
-                // Weapon swaps leave heroAttack bound to the retired weapon —
-                // re-resolve against the equipper's live pick every 2 s.
-                weRevalAt = Time.unscaledTime + 2f;
-                var tagged0 = pm.GetComponentInParent<TaggedObject>();
-                var we0 = tagged0 != null
-                    ? tagged0.GetComponentInChildren<WeaponEquipper>(true)
-                    : UnityEngine.Object.FindObjectOfType<WeaponEquipper>();
-                var cur = we0 != null
-                    ? (we0.activeWeapon != null ? we0.activeWeapon : we0.passiveWeapon)
-                    : null;
-                if (cur != null && cur != heroAttack)
-                {
-                    heroAttack = cur;
-                    weaponRange = 0f;
-                    foreach (var p in cur.targetPriorities)
-                        weaponRange = Mathf.Max(weaponRange, p.range);
-                    Plugin.Log?.LogInfo(
-                        $"[bot] ManualAttack re-resolved -> '{cur.name}' (range={weaponRange:0.#})");
-                }
-            }
-            if (heroAttack == null)
-            {
-                if (Legit)
-                    return;   // no direct-damage fallback under legit rules
-                // Weaponless hero: no ManualAttack exists to pump. Strike the
-                // engaged enemy through Hp — the InstantKill patch turns every
-                // player-caused hit into a kill; even without it, 4 strikes/s
-                // at 500 dmg clears a wave fast.
-                var hpE = engageTarget != null ? engageTarget.GetComponent<Hp>() : null;
-                if (hpE != null)
-                {
-                    var src = pm.GetComponentInParent<TaggedObject>();
-                    hpE.TakeDamage(500f, src, true);
-                }
-                else
-                {
-                    DiagLog("weaponless:" + (engageTarget != null ? engageTarget.name : "null"),
-                        $"[bot] engage: weaponless, enemy hp missing (engageTarget={(engageTarget != null ? engageTarget.name : "null")})", true);
-                }
-                return;
-            }
-
-            TaggedObject t = null;
-            try { t = heroAttack.FindAttackTarget(true); } catch { /* priorities may be empty */ }
-            float dist = engageTarget != null
-                ? FlatDist(pm.transform.position, engageTarget.transform.position) : -1f;
-            DiagLog("wt:" + (t != null ? t.name : "null"),
-                $"[bot] engage diag: weaponTarget={(t != null ? t.name : "null")} pursueDist={dist:0.0}", false);
-            if (t != null)
-            {
-                // Legit: TryToAttack goes through cooldown + input-buffer like
-                // a real button press. Direct Attack() fires every decide tick
-                // regardless of cooldownTime — a hidden attack-speed cheat.
-                if (Legit) heroAttack.TryToAttack();
-                else heroAttack.Attack();
-            }
-            else
-                heroAttack.TryToAttack(); // still arm a press in case a target appears
-        }
-
-        private static Vector3 DirTo(Vector3 from, Vector3 to, float arrive)
-        {
-            Vector3 d = to - from;
-            d.y = 0f;
-            if (d.magnitude <= arrive) return Vector3.zero;
-            return d.normalized;
-        }
-
-        /// <summary>Point on the hero's side of a target, `radius` m out —
-        /// stops the steering from aiming inside a building's collider.</summary>
-        private static Vector3 StandOff(Vector3 target, Vector3 hero, float radius)
-        {
-            Vector3 d = hero - target; d.y = 0f;
-            if (d.magnitude <= radius) return target;
-            return target + d.normalized * radius;
-        }
-
-        /// <summary>
-        /// Legit steering point: next waypoint of the navmesh path to the goal,
-        /// or the goal itself when no path is available (menus, off-graph).
-        /// Also sets navSteerArrive — small for mid-path waypoints so the hero
-        /// doesn't park at a bend, the real arriveDist at the path's end.
-        /// </summary>
-        private static Vector3 NavSteerPoint(Vector3 hero, Vector3 goal)
-        {
-            navSteerArrive = arriveDist;
-            // Direct-steer window: a wrong-layer path flagged the navmesh —
-            // but the hero walks FREELY (navmesh is only our helper). Steer
-            // straight for the goal; hard-stuck detours handle obstacles.
-            if (Time.unscaledTime < navDirectUntil)
-                return goal;
-            if (hasTarget) MaybeRequestPath(hero, goal);
-
-            var p = navPath;
-            if (p == null || p.vectorPath == null || p.vectorPath.Count == 0)
-                return goal;
-            var wp = p.vectorPath;
-            // Stale path: a cached result whose first waypoint sits >15 m from
-            // the hero was built for a different origin (post-snap, scene
-            // edge). Following it steers the hero backward into geometry —
-            // discard and let the next tick re-path from the real position.
-            if (wp.Count > 0 && FlatDist(hero, wp[0]) > 15f)
-            {
-                navPath = null; navIndex = 0; navGoal = Vector3.zero;
-                navWrongLayer = false;   // discarded paths carry no verdict
-                return goal;
-            }
-            while (navIndex < wp.Count - 1 && FlatDist(hero, wp[navIndex]) < 1.4f) navIndex++;
-            navIndex = Mathf.Min(navIndex, wp.Count - 1);
-            var last = wp[wp.Count - 1];
-            // Degenerate path: the navmesh snapped the whole route onto where
-            // the hero already stands — steering at it gives DesiredDir≈0 →
-            // standing still forever. Fall back to the raw goal.
-            if (navIndex == wp.Count - 1 && FlatDist(hero, last) < 0.8f)
-                return goal;
-            // FOLLOW the routed path even when its tail stops short of the
-            // goal — the old "last wp >2.5 m from goal → beeline" skipped the
-            // entire route and steered the hero straight into the cliff/wall
-            // the path had routed around (the pin-the-building bug). Only the
-            // final waypoint's gap gets a straight finish.
-            navSteerArrive = navIndex == wp.Count - 1 ? arriveDist : 0.5f;
-            if (navIndex < wp.Count - 1) return wp[navIndex];
-            // At the last waypoint: if it lands on the goal, hold arrive-dist;
-            // else it's the navmesh's "closest reachable" — beeline the small
-            // remaining gap.
-            return FlatDist(last, goal) <= 2.5f ? last : goal;
-        }
-
-        /// <summary>
-        /// Throttled A* request. Re-paths when the goal moved materially, when
-        /// the current path is consumed, or when none exists. Path requests
-        /// run ~1 Hz — the same cadence the game's own units recalculate.
-        /// </summary>
-        private static void MaybeRequestPath(Vector3 hero, Vector3 goal)
-        {
-            var astar = AstarPath.active;
-            if (astar == null) return;
-            if (navInFlight || Time.unscaledTime < navRepathAt) return;
-
-            bool consumed = false;
-            if (navPath != null && navPath.vectorPath != null && navPath.vectorPath.Count > 0)
-            {
-                var last = navPath.vectorPath[navPath.vectorPath.Count - 1];
-                consumed = navIndex >= navPath.vectorPath.Count - 1 &&
-                           FlatDist(hero, last) < 1.4f;
-            }
-            bool goalMoved = FlatDist(goal, navGoal) > 2.5f;
-            if (navPath != null && !consumed && !goalMoved) return;
-
-            navRepathAt = Time.unscaledTime + 1.1f;
-            navGoal = goal;
-            navInFlight = true;
-            int reqId = ++navRequestId;   // stale-result guard
-            var p = Pathfinding.ABPath.Construct(hero, goal, done =>
-            {
-                navInFlight = false;
-                // A result for a superseded request must not install its
-                // waypoints (scene changed / goal moved / run restarted).
-                if (reqId != navRequestId) return;
-                if (!done.error && done.vectorPath != null && done.vectorPath.Count > 0)
-                {
-                    var last = done.vectorPath[done.vectorPath.Count - 1];
-                    // Wrong-layer path: the navmesh resolved to an elevated
-                    // route (hero on a wall top, slot below — move-diag showed
-                    // y=13.49 paths to y≈0 goals). Grinding produced only
-                    // stuck-strikes; flag it so the watchdog parks instantly.
-                    navWrongLayer = Mathf.Abs(last.y - goal.y) > 2.5f;
-                    navPath = done;
-                    navIndex = 0;
-                    navDiagCount++;
-                    if (navDiagCount <= 20)
-                        Plugin.Log?.LogInfo($"[bot] nav-path ok: {done.vectorPath.Count} wp -> {goal}" +
-                            (navWrongLayer ? " [wrong-layer]" : ""));
-                }
-                else
-                {
-                    navPath = null; navWrongLayer = false;
-                    Plugin.Log?.LogWarning($"[bot] nav-path error -> {goal} ({done.errorLog})");
-                }
-            });
-            AstarPath.StartPath(p);
-        }
-
-        // SceneTransitionManager keeps its busy flag private — same FieldInfo
-        // trick Plugin uses for PlayerInteraction.balance. Gating the
-        // transition call on it kills the old swallow-and-retry double-fire.
-        private static readonly System.Reflection.FieldInfo StmRunningField =
-            typeof(SceneTransitionManager).GetField("sceneTransitionIsRunning",
-                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-
-        private static bool SceneTransitionBusy(SceneTransitionManager stm) =>
-            StmRunningField != null && (bool)StmRunningField.GetValue(stm);
-
-        private static float FlatDist(Vector3 a, Vector3 b)
-        {
-            a.y = 0f; b.y = 0f;
-            return Vector3.Distance(a, b);
-        }
-
-        private static string FormatStatus(in BotPerception.Snapshot s)
-        {
-            return string.Format(CultureInfo.InvariantCulture,
-                "{0} | wv {1}/{2} foes {3} coins {4} gold {5} hp {6:P0}",
-                Mode, s.Wave, s.WaveTotal, s.EnemyCount, s.CoinCount, s.Balance, s.HeroHpPct);
-        }
-
-        // ---- telemetry: JSONL beside the plugin dll ----
-
-        private static void EnsureLog()
-        {
-            if (botLog != null || logFailed) return;
-            try
-            {
-                string path = Path.Combine(Paths.PluginPath, "bot-log.jsonl");
-                botLog = new StreamWriter(path, append: true) { AutoFlush = true };
-            }
-            catch { logFailed = true; }
-        }
-
-        private static void CloseLog()
-        {
-            try { botLog?.Close(); } catch { }
-            botLog = null;
-        }
-
-        private static void LogRaw(string note)
-        {
-            EnsureLog();
-            try
-            {
-                botLog?.WriteLine(string.Format(CultureInfo.InvariantCulture,
-                    "{{\"t\":{0:0.00},\"note\":\"{1}\"}}", Time.unscaledTime, note));
-            }
-            catch { }
-        }
-
-        private static string FormatTickJson(in BotPerception.Snapshot s, string note)
-        {
-            // Mode/GameState/SceneName/note interpolate into quoted JSON —
-            // escape every one or a stray quote tears the log line.
-            return string.Format(CultureInfo.InvariantCulture,
-                "{{\"t\":{0:0.00},\"mode\":{1},\"state\":{2},\"scene\":{3},\"night\":{4},\"wave\":\"{5}/{6}\",\"foes\":{7},\"coins\":{8},\"gold\":{9},\"hp\":{10:0.###},\"pos\":[{11:0.#},{12:0.#}],\"ls\":{13},\"lvln\":{14},\"inter\":{15},\"lvld\":{16:0.#},\"horn\":{17},\"hd\":{18:0.#},\"bld\":{19},\"nf\":{20},\"note\":{21}}}",
-                Time.unscaledTime,
-                BotPerception.JsonStr(Mode.ToString()), BotPerception.JsonStr(s.GameState),
-                BotPerception.JsonStr(s.SceneName),
-                s.IsNight ? "true" : "false",
-                s.Wave, s.WaveTotal, s.EnemyCount, s.CoinCount, s.Balance,
-                s.HeroHpPct, s.HeroPos.x, s.HeroPos.z,
-                s.OnLevelSelect ? "true" : "false", s.LevelCount, s.InteractorCount, s.NearestLevelDist,
-                s.HasHorn ? "true" : "false", s.HornDist, s.BuildCount, s.EnemiesNearHero,
-                BotPerception.JsonStr(note));
-        }
-
-        private static string lastEvtNote; private static float lastEvtAt;
-
-        internal static void LogLine(in BotPerception.Snapshot s, string note)
-        {
-            EnsureLog();
-            // Event stream + derived counters feed the recorder regardless of
-            // the main log being available. "tick" is the 4 Hz heartbeat —
-            // it belongs in ticks.jsonl, not the event stream. Identical
-            // notes flood at ~4 Hz (invalid ×80, hero-door ×18) — collapse
-            // repeats to one entry per 4 s; counters still count every one.
-            if (note != "tick")
-            {
-                if (note == lastEvtNote && Time.unscaledTime - lastEvtAt < 4f) { }
-                else { Recorder.Event(note); lastEvtNote = note; lastEvtAt = Time.unscaledTime; }
-            }
-            if (note == "snap")
-            {
-                Recorder.CountSnap();
-                Recorder.NoteAnchor(s.SceneName, s.HeroPos.x, s.HeroPos.z, "wedge");
-            }
-            else if (note.StartsWith("unstick")) Recorder.CountUnstick();
-            else if (note == "build-stall" || note == "coin-stall" ||
-                     note == "aim-stall" || note == "build-unreachable")
-                Recorder.CountStall();   // parked-aim/parked-slot count too —
-                // summaries underreported stalls (audit finding)
-            if (botLog == null) return;
-            try
-            {
-                botLog.WriteLine(FormatTickJson(in s, note));
-            }
-            catch { }
-        }
-    }
+	public static bool Legit;
+
+	[CompilerGenerated]
+	private static BotMode Mode__BackingField;
+
+	[CompilerGenerated]
+	private static string Status__BackingField;
+
+	private const float ArriveCoin = 0.8f;
+
+	private const float ArriveHold = 6f;
+
+	private const float ArriveEngage = 1.5f;
+
+	private const float HomeRadius = 14f;
+
+	private const float CoinSeekRange = 80f;
+
+	private const float DecisionInterval = 0.25f;
+
+	private const float StuckWatchWindow = 2f;
+
+	private const float StuckEpsilon = 0.35f;
+
+	private const int MaxStrikesBeforeTeleport = 3;
+
+	private const float TeleportNudge = 2.5f;
+
+	private static float decisionClock;
+
+	private static float watchClock;
+
+	private static float arriveSince;
+
+	private static int stuckStrikeTotal;
+
+	private static Vector3 watchAnchor;
+
+	private static bool hasAnchor;
+
+	private static Vector3 lastFreePos;
+
+	private static float lastFreeAt;
+
+	private static bool hasTarget;
+
+	private static Vector3 targetPos;
+
+	private static float arriveDist;
+
+	private static TaggedObject engageTarget;
+
+	private static ManualAttack heroAttack;
+
+	private static float weRevalAt;
+
+	private static float attackDiagAt;
+
+	private static float menuAdvanceAt;
+
+	private static float frameActionAt;
+
+	private static string uiFrame;
+
+	private static string lastUiNoteFrame;
+
+	private static float nextUiNoteAt;
+
+	private static BuildingInteractor heldBuild;
+
+	private static float maScanAt;
+
+	private static float lastWatchDist;
+
+	private static float idleWatchSince = -1f;
+
+	private static int frameCloseStreak;
+
+	private static int choiceConfirmStreak;
+
+	private static float nextCoachBeat;
+
+	private static string lastDiagKey;
+
+	private static float detourUntil;
+
+	private static Vector3 detourPos;
+
+	private static int detourSide;
+
+	private static int detourCount;
+
+	private static Pathfinding.Path navPath;
+
+	private static int navIndex;
+
+	private static Vector3 navGoal;
+
+	private static bool navWrongLayer;
+
+	private static float navDirectUntil;
+
+	private static float interZeroSince;
+
+	private static float interVacuumAt;
+
+	private static float nonVacSince;
+
+	private static bool sawInteractables;
+
+	private static float navRepathAt;
+
+	private static bool navInFlight;
+
+	private static int navRequestId;
+
+	private static bool beganRunThisTick;
+
+	private static float navSteerArrive;
+
+	private static int navDiagCount;
+
+	private static float nextMoveDiagAt;
+
+	private static float weaponRange;
+
+	private static bool weaponFiresWhileMoving;
+
+	private static bool lastNightTick;
+
+	private static readonly Dictionary<string, int> sessionDefeats;
+
+	private static readonly HashSet<string> playedThisSession;
+
+	private static string lastMatchScene;
+
+	private static string lastGameState;
+
+	private static string lastFrameName;
+
+	private static int frameSeen;
+
+	private static float lastFrameAt;
+
+	private static float choiceSince;
+
+	private static StreamWriter botLog;
+
+	private static bool logFailed;
+
+	private static int recTickFrame;
+
+	private static BotMode prevModeRec;
+
+	private static float modeSinceAt;
+
+	private static float nextAuditAt;
+
+	private static string recordedScene;
+
+	private static BotMemory mem;
+
+	private static PolicyTable pol;
+
+	private static string polPath;
+
+	private static long polStamp;
+
+	private static float polScanAt;
+
+	private static readonly HashSet<string> prevRuleFires;
+
+	private static float holdDiagAt;
+
+	private static string holdDoneName;
+
+	private static readonly HashSet<Coin> coinIgnore;
+
+	private static float stuckSpamWindow;
+
+	private static int stuckSpamCount;
+
+	private static float nightParkSince;
+
+	private static float lastAnomalyAt;
+
+	private static Vector3 nightParkPos;
+
+	private static string requestedWeapon;
+
+	private static bool frontierLatch;
+
+	private static Vector3 frontierLatchGoal;
+
+	private static readonly FieldInfo StmRunningField;
+
+	private static string lastEvtNote;
+
+	private static float lastEvtAt;
+
+	public static bool Enabled { get; private set; }
+
+	public static Vector3 DesiredDir
+	{
+		[CompilerGenerated]
+		get
+		{
+			//IL_0000: Unknown result type (might be due to invalid IL or missing references)
+			return field;
+		}
+		[CompilerGenerated]
+		private set
+		{
+			//IL_0000: Unknown result type (might be due to invalid IL or missing references)
+			//IL_0001: Unknown result type (might be due to invalid IL or missing references)
+			field = value;
+		}
+	}
+
+	public static BotMode Mode
+	{
+		[CompilerGenerated]
+		get
+		{
+			return Mode__BackingField;
+		}
+		[CompilerGenerated]
+		private set
+		{
+			Mode__BackingField = value;
+		}
+	}
+
+	public static string Status
+	{
+		[CompilerGenerated]
+		get
+		{
+			return Status__BackingField;
+		}
+		[CompilerGenerated]
+		private set
+		{
+			Status__BackingField = value;
+		}
+	}
+
+	public static string UiFrame => uiFrame;
+
+	public static int StuckStrikes { get; private set; }
+
+	private static Vector3 AimPos
+	{
+		get
+		{
+			//IL_0028: Unknown result type (might be due to invalid IL or missing references)
+			//IL_003e: Unknown result type (might be due to invalid IL or missing references)
+			//IL_0038: Unknown result type (might be due to invalid IL or missing references)
+			if (!Legit || !(Time.unscaledTime < detourUntil))
+			{
+				if (Mode != BotMode.Engage || !((UnityEngine.Object)(object)engageTarget != (UnityEngine.Object)null))
+				{
+					return targetPos;
+				}
+				return ((Component)engageTarget).transform.position;
+			}
+			return detourPos;
+		}
+	}
+
+	private static string Digest(in BotPerception.Snapshot s)
+	{
+		int value;
+		return "{\"scene\":\"" + s.SceneName + "\",\"wave\":" + s.Wave + ",\"wave_max\":" + s.WaveTotal + ",\"gold\":" + s.Balance + ",\"cores\":" + s.CoreBalance + ",\"allies\":" + s.AllyCount + ",\"free_units\":" + s.FreeUnits + ",\"doors_covered\":" + s.DoorsCovered + ",\"doors\":" + s.DoorCount + ",\"foes\":" + s.EnemyCount + ",\"red_alert\":" + (s.RedAlert ? "true" : "false") + ",\"buildings\":" + s.BuildCount + ",\"hero_hp_pct\":" + ((int)(s.HeroHpPct * 100f)).ToString(CultureInfo.InvariantCulture) + ",\"defeats\":" + (sessionDefeats.TryGetValue(s.SceneName ?? "", out value) ? value : 0) + ",\"policy\":" + Policy.Stats() + "}";
+	}
+
+	static Bot()
+	{
+		Mode__BackingField = BotMode.Idle;
+		Status__BackingField = "off (F6)";
+		lastFreeAt = -999f;
+		arriveDist = 1f;
+		uiFrame = "";
+		lastUiNoteFrame = "";
+		lastWatchDist = float.MaxValue;
+		detourSide = 1;
+		interZeroSince = -1f;
+		nonVacSince = -1f;
+		navSteerArrive = 0.5f;
+		weaponFiresWhileMoving = true;
+		lastNightTick = true;
+		sessionDefeats = new Dictionary<string, int>();
+		playedThisSession = new HashSet<string>();
+		lastGameState = "";
+		lastFrameName = "";
+		prevModeRec = BotMode.Idle;
+		mem = BotMemory.Fresh();
+		pol = PolicyTable.Default();
+		prevRuleFires = new HashSet<string>();
+		holdDoneName = "";
+		coinIgnore = new HashSet<Coin>();
+		stuckSpamWindow = -1f;
+		nightParkSince = -1f;
+		StmRunningField = typeof(SceneTransitionManager).GetField("sceneTransitionIsRunning", BindingFlags.Instance | BindingFlags.NonPublic);
+		try
+		{
+			MethodInfo[] methods = typeof(UIFrameManager).GetMethods(BindingFlags.Instance | BindingFlags.Public);
+			StringBuilder stringBuilder = new StringBuilder();
+			MethodInfo[] array = methods;
+			foreach (MethodInfo methodInfo in array)
+			{
+				if (methodInfo.GetParameters().Length <= 1 && (methodInfo.Name.IndexOf("Escape", StringComparison.OrdinalIgnoreCase) >= 0 || methodInfo.Name.IndexOf("Pause", StringComparison.OrdinalIgnoreCase) >= 0 || methodInfo.Name.IndexOf("Open", StringComparison.OrdinalIgnoreCase) >= 0 || methodInfo.Name.IndexOf("Level", StringComparison.OrdinalIgnoreCase) >= 0))
+				{
+					stringBuilder.Append(methodInfo.Name).Append("; ");
+				}
+			}
+			ManualLogSource log = Plugin.Log;
+			if (log != null)
+			{
+				log.LogInfo((object)("[bot] uiframe api: " + stringBuilder));
+			}
+		}
+		catch
+		{
+		}
+		BotPerception.LevelScore = (LevelInteractor li, bool beaten) =>
+		{
+			string text = (((UnityEngine.Object)(object)li.levelInfo != (UnityEngine.Object)null) ? li.levelInfo.sceneName : null);
+			int num = ((text != null && sessionDefeats.TryGetValue(text, out var value)) ? value : 0);
+			float num2 = (beaten ? 0f : 100f);
+			if (text == null || !playedThisSession.Contains(text))
+			{
+				num2 += 15f;
+			}
+			if (Memory.IsBadScene(text))
+			{
+				num2 -= 1000f;
+			}
+			return num2 - (float)num * 45f;
+		};
+		BotPerception.CoinSkip = (Coin c) => coinIgnore.Contains(c);
+		Recorder.Start();
+	}
+
+	public static void SetEnabled(bool v)
+	{
+		//IL_000f: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0095: Unknown result type (might be due to invalid IL or missing references)
+		//IL_009a: Unknown result type (might be due to invalid IL or missing references)
+		if (v != Enabled)
+		{
+			Enabled = v;
+			DesiredDir = Vector3.zero;
+			ClearTarget();
+			Mode = BotMode.Idle;
+			Status = (v ? "starting" : "off (F6)");
+			hasAnchor = false;
+			StuckStrikes = 0;
+			stuckStrikeTotal = 0;
+			ReleaseBuild("new-run");
+			decisionClock = 0f;
+			mem = BotMemory.Fresh();
+			detourUntil = 0f;
+			detourCount = 0;
+			weaponRange = 0f;
+			heroAttack = null;
+			navPath = null;
+			navIndex = 0;
+			navInFlight = false;
+			navGoal = Vector3.zero;
+			navWrongLayer = false;
+			navDirectUntil = 0f;
+			navRepathAt = 0f;
+			navRequestId++;
+			lastGameState = "";
+			recordedScene = null;
+			lastNightTick = true;
+			uiFrame = "";
+			lastFrameName = "";
+			frameSeen = 0;
+			lastFrameAt = 0f;
+			sawInteractables = false;
+			interZeroSince = -1f;
+			nonVacSince = -1f;
+			interVacuumAt = 0f;
+			arriveSince = 0f;
+			lastWatchDist = float.MaxValue;
+			holdDoneName = "";
+			detourCount = 0;
+			detourUntil = 0f;
+			coinIgnore.Clear();
+			ManualLogSource log = Plugin.Log;
+			if (log != null)
+			{
+				log.LogInfo((object)("[bot] autopilot " + (v ? "ENABLED" : "disabled") + " (F6)"));
+			}
+			LogRaw(v ? "enabled" : "disabled");
+			if (!v)
+			{
+				CloseLog();
+			}
+		}
+	}
+
+	public static void Shutdown()
+	{
+		SetEnabled(v: false);
+	}
+
+	public static void Tick()
+	{
+		//IL_000e: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0013: Unknown result type (might be due to invalid IL or missing references)
+		//IL_008a: Unknown result type (might be due to invalid IL or missing references)
+		//IL_008f: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0091: Unknown result type (might be due to invalid IL or missing references)
+		//IL_009b: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00a0: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00b0: Unknown result type (might be due to invalid IL or missing references)
+		//IL_005e: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0063: Unknown result type (might be due to invalid IL or missing references)
+		//IL_006d: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0072: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0031: Unknown result type (might be due to invalid IL or missing references)
+		//IL_003c: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0041: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0046: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0050: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0055: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0241: Unknown result type (might be due to invalid IL or missing references)
+		if (!Enabled)
+		{
+			return;
+		}
+		PlayerMovement instance = PlayerMovement.instance;
+		Vector3 val = Vector3.zero;
+		if (hasTarget && (UnityEngine.Object)(object)instance != (UnityEngine.Object)null)
+		{
+			val = ((!Legit) ? DirTo(((Component)instance).transform.position, AimPos, arriveDist) : DirTo(((Component)instance).transform.position, NavSteerPoint(((Component)instance).transform.position, AimPos), navSteerArrive));
+		}
+		float num = 1f - Mathf.Exp(-10f * Time.unscaledDeltaTime);
+		DesiredDir = Vector3.Lerp(DesiredDir, val, num);
+		Vector3 desiredDir = DesiredDir;
+		if (desiredDir.sqrMagnitude < 0.0001f)
+		{
+			DesiredDir = Vector3.zero;
+		}
+		PlayerInteraction instance2 = PlayerInteraction.instance;
+		if ((UnityEngine.Object)(object)heldBuild != (UnityEngine.Object)null && (UnityEngine.Object)(object)instance2 != (UnityEngine.Object)null && (UnityEngine.Object)(object)instance != (UnityEngine.Object)null)
+		{
+			((InteractorBase)heldBuild).InteractionHold(instance2);
+		}
+		Type ty;
+		if ((UnityEngine.Object)(object)heldBuild != (UnityEngine.Object)null && Time.unscaledTime >= holdDiagAt)
+		{
+			holdDiagAt = Time.unscaledTime + 1f;
+			ty = ((object)heldBuild).GetType();
+			string text = (((UnityEngine.Object)(object)heldBuild.targetBuilding != (UnityEngine.Object)null) ? heldBuild.targetBuilding.buildingName : "");
+			ManualLogSource log = Plugin.Log;
+			if (log != null)
+			{
+				log.LogInfo((object)string.Format("[bot] hold-diag '{0}' b='{1}': state={2} started={3} waitChoice={4} complete={5} harvest={6} canInter={7}", ((UnityEngine.Object)heldBuild).name, text, Get("currentState"), Get("interactionStarted"), Get("isWaitingForChoice"), Get("interactionComplete"), heldBuild.canBeHarvested, ((InteractorBase)heldBuild).CanBeInteractedWith));
+			}
+			object obj = Get("interactionComplete");
+			bool flag = default;
+			int num2;
+			if (obj is bool)
+			{
+				flag = (bool)obj;
+				num2 = 1;
+			}
+			else
+			{
+				num2 = 0;
+			}
+			if (((uint)num2 & (flag ? 1u : 0u)) != 0 && text != "" && text != holdDoneName)
+			{
+				holdDoneName = text;
+				BotPerception.BuildDone(text, ((Component)heldBuild).transform.position);
+			}
+		}
+		Coach.PerFrame();
+		decisionClock += Time.unscaledDeltaTime;
+		if (!(decisionClock < 0.25f))
+		{
+			decisionClock = 0f;
+			TickInner();
+		}
+		object Get(string n)
+		{
+			Type type = ty;
+			while (type != null)
+			{
+				FieldInfo field = type.GetField(n, BindingFlags.Instance | BindingFlags.NonPublic);
+				if (field != null)
+				{
+					return field.GetValue(heldBuild);
+				}
+				type = type.BaseType;
+			}
+			return null;
+		}
+	}
+
+	private static void TickInner()
+	{
+		//IL_0998: Unknown result type (might be due to invalid IL or missing references)
+		//IL_09a1: Unknown result type (might be due to invalid IL or missing references)
+		//IL_09ad: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0bf8: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0c11: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0c5e: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0c6f: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0cb2: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0ccb: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0cd0: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0cd5: Unknown result type (might be due to invalid IL or missing references)
+		BotPerception.Snapshot s = (BotPerception.Last = BotPerception.Capture(((UnityEngine.Object)(object)heldBuild != (UnityEngine.Object)null) ? ((UnityEngine.Object)heldBuild).GetInstanceID() : (-1)));
+		BotPerception.LastValid = true;
+		if (s.GameState != lastGameState)
+		{
+			if (s.GameState == "InMatch")
+			{
+				Recorder.BeginRun(s.SceneName);
+				Policy.BeginRun();
+				Coach.ResetRun();
+				recordedScene = s.SceneName;
+				beganRunThisTick = false;
+				stuckStrikeTotal = 0;
+				sawInteractables = false;
+				interZeroSince = -1f;
+				nonVacSince = -1f;
+				lastNightTick = true;
+				coinIgnore.Clear();
+				navWrongLayer = false;
+				navPath = null;
+				navIndex = 0;
+				navInFlight = false;
+				navRequestId++;
+				heroAttack = null;
+				mem = BotMemory.Fresh();
+				arriveSince = 0f;
+				detourUntil = 0f;
+				detourCount = 0;
+				lastWatchDist = float.MaxValue;
+				holdDoneName = "";
+				prevRuleFires.Clear();
+				Memory.ForgiveParks(s.SceneName);
+				// User-requested campaign bootstrap: one-time gold grant at
+				// match start (config Economy.GoldGrant, 0 = off).
+				if (Plugin.GoldGrant > 0 &&
+				    (UnityEngine.Object)(object)PlayerInteraction.instance != (UnityEngine.Object)null)
+				{
+					PlayerInteraction.instance.AddCoin(Plugin.GoldGrant);
+					LogLine(in s, "gold-grant:" + Plugin.GoldGrant);
+				}
+			}
+			if (s.GameState == "AfterMatchVictory" && lastMatchScene != null)
+			{
+				playedThisSession.Add(lastMatchScene);
+				sessionDefeats.Remove(lastMatchScene);
+				Recorder.MatchEnd("victory", Legit);
+				Policy.MatchEnd(victory: true, Mathf.Max(0f, s.CastleHpPct), BotPerception.BreachCount);
+			}
+			else if (s.GameState == "AfterMatchDefeat" && lastMatchScene != null)
+			{
+				sessionDefeats[lastMatchScene] = ((!sessionDefeats.TryGetValue(lastMatchScene, out var value)) ? 1 : (value + 1));
+				ManualLogSource log = Plugin.Log;
+				if (log != null)
+				{
+					log.LogInfo((object)$"[bot] defeat on '{lastMatchScene}' (x{sessionDefeats[lastMatchScene]} this session)");
+				}
+				LogLine(in s, "defeat");
+				Recorder.MatchEnd("defeat", Legit);
+				Policy.MatchEnd(victory: false, Mathf.Max(0f, s.CastleHpPct), BotPerception.BreachCount);
+				Coach.Advise("defeat", Digest(in s));
+				if (Coach.VisionEnabled)
+				{
+					Texture2D val = ScreenCapture.CaptureScreenshotAsTexture();
+					if ((UnityEngine.Object)(object)val != (UnityEngine.Object)null)
+					{
+						Coach.AnalyzeScreenshot(ImageConversion.EncodeToPNG(val), "scene=" + s.SceneName);
+						UnityEngine.Object.Destroy((UnityEngine.Object)(object)val);
+					}
+				}
+			}
+			lastGameState = s.GameState;
+		}
+		if (lastNightTick && !s.IsNight && s.Valid)
+		{
+			Policy.Pulse(0.2f);
+		}
+		if (lastNightTick && !s.IsNight && s.Valid && (s.SceneName == null || !s.SceneName.StartsWith("_")))
+		{
+			Coach.Advise("day-start", Digest(in s));
+		}
+		if (s.Valid)
+		{
+			lastNightTick = s.IsNight;
+		}
+		if (s.Valid && !s.SceneName.StartsWith("_"))
+		{
+			lastMatchScene = s.SceneName;
+		}
+		if (!s.Valid)
+		{
+			Mode = BotMode.Idle;
+			ClearTarget();
+			Status = "waiting (" + s.GameState + ")";
+			LogLine(in s, "invalid");
+			if (s.SceneName == "_StartMenu" && (UnityEngine.Object)(object)SceneTransitionManager.instance != (UnityEngine.Object)null && Time.unscaledTime >= menuAdvanceAt)
+			{
+				menuAdvanceAt = Time.unscaledTime + 8f;
+				ManualLogSource log2 = Plugin.Log;
+				if (log2 != null)
+				{
+					log2.LogInfo((object)"[bot] start menu -> TransitionFromNullToLevelSelect()");
+				}
+				SceneTransitionManager.instance.TransitionFromNullToLevelSelect();
+			}
+			HandleBlockingFrame(in s);
+			WriteAuditStub(in s, "menu");
+			return;
+		}
+		if (HandleBlockingFrame(in s))
+		{
+			Mode = BotMode.ResolveUI;
+			if (!((UnityEngine.Object)(object)ChoiceManager.instance != (UnityEngine.Object)null) || !ChoiceManager.instance.ChoiceCoroutineRunning)
+			{
+				ClearTarget();
+			}
+			WriteAuditStub(in s, "ui:" + uiFrame);
+			Status = "ui: " + uiFrame;
+			if (uiFrame != lastUiNoteFrame || Time.unscaledTime >= nextUiNoteAt)
+			{
+				lastUiNoteFrame = uiFrame;
+				nextUiNoteAt = Time.unscaledTime + 5f;
+				LogLine(in s, "ui");
+			}
+			return;
+		}
+		if (!s.SceneName.StartsWith("_") && !s.OnLevelSelect && recordedScene != s.SceneName && !beganRunThisTick)
+		{
+			recordedScene = s.SceneName;
+			Recorder.BeginRun(s.SceneName);
+			Policy.BeginRun();
+			Coach.ResetRun();
+			stuckStrikeTotal = 0;
+		}
+		beganRunThisTick = false;
+		SnapshotData s2 = BotPerception.ToData(in s);
+		if ((UnityEngine.Object)(object)s.NearestBuild != (UnityEngine.Object)null || s.BuildCount > 0 || BotPerception.CatBuilt.Count > 0)
+		{
+			sawInteractables = true;
+		}
+		if (s.GameState == "InMatch" && !s.IsNight && !sawInteractables && (UnityEngine.Object)(object)s.NearestBuild == (UnityEngine.Object)null && s.InteractorCount == 0)
+		{
+			nonVacSince = -1f;
+			if (interZeroSince < 0f)
+			{
+				interZeroSince = Time.unscaledTime;
+				ManualLogSource log3 = Plugin.Log;
+				if (log3 != null)
+				{
+					log3.LogWarning((object)($"[bot] vacuum-diag ARMED: gs={s.GameState} night={s.IsNight} " + string.Format("ally={0} coins={1} nb={2} ", s.AllyCount, s.CoinCount, ((UnityEngine.Object)(object)s.NearestBuild == (UnityEngine.Object)null) ? "null" : s.NearestBuildName) + $"inter={s.InteractorCount}"));
+				}
+			}
+			else if (Time.unscaledTime - interZeroSince > 40f && Time.unscaledTime >= interVacuumAt)
+			{
+				interVacuumAt = Time.unscaledTime + 120f;
+				interZeroSince = -1f;
+				if (s.SceneName != null)
+				{
+					sessionDefeats[s.SceneName] = ((!sessionDefeats.TryGetValue(s.SceneName, out var value2)) ? 1 : (value2 + 1));
+					Memory.MarkBadScene(s.SceneName);
+				}
+				ManualLogSource log4 = Plugin.Log;
+				if (log4 != null)
+				{
+					log4.LogWarning((object)"[bot] interactor vacuum — no interactables/coins 40 s into day; match is corrupt → level select via frame");
+				}
+				LogLine(in s, "inter-vacuum");
+				UIFrameManager instance = UIFrameManager.instance;
+				UIFrame val2 = (((UnityEngine.Object)(object)instance != (UnityEngine.Object)null) ? instance.ActiveFrame : null);
+				if ((UnityEngine.Object)(object)val2 != (UnityEngine.Object)null)
+				{
+					val2.Apply();
+				}
+				else if ((UnityEngine.Object)(object)instance != (UnityEngine.Object)null && (UnityEngine.Object)(object)PlayerInteraction.instance != (UnityEngine.Object)null && (UnityEngine.Object)(object)SceneTransitionManager.instance != (UnityEngine.Object)null)
+				{
+					SceneTransitionManager.instance.TransitionToLevelSelect();
+				}
+			}
+		}
+		else if (!s.IsNight)
+		{
+			if (nonVacSince < 0f)
+			{
+				nonVacSince = Time.unscaledTime;
+			}
+			if (Time.unscaledTime - nonVacSince > 3f)
+			{
+				interZeroSince = -1f;
+			}
+		}
+		Mailbox.Poll(in s);
+		if (Time.unscaledTime >= polScanAt)
+		{
+			polScanAt = Time.unscaledTime + 1f;
+			if (polPath == null)
+			{
+				polPath = System.IO.Path.Combine(Recorder.AgentDir, "policy.txt");
+			}
+			try
+			{
+				if (File.Exists(polPath) && File.GetLastWriteTimeUtc(polPath).Ticks != polStamp)
+				{
+					polStamp = File.GetLastWriteTimeUtc(polPath).Ticks;
+					List<string> errors = new List<string>();
+					if (PolicyTable.Parse(File.ReadAllText(polPath), ref pol, out errors))
+					{
+						ManualLogSource log5 = Plugin.Log;
+						if (log5 != null)
+						{
+							log5.LogInfo((object)$"[bot] policy v{pol.Version} loaded ({pol.rules.Count} rule(s))");
+						}
+					}
+					else
+					{
+						LogLine(in s, "policy-reject");
+						ManualLogSource log6 = Plugin.Log;
+						if (log6 != null)
+						{
+							log6.LogWarning((object)string.Format("[bot] policy REJECTED (kept v{0}): {1}", pol.Version, string.Join("; ", errors)));
+						}
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				ManualLogSource log7 = Plugin.Log;
+				if (log7 != null)
+				{
+					log7.LogWarning((object)("[bot] policy read: " + ex.Message));
+				}
+			}
+		}
+		PolicyTable policyTable = pol.Resolved(in s2);
+		DecideResult decideResult = BotBrain.Decide(in s2, ref mem, Time.unscaledTime, Legit, in policyTable);
+		if (decideResult.RulesFired != null && decideResult.RulesFired.Count > 0)
+		{
+			foreach (string item in decideResult.RulesFired)
+			{
+				if (prevRuleFires.Add(item))
+				{
+					LogLine(in s, "rule-fire:" + item);
+				}
+				Recorder.CountRuleFire(item);
+			}
+		}
+		Mode = decideResult.Mode;
+		NetPolicy.Shadow(in s, decideResult.Mode.ToString());
+		engageTarget = ((decideResult.Pursue == 2) ? s.NearestEnemy : ((decideResult.Pursue != 1) ? null : (((UnityEngine.Object)(object)s.CastleThreat != (UnityEngine.Object)null) ? s.CastleThreat : s.NearestEnemy)));
+		if (decideResult.HasAim)
+		{
+			Vector3 val3 = new Vector3(decideResult.AimPos.X, 0f, decideResult.AimPos.Z);
+			val3.y = AimY(in s, val3);
+			SetTarget(val3, decideResult.Arrive, decideResult.ProjectToNav);
+		}
+		else
+		{
+			ClearTarget();
+		}
+		foreach (string note in decideResult.Notes)
+		{
+			LogLine(in s, note);
+		}
+		foreach (Intent intent in decideResult.Intents)
+		{
+			Execute(in s, intent);
+		}
+		// Coach heartbeat: an idle bot is a failure mode — probe the advisor
+		// when the hero has sat in Idle during a live day for >60 s, and on
+		// stuck-strike clusters. Throttle lives inside Coach.Advise (45 s min).
+		if (Mode == BotMode.Idle && s.GameState == "InMatch" && !s.IsNight)
+		{
+			if (idleWatchSince < 0f) idleWatchSince = Time.unscaledTime;
+			else if (Time.unscaledTime - idleWatchSince > 60f &&
+			         Time.unscaledTime >= nextCoachBeat)
+			{
+				nextCoachBeat = Time.unscaledTime + 90f;
+				idleWatchSince = Time.unscaledTime;   // once per spell
+				Coach.Advise("idle-watch", Digest(in s));
+				LogLine(in s, "coach-beat:idle");
+			}
+		}
+		else idleWatchSince = -1f;
+		if (StuckStrikes >= 3 && Time.unscaledTime >= nextCoachBeat)
+		{
+			nextCoachBeat = Time.unscaledTime + 90f;
+			Coach.Advise("stall-watch", Digest(in s));
+			LogLine(in s, "coach-beat:stall");
+		}
+		RunWatchdog(in s);
+		Status = FormatStatus(in s);
+		LogLine(in s, "tick");
+		Recorder.NoteGameFacts(in s);
+		if (Mode != prevModeRec)
+		{
+			if (Mode == BotMode.HeroDead)
+			{
+				Recorder.CountDeath();
+			}
+			prevModeRec = Mode;
+			modeSinceAt = Time.unscaledTime;
+		}
+		if (Time.unscaledTime >= nextAuditAt)
+		{
+			nextAuditAt = Time.unscaledTime + 3f;
+			try
+			{
+				string text = System.IO.Path.Combine(Recorder.AgentDir, "audit.json");
+				string text2 = text + ".tmp";
+				File.WriteAllText(text2, BotPerception.AuditJson(ref s, Mode.ToString(), modeSinceAt, Time.unscaledTime));
+				if (File.Exists(text))
+				{
+					File.Delete(text);
+				}
+				File.Move(text2, text);
+			}
+			catch
+			{
+			}
+		}
+		if ((recTickFrame++ & 1) == 0)
+		{
+			Recorder.Tick(s2.ToJson("tick", Time.unscaledTime, Mode));
+		}
+		CheckAnomalies(in s);
+		if (StuckStrikes <= 0 || !(Time.unscaledTime >= nextMoveDiagAt))
+		{
+			return;
+		}
+		nextMoveDiagAt = Time.unscaledTime + 2f;
+		PlayerMovement instance2 = PlayerMovement.instance;
+		if ((UnityEngine.Object)(object)instance2 == (UnityEngine.Object)null)
+		{
+			nextMoveDiagAt = Time.unscaledTime + 2f;
+			return;
+		}
+		int num = ((navPath?.vectorPath != null) ? navPath.vectorPath.Count : (-1));
+		string text3 = ((num > 0) ? string.Join(";", navPath.vectorPath) : "-");
+		ManualLogSource log8 = Plugin.Log;
+		if (log8 != null)
+		{
+			log8.LogWarning((object)($"[bot] move-diag: hasTgt={hasTarget} desired={DesiredDir} " + $"vel={instance2.Velocity} " + $"frozen={(UnityEngine.Object)(object)LocalGamestate.Instance != (UnityEngine.Object)null && LocalGamestate.Instance.PlayerFrozen} " + $"mode={Mode} aim={AimPos} hero={((Component)instance2).transform.position} " + $"navIdx={navIndex} wpCount={num} inFlight={navInFlight} navGoal={navGoal} wp=[{text3}] steer={NavSteerPoint(((Component)instance2).transform.position, AimPos)}"));
+		}
+	}
+
+	private static void CheckAnomalies(in BotPerception.Snapshot s)
+	{
+		//IL_006e: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00d2: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00d7: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00dc: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00e1: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00c2: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00c7: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00f7: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00fc: Unknown result type (might be due to invalid IL or missing references)
+		//IL_013c: Unknown result type (might be due to invalid IL or missing references)
+		//IL_024f: Unknown result type (might be due to invalid IL or missing references)
+		float unscaledTime = Time.unscaledTime;
+		if (unscaledTime < lastAnomalyAt + 10f)
+		{
+			return;
+		}
+		if (StuckStrikes > 0)
+		{
+			if (unscaledTime > stuckSpamWindow)
+			{
+				stuckSpamWindow = unscaledTime + 30f;
+				stuckSpamCount = 0;
+			}
+			if (++stuckSpamCount >= 3)
+			{
+				stuckSpamCount = 0;
+				lastAnomalyAt = unscaledTime;
+				LogLine(in s, "anomaly:stuck-spam");
+				ManualLogSource log = Plugin.Log;
+				if (log != null)
+				{
+					log.LogWarning((object)$"[bot] anomaly stuck-spam at {s.HeroPos} mode={Mode}");
+				}
+				return;
+			}
+		}
+		if (s.IsNight && s.EnemyCount > 0 && Mode == BotMode.Engage)
+		{
+			if (nightParkSince < 0f)
+			{
+				nightParkSince = unscaledTime;
+				nightParkPos = s.HeroPos;
+			}
+			else
+			{
+				Vector3 val = s.HeroPos - nightParkPos;
+				if (val.sqrMagnitude > 1.5f)
+				{
+					nightParkSince = unscaledTime;
+					nightParkPos = s.HeroPos;
+				}
+				else if (unscaledTime - nightParkSince > 15f)
+				{
+					nightParkSince = -1f;
+					lastAnomalyAt = unscaledTime;
+					LogLine(in s, "anomaly:night-park");
+					ManualLogSource log2 = Plugin.Log;
+					if (log2 != null)
+					{
+						log2.LogWarning((object)$"[bot] anomaly night-park at {s.HeroPos} foes={s.EnemyCount}");
+					}
+					return;
+				}
+			}
+		}
+		else
+		{
+			nightParkSince = -1f;
+		}
+		if (!(BotPerception.MilitaryFirstAt > 0f) || s.AllyCount != 0 || !(unscaledTime - BotPerception.MilitaryFirstAt > 90f))
+		{
+			return;
+		}
+		lastAnomalyAt = unscaledTime;
+		LogLine(in s, "anomaly:army-starved");
+		ManualLogSource log3 = Plugin.Log;
+		if (log3 != null)
+		{
+			log3.LogWarning((object)"[bot] anomaly army-starved: military building 90s, ally=0");
+		}
+		try
+		{
+			StringBuilder stringBuilder = new StringBuilder();
+			BuildSlot[] array = UnityEngine.Object.FindObjectsOfType<BuildSlot>(true);
+			foreach (BuildSlot val2 in array)
+			{
+				if (!((UnityEngine.Object)(object)val2 == (UnityEngine.Object)null))
+				{
+					string text = val2.buildingName ?? "";
+					if (text.IndexOf("barrack", StringComparison.OrdinalIgnoreCase) >= 0 || text.IndexOf("archer", StringComparison.OrdinalIgnoreCase) >= 0 || text.IndexOf("militia", StringComparison.OrdinalIgnoreCase) >= 0)
+					{
+						stringBuilder.Append(text).Append("(lvl=").Append(val2.Level)
+							.Append(",state=")
+							.Append(val2.State)
+							.Append(",active=")
+							.Append(((Component)val2).gameObject.activeInHierarchy)
+							.Append(",actLvl=")
+							.Append(val2.ActivatorLevel)
+							.Append(",via=")
+							.Append(((UnityEngine.Object)(object)val2.ActivatorBuilding != (UnityEngine.Object)null) ? (val2.ActivatorBuilding.buildingName + ":" + val2.ActivatorBuilding.Level) : "-")
+							.Append(");");
+					}
+				}
+			}
+			stringBuilder.Append("| respawners:");
+			UnitRespawnerForBuildings[] array2 = UnityEngine.Object.FindObjectsOfType<UnitRespawnerForBuildings>(true);
+			foreach (UnitRespawnerForBuildings val3 in array2)
+			{
+				if ((UnityEngine.Object)(object)val3 == (UnityEngine.Object)null)
+				{
+					continue;
+				}
+				int value = ((val3.units != null) ? val3.units.Count : (-1));
+				int num = 0;
+				int num2 = 0;
+				if (val3.units != null)
+				{
+					foreach (Hp unit in val3.units)
+					{
+						if (!((UnityEngine.Object)(object)unit == (UnityEngine.Object)null))
+						{
+							if (((Component)unit).gameObject.activeInHierarchy)
+							{
+								num++;
+							}
+							if (unit.Alive)
+							{
+								num2++;
+							}
+						}
+					}
+				}
+				stringBuilder.Append(((UnityEngine.Object)val3).name).Append("(units=").Append(value)
+					.Append(",act=")
+					.Append(num)
+					.Append(",alive=")
+					.Append(num2)
+					.Append(",hp=")
+					.Append(((UnityEngine.Object)(object)val3.hp != (UnityEngine.Object)null && !val3.hp.KnockedOut) ? "ok" : "down")
+					.Append(");");
+			}
+			ManualLogSource log4 = Plugin.Log;
+			if (log4 != null)
+			{
+				log4.LogWarning((object)("[bot] respawner dump: " + stringBuilder));
+			}
+		}
+		catch (Exception ex)
+		{
+			ManualLogSource log5 = Plugin.Log;
+			if (log5 != null)
+			{
+				log5.LogWarning((object)("[bot] respawner dump fail " + ex.Message));
+			}
+		}
+	}
+
+	private static void RunWatchdog(in BotPerception.Snapshot s)
+	{
+		//IL_006d: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0072: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0088: Unknown result type (might be due to invalid IL or missing references)
+		//IL_008d: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00c5: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00ca: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00f2: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00f7: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00fd: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0102: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00dd: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00e2: Unknown result type (might be due to invalid IL or missing references)
+		//IL_033c: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0342: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0347: Unknown result type (might be due to invalid IL or missing references)
+		//IL_034c: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0a0c: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0a12: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0a17: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0a1c: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0a2b: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0a47: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0a3e: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0a51: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0a56: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0a5b: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0a5e: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0882: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0879: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0a75: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0887: Unknown result type (might be due to invalid IL or missing references)
+		//IL_088a: Unknown result type (might be due to invalid IL or missing references)
+		//IL_088f: Unknown result type (might be due to invalid IL or missing references)
+		//IL_089f: Unknown result type (might be due to invalid IL or missing references)
+		//IL_08a4: Unknown result type (might be due to invalid IL or missing references)
+		//IL_08a9: Unknown result type (might be due to invalid IL or missing references)
+		//IL_08ae: Unknown result type (might be due to invalid IL or missing references)
+		//IL_08b0: Unknown result type (might be due to invalid IL or missing references)
+		//IL_08be: Unknown result type (might be due to invalid IL or missing references)
+		//IL_08c3: Unknown result type (might be due to invalid IL or missing references)
+		//IL_08c8: Unknown result type (might be due to invalid IL or missing references)
+		//IL_08df: Unknown result type (might be due to invalid IL or missing references)
+		//IL_08e4: Unknown result type (might be due to invalid IL or missing references)
+		//IL_08ee: Expected Obj, but got Unknown
+		//IL_08e9: Unknown result type (might be due to invalid IL or missing references)
+		//IL_08ee: Unknown result type (might be due to invalid IL or missing references)
+		//IL_08f3: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0467: Unknown result type (might be due to invalid IL or missing references)
+		//IL_045e: Unknown result type (might be due to invalid IL or missing references)
+		//IL_03f2: Unknown result type (might be due to invalid IL or missing references)
+		//IL_046c: Unknown result type (might be due to invalid IL or missing references)
+		//IL_046f: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0474: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0484: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0489: Unknown result type (might be due to invalid IL or missing references)
+		//IL_048e: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0493: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0495: Unknown result type (might be due to invalid IL or missing references)
+		//IL_04a3: Unknown result type (might be due to invalid IL or missing references)
+		//IL_04a8: Unknown result type (might be due to invalid IL or missing references)
+		//IL_04ad: Unknown result type (might be due to invalid IL or missing references)
+		//IL_094e: Unknown result type (might be due to invalid IL or missing references)
+		//IL_04c4: Unknown result type (might be due to invalid IL or missing references)
+		//IL_04c9: Unknown result type (might be due to invalid IL or missing references)
+		//IL_04d3: Expected Obj, but got Unknown
+		//IL_04ce: Unknown result type (might be due to invalid IL or missing references)
+		//IL_04d3: Unknown result type (might be due to invalid IL or missing references)
+		//IL_04d8: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0514: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0579: Unknown result type (might be due to invalid IL or missing references)
+		//IL_05f8: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0639: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0741: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0746: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0760: Unknown result type (might be due to invalid IL or missing references)
+		//IL_076b: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0770: Unknown result type (might be due to invalid IL or missing references)
+		if ((UnityEngine.Object)(object)LocalGamestate.Instance != (UnityEngine.Object)null && LocalGamestate.Instance.PlayerFrozen)
+		{
+			watchClock = 0f;
+			lastWatchDist = float.MaxValue;
+			return;
+		}
+		if (!hasTarget || Mode == BotMode.Idle || s.HeroDead)
+		{
+			hasAnchor = false;
+			StuckStrikes = 0;
+			watchClock = 0f;
+			lastWatchDist = float.MaxValue;
+			return;
+		}
+		if (!hasAnchor)
+		{
+			watchAnchor = s.HeroPos;
+			hasAnchor = true;
+			watchClock = 0f;
+			lastWatchDist = FlatDist(s.HeroPos, AimPos);
+			return;
+		}
+		watchClock += 0.25f;
+		if (watchClock < 2f)
+		{
+			return;
+		}
+		watchClock = 0f;
+		float num = Vector3.Distance(s.HeroPos, watchAnchor);
+		if (num >= 0.35f)
+		{
+			lastFreePos = watchAnchor;
+			lastFreeAt = Time.unscaledTime;
+		}
+		watchAnchor = s.HeroPos;
+		float num2 = FlatDist(s.HeroPos, AimPos);
+		bool flag = num2 < lastWatchDist - 0.3f;
+		lastWatchDist = num2;
+		bool flag2 = num2 > arriveDist + 0.5f;
+		if (!flag2 && Mode != BotMode.PositionArmy)
+		{
+			if (arriveSince <= 0f)
+			{
+				arriveSince = Time.unscaledTime;
+			}
+			if (Time.unscaledTime - arriveSince > 20f)
+			{
+				arriveSince = 0f;
+				ManualLogSource log = Plugin.Log;
+				if (log != null)
+				{
+					log.LogWarning((object)$"[bot] aim-stall in {Mode} — parked aim");
+				}
+				LogLine(in s, "aim-stall");
+				if (Mode == BotMode.CollectCoin && (UnityEngine.Object)(object)s.NearestCoin != (UnityEngine.Object)null)
+				{
+					coinIgnore.Add(s.NearestCoin);
+				}
+				else if (Mode == BotMode.SpendGold && (UnityEngine.Object)(object)s.NearestBuild != (UnityEngine.Object)null)
+				{
+					BotPerception.IgnoreBuild(s.NearestBuild, 300f);
+				}
+				ClearTarget();
+				return;
+			}
+		}
+		else
+		{
+			arriveSince = 0f;
+		}
+		if (((num < 0.35f) & flag2) && !flag)
+		{
+			StuckStrikes++;
+			stuckStrikeTotal++;
+			if (stuckStrikeTotal == 60)
+			{
+				ManualLogSource log2 = Plugin.Log;
+				if (log2 != null)
+				{
+					log2.LogWarning((object)"[bot] 60 stuck strikes — per-strike logging capped this run");
+				}
+			}
+			else if (stuckStrikeTotal < 60)
+			{
+				ManualLogSource log3 = Plugin.Log;
+				if (log3 != null)
+				{
+					log3.LogWarning((object)$"[bot] stuck strike {StuckStrikes} (mode={Mode}, moved {num:0.00} m)");
+				}
+			}
+			LogLine(in s, $"stuck:{StuckStrikes}");
+			if (StuckStrikes < 3)
+			{
+				return;
+			}
+			StuckStrikes = 0;
+			if (Mode == BotMode.Engage)
+			{
+				mem.OrbitAngle += mem.OrbitDir * 0.9f;
+			}
+			if (Mode == BotMode.CollectCoin && (UnityEngine.Object)(object)s.NearestCoin != (UnityEngine.Object)null)
+			{
+				coinIgnore.Add(s.NearestCoin);
+				ClearTarget();
+				ManualLogSource log4 = Plugin.Log;
+				if (log4 != null)
+				{
+					log4.LogWarning((object)"[bot] coin unreachable — parked");
+				}
+				LogLine(in s, "coin-stall");
+				return;
+			}
+			PlayerMovement instance = PlayerMovement.instance;
+			if (Legit)
+			{
+				Vector3 val = AimPos - s.HeroPos;
+				val.y = 0f;
+				if (num < 0.05f && (UnityEngine.Object)(object)instance != (UnityEngine.Object)null)
+				{
+					CharacterController component = ((Component)instance).GetComponent<CharacterController>();
+					ManualLogSource log5 = Plugin.Log;
+					if (log5 != null)
+					{
+						log5.LogWarning((object)("[bot] hard-stuck diag: type=" + ((object)instance).GetType().Name + " " + $"ctrlEnabled={(UnityEngine.Object)(object)component != (UnityEngine.Object)null && ((Collider)component).enabled} grounded={(UnityEngine.Object)(object)component != (UnityEngine.Object)null && component.isGrounded} " + $"vel={instance.Velocity} dead={instance.Dead} scene={s.SceneName}"));
+					}
+					detourCount++;
+					if (detourCount > 4)
+					{
+						detourCount = 1;
+						detourSide = -detourSide;
+					}
+					float num3 = 3f * (float)detourCount;
+					Vector3 val2 = ((val.sqrMagnitude > 0.01f) ? val.normalized : Vector3.forward);
+					detourPos = s.HeroPos - val2 * (2f + num3 * 0.5f) + Vector3.Cross(Vector3.up, val2) * (num3 * (float)detourSide);
+					if ((UnityEngine.Object)(object)AstarPath.active != (UnityEngine.Object)null)
+					{
+						detourPos = AstarPath.active.GetNearest(detourPos, new NNConstraint()).position;
+					}
+					detourUntil = Time.unscaledTime + 1.2f + 0.6f * (float)detourCount;
+					ManualLogSource log6 = Plugin.Log;
+					if (log6 != null)
+					{
+						log6.LogWarning((object)$"[bot] hard-stuck (legit) → detour x{detourCount} to {detourPos}");
+					}
+					LogLine(in s, $"unstick:{detourCount}");
+					if (Mode == BotMode.PositionArmy && s.HasUncoveredDoor && (navWrongLayer || detourCount >= 3))
+					{
+						if (s.UncoveredDoorIdx >= 0)
+						{
+							BotPerception.ParkDoorIdx(s.UncoveredDoorIdx);
+						}
+						else
+						{
+							BotPerception.ParkDoorAnchor(s.UncoveredDoorPos);
+						}
+						navWrongLayer = false;
+						ClearTarget();
+						LogLine(in s, "door-unreachable");
+					}
+					else if (Mode == BotMode.SpendGold && (UnityEngine.Object)(object)s.NearestBuild != (UnityEngine.Object)null && (navWrongLayer || detourCount >= 3))
+					{
+						if (s.HeroPos.y > s.NearestBuildPos.y + 2.5f)
+						{
+							ClearTarget();
+							navWrongLayer = false;
+							detourCount = 0;
+							SetTarget(s.CastlePos, 1.5f);
+							ManualLogSource log7 = Plugin.Log;
+							if (log7 != null)
+							{
+								log7.LogWarning((object)"[bot] hero on wall top → descending via castle");
+							}
+							LogLine(in s, "hero-descend");
+							return;
+						}
+						if (navWrongLayer && detourCount < 3)
+						{
+							BotPerception.IgnoreStand(s.NearestBuildPos);
+							BotPerception.NoteBuildFail(BotPerception.BuildCat(s.NearestBuildName));
+							navDirectUntil = Time.unscaledTime + 9f;
+							navPath = null;
+							navIndex = 0;
+							navWrongLayer = false;
+							ManualLogSource log8 = Plugin.Log;
+							if (log8 != null)
+							{
+								log8.LogWarning((object)"[bot] wrong-layer path → direct steer 9s");
+							}
+							LogLine(in s, "direct-steer");
+							return;
+						}
+						string text = s.NearestBuildName ?? "";
+						bool flag3 = text.IndexOf("castle", StringComparison.OrdinalIgnoreCase) >= 0 || text.IndexOf("horn", StringComparison.OrdinalIgnoreCase) >= 0 || ((UnityEngine.Object)(object)s.NearestBuild != (UnityEngine.Object)null && (object)s.NearestBuild == BotPerception.HornBi);
+						BotPerception.IgnoreBuild(s.NearestBuild, flag3 ? 60f : 300f);
+						BotPerception.NoteBuildFail(BotPerception.BuildCat(s.NearestBuildName));
+						if (flag3)
+						{
+							ClearTarget();
+							ManualLogSource log9 = Plugin.Log;
+							if (log9 != null)
+							{
+								log9.LogWarning((object)"[bot] vital slot unreachable — short ignore only (no park)");
+							}
+							LogLine(in s, "build-vital-skip");
+						}
+						else
+						{
+							Vector3 nearestBuildPos = s.NearestBuildPos;
+							for (float num4 = -8f; num4 <= 8f; num4 += 8f)
+							{
+								for (float num5 = -8f; num5 <= 8f; num5 += 8f)
+								{
+									Memory.Park(s.SceneName, nearestBuildPos + new Vector3(num4, 0f, num5), "unreachable");
+								}
+							}
+						}
+						ClearTarget();
+						ManualLogSource log10 = Plugin.Log;
+						if (log10 != null)
+						{
+							log10.LogWarning((object)("[bot] slot unreachable — parked 5 min" + (navWrongLayer ? " [layer]" : "") + " + pocket cells"));
+						}
+						navWrongLayer = false;
+						LogLine(in s, "build-unreachable");
+					}
+					else if (detourCount >= 4)
+					{
+						ManualLogSource log11 = Plugin.Log;
+						if (log11 != null)
+						{
+							log11.LogWarning((object)$"[bot] aim unreachable in {Mode} — released (detour x{detourCount})");
+						}
+						LogLine(in s, "aim-unreachable");
+						ClearTarget();
+					}
+				}
+				else
+				{
+					detourCount++;
+					if (detourCount > 4)
+					{
+						detourCount = 1;
+						detourSide = -detourSide;
+					}
+					float num6 = 3f * (float)detourCount;
+					Vector3 val3 = ((val.sqrMagnitude > 0.01f) ? val.normalized : Vector3.forward);
+					detourPos = s.HeroPos - val3 * (2f + num6 * 0.5f) + Vector3.Cross(Vector3.up, val3) * (num6 * (float)detourSide);
+					if ((UnityEngine.Object)(object)AstarPath.active != (UnityEngine.Object)null)
+					{
+						detourPos = AstarPath.active.GetNearest(detourPos, new NNConstraint()).position;
+					}
+					detourUntil = Time.unscaledTime + 1.2f + 0.6f * (float)detourCount;
+					UIFrame val4 = (((UnityEngine.Object)(object)UIFrameManager.instance != (UnityEngine.Object)null) ? UIFrameManager.instance.ActiveFrame : null);
+					ManualLogSource log12 = Plugin.Log;
+					if (log12 != null)
+					{
+						log12.LogWarning((object)($"[bot] stuck → sidestep detour x{detourCount} to {detourPos} " + $"(frozen={(UnityEngine.Object)(object)LocalGamestate.Instance != (UnityEngine.Object)null && LocalGamestate.Instance.PlayerFrozen}, " + string.Format("ts={0:0.##}, frame={1}, ", Time.timeScale, ((UnityEngine.Object)(object)val4 != (UnityEngine.Object)null) ? ((UnityEngine.Object)val4).name : "null") + $"choiceWait={(UnityEngine.Object)(object)ChoiceManager.instance != (UnityEngine.Object)null && ChoiceManager.instance.ChoiceCoroutineWaiting})"));
+					}
+					LogLine(in s, $"unstick:{detourCount}");
+				}
+			}
+			else if ((UnityEngine.Object)(object)instance != (UnityEngine.Object)null)
+			{
+				Vector3 val5 = AimPos - s.HeroPos;
+				val5.y = 0f;
+				Vector3 val6 = s.HeroPos + ((val5.sqrMagnitude > 0.01f) ? val5.normalized : Vector3.forward) * 2.5f;
+				instance.TeleportTo(val6);
+				ManualLogSource log13 = Plugin.Log;
+				if (log13 != null)
+				{
+					log13.LogWarning((object)$"[bot] stuck → teleport nudge to {val6}");
+				}
+				LogLine(in s, "teleport-nudge");
+			}
+		}
+		else
+		{
+			StuckStrikes = 0;
+		}
+	}
+
+	private static void WriteAuditStub(in BotPerception.Snapshot s, string label)
+	{
+		if (Time.unscaledTime < nextAuditAt)
+		{
+			return;
+		}
+		nextAuditAt = Time.unscaledTime + 3f;
+		try
+		{
+			string text = System.IO.Path.Combine(Recorder.AgentDir, "audit.json");
+			string text2 = text + ".tmp";
+			File.WriteAllText(text2, "{\"scene\":" + BotPerception.JsonStr(s.SceneName ?? "?") + ",\"t\":0,\"mode\":" + BotPerception.JsonStr(label) + ",\"mode_since\":0,\"gold\":0,\"ally\":0,\"free\":0,\"foes\":0,\"night\":false,\"wave\":0,\"wave_total\":0,\"doors_cov\":0,\"doors\":0,\"red\":false,\"breaches\":0,\"bld\":0,\"cur_build\":\"\",\"checklist\":[],\"door_units\":[],\"door_lines\":[],\"cat_built\":{},\"alerts\":[]}");
+			if (File.Exists(text))
+			{
+				File.Delete(text);
+			}
+			File.Move(text2, text);
+		}
+		catch
+		{
+		}
+	}
+
+	private static float AimY(in BotPerception.Snapshot s, Vector3 flat)
+	{
+		//IL_003d: Unknown result type (might be due to invalid IL or missing references)
+		//IL_003f: Unknown result type (might be due to invalid IL or missing references)
+		//IL_001e: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0020: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00eb: Unknown result type (might be due to invalid IL or missing references)
+		//IL_009c: Unknown result type (might be due to invalid IL or missing references)
+		//IL_009e: Unknown result type (might be due to invalid IL or missing references)
+		//IL_007d: Unknown result type (might be due to invalid IL or missing references)
+		//IL_007f: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00cc: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00ce: Unknown result type (might be due to invalid IL or missing references)
+		if (Mode == BotMode.SpendGold && (UnityEngine.Object)(object)s.NearestBuild != (UnityEngine.Object)null)
+		{
+			if (s.HasBuildStand && FlatDist(flat, s.BuildStandPos) < 3f)
+			{
+				return s.BuildStandPos.y;
+			}
+			if (FlatDist(flat, s.NearestBuildPos) < 6f)
+			{
+				return s.NearestBuildPos.y;
+			}
+		}
+		if ((Mode == BotMode.HoldCastle || Mode == BotMode.PositionArmy) && s.HasCastle)
+		{
+			if (s.HasCastleStand && FlatDist(flat, s.CastleStandPos) < 4f)
+			{
+				return s.CastleStandPos.y;
+			}
+			if (FlatDist(flat, s.CastlePos) < 6f)
+			{
+				return s.CastlePos.y;
+			}
+		}
+		if (Mode == BotMode.PositionArmy && s.HasUncoveredDoor && FlatDist(flat, s.UncoveredDoorPos) < 8f)
+		{
+			return s.UncoveredDoorPos.y;
+		}
+		return flat.y;
+	}
+
+	private static void SetTarget(Vector3 pos, float arrive, bool projectToNav = false)
+	{
+		//IL_0027: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0028: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0055: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0056: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0015: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0016: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0020: Expected Obj, but got Unknown
+		//IL_001b: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0020: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0025: Unknown result type (might be due to invalid IL or missing references)
+		if (projectToNav && (UnityEngine.Object)(object)AstarPath.active != (UnityEngine.Object)null)
+		{
+			pos = AstarPath.active.GetNearest(pos, new NNConstraint()).position;
+		}
+		if (FlatDist(pos, targetPos) > 6f)
+		{
+			detourCount = 0;
+			navWrongLayer = false;
+			arriveSince = 0f;
+			frontierLatch = false;
+		}
+		targetPos = pos;
+		arriveDist = arrive;
+		hasTarget = true;
+	}
+
+	private static void Execute(in BotPerception.Snapshot s, Intent it)
+	{
+		//IL_03cb: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0442: Unknown result type (might be due to invalid IL or missing references)
+		if (it.CheatOnly && Legit)
+		{
+			return;
+		}
+		PlayerInteraction instance = PlayerInteraction.instance;
+		switch (it.Kind)
+		{
+		case IntentKind.ReleaseHold:
+			ReleaseBuild("intent");
+			break;
+		case IntentKind.BeginHold:
+		{
+			if (!((UnityEngine.Object)(object)s.NearestBuild != (UnityEngine.Object)null) || !((UnityEngine.Object)(object)instance != (UnityEngine.Object)null))
+			{
+				break;
+			}
+			ReleaseBuild("pre-begin");
+			BuildingInteractor nearestBuild = s.NearestBuild;
+			((InteractorBase)nearestBuild).Focus(instance);
+			((InteractorBase)nearestBuild).InteractionBegin(instance);
+			if (IsInterLatchedComplete(nearestBuild))
+			{
+				((InteractorBase)nearestBuild).InteractionEnd(instance);
+				nearestBuild.UpdateInteractionState(false, (BuildingInteractor.InteractionState)0);
+				((InteractorBase)nearestBuild).InteractionBegin(instance);
+			}
+			if (IsInterLatchedComplete(nearestBuild))
+			{
+				((InteractorBase)nearestBuild).Unfocus(instance);
+				((InteractorBase)nearestBuild).InteractionEnd(instance);
+				LogLine(in s, "hold-latch-defer");
+				BotPerception.IgnoreBuild(nearestBuild, 30f);
+				break;
+			}
+			heldBuild = nearestBuild;
+			BotPerception.HeldBuildRef = nearestBuild;
+			if (!string.IsNullOrEmpty(s.PolicyFocus))
+			{
+				Policy.Commit("build_focus", s.PolicyFocus, s.PolicyKey ?? "", new string[4] { "military", "income", "defense", "balanced" });
+			}
+			ManualLogSource log4 = Plugin.Log;
+			if (log4 != null)
+			{
+				log4.LogInfo((object)("[bot] building '" + ((UnityEngine.Object)nearestBuild).name + "' -> hold-to-pay"));
+			}
+			break;
+		}
+		case IntentKind.PumpHold:
+			if ((UnityEngine.Object)(object)heldBuild != (UnityEngine.Object)null && (UnityEngine.Object)(object)instance != (UnityEngine.Object)null)
+			{
+				((InteractorBase)heldBuild).InteractionHold(instance);
+			}
+			break;
+		case IntentKind.ParkSlot:
+			if ((UnityEngine.Object)(object)s.NearestBuild != (UnityEngine.Object)null)
+			{
+				Type type = ((object)s.NearestBuild).GetType();
+				string text = "?";
+				object obj = "?";
+				object obj2 = "?";
+				object obj3 = "?";
+				FieldInfo field = type.GetField("currentState", BindingFlags.Instance | BindingFlags.NonPublic);
+				if (field != null)
+				{
+					text = field.GetValue(s.NearestBuild)?.ToString();
+				}
+				FieldInfo field2 = type.GetField("interactionStarted", BindingFlags.Instance | BindingFlags.NonPublic);
+				if (field2 != null)
+				{
+					obj = field2.GetValue(s.NearestBuild);
+				}
+				FieldInfo field3 = type.GetField("isWaitingForChoice", BindingFlags.Instance | BindingFlags.NonPublic);
+				if (field3 != null)
+				{
+					obj2 = field3.GetValue(s.NearestBuild);
+				}
+				FieldInfo field4 = type.GetField("interactionComplete", BindingFlags.Instance | BindingFlags.NonPublic);
+				if (field4 != null)
+				{
+					obj3 = field4.GetValue(s.NearestBuild);
+				}
+				FieldInfo field5 = type.GetField("costDisplay", BindingFlags.Instance | BindingFlags.NonPublic);
+				object obj4 = "?";
+				if (field5 != null)
+				{
+					object value = field5.GetValue(s.NearestBuild);
+					FieldInfo fieldInfo = value?.GetType().GetField("currentlyFilledCoins", BindingFlags.Instance | BindingFlags.NonPublic);
+					if (fieldInfo != null)
+					{
+						obj4 = fieldInfo.GetValue(value);
+					}
+				}
+				ManualLogSource log6 = Plugin.Log;
+				if (log6 != null)
+				{
+					log6.LogWarning((object)("[bot] build-stall diag '" + s.NearestBuildName + "': " + $"state={text} started={obj} waitChoice={obj2} complete={obj3} filled={obj4} " + $"dist={s.NearestBuildDist:0.#} balance={s.Balance} harvest={s.NearestBuild.canBeHarvested} " + $"canInteract={((InteractorBase)s.NearestBuild).CanBeInteractedWith}"));
+				}
+			}
+			BotPerception.IgnoreBuild(s.NearestBuild, 600f);
+			if (!((UnityEngine.Object)(object)s.NearestBuild != (UnityEngine.Object)null))
+			{
+				break;
+			}
+			if (!IsInterLatchedComplete(s.NearestBuild))
+			{
+				Memory.Park(s.SceneName, ((Component)s.NearestBuild).transform.position, "build-stall");
+			}
+			else
+			{
+				ManualLogSource log7 = Plugin.Log;
+				if (log7 != null)
+				{
+					log7.LogWarning((object)"[bot] build-stall is a complete-latch wedge — cell NOT parked");
+				}
+			}
+			BotPerception.NoteBuildFail(BotPerception.BuildCat(s.NearestBuildName));
+			break;
+		case IntentKind.PumpAttack:
+			PumpAttack();
+			break;
+		case IntentKind.CommandArmy:
+			CommandArmyAll(in s);
+			break;
+		case IntentKind.PlaceArmy:
+			PlaceArmy();
+			break;
+		case IntentKind.PlaceSquad:
+			if (PlaceSquad(in s) > 0 && s.HasUncoveredDoor)
+			{
+				if (s.UncoveredDoorIdx >= 0)
+				{
+					BotPerception.MarkDoorClaimIdx(s.UncoveredDoorIdx);
+				}
+				else
+				{
+					BotPerception.MarkDoorClaim(s.UncoveredDoorPos);
+				}
+			}
+			break;
+		case IntentKind.ParkDoor:
+			BotPerception.ParkDoorIdx(it.Index);
+			break;
+		case IntentKind.RecallToBreach:
+			RecallToBreach(in s);
+			break;
+		case IntentKind.EscortHero:
+			EscortHero(in s);
+			break;
+		case IntentKind.HornInteract:
+			if ((UnityEngine.Object)(object)s.Horn != (UnityEngine.Object)null && (UnityEngine.Object)(object)instance != (UnityEngine.Object)null)
+			{
+				((InteractorBase)s.Horn).InteractionBegin(instance);
+				ManualLogSource log2 = Plugin.Log;
+				if (log2 != null)
+				{
+					log2.LogInfo((object)"[bot] at nighthorn -> InteractionBegin()");
+				}
+			}
+			else if ((UnityEngine.Object)(object)BotPerception.HornBi != (UnityEngine.Object)null && (UnityEngine.Object)(object)instance != (UnityEngine.Object)null)
+			{
+				BotPerception.HornBi.InteractionBegin(instance);
+				ManualLogSource log3 = Plugin.Log;
+				if (log3 != null)
+				{
+					log3.LogInfo((object)"[bot] horn interactor -> InteractionBegin()");
+				}
+			}
+			break;
+		case IntentKind.SwitchNight:
+		{
+			Policy.Commit("night", ((int)s.DayBudget).ToString(), s.PolicyKey ?? "", new string[3] { "150", "240", "330" });
+			DayNightCycle instance3 = DayNightCycle.Instance;
+			if (instance3 != null)
+			{
+				instance3.SwitchToNight();
+			}
+			break;
+		}
+		case IntentKind.SeedLoadout:
+			SeedLoadout(in s);
+			break;
+		case IntentKind.TransitionLevel:
+		{
+			LevelInteractor nearestLevel = s.NearestLevel;
+			SceneTransitionManager instance2 = SceneTransitionManager.instance;
+			if ((UnityEngine.Object)(object)instance2 != (UnityEngine.Object)null && (UnityEngine.Object)(object)nearestLevel != (UnityEngine.Object)null && (UnityEngine.Object)(object)nearestLevel.levelInfo != (UnityEngine.Object)null && !BotPerception.SceneTransitionBusy(instance2))
+			{
+				LevelInteractor.lastActiveLevelInfo = nearestLevel.levelInfo;
+				ManualLogSource log5 = Plugin.Log;
+				if (log5 != null)
+				{
+					log5.LogInfo((object)("[bot] transitioning to level '" + nearestLevel.levelInfo.sceneName + "'"));
+				}
+				instance2.TransitionFromLevelSelectToLevel(nearestLevel.levelInfo.sceneName);
+			}
+			break;
+		}
+		case IntentKind.InteractLevel:
+			if ((UnityEngine.Object)(object)s.NearestLevel != (UnityEngine.Object)null && (UnityEngine.Object)(object)instance != (UnityEngine.Object)null)
+			{
+				((InteractorBase)s.NearestLevel).InteractionBegin(instance);
+				ManualLogSource log = Plugin.Log;
+				if (log != null)
+				{
+					log.LogInfo((object)("[bot] level '" + ((UnityEngine.Object)s.NearestLevel).name + "' -> InteractionBegin (frame)"));
+				}
+			}
+			break;
+		case IntentKind.ClearCoinPark:
+			coinIgnore.Clear();
+			break;
+		}
+	}
+
+	private static bool NearDoor(Vector3 p, Vector3[] doors, float r)
+	{
+		//IL_0015: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0028: Unknown result type (might be due to invalid IL or missing references)
+		if (doors == null)
+		{
+			return false;
+		}
+		for (int i = 0; i < doors.Length; i++)
+		{
+			float num = doors[i].x - p.x;
+			float num2 = doors[i].z - p.z;
+			if (num * num + num2 * num2 < r * r)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private static void CommandArmyAll(in BotPerception.Snapshot s)
+	{
+		//IL_0072: Unknown result type (might be due to invalid IL or missing references)
+		CommandUnits instance = CommandUnits.instance;
+		TagManager instance2 = TagManager.instance;
+		if ((UnityEngine.Object)(object)instance == (UnityEngine.Object)null || (UnityEngine.Object)(object)instance2 == (UnityEngine.Object)null)
+		{
+			return;
+		}
+		Vector3[] doorAnchors = s.DoorAnchors;
+		int num = 0;
+		foreach (TaggedObject playerUnit in TagManager.instance.PlayerUnits)
+		{
+			if (!((UnityEngine.Object)(object)playerUnit == (UnityEngine.Object)null) && !((UnityEngine.Object)(object)playerUnit.Hp == (UnityEngine.Object)null) && playerUnit.Hp.Alive && !NearDoor(((Component)playerUnit).transform.position, doorAnchors, 25f))
+			{
+				PathfindMovementPlayerunit component = ((Component)playerUnit).GetComponent<PathfindMovementPlayerunit>();
+				if (!((UnityEngine.Object)(object)component != (UnityEngine.Object)null) || !component.FollowingPlayer)
+				{
+					instance.OnUnitAdd(playerUnit, false);
+					num++;
+				}
+			}
+		}
+		instance.commanding = num > 0;
+		ManualLogSource log = Plugin.Log;
+		if (log != null)
+		{
+			log.LogInfo((object)$"[bot] commanding {num} free unit(s) (squads stay posted)");
+		}
+	}
+
+	private static int PlaceSquad(in BotPerception.Snapshot s)
+	{
+		//IL_00b0: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00ed: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0100: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0105: Unknown result type (might be due to invalid IL or missing references)
+		//IL_010a: Unknown result type (might be due to invalid IL or missing references)
+		//IL_010f: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0111: Unknown result type (might be due to invalid IL or missing references)
+		int num = ((s.UncoveredDoorTarget > 0) ? s.UncoveredDoorTarget : 4);
+		int num2 = 0;
+		int num3 = Mathf.Max(Coach.ReserveSize, BotPerception.Strat.Reserve);
+		int num4 = Mathf.Max(0, s.FreeUnits - num3);
+		TagManager instance = TagManager.instance;
+		if ((UnityEngine.Object)(object)instance == (UnityEngine.Object)null)
+		{
+			return 0;
+		}
+		IReadOnlyList<TaggedObject> playerUnits = instance.PlayerUnits;
+		for (int i = 0; i < playerUnits.Count; i++)
+		{
+			if (num2 >= num)
+			{
+				break;
+			}
+			if (num2 >= num4)
+			{
+				break;
+			}
+			TaggedObject val = playerUnits[i];
+			if (!((UnityEngine.Object)(object)val == (UnityEngine.Object)null) && !((UnityEngine.Object)(object)val.Hp == (UnityEngine.Object)null) && val.Hp.Alive)
+			{
+				PathfindMovementPlayerunit component = ((Component)val).GetComponent<PathfindMovementPlayerunit>();
+				if (!((UnityEngine.Object)(object)component == (UnityEngine.Object)null) && !NearDoor(((Component)component).transform.position, s.DoorAnchors, 25f) && !component.FollowingPlayer)
+				{
+					float num5 = (float)num2 * 1.571f;
+					Vector3 val2 = new Vector3(Mathf.Cos(num5), 0f, Mathf.Sin(num5)) * (1.2f + 0.4f * (float)num2);
+					component.HomePosition = s.UncoveredDoorPos + val2;
+					component.HasReachedHomePositionAlready = false;
+					component.FollowPlayer(false);
+					component.HoldPosition = true;
+					num2++;
+				}
+			}
+		}
+		if (num2 > 0)
+		{
+			Policy.Commit("squad", num.ToString(), s.PolicyKey ?? "", new string[5] { "3", "4", "5", "6", "8" });
+			ManualLogSource log = Plugin.Log;
+			if (log != null)
+			{
+				log.LogInfo((object)$"[bot] posted squad {num2}/{num} remotely at door '{s.UncoveredDoorLine}'");
+			}
+		}
+		return num2;
+	}
+
+	private static void RecallToBreach(in BotPerception.Snapshot s)
+	{
+		//IL_0086: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0099: Unknown result type (might be due to invalid IL or missing references)
+		//IL_009e: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00ab: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00b0: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00b2: Unknown result type (might be due to invalid IL or missing references)
+		TagManager instance = TagManager.instance;
+		if ((UnityEngine.Object)(object)instance == (UnityEngine.Object)null)
+		{
+			return;
+		}
+		IReadOnlyList<TaggedObject> playerUnits = instance.PlayerUnits;
+		int num = 0;
+		for (int i = 0; i < playerUnits.Count; i++)
+		{
+			TaggedObject val = playerUnits[i];
+			if (!((UnityEngine.Object)(object)val == (UnityEngine.Object)null) && !((UnityEngine.Object)(object)val.Hp == (UnityEngine.Object)null) && val.Hp.Alive)
+			{
+				PathfindMovementPlayerunit component = ((Component)val).GetComponent<PathfindMovementPlayerunit>();
+				if (!((UnityEngine.Object)(object)component == (UnityEngine.Object)null))
+				{
+					float num2 = (float)num * 0.785f;
+					Vector3 val2 = new Vector3(Mathf.Cos(num2), 0f, Mathf.Sin(num2)) * (1.5f + 0.3f * (float)num);
+					component.FollowPlayer(false);
+					component.HomePosition = s.ThreatAnchor + val2;
+					component.HasReachedHomePositionAlready = false;
+					component.HoldPosition = true;
+					num++;
+				}
+			}
+		}
+		ManualLogSource log = Plugin.Log;
+		if (log != null)
+		{
+			log.LogWarning((object)$"[bot] BREACH-RESPONSE: {num} unit(s) converging on threat");
+		}
+	}
+
+	private static void EscortHero(in BotPerception.Snapshot s)
+	{
+		//IL_0099: Unknown result type (might be due to invalid IL or missing references)
+		int num;
+		if (Coach.EscortSize > 0)
+		{
+			num = Coach.EscortSize;
+		}
+		else if (BotPerception.Strat.Escort > 0)
+		{
+			num = BotPerception.Strat.Escort;
+		}
+		else
+		{
+			num = ((s.AllyCount >= 12) ? 4 : 3);
+		}
+		int num2 = 0;
+		TagManager instance = TagManager.instance;
+		if ((UnityEngine.Object)(object)instance == (UnityEngine.Object)null)
+		{
+			return;
+		}
+		IReadOnlyList<TaggedObject> playerUnits = instance.PlayerUnits;
+		for (int i = 0; i < playerUnits.Count; i++)
+		{
+			TaggedObject val = playerUnits[i];
+			if ((UnityEngine.Object)(object)val == (UnityEngine.Object)null || (UnityEngine.Object)(object)val.Hp == (UnityEngine.Object)null || !val.Hp.Alive)
+			{
+				continue;
+			}
+			PathfindMovementPlayerunit component = ((Component)val).GetComponent<PathfindMovementPlayerunit>();
+			if (!((UnityEngine.Object)(object)component == (UnityEngine.Object)null) && !NearDoor(((Component)component).transform.position, s.DoorAnchors, 25f))
+			{
+				bool flag = component.FollowingPlayer;
+				if (num2 < num && !flag)
+				{
+					component.HoldPosition = false;
+					component.FollowPlayer(true);
+					flag = true;
+				}
+				if (flag)
+				{
+					num2++;
+				}
+			}
+		}
+	}
+
+	private static void PlaceArmy()
+	{
+		CommandUnits instance = CommandUnits.instance;
+		if (!((UnityEngine.Object)(object)instance == (UnityEngine.Object)null))
+		{
+			instance.PlaceCommandedUnitsAndCalculateTargetPositions(false);
+			instance.MakeUnitsInBufferHoldPosition();
+			instance.commanding = false;
+			ManualLogSource log = Plugin.Log;
+			if (log != null)
+			{
+				log.LogInfo((object)"[bot] army placed at anchor, holding");
+			}
+		}
+	}
+
+	public static void RequestLoadout(string weapon)
+	{
+		requestedWeapon = weapon;
+	}
+
+	private static void SeedLoadout(in BotPerception.Snapshot s)
+	{
+		LevelInteractor nearestLevel = s.NearestLevel;
+		PerkManager instance = PerkManager.instance;
+		if ((UnityEngine.Object)(object)instance == (UnityEngine.Object)null || (UnityEngine.Object)(object)nearestLevel == (UnityEngine.Object)null || (UnityEngine.Object)(object)nearestLevel.levelInfo == (UnityEngine.Object)null)
+		{
+			return;
+		}
+		if (nearestLevel.levelInfo.fixedLoadout != null && nearestLevel.levelInfo.fixedLoadout.Count > 0)
+		{
+			instance.CurrentlyEquipped.Clear();
+			instance.CurrentlyEquipped.AddRange(nearestLevel.levelInfo.fixedLoadout);
+		}
+		if (instance.CurrentlyEquipped.Count != 0)
+		{
+			return;
+		}
+		if (!string.IsNullOrEmpty(requestedWeapon))
+		{
+			Equippable val = null;
+			foreach (Equippable allEquippable in instance.allEquippables)
+			{
+				if (allEquippable is EquippableWeapon && allEquippable.IsUnlocked && string.Equals(allEquippable.displayName, requestedWeapon, StringComparison.OrdinalIgnoreCase))
+				{
+					val = allEquippable;
+					break;
+				}
+			}
+			if ((UnityEngine.Object)(object)val != (UnityEngine.Object)null)
+			{
+				PerkManager.SetEquipped(val, true);
+				ManualLogSource log = Plugin.Log;
+				if (log != null)
+				{
+					log.LogInfo((object)("[bot] loadout pinned by sidecar: '" + val.displayName + "'"));
+				}
+				requestedWeapon = null;
+				return;
+			}
+			ManualLogSource log2 = Plugin.Log;
+			if (log2 != null)
+			{
+				log2.LogWarning((object)("[bot] sidecar weapon '" + requestedWeapon + "' not found/locked — auto pick"));
+			}
+			requestedWeapon = null;
+		}
+		string[] array = new string[14]
+		{
+			"bow", "cross", "wand", "staff", "sling", "knife", "shuriken", "chakram", "javelin", "boomerang",
+			"pistol", "rifle", "dart", "throw"
+		};
+		Equippable val2 = null;
+		Equippable val3 = null;
+		foreach (Equippable allEquippable2 in instance.allEquippables)
+		{
+			if (!(allEquippable2 is EquippableWeapon) || !allEquippable2.IsUnlocked)
+			{
+				continue;
+			}
+			if ((UnityEngine.Object)(object)val2 == (UnityEngine.Object)null || allEquippable2.sortingValue > val2.sortingValue)
+			{
+				val2 = allEquippable2;
+			}
+			string text = (allEquippable2.displayName ?? "").ToLowerInvariant();
+			bool flag = false;
+			string[] array2 = array;
+			foreach (string value in array2)
+			{
+				if (text.Contains(value))
+				{
+					flag = true;
+					break;
+				}
+			}
+			if (flag && ((UnityEngine.Object)(object)val3 == (UnityEngine.Object)null || allEquippable2.sortingValue > val3.sortingValue))
+			{
+				val3 = allEquippable2;
+			}
+		}
+		Equippable val4 = (((UnityEngine.Object)(object)val3 != (UnityEngine.Object)null) ? val3 : val2);
+		if ((UnityEngine.Object)(object)val4 != (UnityEngine.Object)null)
+		{
+			PerkManager.SetEquipped(val4, true);
+			ManualLogSource log3 = Plugin.Log;
+			if (log3 != null)
+			{
+				log3.LogInfo((object)("[bot] loadout seeded: '" + val4.displayName + "'" + (((UnityEngine.Object)(object)val4 == (UnityEngine.Object)(object)val3) ? " (ranged preferred)" : "")));
+			}
+		}
+	}
+
+	private static void ClearTarget()
+	{
+		hasTarget = false;
+		engageTarget = null;
+		detourCount = 0;
+		navWrongLayer = false;
+		arriveSince = 0f;
+		frontierLatch = false;
+		ReleaseBuild("clear-target");
+	}
+
+	private static bool IsInterLatchedComplete(BuildingInteractor bi)
+	{
+		try
+		{
+			Type type = ((object)bi).GetType();
+			while (type != null)
+			{
+				FieldInfo field = type.GetField("interactionComplete", BindingFlags.Instance | BindingFlags.NonPublic);
+				if (field != null)
+				{
+					return (bool)field.GetValue(bi);
+				}
+				type = type.BaseType;
+			}
+			return false;
+		}
+		catch
+		{
+			return false;
+		}
+	}
+
+	private static void ReleaseBuild(string why = "")
+	{
+		if ((UnityEngine.Object)(object)heldBuild == (UnityEngine.Object)null)
+		{
+			return;
+		}
+		PlayerInteraction instance = PlayerInteraction.instance;
+		ManualLogSource log = Plugin.Log;
+		if (log != null)
+		{
+			log.LogInfo((object)("[bot] hold-release '" + ((UnityEngine.Object)heldBuild).name + "' " + $"why={why} " + $"waitChoice={(UnityEngine.Object)(object)ChoiceManager.instance != (UnityEngine.Object)null && ChoiceManager.instance.ChoiceCoroutineRunning}"));
+		}
+		if (BotPerception.IsInteractorComplete(heldBuild))
+		{
+			string text = (((UnityEngine.Object)(object)heldBuild.targetBuilding != (UnityEngine.Object)null) ? heldBuild.targetBuilding.buildingName : ((UnityEngine.Object)heldBuild).name);
+			if (!string.IsNullOrEmpty(text) && text != holdDoneName)
+			{
+				holdDoneName = text;
+				BotPerception.BuildDone(text, ((Component)heldBuild).transform.position);
+			}
+		}
+		if ((UnityEngine.Object)(object)instance != (UnityEngine.Object)null)
+		{
+			((InteractorBase)heldBuild).Unfocus(instance);
+			((InteractorBase)heldBuild).InteractionEnd(instance);
+		}
+		heldBuild = null;
+		BotPerception.HeldBuildRef = null;
+		holdDoneName = "";
+	}
+
+	private static bool HandleBlockingFrame(in BotPerception.Snapshot s)
+	{
+		UIFrameManager instance = UIFrameManager.instance;
+		UIFrame val = (((UnityEngine.Object)(object)instance != (UnityEngine.Object)null) ? instance.ActiveFrame : null);
+		uiFrame = (((UnityEngine.Object)(object)val != (UnityEngine.Object)null) ? ((UnityEngine.Object)val).name : "");
+		ChoiceManager instance2 = ChoiceManager.instance;
+		if ((UnityEngine.Object)(object)instance2 != (UnityEngine.Object)null && instance2.ChoiceCoroutineRunning)
+		{
+			if (choiceSince <= 0f)
+			{
+				choiceSince = Time.unscaledTime;
+			}
+		}
+		else
+		{
+			choiceSince = 0f;
+		}
+		bool flag = choiceSince > 0f && Time.unscaledTime - choiceSince > 20f;
+		if ((UnityEngine.Object)(object)instance2 != (UnityEngine.Object)null && instance2.ChoiceCoroutineRunning && instance2.ChoiceCoroutineWaiting && !flag)
+		{
+			if (Time.unscaledTime >= frameActionAt)
+			{
+				frameActionAt = Time.unscaledTime + 1f;
+				Choice val2 = null;
+				Choice val3 = null;
+				foreach (Choice availableChoice in instance2.availableChoices)
+				{
+					if (availableChoice != null && availableChoice.CanBePicked)
+					{
+						if (val2 == null)
+						{
+							val2 = availableChoice;
+						}
+						string text = availableChoice.name ?? "";
+						if (val3 == null && (text.IndexOf("barrack", StringComparison.OrdinalIgnoreCase) >= 0 || text.IndexOf("archer", StringComparison.OrdinalIgnoreCase) >= 0 || text.IndexOf("militia", StringComparison.OrdinalIgnoreCase) >= 0 || text.IndexOf("guard", StringComparison.OrdinalIgnoreCase) >= 0 || text.IndexOf("tower", StringComparison.OrdinalIgnoreCase) >= 0 || text.IndexOf("wall", StringComparison.OrdinalIgnoreCase) >= 0 || text.IndexOf("knight", StringComparison.OrdinalIgnoreCase) >= 0 || text.IndexOf("squad", StringComparison.OrdinalIgnoreCase) >= 0 || text.IndexOf("troop", StringComparison.OrdinalIgnoreCase) >= 0 || text.IndexOf("soldier", StringComparison.OrdinalIgnoreCase) >= 0))
+						{
+							val3 = availableChoice;
+						}
+					}
+				}
+				instance2.choiceToReturn = val3 ?? val2;
+				ManualLogSource log = Plugin.Log;
+				if (log != null)
+				{
+					log.LogInfo((object)("[bot] choice frame -> '" + ((instance2.choiceToReturn != null) ? instance2.choiceToReturn.name : "none") + "'"));
+				}
+				LogLine(in s, "choice-pick");
+				choiceSince = Time.unscaledTime;
+			}
+			return true;
+		}
+		if ((UnityEngine.Object)(object)instance2 != (UnityEngine.Object)null && instance2.ChoiceCoroutineRunning && !flag)
+		{
+			return true;
+		}
+		if ((UnityEngine.Object)(object)val == (UnityEngine.Object)null || !val.freezePlayer)
+		{
+			if (Time.unscaledTime - lastFrameAt > 3f)
+			{
+				lastFrameName = "";
+				frameSeen = 0;
+				frameCloseStreak = 0;
+				choiceConfirmStreak = 0;
+			}
+			return false;
+		}
+		lastFrameAt = Time.unscaledTime;
+		if (((UnityEngine.Object)val).name != lastFrameName)
+		{
+			lastFrameName = ((UnityEngine.Object)val).name;
+			frameSeen = 0;
+		}
+		if ((UnityEngine.Object)(object)instance2 != (UnityEngine.Object)null && instance2.ChoiceCoroutineRunning)
+		{
+			return true;
+		}
+		if (((UnityEngine.Object)val).name.IndexOf("Choice", StringComparison.OrdinalIgnoreCase) >= 0)
+		{
+			if (Time.unscaledTime >= frameActionAt)
+			{
+				frameActionAt = Time.unscaledTime + 1f;
+				choiceConfirmStreak++;
+				ManualLogSource log2 = Plugin.Log;
+				if (log2 != null)
+				{
+					log2.LogInfo((object)"[bot] choice frame -> Apply() (confirm)");
+				}
+				val.Apply();
+				LogLine(in s, "choice-confirm");
+				// Escalation: the pick coroutine consumes choiceToReturn but the
+				// UI frame outlives it — Apply() loops forever with the frozen
+				// overlay on screen. 2+ confirms → CloseActiveFrame; 6+ →
+				// CancelChoice unfreezes the player outright.
+				if (choiceConfirmStreak >= 6 && (UnityEngine.Object)(object)instance2 != (UnityEngine.Object)null)
+				{
+					Plugin.Log?.LogWarning("[bot] choice frame stuck -> CancelChoice()");
+					instance2.CancelChoice();
+					LogLine(in s, "choice-cancel");
+					choiceConfirmStreak = 0;
+				}
+				else if (choiceConfirmStreak >= 2)
+				{
+					instance.CloseActiveFrame();
+					LogLine(in s, "choice-close");
+				}
+			}
+			return true;
+		}
+		if ((UnityEngine.Object)(object)((Component)val).GetComponentInChildren<BackToLevelSelectHelper>(true) != (UnityEngine.Object)null && (val.canNotBeEscaped || (frameSeen >= 2 && (s.GameState.StartsWith("AfterMatch") || ((UnityEngine.Object)val).name.IndexOf("After Match") >= 0))))
+		{
+			if (Time.unscaledTime >= frameActionAt)
+			{
+				frameActionAt = Time.unscaledTime + 2f;
+				ManualLogSource log3 = Plugin.Log;
+				if (log3 != null)
+				{
+					log3.LogInfo((object)"[bot] end-of-match -> Apply() (back-to-map)");
+				}
+				LogLine(in s, "match-end");
+				val.Apply();
+			}
+			return true;
+		}
+		PerkSelectionItem[] componentsInChildren = ((Component)val).GetComponentsInChildren<PerkSelectionItem>(true);
+		if (componentsInChildren != null && componentsInChildren.Length != 0)
+		{
+			if (Time.unscaledTime >= frameActionAt)
+			{
+				frameActionAt = Time.unscaledTime + 1.5f;
+				int num = 0;
+				PerkSelectionItem[] array = componentsInChildren;
+				foreach (PerkSelectionItem val4 in array)
+				{
+					PerkSelectionGroup componentInParent = ((Component)val4).GetComponentInParent<PerkSelectionGroup>();
+					if (!((UnityEngine.Object)(object)componentInParent == (UnityEngine.Object)null) && !val4.Selected && !((UnityEngine.Object)(object)val4.Equippable == (UnityEngine.Object)null) && val4.Equippable.IsUnlocked)
+					{
+						componentInParent.SelectPerk(val4);
+						num++;
+					}
+				}
+				ManualLogSource log4 = Plugin.Log;
+				if (log4 != null)
+				{
+					log4.LogInfo((object)$"[bot] perk frame '{((UnityEngine.Object)val).name}' -> picked {num} item(s), closing");
+				}
+				LogLine(in s, "perk-pick");
+				if (!val.canNotBeEscaped)
+				{
+					instance.CloseActiveFrame();
+				}
+				else
+				{
+					val.Apply();
+				}
+			}
+			return true;
+		}
+		if (Time.unscaledTime >= frameActionAt)
+		{
+			frameActionAt = Time.unscaledTime + 2f;
+			frameSeen++;
+			ManualLogSource log5 = Plugin.Log;
+			if (log5 != null)
+			{
+				log5.LogInfo((object)("[bot] blocking frame '" + ((UnityEngine.Object)val).name + "' -> close"));
+			}
+			LogLine(in s, "frame-close");
+			if (!val.canNotBeEscaped)
+			{
+				instance.CloseActiveFrame();
+			}
+			else
+			{
+				val.Apply();
+			}
+			// Ping-pong breaker: after-match + level-up frames re-open each
+			// other forever (observed: 40+ s of alternating closes). If we're
+			// still closing frames 10+ times in a row while OUT of a match,
+			// skip the frame stack entirely and hard-transition to the map.
+			if (s.GameState != "InMatch" && ++frameCloseStreak >= 10 &&
+			    (UnityEngine.Object)(object)SceneTransitionManager.instance != (UnityEngine.Object)null)
+			{
+				frameCloseStreak = 0;
+				Plugin.Log?.LogWarning("[bot] frame ping-pong -> forcing TransitionToLevelSelect()");
+				LogLine(in s, "frame-escape");
+				SceneTransitionManager.instance.TransitionToLevelSelect();
+			}
+		}
+		return true;
+	}
+
+	private static void DiagLog(string key, string msg, bool warn)
+	{
+		if (key == lastDiagKey && Time.unscaledTime < attackDiagAt)
+		{
+			return;
+		}
+		lastDiagKey = key;
+		attackDiagAt = Time.unscaledTime + 15f;
+		if (warn)
+		{
+			ManualLogSource log = Plugin.Log;
+			if (log != null)
+			{
+				log.LogWarning((object)msg);
+			}
+		}
+		else
+		{
+			ManualLogSource log2 = Plugin.Log;
+			if (log2 != null)
+			{
+				log2.LogInfo((object)msg);
+			}
+		}
+	}
+
+	private static void PumpAttack()
+	{
+		//IL_0497: Unknown result type (might be due to invalid IL or missing references)
+		//IL_04a6: Unknown result type (might be due to invalid IL or missing references)
+		PlayerMovement instance = PlayerMovement.instance;
+		if ((UnityEngine.Object)(object)instance == (UnityEngine.Object)null)
+		{
+			return;
+		}
+		if ((UnityEngine.Object)(object)heroAttack == (UnityEngine.Object)null)
+		{
+			TaggedObject componentInParent = ((Component)instance).GetComponentInParent<TaggedObject>();
+			WeaponEquipper val = (((UnityEngine.Object)(object)componentInParent != (UnityEngine.Object)null) ? ((Component)componentInParent).GetComponentInChildren<WeaponEquipper>(true) : UnityEngine.Object.FindObjectOfType<WeaponEquipper>());
+			if ((UnityEngine.Object)(object)val != (UnityEngine.Object)null)
+			{
+				heroAttack = (((UnityEngine.Object)(object)val.activeWeapon != (UnityEngine.Object)null) ? val.activeWeapon : val.passiveWeapon);
+			}
+			if ((UnityEngine.Object)(object)heroAttack == (UnityEngine.Object)null && (UnityEngine.Object)(object)componentInParent != (UnityEngine.Object)null)
+			{
+				heroAttack = ((Component)componentInParent).GetComponentInChildren<ManualAttack>(true);
+			}
+			if ((UnityEngine.Object)(object)heroAttack == (UnityEngine.Object)null && Time.unscaledTime >= maScanAt)
+			{
+				maScanAt = Time.unscaledTime + 1f;
+				ManualAttack[] array = UnityEngine.Object.FindObjectsOfType<ManualAttack>(true);
+				ManualAttack[] array2 = array;
+				foreach (ManualAttack val2 in array2)
+				{
+					TaggedObject componentInParent2 = ((Component)val2).GetComponentInParent<TaggedObject>();
+					if ((UnityEngine.Object)(object)componentInParent2 != (UnityEngine.Object)null && componentInParent2.Contains((TagManager.ETag)2))
+					{
+						heroAttack = val2;
+						break;
+					}
+				}
+				if ((UnityEngine.Object)(object)heroAttack == (UnityEngine.Object)null)
+				{
+					string text = "";
+					for (int j = 0; j < array.Length && j < 6; j++)
+					{
+						text = text + ((j > 0) ? "," : "") + ((UnityEngine.Object)array[j]).name;
+					}
+					WeaponEquipper[] array3 = UnityEngine.Object.FindObjectsOfType<WeaponEquipper>(true);
+					int num = (((UnityEngine.Object)(object)PerkManager.instance != (UnityEngine.Object)null) ? PerkManager.instance.CurrentlyEquipped.Count : (-1));
+					DiagLog("no-manual-attack", $"[bot] no player ManualAttack: scene has {array.Length} [{text}], {array3.Length} WeaponEquipper, {num} equipped perks", warn: true);
+				}
+			}
+			if ((UnityEngine.Object)(object)heroAttack != (UnityEngine.Object)null)
+			{
+				weaponRange = 0f;
+				foreach (TargetPriority targetPriority in heroAttack.targetPriorities)
+				{
+					weaponRange = Mathf.Max(weaponRange, targetPriority.range);
+				}
+				weaponFiresWhileMoving = (UnityEngine.Object)(object)((Component)heroAttack).GetComponent<DelayManualAttackWhileMoving>() == (UnityEngine.Object)null;
+				ManualLogSource log = Plugin.Log;
+				if (log != null)
+				{
+					log.LogInfo((object)$"[bot] ManualAttack found on '{((UnityEngine.Object)heroAttack).name}' (autoAttack={heroAttack.autoAttack}, range={weaponRange:0.#}, firesWhileMoving={weaponFiresWhileMoving})");
+				}
+			}
+		}
+		else if (Time.unscaledTime >= weRevalAt)
+		{
+			weRevalAt = Time.unscaledTime + 2f;
+			TaggedObject componentInParent3 = ((Component)instance).GetComponentInParent<TaggedObject>();
+			WeaponEquipper val3 = (((UnityEngine.Object)(object)componentInParent3 != (UnityEngine.Object)null) ? ((Component)componentInParent3).GetComponentInChildren<WeaponEquipper>(true) : UnityEngine.Object.FindObjectOfType<WeaponEquipper>());
+			ManualAttack val4;
+			if ((UnityEngine.Object)(object)val3 != (UnityEngine.Object)null)
+			{
+				val4 = (((UnityEngine.Object)(object)val3.activeWeapon != (UnityEngine.Object)null) ? val3.activeWeapon : val3.passiveWeapon);
+			}
+			else
+			{
+				val4 = null;
+			}
+			if ((UnityEngine.Object)(object)val4 != (UnityEngine.Object)null && (UnityEngine.Object)(object)val4 != (UnityEngine.Object)(object)heroAttack)
+			{
+				heroAttack = val4;
+				weaponRange = 0f;
+				foreach (TargetPriority targetPriority2 in val4.targetPriorities)
+				{
+					weaponRange = Mathf.Max(weaponRange, targetPriority2.range);
+				}
+				ManualLogSource log2 = Plugin.Log;
+				if (log2 != null)
+				{
+					log2.LogInfo((object)$"[bot] ManualAttack re-resolved -> '{((UnityEngine.Object)val4).name}' (range={weaponRange:0.#})");
+				}
+			}
+		}
+		if ((UnityEngine.Object)(object)heroAttack == (UnityEngine.Object)null)
+		{
+			if (!Legit)
+			{
+				Hp val5 = (((UnityEngine.Object)(object)engageTarget != (UnityEngine.Object)null) ? ((Component)engageTarget).GetComponent<Hp>() : null);
+				if ((UnityEngine.Object)(object)val5 != (UnityEngine.Object)null)
+				{
+					TaggedObject componentInParent4 = ((Component)instance).GetComponentInParent<TaggedObject>();
+					val5.TakeDamage(500f, componentInParent4, true, true);
+				}
+				else
+				{
+					DiagLog("weaponless:" + (((UnityEngine.Object)(object)engageTarget != (UnityEngine.Object)null) ? ((UnityEngine.Object)engageTarget).name : "null"), "[bot] engage: weaponless, enemy hp missing (engageTarget=" + (((UnityEngine.Object)(object)engageTarget != (UnityEngine.Object)null) ? ((UnityEngine.Object)engageTarget).name : "null") + ")", warn: true);
+				}
+			}
+			return;
+		}
+		TaggedObject val6 = null;
+		try
+		{
+			val6 = heroAttack.FindAttackTarget(true);
+		}
+		catch
+		{
+		}
+		float num2 = (((UnityEngine.Object)(object)engageTarget != (UnityEngine.Object)null) ? FlatDist(((Component)instance).transform.position, ((Component)engageTarget).transform.position) : (-1f));
+		DiagLog("wt:" + (((UnityEngine.Object)(object)val6 != (UnityEngine.Object)null) ? ((UnityEngine.Object)val6).name : "null"), string.Format("[bot] engage diag: weaponTarget={0} pursueDist={1:0.0}", ((UnityEngine.Object)(object)val6 != (UnityEngine.Object)null) ? ((UnityEngine.Object)val6).name : "null", num2), warn: false);
+		if ((UnityEngine.Object)(object)val6 != (UnityEngine.Object)null)
+		{
+			if (Legit)
+			{
+				heroAttack.TryToAttack();
+			}
+			else
+			{
+				heroAttack.Attack();
+			}
+		}
+		else
+		{
+			heroAttack.TryToAttack();
+		}
+	}
+
+	private static Vector3 DirTo(Vector3 from, Vector3 to, float arrive)
+	{
+		//IL_0000: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0001: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0002: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0007: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0026: Unknown result type (might be due to invalid IL or missing references)
+		//IL_001e: Unknown result type (might be due to invalid IL or missing references)
+		Vector3 val = to - from;
+		val.y = 0f;
+		if (val.magnitude <= arrive)
+		{
+			return Vector3.zero;
+		}
+		return val.normalized;
+	}
+
+	private static Vector3 StandOff(Vector3 target, Vector3 hero, float radius)
+	{
+		//IL_0000: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0001: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0002: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0007: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0020: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0023: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0029: Unknown result type (might be due to invalid IL or missing references)
+		//IL_002e: Unknown result type (might be due to invalid IL or missing references)
+		//IL_001e: Unknown result type (might be due to invalid IL or missing references)
+		Vector3 val = hero - target;
+		val.y = 0f;
+		if (val.magnitude <= radius)
+		{
+			return target;
+		}
+		return target + val.normalized * radius;
+	}
+
+	private static Vector3 NavSteerPoint(Vector3 hero, Vector3 goal)
+	{
+		//IL_0011: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0012: Unknown result type (might be due to invalid IL or missing references)
+		//IL_003a: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0065: Unknown result type (might be due to invalid IL or missing references)
+		//IL_006e: Unknown result type (might be due to invalid IL or missing references)
+		//IL_006f: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0093: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00a5: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00a8: Unknown result type (might be due to invalid IL or missing references)
+		//IL_012a: Unknown result type (might be due to invalid IL or missing references)
+		//IL_012f: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00f2: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00f9: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00c5: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00ca: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00d5: Unknown result type (might be due to invalid IL or missing references)
+		//IL_013f: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0140: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0184: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0189: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0153: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0154: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0163: Unknown result type (might be due to invalid IL or missing references)
+		//IL_01df: Unknown result type (might be due to invalid IL or missing references)
+		//IL_01d9: Unknown result type (might be due to invalid IL or missing references)
+		navSteerArrive = arriveDist;
+		if (frontierLatch && FlatDist(goal, frontierLatchGoal) > 4f)
+		{
+			frontierLatch = false;
+		}
+		if (frontierLatch)
+		{
+			navSteerArrive = 0.5f;
+			return goal;
+		}
+		if (Legit && Time.unscaledTime < detourUntil)
+		{
+			navSteerArrive = 0.5f;
+		}
+		if (Time.unscaledTime < navDirectUntil)
+		{
+			return goal;
+		}
+		if (hasTarget)
+		{
+			MaybeRequestPath(hero, goal);
+		}
+		Pathfinding.Path val = navPath;
+		if (val == null || val.vectorPath == null || val.vectorPath.Count == 0)
+		{
+			return goal;
+		}
+		List<Vector3> vectorPath = val.vectorPath;
+		if (vectorPath.Count > 0 && FlatDist(hero, vectorPath[0]) > 15f)
+		{
+			navPath = null;
+			navIndex = 0;
+			navGoal = Vector3.zero;
+			navWrongLayer = false;
+			return goal;
+		}
+		while (navIndex < vectorPath.Count - 1 && FlatDist(hero, vectorPath[navIndex]) < 1.4f)
+		{
+			navIndex++;
+		}
+		navIndex = Mathf.Min(navIndex, vectorPath.Count - 1);
+		Vector3 val2 = vectorPath[vectorPath.Count - 1];
+		if (navIndex == vectorPath.Count - 1 && FlatDist(hero, val2) < 0.8f)
+		{
+			frontierLatch = true;
+			frontierLatchGoal = goal;
+			navSteerArrive = 0.5f;
+			return goal;
+		}
+		float num;
+		if (navIndex != vectorPath.Count - 1)
+		{
+			num = 0.5f;
+		}
+		else
+		{
+			num = ((FlatDist(vectorPath[vectorPath.Count - 1], goal) > 2.5f) ? 0.5f : arriveDist);
+		}
+		navSteerArrive = num;
+		if (Legit && Time.unscaledTime < detourUntil)
+		{
+			navSteerArrive = 0.5f;
+		}
+		if (navIndex < vectorPath.Count - 1)
+		{
+			return vectorPath[navIndex];
+		}
+		return val2;
+	}
+
+	private static void MaybeRequestPath(Vector3 hero, Vector3 goal)
+	{
+		//IL_0007: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0008: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00a2: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00a7: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00d8: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00dd: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00fb: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00fd: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0109: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0113: Expected Obj, but got Unknown
+		//IL_0071: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0076: Unknown result type (might be due to invalid IL or missing references)
+		//IL_008f: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0090: Unknown result type (might be due to invalid IL or missing references)
+		if ((UnityEngine.Object)(object)AstarPath.active == (UnityEngine.Object)null || navInFlight || Time.unscaledTime < navRepathAt)
+		{
+			return;
+		}
+		bool flag = false;
+		if (navPath != null && navPath.vectorPath != null && navPath.vectorPath.Count > 0)
+		{
+			Vector3 b = navPath.vectorPath[navPath.vectorPath.Count - 1];
+			flag = navIndex >= navPath.vectorPath.Count - 1 && FlatDist(hero, b) < 1.4f;
+		}
+		bool flag2 = FlatDist(goal, navGoal) > 2.5f;
+		if (navPath != null && !flag && !flag2)
+		{
+			return;
+		}
+		navRepathAt = Time.unscaledTime + 1.1f;
+		navGoal = goal;
+		navInFlight = true;
+		int reqId = ++navRequestId;
+		AstarPath.StartPath((Pathfinding.Path)(object)ABPath.Construct(hero, goal, (OnPathDelegate)((Pathfinding.Path done) =>
+		{
+			//IL_0102: Unknown result type (might be due to invalid IL or missing references)
+			//IL_004e: Unknown result type (might be due to invalid IL or missing references)
+			//IL_00b9: Unknown result type (might be due to invalid IL or missing references)
+			navInFlight = false;
+			if (reqId == navRequestId)
+			{
+				if (!done.error && done.vectorPath != null && done.vectorPath.Count > 0)
+				{
+					navWrongLayer = Mathf.Abs(done.vectorPath[done.vectorPath.Count - 1].y - goal.y) > 2.5f;
+					navPath = done;
+					navIndex = 0;
+					navDiagCount++;
+					if (navDiagCount <= 20)
+					{
+						ManualLogSource log = Plugin.Log;
+						if (log != null)
+						{
+							log.LogInfo((object)($"[bot] nav-path ok: {done.vectorPath.Count} wp -> {goal}" + (navWrongLayer ? " [wrong-layer]" : "")));
+						}
+					}
+				}
+				else
+				{
+					navPath = null;
+					navWrongLayer = false;
+					ManualLogSource log2 = Plugin.Log;
+					if (log2 != null)
+					{
+						log2.LogWarning((object)$"[bot] nav-path error -> {goal} ({done.errorLog})");
+					}
+				}
+			}
+		})), false, false);
+	}
+
+	private static bool SceneTransitionBusy(SceneTransitionManager stm)
+	{
+		if (StmRunningField != null)
+		{
+			return (bool)StmRunningField.GetValue(stm);
+		}
+		return false;
+	}
+
+	private static float FlatDist(Vector3 a, Vector3 b)
+	{
+		//IL_0018: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0019: Unknown result type (might be due to invalid IL or missing references)
+		a.y = 0f;
+		b.y = 0f;
+		return Vector3.Distance(a, b);
+	}
+
+	private static string FormatStatus(in BotPerception.Snapshot s)
+	{
+		return string.Format(CultureInfo.InvariantCulture, "{0} | wv {1}/{2} foes {3} coins {4} gold {5} hp {6:P0}", Mode, s.Wave, s.WaveTotal, s.EnemyCount, s.CoinCount, s.Balance, s.HeroHpPct);
+	}
+
+	private static void EnsureLog()
+	{
+		if (botLog != null || logFailed)
+		{
+			return;
+		}
+		try
+		{
+			botLog = new StreamWriter(System.IO.Path.Combine(Paths.PluginPath, "bot-log.jsonl"), append: true)
+			{
+				AutoFlush = true
+			};
+		}
+		catch
+		{
+			logFailed = true;
+		}
+	}
+
+	private static void CloseLog()
+	{
+		try
+		{
+			botLog?.Close();
+		}
+		catch
+		{
+		}
+		botLog = null;
+	}
+
+	private static void LogRaw(string note)
+	{
+		EnsureLog();
+		try
+		{
+			botLog?.WriteLine(string.Format(CultureInfo.InvariantCulture, "{{\"t\":{0:0.00},\"note\":\"{1}\"}}", Time.unscaledTime, note));
+		}
+		catch
+		{
+		}
+	}
+
+	private static string FormatTickJson(in BotPerception.Snapshot s, string note)
+	{
+		return string.Format(CultureInfo.InvariantCulture, "{{\"t\":{0:0.00},\"mode\":{1},\"state\":{2},\"scene\":{3},\"night\":{4},\"wave\":\"{5}/{6}\",\"foes\":{7},\"coins\":{8},\"gold\":{9},\"hp\":{10:0.###},\"hpPct\":{22:0},\"pos\":[{11:0.#},{12:0.#}],\"ls\":{13},\"lvln\":{14},\"inter\":{15},\"lvld\":{16:0.#},\"horn\":{17},\"hd\":{18:0.#},\"bld\":{19},\"nf\":{20},\"note\":{21}}}", Time.unscaledTime, BotPerception.JsonStr(Mode.ToString()), BotPerception.JsonStr(s.GameState), BotPerception.JsonStr(s.SceneName), s.IsNight ? "true" : "false", s.Wave, s.WaveTotal, s.EnemyCount, s.CoinCount, s.Balance, s.HeroHpPct, s.HeroPos.x, s.HeroPos.z, s.OnLevelSelect ? "true" : "false", s.LevelCount, s.InteractorCount, s.NearestLevelDist, s.HasHorn ? "true" : "false", s.HornDist, s.BuildCount, s.EnemiesNearHero, BotPerception.JsonStr(note), (int)(s.HeroHpPct * 100f));
+	}
+
+	internal static void LogLine(in BotPerception.Snapshot s, string note)
+	{
+		EnsureLog();
+		if (note != "tick" && (!(note == lastEvtNote) || !(Time.unscaledTime - lastEvtAt < 4f)))
+		{
+			Recorder.Event(note);
+			lastEvtNote = note;
+			lastEvtAt = Time.unscaledTime;
+		}
+		if (note == "snap")
+		{
+			Recorder.CountSnap();
+			Recorder.NoteAnchor(s.SceneName, s.HeroPos.x, s.HeroPos.z, "wedge");
+		}
+		else if (note.StartsWith("unstick"))
+		{
+			Recorder.CountUnstick();
+		}
+		else
+		{
+			switch (note)
+			{
+			case "build-stall":
+			case "coin-stall":
+			case "aim-stall":
+			case "build-unreachable":
+				Recorder.CountStall();
+				break;
+			}
+		}
+		if (botLog == null)
+		{
+			return;
+		}
+		try
+		{
+			botLog.WriteLine(FormatTickJson(in s, note));
+		}
+		catch
+		{
+		}
+	}
 }

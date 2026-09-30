@@ -24,6 +24,11 @@ own managed APIs (found by decompiling `Assembly-CSharp.dll`), not fragile memor
 | `F4` | +100 gold |
 | `F5` | Teleport hero to the mouse cursor |
 | `F6` | Toggle the autopilot bot (level select → night → coin collection) |
+| `F8` | Toggle the live bot overlay panel (mode, telemetry, coach notes) |
+
+> **Legit lock:** while the autopilot runs with `Bot.BotSurvivalCheats = false`
+> (the default), F2–F5 and every cheat control in the F1 window are disabled —
+> including `Economy.GoldDrip`. The bot then wins with real game mechanics only.
 
 **Overlay window:** drag the **title bar** to move it, drag the `=` grip in the
 bottom-right corner to resize, `[-]` collapses it to a title bar, `[x]` or `F1`
@@ -292,16 +297,30 @@ Trainer\
     Bot.cs                   - autopilot FSM: 4 Hz tick, modes, steering targets,
                                stuck watchdog, JSONL telemetry
     BotPerception.cs         - Snapshot struct + Capture() over game singletons
-                               (TagManager, DayNightCycle, LevelInteractor scan)
+                               (TagManager, DayNightCycle, LevelInteractor scan),
+                               botpack strategy loading, door/army coverage
+    BotBrain.cs              - pure decide layer (SnapshotData -> modes+intents),
+                               policy-table knobs, ToJson tick telemetry
     BotPatches.cs            - Harmony prefix on PlayerMovement.MoveScript
                                injecting the bot's DesiredDir as inputVector
+    Coach.cs                 - coach-commands.json polling, local LLM advisor,
+                               defeat screenshot analysis (VisionCall)
+    Memory.cs                - episodic memory: parked cells, scene quarantine,
+                               mishaps.json persistence
+    Policy.cs                - tabular Q-policy: decisions, rewards, save/load
+    NetPolicy.cs             - shadow neural net comparison (agree/disagree log)
+    Recorder.cs              - run recorder: ticks/events/notes JSONL, atomic
+                               writes, writer thread, episodic index
+    Overlay.cs               - F8 live overlay panel (mode/telemetry/coach text)
     ThronefallTrainer.csproj - net472; references the game's DLLs via $(GameDir)
   tools\
-    build-and-deploy.ps1     - build + stop game + copy DLL + relaunch
+    build-and-deploy.ps1     - build + stop game + copy DLL + relaunch +
+                               log-timestamped load verification
     bot-lint.ps1             - static quality checks (legit-gating, log fields,
                                unscaled time, references, enum coverage)
     bot-diagnose.ps1         - live log diagnoser (parked hero, unstick storms,
                                day-never-ends, wave grind, config drift; -Fix)
+    coach-server.py          - MiniMax watch loop + chat UI + HTTP endpoints
     decompile.ps1            - regenerate the decompiled reference (ilspycmd)
   decompiled\                - gitignored ilspycmd output of Assembly-CSharp
   decompiled_fog\            - gitignored ilspycmd output of KB.FogRTS.Runtime

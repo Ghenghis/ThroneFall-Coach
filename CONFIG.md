@@ -10,21 +10,36 @@ while the game is **closed**, or via the F1 overlay which writes back live).
   written back — they reset to config values on next launch.
 - **Exception:** `Bot.AutopilotEnabled` is written back when you press **F6**,
   so the bot resumes across restarts.
-- `Bot.BotSurvivalCheats` (default `true`) controls whether enabling the bot
+- `Bot.BotSurvivalCheats` (default **`false`**) controls whether enabling the bot
   force-applies the survival bundle (god, regen, magnet, instant-kill,
-  no-cooldown). Previous cheat states are snapshotted and **restored on F6-off**.
+  no-cooldown). Previous cheat states are snapshotted and **restored on F6-off**
+  (conditional: only flags still holding the forced value roll back).
   It also drives `Bot.Legit` (`= !BotSurvivalCheats`): bundle ON unlocks the
   bot's own power shortcuts (direct `Attack()` calls, `TakeDamage` fallbacks,
   teleport nudges); bundle OFF means the bot plays by player rules —
   `TryToAttack()` cooldowns, navmesh/sidestep movement, army via
-  `CommandUnits`. See `AUTOPILOT.md §1`.
+  `CommandUnits`. See `AUTOPILOT.md §1`. While `Bot.Legit`, F2–F5 hotkeys
+  and every GUI cheat control are locked; `Economy.GoldDrip` is force-bypassed
+  (wallet injection is a cheat, not tuning).
 
 ## Bot
 
 | Key | Default | Effect |
 |---|---|---|
 | `Bot.AutopilotEnabled` | `false` | Bot active at launch (same as pressing F6) |
-| `Bot.BotSurvivalCheats` | `true` | Survival bundle on bot enable; `false` = `Bot.Legit` — bot obeys player rules (see AUTOPILOT §1) |
+| `Bot.BotSurvivalCheats` | `false` | Survival bundle on bot enable; `false` = `Bot.Legit` — bot obeys player rules (see AUTOPILOT §1). **Legit is the default.** |
+
+## Coach
+
+| Key | Default | Effect |
+|---|---|---|
+| `Coach.Enabled` | `true` | Polls `agent/coach-commands.json` each tick (server `tools/coach-server.py` writes it) |
+| `Coach.Url` | `http://127.0.0.1:1234/v1/chat/completions` | Local advisor (OpenAI-compatible) endpoint |
+| `Coach.ApiKey` | `""` | Bearer token for the local endpoint, if required |
+| `Coach.Model` | `kat-coder-v2.5-dev-apex` | Model name sent in the request JSON |
+| `Coach.VisionEnabled` | `false` | Send one defeat screenshot to `Coach.Url` (vision-capable model) for post-fail analysis |
+| `Coach.VisionModel` | `qwen3-vl-2b-thinking-abliterated` | Vision model name |
+| `Coach.LiveShot` | `true` | Periodic `agent/live.png` screen capture for the server UI |
 
 ## Protection
 
@@ -43,6 +58,7 @@ while the game is **closed**, or via the F1 overlay which writes back live).
 | `Economy.InstantBuild` | `false` | `Coinslot.AddFill` forced to 100 % — builds/upgrades complete instantly |
 | `Economy.CoinMagnet` | `false` | Coins fly to the hero |
 | `Economy.MagnetRadius` | `250` | Magnet radius (m); the bot bundle raises this to ≥ 500 |
+| `Economy.GoldDrip` | `false` | Pins wallet ≥500 / cores ≥20 in `Update` — **suppressed while `Bot.Legit`** (autopilot legit mode bypasses it regardless of the toggle) |
 
 ## Combat
 
@@ -93,6 +109,11 @@ while the game is **closed**, or via the F1 overlay which writes back live).
 
 - Meta/progression overlay buttons (score, unlocks, resources) have **no** config
   entries — they apply once and write the save file immediately.
-- Hotkeys F2–F5 are hardcoded actions, not config-backed toggles.
+- Hotkeys: **F1** cheat menu · **F2** kill · **F3** revive · **F4** +100 gold ·
+  **F5** teleport-to-mouse · **F6** autopilot · **F8** live bot overlay panel.
+  **F2–F5 are suppressed while `Bot.Legit` is active** (autopilot legit mode) —
+  the GUI cheat controls are locked the same way.
+- `Army.FastRespawn` is a known legit-mode edge: it is a game-mechanics bypass
+  (respawn time), not gated by `Bot.Legit` yet — leave it `false` for legit runs.
 - After a game update, member names may change — invalid values in the cfg are
   coerced by BepInEx; missing keys are recreated with defaults.

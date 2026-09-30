@@ -18,7 +18,7 @@ Endpoints:
 Usage: python tools/coach-server.py [--port 8099]
 Env:  COACH_LLM_URL, COACH_LLM_MODEL, COACH_VISION_MODEL, COACH_LLM_KEY
 """
-import base64, json, os, sys, time, urllib.request, urllib.error, pathlib, glob
+import base64, json, os, sys, time, urllib.request, urllib.error, urllib.parse, pathlib, glob
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -97,6 +97,8 @@ object, no prose outside it:
 Rules: use 0/false for "no change"; squad 1-8, reserve 0-10, escort 0-6,
 army_target 0-60; build_focus must be one of the listed words; only change
 what the telemetry justifies. If nothing needs changing return {}.
+To RELEASE a previously-set override back to the bot's built-in defaults,
+send {"clear":true} — do NOT send zeros to mean "back to default".
 """
 
 # Strict validation — only these keys, clamped ranges, enum values only.
@@ -108,12 +110,19 @@ MM_FIELDS = {
     "build_focus":  (str,  {"military", "income", "defense", "balanced"}),
     "hero_posture": (str,  {"builder", "fighter"}),
     "night_call":   (bool, None),
+    "clear":        (bool, None),   # true = release all overrides to defaults
     "note":         (str,  160),
 }
 def validate_patch(obj):
     if not isinstance(obj, dict):
         return None
     out = {}
+    # clear=true expands to an all-zeros patch — the plugin treats 0 as
+    # "use built-in default", so this is how the model RELEASES an
+    # override (0 alone is stripped as "no change" below).
+    if obj.get("clear") is True:
+        return {"squad_size": 0, "reserve_size": 0, "escort_size": 0,
+                "army_target": 0, "note": "cleared overrides"}
     for k, spec in MM_FIELDS.items():
         if k not in obj: continue
         t, lim = spec
@@ -185,7 +194,10 @@ def mm_watch_loop():
             if not urgent:
                 try:
                     af = AGENT / "audit.json"
-                    if af.exists():
+                    # Stale audit.json used to keep urgent=True forever —
+                    # a dead plugin's last crit made MiniMax burn tokens every
+                    # WATCH_EVER cycle indefinitely. Freshness-gate it.
+                    if af.exists() and time.time() - af.stat().st_mtime < 15:
                         au = json.loads(af.read_text(errors="replace"))
                         urgent = any(x.get("sev") == "crit"
                                      for x in audit_alerts(au))
@@ -205,6 +217,7 @@ def mm_watch_loop():
             # Full-context prompt — the model has ~262k tokens; the old
             # digest clipped doors/checklist/alerts to 5 items and blinded
             # it to per-door detail. Feed everything real instead.
+            track_activity(audit.get("mode"), audit.get("t"))
             door_detail = [{"line": l, "units": u}
                            for l, u in zip(audit.get("door_lines", []),
                                            audit.get("door_units", []))]
@@ -218,7 +231,7 @@ def mm_watch_loop():
                 "\nDOOR POSTS (per-corridor units): " + json.dumps(door_detail) +
                 "\nFULL PLAYBOOK CHECKLIST: " + json.dumps(
                     audit.get("checklist", [])) +
-                "\nACTIVITY TIMELINE: " + json.dumps(audit.get("activity", [])[:6]) +
+                "\nACTIVITY TIMELINE: " + json.dumps(_activity[:6]) +
                 "\nALERTS (all): " + json.dumps(audit_alerts(audit)) +
                 "\nGRADES + INPUTS: " + json.dumps(m.get("grades", {})) +
                 "\nGRADE FORMULAS: " + json.dumps(m.get("grade_src", {})) +
@@ -255,18 +268,27 @@ def mm_watch_loop():
                         glog = pathlib.Path(
                             r"K:\Downloads-IDM\Thronefall\BepInEx\LogOutput.log")
                         try:
-                            before = glog.read_text(
-                                errors="replace")[-40000:].count(
-                                    "[coach] user-cmd ->")
+                            before = tail_bytes(glog, 40000).count(
+                                "[coach] user-cmd ->")
                         except Exception:
                             before = -1
                         try:
+                            # Nonce: if this patch FAILS to apply, the retry
+                            # would write byte-identical content which the
+                            # plugin content-dedupes — 'applied' could never
+                            # become true (infinite BROKEN loop). A fresh
+                            # timestamped note makes every write distinct.
+                            patch["note"] = f"{note}#{int(time.time())}" \
+                                if note else f"#{int(time.time())}"
                             write_cmd(patch)
                         except Exception as ex:
                             # A failed write must NOT commit the dedupe —
                             # identical telemetry should retry next cycle.
+                            # But SLEEP first: continue skipped the bottom
+                            # sleep and burned MiniMax tokens in a hot loop.
                             last_sig = ""
                             append_log("mm", f"write_cmd failed: {ex}")
+                            time.sleep(WATCH_EVERY)
                             continue
                         mm_watch_loop.last_patch = sig   # commit post-write
                         entry["note"] = note
@@ -274,7 +296,7 @@ def mm_watch_loop():
                         time.sleep(6)
                         applied = False
                         try:
-                            tail = glog.read_text(errors="replace")[-40000:]
+                            tail = tail_bytes(glog, 40000)
                             applied = before >= 0 and \
                                 tail.count("[coach] user-cmd ->") > before
                         except Exception:
@@ -340,20 +362,42 @@ def llm(messages, model, max_tokens=700):
     return out["choices"][0]["message"]["content"], out.get("usage", {})
 
 def latest_run():
-    runs = sorted(glob.glob(str(AGENT / "runs" / "*")))
-    return pathlib.Path(runs[-1]) if runs else None
+    # mtimes, not lexical sort — a lexically-last stale dir ("unknown-…")
+    # beat a live "Nordfels-…" run and live_state went dark mid-session.
+    runs = glob.glob(str(AGENT / "runs" / "*"))
+    if not runs: return None
+    try:
+        return pathlib.Path(max(runs, key=lambda p: os.path.getmtime(p)))
+    except OSError:
+        return pathlib.Path(runs[-1])
+
+def tail_bytes(path, cap=65536):
+    """Last N BYTES read from END of file — whole-file read_text() of
+    LogOutput.log / mmwatch.jsonl in polling loops was MB-scale churn."""
+    try:
+        size = path.stat().st_size
+        with open(path, "rb") as fh:
+            fh.seek(max(0, size - cap))
+            return fh.read().decode("utf-8", errors="replace")
+    except OSError:
+        return ""
 
 def tail_lines(path, n, cap=65536):
     """Last N lines read from END of file — unbounded read_text() on the
     whole JSONL was the per-request CPU/RSS climb (audit)."""
-    try:
-        size = path.stat().st_size
-        with path.open("rb") as fh:
-            fh.seek(max(0, size - cap))
-            data = fh.read().decode("utf-8", errors="replace")
-        return [l for l in data.strip().splitlines() if l.strip()][-n:]
-    except OSError:
-        return []
+    data = tail_bytes(path, cap)
+    return [l for l in data.strip().splitlines() if l.strip()][-n:]
+
+def track_activity(mode, t=None):
+    """Shared mode-edge timeline — used by /audit AND the watch prompt.
+    Previously the watch loop saw activity=[] forever because it was only
+    maintained inside the HTTP handler."""
+    global _activity
+    with _auditlock:
+        if not _activity or _activity[-1][1] != mode:
+            _activity.append((t, mode))
+            _activity = _activity[-12:]
+        return list(reversed(_activity))
 
 def live_state():
     st = {"live": False}
@@ -378,7 +422,11 @@ def live_state():
                     "ally": last.get("ally"), "free": last.get("free"),
                     "doors_cov": last.get("drc"), "doors": last.get("drn"),
                     "army_target": last.get("at"), "red": last.get("ra"),
-                    "hp": last.get("hp")})
+                    "hp": last.get("hp"),
+                    # sig fields — they were referenced by mm_watch_loop but
+                    # never populated, so wave/bld dedupe was permanently
+                    # inert (stale steering across wave transitions).
+                    "wave": last.get("wave"), "bld": last.get("bld")})
             except Exception: pass
         notes = run / "notes.jsonl"
         if notes.exists():
@@ -414,8 +462,12 @@ def health():
                             "detail": "no live.png — LiveShot off or plugin absent"})
     # 3. Local LLM (LM Studio)
     try:
-        with urllib.request.urlopen(LLM_URL.rsplit("/chat", 1)[0] + "/models",
-                                    timeout=3) as r:
+        # Strip the /chat/completions path properly — rsplit("/chat") on a
+        # base URL without it produced a nonsense probe URL.
+        base = urllib.parse.urlsplit(LLM_URL)
+        models_url = urllib.parse.urlunsplit(
+            (base.scheme, base.netloc, "/v1/models", "", ""))
+        with urllib.request.urlopen(models_url, timeout=3) as r:
             ok = r.status == 200
         h["checks"].append({"name": "local LLM", "ok": ok,
                             "detail": LLM_MODEL})
@@ -425,7 +477,7 @@ def health():
     # 4. MiniMax — last watch entry: was it an error?
     mm_ok, mm_det = True, "no calls yet"
     try:
-        for ln in MMWATCH.read_text(errors="replace").strip().splitlines()[::-1]:
+        for ln in tail_lines(MMWATCH, 30)[::-1]:   # tail-read, not whole file
             e = json.loads(ln)
             if e.get("error"):
                 mm_ok, mm_det = False, e["error"][:100]
@@ -511,6 +563,10 @@ def extract_cmd(reply):
     raw = reply[i0 + 5:i1]
     try:
         cmd = json.loads(raw[raw.find("{"):raw.rfind("}") + 1])
+        # Validate through the SAME whitelist as MiniMax patches — the chat
+        # model's hallucinated keys (or a bogus build_focus string) used to
+        # land verbatim in coach-commands.json and apply unchecked.
+        cmd = validate_patch(cmd) or {}
         cmd["note"] = cmd.get("note", "") or "user-directed"
         write_cmd(cmd)
         clean = (reply[:i0] + reply[i1 + 6:]).strip()
@@ -589,7 +645,7 @@ class H(BaseHTTPRequestHandler):
             tk = AGENT / "runs" / name / "ticks.jsonl"
             out = {"ticks": []}
             if tk.exists():
-                lines = tk.read_text(errors="replace").strip().splitlines()[-12:]
+                lines = tail_lines(tk, 12)
                 for ln in lines:
                     try:
                         t = json.loads(ln)
@@ -609,15 +665,14 @@ class H(BaseHTTPRequestHandler):
                 tag = f"ui-ping-{int(time.time())}"
                 log = pathlib.Path(
                     r"K:\Downloads-IDM\Thronefall\BepInEx\LogOutput.log")
-                before = log.read_text(errors="replace")[-80000:].count(
+                before = tail_bytes(log, 80000).count(
                     "[coach] user-cmd") if log.exists() else 0
                 write_cmd({"note": tag})
                 out["stage"] = "wait-apply"
                 ok = False
                 for _ in range(20):          # ~10 s window
                     time.sleep(0.5)
-                    if log.exists() and log.read_text(
-                            errors="replace")[-80000:].count(
+                    if log.exists() and tail_bytes(log, 80000).count(
                             "[coach] user-cmd") > before:
                         ok = True
                         break
@@ -644,8 +699,7 @@ class H(BaseHTTPRequestHandler):
                     # Last MiniMax steer for the panel/chip — the audit had
                     # no mm_note, so the UI showed '—' forever.
                     try:
-                        for ln in MMWATCH.read_text(errors="replace") \
-                                .strip().splitlines()[::-1][:8]:
+                        for ln in tail_lines(MMWATCH, 8)[::-1]:
                             e = json.loads(ln)
                             if e.get("patch") or e.get("kind") == "proof":
                                 a["mm_note"] = (
@@ -657,15 +711,11 @@ class H(BaseHTTPRequestHandler):
                     # Activity timeline: mode edges, newest first, capped.
                     # Thread-locked — two concurrent /audit calls used to
                     # interleave the append and lose/duplicate edges.
-                    global _activity, _lastcats
-                    with _auditlock:
-                        if not _activity or _activity[-1][1] != a.get("mode"):
-                            _activity.append((a.get("t"), a.get("mode")))
-                            _activity = _activity[-12:]
-                        a["activity"] = list(reversed(_activity))
+                    a["activity"] = track_activity(a.get("mode"), a.get("t"))
                     # Build-stall tracker: how long since a build completed
                     # (cat_built sum) while the bot claims to be spending.
                     cat_sum = sum((a.get("cat_built") or {}).values())
+                    global _lastcats
                     if cat_sum != _lastcats["sum"]:
                         _lastcats = {"sum": cat_sum, "since": time.time()}
                     a["build_stale_s"] = round(time.time() - _lastcats["since"])
@@ -703,7 +753,7 @@ class H(BaseHTTPRequestHandler):
             self._send(200, json.dumps(metrics()), "application/json")
         elif self.path == "/mmwatch":
             if MMWATCH.exists():
-                lines = MMWATCH.read_text(errors="replace").strip().splitlines()[-30:]
+                lines = tail_lines(MMWATCH, 30)
                 rows = []
                 for x in lines:
                     try: rows.append(json.loads(x))
@@ -727,7 +777,7 @@ class H(BaseHTTPRequestHandler):
                 "application/json")
         elif self.path == "/history":
             if CHATLOG.exists():
-                lines = CHATLOG.read_text(errors="replace").strip().splitlines()[-60:]
+                lines = tail_lines(CHATLOG, 60)
                 rows = []
                 for x in lines:
                     try: rows.append(json.loads(x))
@@ -760,19 +810,22 @@ class H(BaseHTTPRequestHandler):
             cmd = {k: v for k, v in data.items() if k in allowed}
             if not cmd:
                 self._send(400, "no allowed fields"); return
-            cmd.setdefault("note", "ui-order")
+            # Timestamp nonce: two identical orders used to produce identical
+            # file bytes → the plugin's content-dedupe skipped the second and
+            # the proof loop reported FAILED though state applied. Same fix
+            # the watch loop uses for MiniMax patches.
+            cmd.setdefault("note", f"ui-order#{int(time.time())}")
             out = {"ok": False, "cmd": cmd}
             try:
                 log = pathlib.Path(
                     r"K:\Downloads-IDM\Thronefall\BepInEx\LogOutput.log")
-                before = log.read_text(errors="replace")[-80000:].count(
+                before = tail_bytes(log, 80000).count(
                     "[coach] user-cmd") if log.exists() else 0
                 write_cmd(cmd)
                 ok = False
                 for _ in range(20):
                     time.sleep(0.5)
-                    if log.exists() and log.read_text(
-                            errors="replace")[-80000:].count(
+                    if log.exists() and tail_bytes(log, 80000).count(
                             "[coach] user-cmd") > before:
                         ok = True
                         break
@@ -871,7 +924,7 @@ def _metrics():
     # dataset volume + outcome split
     rows = wins = defs = 0
     for f in glob.glob(str(AGENT / "dataset" / "*.jsonl")):
-        for line in open(f, errors="replace"):
+        for line in tail_lines(pathlib.Path(f), 5000):   # bounded tail-read
             try:
                 r = json.loads(line)
                 rows += 1
@@ -894,12 +947,12 @@ def _metrics():
         last_scene = ""
         ev = rd / "events.jsonl"
         if ev.exists():
-            for nl in open(ev, errors="replace"):
+            for nl in tail_lines(ev, 200):
                 try: e = json.loads(nl)
                 except Exception: continue
                 if e.get("note") in ("victory", "defeat"):
                     outcome = e["note"]
-        for line in open(ticks, errors="replace"):
+        for line in tail_lines(ticks, 5000, cap=2_000_000):
             try: t = json.loads(line)
             except Exception: continue
             n += 1
@@ -912,7 +965,10 @@ def _metrics():
             if (t.get("at") or 0) > 0:
                 ally_rat += min(1.0, (t.get("ally") or 0) / t["at"])
             hp_sum += t.get("hp") or 0
-            try: wave_max = max(wave_max, float(t.get("wave") or 0))
+            # tick "wave" is "3/8" — str, not float; the bare float() always
+            # threw ValueError and wave_max silently stayed 0 (surv grade).
+            try: wave_max = max(wave_max,
+                    float(str(t.get("wave") or "0").split("/")[0] or 0))
             except Exception: pass
         if n == 0: continue
         # Scene truth from the ticks themselves — folder names can stay
@@ -937,7 +993,7 @@ def _metrics():
     # MiniMax command apply-rate — % of last 20 steers the plugin confirmed.
     mm_applied = mm_total = 0
     try:
-        for ln in MMWATCH.read_text(errors="replace").strip().splitlines()[-40:]:
+        for ln in tail_lines(MMWATCH, 40):
             e = json.loads(ln)
             if e.get("kind") == "proof":
                 mm_total += 1
@@ -983,7 +1039,7 @@ def _metrics():
     # session-log derived: breaches per line, squads posted
     log = pathlib.Path(r"K:\Downloads-IDM\Thronefall\BepInEx\LogOutput.log")
     if log.exists():
-        tail = log.read_text(errors="replace")[-400000:]
+        tail = tail_bytes(log, 400000)
         import re
         for mm in re.finditer(r"BREACH on door '([^']+)'", tail):
             ln = mm.group(1)

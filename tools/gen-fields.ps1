@@ -7,8 +7,9 @@
 #
 # Usage: .\tools\gen-fields.ps1
 
-$ErrorActionPreference = 'Stop'
 param([string]$GameRoot = (Split-Path $PSScriptRoot -Parent | Split-Path -Parent))
+$ErrorActionPreference = 'Stop'   # param must be the first statement — the
+                                  # old order was a parse error (script dead)
 $src    = Join-Path $PSScriptRoot '..\src\BotBrain.cs'
 $docOut = Join-Path $PSScriptRoot '..\docs\SNAPSHOT-FIELDS.md'
 # GameRoot-parametrized — the hardcoded '..\..\Thronefall' broke under any
@@ -44,6 +45,8 @@ $md -join "`n" | Set-Content -Path $docOut -Encoding UTF8
 
 $json = @{ fields = @($fields | ForEach-Object { @{ n = $_.name; t = $_.type; d = $_.comment } }) }
 New-Item -ItemType Directory -Path (Split-Path $jsonOut) -Force | Out-Null
-($json | ConvertTo-Json -Depth 4 -Compress) | Set-Content -Path $jsonOut -Encoding UTF8
+# UTF8 without BOM — PS 5.1 -Encoding UTF8 writes a BOM that breaks strict
+# Python json.loads() consumers of the sidecar file.
+[IO.File]::WriteAllText($jsonOut, ($json | ConvertTo-Json -Depth 4 -Compress))
 
 Write-Host "gen-fields: $($fields.Count) fields -> $docOut + $jsonOut"

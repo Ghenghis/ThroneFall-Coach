@@ -64,6 +64,7 @@ namespace ThronefallTrainer
         EscortHero,       // a few free units FollowPlayer — the bodyguard
         RecallToBreach,   // red alert — all units converge on the threat
         ClearCoinPark,    // drop the parked-coin set (day edge)
+        ParkDoor,         // mark a door anchor unwalkable (Index = anchor idx)
     }
 
     internal struct Intent
@@ -130,6 +131,7 @@ namespace ThronefallTrainer
         public string UncoveredDoorLine;
         public int UncoveredDoorTarget;
         public bool UncoveredDoorHot;
+        public int UncoveredDoorIdx;
         public int ArmyTarget;
         public float SelfDefendRange;   // hero self-defense radius (posture)
         public float DayBudget;         // learned day length before horn
@@ -156,6 +158,7 @@ namespace ThronefallTrainer
         public float BuildDist;
         public int BuildScore;
         public bool BuildHarvest;
+        public bool HeldBuildComplete;   // held slot latched interactionComplete
 
         public int AllyCount;
         public Vec2 AllyCentroid;
@@ -211,7 +214,7 @@ namespace ThronefallTrainer
             sb.Append("{\"t\":").Append(t.ToString("0.00", ci))
               .Append(",\"mode\":\"").Append(mode).Append("\"")
               .Append(",\"state\":\"").Append(GameState).Append("\"")
-              .Append(",\"scene\":\"").Append(SceneName).Append("\"")
+              .Append(",\"scene\":\"").Append(Esc(SceneName)).Append("\"")
               .Append(",\"night\":").Append(IsNight ? "true" : "false")
               .Append(",\"wave\":\"").Append(Wave).Append('/').Append(WaveTotal).Append("\"")
               .Append(",\"foes\":").Append(EnemyCount)
@@ -220,7 +223,7 @@ namespace ThronefallTrainer
               .Append(",\"hp\":").Append(HeroHpPct.ToString("0.###", ci))
               .Append(",\"pos\":[").Append(HeroPos.X.ToString("0.#", ci))
               .Append(',').Append(HeroPos.Z.ToString("0.#", ci)).Append(']')
-              .Append(",\"note\":\"").Append(note).Append('\"');
+              .Append(",\"note\":\"").Append(Esc(note)).Append('\"');
 
             Append(sb, ",\"dead\":", HeroDead);
             Append(sb, ",\"cbal\":", CoreBalance);
@@ -245,7 +248,7 @@ namespace ThronefallTrainer
             Append(sb, ",\"hd\":", HornDist, ci);
             Append(sb, ",\"bld\":", BuildCount);
             Append(sb, ",\"bldk\":", BuildKey);
-            sb.Append(",\"bn\":\"").Append(BuildName ?? "").Append('\"');
+            sb.Append(",\"bn\":\"").Append(Esc(BuildName)).Append('\"');
             Append(sb, ",\"bpos\":", BuildPos, HasBuild, ci);
             Append(sb, ",\"bd\":", BuildDist, ci);
             Append(sb, ",\"bsc\":", BuildScore);
@@ -289,6 +292,13 @@ namespace ThronefallTrainer
             return sb.Append('}').ToString();
         }
 
+        // JSON string escape — scene/building/note text carries user-visible
+        // names (quotes, backslashes in paths); raw append corrupts the JSONL
+        // and breaks replay/tooling (audit D8).
+        static string Esc(string v) => string.IsNullOrEmpty(v) ? "" :
+            v.Replace("\\", "\\\\").Replace("\"", "\\\"")
+             .Replace("\n", "\\n").Replace("\r", "\\r").Replace("\t", "\\t");
+
         static void Append(System.Text.StringBuilder sb, string key, bool v)
         { sb.Append(key).Append(v ? "true" : "false"); }
         static void Append(System.Text.StringBuilder sb, string key, int v)
@@ -316,7 +326,11 @@ namespace ThronefallTrainer
 
         // held-build interaction
         public int HeldBuild;           // BuildKey of the held slot, -1 none
+        public int HeldMisses;          // consecutive ticks the slot was missing
         public float BuildInteractAt;
+        public float IdleSince;         // continuous-idle timer (-1 = working)
+        public string LastDoorLine;     // last lane a squad was posted to
+        public int DoorPostStreak;      // consecutive posts to the same lane
         public int SpendWatchGold;
         public int SpendWatchCores;
         public float SpendWatchAt;
@@ -582,6 +596,10 @@ namespace ThronefallTrainer
                 RulesFired = pol.firedIds ?? new List<string>(),
             };
 
+            // Idle-spell timer: any non-Idle previous mode clears it so the
+            // idle fallthrough measures a CONTINUOUS idle stretch.
+            if (m.Mode != BotMode.Idle) m.IdleSince = -1f;
+
             // Held-build release guard (used to be ReleaseBuild() inline).
             // Release only on a REAL invalidation — not a 4 m drift that can
             // happen mid-fill, and not "far from slot origin" while parked at
@@ -589,13 +607,39 @@ namespace ThronefallTrainer
             // (ResolveUI was never a real brain mode — mem.Mode is never
             // assigned it; Tick's early-return + ChoiceCoroutineRunning are
             // what actually keep choice frames from releasing the hold.)
-            if (m.HeldBuild >= 0 &&
-                (m.Mode != BotMode.SpendGold ||
-                !s.HasBuild || s.BuildKey != m.HeldBuild ||
-                (s.BuildDist > 5.5f && !(s.HasBuildStand && s.BuildStandDist <= 3f))))
+            // NOTE: the mode clause tests the *incoming* decision — m.Mode is
+            // LAST tick's value, so a mode transition leaked the hold one
+            // extra tick (hero walked off still holding). The BuildKey/dist
+            // invalidation below is the real guard; the mode release happens
+            // naturally next tick once m.Mode updates.
+            if (m.HeldBuild >= 0)
             {
-                r.Intents.Add(Intent.Of(IntentKind.ReleaseHold));
-                m.HeldBuild = -1;
+                // Perception flicker hysteresis: `inter` toggles 0/19 on
+                // alternating ticks, so a single miss released the hold and
+                // the next tick re-began it — InteractionBegin every 250 ms
+                // reset the fill and Castle Center stayed lvl=0 forever (live
+                // Durststein evidence). Require 3 consecutive misses (~0.75 s)
+                // before believing the slot is really gone; distance is an
+                // immediate release (hero genuinely walked off).
+                bool missing = !s.HasBuild || s.BuildKey != m.HeldBuild;
+                m.HeldMisses = missing ? m.HeldMisses + 1 : 0;
+                // Distance release: the hold ring for ANY mid-size building
+                // sits ~9 m from center (live Mill evidence: pay flowed at
+                // dist=8.8 while a 5.5 m cut released it every ~10 s).
+                // 12 m covers castle (9.5) and mills; the flicker guard above
+                // handles real abandonment.
+                float releaseDist = 12f;
+                if ((missing && m.HeldMisses >= 3) ||
+                    (s.BuildDist > releaseDist && !(s.HasBuildStand && s.BuildStandDist <= 3f)))
+                {
+                    r.Notes.Add($"rel:misses={m.HeldMisses} bk={s.BuildKey} " +
+                        $"hasB={s.HasBuild} dist={s.BuildDist:0.#} bn={s.BuildName}");
+                    r.Intents.Add(Intent.Of(IntentKind.ReleaseHold));
+                    m.HeldBuild = -1;
+                    m.HeldMisses = 0;
+                    m.SlotVisitKey = -1;   // arm-less: a stale visit timestamp made
+                                           // the same slot insta-park on revisit
+                }
             }
 
             // Scene/retry change resets the day clock — after a defeat-retry
@@ -611,7 +655,11 @@ namespace ThronefallTrainer
             bool stateEdge = s.GameState == "InMatch" &&
                              m.PrevGameState != "InMatch";
             m.PrevGameState = s.GameState;
-            bool newMatch = m.DayScene != s.SceneName ||
+            // Null/empty scene flicker is not a new match — an additive-load
+            // name wobble once reset DayStartAt mid-match and deferred night.
+            bool sceneChanged = !string.IsNullOrEmpty(s.SceneName) &&
+                                s.SceneName != m.DayScene;
+            bool newMatch = sceneChanged ||
                             (s.Wave <= 0 && m.PrevWave > 0) ||
                             (m.DayStartAt <= 0f) ||
                             stateEdge;
@@ -620,6 +668,8 @@ namespace ThronefallTrainer
                 m.DayScene = s.SceneName;
                 m.DayStartAt = now;
                 m.NightRequestAt = 0f;
+                m.ArmyPhase = 0;   // same-scene retry at night carried phase 2
+                                   // forward and skipped day placement forever
             }
             m.PrevWave = s.Wave;
             // Absolute floor: nothing may call the night inside the first
@@ -667,7 +717,7 @@ namespace ThronefallTrainer
             if (s.HeroDead || s.HeroHpPct <= 0f)
             {
                 m.Mode = BotMode.HeroDead; r.Mode = m.Mode;
-                if (m.HeldBuild >= 0) { r.Intents.Add(Intent.Of(IntentKind.ReleaseHold)); m.HeldBuild = -1; }
+                if (m.HeldBuild >= 0) { r.Intents.Add(Intent.Of(IntentKind.ReleaseHold)); m.HeldBuild = -1; m.SlotVisitKey = -1; }
                 // Drift to the keep's extracted stand-point (a proven free
                 // cell); CastlePos itself is inside the keep collider.
                 if (s.HasCastleStand) Aim(ref r, s.CastleStandPos, ArriveHold);
@@ -681,8 +731,13 @@ namespace ThronefallTrainer
             // Red-alert / castle-threat must WIN over night scavenging — a
             // foe chewing buildings 12+ m from the hero (NearFoeCount==0)
             // used to keep this gate true while RecallToBreach never fired.
-            if (s.IsNight && !s.RedAlert && !s.HasCastleThreat && s.NearFoeCount == 0
-                && (!s.HasNearEnemy || s.NearEnemyDist > 12f)
+            // Night scavenge: foes-in-room blocks it only past ~10 m — coins
+            // literally at his feet should never sit uncollected while he
+            // "holds" (the always-idle complaint is that he freezes even
+            // while free gold lies beside him).
+            bool coinAdj = s.HasCoin && s.CoinDist <= 10f;
+            if (s.IsNight && !s.RedAlert && !s.HasCastleThreat &&
+                ((s.NearFoeCount == 0 && (!s.HasNearEnemy || s.NearEnemyDist > 12f)) || coinAdj)
                 && s.HasCoin && s.CoinDist <= pol.K("coin_seek") * 1.5f)
             {
                 m.Mode = BotMode.CollectCoin; r.Mode = m.Mode;
@@ -695,12 +750,31 @@ namespace ThronefallTrainer
                 // Hot-door posting at NIGHT: a corridor under attack that's
                 // uncovered gets whatever free units exist (≥2), not the
                 // day-time 4-unit minimum — better a thin squad than a leak.
+                // Escalating throttle: the SAME door re-firing every ~6 s is
+                // a squad that never sticks (dies on arrival / can't reach).
+                // After 3 posts to the same lane the hero walks there and
+                // holds it himself — he IS the reinforcement unit.
                 if (legit && s.HasUncoveredDoor && s.UncoveredDoorHot &&
-                    s.FreeUnits >= 2 && now - m.LastSquadAt > 6f)
+                    s.FreeUnits >= 2 && now - m.LastSquadAt > 6f + 4f * m.DoorPostStreak)
                 {
+                    if (m.LastDoorLine == s.UncoveredDoorLine)
+                        m.DoorPostStreak++;
+                    else { m.LastDoorLine = s.UncoveredDoorLine; m.DoorPostStreak = 1; }
                     m.LastSquadAt = now;
                     r.Intents.Add(Intent.Of(IntentKind.PlaceSquad));
                     r.Notes.Add("squad-door:" + s.UncoveredDoorLine);
+                }
+                // Posted 4+ times and NOTHING is standing there — the anchor
+                // is unwalkable (behind a wall / off-navmesh). Park it: the
+                // coverage loop counts parked doors covered, so the spam
+                // ends and the units go to a lane they can actually reach.
+                if (s.HasUncoveredDoor && m.DoorPostStreak >= 4 &&
+                    s.UncoveredDoorIdx >= 0 &&
+                    BotPerception.DoorUnitAt(s.UncoveredDoorIdx) == 0)
+                {
+                    r.Intents.Add(Intent.At(IntentKind.ParkDoor, s.UncoveredDoorIdx));
+                    r.Notes.Add("door-park:" + s.UncoveredDoorLine);
+                    m.DoorPostStreak = 0;
                 }
                 // Proactive night posting: quiet corridors still get manned —
                 // squads stand at their posts BEFORE the next wave leaks.
@@ -774,7 +848,10 @@ namespace ThronefallTrainer
                         return r;
                     }
                     m.Mode = BotMode.Engage; r.Mode = m.Mode;
-                    bool urgent = s.CastleThreatDist > 0f && s.CastleThreatDist < 20f;
+                    // Threat AT dist 0 (sitting on the castle) must stay
+                    // urgent — the old >0 lower bound flipped Pursue to
+                    // nearest-hero and ignored the castle threat.
+                    bool urgent = s.HasCastleThreat && s.CastleThreatDist < 20f;
                     m.Pursue = r.Pursue = (urgent || !s.HasNearEnemy) ? 1 : 2;
                     bool ranged = s.ActiveRange >= 6f;
                     float heroNear = s.HasNearEnemy ? s.NearEnemyDist : float.MaxValue;
@@ -788,12 +865,20 @@ namespace ThronefallTrainer
                         if (heroNear < tooNear || s.NearFoeCount >= (int)pol.K("pull_swarm"))
                         {
                             Vec2 away = s.CastlePos - s.NearEnemyPos;
-                            Aim(ref r, s.CastlePos + away.Norm * 4f, 1.2f);
+                            // Foe ON the castle: the pull vector is ~zero —
+                            // Aiming at CastlePos parks the hero inside the
+                            // keep collider. Perpendicular orbit instead.
+                            Vec2 pull = away.SqrMag > 0.01f ? away.Norm
+                                : Vec2.Perp(axisDir.SqrMag > 0.01f ? axisDir.Norm : new Vec2(1f, 0f));
+                            Aim(ref r, s.CastlePos + pull * 4f, 1.2f);
                         }
                         else
                         {
-                            // perpetual orbit on the defended-side arc
-                            float dt = m.LastOrbitAt > 0f ? now - m.LastOrbitAt : 0.25f;
+                            // perpetual orbit on the defended-side arc —
+                            // dt clamps: first Engage after a long break used
+                            // dt=minutes and snapped the orbit to the arc edge.
+                            float dt = m.LastOrbitAt > 0f
+                                ? Math.Min(now - m.LastOrbitAt, 0.5f) : 0.25f;
                             m.LastOrbitAt = now;
                             m.OrbitAngle += pol.K("orbit_spin") * m.OrbitDir * dt;
                             float arc = pol.K("orbit_arc");
@@ -847,12 +932,34 @@ namespace ThronefallTrainer
                 else if (s.HasCastle)
                 {
                     m.Mode = BotMode.HoldCastle; r.Mode = m.Mode;
-                    // Safe night: park ON the threatened corridor (or the
-                    // hottest uncovered door) — he's the gap-filler unit.
-                    if (s.HasUncoveredDoor && s.UncoveredDoorHot)
-                        Aim(ref r, s.UncoveredDoorPos, ArriveHold);
-                    else
-                        Aim(ref r, s.HasThreatAnchor ? s.ThreatAnchor : s.CastlePos, ArriveHold);
+                    // Safe night: patrol the hold post instead of freezing —
+                    // a small orbit keeps him visibly working (and sweeps up
+                    // adjacent coins) while squads hold the corridors.
+                    Vec2 holdPos = (s.HasUncoveredDoor && s.UncoveredDoorHot)
+                        ? s.UncoveredDoorPos
+                        : (s.HasThreatAnchor ? s.ThreatAnchor : s.CastlePos);
+                    // Late-wave escalation: last third of the night with a
+                    // thin army — a solo hero at the corridor mouth is a
+                    // death sentence. Pull back to the defended castle arc
+                    // where towers + the reserve actually cover him.
+                    if (s.WaveTotal > 0 && s.Wave >= s.WaveTotal - 2 &&
+                        s.AllyCount <= 8 && s.HasCastle)
+                    {
+                        holdPos = s.HasCastleStand ? s.CastleStandPos
+                            : s.CastlePos;
+                        r.Notes.Add("late-wave-hold");
+                    }
+                    float hdt = m.LastOrbitAt > 0f
+                        ? Math.Min(now - m.LastOrbitAt, 0.5f) : 0.25f;
+                    m.LastOrbitAt = now;
+                    m.OrbitAngle += pol.K("orbit_spin") * m.OrbitDir * hdt;
+                    if (m.OrbitAngle > 1.2f) m.OrbitDir = -1f;
+                    else if (m.OrbitAngle < -1.2f) m.OrbitDir = 1f;
+                    Vec2 fwd0 = axisDir.SqrMag > 0.01f ? axisDir.Norm : new Vec2(0f, 1f);
+                    Vec2 hring = holdPos + Vec2.Perp(fwd0) *
+                        (float)Math.Sin(m.OrbitAngle) * 3f;
+                    Aim(ref r, hring, 0.8f);
+                    r.ProjectToNav = true;
                     // Escort follows him between fights — free units only,
                     // posted squads stay at their doors.
                     if (s.FreeUnits > 0 && s.CanCommand && now - m.LastEscortAt > 20f)
@@ -903,7 +1010,7 @@ namespace ThronefallTrainer
                  now - m.DayStartAt > (s.DayBudget > 0f ? s.DayBudget : 240f)))
             {
                 m.Mode = BotMode.StartNight; r.Mode = m.Mode;
-                if (m.HeldBuild >= 0) { r.Intents.Add(Intent.Of(IntentKind.ReleaseHold)); m.HeldBuild = -1; }
+                if (m.HeldBuild >= 0) { r.Intents.Add(Intent.Of(IntentKind.ReleaseHold)); m.HeldBuild = -1; m.SlotVisitKey = -1; }
                 if (s.HasHorn)
                 {
                     Aim(ref r, s.HornPos, 2f);
@@ -932,11 +1039,24 @@ namespace ThronefallTrainer
             {
                 if (s.HasUncoveredDoor &&
                     s.FreeUnits >= (s.UncoveredDoorHot ? 2 : Math.Max(4, s.UncoveredDoorTarget))
-                    && now - m.LastSquadAt > 6f)
+                    && now - m.LastSquadAt > 6f + 4f * m.DoorPostStreak)
                 {
+                    if (m.LastDoorLine == s.UncoveredDoorLine)
+                        m.DoorPostStreak++;
+                    else { m.LastDoorLine = s.UncoveredDoorLine; m.DoorPostStreak = 1; }
                     m.LastSquadAt = now;
                     r.Intents.Add(Intent.Of(IntentKind.PlaceSquad));
                     r.Notes.Add("squad-door:" + s.UncoveredDoorLine);
+                }
+                // Same-day version: posts to a door whose units never arrive
+                // (doorUnit==0 after 4 tries) = unwalkable anchor — park it.
+                if (s.HasUncoveredDoor && m.DoorPostStreak >= 4 &&
+                    s.UncoveredDoorIdx >= 0 &&
+                    BotPerception.DoorUnitAt(s.UncoveredDoorIdx) == 0)
+                {
+                    r.Intents.Add(Intent.At(IntentKind.ParkDoor, s.UncoveredDoorIdx));
+                    r.Notes.Add("door-park:" + s.UncoveredDoorLine);
+                    m.DoorPostStreak = 0;
                 }
                 if (s.FreeUnits > 0 && now - m.LastEscortAt > 20f)
                 {
@@ -961,6 +1081,22 @@ namespace ThronefallTrainer
             }
 
             // ---- day economy ----
+            // Held slot completed its interaction: release IMMEDIATELY — the
+            // old path rode the 7 s stall watchdog for every build, and worse,
+            // a latched 'complete' re-won held-stickiness so BeginHold never
+            // re-fired to clear it (castle tier-2 → wedge → park).
+            if (m.HeldBuild >= 0 && s.HeldBuildComplete)
+            {
+                r.Intents.Add(Intent.Of(IntentKind.ReleaseHold));
+                m.HeldBuild = -1;
+                m.SlotVisitKey = -1;
+                r.Notes.Add("build-done");
+                // Return now: falling through re-picks the just-finished slot
+                // (still best-scoring) and emits Release+BeginHold thrash
+                // while HeldBuildComplete is latched — release/begin/release
+                // every tick.
+                return r;
+            }
             if (s.HasBuild && (s.Balance > 0 || s.BuildHarvest))
             {
                 m.Mode = BotMode.SpendGold; r.Mode = m.Mode;
@@ -968,11 +1104,28 @@ namespace ThronefallTrainer
                 // free cell beside the slot) — never a geometric stand-off
                 // that may land inside the slot's collider. Hold once inside
                 // the interact gate or at the stand-point.
-                bool inGate = s.BuildDist <= 4f ||
+                // BuildDist is hero→slot CENTER — for a large collider the
+                // walkable ring sits past 4 m, so a 4 m gate is unreachable
+                // (castle = ~5 m collider → hero stuck at ~9 m forever).
+                string bn0 = s.BuildName ?? "";
+                bool big = bn0.IndexOf("castle",
+                    System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    bn0.IndexOf("hall",
+                    System.StringComparison.OrdinalIgnoreCase) >= 0;
+                bool inGate = s.BuildDist <= (big ? 10f : 4f) ||
                     (s.HasBuildStand && s.BuildStandDist <= 1.2f);
                 if (inGate) Aim(ref r, s.HeroPos, 1.0f);
                 else if (s.HasBuildStand) Aim(ref r, s.BuildStandPos, 0.8f);
-                else Aim(ref r, Vec2.StandOff(s.BuildPos, s.HeroPos, 3.0f), 1.0f);
+                else
+                {
+                    // Center-based stand-off must clear the building's own
+                    // collider — Castle Center's ~5 m footprint put a 3 m
+                    // offset INSIDE the collider hole (unreachable frontier,
+                    // pin-the-wall loop, live run 105400Z). Big buildings get
+                    // a bigger ring.
+                    Aim(ref r, Vec2.StandOff(s.BuildPos, s.HeroPos,
+                        big ? 6.0f : 3.0f), 1.0f);
+                }
 
                 // Visit-abandon: stood at the picked slot 10 s with no
                 // payment -> the fill can't progress — park and rotate.
@@ -980,7 +1133,7 @@ namespace ThronefallTrainer
                 // vs 10s) — keep this as a backstop, but if it ever fires it
                 // MUST release the hold like the stall path does (it used to
                 // leave m.HeldBuild set → coins kept paying a parked slot).
-                if (inGate && s.BuildKey > 0)
+                if (inGate && s.BuildKey >= 0)   // key 0 is still a valid slot
                 {
                     if (s.BuildKey != m.SlotVisitKey) { m.SlotVisitKey = s.BuildKey; m.SlotVisitSince = now; }
                     else if (now - m.SlotVisitSince >= 10f)
@@ -1003,9 +1156,13 @@ namespace ThronefallTrainer
                 if (inGate && now >= m.BuildInteractAt)
                 {
                     m.BuildInteractAt = now + 0.4f;
-                    if (m.HeldBuild != s.BuildKey)
+                    // While a hold is active we PUMP it — never re-begin on
+                    // a BuildKey change (two same-named Interactor pads used
+                    // to alternate the pick → ReleaseHold+BeginHold every
+                    // tick → the fill reset forever, Castle lvl=0). Release
+                    // is decided ONLY by the miss/dist guard above.
+                    if (m.HeldBuild < 0)
                     {
-                        r.Intents.Add(Intent.Of(IntentKind.ReleaseHold));
                         r.Intents.Add(Intent.Of(IntentKind.BeginHold));
                         m.HeldBuild = s.BuildKey;
                         m.SpendWatchGold = s.Balance;
@@ -1033,6 +1190,8 @@ namespace ThronefallTrainer
                         r.Intents.Add(Intent.Of(IntentKind.ParkSlot));
                         r.Intents.Add(Intent.Of(IntentKind.ReleaseHold));
                         m.HeldBuild = -1;
+                        m.SlotVisitKey = -1;   // parked slot: stale visit
+                                             // stamp must not arm the next
                         return r;
                     }
                     r.Intents.Add(Intent.Of(IntentKind.PumpHold));
@@ -1124,11 +1283,26 @@ namespace ThronefallTrainer
             }
             // Day idle gap: nothing buildable, nothing to collect — the hero
             // IS a unit, so he gap-fills the most dangerous uncovered door
-            // instead of circling the castle.
-            if (s.HasUncoveredDoor)
+            // instead of circling the castle. The door ANCHOR sits ~55 m out
+            // on the corridor waypoint tip — usually off the walkable mesh
+            // (Nordfels: every anchor parked as unreachable). The hero's job
+            // is a guard post INSIDE the corridor mouth — aim at the point
+            // 14 m toward the castle from the anchor.
+            // Mid-fill holds are sacred — hero-door used to yank the hero
+            // 17 m off a paying slot (rel:dist=17.9 in the live log),
+            // refunding the fill every cycle. Door-posting is for IDLE
+            // heroes, not working ones.
+            if (s.HasUncoveredDoor && m.HeldBuild < 0)
             {
                 m.Mode = BotMode.PositionArmy; r.Mode = m.Mode;
-                Aim(ref r, s.UncoveredDoorPos, ArriveHold);
+                // Vec2 layer — pull the hero post 14 m toward the castle.
+                Vec2 guard = s.UncoveredDoorPos;
+                if (s.HasCastle)
+                {
+                    var pull2 = s.CastlePos - s.UncoveredDoorPos;
+                    if (pull2.Mag > 2f) guard = s.UncoveredDoorPos + pull2.Norm * 14f;
+                }
+                Aim(ref r, guard, ArriveHold);
                 r.Notes.Add("hero-door:" + (s.UncoveredDoorLine ?? ""));
                 return r;
             }
@@ -1141,6 +1315,23 @@ namespace ThronefallTrainer
             }
             m.Mode = BotMode.Idle; r.Mode = m.Mode;
             r.HasAim = false;
+            // Nothing left to do mid-day — "sitting still" is the bug, not
+            // the goal. Once every work front is exhausted (no build, no
+            // coin, no uncovered door, past the young-day gate) for 30 s
+            // straight, call night early instead of idling out the 240 s
+            // budget. Neuland day phases used to burn 3+ minutes of dead
+            // time per wave.
+            if (m.IdleSince < 0f) m.IdleSince = now;
+            if (!s.IsNight && m.DayStartAt > 0f && !dayTooYoung &&
+                s.CanSwitch && now - m.IdleSince > 30f &&
+                now >= m.NightRequestAt)
+            {
+                m.NightRequestAt = now + 15f;
+                m.IdleSince = -1f;
+                r.Notes.Add("idle-night-call");
+                r.Intents.Add(Intent.Of(IntentKind.SwitchNight));
+                m.Mode = BotMode.StartNight; r.Mode = m.Mode;
+            }
             return r;
         }
 

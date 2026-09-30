@@ -71,6 +71,8 @@ def main():
         if "--out" in sys.argv else OUT
 
     S, A, G = load_dataset()
+    if S.shape[0] == 0:
+        sys.exit("dataset empty — run tools/episodes.py first")
     n_in = S.shape[1]
     print(f"[train] {S.shape[0]} rows, {n_in} feats, "
           f"mean G {G.mean():.2f}, win-share {float((G > 0).float().mean()):.2f}")

@@ -25,7 +25,10 @@ $fix = Join-Path $root 'tests\fixtures\runs\durststein-dto'
 if (Test-Path (Join-Path $fix 'ticks.jsonl')) {
     $rep = dotnet run --project (Join-Path $root 'tests\Replay\Replay.csproj') `
         -- $fix --tol $ReplayTol 2>&1 | Out-String
-    $results['replay'] = ($rep -match 'PASS')
+    # Any single fixture printing PASS used to mask a FAIL line in the same
+    # run — require the harness to pass AND contain no FAIL marker.
+    $results['replay'] = ($LASTEXITCODE -eq 0 -and $rep -match 'PASS' -and
+                          $rep -notmatch '(?m)FAIL')
     if (-not $results['replay']) { Write-Host $rep }
 } else { $results['replay'] = 'no fixture' }
 

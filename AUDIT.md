@@ -136,3 +136,149 @@ Legend: ✅ fixed+verified · 🔧 fixed, deployed, pending runtime proof · �
 - No pause-open API found on `UIFrameManager` (Escape path not exposed — vacuum exit still falls back to raw `TransitionToLevelSelect` when no frame is up).
 - `door_units` metric, aim/navGoal desync, net-disagree 98%, MM army_target oscillation — unchanged.
 - Durststein stays quarantined until its save heals (or `badscenes.json` is cleared manually).
+
+## Round 6 — 7-agent parallel audit, commit 13f2ee1
+
+7 explore agents swept every src file + tools + live telemetry. ~60 defects
+confirmed and fixed this round (build green, deployed, hash-verified,
+plugin-load line confirmed in log).
+
+| Area | Headline fix | Status |
+|---|---|---|
+| Bot.cs | Legit Engage steered at 4 Hz stale pos — now live transform | 🔧 |
+| Bot.cs | `StuckStrikes>=3` unreachable (reset precedes check) → detourCount | 🔧 |
+| Bot.cs | Double BeginRun per match (edge+scene-change) → dedupe | 🔧 |
+| Bot.cs | SetEnabled kept stale vacuum/frame/nav/coin state → full reset | 🔧 |
+| Bot.cs | `lastNightTick` stale → next match's day-start hooks skipped | 🔧 |
+| Bot.cs | heroAttack never re-validated on weapon swap → 2 s re-resolve | 🔧 |
+| Bot.cs | Async nav path overwrote cleared state → navRequestId guard | 🔧 |
+| Bot.cs | navWrongLayer survived discarded paths → cleared | 🔧 |
+| Bot.cs | postable used AllyCount (posted units counted free) → FreeUnits | 🔧 |
+| Bot.cs | aim-stall/build-unreachable not counted → CountStall | 🔧 |
+| BotPerception | door parks/breaches/claims leaked across same-count scenes | 🔧 |
+| BotPerception | LoadStrategy now clears badStands/BreachCount/HornBi/classCache | 🔧 |
+| BotPerception | `"wp"` greedy regex swallowed narrowAt → MatchBracket | 🔧 |
+| BotPerception | castleStands parsed but never used → CastleStandPos wired | 🔧 |
+| BotPerception | IsInteractorComplete called before field init → EnsureFields | 🔧 |
+| BotPerception | PolicyKey written before RedAlert → after | 🔧 |
+| BotPerception | CastleThreatDist fallback 0 (looked like foe-on-castle) | 🔧 |
+| BotPerception | core-cost `<=0` (cost-3 slot passed with 1 core) | 🔧 |
+| BotPerception | door foe/unit attribution: first-in-array → nearest | 🔧 |
+| BotBrain | ArmyTarget==0 → night trivially ready with zero army | 🔧 |
+| BotBrain | night coin-run preempted RedAlert/breach response | 🔧 |
+| BotBrain | visit-abandon parked slot w/o releasing hold | 🔧 |
+| Coach.cs | GetHashCode dedupe (collisions/A→B→A drop commands) | 🔧 |
+| Coach.cs | Unesc corrupted \\n; Esc missed control chars | 🔧 |
+| Coach.cs | Busy wedged forever on thread-start throw; runGen volatile | 🔧 |
+| Recorder | WriteAtomic delete+move window → File.Replace | 🔧 |
+| Recorder | `running` non-volatile; partial-init dropped all ticks | 🔧 |
+| Recorder | phantom "unknown" run dirs; tick dedupe ate half the 2 Hz | 🔧 |
+| Memory | parkedWhy grew duplicates forever; badScenes unescaped | 🔧 |
+| Policy | NaN reward poisoned row + file; TryParse per-cell | 🔧 |
+| NetPolicy | dim-mismatch net loaded garbage; NaN tokens; no reload | 🔧 |
+| Plugin | **F2–F5 cheat hotkeys fired in legit mode** | 🔧 |
+| Plugin | BotSurvivalCheats default true → false | 🔧 |
+| Plugin | FieldInfo NREs; coin-magnet stale-instance restore | 🔧 |
+| Overlay | F1 opened BOTH windows + froze player mid-run → F8 | 🔧 |
+| tools | verify.ps1 FAIL-regex (always-PASS); e2e config backup; bot-diagnose PS5.1+BOM; coach-chat port reuse; deploy hash+log-verify; gen-fields GameRoot; decompile guards | 🔧 |
+| server | reasoning_content steered the bot (rejected options as cmds) | 🔧 |
+| server | live_state never checked mtime → steered dead runs | 🔧 |
+| server | dedupe sig included ally (never deduped); write_cmd rollback | 🔧 |
+| server | unescaped HTML injection across dashboard; metrics() per-req | 🔧 |
+| server | no handler exception guard; unbounded Content-Length | 🔧 |
+
+## Live status (post-deploy)
+
+- Nordfels relaunch t≈156: hero mobile (ReturnHome→Idle), no pin-loop,
+  `hero-door:Forest` gapfill worked — he walked the corridor and returned.
+- Pending: military production timing (ally=0 through t=156 — the Nordfels
+  playbook defers military until 2 mines; checklist item still open),
+  door_units telemetry, after-match→map→retry proof on THIS build.
+
+## Round 7 — root causes found by live slot-state diagnostics
+
+Four NEW root causes surfaced after round 6 (each proven by a log dump,
+not inference):
+
+| # | Finding | Fix |
+|---|---------|-----|
+| R7-1 | `ParkDoorAnchor(Vector3)` matched the FIRST anchor within 20 m — Forest's stall parked `Spawn` (anchors cluster near Nordfels gate ring), so Forest re-picked forever | `Snapshot.UncoveredDoorIdx` carried through `SnapshotData`; `ParkDoorIdx(int)` parks exactly that index; `ParkDoorAnchor` kept as fallback |
+| R7-2 | Hero gap-fill aimed at the door ANCHOR (~55 m out on the corridor waypoint tip, off the walkable mesh) → every anchor parked as unreachable | `BotBrain` aims 14 m INSIDE the corridor mouth (anchor pulled toward castle) — the hero's guard post, not the spawn tip |
+| R7-3 | The aim-stall parked `PositionArmy` doors even when the hero had ARRIVED and was holding correctly — a reached guard post read as a stall | PositionArmy excluded from arrive-stall; unreachable door aims still park via the hard-stuck path (`detourCount>=3` → `ParkDoorIdx`) |
+| R7-4 | **`isActiveAndEnabled` filtered out every deactivated build pad** — Nordfels slots report `act=False, can=True` (buildable but marker GameObject off). `bld=0` on 406 day ticks; Barracks/Archery/walls never appeared in `bn` — the `ally=0` root cause | Filter dropped; `CanBeInteractedWith` is the game's own predicate |
+| R7-5 | `BuildDone` only ran inside the 1 Hz hold-diag while held — a choice-resolved slot completes at the release instant, so `cat_built.military` stayed 0 and the playbook sat on "military" forever | `ReleaseBuild` now calls `IsInteractorComplete` before dropping the reference and counts the completion there |
+
+Round-7 live proof (run 20260930T073624Z+): Barracks appeared in `bn`
+(×7), `cat_built` gained `military:1` at t≈55, walls built ×3 (first ever
+on Nordfels — they were the same `act=False` victim). Residual: `ally=0`
+post-build → `army-starved` anomaly → respawner-dump instrumentation
+deployed to identify the unit-production gap (build vs produce split).
+
+## Still open (round 6+7)
+
+- Barracks builds but produces no units — `UnitRespawnerForBuildings`
+  dump inbound to see whether `units[]` is empty/disabled or the building
+  needs a separate recruit hold
+- `door_units` audit metric vs `squad-door` events disagreement
+- aim/navGoal desync; mid-match Pause frame origin
+- Policy-net 98% disagree — shadow only
+- MM army_target oscillation
+- GoldDrip removal — pending army-loop proof
+- write_cmd queue/merge (overwrite-clobber window) — deferred: needs a
+  command-queue contract with the plugin, not a hotfix
+
+## Round 8 — 9-agent fleet + live-evidence root cause (2026-06-30)
+
+Live evidence (runs 040714Z–073624Z window): hero at y=5.9 pinned on the
+rock wall with `aim=(0.87,0.00,-46.64)` — every brain aim was **flattened to
+y=0**, so A* projected every target onto the ground navmesh, every path was
+`wrong-layer`, the pocket-park poisoned 19 cells (Neuland), SpendGold
+starved to zero candidates, and the bot sat Idle 135+ s with 522 gold and
+`open_order=["military","wall","military"]`. Allies never spawned because
+military structures never reached.
+
+9-agent fleet audited every subsystem; ~65 fixes shipped, then a 3-agent
+verification pass found and fixed 6 residual regressions:
+
+| # | Fix | Evidence |
+|---|-----|----------|
+| B1 | `AimY` restores target height by mode/context (nearest build/stand/castle/door within 6 m flat) instead of `y=0` | src/Bot.cs:641,1135 |
+| B2 | `recordedScene = s.SceneName` at the InMatch edge + full per-match reset set (mem/arriveSince/detour/lastWatchDist/holdDoneName/prevRuleFires) — no double BeginRun | Bot.cs:384–405 |
+| B3 | `Memory.ForgiveParks(scene)` on new match — wrong-layer/transient parks retry next match; mishaps.json purged of 18 wrong-layer Neuland cells (backup `.bak`) | Memory.cs:143 |
+| B4 | Watchdog ignores `PlayerFrozen` heroes (menu/choice); `detourCount>=4` catch-all releases any stuck aim; SpendGold park excludes castle/horn slots (vital) | Bot.cs:829,1075,1042 |
+| B5 | Choice-coroutine wedge escape: 20 s `choiceSince` watchdog drops the gate | Bot.cs:1670–1712 |
+| B6 | Detour `navSteerArrive=0.5` re-clamped after last-wp branch | Bot.cs:2003 |
+| P1 | Inactive-slot skip gated: only `StartDeactivated` AND activator-under-level | Perception:~1830 |
+| P2 | `ParseSlotPack` bounded to `"slots"` section + per-record; stands search capped at next `"pos"` (re-audit caught the leftover bleed) | ~780 |
+| P3 | `MatchBracket` skips string literals; horn reflection walks base types | ~895,~1618 |
+| P4 | `BuildDone` unparks the full 3×3 pocket (9 cells), parked doors count covered, `doors_claimed` separate, `bmil_first` null-not-0, `foes`=live enemies | ~395,~1372,~474 |
+| P5 | Checklist named entries (`upgrade:Barracks_T2_day6`) match NAME (suffix-stripped) not category — castle upgrade no longer satisfies a Barracks item | ~509 |
+| P6 | `door_distance_m` strategy field now parsed and consumed in `BuildDoors` | ~596,~2260 |
+| P7 | held-match mid-choice: `CanBeInteractedWith` checked inside hold (20 m) + `s.BuildCount++` | ~1774 |
+| G1 | Brain: build-done `return r` (no same-tick re-hold); releases when mode leaves SpendGold; `ArmyPhase=0` on newMatch; `urgent` takes dist 0; scene-flicker ignored; Perp fallback; orbit-dt clamp; JSON `Esc` on note/scene/bn | BotBrain.cs |
+| C1 | `Coach.ResetRun` clears `lastCmdText` — identical-byte retry deadlock fixed; commit-after-Apply; `lastCallAt` post-start; VisionCall gen-dedupe; Esc on models | Coach.cs |
+| S1 | Server: `tail_bytes`/`tail_lines` everywhere; latest_run by mtime; `extract_cmd`→`validate_patch`; `clear:true` + zero-as-reset; `wave`/`bld` in sig; audit freshness gate; MiniMax write-fail now sleeps (no token-burn loop); `/order` nonce; metrics wave `"N/M"` parse; `track_activity` shared | coach-server.py |
+| E1 | **Legit lock**: `GUI.enabled` gate on all cheat controls while `Bot.Legit`; `Bot.Legit` refreshed per frame (config-manager edits honored); conditional bundle restore; menu unfreeze restores only own freeze; Update try/catch so a throwing cheat can't starve `Bot.Tick`; GoldDrip bypassed in legit | Plugin.cs |
+| T1 | Tools: bot-lint PS5.1-safe; gen-fields param order + no-BOM; verify FAIL-grep; deploy checks only new log bytes; decompile exit codes + stale cleanup; Replay fixture path fixed; e2e atomic cmd write + -Directory + per-line try; episodes skips unknown modes; gen-botpack utf-8+mkdir+basename fallback; mm-coach refuse-wrong-scene; train empty guard; _splice marker uniqueness | tools/* |
+
+Deploy: `build-and-deploy.ps1` — hash `990F0EE202A28122` matches src binary.
+`python -m py_compile coach-server.py` OK. `dotnet build` 0 errors (only
+pre-existing NNConstraint-obsolete warnings).
+
+## Verification pass (round 8 residual defects — all fixed above)
+
+- detour arrive-radius overwrite (Bot.cs:2003)
+- wedged choice-coroutine gated Tick forever (choiceSince watchdog)
+- castle slot parkable via SpendGold branch (vital exclusion)
+- stands bleed across slot records (next-`"pos"` bound)
+- server write-fail hot loop (sleep added)
+- `"wave"` string broke `_metrics` (split-parse)
+- `/order` duplicate-content dedupe (nonce)
+
+## Pending live proof (deployed, awaiting next session run)
+
+- `aim.y` ≈ hero y on elevated scenes (no more `0.00` aims)
+- `ally > 0` on Nordfels after barracks completes (bmil≥1 already proven)
+- `door_units` nonzero, `doors_claimed` > 0, checklist `done` accuracy
+- after-match → map → retry on THIS build; netpolicy mtime reload
+- Endless-day/pass-frame regressions under the frozen-watchdog guard

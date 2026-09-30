@@ -92,8 +92,11 @@ namespace ThronefallTrainer
 
         private static string[] FindFixtures()
         {
+            // bin/<cfg>/net8.0 -> 4x .. lands on tests/ (not the repo root) —
+            // the old suffix produced tests/tests/fixtures/runs (audit: path
+            // never existed; autodiscovery only worked via the CWD fallback).
             var root = Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..",
-                "tests", "fixtures", "runs");
+                "fixtures", "runs");
             root = Path.GetFullPath(root);
             if (!Directory.Exists(root))
                 root = Path.Combine(Directory.GetCurrentDirectory(), "tests", "fixtures", "runs");
@@ -149,7 +152,7 @@ namespace ThronefallTrainer
                 LevelCount = I(e, "lvln"),
                 InteractorCount = I(e, "inter"),
                 LevelDist = F(e, "lvld"),
-                HasHorn = e.TryGetProperty("hpos", out _) ? true : B(e, "horn"),
+                HasHorn = e.TryGetProperty("hpos", out _),
                 HornDist = F(e, "hd"),
                 HeroDead = B(e, "dead"),
                 CoreBalance = I(e, "cbal"),
@@ -211,7 +214,6 @@ namespace ThronefallTrainer
             d.BuildPos = P(e, "bpos", out d.HasBuild);
             d.AllyCentroid = P(e, "acen", out _);
             d.ShrinePos = P(e, "shp", out _);
-            if (e.TryGetProperty("pos", out var _unused)) { }
             return new Parsed { T = F(e, "t"), Mode = S(e, "mode"), Data = d };
         }
 

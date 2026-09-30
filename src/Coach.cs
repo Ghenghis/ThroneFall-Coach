@@ -105,8 +105,11 @@ namespace ThronefallTrainer
                 // Content identity, not GetHashCode — a collision or A->B->A
                 // file transition used to silently drop real commands.
                 if (j == lastCmdText) return;
-                lastCmdText = j;
+                // Commit the dedupe AFTER Apply — a malformed-but-new file
+                // used to burn the dedupe key, then a corrected rewrite with
+                // identical bytes could never get through (server retry).
                 Apply(j, "user-cmd", Time.unscaledTime);
+                lastCmdText = j;
             }
             catch (Exception ex)
             { Plugin.Log?.LogWarning($"[coach] cmd poll: {ex.Message}"); }
@@ -118,7 +121,7 @@ namespace ThronefallTrainer
         {
             if (!Enabled || hostRef == null || Busy) return;
             if (Time.unscaledTime - lastCallAt < MinIntervalS) return;
-            lastCallAt = Time.unscaledTime; Busy = true;
+            Busy = true;
             float callNow = Time.unscaledTime;   // captured on the main thread —
             // Unity API is forbidden on the worker below
             int gen = runGen;                    // if a retry resets mid-flight,
@@ -128,7 +131,8 @@ namespace ThronefallTrainer
                 var t = new System.Threading.Thread(() => Call(trigger, digestJson, callNow, gen));
                 t.IsBackground = true;
                 t.Start();
-            }
+                lastCallAt = Time.unscaledTime;  // throttle commits only after
+            }                                    // a successful spawn — a failed
             catch { Busy = false; }   // a failed spawn must not wedge the coach
         }
 
@@ -137,7 +141,7 @@ namespace ThronefallTrainer
             try
             {
                 string body =
-                    "{\"model\":\"" + Model + "\",\"stream\":false," +
+                    "{\"model\":\"" + Esc(Model ?? "") + "\",\"stream\":false," +
                     "\"max_tokens\":" + MaxTokens + ",\"temperature\":0.3," +
                     "\"messages\":[" +
                     "{\"role\":\"system\",\"content\":\"" + Esc(SysPrompt) + "\"}," +
@@ -260,7 +264,7 @@ namespace ThronefallTrainer
         /// next run. Clear them at each BeginRun; notes stay (advice history).</summary>
         private static volatile int runGen; // bumped per match — the stale-reply
         // check must see the new generation the moment it changes
-        private static int applyGen;
+
 
         public static void ResetRun()
         {
@@ -268,6 +272,12 @@ namespace ThronefallTrainer
             ArmyTargetFloor = 0; BuildFocus = ""; HeroPosture = "";
             NightCallRequested = false;
             runGen++;                      // in-flight Apply() sees a stale gen
+            // Clear the command dedupe — a new run MUST accept the same
+            // patch bytes: the server rewrites last_patch on every run and
+            // a stale lastCmdText deadlocked steering forever (the plugin
+            // deduped the file, the server saw "not applied", retried
+            // identical content — permanent mm-watch BROKEN loop).
+            lastCmdText = "";
         }
 
         /// <summary>Defeat screenshot -> local vision model. One call per
@@ -277,21 +287,23 @@ namespace ThronefallTrainer
             if (!VisionEnabled || Busy) return;
             Busy = true;
             string b64 = Convert.ToBase64String(png);
+            int gen = runGen;   // 90 s vision call must not stamp stale-run
+                                // advice after a ResetRun (same guard as Call)
             try
             {
-                var t = new System.Threading.Thread(() => VisionCall(b64, context));
+                var t = new System.Threading.Thread(() => VisionCall(b64, context, gen));
                 t.IsBackground = true;
                 t.Start();
             }
             catch { Busy = false; }   // failed spawn must not wedge the coach
         }
 
-        private static void VisionCall(string b64png, string context)
+        private static void VisionCall(string b64png, string context, int gen)
         {
             try
             {
                 string body =
-                    "{\"model\":\"" + VisionModel + "\",\"stream\":false," +
+                    "{\"model\":\"" + Esc(VisionModel ?? "") + "\",\"stream\":false," +
                     "\"max_tokens\":600,\"temperature\":0.3,\"messages\":[{" +
                     "\"role\":\"user\",\"content\":[{" +
                     "{\"type\":\"text\",\"text\":\"" + Esc(
@@ -318,8 +330,11 @@ namespace ThronefallTrainer
                     resp, "\"content\"\\s*:\\s*\"((?:[^\"\\\\]|\\\\.)*)\"");
                 if (cm.Success)
                 {
-                    LastAdvice = Unesc(cm.Groups[1].Value);
-                    Plugin.Log?.LogInfo("[coach-vision] " + LastAdvice);
+                    if (gen == runGen)   // a reset during the call discards it
+                    {
+                        LastAdvice = Unesc(cm.Groups[1].Value);
+                        Plugin.Log?.LogInfo("[coach-vision] " + LastAdvice);
+                    }
                 }
             }
             catch (Exception ex)

@@ -98,10 +98,14 @@ namespace ThronefallTrainer
             public string[] DoorLines;
             public int DoorCount;
             public int DoorsCovered;   // doors with >=2 manned units
+        public int DoorsClaimed;   // covered only because a squad is en route
             public int FreeUnits;      // units not within 10 m of a door
         public int EscortUnits;    // units on hero escort (not squad-available)
             public Vector3 UncoveredDoorPos;
             public string UncoveredDoorLine;
+            public int UncoveredDoorIdx;   // the pick's anchor index —
+            // parking by POSITION matched a neighbour anchor when two lines
+            // deduped within 20 m (Forest stalls kept parking 'Spawn')
             public int UncoveredDoorTarget;
             public bool UncoveredDoorHot;
             public bool HasUncoveredDoor;
@@ -120,6 +124,7 @@ namespace ThronefallTrainer
             public int NearestBuildKey;        // GetInstanceID — held-slot match
             public string NearestBuildName;    // display/diag name
             public bool NearestBuildHarvest;   // canBeHarvested
+            public bool HeldBuildComplete;     // held slot's interactionComplete latched
             public bool HasWeapon;
             public float ActiveRange;          // active weapon max target-priority range
             public bool ActiveFiresMoving;     // no DelayManualAttackWhileMoving
@@ -190,6 +195,7 @@ namespace ThronefallTrainer
                 UncoveredDoorLine = s.UncoveredDoorLine ?? "",
                 UncoveredDoorTarget = s.UncoveredDoorTarget,
                 UncoveredDoorHot = s.UncoveredDoorHot,
+                UncoveredDoorIdx = s.UncoveredDoorIdx,
                 ArmyTarget = s.ArmyTarget,
                 SelfDefendRange = s.SelfDefendRange,
                 DayBudget = s.DayBudget,
@@ -204,6 +210,7 @@ namespace ThronefallTrainer
                 BuildName = s.NearestBuildName, BuildPos = V(s.NearestBuildPos),
                 BuildDist = s.NearestBuildDist, BuildScore = s.NearestBuildScore,
                 BuildHarvest = s.NearestBuildHarvest,
+                HeldBuildComplete = s.HeldBuildComplete,
                 AllyCount = s.AllyCount, AllyCentroid = V(s.AllyCentroid),
                 CanCommand = s.CanCommand, CanSwitch = s.CanSwitch,
                 NightCall = Coach.NightCallRequested,   // pure-layer bridge
@@ -257,10 +264,31 @@ namespace ThronefallTrainer
         public static void MarkDoorClaim(Vector3 pos)
         {
             if (doorClaim == null || sceneDoorAnchors == null) return;
+            // Nearest anchor, not first-in-20 m: two deduped lines closer than
+            // 20 m once claimed the wrong door (picked door stayed re-pickable
+            // while a different corridor read "en route").
+            int bi = -1; float bd = 400f;
             for (int i = 0; i < sceneDoorAnchors.Length; i++)
-                if ((sceneDoorAnchors[i] - pos).sqrMagnitude < 400f)
-                { doorClaim[i] = UnityEngine.Time.unscaledTime; return; }
+            {
+                float d = (sceneDoorAnchors[i] - pos).sqrMagnitude;
+                if (d < bd) { bd = d; bi = i; }
+            }
+            if (bi >= 0) doorClaim[bi] = UnityEngine.Time.unscaledTime;
         }
+
+        /// <summary>Claim by INDEX — the coverage loop already picked the
+        /// door; a positional re-scan can latch a neighbor anchor.</summary>
+        public static void MarkDoorClaimIdx(int i)
+        {
+            if (doorClaim == null || sceneDoorAnchors == null) return;
+            if (i >= 0 && i < doorClaim.Length)
+                doorClaim[i] = UnityEngine.Time.unscaledTime;
+        }
+
+        /// <summary>Live manned-unit count at a door anchor — the brain's
+        /// "posted but never arrived" detector (squad spam loop).</summary>
+        public static int DoorUnitAt(int i) =>
+            (doorUnit != null && i >= 0 && i < doorUnit.Length) ? doorUnit[i] : 0;
 
         private static float[] doorParked;   // aim-stall proved unwalkable
 
@@ -272,9 +300,35 @@ namespace ThronefallTrainer
             if (sceneDoorAnchors == null) return;
             if (doorParked == null || doorParked.Length != sceneDoorAnchors.Length)
                 doorParked = new float[sceneDoorAnchors.Length];
+            // Nearest anchor — first-in-20 m parked the wrong corridor when
+            // two lines deduped inside the radius.
+            int bi = -1; float bd = 400f;
             for (int i = 0; i < sceneDoorAnchors.Length; i++)
-                if ((sceneDoorAnchors[i] - pos).sqrMagnitude < 400f)
-                { doorParked[i] = UnityEngine.Time.unscaledTime; return; }
+            {
+                float d = (sceneDoorAnchors[i] - pos).sqrMagnitude;
+                if (d < bd) { bd = d; bi = i; }
+            }
+            if (bi >= 0)
+            {
+                doorParked[bi] = UnityEngine.Time.unscaledTime;
+                Plugin.Log?.LogWarning(
+                    $"[bot] door '{(sceneDoorLines != null && bi < sceneDoorLines.Length ? sceneDoorLines[bi] : "?")}' parked 5m @ {pos}");
+                return;
+            }
+            Plugin.Log?.LogWarning($"[bot] ParkDoorAnchor: no anchor within 20m of {pos}");
+        }
+
+        /// <summary>Park by INDEX — the coverage loop knows which door it
+        /// picked; the position scan used to latch the first anchor within
+        /// 20 m and marked the wrong line (Forest aim parked Spawn).</summary>
+        public static void ParkDoorIdx(int i)
+        {
+            if (sceneDoorAnchors == null || i < 0 || i >= sceneDoorAnchors.Length) return;
+            if (doorParked == null || doorParked.Length != sceneDoorAnchors.Length)
+                doorParked = new float[sceneDoorAnchors.Length];
+            doorParked[i] = UnityEngine.Time.unscaledTime;
+            Plugin.Log?.LogWarning(
+                $"[bot] door '{(sceneDoorLines != null && i < sceneDoorLines.Length ? sceneDoorLines[i] : "?")}' parked 5m (idx {i})");
         }
 
         private static bool DoorParked(int i)
@@ -297,6 +351,7 @@ namespace ThronefallTrainer
         internal static class Strat   // Bot.PlaceSquad reads Strat.Reserve
         {
             public static int Squad, Reserve, Escort, ArmyTarget;
+            public static float DoorDist = 40f;   // perimeter anchor distance (m)
             public static string Focus = "";
             public static string[] BuildOrder = new string[0];           // "cat:name - note"
             public static System.Collections.Generic.Dictionary<string, int>
@@ -307,8 +362,15 @@ namespace ThronefallTrainer
         /// standing before the next entry unlocks. Consumed per scene.</summary>
         public static readonly System.Collections.Generic.Dictionary<string, int>
             CatBuilt = new System.Collections.Generic.Dictionary<string, int>();
+        /// <summary>Per-NAME build counts — checklist entries like
+        /// "upgrade:Barracks_T2" used to complete on ANY upgrade (a castle
+        /// upgrade checked a Barracks item). Name matching fixes it.</summary>
+        private static readonly System.Collections.Generic.Dictionary<string, int>
+            NameBuilt = new System.Collections.Generic.Dictionary<string, int>(
+                System.StringComparer.OrdinalIgnoreCase);
         private static string catBuiltScene;
         private static float milFirstAt = -1f;   // first military build (anomaly D3)
+        private static float slotDumpAt;          // slot-filter diagnostic cadence
 
         /// <summary>Classify a buildable by name — the categories the
         /// playbook's build_order speaks in.</summary>
@@ -333,18 +395,29 @@ namespace ThronefallTrainer
         {
             // Redemption: a slot that completes unparks its cell — transient
             // stalls (occupants, temporary walls) shouldn't be remembered.
+            // The pocket-park wrote a 3x3 ring around the unreachable cell —
+            // redeeming only the center leaves 8 permanently-quarantined
+            // neighbor cells even though nav to the pocket is now proven.
             if (pos != default)
-                Memory.Unpark(slotPackScene ?? "", pos);
+            {
+                string sc = slotPackScene ?? "";
+                for (int dx = -1; dx <= 1; dx++)
+                    for (int dz = -1; dz <= 1; dz++)
+                        Memory.Unpark(sc, pos + new Vector3(dx * 8f, 0f, dz * 8f));
+            }
             if (catBuiltScene != slotPackScene)
             {
                 catBuiltScene = slotPackScene;
                 CatBuilt.Clear();
+                NameBuilt.Clear();
                 milFirstAt = -1f;
             }
             string cat = BuildCat(buildingName);
             if (cat == "military" && milFirstAt < 0f)
                 milFirstAt = Time.unscaledTime;
             CatBuilt[cat] = (CatBuilt.TryGetValue(cat, out int c) ? c : 0) + 1;
+            NameBuilt[buildingName] =
+                (NameBuilt.TryGetValue(buildingName, out int nc) ? nc : 0) + 1;
             Plugin.Log?.LogInfo($"[bot] playbook: built '{buildingName}' (cat {cat} #{CatBuilt[cat]})");
         }
 
@@ -392,6 +465,7 @@ namespace ThronefallTrainer
         /// entry with its done/pending status against CatBuilt.</summary>
         public static string AuditJson(ref Snapshot s, string mode, float modeSince, float now)
         {
+            var ci = System.Globalization.CultureInfo.InvariantCulture;
             var sb = new System.Text.StringBuilder(900);
             sb.Append("{\"scene\":").Append(JsonStr(s.SceneName))
               .Append(",\"t\":").Append(Mathf.RoundToInt(now))
@@ -403,12 +477,16 @@ namespace ThronefallTrainer
               .Append(",\"escort\":").Append(s.EscortUnits)
               .Append(",\"army_target\":").Append(s.ArmyTarget)
               .Append(",\"bmil\":").Append(MilitaryCount())
-              .Append(",\"bmil_first\":").Append(Mathf.RoundToInt(milFirstAt))
-              .Append(",\"foes\":").Append(s.NextWaveCount)
+              .Append(",\"bmil_first\":").Append(milFirstAt >= 0f ? Mathf.RoundToInt(milFirstAt).ToString(ci) : "null")
+              // foes = LIVE enemies (was next-wave count — dashboards read
+              // wave size as live foes during the day; audit round 7).
+              .Append(",\"foes\":").Append(s.EnemyCount)
+              .Append(",\"next_foes\":").Append(s.NextWaveCount)
               .Append(",\"night\":").Append(s.IsNight ? "true" : "false")
               .Append(",\"wave\":").Append(s.Wave)
               .Append(",\"wave_total\":").Append(s.WaveTotal)
               .Append(",\"doors_cov\":").Append(s.DoorsCovered)
+              .Append(",\"doors_claimed\":").Append(s.DoorsClaimed)
               .Append(",\"doors\":").Append(s.DoorCount)
               .Append(",\"red\":").Append(s.RedAlert ? "true" : "false")
               .Append(",\"breaches\":").Append(BreachCount)
@@ -438,12 +516,41 @@ namespace ThronefallTrainer
             for (int i = 0; i < Strat.BuildOrder.Length; i++)
             {
                 string entry = Strat.BuildOrder[i];
-                string cat = entry.Split(':')[0].Trim();
+                var cc = entry.Split(':');
+                string cat = cc[0].Trim();
+                // Named entries check the NAME, not the category bucket —
+                // "upgrade:Barracks_T2" used to complete when a Castle Center
+                // upgrade incremented cat 'upgrade' (live-evidence audit).
+                string wantName = cc.Length > 1 ? cc[1].Split('-')[0].Trim() : null;
+                // Playbook names carry day/tier suffixes: "Barracks_T2_day6"
+                // → match the building "Barracks". Strip _dayN and _TN.
+                if (wantName != null)
+                {
+                    wantName = System.Text.RegularExpressions.Regex.Replace(
+                        wantName, "_day\\d+$", "",
+                        System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                    wantName = System.Text.RegularExpressions.Regex.Replace(
+                        wantName, "_T\\d+$", "",
+                        System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                }
                 cnt.TryGetValue(cat, out int k); cnt[cat] = k + 1;
-                CatBuilt.TryGetValue(cat, out int have);
+                bool done;
+                if (wantName != null)
+                {
+                    done = false;
+                    foreach (var nb in NameBuilt)
+                        if (nb.Value > 0 && nb.Key.IndexOf(wantName,
+                                System.StringComparison.OrdinalIgnoreCase) >= 0)
+                        { done = true; break; }
+                }
+                else
+                {
+                    CatBuilt.TryGetValue(cat, out int have);
+                    done = have >= cnt[cat];
+                }
                 if (i > 0) sb.Append(',');
                 sb.Append("{\"n\":").Append(JsonStr(entry))
-                  .Append(",\"done\":").Append(have >= cnt[cat] ? "true" : "false")
+                  .Append(",\"done\":").Append(done ? "true" : "false")
                   .Append('}');
             }
             sb.Append("]}");
@@ -459,6 +566,7 @@ namespace ThronefallTrainer
         private static void LoadStrategy(string scene)
         {
             Strat.Squad = Strat.Reserve = Strat.Escort = Strat.ArmyTarget = 0;
+        Strat.DoorDist = 40f;
             Strat.Focus = "";
             // Clear order data too — a missing playbook used to leave the
             // PREVIOUS scene's build order + checklist in the audit feed.
@@ -469,6 +577,7 @@ namespace ThronefallTrainer
             // scene's counts (playbook categories pre-satisfied, wrong
             // army-starved timers). Reset here where scene context changes.
             CatBuilt.Clear();
+            NameBuilt.Clear();
             catStuck.Clear();
             milFirstAt = -1f;
             catBuiltScene = null;
@@ -476,6 +585,9 @@ namespace ThronefallTrainer
             doorParked = null;       // unwalkable-door marks die with the scene
             BreachCount = 0;
             HornBi = null;           // stale horn handle across reloads
+            lastBuildPick = null;    // dead objects from the old scene
+            HeldBuildRef = null;
+        CommittedBuildRef = null;
             buildClassCache.Clear();
             try
             {
@@ -487,6 +599,19 @@ namespace ThronefallTrainer
                 Strat.Reserve = JInt(j, "reserve_size");
                 Strat.Escort = JInt(j, "escort_size");
                 Strat.ArmyTarget = JInt(j, "army_target");
+                // door_distance_m: how far out the perimeter anchors sit.
+                // Parsed but unconsumed until round-7 — the doc claimed the
+                // field did nothing; wire it into BuildDoors.
+                {
+                    var ddm = System.Text.RegularExpressions.Regex.Match(
+                        j, "\"door_distance_m\"\\s*:\\s*([\\d.]+)");
+                    if (ddm.Success && float.TryParse(ddm.Groups[1].Value,
+                        System.Globalization.NumberStyles.Float,
+                        System.Globalization.CultureInfo.InvariantCulture,
+                        out float dv) && dv >= 10f && dv <= 200f)
+                        Strat.DoorDist = dv;
+                    else Strat.DoorDist = 40f;
+                }
                 // build_order: ["cat:name - note", ...] — the playbook's
                 // literal sequence the scoring bonus below follows.
                 var bom = System.Text.RegularExpressions.Regex.Match(
@@ -656,21 +781,25 @@ namespace ThronefallTrainer
             // gates/spawns/level objects with their own "pos" keys that would
             // both shadow real slots and push the substrings out of range.
             int scopeEnd = json.Length;
+            int scopeStart = 0;
             int si = json.IndexOf("\"slots\"", System.StringComparison.Ordinal);
-            if (si >= 0)
+            if (si < 0) return null;   // no slots section — a full-file scan
+                                       // turns gates/spawns pos keys into
+                                       // phantom buildable slots.
             {
                 int so = json.IndexOf('[', si);
                 int sc = MatchBracket(json, so);
-                if (sc > so) scopeEnd = sc;
+                if (sc > so) { scopeStart = so; scopeEnd = sc; }
             }
-            int i = 0;
+            int i = scopeStart;
             while (true)
             {
                 i = json.IndexOf("\"pos\"", i, System.StringComparison.Ordinal);
                 if (i < 0 || i >= scopeEnd) break;
                 var sl = new SlotPackRec { name = "" };
-                // id sits a few chars before pos
-                int h = json.LastIndexOf("\"id\"", i);
+                // id sits a few chars before pos — bounded to the slots
+                // section so a slot can't adopt a preceding object's id.
+                int h = json.LastIndexOf("\"id\"", i, i - scopeStart);
                 if (h > 0 && i - h < 400) { var m = System.Text.RegularExpressions.Regex.Match(json.Substring(h, System.Math.Min(32, json.Length - h)), "\"id\"\\s*:\\s*(-?\\d+)"); if (m.Success) sl.id = int.Parse(m.Groups[1].Value, ci); }
                 var pm = System.Text.RegularExpressions.Regex.Match(json.Substring(i, System.Math.Min(120, json.Length - i)),
                     "\"pos\"\\s*:\\s*\\[\\s*(-?[\\d.eE+-]+)\\s*,\\s*(-?[\\d.eE+-]+)\\s*,\\s*(-?[\\d.eE+-]+)\\s*\\]");
@@ -678,8 +807,15 @@ namespace ThronefallTrainer
                     float.Parse(pm.Groups[1].Value, ci),
                     float.Parse(pm.Groups[2].Value, ci),
                     float.Parse(pm.Groups[3].Value, ci) };
+                // stands must come from THIS slot — an unbounded search let
+                // a stand-less slot attach the NEXT slot's stands (re-audit:
+                // scopeEnd/20 k alone still crossed record boundaries). Bound
+                // it to the next "pos" — a slot record ends where the next
+                // begins.
+                int nextPos = json.IndexOf("\"pos\"", i + 5, System.StringComparison.Ordinal);
+                int slotEnd = (nextPos > i && nextPos < scopeEnd) ? nextPos : scopeEnd;
                 int st = json.IndexOf("\"stands\"", i, System.StringComparison.Ordinal);
-                if (st > 0)
+                if (st > 0 && st < slotEnd)
                 {
                     int open = json.IndexOf('[', st);
                     int close = MatchBracket(json, open);
@@ -729,8 +865,27 @@ namespace ThronefallTrainer
             EnsureInteractorFields();
             try
             {
-                if (fiComplete != null && (bool)fiComplete.GetValue(bi)) return true;
-                if (fiWaiting != null && (bool)fiWaiting.GetValue(bi)) return true;
+                // interactionComplete LATCHES after the first successful hold —
+                // a multi-tier building (Castle Center: 4 upgrade tiers) then
+                // read "finished" forever and never offered tier 2, which is
+                // why the barracks activator stayed at level 1. The game's own
+                // CanBeInteractedWith is authoritative: a slot that still
+                // accepts interaction is NOT finished regardless of the flag.
+                if (!bi.CanBeInteractedWith)
+                {
+                    if (fiComplete != null && (bool)fiComplete.GetValue(bi)) return true;
+                    // isWaitingForChoice is STALE-SAFE: a slot whose hold ended
+                    // mid-choice keeps the flag latched forever, which read as
+                    // "finished" and skipped the Castle Center's second tier —
+                    // the barracks activator then never reached level 2. Only a
+                    // LIVE choice coroutine counts as finished here.
+                    if (fiWaiting != null && (bool)fiWaiting.GetValue(bi))
+                    {
+                        var cm = ChoiceManager.instance;
+                        if (cm != null && cm.ChoiceCoroutineRunning) return true;
+                        // no live choice — stale flag, keep the slot pickable
+                    }
+                }
             }
             catch { }
             return false;
@@ -740,7 +895,7 @@ namespace ThronefallTrainer
         /// isWaitingForChoice must NOT read as finished (a mid-fill choice
         /// would drop the hold → release → refund; the exact bmil=0 loop).
         /// </summary>
-        private static bool IsInteractorComplete(BuildingInteractor bi)
+        public static bool IsInteractorComplete(BuildingInteractor bi)
         {
             // Held-slot check runs BEFORE IsInteractorFinished in the scan —
             // a null fiComplete would mean "never finished" and the bot would
@@ -754,8 +909,13 @@ namespace ThronefallTrainer
         {
             if (open < 0) return -1;
             int depth = 0;
+            bool inStr = false;
             for (int i = open; i < s.Length; i++)
             {
+                // Skip string literals — a '[' or ']' inside a name/note
+                // corrupted depth and truncated sections.
+                if (s[i] == '"' && (i == 0 || s[i - 1] != '\\')) inStr = !inStr;
+                if (inStr) continue;
                 if (s[i] == '[') depth++;
                 else if (s[i] == ']') { if (--depth == 0) return i; }
             }
@@ -932,9 +1092,19 @@ namespace ThronefallTrainer
         public static Snapshot Last;               // newest capture (overlay)
         public static bool LastValid;
 
+        /// <summary>The executor's currently-held interactor — survives
+        /// leaving the builds list mid-fill so stickiness isn't lost.</summary>
+        public static BuildingInteractor HeldBuildRef;
+        public static BuildingInteractor CommittedBuildRef;
+        public static float CommittedBuildAt;
+
+        // TagManager list-flicker grace — see the carry-forward below.
+        private static BuildingInteractor lastBuildPick;
+        private static float lastBuildPickAt;
+
         public static Snapshot Capture(int preferBuildKey = -1)
         {
-            var s = new Snapshot { GameState = "unknown" };
+            var s = new Snapshot { GameState = "unknown", UncoveredDoorIdx = -1 };
             s.SceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
             LoadSlotPack(s.SceneName);
 
@@ -1152,6 +1322,7 @@ namespace ThronefallTrainer
                 for (int d = 0; d < doorUnit.Length; d++) doorUnit[d] = 0;
                 s.DoorsCovered = 0; s.FreeUnits = 0;
                 s.UncoveredDoorPos = Vector3.zero; s.UncoveredDoorLine = null;
+                s.UncoveredDoorIdx = -1;
             }
 
             // Allied army (troop buildings / heroes). Used to anchor the hero
@@ -1217,35 +1388,54 @@ namespace ThronefallTrainer
                 s.DoorCount = s.DoorAnchors.Length;
                 s.DoorsCovered = 0;
                 s.UncoveredDoorPos = Vector3.zero; s.UncoveredDoorLine = null;
+                s.UncoveredDoorIdx = -1;
                 s.UncoveredDoorHot = false;
                 float leakD = float.MaxValue;
+                int doorsClaimed = 0;
                 for (int hot = 1; hot >= 0; hot--)
                 {
                     for (int d = 0; d < s.DoorAnchors.Length; d++)
                     {
-                        if (DoorParked(d)) continue;   // aim-stall proved it
-                        if (doorUnit[d] >= DoorTarget(d, pk)) { if (hot == 1) s.DoorsCovered++; continue; }
-                        // Claimed + walking — skip re-posting for 25 s.
+                        if (DoorParked(d))
+                        {
+                            // Parked = unwalkable proof — count it covered so
+                            // doors_cov can still reach doors and defenseFirst
+                            // doesn't latch permanently on a dead anchor.
+                            if (hot == 1) s.DoorsCovered++;
+                            continue;
+                        }
+                        if (doorUnit != null && d < doorUnit.Length &&
+                            doorUnit[d] >= DoorTarget(d, pk))
+                        { if (hot == 1) s.DoorsCovered++; continue; }
+                        // Claimed + walking — skip re-posting for 25 s. This
+                        // is "claimed", not "covered" — a wiped squad used to
+                        // inflate doors_cov. Tracked separately now.
                         if (doorClaim != null && d < doorClaim.Length &&
                             UnityEngine.Time.unscaledTime - doorClaim[d] < 25f)
                         {
-                            if (hot == 1) s.DoorsCovered++;   // en route counts
+                            if (hot == 1) { s.DoorsCovered++; doorsClaimed++; }
                             continue;
                         }
-                        if ((doorFoes != null && doorFoes[d] > 0) != (hot == 1)) continue;
+                        if ((doorFoes != null && d < doorFoes.Length &&
+                             doorFoes[d] > 0) != (hot == 1)) continue;
                         float dc = FlatDist(s.DoorAnchors[d], s.CastlePos);
                         if (hot == 1 || dc < leakD)
                         {
                             if (hot == 0) leakD = dc;
                             s.UncoveredDoorPos = s.DoorAnchors[d];
-                            s.UncoveredDoorLine = d < s.DoorLines.Length ? s.DoorLines[d] : "";
+                            s.UncoveredDoorIdx = d;
+                            s.UncoveredDoorLine =
+                                d < (s.DoorLines?.Length ?? 0) ? s.DoorLines[d] : "";
                             s.UncoveredDoorTarget = DoorTarget(d, pk);
                             s.UncoveredDoorHot = hot == 1;
                             if (hot == 1) break;   // first hot door wins
                         }
                     }
                 }
-                s.HasUncoveredDoor = s.UncoveredDoorPos != Vector3.zero;
+                s.DoorsClaimed = doorsClaimed;
+                // Sentinel bug: an anchor legitimately AT world origin read
+                // as "no uncovered door" — the index is the truth.
+                s.HasUncoveredDoor = s.UncoveredDoorIdx >= 0;
                 // Army target: squad-size per door (breach doubles), at least
                 // 16, plus headroom for the incoming wave — production runs
                 // until met.
@@ -1315,7 +1505,7 @@ namespace ThronefallTrainer
                             doorBreach[bi] = true;
                             BreachCount++;
                             Policy.Pulse(-0.4f);   // RL: breaches cost
-                            Plugin.Log?.LogWarning($"[bot] BREACH on door '{s.DoorLines[bi]}' — squad target raised");
+                            Plugin.Log?.LogWarning($"[bot] BREACH on door '{(bi < (s.DoorLines?.Length ?? 0) ? s.DoorLines[bi] : "?")}' — squad target raised");
                         }
                     }
                 }
@@ -1453,10 +1643,18 @@ namespace ThronefallTrainer
                                 System.Reflection.BindingFlags.Public |
                                 System.Reflection.BindingFlags.NonPublic;
                             var t = bi.GetType();
-                            object tb = t.GetField("targetBuilding", BF)?.GetValue(bi)
-                                     ?? t.GetProperty("targetBuilding", BF)?.GetValue(bi)
-                                     ?? t.GetField("building", BF)?.GetValue(bi)
-                                     ?? t.GetProperty("building", BF)?.GetValue(bi);
+                            // Walk the base types — GetField with NonPublic
+                            // does NOT return fields declared on a base class
+                            // (the horn's targetBuilding lives there), so bn
+                            // stayed "" and horn detection degraded.
+                            object tb = null;
+                            for (var tt = t; tt != null && tb == null; tt = tt.BaseType)
+                            {
+                                tb = tt.GetField("targetBuilding", BF)?.GetValue(bi)
+                                  ?? tt.GetProperty("targetBuilding", BF)?.GetValue(bi)
+                                  ?? tt.GetField("building", BF)?.GetValue(bi)
+                                  ?? tt.GetProperty("building", BF)?.GetValue(bi);
+                            }
                             bn = tb is UnityEngine.Component c ? (c.name ?? c.GetType().Name)
                                : tb != null ? tb.GetType().Name : "";
                         }
@@ -1546,6 +1744,17 @@ namespace ThronefallTrainer
             // interactor's state to None anyway, so parked slots get a fresh
             // retry on the next day rather than expiring mid-day.
             if (s.IsNight && buildIgnore.Count > 0) buildIgnore.Clear();
+            // Long-day leak: destroyed slots and one-shot ignores accumulate
+            // as keys forever (Unity fake-null keys hold the entry). Sweep
+            // expired entries when the table grows past a small bound.
+            if (buildIgnore.Count > 64)
+            {
+                var dead = new List<BuildingInteractor>();
+                float nowU = Time.unscaledTime;
+                foreach (var kv in buildIgnore)
+                    if (kv.Key == null || kv.Value <= nowU) dead.Add(kv.Key);
+                foreach (var k in dead) buildIgnore.Remove(k);
+            }
 
             // ArmyAnchor: day-time pre-positioning on the incoming wave's
             // corridor (botpack waves -> spawnRoutes -> a waypoint ~12 m out
@@ -1569,11 +1778,47 @@ namespace ThronefallTrainer
             // eating a 7 s stall-watch park.
             s.NearestBuildDist = float.MaxValue;
             int bestBuildScore = int.MinValue;
+            int commitCandScore = int.MinValue;   // committed slot's score
+            float commitCandDist = 0f;            // this pass (if it survived
+            float nowT = Time.unscaledTime;       // the filters)
             var builds = tm.playerBuildingInteractors;
+            // Held-hold identity pin: a mid-fill interactor LEAVES the
+            // builds list while its fill runs (pads deactivate) — the
+            // preferBuildKey match then misses every tick and the brain
+            // release/re-begins forever (fill never completes: Castle lvl=0
+            // bug). If the held object still exists and isn't complete, keep
+            // it selected regardless of list membership.
+            if (HeldBuildRef != null)
+            {
+                bool hbInList = false;
+                for (int i = 0; i < builds.Count; i++)
+                    if (ReferenceEquals(builds[i], HeldBuildRef)) { hbInList = true; break; }
+                if (!hbInList)
+                {
+                    float hdh = (HeldBuildRef.transform.position - s.HeroPos).sqrMagnitude;
+                    bool midCh = ChoiceManager.instance != null &&
+                                 ChoiceManager.instance.ChoiceCoroutineRunning;
+                    // 12 m held radius — the castle's stand ring sits ~9.5 m
+                    // from center; 6 m (36 sqr) dropped the pin every tick.
+                    if (hdh <= (midCh ? 400f : 144f) && !IsInteractorComplete(HeldBuildRef))
+                    {
+                        s.NearestBuild = HeldBuildRef;
+                        s.NearestBuildDist = hdh;
+                        s.NearestBuildScore = 100000;
+                        bestBuildScore = int.MaxValue;
+                        s.BuildCount++;
+                    }
+                }
+            }
             for (int i = 0; i < builds.Count; i++)
             {
                 var bi = builds[i];
-                if (bi == null || !bi.isActiveAndEnabled) continue;
+                if (bi == null) continue;
+                // Do NOT gate on isActiveAndEnabled — Thronefall's build pads
+                // report act=False while still fully interactable (live diag:
+                // Barracks(act=False, can=True) sat unbuildable for the whole
+                // day). CanBeInteractedWith is the game's own predicate —
+                // it already goes false on destroyed/removed slots.
                 // Held-hold stickiness must outrank the interactable filter:
                 // mid-choice slots report CanBeInteractedWith=false while the
                 // unit pick resolves — skipping them here releases the hold
@@ -1581,16 +1826,35 @@ namespace ThronefallTrainer
                 // waitChoice → brain re-picked Barracks → refund → never
                 // completes). Keep the held slot selected until done.
                 bool heldMatch0 = preferBuildKey >= 0 &&
-                                  bi.GetInstanceID() == preferBuildKey;
+                                  (bi.GetInstanceID() == preferBuildKey ||
+                                   ReferenceEquals(bi, HeldBuildRef));
                 if (heldMatch0)
                 {
                     float hd0 = (bi.transform.position - s.HeroPos).sqrMagnitude;
-                    if (hd0 <= 6f * 6f && !IsInteractorComplete(bi))
+                    // Completion surfaced to the brain: it releases the hold
+                    // instantly instead of riding the 7 s stall watchdog —
+                    // the latch-loop (complete → re-hold → early-return →
+                    // stall → re-pick) is how Castle Center tier-2 never ran.
+                    if (IsInteractorComplete(bi)) s.HeldBuildComplete = true;
+                    // Mid-choice slots MUST stay held at any distance —
+                    // walking >6 m during a pick + going invisible caused the
+                    // refund churn. Keep them selected while a choice coroutine
+                    // is live (or they simply report non-interactable).
+                    bool midChoice = ChoiceManager.instance != null &&
+                                     ChoiceManager.instance.ChoiceCoroutineRunning;
+                    // 12 m held radius: big-building stands (castle ~9.5 m
+                    // center-dist) used to exceed 6 m and drop the pin →
+                    // per-tick release/re-begin thrash (fill never fills).
+                    float heldR = midChoice ? 400f : 144f;  // 20 m vs 12 m
+                    if (hd0 <= heldR && !IsInteractorComplete(bi))
                     {
                         s.NearestBuildDist = hd0;
                         s.NearestBuild = bi;
                         s.NearestBuildScore = 100000;
                         bestBuildScore = int.MaxValue;
+                        s.BuildCount++;          // held pick is still a
+                                                 // candidate — bld telemetry
+                                                 // underreported it to 0
                         continue;
                     }
                 }
@@ -1611,6 +1875,20 @@ namespace ThronefallTrainer
                 var bs = bi.targetBuilding;
                 if (bs != null)
                 {
+                    // Deactivated slots accept payment through the interactor
+                    // but NEVER materialize — Activate() only fires when the
+                    // slot's activator building passes activatorLevel. The
+                    // barracks held to waitChoice, "completed", and produced
+                    // zero units: lvl=1 Built on an inactive GameObject.
+                    // Skip only while the slot is still activator-GATED — a
+                    // slot whose activator already passed its level (or was
+                    // never StartDeactivated) is legitimately interactable:
+                    // unconditional skipping made them invisible forever
+                    // (round-7 audit). ActivatorBuilding can be null — guard.
+                    if (!bs.gameObject.activeInHierarchy && bs.StartDeactivated &&
+                        (bs.ActivatorBuilding == null ||
+                         bs.ActivatorBuilding.Level <= bs.ActivatorLevel))
+                        continue;
                     if (bs.NextUpgradeOrBuildEnergyCoreCost > s.CoreBalance)
                         continue;                              // can't afford cores — skip outright
                     if (!bi.canBeHarvested && s.Balance <= 0 &&
@@ -1658,11 +1936,13 @@ namespace ThronefallTrainer
                         string scat = BuildCat(bs.buildingName);
                         int oi = System.Array.IndexOf(open, scat);
                         if (oi >= 0)
-                            // The playbook IS the default policy: open[0]
-                            // outbids even a harvest; open[1..2] still beat
-                            // any non-plan pick (tower spam at +600 used to
-                            // swallow the plan's wall→gate→military order).
-                            score += broke ? 0 : (oi == 0 ? 1200 : 600 - oi * 150);
+                            // HARD build order (user mandate): the next
+                            // playbook category is not a hint — it's a pin.
+                            // open[0] outbids everything except an active
+                            // hold (100000) — walls/gates/military/upgrades
+                            // can no longer lose to tower-spam or a broke
+                            // wallet. open[1..2] stay strong suggestions.
+                            score += oi == 0 ? 8000 : (600 - oi * 150);
                     }
                 }
                 s.BuildCount++;
@@ -1674,8 +1954,12 @@ namespace ThronefallTrainer
                 // Held-hold stickiness: the slot we're mid-pay on wins
                 // outright while it's still interactable and near — prevents
                 // per-tick pick flips that refund the partial fill.
-                bool heldMatch = preferBuildKey >= 0 && bi.GetInstanceID() == preferBuildKey;
-                if (heldMatch && d <= 6f * 6f)
+                // Stickiness must die on completion — a completed interactor
+                // re-winning +100000 makes the brain keep pumping a latch the
+                // fill can never satisfy (castle tier-2 wedge).
+                bool heldMatch = preferBuildKey >= 0 && bi.GetInstanceID() == preferBuildKey
+                                 && !IsInteractorComplete(bi);
+                if (heldMatch && d <= 12f * 12f)   // castle stand ring is ~9.5 m
                 {
                     s.NearestBuildDist = d;
                     s.NearestBuild = bi;
@@ -1683,6 +1967,8 @@ namespace ThronefallTrainer
                     bestBuildScore = int.MaxValue;   // no later pick can beat it
                     continue;
                 }
+                if (CommittedBuildRef != null && ReferenceEquals(bi, CommittedBuildRef))
+                { commitCandScore = score; commitCandDist = d; }
                 if (score > bestBuildScore || (score == bestBuildScore && d < s.NearestBuildDist))
                 {
                     bestBuildScore = score;
@@ -1690,6 +1976,79 @@ namespace ThronefallTrainer
                     s.NearestBuild = bi;
                     s.NearestBuildScore = score;
                 }
+            }
+            // Slot-scan diagnostic: WHY did the military never build? Dump the
+            // filtered interactables once per 30 s of day — the audit found
+            // 406 day ticks with bld=0 and barracks never appearing as `bn`.
+            if (!s.IsNight && Time.unscaledTime > slotDumpAt)
+            {
+                slotDumpAt = Time.unscaledTime + 30f;
+                var skip = new System.Text.StringBuilder();
+                for (int i = 0; i < builds.Count; i++)
+                {
+                    var bi = builds[i];
+                    if (bi == null) continue;
+                    string bn = bi.targetBuilding != null ? bi.targetBuilding.buildingName : bi.name;
+                    if (bn == null || bn.IndexOf("barrack", System.StringComparison.OrdinalIgnoreCase) < 0 &&
+                        bn.IndexOf("archer", System.StringComparison.OrdinalIgnoreCase) < 0 &&
+                        bn.IndexOf("militia", System.StringComparison.OrdinalIgnoreCase) < 0 &&
+                        bn.IndexOf("wall", System.StringComparison.OrdinalIgnoreCase) < 0 &&
+                        bn.IndexOf("gate", System.StringComparison.OrdinalIgnoreCase) < 0 &&
+                        bn.IndexOf("castle", System.StringComparison.OrdinalIgnoreCase) < 0) continue;
+                    if (bn.IndexOf("castle", System.StringComparison.OrdinalIgnoreCase) >= 0)
+                    {
+                        var csl = bi.targetBuilding;
+                        skip.Append(bn)
+                            .Append("(can=").Append(bi.CanBeInteractedWith)
+                            .Append(csl != null ?
+                                (",lvl=" + csl.Level +
+                                 ",upgs=" + (csl.OwnUpgrades != null ? csl.OwnUpgrades.Count : -1) +
+                                 ",canUp=" + csl.CanBeUpgraded) : "")
+                            .Append(");");
+                        continue;
+                    }
+                    var bslot = bi.targetBuilding;
+                    skip.Append(bn)
+                        .Append("(inter=").Append(bi.isActiveAndEnabled)
+                        .Append(",can=").Append(bi.CanBeInteractedWith)
+                        .Append(",slot=").Append(bslot == null ? "?" :
+                            (bslot.gameObject.activeInHierarchy ? "on" : "off"))
+                        .Append(bslot != null ?
+                            (",lvl=" + bslot.Level +
+                             ",actLvl=" + bslot.ActivatorLevel +
+                             ",via=" + (bslot.ActivatorBuilding != null
+                                 ? bslot.ActivatorBuilding.buildingName + ":" + bslot.ActivatorBuilding.Level
+                                 : "-")) : "")
+                        .Append(");");
+                }
+                if (skip.Length > 0)
+                    Plugin.Log?.LogInfo($"[bot] mil/wall slot state: {skip}");
+            }
+            // Approach-commit hysteresis: two same-name slots scoring within
+            // ~35% flip-flopped the pick every tick — the hero orbited
+            // between Defense Towers for 150 s paying each once and never
+            // finishing any (Durststein). While walking, keep the committed
+            // slot unless the new argmax CLEARLY beats it or the commit went
+            // stale/invalid.
+            if (HeldBuildRef != null)
+            {
+                CommittedBuildRef = null;      // a live hold supersedes
+            }
+            else if (s.NearestBuild != null && CommittedBuildRef != null &&
+                !ReferenceEquals(s.NearestBuild, CommittedBuildRef) &&
+                commitCandScore > int.MinValue &&
+                nowT - CommittedBuildAt < 25f &&
+                bestBuildScore <= commitCandScore * 1.35f + 60)
+            {
+                s.NearestBuild = CommittedBuildRef;
+                s.NearestBuildDist = commitCandDist;
+                s.NearestBuildScore = commitCandScore;
+            }
+            else if (s.NearestBuild != null &&
+                !ReferenceEquals(s.NearestBuild, CommittedBuildRef))
+            {
+                CommittedBuildRef = s.NearestBuild;
+                CommittedBuildAt = nowT;
             }
             if (s.NearestBuild != null)
             {
@@ -1721,6 +2080,30 @@ namespace ThronefallTrainer
                 }
             }
             else s.NearestBuildDist = 0f;
+            // TagManager flicker grace: playerBuildingInteractors goes EMPTY
+            // for whole tick runs mid-hold (inter=0 flicker) — the pick then
+            // drops, SpendGold is skipped, hero-door walks the hero off, and
+            // the distance guard releases the fill (hold/release thrash at
+            // Mill, live run). Carry the last pick forward for 1.5 s while
+            // the hero is still within hold range of it.
+            if (s.NearestBuild == null && lastBuildPick != null &&
+                Time.unscaledTime - lastBuildPickAt < 1.5f &&
+                (lastBuildPick.transform.position - s.HeroPos).sqrMagnitude <= 196f)
+            {
+                s.NearestBuild = lastBuildPick;
+                s.NearestBuildPos = lastBuildPick.transform.position;
+                s.NearestBuildDist = FlatDist(s.NearestBuildPos, s.HeroPos);
+                s.NearestBuildKey = lastBuildPick.GetInstanceID();
+                s.NearestBuildHarvest = lastBuildPick.canBeHarvested;
+                s.NearestBuildName = lastBuildPick.targetBuilding != null
+                    ? lastBuildPick.targetBuilding.buildingName : lastBuildPick.name;
+                s.BuildCount++;
+            }
+            else if (s.NearestBuild != null)
+            {
+                lastBuildPick = s.NearestBuild;
+                lastBuildPickAt = Time.unscaledTime;
+            }
 
             // v3 seam fields: singleton presence + busy + weapon state (P6).
             s.CanCommand = CommandUnits.instance != null;
@@ -1982,13 +2365,15 @@ namespace ThronefallTrainer
                         if (key == null && seen.Contains("")) continue;
                         if (key == null) seen.Add("");
                         var last = r.wp[r.wp.Length - 1];
-                        // perimeter anchor ~40 m out (outer line — squads meet
-                        // the wave early, not at the doorstep)
+                        // perimeter anchor ~door_distance_m out (outer line —
+                        // squads meet the wave early, not at the doorstep;
+                        // was hard-coded 40 m, now playbook-tunable)
                         bool added = false;
+                        float dd = Strat.DoorDist * Strat.DoorDist;
                         for (int i = r.wp.Length - 1; i >= 0; i--)
                         {
                             float dx = r.wp[i][0] - last[0], dz = r.wp[i][1] - last[1];
-                            if (dx * dx + dz * dz >= 1600f)
+                            if (dx * dx + dz * dz >= dd)
                             {
                                 A.Add(new Vector3(r.wp[i][0], s.CastlePos.y, r.wp[i][1]));
                                 L.Add(key ?? "");

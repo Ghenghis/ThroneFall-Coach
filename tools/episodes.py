@@ -75,10 +75,14 @@ def convert(run_dir: pathlib.Path):
         try: t = json.loads(line)
         except Exception: continue
         if "mode" not in t: continue
+        if t["mode"] not in MODES:
+            # Unknown/new mode → index-0 ("Idle") poisoning of the training
+            # set. Skip the row instead of mislabeling it.
+            continue
         hp = t.get("hp") or prev_hp
         row = {
             "s": feats(t, None),
-            "a": MODES.index(t["mode"]) if t["mode"] in MODES else 0,
+            "a": MODES.index(t["mode"]),
             "mode": t["mode"],
             "t": t.get("t"),
             "hp_d": hp - prev_hp,

@@ -13,10 +13,15 @@ nav  = {os.path.splitext(os.path.basename(f))[0]: f for f in glob.glob(base + r'
 lvl  = {os.path.splitext(os.path.basename(f))[0]: f for f in glob.glob(base + r'\levels\*.json')}
 
 def scene_name(fp):
+    # No-underscore filenames used to IndexError on BOTH paths (the except
+    # re-threw the same expression). Fall back to the full stem.
+    fb = os.path.basename(fp)
+    parts = os.path.splitext(fb)[0].split('_', 1)
     try:
-        return json.load(open(fp)).get('scene') or os.path.basename(fp).split('_', 1)[1]
+        with open(fp, encoding='utf-8') as fh:
+            return json.load(fh).get('scene') or parts[1] if len(parts) > 1 else parts[0]
     except Exception:
-        return os.path.basename(fp).split('_', 1)[1]
+        return parts[1] if len(parts) > 1 else parts[0]
 
 waves = {}
 for row in csv.DictReader(open(base + r'\waves_all.csv', encoding='utf-8-sig')):
@@ -76,7 +81,9 @@ for key, tf in sorted(terr.items()):
                         'dayNight': l.get('dayNight'), 'autoDayNight': l.get('autoDayNight'),
                         'nightCall': l.get('nightCall')}
 
-    json.dump(out, open(os.path.join(dst, sc + '.json'), 'w'))
+    os.makedirs(dst, exist_ok=True)   # fresh checkout crashed on missing dir
+    with open(os.path.join(dst, sc + '.json'), 'w', encoding='utf-8') as fh:
+        json.dump(out, fh)   # default cp1252 mojibake'd non-ASCII displayNames
     built += 1
 
 print('botpack scenes written:', built)

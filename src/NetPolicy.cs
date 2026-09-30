@@ -60,6 +60,27 @@ namespace ThronefallTrainer
                         $"{Features(default(BotPerception.Snapshot)).Length} — net NOT loaded");
                     Loaded = false;
                 }
+                // FULL chain check: hidden/output layer boundaries must line
+                // up end-to-end or Mul silently truncates to wrong dims.
+                if (Loaded)
+                {
+                    bool ok =
+                        w2.Length > 0 && w2[0] != null && w2[0].Length == w1.Length &&
+                        b1 != null && b1.Length == w1.Length &&
+                        b2 != null && b2.Length == w2.Length &&
+                        wp[0] != null && wp[0].Length == w2.Length &&
+                        bp != null && bp.Length == wp.Length &&
+                        wp.Length == Modes.Length;
+                    if (!ok)
+                    {
+                        Plugin.Log?.LogWarning(
+                            $"[net] layer dims broken: w1 {w1.Length}x{w1[0].Length} " +
+                            $"w2 {w2.Length}x{(w2[0] != null ? w2[0].Length : -1)} " +
+                            $"wp {wp.Length}x{(wp[0] != null ? wp[0].Length : -1)} " +
+                            $"(need {Modes.Length} outputs) — net NOT loaded");
+                        Loaded = false;
+                    }
+                }
                 if (Loaded)
                     Plugin.Log?.LogInfo(
                         $"[net] policy net loaded ({w1.Length}x{w1[0].Length}" +
@@ -128,7 +149,10 @@ namespace ThronefallTrainer
                 {
                     var p = Path.Combine(Recorder.AgentDir, "netpolicy.json");
                     var mt = File.Exists(p) ? File.GetLastWriteTimeUtc(p) : default;
-                    if (mt != netMtime) { netMtime = mt; Init(); }
+                    // Latch the mtime only on a SUCCESSFUL load — a torn
+                    // sidecar write used to consume the mtime and the retry
+                    // window then skipped the fix for 30 s.
+                    if (mt != netMtime) { Init(); if (Loaded) netMtime = mt; }
                 }
                 catch { }
             }

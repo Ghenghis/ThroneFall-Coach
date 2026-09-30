@@ -14,7 +14,6 @@ $ErrorActionPreference = 'Continue'
 $gameRoot = Split-Path $PSScriptRoot -Parent | Split-Path -Parent
 $logFile  = Join-Path $gameRoot 'BepInEx\plugins\bot-log.jsonl'
 $cfgFile  = Join-Path $gameRoot 'BepInEx\config\dev.thronefall.trainer.cfg'
-$bep      = Join-Path $gameRoot 'BepInEx\LogOutput.log'
 $issues = 0
 
 function Diag([string]$sev, [string]$what, [string]$detail, [string]$fix) {
@@ -119,8 +118,9 @@ if ($cfg -ne '') {
         Diag 'FAIL' 'config drift' "BotSurvivalCheats=false but $($cheatsOn.Count) cheat flags still true: $(($cheatsOn | ForEach-Object { $_.Groups[1].Value }) -join ', ')" `
              "run with -Fix to write false values, or edit $cfgFile manually"
         if ($Fix) {
-            $fixed = [regex]::Replace($cfg, '(?m)^(\s*(GodHero|GodAll|InstantKill|NeverLose|NoCooldown|FreeBuild|InstantBuild)\s*=\s*)true', '${1}false')
-            Set-Content $cfgFile $fixed -NoNewline
+            $fixed = [regex]::Replace($cfg, '(?m)^(\s*(GodHero|GodAll|InstantKill|NeverLose|NoCooldown|FreeBuild|InstantBuild|GoldDrip)\s*=\s*)true', '${1}false')
+            # UTF8 — default ANSI silently corrupted non-ASCII cfg values.
+            Set-Content $cfgFile $fixed -NoNewline -Encoding UTF8
             Write-Host "  → repaired $cfgFile (cheats forced false)" -ForegroundColor Green
         }
     } else {

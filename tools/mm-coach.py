@@ -54,9 +54,14 @@ def game_digest(scene="Durststein"):
                    if not p.stem.startswith(("strategy_",)))
     if not f.exists() and packs:
         # exact stem match only — a substring would grab challenge maps
-        f = [p for p in packs if p.stem.lower() == scene.lower()]
-        f = f[0] if f else packs[0]
-    d = json.loads(f.read_text())
+        m = [p for p in packs if p.stem.lower() == scene.lower()]
+        if not m:
+            sys.exit(f"no botpack for '{scene}' — refusing to silently "
+                     f"substitute another scene's data into the prompt")
+        f = m[0]
+    elif not f.exists():
+        sys.exit(f"no botpack for '{scene}' and no packs at all")
+    d = json.loads(f.read_text(encoding='utf-8'))
     waves = d.get("waves", [])[:12]
     return {
         "scene": d.get("scene", f.stem),

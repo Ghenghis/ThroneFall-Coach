@@ -1,5 +1,46 @@
 # Changelog
 
+## v3.0-dev round-7 audit pass (2026-06-30)
+
+Nine-agent audit fleet + live Neuland evidence; defects fixed:
+
+- **Nav root cause**: brain aims were Vec2-flattened to y=0 — elevated/pocket
+  slots always produced wrong-layer A* goals, mass-parking the buildable map
+  and starving SpendGold into a permanent Idle deadlock. `AimY` now restores
+  the real target height; parked cells are forgiven on each new match
+  (`Memory.ForgiveParks`).
+- **Double BeginRun**: a blocking frame on the InMatch edge could re-run
+  `BeginRun`/`Coach.ResetRun` mid-match — fixed via `recordedScene` commit at
+  the edge + full per-match reset set (mem/arriveSince/detour/holdDoneName).
+- **Coach deadlock**: `Coach.ResetRun` now clears `lastCmdText` — the
+  byte-identical server retry could never re-apply (permanent BROKEN loop).
+  Server writes carry a per-attempt nonce so retries produce fresh bytes.
+- **Legit lock hardening**: all GUI cheat controls are `GUI.enabled`-gated
+  while `Bot.Legit`; `GoldDrip` is force-bypassed in legit mode; `Bot.Legit`
+  refreshes every frame (config-manager edits no longer leave it stale);
+  cheat-bundle restore is conditional (mid-run user flips preserved);
+  menu unfreeze restores only our own freeze; watchdog ignores frozen heroes.
+- **Checklist integrity**: named playbook entries (`upgrade:Barracks_T2`) now
+  match on build NAME — a Castle upgrade no longer satisfies Barracks items.
+- **Persistence**: Policy update overflow guard, JSON key escape/unescape,
+  Memory scene sanitize, `ForgiveScene` EnsureInit, NetPolicy full-layer dim
+  check + torn-file mtime retry, Recorder Tick phantom/drop accounting,
+  writer-join on Stop, single-pass JSON unescape (Windows path safe).
+- **Perception**: gated inactive-slot skip (activator-bound only, not all
+  inactive), slot-pack parse bounded to the slots section, bracket matcher
+  skips string literals, horn reflection walks base types, door claim/park by
+  index, parked doors counted covered, `doors_claimed`/`next_foes` telemetry
+  split, `door_distance_m` strategy field consumed, held-mid-choice slots
+  stay selected, `buildIgnore` sweep.
+- **Brain**: build-done returns immediately (no release→begin thrash),
+  SlotVisitKey cleared on every release, newMatch resets ArmyPhase, scene
+  flicker ignored, castle-threat at distance 0 stays urgent, JSONL notes
+  escaped, orbit-dt clamped.
+- **Tools**: PS5.1-safe bot-lint, gen-fields param order + no-BOM, verify
+  FAIL-grep, deploy log freshness gate, decompile exit codes, replay fixture
+  path, e2e atomic command write, coach-server tail-reads everywhere +
+  `clear:true` release + validated extract_cmd + live `wave`/`bld` sig fields.
+
 ## v3.0-dev — agentic architecture Phase 0–2 (2026-09-29)
 
 Per `docs/AGENTIC-DESIGN.md` — the agentic layers land incrementally;

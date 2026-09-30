@@ -20,6 +20,14 @@ namespace ThronefallTrainer
     {
         private static readonly HashSet<string> parked = new HashSet<string>();
         private static readonly HashSet<string> parkedWhy = new HashSet<string>();
+        // Parks EXPIRE — a permanent cell quarantine was the "bot forgets
+        // walls/gates" bug: one transient stall (nav block mid-wave) removed
+        // the slot from every later attempt and the open_order could never
+        // complete. 5 min of wall time is enough to dodge a live jam while
+        // still retrying later.
+        private static readonly System.Collections.Generic.Dictionary<string, float> parkedAt =
+            new System.Collections.Generic.Dictionary<string, float>();
+        private const float ParkTtlS = 300f;
         // Scene-level quarantine: a persisted dead match (interactables
         // never spawn — the game resumes the same corrupt save on every
         // reload) must not be re-entered across sessions.
@@ -46,7 +54,20 @@ namespace ThronefallTrainer
         public static bool IsParked(string scene, Vector3 pos)
         {
             EnsureInit();
-            return parked.Contains(scene + "|" + Cell(pos));
+            string key = Sanitize(scene) + "|" + Cell(pos);
+            if (!parked.Contains(key)) return false;
+            if (parkedAt.TryGetValue(key, out float at) &&
+                UnityEngine.Time.unscaledTime - at > ParkTtlS)
+            {
+                parked.Remove(key); parkedAt.Remove(key);
+                parkOrder.Remove(key);
+                string v2 = null;
+                foreach (var w in parkedWhy)
+                    if (w.StartsWith(key + "|")) { v2 = w; break; }
+                if (v2 != null) parkedWhy.Remove(v2);
+                return false;
+            }
+            return true;
         }
 
         /// <summary>Record a mishap; persists immediately. Per-scene cap —
@@ -57,8 +78,10 @@ namespace ThronefallTrainer
         public static void Park(string scene, Vector3 pos, string why)
         {
             EnsureInit();
+            scene = Sanitize(scene);
             // Sanitize the delimiter/quote — a | or " inside `why` corrupted
-            // the row on save and then silently vanished on reload.
+            // the row on save and then silently vanished on reload. `scene`
+            // had the same exposure (unused in practice, but consistent).
             if (why != null && (why.Contains("|") || why.Contains("\"") || why.Contains("\\")))
                 why = why.Replace("|", "/").Replace("\"", "'").Replace("\\", "/");
             string key = scene + "|" + Cell(pos);
@@ -66,6 +89,7 @@ namespace ThronefallTrainer
             {
                 parkedWhy.Add(key + "|" + (why ?? "?"));
                 parkOrder.Add(key);
+                parkedAt[key] = UnityEngine.Time.unscaledTime;
                 // Cap per scene: evict the OLDEST entries first (FIFO order,
                 // not HashSet enumeration — the newest mishap was getting
                 // thrown away while ancient ones survived).
@@ -97,7 +121,7 @@ namespace ThronefallTrainer
         public static void Unpark(string scene, Vector3 pos)
         {
             EnsureInit();
-            string key = scene + "|" + Cell(pos);
+            string key = Sanitize(scene) + "|" + Cell(pos);
             if (parked.Remove(key))
             {
                 parkOrder.Remove(key);
@@ -117,6 +141,7 @@ namespace ThronefallTrainer
         public static void MarkBadScene(string scene)
         {
             EnsureInit();
+            scene = Sanitize(scene);
             if (string.IsNullOrEmpty(scene)) return;
             if (badScenes.Add(scene))
             {
@@ -128,14 +153,44 @@ namespace ThronefallTrainer
         public static bool IsBadScene(string scene)
         {
             EnsureInit();
-            return scene != null && badScenes.Contains(scene);
+            return scene != null && badScenes.Contains(Sanitize(scene));
+        }
+
+        /// <summary>Drop all parked cells for a scene — called on a NEW MATCH:
+        /// nav fixes and scene-state changes mean a cell parked under the old
+        /// verdict may now be reachable. Permanent parks starved SpendGold
+        /// into the Idle deadlock (19 poisoned cells on Neuland). Truly-broken
+        /// slots re-park on their own within one stall cycle — bounded cost,
+        /// full recovery.</summary>
+        public static void ForgiveParks(string scene)
+        {
+            EnsureInit();
+            scene = Sanitize(scene);
+            int n = 0;
+            foreach (var p in parkOrder.ToArray())
+                if (p.StartsWith(scene + "|") && parked.Remove(p))
+                { parkOrder.Remove(p); n++; }
+            if (n > 0)
+            {
+                parkedWhy.RemoveWhere(w => w.StartsWith(scene + "|"));
+                Save();
+                Plugin.Log?.LogInfo($"[memory] forgave {n} parked cells for '{scene}' (new match)");
+            }
         }
 
         /// <summary>Debug/manual: clear a quarantine.</summary>
         public static void ForgiveScene(string scene)
         {
-            if (badScenes.Remove(scene)) SaveBadScenes();
+            EnsureInit();   // early calls read an empty badScenes — the remove
+                            // silently no-op'd and the quarantine persisted
+            if (badScenes.Remove(Sanitize(scene))) SaveBadScenes();
         }
+
+        /// <summary>'|' is the key delimiter — keep scene names key-safe
+        /// everywhere they form keys (Park/Unpark/IsParked/MarkBadScene).</summary>
+        private static string Sanitize(string scene) =>
+            string.IsNullOrEmpty(scene) ? "" : scene.Replace("|", "/")
+                .Replace("\"", "'").Replace("\\", "/");
 
         private static void SaveBadScenes()
         {
@@ -213,6 +268,9 @@ namespace ThronefallTrainer
                         {
                             parkOrder.Add(parts[0] + "|" + parts[1]);
                             parkedWhy.Add(row);
+                            // Reloaded rows park for 5 min from load — stale
+                            // forever-parks were the "forgets walls" bug.
+                            parkedAt[parts[0] + "|" + parts[1]] = UnityEngine.Time.unscaledTime;
                         }
                         else dupes = true;
                     }

@@ -1,0 +1,2678 @@
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Text;
+using BepInEx;
+using BepInEx.Logging;
+using Pathfinding;
+using UnityEngine;
+
+namespace ThronefallTrainer;
+
+internal static class Bot
+{
+	public static bool Legit;
+
+	[CompilerGenerated]
+	private static BotMode Mode__BackingField;
+
+	[CompilerGenerated]
+	private static string Status__BackingField;
+
+	private const float ArriveCoin = 0.8f;
+
+	private const float ArriveHold = 6f;
+
+	private const float ArriveEngage = 1.5f;
+
+	private const float HomeRadius = 14f;
+
+	private const float CoinSeekRange = 80f;
+
+	private const float DecisionInterval = 0.25f;
+
+	private const float StuckWatchWindow = 2f;
+
+	private const float StuckEpsilon = 0.35f;
+
+	private const int MaxStrikesBeforeTeleport = 3;
+
+	private const float TeleportNudge = 2.5f;
+
+	private static float decisionClock;
+
+	private static float watchClock;
+
+	private static float arriveSince;
+
+	private static int stuckStrikeTotal;
+
+	private static Vector3 watchAnchor;
+
+	private static bool hasAnchor;
+
+	private static Vector3 lastFreePos;
+
+	private static float lastFreeAt;
+
+	private static bool hasTarget;
+
+	private static Vector3 targetPos;
+
+	private static float arriveDist;
+
+	private static TaggedObject engageTarget;
+
+	private static ManualAttack heroAttack;
+
+	private static float weRevalAt;
+
+	private static float attackDiagAt;
+
+	private static float menuAdvanceAt;
+
+	private static float frameActionAt;
+
+	private static string uiFrame;
+
+	private static string lastUiNoteFrame;
+
+	private static float nextUiNoteAt;
+
+	private static BuildingInteractor heldBuild;
+
+	private static float maScanAt;
+
+	private static float lastWatchDist;
+
+	private static string lastDiagKey;
+
+	private static float detourUntil;
+
+	private static Vector3 detourPos;
+
+	private static int detourSide;
+
+	private static int detourCount;
+
+	private static Path navPath;
+
+	private static int navIndex;
+
+	private static Vector3 navGoal;
+
+	private static bool navWrongLayer;
+
+	private static float navDirectUntil;
+
+	private static float interZeroSince;
+
+	private static float interVacuumAt;
+
+	private static float nonVacSince;
+
+	private static bool sawInteractables;
+
+	private static float navRepathAt;
+
+	private static bool navInFlight;
+
+	private static int navRequestId;
+
+	private static bool beganRunThisTick;
+
+	private static float navSteerArrive;
+
+	private static int navDiagCount;
+
+	private static float nextMoveDiagAt;
+
+	private static float weaponRange;
+
+	private static bool weaponFiresWhileMoving;
+
+	private static bool lastNightTick;
+
+	private static readonly Dictionary<string, int> sessionDefeats;
+
+	private static readonly HashSet<string> playedThisSession;
+
+	private static string lastMatchScene;
+
+	private static string lastGameState;
+
+	private static string lastFrameName;
+
+	private static int frameSeen;
+
+	private static float lastFrameAt;
+
+	private static float choiceSince;
+
+	private static StreamWriter botLog;
+
+	private static bool logFailed;
+
+	private static int recTickFrame;
+
+	private static BotMode prevModeRec;
+
+	private static float modeSinceAt;
+
+	private static float nextAuditAt;
+
+	private static string recordedScene;
+
+	private static BotMemory mem;
+
+	private static PolicyTable pol;
+
+	private static string polPath;
+
+	private static long polStamp;
+
+	private static float polScanAt;
+
+	private static readonly HashSet<string> prevRuleFires;
+
+	private static float holdDiagAt;
+
+	private static string holdDoneName;
+
+	private static readonly HashSet<Coin> coinIgnore;
+
+	private static float stuckSpamWindow;
+
+	private static int stuckSpamCount;
+
+	private static float nightParkSince;
+
+	private static float lastAnomalyAt;
+
+	private static Vector3 nightParkPos;
+
+	private static string requestedWeapon;
+
+	private static bool frontierLatch;
+
+	private static Vector3 frontierLatchGoal;
+
+	private static readonly FieldInfo StmRunningField;
+
+	private static string lastEvtNote;
+
+	private static float lastEvtAt;
+
+	public static bool Enabled { get; private set; }
+
+	public static Vector3 DesiredDir
+	{
+		[CompilerGenerated]
+		get
+		{
+			//IL_0000: Unknown result type (might be due to invalid IL or missing references)
+			return field;
+		}
+		[CompilerGenerated]
+		private set
+		{
+			//IL_0000: Unknown result type (might be due to invalid IL or missing references)
+			//IL_0001: Unknown result type (might be due to invalid IL or missing references)
+			field = value;
+		}
+	}
+
+	public static BotMode Mode
+	{
+		[CompilerGenerated]
+		get
+		{
+			return Mode__BackingField;
+		}
+		[CompilerGenerated]
+		private set
+		{
+			Mode__BackingField = value;
+		}
+	}
+
+	public static string Status
+	{
+		[CompilerGenerated]
+		get
+		{
+			return Status__BackingField;
+		}
+		[CompilerGenerated]
+		private set
+		{
+			Status__BackingField = value;
+		}
+	}
+
+	public static string UiFrame => uiFrame;
+
+	public static int StuckStrikes { get; private set; }
+
+	private static Vector3 AimPos
+	{
+		get
+		{
+			//IL_0028: Unknown result type (might be due to invalid IL or missing references)
+			//IL_003e: Unknown result type (might be due to invalid IL or missing references)
+			//IL_0038: Unknown result type (might be due to invalid IL or missing references)
+			if (!Legit || !(Time.unscaledTime < detourUntil))
+			{
+				if (Mode != BotMode.Engage || !((Object)(object)engageTarget != (Object)null))
+				{
+					return targetPos;
+				}
+				return ((Component)engageTarget).transform.position;
+			}
+			return detourPos;
+		}
+	}
+
+	private static string Digest(in BotPerception.Snapshot s)
+	{
+		int value;
+		return "{\"scene\":\"" + s.SceneName + "\",\"wave\":" + s.Wave + ",\"wave_max\":" + s.WaveTotal + ",\"gold\":" + s.Balance + ",\"cores\":" + s.CoreBalance + ",\"allies\":" + s.AllyCount + ",\"free_units\":" + s.FreeUnits + ",\"doors_covered\":" + s.DoorsCovered + ",\"doors\":" + s.DoorCount + ",\"foes\":" + s.EnemyCount + ",\"red_alert\":" + (s.RedAlert ? "true" : "false") + ",\"buildings\":" + s.BuildCount + ",\"hero_hp\":" + s.HeroHpPct.ToString("0.##", CultureInfo.InvariantCulture) + ",\"defeats\":" + (sessionDefeats.TryGetValue(s.SceneName ?? "", out value) ? value : 0) + ",\"policy\":" + Policy.Stats() + "}";
+	}
+
+	static Bot()
+	{
+		Mode__BackingField = BotMode.Idle;
+		Status__BackingField = "off (F6)";
+		lastFreeAt = -999f;
+		arriveDist = 1f;
+		uiFrame = "";
+		lastUiNoteFrame = "";
+		lastWatchDist = float.MaxValue;
+		detourSide = 1;
+		interZeroSince = -1f;
+		nonVacSince = -1f;
+		navSteerArrive = 0.5f;
+		weaponFiresWhileMoving = true;
+		lastNightTick = true;
+		sessionDefeats = new Dictionary<string, int>();
+		playedThisSession = new HashSet<string>();
+		lastGameState = "";
+		lastFrameName = "";
+		prevModeRec = BotMode.Idle;
+		mem = BotMemory.Fresh();
+		pol = PolicyTable.Default();
+		prevRuleFires = new HashSet<string>();
+		holdDoneName = "";
+		coinIgnore = new HashSet<Coin>();
+		stuckSpamWindow = -1f;
+		nightParkSince = -1f;
+		StmRunningField = typeof(SceneTransitionManager).GetField("sceneTransitionIsRunning", BindingFlags.Instance | BindingFlags.NonPublic);
+		try
+		{
+			MethodInfo[] methods = typeof(UIFrameManager).GetMethods(BindingFlags.Instance | BindingFlags.Public);
+			StringBuilder stringBuilder = new StringBuilder();
+			MethodInfo[] array = methods;
+			foreach (MethodInfo methodInfo in array)
+			{
+				if (methodInfo.GetParameters().Length <= 1 && (methodInfo.Name.IndexOf("Escape", StringComparison.OrdinalIgnoreCase) >= 0 || methodInfo.Name.IndexOf("Pause", StringComparison.OrdinalIgnoreCase) >= 0 || methodInfo.Name.IndexOf("Open", StringComparison.OrdinalIgnoreCase) >= 0 || methodInfo.Name.IndexOf("Level", StringComparison.OrdinalIgnoreCase) >= 0))
+				{
+					stringBuilder.Append(methodInfo.Name).Append("; ");
+				}
+			}
+			ManualLogSource log = Plugin.Log;
+			if (log != null)
+			{
+				log.LogInfo((object)("[bot] uiframe api: " + stringBuilder));
+			}
+		}
+		catch
+		{
+		}
+		BotPerception.LevelScore = (LevelInteractor li, bool beaten) =>
+		{
+			string text = (((Object)(object)li.levelInfo != (Object)null) ? li.levelInfo.sceneName : null);
+			int num = ((text != null && sessionDefeats.TryGetValue(text, out var value)) ? value : 0);
+			float num2 = (beaten ? 0f : 100f);
+			if (text == null || !playedThisSession.Contains(text))
+			{
+				num2 += 15f;
+			}
+			if (Memory.IsBadScene(text))
+			{
+				num2 -= 1000f;
+			}
+			return num2 - (float)num * 45f;
+		};
+		BotPerception.CoinSkip = (Coin c) => coinIgnore.Contains(c);
+		Recorder.Start();
+	}
+
+	public static void SetEnabled(bool v)
+	{
+		//IL_000f: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0095: Unknown result type (might be due to invalid IL or missing references)
+		//IL_009a: Unknown result type (might be due to invalid IL or missing references)
+		if (v != Enabled)
+		{
+			Enabled = v;
+			DesiredDir = Vector3.zero;
+			ClearTarget();
+			Mode = BotMode.Idle;
+			Status = (v ? "starting" : "off (F6)");
+			hasAnchor = false;
+			StuckStrikes = 0;
+			stuckStrikeTotal = 0;
+			ReleaseBuild();
+			decisionClock = 0f;
+			mem = BotMemory.Fresh();
+			detourUntil = 0f;
+			detourCount = 0;
+			weaponRange = 0f;
+			heroAttack = null;
+			navPath = null;
+			navIndex = 0;
+			navInFlight = false;
+			navGoal = Vector3.zero;
+			navWrongLayer = false;
+			navDirectUntil = 0f;
+			navRepathAt = 0f;
+			navRequestId++;
+			lastGameState = "";
+			recordedScene = null;
+			lastNightTick = true;
+			uiFrame = "";
+			lastFrameName = "";
+			frameSeen = 0;
+			lastFrameAt = 0f;
+			sawInteractables = false;
+			interZeroSince = -1f;
+			nonVacSince = -1f;
+			interVacuumAt = 0f;
+			arriveSince = 0f;
+			lastWatchDist = float.MaxValue;
+			holdDoneName = "";
+			detourCount = 0;
+			detourUntil = 0f;
+			coinIgnore.Clear();
+			ManualLogSource log = Plugin.Log;
+			if (log != null)
+			{
+				log.LogInfo((object)("[bot] autopilot " + (v ? "ENABLED" : "disabled") + " (F6)"));
+			}
+			LogRaw(v ? "enabled" : "disabled");
+			if (!v)
+			{
+				CloseLog();
+			}
+		}
+	}
+
+	public static void Shutdown()
+	{
+		SetEnabled(v: false);
+	}
+
+	public static void Tick()
+	{
+		//IL_000e: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0013: Unknown result type (might be due to invalid IL or missing references)
+		//IL_008a: Unknown result type (might be due to invalid IL or missing references)
+		//IL_008f: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0091: Unknown result type (might be due to invalid IL or missing references)
+		//IL_009b: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00a0: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00b0: Unknown result type (might be due to invalid IL or missing references)
+		//IL_005e: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0063: Unknown result type (might be due to invalid IL or missing references)
+		//IL_006d: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0072: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0031: Unknown result type (might be due to invalid IL or missing references)
+		//IL_003c: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0041: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0046: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0050: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0055: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0241: Unknown result type (might be due to invalid IL or missing references)
+		if (!Enabled)
+		{
+			return;
+		}
+		PlayerMovement instance = PlayerMovement.instance;
+		Vector3 val = Vector3.zero;
+		if (hasTarget && (Object)(object)instance != (Object)null)
+		{
+			val = ((!Legit) ? DirTo(((Component)instance).transform.position, AimPos, arriveDist) : DirTo(((Component)instance).transform.position, NavSteerPoint(((Component)instance).transform.position, AimPos), navSteerArrive));
+		}
+		float num = 1f - Mathf.Exp(-10f * Time.unscaledDeltaTime);
+		DesiredDir = Vector3.Lerp(DesiredDir, val, num);
+		Vector3 desiredDir = DesiredDir;
+		if (desiredDir.sqrMagnitude < 0.0001f)
+		{
+			DesiredDir = Vector3.zero;
+		}
+		PlayerInteraction instance2 = PlayerInteraction.instance;
+		if ((Object)(object)heldBuild != (Object)null && (Object)(object)instance2 != (Object)null && (Object)(object)instance != (Object)null)
+		{
+			((InteractorBase)heldBuild).InteractionHold(instance2);
+		}
+		Type ty;
+		if ((Object)(object)heldBuild != (Object)null && Time.unscaledTime >= holdDiagAt)
+		{
+			holdDiagAt = Time.unscaledTime + 1f;
+			ty = ((object)heldBuild).GetType();
+			string text = (((Object)(object)heldBuild.targetBuilding != (Object)null) ? heldBuild.targetBuilding.buildingName : "");
+			ManualLogSource log = Plugin.Log;
+			if (log != null)
+			{
+				log.LogInfo((object)string.Format("[bot] hold-diag '{0}' b='{1}': state={2} started={3} waitChoice={4} complete={5} harvest={6} canInter={7}", ((Object)heldBuild).name, text, Get("currentState"), Get("interactionStarted"), Get("isWaitingForChoice"), Get("interactionComplete"), heldBuild.canBeHarvested, ((InteractorBase)heldBuild).CanBeInteractedWith));
+			}
+			object obj = Get("interactionComplete");
+			bool flag = default;
+			int num2;
+			if (obj is bool)
+			{
+				flag = (bool)obj;
+				num2 = 1;
+			}
+			else
+			{
+				num2 = 0;
+			}
+			if (((uint)num2 & (flag ? 1u : 0u)) != 0 && text != "" && text != holdDoneName)
+			{
+				holdDoneName = text;
+				BotPerception.BuildDone(text, ((Component)heldBuild).transform.position);
+			}
+		}
+		Coach.PerFrame();
+		decisionClock += Time.unscaledDeltaTime;
+		if (!(decisionClock < 0.25f))
+		{
+			decisionClock = 0f;
+			TickInner();
+		}
+		object Get(string n)
+		{
+			Type type = ty;
+			while (type != null)
+			{
+				FieldInfo field = type.GetField(n, BindingFlags.Instance | BindingFlags.NonPublic);
+				if (field != null)
+				{
+					return field.GetValue(heldBuild);
+				}
+				type = type.BaseType;
+			}
+			return null;
+		}
+	}
+
+	private static void TickInner()
+	{
+		//IL_0998: Unknown result type (might be due to invalid IL or missing references)
+		//IL_09a1: Unknown result type (might be due to invalid IL or missing references)
+		//IL_09ad: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0bf8: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0c11: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0c5e: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0c6f: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0cb2: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0ccb: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0cd0: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0cd5: Unknown result type (might be due to invalid IL or missing references)
+		BotPerception.Snapshot s = (BotPerception.Last = BotPerception.Capture(((Object)(object)heldBuild != (Object)null) ? ((Object)heldBuild).GetInstanceID() : (-1)));
+		BotPerception.LastValid = true;
+		if (s.GameState != lastGameState)
+		{
+			if (s.GameState == "InMatch")
+			{
+				Recorder.BeginRun(s.SceneName);
+				Policy.BeginRun();
+				Coach.ResetRun();
+				recordedScene = s.SceneName;
+				beganRunThisTick = false;
+				stuckStrikeTotal = 0;
+				sawInteractables = false;
+				interZeroSince = -1f;
+				nonVacSince = -1f;
+				lastNightTick = true;
+				coinIgnore.Clear();
+				navWrongLayer = false;
+				navPath = null;
+				navIndex = 0;
+				navInFlight = false;
+				navRequestId++;
+				heroAttack = null;
+				mem = BotMemory.Fresh();
+				arriveSince = 0f;
+				detourUntil = 0f;
+				detourCount = 0;
+				lastWatchDist = float.MaxValue;
+				holdDoneName = "";
+				prevRuleFires.Clear();
+				Memory.ForgiveParks(s.SceneName);
+			}
+			if (s.GameState == "AfterMatchVictory" && lastMatchScene != null)
+			{
+				playedThisSession.Add(lastMatchScene);
+				sessionDefeats.Remove(lastMatchScene);
+				Recorder.MatchEnd("victory", Legit);
+				Policy.MatchEnd(victory: true, Mathf.Max(0f, s.CastleHpPct), BotPerception.BreachCount);
+			}
+			else if (s.GameState == "AfterMatchDefeat" && lastMatchScene != null)
+			{
+				sessionDefeats[lastMatchScene] = ((!sessionDefeats.TryGetValue(lastMatchScene, out var value)) ? 1 : (value + 1));
+				ManualLogSource log = Plugin.Log;
+				if (log != null)
+				{
+					log.LogInfo((object)$"[bot] defeat on '{lastMatchScene}' (x{sessionDefeats[lastMatchScene]} this session)");
+				}
+				LogLine(in s, "defeat");
+				Recorder.MatchEnd("defeat", Legit);
+				Policy.MatchEnd(victory: false, Mathf.Max(0f, s.CastleHpPct), BotPerception.BreachCount);
+				Coach.Advise("defeat", Digest(in s));
+				if (Coach.VisionEnabled)
+				{
+					Texture2D val = ScreenCapture.CaptureScreenshotAsTexture();
+					if ((Object)(object)val != (Object)null)
+					{
+						Coach.AnalyzeScreenshot(ImageConversion.EncodeToPNG(val), "scene=" + s.SceneName);
+						Object.Destroy((Object)(object)val);
+					}
+				}
+			}
+			lastGameState = s.GameState;
+		}
+		if (lastNightTick && !s.IsNight && s.Valid)
+		{
+			Policy.Pulse(0.2f);
+		}
+		if (lastNightTick && !s.IsNight && s.Valid && (s.SceneName == null || !s.SceneName.StartsWith("_")))
+		{
+			Coach.Advise("day-start", Digest(in s));
+		}
+		if (s.Valid)
+		{
+			lastNightTick = s.IsNight;
+		}
+		if (s.Valid && !s.SceneName.StartsWith("_"))
+		{
+			lastMatchScene = s.SceneName;
+		}
+		if (!s.Valid)
+		{
+			Mode = BotMode.Idle;
+			ClearTarget();
+			Status = "waiting (" + s.GameState + ")";
+			LogLine(in s, "invalid");
+			if (s.SceneName == "_StartMenu" && (Object)(object)SceneTransitionManager.instance != (Object)null && Time.unscaledTime >= menuAdvanceAt)
+			{
+				menuAdvanceAt = Time.unscaledTime + 8f;
+				ManualLogSource log2 = Plugin.Log;
+				if (log2 != null)
+				{
+					log2.LogInfo((object)"[bot] start menu -> TransitionFromNullToLevelSelect()");
+				}
+				SceneTransitionManager.instance.TransitionFromNullToLevelSelect();
+			}
+			HandleBlockingFrame(in s);
+			WriteAuditStub(in s, "menu");
+			return;
+		}
+		if (HandleBlockingFrame(in s))
+		{
+			Mode = BotMode.ResolveUI;
+			if (!((Object)(object)ChoiceManager.instance != (Object)null) || !ChoiceManager.instance.ChoiceCoroutineRunning)
+			{
+				ClearTarget();
+			}
+			WriteAuditStub(in s, "ui:" + uiFrame);
+			Status = "ui: " + uiFrame;
+			if (uiFrame != lastUiNoteFrame || Time.unscaledTime >= nextUiNoteAt)
+			{
+				lastUiNoteFrame = uiFrame;
+				nextUiNoteAt = Time.unscaledTime + 5f;
+				LogLine(in s, "ui");
+			}
+			return;
+		}
+		if (!s.SceneName.StartsWith("_") && !s.OnLevelSelect && recordedScene != s.SceneName && !beganRunThisTick)
+		{
+			recordedScene = s.SceneName;
+			Recorder.BeginRun(s.SceneName);
+			Policy.BeginRun();
+			Coach.ResetRun();
+			stuckStrikeTotal = 0;
+		}
+		beganRunThisTick = false;
+		SnapshotData s2 = BotPerception.ToData(in s);
+		if ((Object)(object)s.NearestBuild != (Object)null || s.BuildCount > 0 || BotPerception.CatBuilt.Count > 0)
+		{
+			sawInteractables = true;
+		}
+		if (s.GameState == "InMatch" && !s.IsNight && !sawInteractables && (Object)(object)s.NearestBuild == (Object)null && s.InteractorCount == 0)
+		{
+			nonVacSince = -1f;
+			if (interZeroSince < 0f)
+			{
+				interZeroSince = Time.unscaledTime;
+				ManualLogSource log3 = Plugin.Log;
+				if (log3 != null)
+				{
+					log3.LogWarning((object)($"[bot] vacuum-diag ARMED: gs={s.GameState} night={s.IsNight} " + string.Format("ally={0} coins={1} nb={2} ", s.AllyCount, s.CoinCount, ((Object)(object)s.NearestBuild == (Object)null) ? "null" : s.NearestBuildName) + $"inter={s.InteractorCount}"));
+				}
+			}
+			else if (Time.unscaledTime - interZeroSince > 40f && Time.unscaledTime >= interVacuumAt)
+			{
+				interVacuumAt = Time.unscaledTime + 120f;
+				interZeroSince = -1f;
+				if (s.SceneName != null)
+				{
+					sessionDefeats[s.SceneName] = ((!sessionDefeats.TryGetValue(s.SceneName, out var value2)) ? 1 : (value2 + 1));
+					Memory.MarkBadScene(s.SceneName);
+				}
+				ManualLogSource log4 = Plugin.Log;
+				if (log4 != null)
+				{
+					log4.LogWarning((object)"[bot] interactor vacuum — no interactables/coins 40 s into day; match is corrupt → level select via frame");
+				}
+				LogLine(in s, "inter-vacuum");
+				UIFrameManager instance = UIFrameManager.instance;
+				UIFrame val2 = (((Object)(object)instance != (Object)null) ? instance.ActiveFrame : null);
+				if ((Object)(object)val2 != (Object)null)
+				{
+					val2.Apply();
+				}
+				else if ((Object)(object)instance != (Object)null && (Object)(object)PlayerInteraction.instance != (Object)null && (Object)(object)SceneTransitionManager.instance != (Object)null)
+				{
+					SceneTransitionManager.instance.TransitionToLevelSelect();
+				}
+			}
+		}
+		else if (!s.IsNight)
+		{
+			if (nonVacSince < 0f)
+			{
+				nonVacSince = Time.unscaledTime;
+			}
+			if (Time.unscaledTime - nonVacSince > 3f)
+			{
+				interZeroSince = -1f;
+			}
+		}
+		Mailbox.Poll(in s);
+		if (Time.unscaledTime >= polScanAt)
+		{
+			polScanAt = Time.unscaledTime + 1f;
+			if (polPath == null)
+			{
+				polPath = Path.Combine(Recorder.AgentDir, "policy.txt");
+			}
+			try
+			{
+				if (File.Exists(polPath) && File.GetLastWriteTimeUtc(polPath).Ticks != polStamp)
+				{
+					polStamp = File.GetLastWriteTimeUtc(polPath).Ticks;
+					List<string> errors = new List<string>();
+					if (PolicyTable.Parse(File.ReadAllText(polPath), ref pol, out errors))
+					{
+						ManualLogSource log5 = Plugin.Log;
+						if (log5 != null)
+						{
+							log5.LogInfo((object)$"[bot] policy v{pol.Version} loaded ({pol.rules.Count} rule(s))");
+						}
+					}
+					else
+					{
+						LogLine(in s, "policy-reject");
+						ManualLogSource log6 = Plugin.Log;
+						if (log6 != null)
+						{
+							log6.LogWarning((object)string.Format("[bot] policy REJECTED (kept v{0}): {1}", pol.Version, string.Join("; ", errors)));
+						}
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				ManualLogSource log7 = Plugin.Log;
+				if (log7 != null)
+				{
+					log7.LogWarning((object)("[bot] policy read: " + ex.Message));
+				}
+			}
+		}
+		PolicyTable policyTable = pol.Resolved(in s2);
+		DecideResult decideResult = BotBrain.Decide(in s2, ref mem, Time.unscaledTime, Legit, in policyTable);
+		if (decideResult.RulesFired != null && decideResult.RulesFired.Count > 0)
+		{
+			foreach (string item in decideResult.RulesFired)
+			{
+				if (prevRuleFires.Add(item))
+				{
+					LogLine(in s, "rule-fire:" + item);
+				}
+				Recorder.CountRuleFire(item);
+			}
+		}
+		Mode = decideResult.Mode;
+		NetPolicy.Shadow(in s, decideResult.Mode.ToString());
+		engageTarget = ((decideResult.Pursue == 2) ? s.NearestEnemy : ((decideResult.Pursue != 1) ? null : (((Object)(object)s.CastleThreat != (Object)null) ? s.CastleThreat : s.NearestEnemy)));
+		if (decideResult.HasAim)
+		{
+			Vector3 val3 = new Vector3(decideResult.AimPos.X, 0f, decideResult.AimPos.Z);
+			val3.y = AimY(in s, val3);
+			SetTarget(val3, decideResult.Arrive, decideResult.ProjectToNav);
+		}
+		else
+		{
+			ClearTarget();
+		}
+		foreach (string note in decideResult.Notes)
+		{
+			LogLine(in s, note);
+		}
+		foreach (Intent intent in decideResult.Intents)
+		{
+			Execute(in s, intent);
+		}
+		RunWatchdog(in s);
+		Status = FormatStatus(in s);
+		LogLine(in s, "tick");
+		Recorder.NoteGameFacts(in s);
+		if (Mode != prevModeRec)
+		{
+			if (Mode == BotMode.HeroDead)
+			{
+				Recorder.CountDeath();
+			}
+			prevModeRec = Mode;
+			modeSinceAt = Time.unscaledTime;
+		}
+		if (Time.unscaledTime >= nextAuditAt)
+		{
+			nextAuditAt = Time.unscaledTime + 3f;
+			try
+			{
+				string text = Path.Combine(Recorder.AgentDir, "audit.json");
+				string text2 = text + ".tmp";
+				File.WriteAllText(text2, BotPerception.AuditJson(ref s, Mode.ToString(), modeSinceAt, Time.unscaledTime));
+				if (File.Exists(text))
+				{
+					File.Delete(text);
+				}
+				File.Move(text2, text);
+			}
+			catch
+			{
+			}
+		}
+		if ((recTickFrame++ & 1) == 0)
+		{
+			Recorder.Tick(s2.ToJson("tick", Time.unscaledTime, Mode));
+		}
+		CheckAnomalies(in s);
+		if (StuckStrikes <= 0 || !(Time.unscaledTime >= nextMoveDiagAt))
+		{
+			return;
+		}
+		nextMoveDiagAt = Time.unscaledTime + 2f;
+		PlayerMovement instance2 = PlayerMovement.instance;
+		if ((Object)(object)instance2 == (Object)null)
+		{
+			nextMoveDiagAt = Time.unscaledTime + 2f;
+			return;
+		}
+		int num = ((navPath?.vectorPath != null) ? navPath.vectorPath.Count : (-1));
+		string text3 = ((num > 0) ? string.Join(";", navPath.vectorPath) : "-");
+		ManualLogSource log8 = Plugin.Log;
+		if (log8 != null)
+		{
+			log8.LogWarning((object)($"[bot] move-diag: hasTgt={hasTarget} desired={DesiredDir} " + $"vel={instance2.Velocity} " + $"frozen={(Object)(object)LocalGamestate.Instance != (Object)null && LocalGamestate.Instance.PlayerFrozen} " + $"mode={Mode} aim={AimPos} hero={((Component)instance2).transform.position} " + $"navIdx={navIndex} wpCount={num} inFlight={navInFlight} navGoal={navGoal} wp=[{text3}] steer={NavSteerPoint(((Component)instance2).transform.position, AimPos)}"));
+		}
+	}
+
+	private static void CheckAnomalies(in BotPerception.Snapshot s)
+	{
+		//IL_006e: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00d2: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00d7: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00dc: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00e1: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00c2: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00c7: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00f7: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00fc: Unknown result type (might be due to invalid IL or missing references)
+		//IL_013c: Unknown result type (might be due to invalid IL or missing references)
+		//IL_024f: Unknown result type (might be due to invalid IL or missing references)
+		float unscaledTime = Time.unscaledTime;
+		if (unscaledTime < lastAnomalyAt + 10f)
+		{
+			return;
+		}
+		if (StuckStrikes > 0)
+		{
+			if (unscaledTime > stuckSpamWindow)
+			{
+				stuckSpamWindow = unscaledTime + 30f;
+				stuckSpamCount = 0;
+			}
+			if (++stuckSpamCount >= 3)
+			{
+				stuckSpamCount = 0;
+				lastAnomalyAt = unscaledTime;
+				LogLine(in s, "anomaly:stuck-spam");
+				ManualLogSource log = Plugin.Log;
+				if (log != null)
+				{
+					log.LogWarning((object)$"[bot] anomaly stuck-spam at {s.HeroPos} mode={Mode}");
+				}
+				return;
+			}
+		}
+		if (s.IsNight && s.EnemyCount > 0 && Mode == BotMode.Engage)
+		{
+			if (nightParkSince < 0f)
+			{
+				nightParkSince = unscaledTime;
+				nightParkPos = s.HeroPos;
+			}
+			else
+			{
+				Vector3 val = s.HeroPos - nightParkPos;
+				if (val.sqrMagnitude > 1.5f)
+				{
+					nightParkSince = unscaledTime;
+					nightParkPos = s.HeroPos;
+				}
+				else if (unscaledTime - nightParkSince > 15f)
+				{
+					nightParkSince = -1f;
+					lastAnomalyAt = unscaledTime;
+					LogLine(in s, "anomaly:night-park");
+					ManualLogSource log2 = Plugin.Log;
+					if (log2 != null)
+					{
+						log2.LogWarning((object)$"[bot] anomaly night-park at {s.HeroPos} foes={s.EnemyCount}");
+					}
+					return;
+				}
+			}
+		}
+		else
+		{
+			nightParkSince = -1f;
+		}
+		if (!(BotPerception.MilitaryFirstAt > 0f) || s.AllyCount != 0 || !(unscaledTime - BotPerception.MilitaryFirstAt > 90f))
+		{
+			return;
+		}
+		lastAnomalyAt = unscaledTime;
+		LogLine(in s, "anomaly:army-starved");
+		ManualLogSource log3 = Plugin.Log;
+		if (log3 != null)
+		{
+			log3.LogWarning((object)"[bot] anomaly army-starved: military building 90s, ally=0");
+		}
+		try
+		{
+			StringBuilder stringBuilder = new StringBuilder();
+			BuildSlot[] array = Object.FindObjectsOfType<BuildSlot>(true);
+			foreach (BuildSlot val2 in array)
+			{
+				if (!((Object)(object)val2 == (Object)null))
+				{
+					string text = val2.buildingName ?? "";
+					if (text.IndexOf("barrack", StringComparison.OrdinalIgnoreCase) >= 0 || text.IndexOf("archer", StringComparison.OrdinalIgnoreCase) >= 0 || text.IndexOf("militia", StringComparison.OrdinalIgnoreCase) >= 0)
+					{
+						stringBuilder.Append(text).Append("(lvl=").Append(val2.Level)
+							.Append(",state=")
+							.Append(val2.State)
+							.Append(",active=")
+							.Append(((Component)val2).gameObject.activeInHierarchy)
+							.Append(",actLvl=")
+							.Append(val2.ActivatorLevel)
+							.Append(",via=")
+							.Append(((Object)(object)val2.ActivatorBuilding != (Object)null) ? (val2.ActivatorBuilding.buildingName + ":" + val2.ActivatorBuilding.Level) : "-")
+							.Append(");");
+					}
+				}
+			}
+			stringBuilder.Append("| respawners:");
+			UnitRespawnerForBuildings[] array2 = Object.FindObjectsOfType<UnitRespawnerForBuildings>(true);
+			foreach (UnitRespawnerForBuildings val3 in array2)
+			{
+				if ((Object)(object)val3 == (Object)null)
+				{
+					continue;
+				}
+				int value = ((val3.units != null) ? val3.units.Count : (-1));
+				int num = 0;
+				int num2 = 0;
+				if (val3.units != null)
+				{
+					foreach (Hp unit in val3.units)
+					{
+						if (!((Object)(object)unit == (Object)null))
+						{
+							if (((Component)unit).gameObject.activeInHierarchy)
+							{
+								num++;
+							}
+							if (unit.Alive)
+							{
+								num2++;
+							}
+						}
+					}
+				}
+				stringBuilder.Append(((Object)val3).name).Append("(units=").Append(value)
+					.Append(",act=")
+					.Append(num)
+					.Append(",alive=")
+					.Append(num2)
+					.Append(",hp=")
+					.Append(((Object)(object)val3.hp != (Object)null && !val3.hp.KnockedOut) ? "ok" : "down")
+					.Append(");");
+			}
+			ManualLogSource log4 = Plugin.Log;
+			if (log4 != null)
+			{
+				log4.LogWarning((object)("[bot] respawner dump: " + stringBuilder));
+			}
+		}
+		catch (Exception ex)
+		{
+			ManualLogSource log5 = Plugin.Log;
+			if (log5 != null)
+			{
+				log5.LogWarning((object)("[bot] respawner dump fail " + ex.Message));
+			}
+		}
+	}
+
+	private static void RunWatchdog(in BotPerception.Snapshot s)
+	{
+		//IL_006d: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0072: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0088: Unknown result type (might be due to invalid IL or missing references)
+		//IL_008d: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00c5: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00ca: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00f2: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00f7: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00fd: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0102: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00dd: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00e2: Unknown result type (might be due to invalid IL or missing references)
+		//IL_033c: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0342: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0347: Unknown result type (might be due to invalid IL or missing references)
+		//IL_034c: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0a0c: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0a12: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0a17: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0a1c: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0a2b: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0a47: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0a3e: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0a51: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0a56: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0a5b: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0a5e: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0882: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0879: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0a75: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0887: Unknown result type (might be due to invalid IL or missing references)
+		//IL_088a: Unknown result type (might be due to invalid IL or missing references)
+		//IL_088f: Unknown result type (might be due to invalid IL or missing references)
+		//IL_089f: Unknown result type (might be due to invalid IL or missing references)
+		//IL_08a4: Unknown result type (might be due to invalid IL or missing references)
+		//IL_08a9: Unknown result type (might be due to invalid IL or missing references)
+		//IL_08ae: Unknown result type (might be due to invalid IL or missing references)
+		//IL_08b0: Unknown result type (might be due to invalid IL or missing references)
+		//IL_08be: Unknown result type (might be due to invalid IL or missing references)
+		//IL_08c3: Unknown result type (might be due to invalid IL or missing references)
+		//IL_08c8: Unknown result type (might be due to invalid IL or missing references)
+		//IL_08df: Unknown result type (might be due to invalid IL or missing references)
+		//IL_08e4: Unknown result type (might be due to invalid IL or missing references)
+		//IL_08ee: Expected Obj, but got Unknown
+		//IL_08e9: Unknown result type (might be due to invalid IL or missing references)
+		//IL_08ee: Unknown result type (might be due to invalid IL or missing references)
+		//IL_08f3: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0467: Unknown result type (might be due to invalid IL or missing references)
+		//IL_045e: Unknown result type (might be due to invalid IL or missing references)
+		//IL_03f2: Unknown result type (might be due to invalid IL or missing references)
+		//IL_046c: Unknown result type (might be due to invalid IL or missing references)
+		//IL_046f: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0474: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0484: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0489: Unknown result type (might be due to invalid IL or missing references)
+		//IL_048e: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0493: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0495: Unknown result type (might be due to invalid IL or missing references)
+		//IL_04a3: Unknown result type (might be due to invalid IL or missing references)
+		//IL_04a8: Unknown result type (might be due to invalid IL or missing references)
+		//IL_04ad: Unknown result type (might be due to invalid IL or missing references)
+		//IL_094e: Unknown result type (might be due to invalid IL or missing references)
+		//IL_04c4: Unknown result type (might be due to invalid IL or missing references)
+		//IL_04c9: Unknown result type (might be due to invalid IL or missing references)
+		//IL_04d3: Expected Obj, but got Unknown
+		//IL_04ce: Unknown result type (might be due to invalid IL or missing references)
+		//IL_04d3: Unknown result type (might be due to invalid IL or missing references)
+		//IL_04d8: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0514: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0579: Unknown result type (might be due to invalid IL or missing references)
+		//IL_05f8: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0639: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0741: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0746: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0760: Unknown result type (might be due to invalid IL or missing references)
+		//IL_076b: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0770: Unknown result type (might be due to invalid IL or missing references)
+		if ((Object)(object)LocalGamestate.Instance != (Object)null && LocalGamestate.Instance.PlayerFrozen)
+		{
+			watchClock = 0f;
+			lastWatchDist = float.MaxValue;
+			return;
+		}
+		if (!hasTarget || Mode == BotMode.Idle || s.HeroDead)
+		{
+			hasAnchor = false;
+			StuckStrikes = 0;
+			watchClock = 0f;
+			lastWatchDist = float.MaxValue;
+			return;
+		}
+		if (!hasAnchor)
+		{
+			watchAnchor = s.HeroPos;
+			hasAnchor = true;
+			watchClock = 0f;
+			lastWatchDist = FlatDist(s.HeroPos, AimPos);
+			return;
+		}
+		watchClock += 0.25f;
+		if (watchClock < 2f)
+		{
+			return;
+		}
+		watchClock = 0f;
+		float num = Vector3.Distance(s.HeroPos, watchAnchor);
+		if (num >= 0.35f)
+		{
+			lastFreePos = watchAnchor;
+			lastFreeAt = Time.unscaledTime;
+		}
+		watchAnchor = s.HeroPos;
+		float num2 = FlatDist(s.HeroPos, AimPos);
+		bool flag = num2 < lastWatchDist - 0.3f;
+		lastWatchDist = num2;
+		bool flag2 = num2 > arriveDist + 0.5f;
+		if (!flag2 && Mode != BotMode.PositionArmy)
+		{
+			if (arriveSince <= 0f)
+			{
+				arriveSince = Time.unscaledTime;
+			}
+			if (Time.unscaledTime - arriveSince > 20f)
+			{
+				arriveSince = 0f;
+				ManualLogSource log = Plugin.Log;
+				if (log != null)
+				{
+					log.LogWarning((object)$"[bot] aim-stall in {Mode} — parked aim");
+				}
+				LogLine(in s, "aim-stall");
+				if (Mode == BotMode.CollectCoin && (Object)(object)s.NearestCoin != (Object)null)
+				{
+					coinIgnore.Add(s.NearestCoin);
+				}
+				else if (Mode == BotMode.SpendGold && (Object)(object)s.NearestBuild != (Object)null)
+				{
+					BotPerception.IgnoreBuild(s.NearestBuild, 300f);
+				}
+				ClearTarget();
+				return;
+			}
+		}
+		else
+		{
+			arriveSince = 0f;
+		}
+		if (((num < 0.35f) & flag2) && !flag)
+		{
+			StuckStrikes++;
+			stuckStrikeTotal++;
+			if (stuckStrikeTotal == 60)
+			{
+				ManualLogSource log2 = Plugin.Log;
+				if (log2 != null)
+				{
+					log2.LogWarning((object)"[bot] 60 stuck strikes — per-strike logging capped this run");
+				}
+			}
+			else if (stuckStrikeTotal < 60)
+			{
+				ManualLogSource log3 = Plugin.Log;
+				if (log3 != null)
+				{
+					log3.LogWarning((object)$"[bot] stuck strike {StuckStrikes} (mode={Mode}, moved {num:0.00} m)");
+				}
+			}
+			LogLine(in s, $"stuck:{StuckStrikes}");
+			if (StuckStrikes < 3)
+			{
+				return;
+			}
+			StuckStrikes = 0;
+			if (Mode == BotMode.Engage)
+			{
+				mem.OrbitAngle += mem.OrbitDir * 0.9f;
+			}
+			if (Mode == BotMode.CollectCoin && (Object)(object)s.NearestCoin != (Object)null)
+			{
+				coinIgnore.Add(s.NearestCoin);
+				ClearTarget();
+				ManualLogSource log4 = Plugin.Log;
+				if (log4 != null)
+				{
+					log4.LogWarning((object)"[bot] coin unreachable — parked");
+				}
+				LogLine(in s, "coin-stall");
+				return;
+			}
+			PlayerMovement instance = PlayerMovement.instance;
+			if (Legit)
+			{
+				Vector3 val = AimPos - s.HeroPos;
+				val.y = 0f;
+				if (num < 0.05f && (Object)(object)instance != (Object)null)
+				{
+					CharacterController component = ((Component)instance).GetComponent<CharacterController>();
+					ManualLogSource log5 = Plugin.Log;
+					if (log5 != null)
+					{
+						log5.LogWarning((object)("[bot] hard-stuck diag: type=" + ((object)instance).GetType().Name + " " + $"ctrlEnabled={(Object)(object)component != (Object)null && ((Collider)component).enabled} grounded={(Object)(object)component != (Object)null && component.isGrounded} " + $"vel={instance.Velocity} dead={instance.Dead} scene={s.SceneName}"));
+					}
+					detourCount++;
+					if (detourCount > 4)
+					{
+						detourCount = 1;
+						detourSide = -detourSide;
+					}
+					float num3 = 3f * (float)detourCount;
+					Vector3 val2 = ((val.sqrMagnitude > 0.01f) ? val.normalized : Vector3.forward);
+					detourPos = s.HeroPos - val2 * (2f + num3 * 0.5f) + Vector3.Cross(Vector3.up, val2) * (num3 * (float)detourSide);
+					if ((Object)(object)AstarPath.active != (Object)null)
+					{
+						detourPos = AstarPath.active.GetNearest(detourPos, new NNConstraint()).position;
+					}
+					detourUntil = Time.unscaledTime + 1.2f + 0.6f * (float)detourCount;
+					ManualLogSource log6 = Plugin.Log;
+					if (log6 != null)
+					{
+						log6.LogWarning((object)$"[bot] hard-stuck (legit) → detour x{detourCount} to {detourPos}");
+					}
+					LogLine(in s, $"unstick:{detourCount}");
+					if (Mode == BotMode.PositionArmy && s.HasUncoveredDoor && (navWrongLayer || detourCount >= 3))
+					{
+						if (s.UncoveredDoorIdx >= 0)
+						{
+							BotPerception.ParkDoorIdx(s.UncoveredDoorIdx);
+						}
+						else
+						{
+							BotPerception.ParkDoorAnchor(s.UncoveredDoorPos);
+						}
+						navWrongLayer = false;
+						ClearTarget();
+						LogLine(in s, "door-unreachable");
+					}
+					else if (Mode == BotMode.SpendGold && (Object)(object)s.NearestBuild != (Object)null && (navWrongLayer || detourCount >= 3))
+					{
+						if (s.HeroPos.y > s.NearestBuildPos.y + 2.5f)
+						{
+							ClearTarget();
+							navWrongLayer = false;
+							detourCount = 0;
+							SetTarget(s.CastlePos, 1.5f);
+							ManualLogSource log7 = Plugin.Log;
+							if (log7 != null)
+							{
+								log7.LogWarning((object)"[bot] hero on wall top → descending via castle");
+							}
+							LogLine(in s, "hero-descend");
+							return;
+						}
+						if (navWrongLayer && detourCount < 3)
+						{
+							BotPerception.IgnoreStand(s.NearestBuildPos);
+							BotPerception.NoteBuildFail(BotPerception.BuildCat(s.NearestBuildName));
+							navDirectUntil = Time.unscaledTime + 9f;
+							navPath = null;
+							navIndex = 0;
+							navWrongLayer = false;
+							ManualLogSource log8 = Plugin.Log;
+							if (log8 != null)
+							{
+								log8.LogWarning((object)"[bot] wrong-layer path → direct steer 9s");
+							}
+							LogLine(in s, "direct-steer");
+							return;
+						}
+						string text = s.NearestBuildName ?? "";
+						bool flag3 = text.IndexOf("castle", StringComparison.OrdinalIgnoreCase) >= 0 || text.IndexOf("horn", StringComparison.OrdinalIgnoreCase) >= 0 || ((Object)(object)s.NearestBuild != (Object)null && (object)s.NearestBuild == BotPerception.HornBi);
+						BotPerception.IgnoreBuild(s.NearestBuild, flag3 ? 60f : 300f);
+						BotPerception.NoteBuildFail(BotPerception.BuildCat(s.NearestBuildName));
+						if (flag3)
+						{
+							ClearTarget();
+							ManualLogSource log9 = Plugin.Log;
+							if (log9 != null)
+							{
+								log9.LogWarning((object)"[bot] vital slot unreachable — short ignore only (no park)");
+							}
+							LogLine(in s, "build-vital-skip");
+						}
+						else
+						{
+							Vector3 nearestBuildPos = s.NearestBuildPos;
+							for (float num4 = -8f; num4 <= 8f; num4 += 8f)
+							{
+								for (float num5 = -8f; num5 <= 8f; num5 += 8f)
+								{
+									Memory.Park(s.SceneName, nearestBuildPos + new Vector3(num4, 0f, num5), "unreachable");
+								}
+							}
+						}
+						ClearTarget();
+						ManualLogSource log10 = Plugin.Log;
+						if (log10 != null)
+						{
+							log10.LogWarning((object)("[bot] slot unreachable — parked 5 min" + (navWrongLayer ? " [layer]" : "") + " + pocket cells"));
+						}
+						navWrongLayer = false;
+						LogLine(in s, "build-unreachable");
+					}
+					else if (detourCount >= 4)
+					{
+						ManualLogSource log11 = Plugin.Log;
+						if (log11 != null)
+						{
+							log11.LogWarning((object)$"[bot] aim unreachable in {Mode} — released (detour x{detourCount})");
+						}
+						LogLine(in s, "aim-unreachable");
+						ClearTarget();
+					}
+				}
+				else
+				{
+					detourCount++;
+					if (detourCount > 4)
+					{
+						detourCount = 1;
+						detourSide = -detourSide;
+					}
+					float num6 = 3f * (float)detourCount;
+					Vector3 val3 = ((val.sqrMagnitude > 0.01f) ? val.normalized : Vector3.forward);
+					detourPos = s.HeroPos - val3 * (2f + num6 * 0.5f) + Vector3.Cross(Vector3.up, val3) * (num6 * (float)detourSide);
+					if ((Object)(object)AstarPath.active != (Object)null)
+					{
+						detourPos = AstarPath.active.GetNearest(detourPos, new NNConstraint()).position;
+					}
+					detourUntil = Time.unscaledTime + 1.2f + 0.6f * (float)detourCount;
+					UIFrame val4 = (((Object)(object)UIFrameManager.instance != (Object)null) ? UIFrameManager.instance.ActiveFrame : null);
+					ManualLogSource log12 = Plugin.Log;
+					if (log12 != null)
+					{
+						log12.LogWarning((object)($"[bot] stuck → sidestep detour x{detourCount} to {detourPos} " + $"(frozen={(Object)(object)LocalGamestate.Instance != (Object)null && LocalGamestate.Instance.PlayerFrozen}, " + string.Format("ts={0:0.##}, frame={1}, ", Time.timeScale, ((Object)(object)val4 != (Object)null) ? ((Object)val4).name : "null") + $"choiceWait={(Object)(object)ChoiceManager.instance != (Object)null && ChoiceManager.instance.ChoiceCoroutineWaiting})"));
+					}
+					LogLine(in s, $"unstick:{detourCount}");
+				}
+			}
+			else if ((Object)(object)instance != (Object)null)
+			{
+				Vector3 val5 = AimPos - s.HeroPos;
+				val5.y = 0f;
+				Vector3 val6 = s.HeroPos + ((val5.sqrMagnitude > 0.01f) ? val5.normalized : Vector3.forward) * 2.5f;
+				instance.TeleportTo(val6);
+				ManualLogSource log13 = Plugin.Log;
+				if (log13 != null)
+				{
+					log13.LogWarning((object)$"[bot] stuck → teleport nudge to {val6}");
+				}
+				LogLine(in s, "teleport-nudge");
+			}
+		}
+		else
+		{
+			StuckStrikes = 0;
+		}
+	}
+
+	private static void WriteAuditStub(in BotPerception.Snapshot s, string label)
+	{
+		if (Time.unscaledTime < nextAuditAt)
+		{
+			return;
+		}
+		nextAuditAt = Time.unscaledTime + 3f;
+		try
+		{
+			string text = Path.Combine(Recorder.AgentDir, "audit.json");
+			string text2 = text + ".tmp";
+			File.WriteAllText(text2, "{\"scene\":" + BotPerception.JsonStr(s.SceneName ?? "?") + ",\"t\":0,\"mode\":" + BotPerception.JsonStr(label) + ",\"mode_since\":0,\"gold\":0,\"ally\":0,\"free\":0,\"foes\":0,\"night\":false,\"wave\":0,\"wave_total\":0,\"doors_cov\":0,\"doors\":0,\"red\":false,\"breaches\":0,\"bld\":0,\"cur_build\":\"\",\"checklist\":[],\"door_units\":[],\"door_lines\":[],\"cat_built\":{},\"alerts\":[]}");
+			if (File.Exists(text))
+			{
+				File.Delete(text);
+			}
+			File.Move(text2, text);
+		}
+		catch
+		{
+		}
+	}
+
+	private static float AimY(in BotPerception.Snapshot s, Vector3 flat)
+	{
+		//IL_003d: Unknown result type (might be due to invalid IL or missing references)
+		//IL_003f: Unknown result type (might be due to invalid IL or missing references)
+		//IL_001e: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0020: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00eb: Unknown result type (might be due to invalid IL or missing references)
+		//IL_009c: Unknown result type (might be due to invalid IL or missing references)
+		//IL_009e: Unknown result type (might be due to invalid IL or missing references)
+		//IL_007d: Unknown result type (might be due to invalid IL or missing references)
+		//IL_007f: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00cc: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00ce: Unknown result type (might be due to invalid IL or missing references)
+		if (Mode == BotMode.SpendGold && (Object)(object)s.NearestBuild != (Object)null)
+		{
+			if (s.HasBuildStand && FlatDist(flat, s.BuildStandPos) < 3f)
+			{
+				return s.BuildStandPos.y;
+			}
+			if (FlatDist(flat, s.NearestBuildPos) < 6f)
+			{
+				return s.NearestBuildPos.y;
+			}
+		}
+		if ((Mode == BotMode.HoldCastle || Mode == BotMode.PositionArmy) && s.HasCastle)
+		{
+			if (s.HasCastleStand && FlatDist(flat, s.CastleStandPos) < 4f)
+			{
+				return s.CastleStandPos.y;
+			}
+			if (FlatDist(flat, s.CastlePos) < 6f)
+			{
+				return s.CastlePos.y;
+			}
+		}
+		if (Mode == BotMode.PositionArmy && s.HasUncoveredDoor && FlatDist(flat, s.UncoveredDoorPos) < 8f)
+		{
+			return s.UncoveredDoorPos.y;
+		}
+		return flat.y;
+	}
+
+	private static void SetTarget(Vector3 pos, float arrive, bool projectToNav = false)
+	{
+		//IL_0027: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0028: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0055: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0056: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0015: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0016: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0020: Expected Obj, but got Unknown
+		//IL_001b: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0020: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0025: Unknown result type (might be due to invalid IL or missing references)
+		if (projectToNav && (Object)(object)AstarPath.active != (Object)null)
+		{
+			pos = AstarPath.active.GetNearest(pos, new NNConstraint()).position;
+		}
+		if (FlatDist(pos, targetPos) > 6f)
+		{
+			detourCount = 0;
+			navWrongLayer = false;
+			arriveSince = 0f;
+			frontierLatch = false;
+		}
+		targetPos = pos;
+		arriveDist = arrive;
+		hasTarget = true;
+	}
+
+	private static void Execute(in BotPerception.Snapshot s, Intent it)
+	{
+		//IL_03cb: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0442: Unknown result type (might be due to invalid IL or missing references)
+		if (it.CheatOnly && Legit)
+		{
+			return;
+		}
+		PlayerInteraction instance = PlayerInteraction.instance;
+		switch (it.Kind)
+		{
+		case IntentKind.ReleaseHold:
+			ReleaseBuild();
+			break;
+		case IntentKind.BeginHold:
+		{
+			if (!((Object)(object)s.NearestBuild != (Object)null) || !((Object)(object)instance != (Object)null))
+			{
+				break;
+			}
+			ReleaseBuild();
+			BuildingInteractor nearestBuild = s.NearestBuild;
+			((InteractorBase)nearestBuild).Focus(instance);
+			((InteractorBase)nearestBuild).InteractionBegin(instance);
+			if (IsInterLatchedComplete(nearestBuild))
+			{
+				((InteractorBase)nearestBuild).InteractionEnd(instance);
+				nearestBuild.UpdateInteractionState(false, (InteractionState)0);
+				((InteractorBase)nearestBuild).InteractionBegin(instance);
+			}
+			if (IsInterLatchedComplete(nearestBuild))
+			{
+				((InteractorBase)nearestBuild).Unfocus(instance);
+				((InteractorBase)nearestBuild).InteractionEnd(instance);
+				LogLine(in s, "hold-latch-defer");
+				BotPerception.IgnoreBuild(nearestBuild, 30f);
+				break;
+			}
+			heldBuild = nearestBuild;
+			BotPerception.HeldBuildRef = nearestBuild;
+			if (!string.IsNullOrEmpty(s.PolicyFocus))
+			{
+				Policy.Commit("build_focus", s.PolicyFocus, s.PolicyKey ?? "", new string[4] { "military", "income", "defense", "balanced" });
+			}
+			ManualLogSource log4 = Plugin.Log;
+			if (log4 != null)
+			{
+				log4.LogInfo((object)("[bot] building '" + ((Object)nearestBuild).name + "' -> hold-to-pay"));
+			}
+			break;
+		}
+		case IntentKind.PumpHold:
+			if ((Object)(object)heldBuild != (Object)null && (Object)(object)instance != (Object)null)
+			{
+				((InteractorBase)heldBuild).InteractionHold(instance);
+			}
+			break;
+		case IntentKind.ParkSlot:
+			if ((Object)(object)s.NearestBuild != (Object)null)
+			{
+				Type type = ((object)s.NearestBuild).GetType();
+				string text = "?";
+				object obj = "?";
+				object obj2 = "?";
+				object obj3 = "?";
+				FieldInfo field = type.GetField("currentState", BindingFlags.Instance | BindingFlags.NonPublic);
+				if (field != null)
+				{
+					text = field.GetValue(s.NearestBuild)?.ToString();
+				}
+				FieldInfo field2 = type.GetField("interactionStarted", BindingFlags.Instance | BindingFlags.NonPublic);
+				if (field2 != null)
+				{
+					obj = field2.GetValue(s.NearestBuild);
+				}
+				FieldInfo field3 = type.GetField("isWaitingForChoice", BindingFlags.Instance | BindingFlags.NonPublic);
+				if (field3 != null)
+				{
+					obj2 = field3.GetValue(s.NearestBuild);
+				}
+				FieldInfo field4 = type.GetField("interactionComplete", BindingFlags.Instance | BindingFlags.NonPublic);
+				if (field4 != null)
+				{
+					obj3 = field4.GetValue(s.NearestBuild);
+				}
+				FieldInfo field5 = type.GetField("costDisplay", BindingFlags.Instance | BindingFlags.NonPublic);
+				object obj4 = "?";
+				if (field5 != null)
+				{
+					object value = field5.GetValue(s.NearestBuild);
+					FieldInfo fieldInfo = value?.GetType().GetField("currentlyFilledCoins", BindingFlags.Instance | BindingFlags.NonPublic);
+					if (fieldInfo != null)
+					{
+						obj4 = fieldInfo.GetValue(value);
+					}
+				}
+				ManualLogSource log6 = Plugin.Log;
+				if (log6 != null)
+				{
+					log6.LogWarning((object)("[bot] build-stall diag '" + s.NearestBuildName + "': " + $"state={text} started={obj} waitChoice={obj2} complete={obj3} filled={obj4} " + $"dist={s.NearestBuildDist:0.#} balance={s.Balance} harvest={s.NearestBuild.canBeHarvested} " + $"canInteract={((InteractorBase)s.NearestBuild).CanBeInteractedWith}"));
+				}
+			}
+			BotPerception.IgnoreBuild(s.NearestBuild, 600f);
+			if (!((Object)(object)s.NearestBuild != (Object)null))
+			{
+				break;
+			}
+			if (!IsInterLatchedComplete(s.NearestBuild))
+			{
+				Memory.Park(s.SceneName, ((Component)s.NearestBuild).transform.position, "build-stall");
+			}
+			else
+			{
+				ManualLogSource log7 = Plugin.Log;
+				if (log7 != null)
+				{
+					log7.LogWarning((object)"[bot] build-stall is a complete-latch wedge — cell NOT parked");
+				}
+			}
+			BotPerception.NoteBuildFail(BotPerception.BuildCat(s.NearestBuildName));
+			break;
+		case IntentKind.PumpAttack:
+			PumpAttack();
+			break;
+		case IntentKind.CommandArmy:
+			CommandArmyAll(in s);
+			break;
+		case IntentKind.PlaceArmy:
+			PlaceArmy();
+			break;
+		case IntentKind.PlaceSquad:
+			if (PlaceSquad(in s) > 0 && s.HasUncoveredDoor)
+			{
+				if (s.UncoveredDoorIdx >= 0)
+				{
+					BotPerception.MarkDoorClaimIdx(s.UncoveredDoorIdx);
+				}
+				else
+				{
+					BotPerception.MarkDoorClaim(s.UncoveredDoorPos);
+				}
+			}
+			break;
+		case IntentKind.RecallToBreach:
+			RecallToBreach(in s);
+			break;
+		case IntentKind.EscortHero:
+			EscortHero(in s);
+			break;
+		case IntentKind.HornInteract:
+			if ((Object)(object)s.Horn != (Object)null && (Object)(object)instance != (Object)null)
+			{
+				((InteractorBase)s.Horn).InteractionBegin(instance);
+				ManualLogSource log2 = Plugin.Log;
+				if (log2 != null)
+				{
+					log2.LogInfo((object)"[bot] at nighthorn -> InteractionBegin()");
+				}
+			}
+			else if ((Object)(object)BotPerception.HornBi != (Object)null && (Object)(object)instance != (Object)null)
+			{
+				BotPerception.HornBi.InteractionBegin(instance);
+				ManualLogSource log3 = Plugin.Log;
+				if (log3 != null)
+				{
+					log3.LogInfo((object)"[bot] horn interactor -> InteractionBegin()");
+				}
+			}
+			break;
+		case IntentKind.SwitchNight:
+		{
+			Policy.Commit("night", ((int)s.DayBudget).ToString(), s.PolicyKey ?? "", new string[3] { "150", "240", "330" });
+			DayNightCycle instance3 = DayNightCycle.Instance;
+			if (instance3 != null)
+			{
+				instance3.SwitchToNight();
+			}
+			break;
+		}
+		case IntentKind.SeedLoadout:
+			SeedLoadout(in s);
+			break;
+		case IntentKind.TransitionLevel:
+		{
+			LevelInteractor nearestLevel = s.NearestLevel;
+			SceneTransitionManager instance2 = SceneTransitionManager.instance;
+			if ((Object)(object)instance2 != (Object)null && (Object)(object)nearestLevel != (Object)null && (Object)(object)nearestLevel.levelInfo != (Object)null && !BotPerception.SceneTransitionBusy(instance2))
+			{
+				LevelInteractor.lastActiveLevelInfo = nearestLevel.levelInfo;
+				ManualLogSource log5 = Plugin.Log;
+				if (log5 != null)
+				{
+					log5.LogInfo((object)("[bot] transitioning to level '" + nearestLevel.levelInfo.sceneName + "'"));
+				}
+				instance2.TransitionFromLevelSelectToLevel(nearestLevel.levelInfo.sceneName);
+			}
+			break;
+		}
+		case IntentKind.InteractLevel:
+			if ((Object)(object)s.NearestLevel != (Object)null && (Object)(object)instance != (Object)null)
+			{
+				((InteractorBase)s.NearestLevel).InteractionBegin(instance);
+				ManualLogSource log = Plugin.Log;
+				if (log != null)
+				{
+					log.LogInfo((object)("[bot] level '" + ((Object)s.NearestLevel).name + "' -> InteractionBegin (frame)"));
+				}
+			}
+			break;
+		case IntentKind.ClearCoinPark:
+			coinIgnore.Clear();
+			break;
+		}
+	}
+
+	private static bool NearDoor(Vector3 p, Vector3[] doors, float r)
+	{
+		//IL_0015: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0028: Unknown result type (might be due to invalid IL or missing references)
+		if (doors == null)
+		{
+			return false;
+		}
+		for (int i = 0; i < doors.Length; i++)
+		{
+			float num = doors[i].x - p.x;
+			float num2 = doors[i].z - p.z;
+			if (num * num + num2 * num2 < r * r)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private static void CommandArmyAll(in BotPerception.Snapshot s)
+	{
+		//IL_0072: Unknown result type (might be due to invalid IL or missing references)
+		CommandUnits instance = CommandUnits.instance;
+		TagManager instance2 = TagManager.instance;
+		if ((Object)(object)instance == (Object)null || (Object)(object)instance2 == (Object)null)
+		{
+			return;
+		}
+		Vector3[] doorAnchors = s.DoorAnchors;
+		int num = 0;
+		foreach (TaggedObject playerUnit in TagManager.instance.PlayerUnits)
+		{
+			if (!((Object)(object)playerUnit == (Object)null) && !((Object)(object)playerUnit.Hp == (Object)null) && playerUnit.Hp.Alive && !NearDoor(((Component)playerUnit).transform.position, doorAnchors, 25f))
+			{
+				PathfindMovementPlayerunit component = ((Component)playerUnit).GetComponent<PathfindMovementPlayerunit>();
+				if (!((Object)(object)component != (Object)null) || !component.FollowingPlayer)
+				{
+					instance.OnUnitAdd(playerUnit, false);
+					num++;
+				}
+			}
+		}
+		instance.commanding = num > 0;
+		ManualLogSource log = Plugin.Log;
+		if (log != null)
+		{
+			log.LogInfo((object)$"[bot] commanding {num} free unit(s) (squads stay posted)");
+		}
+	}
+
+	private static int PlaceSquad(in BotPerception.Snapshot s)
+	{
+		//IL_00b0: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00ed: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0100: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0105: Unknown result type (might be due to invalid IL or missing references)
+		//IL_010a: Unknown result type (might be due to invalid IL or missing references)
+		//IL_010f: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0111: Unknown result type (might be due to invalid IL or missing references)
+		int num = ((s.UncoveredDoorTarget > 0) ? s.UncoveredDoorTarget : 4);
+		int num2 = 0;
+		int num3 = Mathf.Max(Coach.ReserveSize, BotPerception.Strat.Reserve);
+		int num4 = Mathf.Max(0, s.FreeUnits - num3);
+		TagManager instance = TagManager.instance;
+		if ((Object)(object)instance == (Object)null)
+		{
+			return 0;
+		}
+		IReadOnlyList<TaggedObject> playerUnits = instance.PlayerUnits;
+		for (int i = 0; i < playerUnits.Count; i++)
+		{
+			if (num2 >= num)
+			{
+				break;
+			}
+			if (num2 >= num4)
+			{
+				break;
+			}
+			TaggedObject val = playerUnits[i];
+			if (!((Object)(object)val == (Object)null) && !((Object)(object)val.Hp == (Object)null) && val.Hp.Alive)
+			{
+				PathfindMovementPlayerunit component = ((Component)val).GetComponent<PathfindMovementPlayerunit>();
+				if (!((Object)(object)component == (Object)null) && !NearDoor(((Component)component).transform.position, s.DoorAnchors, 25f) && !component.FollowingPlayer)
+				{
+					float num5 = (float)num2 * 1.571f;
+					Vector3 val2 = new Vector3(Mathf.Cos(num5), 0f, Mathf.Sin(num5)) * (1.2f + 0.4f * (float)num2);
+					component.HomePosition = s.UncoveredDoorPos + val2;
+					component.HasReachedHomePositionAlready = false;
+					component.FollowPlayer(false);
+					component.HoldPosition = true;
+					num2++;
+				}
+			}
+		}
+		if (num2 > 0)
+		{
+			Policy.Commit("squad", num.ToString(), s.PolicyKey ?? "", new string[5] { "3", "4", "5", "6", "8" });
+			ManualLogSource log = Plugin.Log;
+			if (log != null)
+			{
+				log.LogInfo((object)$"[bot] posted squad {num2}/{num} remotely at door '{s.UncoveredDoorLine}'");
+			}
+		}
+		return num2;
+	}
+
+	private static void RecallToBreach(in BotPerception.Snapshot s)
+	{
+		//IL_0086: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0099: Unknown result type (might be due to invalid IL or missing references)
+		//IL_009e: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00ab: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00b0: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00b2: Unknown result type (might be due to invalid IL or missing references)
+		TagManager instance = TagManager.instance;
+		if ((Object)(object)instance == (Object)null)
+		{
+			return;
+		}
+		IReadOnlyList<TaggedObject> playerUnits = instance.PlayerUnits;
+		int num = 0;
+		for (int i = 0; i < playerUnits.Count; i++)
+		{
+			TaggedObject val = playerUnits[i];
+			if (!((Object)(object)val == (Object)null) && !((Object)(object)val.Hp == (Object)null) && val.Hp.Alive)
+			{
+				PathfindMovementPlayerunit component = ((Component)val).GetComponent<PathfindMovementPlayerunit>();
+				if (!((Object)(object)component == (Object)null))
+				{
+					float num2 = (float)num * 0.785f;
+					Vector3 val2 = new Vector3(Mathf.Cos(num2), 0f, Mathf.Sin(num2)) * (1.5f + 0.3f * (float)num);
+					component.FollowPlayer(false);
+					component.HomePosition = s.ThreatAnchor + val2;
+					component.HasReachedHomePositionAlready = false;
+					component.HoldPosition = true;
+					num++;
+				}
+			}
+		}
+		ManualLogSource log = Plugin.Log;
+		if (log != null)
+		{
+			log.LogWarning((object)$"[bot] BREACH-RESPONSE: {num} unit(s) converging on threat");
+		}
+	}
+
+	private static void EscortHero(in BotPerception.Snapshot s)
+	{
+		//IL_0099: Unknown result type (might be due to invalid IL or missing references)
+		int num;
+		if (Coach.EscortSize > 0)
+		{
+			num = Coach.EscortSize;
+		}
+		else if (BotPerception.Strat.Escort > 0)
+		{
+			num = BotPerception.Strat.Escort;
+		}
+		else
+		{
+			num = ((s.AllyCount >= 12) ? 4 : 3);
+		}
+		int num2 = 0;
+		TagManager instance = TagManager.instance;
+		if ((Object)(object)instance == (Object)null)
+		{
+			return;
+		}
+		IReadOnlyList<TaggedObject> playerUnits = instance.PlayerUnits;
+		for (int i = 0; i < playerUnits.Count; i++)
+		{
+			TaggedObject val = playerUnits[i];
+			if ((Object)(object)val == (Object)null || (Object)(object)val.Hp == (Object)null || !val.Hp.Alive)
+			{
+				continue;
+			}
+			PathfindMovementPlayerunit component = ((Component)val).GetComponent<PathfindMovementPlayerunit>();
+			if (!((Object)(object)component == (Object)null) && !NearDoor(((Component)component).transform.position, s.DoorAnchors, 25f))
+			{
+				bool flag = component.FollowingPlayer;
+				if (num2 < num && !flag)
+				{
+					component.HoldPosition = false;
+					component.FollowPlayer(true);
+					flag = true;
+				}
+				if (flag)
+				{
+					num2++;
+				}
+			}
+		}
+	}
+
+	private static void PlaceArmy()
+	{
+		CommandUnits instance = CommandUnits.instance;
+		if (!((Object)(object)instance == (Object)null))
+		{
+			instance.PlaceCommandedUnitsAndCalculateTargetPositions(false);
+			instance.MakeUnitsInBufferHoldPosition();
+			instance.commanding = false;
+			ManualLogSource log = Plugin.Log;
+			if (log != null)
+			{
+				log.LogInfo((object)"[bot] army placed at anchor, holding");
+			}
+		}
+	}
+
+	public static void RequestLoadout(string weapon)
+	{
+		requestedWeapon = weapon;
+	}
+
+	private static void SeedLoadout(in BotPerception.Snapshot s)
+	{
+		LevelInteractor nearestLevel = s.NearestLevel;
+		PerkManager instance = PerkManager.instance;
+		if ((Object)(object)instance == (Object)null || (Object)(object)nearestLevel == (Object)null || (Object)(object)nearestLevel.levelInfo == (Object)null)
+		{
+			return;
+		}
+		if (nearestLevel.levelInfo.fixedLoadout != null && nearestLevel.levelInfo.fixedLoadout.Count > 0)
+		{
+			instance.CurrentlyEquipped.Clear();
+			instance.CurrentlyEquipped.AddRange(nearestLevel.levelInfo.fixedLoadout);
+		}
+		if (instance.CurrentlyEquipped.Count != 0)
+		{
+			return;
+		}
+		if (!string.IsNullOrEmpty(requestedWeapon))
+		{
+			Equippable val = null;
+			foreach (Equippable allEquippable in instance.allEquippables)
+			{
+				if (allEquippable is EquippableWeapon && allEquippable.IsUnlocked && string.Equals(allEquippable.displayName, requestedWeapon, StringComparison.OrdinalIgnoreCase))
+				{
+					val = allEquippable;
+					break;
+				}
+			}
+			if ((Object)(object)val != (Object)null)
+			{
+				PerkManager.SetEquipped(val, true);
+				ManualLogSource log = Plugin.Log;
+				if (log != null)
+				{
+					log.LogInfo((object)("[bot] loadout pinned by sidecar: '" + val.displayName + "'"));
+				}
+				requestedWeapon = null;
+				return;
+			}
+			ManualLogSource log2 = Plugin.Log;
+			if (log2 != null)
+			{
+				log2.LogWarning((object)("[bot] sidecar weapon '" + requestedWeapon + "' not found/locked — auto pick"));
+			}
+			requestedWeapon = null;
+		}
+		string[] array = new string[14]
+		{
+			"bow", "cross", "wand", "staff", "sling", "knife", "shuriken", "chakram", "javelin", "boomerang",
+			"pistol", "rifle", "dart", "throw"
+		};
+		Equippable val2 = null;
+		Equippable val3 = null;
+		foreach (Equippable allEquippable2 in instance.allEquippables)
+		{
+			if (!(allEquippable2 is EquippableWeapon) || !allEquippable2.IsUnlocked)
+			{
+				continue;
+			}
+			if ((Object)(object)val2 == (Object)null || allEquippable2.sortingValue > val2.sortingValue)
+			{
+				val2 = allEquippable2;
+			}
+			string text = (allEquippable2.displayName ?? "").ToLowerInvariant();
+			bool flag = false;
+			string[] array2 = array;
+			foreach (string value in array2)
+			{
+				if (text.Contains(value))
+				{
+					flag = true;
+					break;
+				}
+			}
+			if (flag && ((Object)(object)val3 == (Object)null || allEquippable2.sortingValue > val3.sortingValue))
+			{
+				val3 = allEquippable2;
+			}
+		}
+		Equippable val4 = (((Object)(object)val3 != (Object)null) ? val3 : val2);
+		if ((Object)(object)val4 != (Object)null)
+		{
+			PerkManager.SetEquipped(val4, true);
+			ManualLogSource log3 = Plugin.Log;
+			if (log3 != null)
+			{
+				log3.LogInfo((object)("[bot] loadout seeded: '" + val4.displayName + "'" + (((Object)(object)val4 == (Object)(object)val3) ? " (ranged preferred)" : "")));
+			}
+		}
+	}
+
+	private static void ClearTarget()
+	{
+		hasTarget = false;
+		engageTarget = null;
+		detourCount = 0;
+		navWrongLayer = false;
+		arriveSince = 0f;
+		frontierLatch = false;
+		ReleaseBuild();
+	}
+
+	private static bool IsInterLatchedComplete(BuildingInteractor bi)
+	{
+		try
+		{
+			Type type = ((object)bi).GetType();
+			while (type != null)
+			{
+				FieldInfo field = type.GetField("interactionComplete", BindingFlags.Instance | BindingFlags.NonPublic);
+				if (field != null)
+				{
+					return (bool)field.GetValue(bi);
+				}
+				type = type.BaseType;
+			}
+			return false;
+		}
+		catch
+		{
+			return false;
+		}
+	}
+
+	private static void ReleaseBuild()
+	{
+		//IL_00c6: Unknown result type (might be due to invalid IL or missing references)
+		if ((Object)(object)heldBuild == (Object)null)
+		{
+			return;
+		}
+		PlayerInteraction instance = PlayerInteraction.instance;
+		ManualLogSource log = Plugin.Log;
+		if (log != null)
+		{
+			log.LogInfo((object)("[bot] hold-release '" + ((Object)heldBuild).name + "' " + $"waitChoice={(Object)(object)ChoiceManager.instance != (Object)null && ChoiceManager.instance.ChoiceCoroutineRunning}"));
+		}
+		if (BotPerception.IsInteractorComplete(heldBuild))
+		{
+			string text = (((Object)(object)heldBuild.targetBuilding != (Object)null) ? heldBuild.targetBuilding.buildingName : ((Object)heldBuild).name);
+			if (!string.IsNullOrEmpty(text) && text != holdDoneName)
+			{
+				holdDoneName = text;
+				BotPerception.BuildDone(text, ((Component)heldBuild).transform.position);
+			}
+		}
+		if ((Object)(object)instance != (Object)null)
+		{
+			((InteractorBase)heldBuild).Unfocus(instance);
+			((InteractorBase)heldBuild).InteractionEnd(instance);
+		}
+		heldBuild = null;
+		BotPerception.HeldBuildRef = null;
+		holdDoneName = "";
+	}
+
+	private static bool HandleBlockingFrame(in BotPerception.Snapshot s)
+	{
+		UIFrameManager instance = UIFrameManager.instance;
+		UIFrame val = (((Object)(object)instance != (Object)null) ? instance.ActiveFrame : null);
+		uiFrame = (((Object)(object)val != (Object)null) ? ((Object)val).name : "");
+		ChoiceManager instance2 = ChoiceManager.instance;
+		if ((Object)(object)instance2 != (Object)null && instance2.ChoiceCoroutineRunning)
+		{
+			if (choiceSince <= 0f)
+			{
+				choiceSince = Time.unscaledTime;
+			}
+		}
+		else
+		{
+			choiceSince = 0f;
+		}
+		bool flag = choiceSince > 0f && Time.unscaledTime - choiceSince > 20f;
+		if ((Object)(object)instance2 != (Object)null && instance2.ChoiceCoroutineRunning && instance2.ChoiceCoroutineWaiting && !flag)
+		{
+			if (Time.unscaledTime >= frameActionAt)
+			{
+				frameActionAt = Time.unscaledTime + 1f;
+				Choice val2 = null;
+				Choice val3 = null;
+				foreach (Choice availableChoice in instance2.availableChoices)
+				{
+					if (availableChoice != null && availableChoice.CanBePicked)
+					{
+						if (val2 == null)
+						{
+							val2 = availableChoice;
+						}
+						string text = availableChoice.name ?? "";
+						if (val3 == null && (text.IndexOf("barrack", StringComparison.OrdinalIgnoreCase) >= 0 || text.IndexOf("archer", StringComparison.OrdinalIgnoreCase) >= 0 || text.IndexOf("militia", StringComparison.OrdinalIgnoreCase) >= 0 || text.IndexOf("guard", StringComparison.OrdinalIgnoreCase) >= 0 || text.IndexOf("tower", StringComparison.OrdinalIgnoreCase) >= 0 || text.IndexOf("wall", StringComparison.OrdinalIgnoreCase) >= 0 || text.IndexOf("knight", StringComparison.OrdinalIgnoreCase) >= 0 || text.IndexOf("squad", StringComparison.OrdinalIgnoreCase) >= 0 || text.IndexOf("troop", StringComparison.OrdinalIgnoreCase) >= 0 || text.IndexOf("soldier", StringComparison.OrdinalIgnoreCase) >= 0))
+						{
+							val3 = availableChoice;
+						}
+					}
+				}
+				instance2.choiceToReturn = val3 ?? val2;
+				ManualLogSource log = Plugin.Log;
+				if (log != null)
+				{
+					log.LogInfo((object)("[bot] choice frame -> '" + ((instance2.choiceToReturn != null) ? instance2.choiceToReturn.name : "none") + "'"));
+				}
+				LogLine(in s, "choice-pick");
+				choiceSince = Time.unscaledTime;
+			}
+			return true;
+		}
+		if ((Object)(object)instance2 != (Object)null && instance2.ChoiceCoroutineRunning && !flag)
+		{
+			return true;
+		}
+		if ((Object)(object)val == (Object)null || !val.freezePlayer)
+		{
+			if (Time.unscaledTime - lastFrameAt > 3f)
+			{
+				lastFrameName = "";
+				frameSeen = 0;
+			}
+			return false;
+		}
+		lastFrameAt = Time.unscaledTime;
+		if (((Object)val).name != lastFrameName)
+		{
+			lastFrameName = ((Object)val).name;
+			frameSeen = 0;
+		}
+		if ((Object)(object)instance2 != (Object)null && instance2.ChoiceCoroutineRunning)
+		{
+			return true;
+		}
+		if (((Object)val).name.IndexOf("Choice", StringComparison.OrdinalIgnoreCase) >= 0)
+		{
+			if (Time.unscaledTime >= frameActionAt)
+			{
+				frameActionAt = Time.unscaledTime + 1f;
+				ManualLogSource log2 = Plugin.Log;
+				if (log2 != null)
+				{
+					log2.LogInfo((object)"[bot] choice frame -> Apply() (confirm)");
+				}
+				val.Apply();
+				LogLine(in s, "choice-confirm");
+			}
+			return true;
+		}
+		if ((Object)(object)((Component)val).GetComponentInChildren<BackToLevelSelectHelper>(true) != (Object)null && (val.canNotBeEscaped || (frameSeen >= 2 && (s.GameState.StartsWith("AfterMatch") || ((Object)val).name.IndexOf("After Match") >= 0))))
+		{
+			if (Time.unscaledTime >= frameActionAt)
+			{
+				frameActionAt = Time.unscaledTime + 2f;
+				ManualLogSource log3 = Plugin.Log;
+				if (log3 != null)
+				{
+					log3.LogInfo((object)"[bot] end-of-match -> Apply() (back-to-map)");
+				}
+				LogLine(in s, "match-end");
+				val.Apply();
+			}
+			return true;
+		}
+		PerkSelectionItem[] componentsInChildren = ((Component)val).GetComponentsInChildren<PerkSelectionItem>(true);
+		if (componentsInChildren != null && componentsInChildren.Length != 0)
+		{
+			if (Time.unscaledTime >= frameActionAt)
+			{
+				frameActionAt = Time.unscaledTime + 1.5f;
+				int num = 0;
+				PerkSelectionItem[] array = componentsInChildren;
+				foreach (PerkSelectionItem val4 in array)
+				{
+					PerkSelectionGroup componentInParent = ((Component)val4).GetComponentInParent<PerkSelectionGroup>();
+					if (!((Object)(object)componentInParent == (Object)null) && !val4.Selected && !((Object)(object)val4.Equippable == (Object)null) && val4.Equippable.IsUnlocked)
+					{
+						componentInParent.SelectPerk(val4);
+						num++;
+					}
+				}
+				ManualLogSource log4 = Plugin.Log;
+				if (log4 != null)
+				{
+					log4.LogInfo((object)$"[bot] perk frame '{((Object)val).name}' -> picked {num} item(s), closing");
+				}
+				LogLine(in s, "perk-pick");
+				if (!val.canNotBeEscaped)
+				{
+					instance.CloseActiveFrame();
+				}
+				else
+				{
+					val.Apply();
+				}
+			}
+			return true;
+		}
+		if (Time.unscaledTime >= frameActionAt)
+		{
+			frameActionAt = Time.unscaledTime + 2f;
+			frameSeen++;
+			ManualLogSource log5 = Plugin.Log;
+			if (log5 != null)
+			{
+				log5.LogInfo((object)("[bot] blocking frame '" + ((Object)val).name + "' -> close"));
+			}
+			LogLine(in s, "frame-close");
+			if (!val.canNotBeEscaped)
+			{
+				instance.CloseActiveFrame();
+			}
+			else
+			{
+				val.Apply();
+			}
+		}
+		return true;
+	}
+
+	private static void DiagLog(string key, string msg, bool warn)
+	{
+		if (key == lastDiagKey && Time.unscaledTime < attackDiagAt)
+		{
+			return;
+		}
+		lastDiagKey = key;
+		attackDiagAt = Time.unscaledTime + 15f;
+		if (warn)
+		{
+			ManualLogSource log = Plugin.Log;
+			if (log != null)
+			{
+				log.LogWarning((object)msg);
+			}
+		}
+		else
+		{
+			ManualLogSource log2 = Plugin.Log;
+			if (log2 != null)
+			{
+				log2.LogInfo((object)msg);
+			}
+		}
+	}
+
+	private static void PumpAttack()
+	{
+		//IL_0497: Unknown result type (might be due to invalid IL or missing references)
+		//IL_04a6: Unknown result type (might be due to invalid IL or missing references)
+		PlayerMovement instance = PlayerMovement.instance;
+		if ((Object)(object)instance == (Object)null)
+		{
+			return;
+		}
+		if ((Object)(object)heroAttack == (Object)null)
+		{
+			TaggedObject componentInParent = ((Component)instance).GetComponentInParent<TaggedObject>();
+			WeaponEquipper val = (((Object)(object)componentInParent != (Object)null) ? ((Component)componentInParent).GetComponentInChildren<WeaponEquipper>(true) : Object.FindObjectOfType<WeaponEquipper>());
+			if ((Object)(object)val != (Object)null)
+			{
+				heroAttack = (((Object)(object)val.activeWeapon != (Object)null) ? val.activeWeapon : val.passiveWeapon);
+			}
+			if ((Object)(object)heroAttack == (Object)null && (Object)(object)componentInParent != (Object)null)
+			{
+				heroAttack = ((Component)componentInParent).GetComponentInChildren<ManualAttack>(true);
+			}
+			if ((Object)(object)heroAttack == (Object)null && Time.unscaledTime >= maScanAt)
+			{
+				maScanAt = Time.unscaledTime + 1f;
+				ManualAttack[] array = Object.FindObjectsOfType<ManualAttack>(true);
+				ManualAttack[] array2 = array;
+				foreach (ManualAttack val2 in array2)
+				{
+					TaggedObject componentInParent2 = ((Component)val2).GetComponentInParent<TaggedObject>();
+					if ((Object)(object)componentInParent2 != (Object)null && componentInParent2.Contains((ETag)2))
+					{
+						heroAttack = val2;
+						break;
+					}
+				}
+				if ((Object)(object)heroAttack == (Object)null)
+				{
+					string text = "";
+					for (int j = 0; j < array.Length && j < 6; j++)
+					{
+						text = text + ((j > 0) ? "," : "") + ((Object)array[j]).name;
+					}
+					WeaponEquipper[] array3 = Object.FindObjectsOfType<WeaponEquipper>(true);
+					int num = (((Object)(object)PerkManager.instance != (Object)null) ? PerkManager.instance.CurrentlyEquipped.Count : (-1));
+					DiagLog("no-manual-attack", $"[bot] no player ManualAttack: scene has {array.Length} [{text}], {array3.Length} WeaponEquipper, {num} equipped perks", warn: true);
+				}
+			}
+			if ((Object)(object)heroAttack != (Object)null)
+			{
+				weaponRange = 0f;
+				foreach (TargetPriority targetPriority in heroAttack.targetPriorities)
+				{
+					weaponRange = Mathf.Max(weaponRange, targetPriority.range);
+				}
+				weaponFiresWhileMoving = (Object)(object)((Component)heroAttack).GetComponent<DelayManualAttackWhileMoving>() == (Object)null;
+				ManualLogSource log = Plugin.Log;
+				if (log != null)
+				{
+					log.LogInfo((object)$"[bot] ManualAttack found on '{((Object)heroAttack).name}' (autoAttack={heroAttack.autoAttack}, range={weaponRange:0.#}, firesWhileMoving={weaponFiresWhileMoving})");
+				}
+			}
+		}
+		else if (Time.unscaledTime >= weRevalAt)
+		{
+			weRevalAt = Time.unscaledTime + 2f;
+			TaggedObject componentInParent3 = ((Component)instance).GetComponentInParent<TaggedObject>();
+			WeaponEquipper val3 = (((Object)(object)componentInParent3 != (Object)null) ? ((Component)componentInParent3).GetComponentInChildren<WeaponEquipper>(true) : Object.FindObjectOfType<WeaponEquipper>());
+			ManualAttack val4;
+			if ((Object)(object)val3 != (Object)null)
+			{
+				val4 = (((Object)(object)val3.activeWeapon != (Object)null) ? val3.activeWeapon : val3.passiveWeapon);
+			}
+			else
+			{
+				val4 = null;
+			}
+			if ((Object)(object)val4 != (Object)null && (Object)(object)val4 != (Object)(object)heroAttack)
+			{
+				heroAttack = val4;
+				weaponRange = 0f;
+				foreach (TargetPriority targetPriority2 in val4.targetPriorities)
+				{
+					weaponRange = Mathf.Max(weaponRange, targetPriority2.range);
+				}
+				ManualLogSource log2 = Plugin.Log;
+				if (log2 != null)
+				{
+					log2.LogInfo((object)$"[bot] ManualAttack re-resolved -> '{((Object)val4).name}' (range={weaponRange:0.#})");
+				}
+			}
+		}
+		if ((Object)(object)heroAttack == (Object)null)
+		{
+			if (!Legit)
+			{
+				Hp val5 = (((Object)(object)engageTarget != (Object)null) ? ((Component)engageTarget).GetComponent<Hp>() : null);
+				if ((Object)(object)val5 != (Object)null)
+				{
+					TaggedObject componentInParent4 = ((Component)instance).GetComponentInParent<TaggedObject>();
+					val5.TakeDamage(500f, componentInParent4, true, true);
+				}
+				else
+				{
+					DiagLog("weaponless:" + (((Object)(object)engageTarget != (Object)null) ? ((Object)engageTarget).name : "null"), "[bot] engage: weaponless, enemy hp missing (engageTarget=" + (((Object)(object)engageTarget != (Object)null) ? ((Object)engageTarget).name : "null") + ")", warn: true);
+				}
+			}
+			return;
+		}
+		TaggedObject val6 = null;
+		try
+		{
+			val6 = heroAttack.FindAttackTarget(true);
+		}
+		catch
+		{
+		}
+		float num2 = (((Object)(object)engageTarget != (Object)null) ? FlatDist(((Component)instance).transform.position, ((Component)engageTarget).transform.position) : (-1f));
+		DiagLog("wt:" + (((Object)(object)val6 != (Object)null) ? ((Object)val6).name : "null"), string.Format("[bot] engage diag: weaponTarget={0} pursueDist={1:0.0}", ((Object)(object)val6 != (Object)null) ? ((Object)val6).name : "null", num2), warn: false);
+		if ((Object)(object)val6 != (Object)null)
+		{
+			if (Legit)
+			{
+				heroAttack.TryToAttack();
+			}
+			else
+			{
+				heroAttack.Attack();
+			}
+		}
+		else
+		{
+			heroAttack.TryToAttack();
+		}
+	}
+
+	private static Vector3 DirTo(Vector3 from, Vector3 to, float arrive)
+	{
+		//IL_0000: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0001: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0002: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0007: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0026: Unknown result type (might be due to invalid IL or missing references)
+		//IL_001e: Unknown result type (might be due to invalid IL or missing references)
+		Vector3 val = to - from;
+		val.y = 0f;
+		if (val.magnitude <= arrive)
+		{
+			return Vector3.zero;
+		}
+		return val.normalized;
+	}
+
+	private static Vector3 StandOff(Vector3 target, Vector3 hero, float radius)
+	{
+		//IL_0000: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0001: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0002: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0007: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0020: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0023: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0029: Unknown result type (might be due to invalid IL or missing references)
+		//IL_002e: Unknown result type (might be due to invalid IL or missing references)
+		//IL_001e: Unknown result type (might be due to invalid IL or missing references)
+		Vector3 val = hero - target;
+		val.y = 0f;
+		if (val.magnitude <= radius)
+		{
+			return target;
+		}
+		return target + val.normalized * radius;
+	}
+
+	private static Vector3 NavSteerPoint(Vector3 hero, Vector3 goal)
+	{
+		//IL_0011: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0012: Unknown result type (might be due to invalid IL or missing references)
+		//IL_003a: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0065: Unknown result type (might be due to invalid IL or missing references)
+		//IL_006e: Unknown result type (might be due to invalid IL or missing references)
+		//IL_006f: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0093: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00a5: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00a8: Unknown result type (might be due to invalid IL or missing references)
+		//IL_012a: Unknown result type (might be due to invalid IL or missing references)
+		//IL_012f: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00f2: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00f9: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00c5: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00ca: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00d5: Unknown result type (might be due to invalid IL or missing references)
+		//IL_013f: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0140: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0184: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0189: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0153: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0154: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0163: Unknown result type (might be due to invalid IL or missing references)
+		//IL_01df: Unknown result type (might be due to invalid IL or missing references)
+		//IL_01d9: Unknown result type (might be due to invalid IL or missing references)
+		navSteerArrive = arriveDist;
+		if (frontierLatch && FlatDist(goal, frontierLatchGoal) > 4f)
+		{
+			frontierLatch = false;
+		}
+		if (frontierLatch)
+		{
+			navSteerArrive = 0.5f;
+			return goal;
+		}
+		if (Legit && Time.unscaledTime < detourUntil)
+		{
+			navSteerArrive = 0.5f;
+		}
+		if (Time.unscaledTime < navDirectUntil)
+		{
+			return goal;
+		}
+		if (hasTarget)
+		{
+			MaybeRequestPath(hero, goal);
+		}
+		Path val = navPath;
+		if (val == null || val.vectorPath == null || val.vectorPath.Count == 0)
+		{
+			return goal;
+		}
+		List<Vector3> vectorPath = val.vectorPath;
+		if (vectorPath.Count > 0 && FlatDist(hero, vectorPath[0]) > 15f)
+		{
+			navPath = null;
+			navIndex = 0;
+			navGoal = Vector3.zero;
+			navWrongLayer = false;
+			return goal;
+		}
+		while (navIndex < vectorPath.Count - 1 && FlatDist(hero, vectorPath[navIndex]) < 1.4f)
+		{
+			navIndex++;
+		}
+		navIndex = Mathf.Min(navIndex, vectorPath.Count - 1);
+		Vector3 val2 = vectorPath[vectorPath.Count - 1];
+		if (navIndex == vectorPath.Count - 1 && FlatDist(hero, val2) < 0.8f)
+		{
+			frontierLatch = true;
+			frontierLatchGoal = goal;
+			navSteerArrive = 0.5f;
+			return goal;
+		}
+		float num;
+		if (navIndex != vectorPath.Count - 1)
+		{
+			num = 0.5f;
+		}
+		else
+		{
+			num = ((FlatDist(vectorPath[vectorPath.Count - 1], goal) > 2.5f) ? 0.5f : arriveDist);
+		}
+		navSteerArrive = num;
+		if (Legit && Time.unscaledTime < detourUntil)
+		{
+			navSteerArrive = 0.5f;
+		}
+		if (navIndex < vectorPath.Count - 1)
+		{
+			return vectorPath[navIndex];
+		}
+		return val2;
+	}
+
+	private static void MaybeRequestPath(Vector3 hero, Vector3 goal)
+	{
+		//IL_0007: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0008: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00a2: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00a7: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00d8: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00dd: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00fb: Unknown result type (might be due to invalid IL or missing references)
+		//IL_00fd: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0109: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0113: Expected Obj, but got Unknown
+		//IL_0071: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0076: Unknown result type (might be due to invalid IL or missing references)
+		//IL_008f: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0090: Unknown result type (might be due to invalid IL or missing references)
+		if ((Object)(object)AstarPath.active == (Object)null || navInFlight || Time.unscaledTime < navRepathAt)
+		{
+			return;
+		}
+		bool flag = false;
+		if (navPath != null && navPath.vectorPath != null && navPath.vectorPath.Count > 0)
+		{
+			Vector3 b = navPath.vectorPath[navPath.vectorPath.Count - 1];
+			flag = navIndex >= navPath.vectorPath.Count - 1 && FlatDist(hero, b) < 1.4f;
+		}
+		bool flag2 = FlatDist(goal, navGoal) > 2.5f;
+		if (navPath != null && !flag && !flag2)
+		{
+			return;
+		}
+		navRepathAt = Time.unscaledTime + 1.1f;
+		navGoal = goal;
+		navInFlight = true;
+		int reqId = ++navRequestId;
+		AstarPath.StartPath((Path)(object)ABPath.Construct(hero, goal, (OnPathDelegate)((Path done) =>
+		{
+			//IL_0102: Unknown result type (might be due to invalid IL or missing references)
+			//IL_004e: Unknown result type (might be due to invalid IL or missing references)
+			//IL_00b9: Unknown result type (might be due to invalid IL or missing references)
+			navInFlight = false;
+			if (reqId == navRequestId)
+			{
+				if (!done.error && done.vectorPath != null && done.vectorPath.Count > 0)
+				{
+					navWrongLayer = Mathf.Abs(done.vectorPath[done.vectorPath.Count - 1].y - goal.y) > 2.5f;
+					navPath = done;
+					navIndex = 0;
+					navDiagCount++;
+					if (navDiagCount <= 20)
+					{
+						ManualLogSource log = Plugin.Log;
+						if (log != null)
+						{
+							log.LogInfo((object)($"[bot] nav-path ok: {done.vectorPath.Count} wp -> {goal}" + (navWrongLayer ? " [wrong-layer]" : "")));
+						}
+					}
+				}
+				else
+				{
+					navPath = null;
+					navWrongLayer = false;
+					ManualLogSource log2 = Plugin.Log;
+					if (log2 != null)
+					{
+						log2.LogWarning((object)$"[bot] nav-path error -> {goal} ({done.errorLog})");
+					}
+				}
+			}
+		})), false, false);
+	}
+
+	private static bool SceneTransitionBusy(SceneTransitionManager stm)
+	{
+		if (StmRunningField != null)
+		{
+			return (bool)StmRunningField.GetValue(stm);
+		}
+		return false;
+	}
+
+	private static float FlatDist(Vector3 a, Vector3 b)
+	{
+		//IL_0018: Unknown result type (might be due to invalid IL or missing references)
+		//IL_0019: Unknown result type (might be due to invalid IL or missing references)
+		a.y = 0f;
+		b.y = 0f;
+		return Vector3.Distance(a, b);
+	}
+
+	private static string FormatStatus(in BotPerception.Snapshot s)
+	{
+		return string.Format(CultureInfo.InvariantCulture, "{0} | wv {1}/{2} foes {3} coins {4} gold {5} hp {6:P0}", Mode, s.Wave, s.WaveTotal, s.EnemyCount, s.CoinCount, s.Balance, s.HeroHpPct);
+	}
+
+	private static void EnsureLog()
+	{
+		if (botLog != null || logFailed)
+		{
+			return;
+		}
+		try
+		{
+			botLog = new StreamWriter(Path.Combine(Paths.PluginPath, "bot-log.jsonl"), append: true)
+			{
+				AutoFlush = true
+			};
+		}
+		catch
+		{
+			logFailed = true;
+		}
+	}
+
+	private static void CloseLog()
+	{
+		try
+		{
+			botLog?.Close();
+		}
+		catch
+		{
+		}
+		botLog = null;
+	}
+
+	private static void LogRaw(string note)
+	{
+		EnsureLog();
+		try
+		{
+			botLog?.WriteLine(string.Format(CultureInfo.InvariantCulture, "{{\"t\":{0:0.00},\"note\":\"{1}\"}}", Time.unscaledTime, note));
+		}
+		catch
+		{
+		}
+	}
+
+	private static string FormatTickJson(in BotPerception.Snapshot s, string note)
+	{
+		return string.Format(CultureInfo.InvariantCulture, "{{\"t\":{0:0.00},\"mode\":{1},\"state\":{2},\"scene\":{3},\"night\":{4},\"wave\":\"{5}/{6}\",\"foes\":{7},\"coins\":{8},\"gold\":{9},\"hp\":{10:0.###},\"pos\":[{11:0.#},{12:0.#}],\"ls\":{13},\"lvln\":{14},\"inter\":{15},\"lvld\":{16:0.#},\"horn\":{17},\"hd\":{18:0.#},\"bld\":{19},\"nf\":{20},\"note\":{21}}}", Time.unscaledTime, BotPerception.JsonStr(Mode.ToString()), BotPerception.JsonStr(s.GameState), BotPerception.JsonStr(s.SceneName), s.IsNight ? "true" : "false", s.Wave, s.WaveTotal, s.EnemyCount, s.CoinCount, s.Balance, s.HeroHpPct, s.HeroPos.x, s.HeroPos.z, s.OnLevelSelect ? "true" : "false", s.LevelCount, s.InteractorCount, s.NearestLevelDist, s.HasHorn ? "true" : "false", s.HornDist, s.BuildCount, s.EnemiesNearHero, BotPerception.JsonStr(note));
+	}
+
+	internal static void LogLine(in BotPerception.Snapshot s, string note)
+	{
+		EnsureLog();
+		if (note != "tick" && (!(note == lastEvtNote) || !(Time.unscaledTime - lastEvtAt < 4f)))
+		{
+			Recorder.Event(note);
+			lastEvtNote = note;
+			lastEvtAt = Time.unscaledTime;
+		}
+		if (note == "snap")
+		{
+			Recorder.CountSnap();
+			Recorder.NoteAnchor(s.SceneName, s.HeroPos.x, s.HeroPos.z, "wedge");
+		}
+		else if (note.StartsWith("unstick"))
+		{
+			Recorder.CountUnstick();
+		}
+		else
+		{
+			switch (note)
+			{
+			case "build-stall":
+			case "coin-stall":
+			case "aim-stall":
+			case "build-unreachable":
+				Recorder.CountStall();
+				break;
+			}
+		}
+		if (botLog == null)
+		{
+			return;
+		}
+		try
+		{
+			botLog.WriteLine(FormatTickJson(in s, note));
+		}
+		catch
+		{
+		}
+	}
+}

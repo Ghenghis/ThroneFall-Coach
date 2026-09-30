@@ -73,7 +73,7 @@ namespace ThronefallTrainer
     public class Plugin : BaseUnityPlugin
     {
         public const string GUID = "dev.thronefall.trainer";
-        public const string Version = "1.2.0";
+        public const string Version = "3.0.0";   // must parse as System.Version — "3.0.0-dev" got the plugin skipped by BepInEx
 
         internal static ManualLogSource Log;
 
@@ -94,6 +94,8 @@ namespace ThronefallTrainer
             cfgMultiShotCount, cfgAllyDmgMult, cfgAllyAspdMult,
             cfgOpacity;
         private ConfigEntry<int> cfgTheme;
+        private ConfigEntry<int> cfgGoldGrant;
+        internal static int GoldGrant;   // cfg mirrored at apply
 
         // ---- reflection handles ----
         private static readonly FieldInfo BalanceField =
@@ -222,6 +224,7 @@ namespace ThronefallTrainer
             cfgInstantBuild   = Config.Bind("Economy",    "InstantBuild",     false);
             cfgMagnet         = Config.Bind("Economy",    "CoinMagnet",       false);
             cfgMagnetRadius   = Config.Bind("Economy",    "MagnetRadius",     250f);
+            cfgGoldGrant      = Config.Bind("Economy",    "GoldGrant",        0);
 
             cfgInstantKill    = Config.Bind("Combat",     "InstantKill",      false);
             cfgDmgEnabled     = Config.Bind("Combat",     "DamageMultEnabled",false);
@@ -277,6 +280,7 @@ namespace ThronefallTrainer
         gameObject.AddComponent<Overlay>();          // F1 in-game panel
         Cheats.InstantBuild = cfgInstantBuild.Value;
             Cheats.CoinMagnet = cfgMagnet.Value;           Cheats.MagnetRadius = cfgMagnetRadius.Value;
+            GoldGrant = cfgGoldGrant.Value;
             magnetText = Fmt(Cheats.MagnetRadius);
             Cheats.InstantKill = cfgInstantKill.Value;     Cheats.DamageMultEnabled = cfgDmgEnabled.Value;
             Cheats.DamageMultiplier = cfgDmgMult.Value;    dmgText = Fmt(Cheats.DamageMultiplier);
@@ -323,6 +327,10 @@ namespace ThronefallTrainer
         // =====================================================================
         private void Update()
         {
+            // Re-read every frame: a runtime edit of BotSurvivalCheats via the
+            // config manager used to leave Bot.Legit stale — true→false kept
+            // F2–F5 armed in what had become legit mode.
+            Bot.Legit = !cfgBotCheats.Value;
             if (Input.GetKeyDown(KeyCode.F1)) ToggleMenu();
             // LEGIT-MODE GATE: F2–F5 are direct cheat injects (kill/gold/
             // teleport) — they must NEVER fire while the autopilot is
@@ -340,6 +348,12 @@ namespace ThronefallTrainer
             var pi = PlayerInteraction.instance;
             var pm = PlayerMovement.instance;
 
+            // A throwing cheat (reflection, torn game state) must NEVER starve
+            // the autopilot — the old code skipped Bot.Tick on exception and
+            // silently stalled the run while the broken cheat stayed enabled.
+            try
+            {
+
             // ---- Free build: spending is patched to a no-op, but the pay loop
             // also requires Balance > 0, so keep a floor of 1 in each currency.
             if (Cheats.FreeBuild && pi != null &&
@@ -353,8 +367,9 @@ namespace ThronefallTrainer
 
             // ---- Gold drip (bot-tuning aid): pin the wallet so the strategy
             // loop can be validated without the economy bottleneck. OFF by
-            // default — legit autopilot never enables it.
-            if (Cheats.GoldDrip && pi != null)
+            // default — legit autopilot never enables it. Hard-gated: wallet
+            // injection is a cheat, not strategy tuning.
+            if (Cheats.GoldDrip && pi != null && !(Bot.Enabled && Bot.Legit))
             {
                 if (pi.Balance < 500) SetGold(500);
                 if (pi.EnergyCoreBalance < 20) SetCores(20);
@@ -606,9 +621,17 @@ namespace ThronefallTrainer
                 ApplyAllyAttackSpeed();
             }
 
+            }
+            catch (System.Exception ex)
+            {
+                Log?.LogWarning($"[plugin] Update cheat section threw: {ex.Message}");
+            }
+
             // ---- Autopilot: decides + steers at 4 Hz; movement is injected
             // via the MoveScript prefix in BotPatches.cs.
-            Bot.Tick();
+            try { Bot.Tick(); }
+            catch (System.Exception ex)
+            { Log?.LogWarning($"[bot] Tick threw: {ex.Message}"); }
         }
 
         /// <summary>Scale cooldownDuration on every PlayerOwned AutoAttack (troops + towers).</summary>
@@ -722,10 +745,21 @@ namespace ThronefallTrainer
             showMenu = !showMenu;
             // Freeze the hero while the menu is open so keystrokes typed into
             // the text fields don't steer the character or trigger attacks.
+            // RESTORE only OUR freeze — a game frame (level-up/pause) that
+            // froze the player while the menu was open used to get clobbered
+            // by the unconditional unfreeze (audit round 7).
             if (LocalGamestate.Instance != null)
             {
-                LocalGamestate.Instance.SetPlayerFreezeState(showMenu);
-                playerFrozenByUs = showMenu;
+                if (showMenu)
+                {
+                    LocalGamestate.Instance.SetPlayerFreezeState(true);
+                    playerFrozenByUs = true;
+                }
+                else if (playerFrozenByUs)
+                {
+                    LocalGamestate.Instance.SetPlayerFreezeState(false);
+                    playerFrozenByUs = false;
+                }
             }
         }
 
@@ -788,11 +822,17 @@ namespace ThronefallTrainer
             else if (botCheatsActive)
             {
                 botCheatsActive = false;
-                Cheats.GodHero = svGodHero; Cheats.GodAll = svGodAll;
-                Cheats.InstantRevive = svInstantRevive; Cheats.NeverLose = svNeverLose;
-                Cheats.RegenEnabled = svRegen; Cheats.RegenMult = svRegenMult;
-                Cheats.CoinMagnet = svMagnet; Cheats.MagnetRadius = svMagnetRadius;
-                Cheats.InstantKill = svInstantKill; Cheats.NoCooldown = svNoCooldown;
+                // Conditional restore: only roll back flags that still equal
+                // what WE forced — a user who flipped a toggle mid-run used
+                // to lose that choice to the stale snapshot.
+                if (Cheats.GodHero) Cheats.GodHero = svGodHero;
+                if (Cheats.GodAll) Cheats.GodAll = svGodAll;
+                if (Cheats.InstantRevive) Cheats.InstantRevive = svInstantRevive;
+                if (Cheats.NeverLose) Cheats.NeverLose = svNeverLose;
+                if (Cheats.RegenEnabled) { Cheats.RegenEnabled = svRegen; Cheats.RegenMult = svRegenMult; }
+                if (Cheats.CoinMagnet) { Cheats.CoinMagnet = svMagnet; Cheats.MagnetRadius = svMagnetRadius; }
+                if (Cheats.InstantKill) Cheats.InstantKill = svInstantKill;
+                if (Cheats.NoCooldown) Cheats.NoCooldown = svNoCooldown;
                 Log?.LogInfo("[bot] survival cheats restored to previous state");
             }
         }
@@ -1211,9 +1251,21 @@ namespace ThronefallTrainer
                 resizing = false;
             }
 
-            windowRect = GUI.Window(0x7A11, windowRect, DrawWindow, "Thronefall Trainer");
-            GUI.color = Color.white;
-            GUI.skin = prevSkin;
+            // A DrawWindow throw must not leak GUI.skin/color corruption to
+            // every other plugin's OnGUI — restore in finally.
+            try
+            {
+                windowRect = GUI.Window(0x7A11, windowRect, DrawWindow, "Thronefall Trainer");
+            }
+            catch (System.Exception ex)
+            {
+                Log?.LogWarning($"[plugin] DrawWindow threw: {ex.Message}");
+            }
+            finally
+            {
+                GUI.color = Color.white;
+                GUI.skin = prevSkin;
+            }
         }
 
         private static bool EnterPressed()
@@ -1345,6 +1397,18 @@ namespace ThronefallTrainer
 
                 var pi = PlayerInteraction.instance;
 
+                // LEGIT-MODE GATE (GUI): the same lock the F2–F5 keys honor.
+                // Every button below injects a cheat — they used to bypass
+                // the gate entirely, so the autopilot's "legit" mode could
+                // be silently broken by a stray click. Bot toggle stays
+                // enabled below so the user can always disengage.
+                bool legitLocked = Bot.Enabled && Bot.Legit;
+                if (legitLocked)
+                {
+                    GUILayout.Label("<i>Cheats locked — autopilot is playing legit. Disable bot (F6) to unlock.</i>");
+                    GUI.enabled = false;
+                }
+
                 // ---------------- Resources ----------------
                 Section("-- RESOURCES --");
                 IntRow("goldField", "Gold: " + (pi != null ? pi.Balance.ToString() : "n/a"), ref goldText, SetGold);
@@ -1467,13 +1531,15 @@ namespace ThronefallTrainer
                 GUILayout.EndHorizontal();
                 if (GUILayout.Button("+1,000,000 score")) AddScore(1000000);
 
+                if (legitLocked) GUI.enabled = true;   // Bot toggle stays live
+
                 Section("Bot");
                 bool botOn = GUILayout.Toggle(Bot.Enabled, " Autopilot (F6)");
                 if (botOn != Bot.Enabled) SetBotEnabled(botOn);
                 GUILayout.Label("  " + Bot.Status);
 
                 GUILayout.FlexibleSpace();
-                GUILayout.Label($"F1 menu | F2 kill | F3 revive | F4 +100g | F5 tp | F6 bot  v{Version}");
+                GUILayout.Label($"F1 menu | F2 kill | F3 revive | F4 +100g | F5 tp | F6 bot | F8 panel  v{Version}");
 
                 GUILayout.EndScrollView();
             }

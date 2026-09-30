@@ -112,9 +112,11 @@ upgrade choices, perk/level-up selections, reward frames, escapable menus.
 | `src/ThronefallTrainer.csproj` | net472, `GameDir=..\..`, references game's Managed DLLs (incl. `AstarPathfindingProject`, `PackageTools`, `Drawing` for A* types). **No auto-deploy** — manual copy |
 | `decompiled/` | Reference dumps of game classes the bot calls — verify against these before touching API usage |
 
-Hotkeys (from overlay footer): `F1 menu | F2 kill | F3 revive | F4 +100g | F5 tp | F6 bot`
+Hotkeys: `F1 menu | F2 kill | F3 revive | F4 +100g | F5 tp | F6 bot | F8 live overlay`.
+**While `Bot.Legit` is active, F2–F5 and every cheat control in the F1 window
+are locked** — the autopilot's legit guarantee applies to the human hand too.
 
-### Bot survival bundle (`Bot.BotSurvivalCheats`, default **true**)
+### Bot survival bundle (`Bot.BotSurvivalCheats`, default **false**)
 Applied on enable, restored on disable: `GodHero`, `GodAll`, `InstantRevive`,
 `NeverLose`, `RegenEnabled`+`RegenMult=20`, `CoinMagnet`+`MagnetRadius=500`,
 `InstantKill`, `NoCooldown`. Bundle ON also unlocks the bot's internal power

@@ -42,7 +42,11 @@ Check "order->applied"       {
     try {
         $log = Get-Content $gamelog -Tail 4000
         $before = ($log | Select-String 'user-cmd').Count
-        Set-Content $cmdFile '{"escort_size":5,"note":"e2e-audit"}'
+        # Atomic write — the plugin polls this file; a torn read is silently
+        # skipped and would false-FAIL the round-trip check (server uses
+        # tmp+rename for the same reason).
+        Set-Content "$cmdFile.tmp" '{"escort_size":5,"note":"e2e-audit"}' -NoNewline
+        Move-Item "$cmdFile.tmp" $cmdFile -Force
         Start-Sleep -Seconds 8
         ((Get-Content $gamelog -Tail 4000 | Select-String 'user-cmd').Count -gt $before)
     } finally {
@@ -61,14 +65,16 @@ Check "mm apply rate > 50%"  {
 # The run must be fresh enough to be THIS session — a brand-new run still
 # idling at t<60 reads as "no day phase" and false-failed (audit staleness).
 Check "run has day phase"    {
-    $run = Get-ChildItem "$agent\runs" | Sort-Object LastWriteTime -Desc | Select-Object -First 1
+    $run = Get-ChildItem "$agent\runs" -Directory | Sort-Object LastWriteTime -Desc | Select-Object -First 1
     if (-not $run) { return $false }
     if ($run.LastWriteTime -lt (Get-Date).AddMinutes(-30)) { return "stale run dir" }
-    $modes = Get-Content "$($run.FullName)\ticks.jsonl" -Tail 2000 | ForEach-Object { (($_ | ConvertFrom-Json).mode) }
+    # Per-line try: the game is still appending — a torn last line threw a
+    # ConvertFrom-Json exception instead of being skipped (false FAIL).
+    $modes = Get-Content "$($run.FullName)\ticks.jsonl" -Tail 2000 | ForEach-Object { try { (($_ | ConvertFrom-Json).mode) } catch { $null } }
     $modes -contains 'SpendGold' -or $modes -contains 'CollectCoin' -or $modes -contains 'PositionArmy' }
 Check "no instant night"     {
-    $run = Get-ChildItem "$agent\runs" | Sort-Object LastWriteTime -Desc | Select-Object -First 1
-    $t = Get-Content "$($run.FullName)\ticks.jsonl" -Tail 4000 | ForEach-Object { $j = $_ | ConvertFrom-Json; if ($j.mode -eq 'StartNight') { [int]$j.t; break } }
+    $run = Get-ChildItem "$agent\runs" -Directory | Sort-Object LastWriteTime -Desc | Select-Object -First 1
+    $t = Get-Content "$($run.FullName)\ticks.jsonl" -Tail 4000 | ForEach-Object { try { $j = $_ | ConvertFrom-Json; if ($j.mode -eq 'StartNight') { [int]$j.t; break } } catch { $null } }
     -not $t -or $t -gt 60 }
 
 ""
