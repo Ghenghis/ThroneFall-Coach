@@ -9,6 +9,15 @@ $ErrorActionPreference = 'Stop'
 $managed = Join-Path $GameRoot 'Thronefall_Data\Managed'
 $out = Join-Path $PSScriptRoot '..\decompiled'
 
+# Upfront guards — a missing tool or wrong GameRoot used to surface as raw
+# native-exit noise under ErrorActionPreference Stop.
+if (-not (Get-Command ilspycmd -ErrorAction SilentlyContinue)) {
+    throw "ilspycmd not on PATH — run: dotnet tool install -g ilspycmd"
+}
+if (-not (Test-Path $managed)) {
+    throw "Managed dir not found at $managed — pass -GameRoot <game install>"
+}
+
 ilspycmd (Join-Path $managed 'Assembly-CSharp.dll') -o $out -p
 ilspycmd (Join-Path $managed 'KB.FogRTS.Runtime.dll') -o (Join-Path $PSScriptRoot '..\decompiled_fog') -p
 

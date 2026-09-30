@@ -586,11 +586,11 @@ namespace ThronefallTrainer
             // Release only on a REAL invalidation — not a 4 m drift that can
             // happen mid-fill, and not "far from slot origin" while parked at
             // its stand-point. Every release refunds paid coins.
-            // ResolveUI (the choice frame freezes the player) must NOT
-            // release the hold — that was the refund loop: pick → ResolveUI
-            // → release → refund → re-arm. Choice frames keep the fill.
+            // (ResolveUI was never a real brain mode — mem.Mode is never
+            // assigned it; Tick's early-return + ChoiceCoroutineRunning are
+            // what actually keep choice frames from releasing the hold.)
             if (m.HeldBuild >= 0 &&
-                (m.Mode != BotMode.SpendGold && m.Mode != BotMode.ResolveUI ||
+                (m.Mode != BotMode.SpendGold ||
                 !s.HasBuild || s.BuildKey != m.HeldBuild ||
                 (s.BuildDist > 5.5f && !(s.HasBuildStand && s.BuildStandDist <= 3f))))
             {
@@ -678,7 +678,10 @@ namespace ThronefallTrainer
 
             // ---- safe night coin-run (wider range at night — foes are held
             // at the doors by squads, so the field is safer to scavenge) ----
-            if (s.IsNight && s.NearFoeCount == 0
+            // Red-alert / castle-threat must WIN over night scavenging — a
+            // foe chewing buildings 12+ m from the hero (NearFoeCount==0)
+            // used to keep this gate true while RecallToBreach never fired.
+            if (s.IsNight && !s.RedAlert && !s.HasCastleThreat && s.NearFoeCount == 0
                 && (!s.HasNearEnemy || s.NearEnemyDist > 12f)
                 && s.HasCoin && s.CoinDist <= pol.K("coin_seek") * 1.5f)
             {
@@ -887,8 +890,13 @@ namespace ThronefallTrainer
                   // Ready = army target met AND someone actually manning the
                   // perimeter (calling night with zero posts invites the
                   // breach we saw at t≈90: 25 foes vs a lone hero).
-                  (s.AllyCount >= s.ArmyTarget && (s.DoorCount == 0 || s.DoorsCovered > 0) ||
-                   (s.DoorCount > 0 && s.DoorsCovered >= s.DoorCount)))) ||
+                  // ArmyTarget==0 means the door scan produced nothing —
+                  // x >= 0 trivially true called night with ZERO troops.
+                  // Zero is "unknown", not "ready": require a real target
+                  // AND a nonzero army before readiness counts.
+                  (s.ArmyTarget > 0 && s.AllyCount >= s.ArmyTarget &&
+                   (s.DoorCount == 0 || s.DoorsCovered > 0) ||
+                   (s.DoorCount > 0 && s.DoorsCovered >= s.DoorCount && s.AllyCount > 0)))) ||
                  // Budget expiry forces the night even when the horn isn't
                  // visible — SwitchToNight is the game's own call and rejects
                  // harmlessly if the day is still locked.
@@ -968,6 +976,10 @@ namespace ThronefallTrainer
 
                 // Visit-abandon: stood at the picked slot 10 s with no
                 // payment -> the fill can't progress — park and rotate.
+                // NOTE: the stall watchdog below fires first in practice (7s
+                // vs 10s) — keep this as a backstop, but if it ever fires it
+                // MUST release the hold like the stall path does (it used to
+                // leave m.HeldBuild set → coins kept paying a parked slot).
                 if (inGate && s.BuildKey > 0)
                 {
                     if (s.BuildKey != m.SlotVisitKey) { m.SlotVisitKey = s.BuildKey; m.SlotVisitSince = now; }
@@ -975,6 +987,11 @@ namespace ThronefallTrainer
                     {
                         r.Intents.Add(Intent.Of(IntentKind.ParkSlot));
                         r.Notes.Add("slot-abandon");
+                        if (m.HeldBuild >= 0)
+                        {
+                            r.Intents.Add(Intent.Of(IntentKind.ReleaseHold));
+                            m.HeldBuild = -1;
+                        }
                         m.SlotVisitKey = -1; m.SlotVisitSince = now;
                         return r;
                     }
@@ -1075,8 +1092,10 @@ namespace ThronefallTrainer
             // passes through s.CanSwitch, so a locked day can't fire early.
             bool readyForNight = m.DayStartAt > 0f && !dayTooYoung &&
                 (s.NightCall ||
-                 (s.AllyCount >= s.ArmyTarget && (s.DoorCount == 0 || s.DoorsCovered > 0)) ||
-                 (s.DoorCount > 0 && s.DoorsCovered >= s.DoorCount) ||
+                 // ArmyTarget==0 = door scan empty = "unknown", not "ready".
+                 (s.ArmyTarget > 0 && s.AllyCount >= s.ArmyTarget &&
+                  (s.DoorCount == 0 || s.DoorsCovered > 0)) ||
+                 (s.DoorCount > 0 && s.DoorsCovered >= s.DoorCount && s.AllyCount > 0) ||
                  now - m.DayStartAt > (s.DayBudget > 0f ? s.DayBudget : 240f));
             if (readyForNight && s.HasHorn)
             {

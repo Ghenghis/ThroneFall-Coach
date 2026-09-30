@@ -44,7 +44,9 @@ try {
     $hc = Invoke-RestMethod 'http://127.0.0.1:8099/health' -TimeoutSec 5
     if ($hc.ok) {
         $e2e = & (Join-Path $PSScriptRoot 'e2e-audit.ps1') 2>&1 | Out-String
-        $fails = ([regex]::Matches($e2e, 'FAIL:')).Count
+        # e2e-audit emits "  FAIL  name" (colon-free) — 'FAIL:' matched
+        # nothing and every broken chain reported PASS.
+        $fails = ([regex]::Matches($e2e, '(?m)^\s*FAIL\s')).Count
         $results['e2e-chain'] = $fails -eq 0
         if ($fails -gt 0) { Write-Host $e2e }
     } else { $results['e2e-chain'] = 'plugin feed not live' }

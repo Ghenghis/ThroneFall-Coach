@@ -57,6 +57,10 @@ namespace ThronefallTrainer
         public static void Park(string scene, Vector3 pos, string why)
         {
             EnsureInit();
+            // Sanitize the delimiter/quote — a | or " inside `why` corrupted
+            // the row on save and then silently vanished on reload.
+            if (why != null && (why.Contains("|") || why.Contains("\"") || why.Contains("\\")))
+                why = why.Replace("|", "/").Replace("\"", "'").Replace("\\", "/");
             string key = scene + "|" + Cell(pos);
             if (parked.Add(key))
             {
@@ -143,7 +147,10 @@ namespace ThronefallTrainer
                 {
                     if (!first) sb.Append(",");
                     first = false;
-                    sb.Append("\"").Append(w).Append('"');
+                    // Escape through the JSON helper — an unescaped quote in
+                    // a scene name would corrupt the quarantine file itself
+                    // and un-quarantine a corrupt save on reload.
+                    sb.Append(BotPerception.JsonStr(w));
                 }
                 sb.Append("]");
                 Recorder.WriteAtomic(
@@ -190,6 +197,7 @@ namespace ThronefallTrainer
             try
             {
                 if (!File.Exists(file)) return;
+                bool dupes = false;
                 foreach (System.Text.RegularExpressions.Match m in
                     System.Text.RegularExpressions.Regex.Matches(
                         File.ReadAllText(file), "\"([^\"]+)\""))
@@ -198,11 +206,18 @@ namespace ThronefallTrainer
                     var parts = row.Split('|');
                     if (parts.Length >= 2)
                     {
+                        // parkedWhy only for NEW keys — a duplicate used to
+                        // still append a row, growing the file forever and
+                        // leaving orphans that survived eviction.
                         if (parked.Add(parts[0] + "|" + parts[1]))
+                        {
                             parkOrder.Add(parts[0] + "|" + parts[1]);
-                        parkedWhy.Add(row);
+                            parkedWhy.Add(row);
+                        }
+                        else dupes = true;
                     }
                 }
+                if (dupes) Save();   // compact once
                 if (parked.Count > 0)
                     Plugin.Log?.LogInfo($"[memory] {parked.Count} mishaps remembered");
             }

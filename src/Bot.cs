@@ -74,14 +74,17 @@ namespace ThronefallTrainer
         // interact path is blocked while the trainer menu freezes the player,
         // so the bot buffers presses itself while engaged.
         private static ManualAttack heroAttack;
+        private static float weRevalAt;     // weapon-swap revalidation clock
         private static float attackDiagAt;
 
         /// <summary>World pos the bot steers toward — live enemy transform when engaging.</summary>
         private static Vector3 AimPos =>
             (Legit && Time.unscaledTime < detourUntil)
                 ? detourPos
-                : (Mode == BotMode.Engage && engageTarget != null && !Legit)
-                    ? engageTarget.transform.position
+                : (Mode == BotMode.Engage && engageTarget != null)
+                    ? engageTarget.transform.position   // live tracking — legit
+                    // mode used to steer at a stale 4 Hz snapshot while the
+                    // fast-fallback (!Legit) tracked the real transform.
                     : targetPos;
 
         // title-screen advance: throttle while the level-select scene loads
@@ -126,6 +129,8 @@ namespace ThronefallTrainer
         private static bool sawInteractables;       // ever-seen interactables this match
         private static float navRepathAt;
         private static bool navInFlight;
+        private static int navRequestId;      // stale async path guard
+        private static bool beganRunThisTick; // BeginRun dedupe (edge+scene)
         private static float navSteerArrive = 0.5f;
         private static int navDiagCount;
         private static float nextMoveDiagAt;
@@ -257,6 +262,22 @@ namespace ThronefallTrainer
             navIndex = 0;
             navInFlight = false;
             navGoal = Vector3.zero;
+            navWrongLayer = false;
+            navDirectUntil = 0f;
+            navRepathAt = 0f;
+            navRequestId++;          // discard any in-flight path result
+            // Full run/vacuum/frame state — a disable+enable mid-match must
+            // not skip the InMatch edge resets (vacuum timer, frame names,
+            // coin parks, watchdogs all belonged to the old session).
+            lastGameState = "";
+            recordedScene = null;
+            lastNightTick = true;
+            uiFrame = "";
+            lastFrameName = ""; frameSeen = 0; lastFrameAt = 0f;
+            sawInteractables = false;
+            interZeroSince = -1f; nonVacSince = -1f; interVacuumAt = 0f;
+            arriveSince = 0f; lastWatchDist = float.MaxValue;
+            coinIgnore.Clear();
             Plugin.Log?.LogInfo($"[bot] autopilot {(v ? "ENABLED" : "disabled")} (F6)");
             LogRaw(v ? "enabled" : "disabled");
             if (!v) CloseLog();
@@ -351,6 +372,14 @@ namespace ThronefallTrainer
                     stuckStrikeTotal = 0;
                     sawInteractables = false;   // new match: vacuum detector re-arms
                     interZeroSince = -1f;
+                    nonVacSince = -1f;
+                    lastNightTick = true;   // next dawn fires day-start hooks
+                    coinIgnore.Clear();     // parked coins die with the match
+                    navWrongLayer = false;  // no carried-over path verdicts
+                    navPath = null; navIndex = 0; navInFlight = false;
+                    navRequestId++;         // invalidate in-flight path results
+                    heroAttack = null;      // re-resolve the live weapon
+                    beganRunThisTick = true;
                 }
                 if (s.GameState == "AfterMatchVictory" && lastMatchScene != null)
                 {
@@ -442,9 +471,11 @@ namespace ThronefallTrainer
             }
 
             // Run bookkeeping: scene transitions begin a recorder run.
-            // Same-scene retries are covered by the InMatch edge above.
+            // Same-scene retries are covered by the InMatch edge above —
+            // and must not run AGAIN here (BeginRun would create a second
+            // empty run dir + double run-start every fresh match).
             if (!s.SceneName.StartsWith("_") && !s.OnLevelSelect &&
-                recordedScene != s.SceneName)
+                recordedScene != s.SceneName && !beganRunThisTick)
             {
                 recordedScene = s.SceneName;
                 Recorder.BeginRun(s.SceneName);
@@ -454,6 +485,7 @@ namespace ThronefallTrainer
                 Coach.ResetRun();
                 stuckStrikeTotal = 0;   // per-run strike-log cap
             }
+            beganRunThisTick = false;
 
             var sd = BotPerception.ToData(in s);
 
@@ -831,8 +863,11 @@ namespace ThronefallTrainer
                             // grinding the same wall forever. A wrong-layer
                             // path (elevated navmesh, wall-top hero to ground
                             // slot) can NEVER descend — park instantly.
+                            // detourStrikes counts THIS recovery burst —
+                            // StuckStrikes was reset to 0 above so testing it
+                            // here could never be true (dead escalation).
                             if (Mode == BotMode.SpendGold && s.NearestBuild != null &&
-                                (navWrongLayer || StuckStrikes >= 3))
+                                (navWrongLayer || detourCount >= 3))
                             {
                                 // HERO is the wrong layer (standing on a wall
                                 // top, all waypoints at y≈13): parking the slot
@@ -924,9 +959,11 @@ namespace ThronefallTrainer
             {
                 var ap = System.IO.Path.Combine(Recorder.AgentDir, "audit.json");
                 var tmp = ap + ".tmp";
+                // J()-escape: uiFrame/SceneName come from the game — a quote
+                // in a frame name used to tear the whole audit document.
                 System.IO.File.WriteAllText(tmp,
-                    "{\"scene\":\"" + (s.SceneName ?? "?") + "\",\"t\":0," +
-                    "\"mode\":\"" + label + "\",\"mode_since\":0,\"gold\":0," +
+                    "{\"scene\":" + BotPerception.JsonStr(s.SceneName ?? "?") + ",\"t\":0," +
+                    "\"mode\":" + BotPerception.JsonStr(label) + ",\"mode_since\":0,\"gold\":0," +
                     "\"ally\":0,\"free\":0,\"foes\":0,\"night\":false," +
                     "\"wave\":0,\"wave_total\":0,\"doors_cov\":0,\"doors\":0," +
                     "\"red\":false,\"breaches\":0,\"bld\":0,\"cur_build\":\"\"," +
@@ -1144,7 +1181,10 @@ namespace ThronefallTrainer
             // at the castle as the emergency garrison (field was previously
             // parsed but never consumed).
             int reserve = Mathf.Max(Coach.ReserveSize, BotPerception.Strat.Reserve);
-            int postable = Mathf.Max(0, s.AllyCount - reserve);
+            // FreeUnits excludes door-posted + escort units — AllyCount didn't,
+            // so repeated posts could drain the reserve by re-counting squads
+            // already standing at doors as available.
+            int postable = Mathf.Max(0, s.FreeUnits - reserve);
             var units = TagManager.instance.PlayerUnits;
             for (int i = 0; i < units.Count && posted < target && posted < postable; i++)
             {
@@ -1549,6 +1589,28 @@ namespace ThronefallTrainer
                     Plugin.Log?.LogInfo($"[bot] ManualAttack found on '{heroAttack.name}' (autoAttack={heroAttack.autoAttack}, range={weaponRange:0.#}, firesWhileMoving={weaponFiresWhileMoving})");
                 }
             }
+            else if (Time.unscaledTime >= weRevalAt)
+            {
+                // Weapon swaps leave heroAttack bound to the retired weapon —
+                // re-resolve against the equipper's live pick every 2 s.
+                weRevalAt = Time.unscaledTime + 2f;
+                var tagged0 = pm.GetComponentInParent<TaggedObject>();
+                var we0 = tagged0 != null
+                    ? tagged0.GetComponentInChildren<WeaponEquipper>(true)
+                    : UnityEngine.Object.FindObjectOfType<WeaponEquipper>();
+                var cur = we0 != null
+                    ? (we0.activeWeapon != null ? we0.activeWeapon : we0.passiveWeapon)
+                    : null;
+                if (cur != null && cur != heroAttack)
+                {
+                    heroAttack = cur;
+                    weaponRange = 0f;
+                    foreach (var p in cur.targetPriorities)
+                        weaponRange = Mathf.Max(weaponRange, p.range);
+                    Plugin.Log?.LogInfo(
+                        $"[bot] ManualAttack re-resolved -> '{cur.name}' (range={weaponRange:0.#})");
+                }
+            }
             if (heroAttack == null)
             {
                 if (Legit)
@@ -1633,6 +1695,7 @@ namespace ThronefallTrainer
             if (wp.Count > 0 && FlatDist(hero, wp[0]) > 15f)
             {
                 navPath = null; navIndex = 0; navGoal = Vector3.zero;
+                navWrongLayer = false;   // discarded paths carry no verdict
                 return goal;
             }
             while (navIndex < wp.Count - 1 && FlatDist(hero, wp[navIndex]) < 1.4f) navIndex++;
@@ -1680,9 +1743,13 @@ namespace ThronefallTrainer
             navRepathAt = Time.unscaledTime + 1.1f;
             navGoal = goal;
             navInFlight = true;
+            int reqId = ++navRequestId;   // stale-result guard
             var p = Pathfinding.ABPath.Construct(hero, goal, done =>
             {
                 navInFlight = false;
+                // A result for a superseded request must not install its
+                // waypoints (scene changed / goal moved / run restarted).
+                if (reqId != navRequestId) return;
                 if (!done.error && done.vectorPath != null && done.vectorPath.Count > 0)
                 {
                     var last = done.vectorPath[done.vectorPath.Count - 1];
@@ -1700,7 +1767,7 @@ namespace ThronefallTrainer
                 }
                 else
                 {
-                    navPath = null;
+                    navPath = null; navWrongLayer = false;
                     Plugin.Log?.LogWarning($"[bot] nav-path error -> {goal} ({done.errorLog})");
                 }
             });
@@ -1762,14 +1829,19 @@ namespace ThronefallTrainer
 
         private static string FormatTickJson(in BotPerception.Snapshot s, string note)
         {
+            // Mode/GameState/SceneName/note interpolate into quoted JSON —
+            // escape every one or a stray quote tears the log line.
             return string.Format(CultureInfo.InvariantCulture,
-                "{{\"t\":{0:0.00},\"mode\":\"{1}\",\"state\":\"{2}\",\"scene\":\"{3}\",\"night\":{4},\"wave\":\"{5}/{6}\",\"foes\":{7},\"coins\":{8},\"gold\":{9},\"hp\":{10:0.###},\"pos\":[{11:0.#},{12:0.#}],\"ls\":{13},\"lvln\":{14},\"inter\":{15},\"lvld\":{16:0.#},\"horn\":{17},\"hd\":{18:0.#},\"bld\":{19},\"nf\":{20},\"note\":\"{21}\"}}",
-                Time.unscaledTime, Mode, s.GameState, s.SceneName,
+                "{{\"t\":{0:0.00},\"mode\":{1},\"state\":{2},\"scene\":{3},\"night\":{4},\"wave\":\"{5}/{6}\",\"foes\":{7},\"coins\":{8},\"gold\":{9},\"hp\":{10:0.###},\"pos\":[{11:0.#},{12:0.#}],\"ls\":{13},\"lvln\":{14},\"inter\":{15},\"lvld\":{16:0.#},\"horn\":{17},\"hd\":{18:0.#},\"bld\":{19},\"nf\":{20},\"note\":{21}}}",
+                Time.unscaledTime,
+                BotPerception.JsonStr(Mode.ToString()), BotPerception.JsonStr(s.GameState),
+                BotPerception.JsonStr(s.SceneName),
                 s.IsNight ? "true" : "false",
                 s.Wave, s.WaveTotal, s.EnemyCount, s.CoinCount, s.Balance,
                 s.HeroHpPct, s.HeroPos.x, s.HeroPos.z,
                 s.OnLevelSelect ? "true" : "false", s.LevelCount, s.InteractorCount, s.NearestLevelDist,
-                s.HasHorn ? "true" : "false", s.HornDist, s.BuildCount, s.EnemiesNearHero, note);
+                s.HasHorn ? "true" : "false", s.HornDist, s.BuildCount, s.EnemiesNearHero,
+                BotPerception.JsonStr(note));
         }
 
         private static string lastEvtNote; private static float lastEvtAt;
@@ -1793,7 +1865,10 @@ namespace ThronefallTrainer
                 Recorder.NoteAnchor(s.SceneName, s.HeroPos.x, s.HeroPos.z, "wedge");
             }
             else if (note.StartsWith("unstick")) Recorder.CountUnstick();
-            else if (note == "build-stall" || note == "coin-stall") Recorder.CountStall();
+            else if (note == "build-stall" || note == "coin-stall" ||
+                     note == "aim-stall" || note == "build-unreachable")
+                Recorder.CountStall();   // parked-aim/parked-slot count too —
+                // summaries underreported stalls (audit finding)
             if (botLog == null) return;
             try
             {

@@ -46,7 +46,20 @@ namespace ThronefallTrainer
                 w2 = Mat(j, "w2"); b2 = Vec(j, "b2");
                 wp = Mat(j, "wp"); bp = Vec(j, "bp");
                 wv = Vec(j, "wv"); bv = Vec(j, "bv");
-                Loaded = w1 != null && w2 != null && wp != null;
+                // Verify EVERY tensor is real — a partial load (w1 set, w2
+                // null) used to flip Loaded and crash inside the forward pass.
+                Loaded = w1 != null && w1.Length > 0 && w1[0] != null &&
+                         w2 != null && wp != null && wp.Length > 0;
+                // Dimension mismatch = a net trained on a different feature
+                // count — its silent-truncated dot products produced
+                // confident garbage disagree data. Refuse to load.
+                if (Loaded && w1[0].Length != Features(default(BotPerception.Snapshot)).Length)
+                {
+                    Plugin.Log?.LogWarning(
+                        $"[net] feature dim mismatch: w1={w1[0].Length} vs features=" +
+                        $"{Features(default(BotPerception.Snapshot)).Length} — net NOT loaded");
+                    Loaded = false;
+                }
                 if (Loaded)
                     Plugin.Log?.LogInfo(
                         $"[net] policy net loaded ({w1.Length}x{w1[0].Length}" +
@@ -100,10 +113,25 @@ namespace ThronefallTrainer
         }
 
         private static bool tried;
+        private static float netPollAt;
+        private static DateTime netMtime;
         /// <summary>Shadow check — call once per Decide tick.</summary>
         public static void Shadow(in BotPerception.Snapshot s, string pickedMode)
         {
             if (!tried) { tried = true; Init(); }
+            // Sidecar can drop a fresh netpolicy.json mid-session — the old
+            // tried-once gate left the stale model shadowing forever.
+            if (Time.unscaledTime > netPollAt)
+            {
+                netPollAt = Time.unscaledTime + 30f;
+                try
+                {
+                    var p = Path.Combine(Recorder.AgentDir, "netpolicy.json");
+                    var mt = File.Exists(p) ? File.GetLastWriteTimeUtc(p) : default;
+                    if (mt != netMtime) { netMtime = mt; Init(); }
+                }
+                catch { }
+            }
             if (!Loaded) return;
             int m = Predict(Features(in s), out float conf);
             if (m < 0 || m >= Modes.Length) return;   // OOB argmax → per-tick crash
@@ -123,8 +151,8 @@ namespace ThronefallTrainer
                             ? ((float)agree / (agree + disagree)).ToString("0.###",
                                 System.Globalization.CultureInfo.InvariantCulture)
                             : "0") +
-                        ",\"last_net\":\"" + Modes[m] +
-                        "\",\"last_bot\":\"" + pickedMode +
+                        ",\"last_net\":" + BotPerception.JsonStr(Modes[m]) +
+                        ",\"last_bot\":" + BotPerception.JsonStr(pickedMode) +
                         "\",\"conf\":" + conf.ToString("0.###",
                             System.Globalization.CultureInfo.InvariantCulture) + "}");
                 }
@@ -159,6 +187,7 @@ namespace ThronefallTrainer
             int i = j.IndexOf("\"" + key + "\"");
             if (i < 0) return null;
             int a = j.IndexOf('[', i);
+            if (a < 0) return null;
             int depth = 0, end = a;
             for (int k = a; k < j.Length; k++)
             {
@@ -182,6 +211,7 @@ namespace ThronefallTrainer
             int i = j.IndexOf("\"" + key + "\"");
             if (i < 0) return null;
             int a = j.IndexOf('[', i), b = j.IndexOf(']', a);
+            if (a < 0 || b <= a) return null;   // malformed bracket → was Substring(-)
             return ParseVec(j.Substring(a + 1, b - a - 1));
         }
 
@@ -192,7 +222,9 @@ namespace ThronefallTrainer
                 if (float.TryParse(tok.Trim(),
                     System.Globalization.NumberStyles.Float,
                     System.Globalization.CultureInfo.InvariantCulture,
-                    out float v)) list.Add(v);
+                    out float v) && !float.IsNaN(v) && !float.IsInfinity(v))   // NaN/Inf tokens parsed
+                    // as legit numbers and poisoned every logit
+                    list.Add(v);
             return list.ToArray();
         }
     }

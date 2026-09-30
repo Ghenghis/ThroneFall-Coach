@@ -450,7 +450,7 @@ namespace ThronefallTrainer
             return sb.ToString();
         }
 
-        private static string JsonStr(string v)
+        internal static string JsonStr(string v)
         {
             if (v == null) return "null";
             return "\"" + v.Replace("\\", "\\\\").Replace("\"", "\\\"") + "\"";
@@ -472,6 +472,11 @@ namespace ThronefallTrainer
             catStuck.Clear();
             milFirstAt = -1f;
             catBuiltScene = null;
+            badStands.Clear();       // per-scene stand blacklist (PosKey has no scene)
+            doorParked = null;       // unwalkable-door marks die with the scene
+            BreachCount = 0;
+            HornBi = null;           // stale horn handle across reloads
+            buildClassCache.Clear();
             try
             {
                 var p = System.IO.Path.Combine(Recorder.AgentDir, "botpack",
@@ -597,7 +602,7 @@ namespace ThronefallTrainer
         }
 
         private static string PosKey(Vector3 p) =>
-            ((int)(p.x / 4f)).ToString() + "," + ((int)(p.z / 4f)).ToString();
+            Mathf.FloorToInt(p.x / 4f) + "," + Mathf.FloorToInt(p.z / 4f);
 
         /// <summary>Best stand-point for a slot: nearest to the hero among
         /// stands that exist; clearanceM &gt;= 0.5 preferred.</summary>
@@ -613,7 +618,26 @@ namespace ThronefallTrainer
                 float d = dx * dx + dz * dz;
                 if (d < bd) { bd = d; best = p; }
             }
-            if (best == null) best = sl.stands[0];
+            // NO fallback to stands[0] — every candidate just failed the
+            // clearance check; returning one anyway advertises an unwalkable
+            // stand as usable (audit: east-perimeter aims never released).
+            if (best == null) return Vector3.zero;
+            return new Vector3(best.x, best.y, best.z);
+        }
+
+        /// <summary>BestStand over a raw stands array (castle section).</summary>
+        private static Vector3 BestStandRecs(StandPtRec[] stands, Vector3 hero)
+        {
+            if (stands == null || stands.Length == 0) return Vector3.zero;
+            StandPtRec best = null; float bd = float.MaxValue;
+            foreach (var p in stands)
+            {
+                if (p.cl < 0.5f) continue;
+                float dx = p.x - hero.x, dz = p.z - hero.z;
+                float d = dx * dx + dz * dz;
+                if (d < bd) { bd = d; best = p; }
+            }
+            if (best == null) return Vector3.zero;
             return new Vector3(best.x, best.y, best.z);
         }
 
@@ -689,17 +713,20 @@ namespace ThronefallTrainer
         // and cache the FieldInfo (the scan hits ~20 slots at 4 Hz).
         private static System.Reflection.FieldInfo fiComplete, fiWaiting;
         private static bool fiLooked;
+        private static void EnsureInteractorFields()
+        {
+            if (fiLooked) return;
+            fiLooked = true;
+            var ty = typeof(BuildingInteractor);
+            fiComplete = ty.GetField("interactionComplete",
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            fiWaiting = ty.GetField("isWaitingForChoice",
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+        }
+
         private static bool IsInteractorFinished(BuildingInteractor bi)
         {
-            if (!fiLooked)
-            {
-                fiLooked = true;
-                var ty = typeof(BuildingInteractor);
-                fiComplete = ty.GetField("interactionComplete",
-                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                fiWaiting = ty.GetField("isWaitingForChoice",
-                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            }
+            EnsureInteractorFields();
             try
             {
                 if (fiComplete != null && (bool)fiComplete.GetValue(bi)) return true;
@@ -715,6 +742,10 @@ namespace ThronefallTrainer
         /// </summary>
         private static bool IsInteractorComplete(BuildingInteractor bi)
         {
+            // Held-slot check runs BEFORE IsInteractorFinished in the scan —
+            // a null fiComplete would mean "never finished" and the bot would
+            // hold a completed slot forever. Initialize the fields here too.
+            EnsureInteractorFields();
             try { return fiComplete != null && (bool)fiComplete.GetValue(bi); }
             catch { return false; }
         }
@@ -788,14 +819,22 @@ namespace ThronefallTrainer
                         r.line = lm.Success ? lm.Groups[1].Value : "";
                         var sm = System.Text.RegularExpressions.Regex.Match(seg, "\"spawn\"\\s*:\\s*\\[\\s*(-?[\\d.eE+-]+)\\s*,\\s*(-?[\\d.eE+-]+)\\s*\\]");
                         if (sm.Success) r.spawn = new float[] { float.Parse(sm.Groups[1].Value, ci), float.Parse(sm.Groups[2].Value, ci) };
-                        var wm = System.Text.RegularExpressions.Regex.Match(seg, "\"wp\"\\s*:\\s*(\\[.*\\])", System.Text.RegularExpressions.RegexOptions.Singleline);
-                        if (wm.Success)
+                        // "wp" is a nested array — a greedy \[.*\] swallows
+                        // the narrowAt [x,y] that follows it, corrupting the
+                        // final waypoint (audit's choke-as-origin bug).
+                        int wk = seg.IndexOf("\"wp\"", System.StringComparison.Ordinal);
+                        if (wk >= 0)
                         {
-                            var wps = new System.Collections.Generic.List<float[]>();
-                            foreach (System.Text.RegularExpressions.Match pm in
-                                System.Text.RegularExpressions.Regex.Matches(wm.Groups[1].Value, "\\[\\s*(-?[\\d.eE+-]+)\\s*,\\s*(-?[\\d.eE+-]+)\\s*\\]"))
-                                wps.Add(new float[] { float.Parse(pm.Groups[1].Value, ci), float.Parse(pm.Groups[2].Value, ci) });
-                            r.wp = wps.ToArray();
+                            int wo = seg.IndexOf('[', wk);
+                            int wc = wo >= 0 ? MatchBracket(seg, wo) : -1;
+                            if (wc > wo)
+                            {
+                                var wps = new System.Collections.Generic.List<float[]>();
+                                foreach (System.Text.RegularExpressions.Match pm in
+                                    System.Text.RegularExpressions.Regex.Matches(seg.Substring(wo, wc - wo), "\\[\\s*(-?[\\d.eE+-]+)\\s*,\\s*(-?[\\d.eE+-]+)\\s*\\]"))
+                                    wps.Add(new float[] { float.Parse(pm.Groups[1].Value, ci), float.Parse(pm.Groups[2].Value, ci) });
+                                r.wp = wps.ToArray();
+                            }
                         }
                         var nm = System.Text.RegularExpressions.Regex.Match(seg, "\"lenM\"\\s*:\\s*(-?[\\d.eE+-]+)");
                         if (nm.Success) r.lenM = float.Parse(nm.Groups[1].Value, ci);
@@ -944,7 +983,11 @@ namespace ThronefallTrainer
                 s.HasCastle = true;
                 s.CastlePos = castlePos;
                 s.CastleDist = FlatDist(s.CastlePos, s.HeroPos);
-                var csp = BestStand(FindSlot(castlePos), s.HeroPos);
+                // The keep has a dedicated "castle" stands section — it is
+                // not a slot record, so FindSlot(castlePos) never matches and
+                // HasCastleStand stayed permanently false (dead pack data).
+                var csp = castleStands != null ? BestStandRecs(castleStands, s.HeroPos)
+                                             : BestStand(FindSlot(castlePos), s.HeroPos);
                 s.HasCastleStand = csp != Vector3.zero;
                 if (s.HasCastleStand) s.CastleStandPos = csp;
 
@@ -1059,13 +1102,21 @@ namespace ThronefallTrainer
                     if (dc < castleThreatSq) { castleThreatSq = dc; s.CastleThreat = e; }
                 }
                 if (sceneDoorAnchors != null && doorFoes != null)
+                {
+                    // Nearest anchor wins — converging corridors mis-attributed
+                    // foes to whichever door came first in array order.
+                    int nd = -1; float ndD = 900f;
                     for (int dd = 0; dd < sceneDoorAnchors.Length && dd < doorFoes.Length; dd++)
                     {
                         float fx = sceneDoorAnchors[dd].x - ep.x, fz = sceneDoorAnchors[dd].z - ep.z;
-                        if (fx * fx + fz * fz < 900f) { doorFoes[dd]++; break; }   // <30 m of the anchor
+                        float fd = fx * fx + fz * fz;
+                        if (fd < ndD) { ndD = fd; nd = dd; }
                     }
+                    if (nd >= 0) doorFoes[nd]++;
+                }
                 enemySum += ep; enemyN++;
             }
+            s.EnemyCount = enemyN;      // live-only — the raw list keeps dead entries
             s.EnemiesNearHero = foesNear;
             if (s.NearestEnemy != null)
             {
@@ -1075,7 +1126,9 @@ namespace ThronefallTrainer
             else s.NearestEnemyDist = 0f;
             if (s.CastleThreat != null)
                 s.CastleThreatDist = Mathf.Sqrt(castleThreatSq);
-            else { s.CastleThreatDist = 0f; s.CastleThreat = s.NearestEnemy; }
+            else { s.CastleThreatDist = s.NearestEnemyDist; s.CastleThreat = s.NearestEnemy; }
+            // NearestEnemyDist is already sqrt'd above — a 0 here told every
+            // consumer "enemy on top of the castle" for a distant live foe.
 
             // P3: live-threat metadata — the foe we're about to fight decides
             // the kite distance, so read its own attack range + hp + elite.
@@ -1118,17 +1171,26 @@ namespace ThronefallTrainer
                     var pu = u.GetComponent<PathfindMovementPlayerunit>();
                     if (s.DoorAnchors != null)
                     {
+                        // Escorts walking past a corridor must NOT count as
+                        // manning it — only a unit ordered to HOLD or stand its
+                        // home post counts. Nearest manned anchor wins (the
+                        // old first-in-array break mis-tallied at choke
+                        // convergences near the castle).
+                        int md = -1; float mdD = 625f;
                         for (int d = 0; d < s.DoorAnchors.Length; d++)
                         {
                             float dx = s.DoorAnchors[d].x - u.transform.position.x;
                             float dz = s.DoorAnchors[d].z - u.transform.position.z;
-                            // Escorts walking past a corridor must NOT count
-                            // as manning it — only a unit ordered to HOLD or
-                            // stand its home post counts toward coverage.
                             bool manned = pu != null && !pu.FollowingPlayer &&
                                 (pu.HoldPosition ||
                                 (pu.HomePosition - s.DoorAnchors[d]).sqrMagnitude < 64f);
-                            if (dx * dx + dz * dz < 625f && manned) { nearDoor = true; if (doorUnit != null && d < doorUnit.Length) doorUnit[d]++; break; }
+                            float dd2 = dx * dx + dz * dz;
+                            if (dd2 < mdD && manned) { mdD = dd2; md = d; }
+                        }
+                        if (md >= 0)
+                        {
+                            nearDoor = true;
+                            if (doorUnit != null && md < doorUnit.Length) doorUnit[md]++;
                         }
                     }
                     // Escorts are NOT free — PlaceSquad skips FollowingPlayer
@@ -1147,8 +1209,11 @@ namespace ThronefallTrainer
             // then the rest by distance-to-castle (the most dangerous leak).
             if (s.DoorAnchors != null)
             {
+                // pk feeds DoorTarget inside the loop (needs a key NOW) —
+                // but s.PolicyKey is re-assigned AFTER RedAlert so the RL
+                // state key actually carries the coverage/alert buckets it
+                // claims to (it used to be written with stale c0/r0).
                 string pk = PKey(ref s);
-                s.PolicyKey = pk;
                 s.DoorCount = s.DoorAnchors.Length;
                 s.DoorsCovered = 0;
                 s.UncoveredDoorPos = Vector3.zero; s.UncoveredDoorLine = null;
@@ -1256,6 +1321,8 @@ namespace ThronefallTrainer
                 }
             }
             else s.RedAlert = false;
+            // Final RL state key — now that DoorsCovered and RedAlert are real.
+            s.PolicyKey = PKey(ref s);
 
             // Nearest unclaimed coin. freeCoins is maintained by TagManager via
             // Coin.OnEnable/OnDestroy, so it should always be accurate.
@@ -1265,8 +1332,9 @@ namespace ThronefallTrainer
             {
                 Coin c = tm.freeCoins[i];
                 if (c == null || !c.IsFree) continue;
-                s.CoinCount++;
                 if (CoinSkip != null && CoinSkip(c)) continue;
+                s.CoinCount++;   // count collectable coins only — the skip list
+                                 // used to inflate CoinCount for an ignored coin
                 float d = (c.transform.position - s.HeroPos).sqrMagnitude;
                 if (d < s.NearestCoinDist)
                 {
@@ -1543,8 +1611,8 @@ namespace ThronefallTrainer
                 var bs = bi.targetBuilding;
                 if (bs != null)
                 {
-                    if (bs.NextUpgradeOrBuildEnergyCoreCost > 0 && s.CoreBalance <= 0)
-                        continue;                              // can never pay — skip outright
+                    if (bs.NextUpgradeOrBuildEnergyCoreCost > s.CoreBalance)
+                        continue;                              // can't afford cores — skip outright
                     if (!bi.canBeHarvested && s.Balance <= 0 &&
                         (bs.NextUpgradeOrBuildCost > 0 || bs.NextUpgradeOrBuildEnergyCoreCost > 0))
                         continue;                              // broke and nothing to harvest
@@ -1892,7 +1960,11 @@ namespace ThronefallTrainer
             {
                 doorScene = s.SceneName;
                 sceneDoorAnchors = null; sceneDoorLines = null;
-                doorBreach = null; doorUnit = null;
+                doorBreach = null; doorUnit = null; doorParked = null;
+                // Claims/parks/breaches are per-scene state — a same-count
+                // corridor layout must not inherit the previous map's marks
+                // (audit: new scene kept 5-min door parks and breach-doubled
+                // targets because the realloc only ran on length change).
                 if (spawnRoutes != null && s.CastlePos != Vector3.zero)
                 {
                     var A = new System.Collections.Generic.List<Vector3>();
@@ -1936,6 +2008,8 @@ namespace ThronefallTrainer
                 }
             }
             s.DoorAnchors = sceneDoorAnchors; s.DoorLines = sceneDoorLines;
+            // Always rebuild on scene change (nulls above) OR length change —
+            // never carry per-door marks into a fresh scene.
             if (doorUnit == null || doorUnit.Length != (sceneDoorAnchors?.Length ?? 0))
             {
                 doorUnit = new int[sceneDoorAnchors?.Length ?? 0];

@@ -8,9 +8,12 @@
 # Usage: .\tools\gen-fields.ps1
 
 $ErrorActionPreference = 'Stop'
+param([string]$GameRoot = (Split-Path $PSScriptRoot -Parent | Split-Path -Parent))
 $src    = Join-Path $PSScriptRoot '..\src\BotBrain.cs'
 $docOut = Join-Path $PSScriptRoot '..\docs\SNAPSHOT-FIELDS.md'
-$jsonOut = Join-Path $PSScriptRoot '..\..\Thronefall\BepInEx\plugins\agent\snapshot-fields.json'
+# GameRoot-parametrized — the hardcoded '..\..\Thronefall' broke under any
+# repo rename (audit: inconsistent with every other tool's layout param).
+$jsonOut = Join-Path $GameRoot 'BepInEx\plugins\agent\snapshot-fields.json'
 
 $code = Get-Content $src -Raw
 $body = [regex]::Match($code, '(?s)internal struct SnapshotData\s*\{(.*?)\n    \}').Groups[1].Value

@@ -24,7 +24,9 @@ namespace ThronefallTrainer
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.F1))
+            // F8 — F1 collided with Plugin.ToggleMenu: one keypress opened
+            // BOTH windows and froze the player mid-run (audit #2).
+            if (Input.GetKeyDown(KeyCode.F8))
                 Visible = !Visible;
         }
 
@@ -36,7 +38,7 @@ namespace ThronefallTrainer
             try
             {
                 if (big == null) Styles();
-                win = GUI.Window(0xD41B, win, Draw, "Grandmaster  [F1]");
+                win = GUI.Window(0xD41B, win, Draw, "Grandmaster  [F8]");
             }
             catch (System.Exception ex)
             {
@@ -47,13 +49,15 @@ namespace ThronefallTrainer
 
         private void Styles()
         {
-            big   = new GUIStyle(GUI.skin.label) { fontSize = 15, fontStyle = FontStyle.Bold };
-            small = new GUIStyle(GUI.skin.label) { fontSize = 11, wordWrap = true };
-            dim   = new GUIStyle(GUI.skin.label) { fontSize = 11, wordWrap = true };
+            // richText required — page bodies embed <b>/<color> markup that
+            // otherwise renders literally (audit: tags printed raw).
+            big   = new GUIStyle(GUI.skin.label) { fontSize = 15, fontStyle = FontStyle.Bold, richText = true };
+            small = new GUIStyle(GUI.skin.label) { fontSize = 11, wordWrap = true, richText = true };
+            dim   = new GUIStyle(GUI.skin.label) { fontSize = 11, wordWrap = true, richText = true };
             dim.normal.textColor  = new Color(0.7f, 0.75f, 0.85f);
-            green = new GUIStyle(GUI.skin.label) { fontSize = 11, wordWrap = true };
+            green = new GUIStyle(GUI.skin.label) { fontSize = 11, wordWrap = true, richText = true };
             green.normal.textColor = new Color(0.5f, 1f, 0.5f);
-            red   = new GUIStyle(GUI.skin.label) { fontSize = 11, wordWrap = true };
+            red   = new GUIStyle(GUI.skin.label) { fontSize = 11, wordWrap = true, richText = true };
             red.normal.textColor  = new Color(1f, 0.55f, 0.45f);
         }
 

@@ -90,7 +90,7 @@ namespace ThronefallTrainer
         }
 
         private static float nextCmdPoll;
-        private static string lastCmdHash = "";
+        private static string lastCmdText = "";   // content-level dedupe
 
         /// <summary>tools/coach-server.py writes agent/coach-commands.json
         /// whenever the user (via chat) issues a strategy override. Same
@@ -102,9 +102,10 @@ namespace ThronefallTrainer
                 var p = Path.Combine(Recorder.AgentDir, "coach-commands.json");
                 if (!File.Exists(p)) return;
                 string j = File.ReadAllText(p);
-                string h = j.GetHashCode().ToString();
-                if (h == lastCmdHash) return;
-                lastCmdHash = h;
+                // Content identity, not GetHashCode — a collision or A->B->A
+                // file transition used to silently drop real commands.
+                if (j == lastCmdText) return;
+                lastCmdText = j;
                 Apply(j, "user-cmd", Time.unscaledTime);
             }
             catch (Exception ex)
@@ -122,9 +123,13 @@ namespace ThronefallTrainer
             // Unity API is forbidden on the worker below
             int gen = runGen;                    // if a retry resets mid-flight,
             // Apply() discards the stale advisory instead of re-stamping
-            var t = new System.Threading.Thread(() => Call(trigger, digestJson, callNow, gen));
-            t.IsBackground = true;
-            t.Start();
+            try
+            {
+                var t = new System.Threading.Thread(() => Call(trigger, digestJson, callNow, gen));
+                t.IsBackground = true;
+                t.Start();
+            }
+            catch { Busy = false; }   // a failed spawn must not wedge the coach
         }
 
         private static void Call(string trigger, string digest, float callNow, int gen)
@@ -253,7 +258,8 @@ namespace ThronefallTrainer
         /// <summary>Run-start reset: coach overrides were persisting across
         /// matches/scenes — a squad_size issued hours ago silently steered the
         /// next run. Clear them at each BeginRun; notes stay (advice history).</summary>
-        private static int runGen;         // bumped per match — stale worker replies die
+        private static volatile int runGen; // bumped per match — the stale-reply
+        // check must see the new generation the moment it changes
         private static int applyGen;
 
         public static void ResetRun()
@@ -271,9 +277,13 @@ namespace ThronefallTrainer
             if (!VisionEnabled || Busy) return;
             Busy = true;
             string b64 = Convert.ToBase64String(png);
-            var t = new System.Threading.Thread(() => VisionCall(b64, context));
-            t.IsBackground = true;
-            t.Start();
+            try
+            {
+                var t = new System.Threading.Thread(() => VisionCall(b64, context));
+                t.IsBackground = true;
+                t.Start();
+            }
+            catch { Busy = false; }   // failed spawn must not wedge the coach
         }
 
         private static void VisionCall(string b64png, string context)
@@ -322,14 +332,45 @@ namespace ThronefallTrainer
 
         private static string Esc(string s)
         {
-            return s.Replace("\\", "\\\\").Replace("\"", "\\\"")
-                    .Replace("\n", "\\n").Replace("\r", "");
+            // All control chars <0x20 must escape — a stray \t/\f in a digest
+            // produced invalid request JSON (every advisory failed that run).
+            var sb = new System.Text.StringBuilder(s.Length + 8);
+            foreach (char c in s)
+            {
+                if (c == '\\') sb.Append("\\\\");
+                else if (c == '"') sb.Append("\\\"");
+                else if (c == '\n') sb.Append("\\n");
+                else if (c == '\r') { }                     // drop
+                else if (c < 0x20) sb.Append("\\u").Append(((int)c).ToString("x4"));
+                else sb.Append(c);
+            }
+            return sb.ToString();
         }
 
         private static string Unesc(string s)
         {
-            return s.Replace("\\n", "\n").Replace("\\\"", "\"")
-                    .Replace("\\\\", "\\");
+            // Single-pass unescape — sequential Replace corrupted \\n into a
+            // literal newline (audit: "\\\\n" came out as '\' + newline).
+            var sb = new System.Text.StringBuilder(s.Length);
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (s[i] == '\\' && i + 1 < s.Length)
+                {
+                    char n = s[i + 1];
+                    if (n == 'n') { sb.Append('\n'); i++; continue; }
+                    if (n == 't') { sb.Append('\t'); i++; continue; }
+                    if (n == 'r') { sb.Append('\r'); i++; continue; }
+                    if (n == '"') { sb.Append('"'); i++; continue; }
+                    if (n == '\\') { sb.Append('\\'); i++; continue; }
+                    if (n == '/') { sb.Append('/'); i++; continue; }
+                    if (n == 'u' && i + 5 < s.Length &&
+                        int.TryParse(s.Substring(i + 2, 4),
+                            System.Globalization.NumberStyles.HexNumber, null, out int cv))
+                    { sb.Append((char)cv); i += 5; continue; }
+                }
+                sb.Append(s[i]);
+            }
+            return sb.ToString();
         }
     }
 }

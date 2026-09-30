@@ -36,7 +36,10 @@ MMWATCH = AGENT / "mmwatch.jsonl"
 _live_cache = {"b": None, "ts": 0}
 PORT = 8099
 if "--port" in sys.argv:
-    PORT = int(sys.argv[sys.argv.index("--port") + 1])
+    _pi = sys.argv.index("--port") + 1
+    if _pi >= len(sys.argv):
+        raise SystemExit("usage: --port <number>")
+    PORT = int(sys.argv[_pi])
 
 # ── MiniMax live-watch loop ──────────────────────────────────────────────
 # MiniMax observes telemetry every MM_WATCH_SECS, proposes ONE bounded
@@ -74,9 +77,10 @@ def mm_chat(messages, max_tokens=3000):
     try:
         msg = out["choices"][0]["message"]
         content = msg.get("content") or ""
-        if not content.strip() and msg.get("reasoning_content"):
-            content = msg["reasoning_content"]
         if not content.strip():
+            # NEVER fall back to reasoning_content — it carries the model's
+            # rejected/considered options; feeding it into the patch parser
+            # applied half-formed thoughts as live commands (audit).
             raise RuntimeError(f"empty MiniMax reply: {str(out)[:200]}")
         return content, out.get("usage", {})
     except (KeyError, IndexError, TypeError):
@@ -159,13 +163,22 @@ def mm_watch_loop():
     mm_watch_loop.last_patch = ""
     mm_watch_loop.last_raw = ""
     last_sig = ""
+    last_run = None
     while True:
         try:
             st = live_state()
             if not st.get("live"):
                 time.sleep(8); continue
-            # Skip mid-call spam: only re-steer when something moved
-            sig = (st.get("mode"), st.get("night"), st.get("ally", 0))
+            # New run => the plugin-side ResetRun() cleared all overrides —
+            # re-issue steering instead of deduping it away forever.
+            if st.get("run") != last_run:
+                last_run = st.get("run")
+                mm_watch_loop.last_patch = ""
+                last_sig = ""
+            # Skip mid-call spam: re-steer on stable signals only — `ally`
+            # fluctuated every tick so sig==last_sig almost never deduped.
+            sig = (st.get("mode"), st.get("night"), st.get("wave"),
+                   st.get("red"), st.get("bld", 0))
             urgent = st.get("red") or (st.get("night") and st.get("doors_cov", 0) == 0)
             # Audit alerts make it urgent too — MiniMax stays busy while
             # the bot fails checklist items.
@@ -235,7 +248,6 @@ def mm_watch_loop():
                 # but skipping it keeps the feed readable.
                 sig = json.dumps(patch, sort_keys=True)
                 if sig != mm_watch_loop.last_patch:
-                    mm_watch_loop.last_patch = sig
                     if patch:
                         # Proof must count NEW applies — an old "[coach]
                         # user-cmd ->" marker in the tail made every later
@@ -248,7 +260,15 @@ def mm_watch_loop():
                                     "[coach] user-cmd ->")
                         except Exception:
                             before = -1
-                        write_cmd(patch)
+                        try:
+                            write_cmd(patch)
+                        except Exception as ex:
+                            # A failed write must NOT commit the dedupe —
+                            # identical telemetry should retry next cycle.
+                            last_sig = ""
+                            append_log("mm", f"write_cmd failed: {ex}")
+                            continue
+                        mm_watch_loop.last_patch = sig   # commit post-write
                         entry["note"] = note
                         _watch_log(entry)
                         time.sleep(6)
@@ -323,6 +343,18 @@ def latest_run():
     runs = sorted(glob.glob(str(AGENT / "runs" / "*")))
     return pathlib.Path(runs[-1]) if runs else None
 
+def tail_lines(path, n, cap=65536):
+    """Last N lines read from END of file — unbounded read_text() on the
+    whole JSONL was the per-request CPU/RSS climb (audit)."""
+    try:
+        size = path.stat().st_size
+        with path.open("rb") as fh:
+            fh.seek(max(0, size - cap))
+            data = fh.read().decode("utf-8", errors="replace")
+        return [l for l in data.strip().splitlines() if l.strip()][-n:]
+    except OSError:
+        return []
+
 def live_state():
     st = {"live": False}
     run = latest_run()
@@ -330,9 +362,13 @@ def live_state():
     ticks = run / "ticks.jsonl"
     if ticks.exists():
         try:
-            lines = ticks.read_text(errors="replace").strip().splitlines()
+            # Freshness gate: an orphaned old run dir must not steer a dead
+            # game — "live" requires the file written within 30 s.
+            if time.time() - ticks.stat().st_mtime > 30:
+                return st
         except OSError:
-            lines = []          # torn write / lock — caller gets stale-free {}
+            return st
+        lines = tail_lines(ticks, 1)
         if lines:
             try:
                 last = json.loads(lines[-1])
@@ -346,10 +382,7 @@ def live_state():
             except Exception: pass
         notes = run / "notes.jsonl"
         if notes.exists():
-            try:
-                nl = notes.read_text(errors="replace").strip().splitlines()[-8:]
-            except OSError:
-                nl = []
+            nl = tail_lines(notes, 8)
             out = []
             for x in nl:
                 if not x.strip().startswith("{"): continue
@@ -413,9 +446,10 @@ def health():
     sig = tuple(c["ok"] for c in h["checks"])
     with _healthlock:
         if health.prev_sig is not None and sig != health.prev_sig:
-            for c, now in zip(h["checks"], sig):
-                was = health.prev_sig[h["checks"].index(c)] if \
-                      len(health.prev_sig) > h["checks"].index(c) else True
+            # Enumerate — index(c) matched by dict equality, which collapses
+            # when two checks ever produce identical dicts.
+            for i, (c, now) in enumerate(zip(h["checks"], sig)):
+                was = health.prev_sig[i] if i < len(health.prev_sig) else True
                 hhmm = time.strftime("%H:%M")
                 if was and not now:
                     append_log("err", f"[{hhmm} LINK DOWN] {c['name']} — {c['detail']}")
@@ -453,6 +487,7 @@ import threading as _threading
 _loglock = _threading.Lock()
 _cmdlock = _threading.Lock()
 _healthlock = _threading.Lock()   # guards health() edge detection
+_auditlock = _threading.Lock()    # guards _activity/_lastcats mutation
 
 def append_log(role, text):
     CHATLOG.parent.mkdir(parents=True, exist_ok=True)
@@ -494,11 +529,27 @@ class H(BaseHTTPRequestHandler):
         # localhost-only — a wildcard let ANY website drive /order and
         # /chat on this port from the user's browser.
         self.send_header("Access-Control-Allow-Origin",
-                         "http://127.0.0.1:8099")
+                         f"http://127.0.0.1:{PORT}")
         self.end_headers()
         self.wfile.write(body)
 
     def do_GET(self):
+        # Global guard — any unexpected exception (TOCTOU file race etc.)
+        # used to drop the connection with NO response at all.
+        try:
+            self._do_GET()
+        except Exception as ex:
+            try: self._send(500, f"handler error: {ex}")
+            except Exception: pass
+
+    def do_POST(self):
+        try:
+            self._do_POST()
+        except Exception as ex:
+            try: self._send(500, f"handler error: {ex}")
+            except Exception: pass
+
+    def _do_GET(self):
         if self.path == "/" or self.path.startswith("/index"):
             self._send(200, PAGE, "text/html; charset=utf-8")
         elif self.path == "/state":
@@ -604,11 +655,14 @@ class H(BaseHTTPRequestHandler):
                     except Exception:
                         pass
                     # Activity timeline: mode edges, newest first, capped.
+                    # Thread-locked — two concurrent /audit calls used to
+                    # interleave the append and lose/duplicate edges.
                     global _activity, _lastcats
-                    if not _activity or _activity[-1][1] != a.get("mode"):
-                        _activity.append((a.get("t"), a.get("mode")))
-                        _activity = _activity[-12:]
-                    a["activity"] = list(reversed(_activity))
+                    with _auditlock:
+                        if not _activity or _activity[-1][1] != a.get("mode"):
+                            _activity.append((a.get("t"), a.get("mode")))
+                            _activity = _activity[-12:]
+                        a["activity"] = list(reversed(_activity))
                     # Build-stall tracker: how long since a build completed
                     # (cat_built sum) while the bot claims to be spending.
                     cat_sum = sum((a.get("cat_built") or {}).values())
@@ -684,11 +738,19 @@ class H(BaseHTTPRequestHandler):
         else:
             self._send(404, "?")
 
-    def do_POST(self):
+    def _do_POST(self):
+        # Cap the read — a peer claiming a huge Content-Length used to hang
+        # the handler thread (and unbounded base64 hit the LLM request).
+        try:
+            _n = int(self.headers.get("Content-Length", 0) or 0)
+        except (TypeError, ValueError):
+            _n = 0
+        if _n > 8 * 1024 * 1024:
+            self._send(413, "too large"); return
         if self.path == "/order":
             # Direct command — writes the coach file, waits for the plugin's
             # own apply line in the game log. Proof, not assumption.
-            n = int(self.headers.get("Content-Length", 0))
+            n = _n
             try:
                 data = json.loads(self.rfile.read(n) or b"{}")
             except Exception:
@@ -749,7 +811,9 @@ class H(BaseHTTPRequestHandler):
         st["learner"] = {
             "policy": readj(AGENT / "policystats.json", {}),
             "net": readj(AGENT / "netstats.json", {}),
-            "grades": metrics()["grades"] if self.path == "/chat" else {}}
+            "grades": metrics()["grades"]}   # /chat is the only caller left —
+        # metrics() is now TTL-cached so the full JSONL scan doesn't run per
+        # message (seconds-long scan per chat = audit finding #16)
         digest = json.dumps(st, separators=(",", ":"))
         append_log("user", msg + (" [image]" if img else ""))
         try:
@@ -785,8 +849,21 @@ def readj(p, dflt):
     except Exception:
         return dflt
 
+_metrics_cache = {"m": None, "at": 0.0}
+
 def metrics():
-    """Full dashboard payload — grades, learning, weaknesses, curve."""
+    """Full dashboard payload — grades, learning, weaknesses, curve.
+    TTL-cached: this scans every ticks/events/dataset file — at per-request
+    cadence it was the server's dominant CPU cost."""
+    if _metrics_cache["m"] is not None and \
+            time.time() - _metrics_cache["at"] < 15:
+        return _metrics_cache["m"]
+    m = _metrics()
+    _metrics_cache["m"] = m
+    _metrics_cache["at"] = time.time()
+    return m
+
+def _metrics():
     m = {"learning": {}, "grades": {}, "weaknesses": [], "runs": [],
          "mishaps": readj(AGENT / "mishaps.json", []) or []}
     m["learning"]["policy"] = readj(AGENT / "policystats.json", {})
@@ -1195,8 +1272,8 @@ function paint(){
  // mmchip is owned by healthCheck() — paint() must not fight it.
  const cell=(k,v,cls)=>`<div class="st"><div class="k">${k}</div><div class="v ${cls||''}">${v}</div></div>`;
  document.getElementById('strip').innerHTML=
-  cell('action',a.mode+(a.mode_since>60?` <span style="font-size:10px;color:var(--bad)">${a.mode_since}s</span>`:`<span style="font-size:10px;color:var(--dim)">${a.mode_since}s</span>`),'small')
-  +cell('building',a.cur_build||'—','small')
+  cell('action',esc(a.mode||'')+(a.mode_since>60?` <span style="font-size:10px;color:var(--bad)">${a.mode_since}s</span>`:`<span style="font-size:10px;color:var(--dim)">${a.mode_since}s</span>`),'small')
+  +cell('building',esc(a.cur_build||'—'),'small')
   +cell('gold',a.gold,'gold')
   +`<div class="st"><div class="k">army</div><div class="v">${a.ally}
    <span style="font-size:10px;color:var(--dim)">+${a.free||0}free</span></div>
@@ -1211,14 +1288,14 @@ function paint(){
  // door chips in audit pane
  const du=a.door_units||[],dl=a.door_lines||[];
  document.getElementById('auDoor').innerHTML=dl.length?dl.map((l,i)=>
-  `<span class="door ${du[i]>0?'cov':'open'}">${l} · ${du[i]||0}</span>`).join(''):'<span class="hint">—</span>';
+  `<span class="door ${du[i]>0?'cov':'open'}">${esc(l)} · ${du[i]||0}</span>`).join(''):'<span class="hint">—</span>';
  document.getElementById('auCheck').innerHTML=(a.checklist||[]).map(c=>
   `<div class="kv"><span>${esc(c.n)}</span><b style="color:${c.done?'#7bc96f':'#e5534b'}">${c.done?'✓':'✗'}</b></div>`).join('')
   ||'<div class="hint">no playbook</div>';
  document.getElementById('auCat').innerHTML=Object.entries(a.cat_built||{}).map(([k,v])=>
-  `<div class="kv"><span>${k}</span><b>${v}</b></div>`).join('')||'<div class="hint">nothing built yet</div>';
+  `<div class="kv"><span>${esc(k)}</span><b>${esc(v)}</b></div>`).join('')||'<div class="hint">nothing built yet</div>';
  document.getElementById('auAct').innerHTML=(a.activity||[]).map(([t,m])=>
-  `<div class="kv"><span>t=${t}s</span><b>${m}</b></div>`).join('')||'<div class="hint">—</div>';
+  `<div class="kv"><span>t=${t}s</span><b>${esc(m)}</b></div>`).join('')||'<div class="hint">—</div>';
  document.getElementById('auMm').textContent=a.mm_note||'—';
  const done=(a.checklist||[]).filter(c=>c.done).length,tot=(a.checklist||[]).length;
  document.getElementById('auCheck').insertAdjacentHTML('afterbegin',
@@ -1306,10 +1383,10 @@ async function runs(){
  document.getElementById('runlist').innerHTML=runRows
   .filter(r=>runFilter=='all'||(runFilter=='tr' ? r.transit : !r.transit && r.outcome==runFilter))
   .filter(r=>!q||(r.scene||'').toLowerCase().includes(q))
-  .map((r,i)=>`<div class="rl ${r.transit?'tr':''} ${r.run==selRun?'on':''}" onclick="pickRun('${r.run}',${i})">
+  .map((r,i)=>`<div class="rl ${r.transit?'tr':''} ${r.run==selRun?'on':''}" onclick='pickRun(${JSON.stringify?JSON.stringify(r.run):'"'+r.run+'"'},${i})'>
    <span class="rn"><span class="dot ${r.outcome=='victory'?'win':r.outcome=='defeat'?'lose':'run'}"></span>
-   ${r.scene||'unknown'}</span>
-   <span class="rm">${r.transit?'transition':r.outcome} · wave ${r.wave} · score ${r.score}</span>
+   ${esc(r.scene||'unknown')}</span>
+   <span class="rm">${r.transit?'transition':esc(r.outcome||'')} · wave ${r.wave} · score ${r.score}</span>
    <div class="det" id="det${i}" style="display:none"></div></div>`).join('');
  document.getElementById('sideft').textContent=`${runRows.length} runs · squads ${m.squads_posted} · memory ${(m.mishaps||[]).length}`;
  if(selRun)pickRun(selRun)}catch(e){}}
@@ -1319,7 +1396,7 @@ async function pickRun(runId,idx){const r=runRows.find(x=>x.run===runId);if(!r)r
  if(d.dataset.open){d.style.display='none';d.dataset.open='';return}
  d.style.display='block';d.dataset.open='1';d.textContent='loading…';
  try{const t=await j('/run?name='+encodeURIComponent(r.run));
-  d.innerHTML=(t.ticks||[]).map(x=>`t=${x.t} · ${x.mode} · ally ${x.ally} · doors ${x.drc}/${x.drn} · ${x.gold}g`).join('<br>')
+  d.innerHTML=(t.ticks||[]).map(x=>`t=${x.t} · ${esc(x.mode)} · ally ${x.ally} · doors ${x.drc}/${x.drn} · ${x.gold}g`).join('<br>')
    ||'no ticks'}catch(e){d.textContent='err'}}
 setInterval(runs,15000);
 /* metrics */
@@ -1343,7 +1420,7 @@ async function refresh(){try{const m=await j('/metrics');
   m.weaknesses.map(w=>`<div class="wk"><b>${esc(w.type)}</b> — ${esc(w.where)} (${w.count})<div class="hint">→ ${esc(w.fix)}</div></div>`).join('')
   :'<div class="hint">none detected</div>';
  document.getElementById('breachTbl').innerHTML=(m.breach_doors||[]).map(([d,c])=>
-  `<div class="kv"><span>${d}</span><b>${c}</b></div>`).join('')||'<div class="hint">none</div>';
+  `<div class="kv"><span>${esc(d)}</span><b>${esc(c)}</b></div>`).join('')||'<div class="hint">none</div>';
  document.getElementById('mish').innerHTML=(m.mishaps||[]).map(x=>`<div>• ${esc(x)}</div>`).join('')||'none yet';
  const c=document.getElementById('curve'),x=c.getContext('2d');
  const W=c.width=c.clientWidth*2,H=c.height=260;x.clearRect(0,0,W,H);

@@ -158,6 +158,10 @@ namespace ThronefallTrainer
 
         private static void Update(string key, string action, float target)
         {
+            // NaN poison: a single non-finite reward wrote "NaN" into the
+            // file (unparseable on reload → cell vanished) AND made every
+            // future Best() compare false → policy degenerated to options[0].
+            if (!!float.IsNaN(target) && !float.IsInfinity(target)) return;
             if (!Q.TryGetValue(key, out var row))
                 Q[key] = row = new Dictionary<string, float>();
             float old = row.TryGetValue(action, out float v) ? v : 0f;
@@ -255,9 +259,16 @@ namespace ThronefallTrainer
                     var row = new Dictionary<string, float>();
                     foreach (System.Text.RegularExpressions.Match a in
                         System.Text.RegularExpressions.Regex.Matches(
-                            m.Groups[2].Value, "\"([^\"]+)\"\\s*:\\s*(-?[\\d.]+)"))
-                        row[a.Groups[1].Value] = float.Parse(a.Groups[2].Value,
-                            System.Globalization.CultureInfo.InvariantCulture);
+                            m.Groups[2].Value, "\"([^\"]+)\"\\s*:\\s*(-?[\\d.eE+-]+)"))
+                    {
+                        // TryParse per cell — one malformed token used to
+                        // abort the WHOLE table load mid-file.
+                        if (float.TryParse(a.Groups[2].Value,
+                                System.Globalization.NumberStyles.Float,
+                                System.Globalization.CultureInfo.InvariantCulture,
+                                out float av) && !float.IsNaN(av) && !float.IsInfinity(av))
+                            row[a.Groups[1].Value] = av;
+                    }
                     Q[m.Groups[1].Value] = row;
                 }
                 Plugin.Log?.LogInfo($"[policy] loaded {Q.Count} learned states");

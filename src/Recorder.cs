@@ -23,7 +23,7 @@ namespace ThronefallTrainer
 
         private static Thread writer;
         private static readonly object writerLock = new object();
-        private static bool running;
+        private static volatile bool running;   // Drain() reads it outside the lock
 
         private static string runId;
         private static string runDir;
@@ -115,7 +115,9 @@ namespace ThronefallTrainer
             if (i < 0) return 0f;
             i += key.Length;
             int j = i;
-            while (j < json.Length && (char.IsDigit(json[j]) || json[j] == '.' || json[j] == '-')) j++;
+            while (j < json.Length && (char.IsDigit(json[j]) || json[j] == '.' ||
+                   json[j] == '-' || json[j] == '+' || json[j] == 'e' || json[j] == 'E')) j++;
+            // NumberStyles.Float: digit-scan refused 1e-05 notation → parsed 1.
             float.TryParse(json.Substring(i, j - i), NumberStyles.Float,
                 CultureInfo.InvariantCulture, out float v);
             return v;
@@ -132,9 +134,13 @@ namespace ThronefallTrainer
                 string id = DateTime.UtcNow.ToString("yyyyMMddTHHmmssZ",
                         CultureInfo.InvariantCulture) + "-" +
                     (string.IsNullOrEmpty(scene) ? "unknown" : Sanitize(scene));
+                // Commit locals AFTER all fallible work — a failed
+                // CreateDirectory used to leave runDir set with null paths,
+                // silently dropping every tick until the next run (audit #3).
+                string dir = Path.Combine(AgentDir, "runs", id);
+                Directory.CreateDirectory(dir);
                 runId = id;
-                runDir = Path.Combine(AgentDir, "runs", id);
-                Directory.CreateDirectory(runDir);
+                runDir = dir;
                 ticksPath = Path.Combine(runDir, "ticks.jsonl");
                 eventsPath = Path.Combine(runDir, "events.jsonl");
                 summaryPath = Path.Combine(runDir, "summary.json");
@@ -157,7 +163,9 @@ namespace ThronefallTrainer
         /// </summary>
         public static void Event(string note, string extra = null)
         {
-            if (runDir == null) BeginRun("unknown");
+            // No phantom "unknown" run dirs — events before the first real
+            // BeginRun used to create orphaned runs/<ts>-unknown/ folders.
+            if (runDir == null) return;
             Enq(eventsPath, "{" + "\"t\":" + F(UnityEngine.Time.unscaledTime - tStart) +
                 ",\"note\":\"" + J(note) + "\"" +
                 (extra != null ? "," + extra : "") + "}");
@@ -170,10 +178,11 @@ namespace ThronefallTrainer
         /// </summary>
         public static void Tick(string compactLine)
         {
-            int sec = (int)(UnityEngine.Time.unscaledTime - tStart);
-            if (sec == lastTickSecond) return;   // caller emits ~2 Hz already;
-            // this guard just dedupes accidental double-calls in the same second
-            lastTickSecond = sec;
+            // Half-second bucket: whole-second dedupe threw away ~half the
+            // real 2 Hz ticks (tickCount/summary underreported).
+            int bucket = (int)((UnityEngine.Time.unscaledTime - tStart) * 2f);
+            if (bucket == lastTickSecond) return;
+            lastTickSecond = bucket;
             Enq(ticksPath, compactLine);
             tickCount++;
         }
@@ -294,10 +303,21 @@ namespace ThronefallTrainer
         /// </summary>
         public static void WriteAtomic(string path, string text)
         {
+            if (path == null) return;
             string tmp = path + ".tmp";
             File.WriteAllText(tmp, text);
-            if (File.Exists(path)) File.Delete(path);
-            File.Move(tmp, path);
+            // File.Replace is a REAL atomic rename — the delete+move pair
+            // left the destination missing to 1 Hz sidecar polls, and a
+            // crash in the window destroyed the old file too (audit).
+            try
+            {
+                if (File.Exists(path)) File.Replace(tmp, path, null);
+                else File.Move(tmp, path);
+            }
+            catch (System.IO.FileNotFoundException)
+            {
+                File.Move(tmp, path);   // destination vanished mid-write
+            }
         }
     }
 
@@ -452,11 +472,20 @@ namespace ThronefallTrainer
             while (i < json.Length && (json[i] == ' ' || json[i] == ':')) i++;
             if (i >= json.Length || json[i] != '"') return null;
             i++;
-            // Scan for the closing UNESCAPED quote either way — raw mode's
-            // LastIndexOf swallowed trailing fields when "text" wasn't last.
+            // Scan for the closing UNESCAPED quote — quote is escaped only
+            // when preceded by an ODD number of backslashes (the single-char
+            // check misread \\" as escaped and swallowed following fields).
             int j = i;
-            while (j < json.Length &&
-                   (json[j] != '"' || json[j - 1] == '\\')) j++;
+            while (j < json.Length)
+            {
+                if (json[j] == '"')
+                {
+                    int bs = 0;
+                    for (int k = j - 1; k >= i && json[k] == '\\'; k--) bs++;
+                    if (bs % 2 == 0) break;
+                }
+                j++;
+            }
             if (j <= i) return null;
             return json.Substring(i, j - i)
                 .Replace("\\n", "\n").Replace("\\\"", "\"").Replace("\\\\", "\\");
@@ -469,10 +498,21 @@ namespace ThronefallTrainer
         /// </summary>
         public static void WriteAtomic(string path, string text)
         {
+            if (path == null) return;
             string tmp = path + ".tmp";
             File.WriteAllText(tmp, text);
-            if (File.Exists(path)) File.Delete(path);
-            File.Move(tmp, path);
+            // File.Replace is a REAL atomic rename — the delete+move pair
+            // left the destination missing to 1 Hz sidecar polls, and a
+            // crash in the window destroyed the old file too (audit).
+            try
+            {
+                if (File.Exists(path)) File.Replace(tmp, path, null);
+                else File.Move(tmp, path);
+            }
+            catch (System.IO.FileNotFoundException)
+            {
+                File.Move(tmp, path);   // destination vanished mid-write
+            }
         }
     }
 }

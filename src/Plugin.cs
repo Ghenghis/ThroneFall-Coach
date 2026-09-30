@@ -160,6 +160,7 @@ namespace ThronefallTrainer
         private float origSpeed, origSpeedDay, origSprint, origSprintDay;
         private float origMagnet = -1f;
         private bool magnetWasOn, gameSpeedWasOn;
+        private PlayerInteraction cachedPI;   // magnet capture is per-instance
 
         private ManualAttack[] heroAttacks;
         private readonly Dictionary<int, float> origCooldownTimes = new Dictionary<int, float>();
@@ -251,7 +252,9 @@ namespace ThronefallTrainer
             cfgNeverLose        = Config.Bind("Protection","NeverLose",       false);
             cfgRevealMap        = Config.Bind("Camera",   "RevealMap",        false);
             cfgBotEnabled       = Config.Bind("Bot",      "AutopilotEnabled", false);
-            cfgBotCheats        = Config.Bind("Bot",      "BotSurvivalCheats", true);
+            // Default LEGIT — fresh installs must not arm the cheat bundle;
+            // the user's standing rule is "no trainer cheats" in autopilot.
+            cfgBotCheats        = Config.Bind("Bot",      "BotSurvivalCheats", false);
             cfgOpacity          = Config.Bind("Overlay",  "Opacity",          1f);
             cfgTheme            = Config.Bind("Overlay",  "ThemeIndex",       0);
 
@@ -321,10 +324,17 @@ namespace ThronefallTrainer
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.F1)) ToggleMenu();
-            if (Input.GetKeyDown(KeyCode.F2)) KillAllEnemies();
-            if (Input.GetKeyDown(KeyCode.F3)) ReviveAll();
-            if (Input.GetKeyDown(KeyCode.F4)) AddGold(100);
-            if (Input.GetKeyDown(KeyCode.F5)) TeleportToMouse();
+            // LEGIT-MODE GATE: F2–F5 are direct cheat injects (kill/gold/
+            // teleport) — they must NEVER fire while the autopilot is
+            // playing legitimately. The Bot's own cheat intents are gated
+            // the same way; the hotkeys weren't (audit #1).
+            if (!Bot.Enabled || !Bot.Legit)
+            {
+                if (Input.GetKeyDown(KeyCode.F2)) KillAllEnemies();
+                if (Input.GetKeyDown(KeyCode.F3)) ReviveAll();
+                if (Input.GetKeyDown(KeyCode.F4)) AddGold(100);
+                if (Input.GetKeyDown(KeyCode.F5)) TeleportToMouse();
+            }
             if (Input.GetKeyDown(KeyCode.F6)) SetBotEnabled(!Bot.Enabled);
 
             var pi = PlayerInteraction.instance;
@@ -332,7 +342,8 @@ namespace ThronefallTrainer
 
             // ---- Free build: spending is patched to a no-op, but the pay loop
             // also requires Balance > 0, so keep a floor of 1 in each currency.
-            if (Cheats.FreeBuild && pi != null)
+            if (Cheats.FreeBuild && pi != null &&
+                BalanceField != null && CoresField != null)
             {
                 if (pi.Balance < 1)
                     BalanceField.SetValue(pi, 1);
@@ -450,9 +461,14 @@ namespace ThronefallTrainer
                 Time.timeScale = PlayerMovement.gameplayTimeScale;
             }
 
-            // ---- Coin magnet.
-            if (pi != null && origMagnet < 0f)
-                origMagnet = pi.coinMagnetRadius;
+            // ---- Coin magnet (per-instance capture — a scene reload swaps
+            // in a NEW PlayerInteraction; restoring the old instance's radius
+            // over its real default was the audit's stale-restore bug).
+            if (pi != cachedPI)
+            {
+                cachedPI = pi;
+                if (pi != null) origMagnet = pi.coinMagnetRadius;
+            }
             if (Cheats.CoinMagnet && pi != null)
             {
                 magnetWasOn = true;
@@ -541,6 +557,7 @@ namespace ThronefallTrainer
 
             // ---- Endless day: hold the automated day timer up.
             if (Cheats.EndlessDay && DayNightCycle.Instance != null &&
+                DayTimeField != null &&
                 DayNightCycle.Instance.CurrentTimestate == DayNightCycle.Timestate.Day &&
                 DayNightCycle.Instance.AutomatedDaytime)
             {
@@ -562,7 +579,7 @@ namespace ThronefallTrainer
                     cachedCamRig = Object.FindObjectOfType<CameraRig>();
                     origZoomLevels = null;
                 }
-                if (cachedCamRig != null)
+                if (cachedCamRig != null && ZoomLevelsField != null)
                 {
                     var levels = (float[])ZoomLevelsField.GetValue(cachedCamRig);
                     if (origZoomLevels == null && levels != null)
@@ -802,7 +819,7 @@ namespace ThronefallTrainer
         private void SetGold(int value)
         {
             var pi = PlayerInteraction.instance;
-            if (pi == null) return;
+            if (pi == null || BalanceField == null) return;
             int delta = value - pi.Balance;
             BalanceField.SetValue(pi, value);
             if (delta > 0) pi.onBalanceGain.Invoke(delta);
@@ -812,7 +829,7 @@ namespace ThronefallTrainer
         private void SetCores(int value)
         {
             var pi = PlayerInteraction.instance;
-            if (pi == null) return;
+            if (pi == null || CoresField == null) return;
             int delta = value - pi.EnergyCoreBalance;
             CoresField.SetValue(pi, value);
             if (delta > 0) pi.onEnergyCoreBalanceGain.Invoke(delta);

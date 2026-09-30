@@ -1,4 +1,4 @@
-# Thronefall bot live diagnoser — reads recent bot-log.jsonl + BepInEx log
+﻿# Thronefall bot live diagnoser — reads recent bot-log.jsonl + BepInEx log
 # and reports what the run is doing wrong (or right) with suggested fixes.
 #
 # Usage: .\tools\bot-diagnose.ps1 [-Lines 2000] [-Fix]
@@ -116,7 +116,7 @@ if ($defeats.Count -gt 0) {
 if ($cfg -ne '') {
     $cheatsOn = [regex]::Matches($cfg, '(?m)^\s*(GodHero|GodAll|InstantKill|NeverLose|NoCooldown|FreeBuild|InstantBuild)\s*=\s*true')
     if ($legitExpected -and $cheatsOn.Count -gt 0) {
-        Diag 'FAIL' 'config drift' "BotSurvivalCheats=false but $($cheatsOn.Count) cheat flags still true: $($cheatsOn.Groups[1].Value -join ', ')" `
+        Diag 'FAIL' 'config drift' "BotSurvivalCheats=false but $($cheatsOn.Count) cheat flags still true: $(($cheatsOn | ForEach-Object { $_.Groups[1].Value }) -join ', ')" `
              "run with -Fix to write false values, or edit $cfgFile manually"
         if ($Fix) {
             $fixed = [regex]::Replace($cfg, '(?m)^(\s*(GodHero|GodAll|InstantKill|NeverLose|NoCooldown|FreeBuild|InstantBuild)\s*=\s*)true', '${1}false')
@@ -124,7 +124,7 @@ if ($cfg -ne '') {
             Write-Host "  → repaired $cfgFile (cheats forced false)" -ForegroundColor Green
         }
     } else {
-        Diag 'OK' 'config consistent' "BotSurvivalCheats=$($legitExpected ? 'false (legit)' : 'true (bundle)')" $null
+        Diag 'OK' 'config consistent' "BotSurvivalCheats=$(if($legitExpected){'false (legit)'}else{'true (bundle)'})" $null
     }
 }
 
@@ -134,11 +134,11 @@ if ($proc) {
     $age = ((Get-Date) - $proc[0].StartTime).TotalMinutes
     $logAge = ((Get-Date) - (Get-Item $logFile).LastWriteTime).TotalSeconds
     Diag 'INFO' 'process' "thronefall.exe running $([math]::Round($age,1)) min; log last write $([math]::Round($logAge)) s ago" `
-             ($logAge -gt 30 ? "log stalled >30 s — game may be paused/crashed or bot disabled" : $null)
+             $(if ($logAge -gt 30) { "log stalled >30 s — game may be paused/crashed or bot disabled" } else { $null })
 } else {
     Diag 'WARN' 'process' 'thronefall.exe not running' 'relaunch to continue verification'
 }
 
 Write-Host ""
-Write-Host "bot-diagnose: $issues issue(s)" -ForegroundColor ($issues -gt 0 ? 'Yellow' : 'Green')
-exit ($issues -gt 0 ? 1 : 0)
+Write-Host "bot-diagnose: $issues issue(s)" -ForegroundColor $(if ($issues -gt 0) { 'Yellow' } else { 'Green' })
+exit $(if ($issues -gt 0) { 1 } else { 0 })
