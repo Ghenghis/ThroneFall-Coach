@@ -282,3 +282,35 @@ pre-existing NNConstraint-obsolete warnings).
 - `door_units` nonzero, `doors_claimed` > 0, checklist `done` accuracy
 - after-match → map → retry on THIS build; netpolicy mtime reload
 - Endless-day/pass-frame regressions under the frozen-watchdog guard
+
+## Round 8 (2026-09-30 evening) — campaign reset, 5k grant, loop/idle extermination
+
+### Config / save
+- Campaign reset: all progress files archived to `LocalLow\...\Thronefall\pre-reset-20260930*` (reversible).
+- `Economy.GoldGrant` config key -> `PlayerInteraction.AddCoin()` once at match start. Set 5000; verified `gold=4991` at t~97 fresh run.
+- All cheat toggles verified `= false` — legit mode intact.
+
+### Fixes (each with live telemetry proof)
+1. hpPct ambiguity — `hp:1` = HeroHpPct 1.0 (100%), misread by coach + user report as "1 HP". Digest now `hero_hp_pct` int; tick log gains `hpPct`.
+2. Frame ping-pong — AfterMatch <-> Level Up closed each other forever (>40 s). Now 10 out-of-match closes -> `frame-escape` -> TransitionToLevelSelect.
+3. Choice-frame overlay freeze — pick consumed by coroutine but UI frame never closed; Apply spam forever. Escalation: Apply -> CloseActiveFrame (>=2) -> CancelChoice (>=6).
+4. Day idle — 30 s of exhausted work -> `idle-night-call` (fired t=317, t=822; day wait was 240 s).
+5. Night statue — HoldCastle now patrol-orbits the post + grabs adjacent coins (coinAdj <=10 m).
+6. Late-wave escalation — wave >= total-2 + ally<=8 -> `late-wave-hold` pulls hero to castle arc.
+7. Build orbit — same-name slots flip-flopped picks every tick (5x pay->release cycles, 150 s circling). 25 s commit latch; rival must beat score >35%+60.
+8. squad-door spam — Front Road posted every ~6 s forever (units never arrived: anchor behind wall). Escalating throttle 6+4*streak s; 4 posts + doorUnit==0 -> `door-park` (fired t=196.85 — spam stopped).
+9. Mid-hold yank — hero-door fallback suppressed unconditionally while HeldBuild >= 0.
+10. Memory.Park TTL 300 s incl. loaded rows — permanent parks were the "forgets walls/gates" bug.
+11. Playbook hard pin — open_order[0] +8000 (was conditional 1200, zeroed when broke) — wall/gate/military order enforced.
+
+### Live campaign proof
+- Neuland victory (8/8 waves, 0 breaches, ally=8) -> AfterMatchVictory -> map -> Nordfels.
+- Nordfels victory (13 waves, ally=16, doors=3 manned) -> map -> Durststein.
+- Durststein wave 5+: ally=28-32, door_units=[4,2,0,2,0,18], bmil=8, doors_cov=5, cat_built military 2->7 after hard pin.
+- Coach: day-start advisories applying (squad/focus/posture), user-cmd file polled 4 s, heartbeat added (`idle-watch` >60 s idle, `stall-watch` stuck clusters). Server on :8099 (`/health`/`/audit` 200).
+
+### Still pending proof
+- `choice-cancel` firing on a real wedge.
+- Durststein completion -> next node.
+- Defeat -> retry cycle.
+- gate cat_built > 0 (pin queued; needs live slot).
