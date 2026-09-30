@@ -491,10 +491,12 @@ namespace ThronefallTrainer
                         SceneTransitionManager.instance.TransitionToLevelSelect();
                 }
             }
-            else
+            else if (!s.IsNight)
             {
                 // Fields flicker (ally/coin/gs bounce between captures) —
                 // only a SUSTAINED healthy window disarms the vacuum timer.
+                // NIGHT is exempt: a dead match still cycles days — the
+                // night pause must not reset the accumulated void time.
                 if (nonVacSince < 0) nonVacSince = Time.unscaledTime;
                 if (Time.unscaledTime - nonVacSince > 3f) interZeroSince = -1f;
             }
