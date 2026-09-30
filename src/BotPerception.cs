@@ -206,6 +206,7 @@ namespace ThronefallTrainer
                 BuildHarvest = s.NearestBuildHarvest,
                 AllyCount = s.AllyCount, AllyCentroid = V(s.AllyCentroid),
                 CanCommand = s.CanCommand, CanSwitch = s.CanSwitch,
+                NightCall = Coach.NightCallRequested,   // pure-layer bridge
                 HasWeapon = s.HasWeapon, ActiveRange = s.ActiveRange,
                 ActiveFiresMoving = s.ActiveFiresMoving,
                 NextWaveCount = s.NextWaveCount, NextWaveElites = s.NextWaveElites,
@@ -425,6 +426,13 @@ namespace ThronefallTrainer
             // PREVIOUS scene's build order + checklist in the audit feed.
             Strat.BuildOrder = new string[0];
             Strat.LineSquad.Clear();
+            // CatBuilt/milFirstAt were lazily reset inside BuildDone only —
+            // a new scene before the first completion inherited the old
+            // scene's counts (playbook categories pre-satisfied, wrong
+            // army-starved timers). Reset here where scene context changes.
+            CatBuilt.Clear();
+            milFirstAt = -1f;
+            catBuiltScene = null;
             try
             {
                 var p = System.IO.Path.Combine(Recorder.AgentDir, "botpack",
@@ -647,6 +655,16 @@ namespace ThronefallTrainer
             }
             catch { }
             return false;
+        }
+
+        /// <summary>Strict completion for held-slot stickiness ONLY —
+        /// isWaitingForChoice must NOT read as finished (a mid-fill choice
+        /// would drop the hold → release → refund; the exact bmil=0 loop).
+        /// </summary>
+        private static bool IsInteractorComplete(BuildingInteractor bi)
+        {
+            try { return fiComplete != null && (bool)fiComplete.GetValue(bi); }
+            catch { return false; }
         }
 
         private static int MatchBracket(string s, int open)
@@ -1055,7 +1073,8 @@ namespace ThronefallTrainer
                             // Escorts walking past a corridor must NOT count
                             // as manning it — only a unit ordered to HOLD or
                             // stand its home post counts toward coverage.
-                            bool manned = pu != null && (pu.HoldPosition ||
+                            bool manned = pu != null && !pu.FollowingPlayer &&
+                                (pu.HoldPosition ||
                                 (pu.HomePosition - s.DoorAnchors[d]).sqrMagnitude < 64f);
                             if (dx * dx + dz * dz < 625f && manned) { nearDoor = true; if (doorUnit != null && d < doorUnit.Length) doorUnit[d]++; break; }
                         }
@@ -1064,8 +1083,8 @@ namespace ThronefallTrainer
                     // units, so counting them as "free" made the brain think
                     // it had a squad to post while every unit was on escort.
                     bool escortU = pu != null && pu.FollowingPlayer;
-                    if (!nearDoor && !escortU) s.FreeUnits++;
-                    else if (escortU) s.EscortUnits++;
+                    if (escortU) { s.EscortUnits++; }
+                    else if (!nearDoor) s.FreeUnits++;
                 }
                 if (s.AllyCount > 0) s.AllyCentroid = allySum / s.AllyCount;
             }
@@ -1445,7 +1464,7 @@ namespace ThronefallTrainer
                 if (heldMatch0)
                 {
                     float hd0 = (bi.transform.position - s.HeroPos).sqrMagnitude;
-                    if (hd0 <= 6f * 6f && !IsInteractorFinished(bi))
+                    if (hd0 <= 6f * 6f && !IsInteractorComplete(bi))
                     {
                         s.NearestBuildDist = hd0;
                         s.NearestBuild = bi;

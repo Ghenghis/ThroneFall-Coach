@@ -98,13 +98,13 @@ namespace ThronefallTrainer
                     list[i] = string.Format(ci,
                         "{{\"s\":\"{0}\",\"k\":\"{1}\",\"x\":{2},\"z\":{3},\"hits\":{4}}}",
                         scene, kind, bx, bz, hits);
-                    File.WriteAllLines(path, list);
+                    WriteAtomic(path, string.Join("\n", list));
                     return;
                 }
                 list.Add(string.Format(ci,
                     "{{\"s\":\"{0}\",\"k\":\"{1}\",\"x\":{2},\"z\":{3},\"hits\":1}}",
                     scene, kind, bx, bz));
-                File.WriteAllLines(path, list);
+                WriteAtomic(path, string.Join("\n", list));
             }
             catch { }
         }
@@ -452,8 +452,11 @@ namespace ThronefallTrainer
             while (i < json.Length && (json[i] == ' ' || json[i] == ':')) i++;
             if (i >= json.Length || json[i] != '"') return null;
             i++;
-            int j = raw ? json.LastIndexOf('"') : i;
-            if (!raw) while (j < json.Length && json[j] != '"') j++;
+            // Scan for the closing UNESCAPED quote either way — raw mode's
+            // LastIndexOf swallowed trailing fields when "text" wasn't last.
+            int j = i;
+            while (j < json.Length &&
+                   (json[j] != '"' || json[j - 1] == '\\')) j++;
             if (j <= i) return null;
             return json.Substring(i, j - i)
                 .Replace("\\n", "\n").Replace("\\\"", "\"").Replace("\\\\", "\\");

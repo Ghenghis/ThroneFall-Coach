@@ -214,6 +214,8 @@ namespace ThronefallTrainer
             Status = v ? "starting" : "off (F6)";
             hasAnchor = false;
             StuckStrikes = 0;
+            stuckStrikeTotal = 0;
+            ReleaseBuild();              // mid-hold disable left InteractionBegin open
             decisionClock = 0f;
             mem = BotMemory.Fresh();
             detourUntil = 0f;
@@ -306,6 +308,17 @@ namespace ThronefallTrainer
             // out of the unbeaten pool (LevelScore penalises it).
             if (s.GameState != lastGameState)
             {
+                // InMatch edge = a fresh match for bookkeeping AND runtime
+                // state — same-scene retries (defeat → retry loads the same
+                // scene name) skipped the scene-name check and leaked coach
+                // overrides, parked strikes, and policy traj into the retry.
+                if (s.GameState == "InMatch")
+                {
+                    Recorder.BeginRun(s.SceneName);
+                    Policy.BeginRun();
+                    Coach.ResetRun();
+                    stuckStrikeTotal = 0;
+                }
                 if (s.GameState == "AfterMatchVictory" && lastMatchScene != null)
                 {
                     playedThisSession.Add(lastMatchScene);
@@ -378,7 +391,12 @@ namespace ThronefallTrainer
             if (HandleBlockingFrame(in s))
             {
                 Mode = BotMode.ResolveUI;
-                ClearTarget();
+                // Don't ClearTarget→ReleaseBuild while a CHOICE coroutine is
+                // live — releasing mid-fill refunds the payment (the exact
+                // refund loop the trace found). Movement target still clears.
+                if (!(ChoiceManager.instance != null &&
+                      ChoiceManager.instance.ChoiceCoroutineRunning))
+                    ClearTarget();
                 WriteAuditStub(in s, "ui:" + uiFrame);
                 Status = "ui: " + uiFrame;
                 if (uiFrame != lastUiNoteFrame || Time.unscaledTime >= nextUiNoteAt)
@@ -390,7 +408,8 @@ namespace ThronefallTrainer
                 return;
             }
 
-            // Run bookkeeping: a fresh level scene begins a recorder run.
+            // Run bookkeeping: scene transitions begin a recorder run.
+            // Same-scene retries are covered by the InMatch edge above.
             if (!s.SceneName.StartsWith("_") && !s.OnLevelSelect &&
                 recordedScene != s.SceneName)
             {
@@ -400,6 +419,7 @@ namespace ThronefallTrainer
                 // Coach overrides must not leak across matches — a squad_size
                 // issued hours ago silently steered later runs. Fresh slate.
                 Coach.ResetRun();
+                stuckStrikeTotal = 0;   // per-run strike-log cap
             }
 
             var sd = BotPerception.ToData(in s);
@@ -500,12 +520,13 @@ namespace ThronefallTrainer
             {
                 nextMoveDiagAt = Time.unscaledTime + 2f;
                 var pmD = PlayerMovement.instance;
+                if (pmD == null) { nextMoveDiagAt = Time.unscaledTime + 2f; return; }
                 int wpCount = navPath?.vectorPath != null ? navPath.vectorPath.Count : -1;
                 string wpInfo = wpCount > 0 ? string.Join(";", navPath.vectorPath) : "-";
                 Plugin.Log?.LogWarning($"[bot] move-diag: hasTgt={hasTarget} desired={DesiredDir} " +
-                    $"vel={(pmD != null ? pmD.Velocity.ToString() : "null")} " +
+                    $"vel={pmD.Velocity} " +
                     $"frozen={LocalGamestate.Instance != null && LocalGamestate.Instance.PlayerFrozen} " +
-                    $"mode={Mode} aim={AimPos} hero={(pmD != null ? pmD.transform.position.ToString() : "null")} " +
+                    $"mode={Mode} aim={AimPos} hero={pmD.transform.position} " +
                     $"navIdx={navIndex} wpCount={wpCount} inFlight={navInFlight} navGoal={navGoal} wp=[{wpInfo}] steer={NavSteerPoint(pmD.transform.position, AimPos)}");
             }
         }
@@ -947,6 +968,9 @@ namespace ThronefallTrainer
             {
                 if (u == null || u.Hp == null || !u.Hp.Alive) continue;
                 if (NearDoor(u.transform.position, doors, 25f)) continue;   // posted/en-route squad — leave it
+                var pu0 = u.GetComponent<PathfindMovementPlayerunit>();
+                if (pu0 != null && pu0.FollowingPlayer) continue;   // escorts stay on the hero —
+                // the sweep kept re-holding them into churn with EscortHero
                 cu.OnUnitAdd(u, false); added++;
             }
             cu.commanding = added > 0;
@@ -1023,7 +1047,8 @@ namespace ThronefallTrainer
         private static void EscortHero(in BotPerception.Snapshot s)
         {
             int want = Coach.EscortSize > 0 ? Coach.EscortSize
-                     : (s.AllyCount >= 12 ? 4 : 3);   // bigger army -> bigger bodyguard
+                     : BotPerception.Strat.Escort > 0 ? BotPerception.Strat.Escort
+                     : (s.AllyCount >= 12 ? 4 : 3);   // playbook escort honored too
             int escorts = 0;
             var units = TagManager.instance.PlayerUnits;
             for (int i = 0; i < units.Count; i++)
@@ -1134,9 +1159,17 @@ namespace ThronefallTrainer
         private static void ReleaseBuild()
         {
             if (heldBuild == null) return;
+            // Silent releases hid the refund loop for a whole session —
+            // log every release with the fill state so it's auditable.
             var pi = PlayerInteraction.instance;
+            Plugin.Log?.LogInfo(
+                $"[bot] hold-release '{heldBuild.name}' " +
+                $"waitChoice={ChoiceManager.instance != null && ChoiceManager.instance.ChoiceCoroutineRunning}");
             if (pi != null) { heldBuild.Unfocus(pi); heldBuild.InteractionEnd(pi); }
             heldBuild = null;
+            holdDoneName = "";   // reset dedup — the next same-named
+                                 // building (more_barracks, wall #2) must
+                                 // count too; stale name made it invisible
         }
 
         /// <summary>

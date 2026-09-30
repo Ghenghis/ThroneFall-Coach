@@ -72,9 +72,11 @@ namespace ThronefallTrainer
                     var tex = ScreenCapture.CaptureScreenshotAsTexture();
                     if (tex != null)
                     {
-                        File.WriteAllBytes(
-                            Path.Combine(Recorder.AgentDir, "live.png"),
-                            tex.EncodeToPNG());
+                        var lp = Path.Combine(Recorder.AgentDir, "live.png");
+                        var tmp = lp + ".tmp";
+                        File.WriteAllBytes(tmp, tex.EncodeToPNG());
+                        if (File.Exists(lp)) File.Delete(lp);
+                        File.Move(tmp, lp);   // atomic — server polls live.png
                         UnityEngine.Object.Destroy(tex);
                     }
                 }
@@ -118,12 +120,14 @@ namespace ThronefallTrainer
             lastCallAt = Time.unscaledTime; Busy = true;
             float callNow = Time.unscaledTime;   // captured on the main thread —
             // Unity API is forbidden on the worker below
-            var t = new System.Threading.Thread(() => Call(trigger, digestJson, callNow));
+            int gen = runGen;                    // if a retry resets mid-flight,
+            // Apply() discards the stale advisory instead of re-stamping
+            var t = new System.Threading.Thread(() => Call(trigger, digestJson, callNow, gen));
             t.IsBackground = true;
             t.Start();
         }
 
-        private static void Call(string trigger, string digest, float callNow)
+        private static void Call(string trigger, string digest, float callNow, int gen)
         {
             try
             {
@@ -153,7 +157,12 @@ namespace ThronefallTrainer
                 if (um.Success) TokensUsed += int.Parse(um.Groups[1].Value);
                 var cm = System.Text.RegularExpressions.Regex.Match(
                     resp, "\"content\"\\s*:\\s*\"((?:[^\"\\\\]|\\\\.)*)\"");
-                if (cm.Success) Apply(Unesc(cm.Groups[1].Value), trigger, callNow);
+                if (cm.Success)
+                {
+                    if (gen != runGen)
+                        Plugin.Log?.LogInfo("[coach] stale-run advisory discarded");
+                    else Apply(Unesc(cm.Groups[1].Value), trigger, callNow);
+                }
                 else Plugin.Log?.LogWarning("[coach] no content in response");
             }
             catch (Exception ex)
@@ -244,11 +253,15 @@ namespace ThronefallTrainer
         /// <summary>Run-start reset: coach overrides were persisting across
         /// matches/scenes — a squad_size issued hours ago silently steered the
         /// next run. Clear them at each BeginRun; notes stay (advice history).</summary>
+        private static int runGen;         // bumped per match — stale worker replies die
+        private static int applyGen;
+
         public static void ResetRun()
         {
             SquadSize = 0; ReserveSize = 0; EscortSize = 0;
             ArmyTargetFloor = 0; BuildFocus = ""; HeroPosture = "";
             NightCallRequested = false;
+            runGen++;                      // in-flight Apply() sees a stale gen
         }
 
         /// <summary>Defeat screenshot -> local vision model. One call per

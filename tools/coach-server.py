@@ -216,11 +216,12 @@ def mm_watch_loop():
             reply, usage = mm_chat(
                 [{"role": "system", "content": MM_SYS},
                  {"role": "user", "content": prompt}])
-            last_sig = sig   # commit ONLY after the call succeeds
-            # extract first {...} block
+            # extract first {...} block — parse failure must NOT commit
+            # last_sig (a malformed reply would dedupe future calls forever)
             i0, i1 = reply.find("{"), reply.rfind("}")
             patch = validate_patch(
                 json.loads(reply[i0:i1 + 1])) if 0 <= i0 < i1 else None
+            last_sig = sig   # commit ONLY after call+parse both succeed
             entry = {"t": round(time.time(), 1), "state": st, "usage": usage,
                      "raw": reply[:300], "patch": patch, "note": ""}
             if patch:
@@ -236,19 +237,26 @@ def mm_watch_loop():
                 if sig != mm_watch_loop.last_patch:
                     mm_watch_loop.last_patch = sig
                     if patch:
+                        # Proof must count NEW applies — an old "[coach]
+                        # user-cmd ->" marker in the tail made every later
+                        # patch a false-positive (audit finding).
+                        glog = pathlib.Path(
+                            r"K:\Downloads-IDM\Thronefall\BepInEx\LogOutput.log")
+                        try:
+                            before = glog.read_text(
+                                errors="replace")[-40000:].count(
+                                    "[coach] user-cmd ->")
+                        except Exception:
+                            before = -1
                         write_cmd(patch)
                         entry["note"] = note
                         _watch_log(entry)
-                        # Proof: the game log's own "[coach] user-cmd ->"
-                        # line — that's the plugin confirming it applied
-                        # the file, not our assumption it did.
                         time.sleep(6)
                         applied = False
                         try:
-                            log = pathlib.Path(
-                                r"K:\Downloads-IDM\Thronefall\BepInEx\LogOutput.log")
-                            tail = log.read_text(errors="replace")[-40000:]
-                            applied = "[coach] user-cmd ->" in tail
+                            tail = glog.read_text(errors="replace")[-40000:]
+                            applied = before >= 0 and \
+                                tail.count("[coach] user-cmd ->") > before
                         except Exception:
                             pass
                         entry["applied"] = applied
@@ -321,7 +329,10 @@ def live_state():
     if not run: return st
     ticks = run / "ticks.jsonl"
     if ticks.exists():
-        lines = ticks.read_text(errors="replace").strip().splitlines()
+        try:
+            lines = ticks.read_text(errors="replace").strip().splitlines()
+        except OSError:
+            lines = []          # torn write / lock — caller gets stale-free {}
         if lines:
             try:
                 last = json.loads(lines[-1])
@@ -335,9 +346,16 @@ def live_state():
             except Exception: pass
         notes = run / "notes.jsonl"
         if notes.exists():
-            nl = notes.read_text(errors="replace").strip().splitlines()[-8:]
-            st["notes"] = [json.loads(x).get("note", "?") for x in nl
-                           if x.strip().startswith("{")]
+            try:
+                nl = notes.read_text(errors="replace").strip().splitlines()[-8:]
+            except OSError:
+                nl = []
+            out = []
+            for x in nl:
+                if not x.strip().startswith("{"): continue
+                try: out.append(json.loads(x).get("note", "?"))
+                except Exception: continue     # torn line can't kill /state or /chat
+            st["notes"] = out
     return st
 
 def health():
@@ -514,6 +532,9 @@ class H(BaseHTTPRequestHandler):
             q = parse_qs(self.path.split("?", 1)[1])
             name = (q.get("name") or [""])[0]
             name = pathlib.Path(name).name          # traversal-safe
+            if name in ("", ".", ".."):
+                self._send(400, json.dumps({"err": "bad run name"}),
+                           "application/json"); return
             tk = AGENT / "runs" / name / "ticks.jsonl"
             out = {"ticks": []}
             if tk.exists():
@@ -643,6 +664,7 @@ class H(BaseHTTPRequestHandler):
             if not scene:
                 st = live_state()
                 scene = (st.get("run") or "").split("-", 1)[-1]
+            scene = pathlib.Path(scene).name        # same traversal guard
             pb = AGENT / "botpack" / f"strategy_{scene.lower()}.json"
             self._send(200, json.dumps({
                 "scene": scene,
@@ -751,7 +773,7 @@ class H(BaseHTTPRequestHandler):
                                         "usage": usage,
                                         "state": st}), "application/json")
         except Exception as ex:
-            append_log("error", str(ex))
+            append_log("err", str(ex))   # 'err' is the role the history mapper styles red
             self._send(200, json.dumps({"reply": f"(LLM unreachable: {ex})",
                                         "cmd": None, "state": st}),
                        "application/json")
@@ -957,6 +979,7 @@ button{background:none;border:0;color:var(--txt);cursor:pointer;font-family:inhe
 .st .k{font-size:9px;color:var(--dim);text-transform:uppercase;letter-spacing:.7px}
 .st .v{font-size:16px;font-weight:700;color:var(--txt);line-height:1.1}
 .st .v.gold{color:var(--acc)}.st .v.red{color:var(--bad)}.st .v.ok{color:var(--ok)}
+.gA{color:#7bc96f}.gB{color:#a4d277}.gC{color:#f0b35e}.gD{color:#e8824b}.gF{color:#e5534b}
 .st .v.small{font-size:12px;line-height:1.5}
 .bar-mini{height:4px;border-radius:2px;background:#150e0a;overflow:hidden;width:70px;margin-top:2px}
 .bar-mini div{height:100%;background:var(--acc2)}
@@ -1155,7 +1178,7 @@ function add(role,text,who,tm){
  if(role=='a'&&ttsOn){const u=new SpeechSynthesisUtterance(text);u.rate=1.05;speechSynthesis.speak(u)}}
 async function j(u,o){const r=await fetch(u,o);return r.json()}
 /* ── THE ONE LIVE LOOP: audit.json every 1 s drives EVERYTHING ── */
-async function tick(){try{const a=await j('/audit');A=a;paint()}catch(e){}}
+async function tick(){try{const a=await j('/audit');A=a;paint()}catch(e){A={};paint()}}
 function paint(){
  const a=A;if(!a.mode){
   const chip=document.getElementById('stchip');
@@ -1283,16 +1306,16 @@ async function runs(){
  document.getElementById('runlist').innerHTML=runRows
   .filter(r=>runFilter=='all'||(runFilter=='tr' ? r.transit : !r.transit && r.outcome==runFilter))
   .filter(r=>!q||(r.scene||'').toLowerCase().includes(q))
-  .map((r,i)=>`<div class="rl ${r.transit?'tr':''} ${i==selRun?'on':''}" onclick="pickRun(${i})">
+  .map((r,i)=>`<div class="rl ${r.transit?'tr':''} ${r.run==selRun?'on':''}" onclick="pickRun('${r.run}',${i})">
    <span class="rn"><span class="dot ${r.outcome=='victory'?'win':r.outcome=='defeat'?'lose':'run'}"></span>
    ${r.scene||'unknown'}</span>
    <span class="rm">${r.transit?'transition':r.outcome} · wave ${r.wave} · score ${r.score}</span>
    <div class="det" id="det${i}" style="display:none"></div></div>`).join('');
  document.getElementById('sideft').textContent=`${runRows.length} runs · squads ${m.squads_posted} · memory ${(m.mishaps||[]).length}`;
- if(selRun>=0)pickRun(selRun)}catch(e){}}
-async function pickRun(i){const r=runRows[i];if(!r)return;selRun=i;
- document.querySelectorAll('.rl').forEach((x,j)=>x.classList.toggle('on',j==i));
- const d=document.getElementById('det'+i);if(!d)return;
+ if(selRun)pickRun(selRun)}catch(e){}}
+async function pickRun(runId,idx){const r=runRows.find(x=>x.run===runId);if(!r)return;selRun=runId;
+ document.querySelectorAll('.rl').forEach(x=>x.classList.toggle('on',x.onclick&&x.onclick.toString().includes(`'${runId}'`)));
+ const d=document.getElementById('det'+idx);if(!d)return;
  if(d.dataset.open){d.style.display='none';d.dataset.open='';return}
  d.style.display='block';d.dataset.open='1';d.textContent='loading…';
  try{const t=await j('/run?name='+encodeURIComponent(r.run));
@@ -1317,11 +1340,11 @@ async function refresh(){try{const m=await j('/metrics');
  document.getElementById('trendline').textContent=
   `trend ${(m.trend??0)>=0?'+':''}${m.trend??'—'} · net: ${N.last_net||'—'} vs bot ${N.last_bot||'—'} conf ${N.conf||0}`;
  document.getElementById('weak').innerHTML=(m.weaknesses||[]).length?
-  m.weaknesses.map(w=>`<div class="wk"><b>${w.type}</b> — ${w.where} (${w.count})<div class="hint">→ ${w.fix}</div></div>`).join('')
+  m.weaknesses.map(w=>`<div class="wk"><b>${esc(w.type)}</b> — ${esc(w.where)} (${w.count})<div class="hint">→ ${esc(w.fix)}</div></div>`).join('')
   :'<div class="hint">none detected</div>';
  document.getElementById('breachTbl').innerHTML=(m.breach_doors||[]).map(([d,c])=>
   `<div class="kv"><span>${d}</span><b>${c}</b></div>`).join('')||'<div class="hint">none</div>';
- document.getElementById('mish').innerHTML=(m.mishaps||[]).map(x=>`<div>• ${x}</div>`).join('')||'none yet';
+ document.getElementById('mish').innerHTML=(m.mishaps||[]).map(x=>`<div>• ${esc(x)}</div>`).join('')||'none yet';
  const c=document.getElementById('curve'),x=c.getContext('2d');
  const W=c.width=c.clientWidth*2,H=c.height=260;x.clearRect(0,0,W,H);
  const pts=(m.curve||[]).filter(c2=>!c2.transit).map(c2=>c2.score);

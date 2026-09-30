@@ -20,6 +20,10 @@ namespace ThronefallTrainer
     {
         private static readonly HashSet<string> parked = new HashSet<string>();
         private static readonly HashSet<string> parkedWhy = new HashSet<string>();
+        // Insertion order for fair eviction — HashSet enumeration can pick
+        // the JUST-ADDED key as victim (was silently discarding newest).
+        private static readonly System.Collections.Generic.List<string> parkOrder =
+            new System.Collections.Generic.List<string>();
         private static string file;
         private static bool loaded;
 
@@ -53,17 +57,22 @@ namespace ThronefallTrainer
             if (parked.Add(key))
             {
                 parkedWhy.Add(key + "|" + (why ?? "?"));
-                // Cap per scene: drop the oldest reason entries until under
-                // the limit. parked is a HashSet so "oldest" = first pruned.
+                parkOrder.Add(key);
+                // Cap per scene: evict the OLDEST entries first (FIFO order,
+                // not HashSet enumeration — the newest mishap was getting
+                // thrown away while ancient ones survived).
                 int count = 0;
-                foreach (var p in parked) if (p.StartsWith(scene + "|")) count++;
+                foreach (var p in parkOrder)
+                    if (p.StartsWith(scene + "|") && parked.Contains(p)) count++;
                 while (count > MaxPerScene)
                 {
                     string victim = null;
-                    foreach (var p in parked)
-                        if (p.StartsWith(scene + "|")) { victim = p; break; }
+                    foreach (var p in parkOrder)
+                        if (p.StartsWith(scene + "|") && parked.Contains(p))
+                        { victim = p; break; }
                     if (victim == null) break;
                     parked.Remove(victim);
+                    parkOrder.Remove(victim);
                     string v2 = null;
                     foreach (var w in parkedWhy)
                         if (w.StartsWith(victim + "|")) { v2 = w; break; }
@@ -83,6 +92,7 @@ namespace ThronefallTrainer
             string key = scene + "|" + Cell(pos);
             if (parked.Remove(key))
             {
+                parkOrder.Remove(key);
                 string v2 = null;
                 foreach (var w in parkedWhy)
                     if (w.StartsWith(key + "|")) { v2 = w; break; }
@@ -126,7 +136,8 @@ namespace ThronefallTrainer
                     var parts = row.Split('|');
                     if (parts.Length >= 2)
                     {
-                        parked.Add(parts[0] + "|" + parts[1]);
+                        if (parked.Add(parts[0] + "|" + parts[1]))
+                            parkOrder.Add(parts[0] + "|" + parts[1]);
                         parkedWhy.Add(row);
                     }
                 }

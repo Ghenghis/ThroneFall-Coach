@@ -84,6 +84,7 @@ namespace ThronefallTrainer
             var h1 = Act(Mul(w1, x, b1));
             var h2 = Act(Mul(w2, h1, b2));
             var logits = Mul(wp, h2, bp);
+            if (logits.Length == 0) return -1;   // malformed net → no silent argmax
             // softmax argmax + confidence
             float max = float.MinValue;
             foreach (var l in logits) if (l > max) max = l;
@@ -139,7 +140,7 @@ namespace ThronefallTrainer
             var o = new float[w.Length];
             for (int i = 0; i < w.Length; i++)
             {
-                float acc = b != null ? b[i] : 0f;
+                float acc = b != null && i < b.Length ? b[i] : 0f;   // OOB bias → per-tick crash
                 var r = w[i];
                 for (int j = 0; j < r.Length && j < x.Length; j++) acc += r[j] * x[j];
                 o[i] = acc;

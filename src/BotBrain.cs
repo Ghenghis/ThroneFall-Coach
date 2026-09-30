@@ -161,6 +161,7 @@ namespace ThronefallTrainer
         public Vec2 AllyCentroid;
         public bool CanCommand;         // CommandUnits.instance present
         public bool CanSwitch;          // DayNightCycle.Instance present
+        public bool NightCall;          // coach advisory night-call (pure view)
 
         // Weapon state (P6): perception reads WeaponEquipper so the pure
         // layer knows the armed range without holding a ManualAttack ref.
@@ -335,6 +336,8 @@ namespace ThronefallTrainer
         public float DayStartAt;
         public string DayScene;
         public string PrevGameState;   // InMatch edge = new match signal
+        public string LastArmyLine;    // last noted army anchor line (spam cap)
+        public float ArmyLineNoteAt;
         public int PrevWave;         // wave-rollover detects same-scene retries
         public float SquadWalkAt;
         public float LastEscortAt;
@@ -462,7 +465,11 @@ namespace ThronefallTrainer
                 var f = ty.GetField(r.Field);
                 if (f == null) continue;
                 object o = f.GetValue(s);
-                float cur = o is bool ? ((bool)o ? 1f : 0f) : Convert.ToSingle(o);
+                float cur;
+                // Non-numeric fields (Vec2, string, enum) crash ToSingle —
+                // a bad rule used to kill EVERY decide tick. Skip it.
+                try { cur = o is bool ? ((bool)o ? 1f : 0f) : Convert.ToSingle(o); }
+                catch { continue; }
                 if (Cmp(cur, r.Op, r.Value))
                 {
                     t.knobs[r.Knob] = r.Set;
@@ -579,7 +586,11 @@ namespace ThronefallTrainer
             // Release only on a REAL invalidation — not a 4 m drift that can
             // happen mid-fill, and not "far from slot origin" while parked at
             // its stand-point. Every release refunds paid coins.
-            if (m.HeldBuild >= 0 && (m.Mode != BotMode.SpendGold ||
+            // ResolveUI (the choice frame freezes the player) must NOT
+            // release the hold — that was the refund loop: pick → ResolveUI
+            // → release → refund → re-arm. Choice frames keep the fill.
+            if (m.HeldBuild >= 0 &&
+                (m.Mode != BotMode.SpendGold && m.Mode != BotMode.ResolveUI ||
                 !s.HasBuild || s.BuildKey != m.HeldBuild ||
                 (s.BuildDist > 5.5f && !(s.HasBuildStand && s.BuildStandDist <= 3f))))
             {
@@ -872,7 +883,7 @@ namespace ThronefallTrainer
             // army is up to target OR the day budget is spent — whichever
             // readiness signal arrives first.
             if (m.DayStartAt > 0f && !dayTooYoung &&
-                ((s.CanSwitch && (Coach.NightCallRequested ||
+                ((s.CanSwitch && (s.NightCall ||
                   // Ready = army target met AND someone actually manning the
                   // perimeter (calling night with zero posts invites the
                   // breach we saw at t≈90: 25 foes vs a lone hero).
@@ -988,10 +999,16 @@ namespace ThronefallTrainer
                     {
                         // Real spend progress — mark it so events prove
                         // coins actually land (the analyzer counts these).
+                        // ALSO resets the slot-abandon timer: a slow fill
+                        // (Barracks 40g) pays for >10s — without this, the
+                        // visit timer fired mid-payment → ParkSlot → the
+                        // cell went into permanent mishap memory. THE
+                        // bmil=0 root cause.
                         r.Notes.Add("pay");
                         m.SpendWatchGold = s.Balance;
                         m.SpendWatchCores = s.CoreBalance;
                         m.SpendWatchAt = now + 7f;
+                        m.SlotVisitSince = now;
                     }
                     else if (now >= m.SpendWatchAt)
                     {
@@ -1022,7 +1039,18 @@ namespace ThronefallTrainer
                 }
                 m.Mode = BotMode.PositionArmy; r.Mode = m.Mode;
                 Vec2 anchor;
-                if (s.HasArmyAnchor) { anchor = s.ArmyAnchor; r.Notes.Add("army-line:" + s.ArmyAnchorLine); }
+                if (s.HasArmyAnchor)
+                {
+                    anchor = s.ArmyAnchor;
+                    // Rate-limit: the line name repeats every decision while
+                    // the squad walks — once per line per 10 s is enough.
+                    if (s.ArmyAnchorLine != m.LastArmyLine || now >= m.ArmyLineNoteAt)
+                    {
+                        m.LastArmyLine = s.ArmyAnchorLine;
+                        m.ArmyLineNoteAt = now + 10f;
+                        r.Notes.Add("army-line:" + s.ArmyAnchorLine);
+                    }
+                }
                 else
                 {
                     Vec2 aAxis = s.HasThreatAnchor ? s.ThreatAnchor - s.CastlePos : Vec2.Zero;
@@ -1046,7 +1074,7 @@ namespace ThronefallTrainer
             // The coach's explicit night_call is also readiness — it still
             // passes through s.CanSwitch, so a locked day can't fire early.
             bool readyForNight = m.DayStartAt > 0f && !dayTooYoung &&
-                (Coach.NightCallRequested ||
+                (s.NightCall ||
                  (s.AllyCount >= s.ArmyTarget && (s.DoorCount == 0 || s.DoorsCovered > 0)) ||
                  (s.DoorCount > 0 && s.DoorsCovered >= s.DoorCount) ||
                  now - m.DayStartAt > (s.DayBudget > 0f ? s.DayBudget : 240f));
@@ -1114,6 +1142,7 @@ namespace ThronefallTrainer
     /// </summary>
     internal enum BotMode { Idle, CollectCoin, ReturnHome, HoldCastle, Engage, EnterLevel, StartNight, SpendGold, ResolveUI, PositionArmy, HeroDead }
 }
+
 
 
 
