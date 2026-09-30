@@ -334,6 +334,7 @@ namespace ThronefallTrainer
         public float LastBreachAt;
         public float DayStartAt;
         public string DayScene;
+        public int PrevWave;         // wave-rollover detects same-scene retries
         public float SquadWalkAt;
         public float LastEscortAt;
 
@@ -588,12 +589,19 @@ namespace ThronefallTrainer
             // Scene/retry change resets the day clock — after a defeat-retry
             // DayStartAt was still ancient, so the budget read as instantly
             // expired and night was called with zero army (ally=0, wave 1).
-            if (m.DayScene != s.SceneName)
+            // Wave rollover catches the same-scene retry the scene check
+            // misses: any new match starts at wave -1/0 — if the previous
+            // wave was deeper, this is a fresh match, reset the clock.
+            bool newMatch = m.DayScene != s.SceneName ||
+                            (s.Wave <= 0 && m.PrevWave > 0) ||
+                            (m.DayStartAt <= 0f);
+            if (newMatch)
             {
                 m.DayScene = s.SceneName;
                 m.DayStartAt = now;
                 m.NightRequestAt = 0f;
             }
+            m.PrevWave = s.Wave;
 
             // Day/night edge → re-arm night request + army + coin park.
             if (m.LastNightState != s.IsNight)

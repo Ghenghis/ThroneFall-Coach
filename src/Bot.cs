@@ -364,6 +364,7 @@ namespace ThronefallTrainer
                 // A blocking frame can outlive the match state (end-of-match
                 // shows before/while the scene flips) — resolve it here too.
                 HandleBlockingFrame(in s);
+                WriteAuditStub(in s, "menu");
                 return;
             }
 
@@ -375,6 +376,7 @@ namespace ThronefallTrainer
             {
                 Mode = BotMode.ResolveUI;
                 ClearTarget();
+                WriteAuditStub(in s, "ui:" + uiFrame);
                 Status = "ui: " + uiFrame;
                 if (uiFrame != lastUiNoteFrame || Time.unscaledTime >= nextUiNoteAt)
                 {
@@ -391,6 +393,9 @@ namespace ThronefallTrainer
             {
                 recordedScene = s.SceneName;
                 Recorder.BeginRun(s.SceneName);
+                // Coach overrides must not leak across matches — a squad_size
+                // issued hours ago silently steered later runs. Fresh slate.
+                Coach.ResetRun();
             }
 
             var sd = BotPerception.ToData(in s);
@@ -458,16 +463,20 @@ namespace ThronefallTrainer
             }
             // Audit feed for the coach UI: current action, playbook checklist,
             // per-door posts — refreshed ~every 3 s so the panel can prove
-            // what the bot is (not) doing.
+            // what the bot is (not) doing. Atomic tmp+move: the server reads
+            // this every second — a torn write would poison the feed.
             if (Time.unscaledTime >= nextAuditAt)
             {
                 nextAuditAt = Time.unscaledTime + 3f;
                 try
                 {
-                    var aj = BotPerception.AuditJson(ref s, Mode.ToString(),
-                        modeSinceAt, Time.unscaledTime);
-                    System.IO.File.WriteAllText(
-                        System.IO.Path.Combine(Recorder.AgentDir, "audit.json"), aj);
+                    var ap = System.IO.Path.Combine(Recorder.AgentDir, "audit.json");
+                    var tmp = ap + ".tmp";
+                    System.IO.File.WriteAllText(tmp,
+                        BotPerception.AuditJson(ref s, Mode.ToString(),
+                            modeSinceAt, Time.unscaledTime));
+                    if (System.IO.File.Exists(ap)) System.IO.File.Delete(ap);
+                    System.IO.File.Move(tmp, ap);
                 }
                 catch { }
             }
@@ -555,8 +564,10 @@ namespace ThronefallTrainer
         /// </summary>
         private static void RunWatchdog(in BotPerception.Snapshot s)
         {
-            if (!hasTarget || Mode == BotMode.Idle)
+            if (!hasTarget || Mode == BotMode.Idle || s.HeroDead)
             {
+                // Dead hero: no movement is expected — strikes would stack
+                // forever and fire teleport attempts on a corpse.
                 hasAnchor = false; StuckStrikes = 0; watchClock = 0f;
                 lastWatchDist = float.MaxValue;
                 return;
@@ -686,6 +697,32 @@ namespace ThronefallTrainer
             else { StuckStrikes = 0; detourCount = 0; }
         }
 
+        /// <summary>Outside InMatch (menus, frames) the normal audit writer
+        /// never runs — the server then shows the LAST mode for minutes
+        /// ("Engage" while sitting at level select = the 'rogue bot' look).
+        /// Write a minimal honest audit here: mode=ui/menu, real scene.</summary>
+        private static void WriteAuditStub(in BotPerception.Snapshot s, string label)
+        {
+            if (Time.unscaledTime < nextAuditAt) return;
+            nextAuditAt = Time.unscaledTime + 3f;
+            try
+            {
+                var ap = System.IO.Path.Combine(Recorder.AgentDir, "audit.json");
+                var tmp = ap + ".tmp";
+                System.IO.File.WriteAllText(tmp,
+                    "{\"scene\":\"" + (s.SceneName ?? "?") + "\",\"t\":0," +
+                    "\"mode\":\"" + label + "\",\"mode_since\":0,\"gold\":0," +
+                    "\"ally\":0,\"free\":0,\"foes\":0,\"night\":false," +
+                    "\"wave\":0,\"wave_total\":0,\"doors_cov\":0,\"doors\":0," +
+                    "\"red\":false,\"breaches\":0,\"bld\":0,\"cur_build\":\"\"," +
+                    "\"checklist\":[],\"door_units\":[],\"door_lines\":[]," +
+                    "\"cat_built\":{},\"alerts\":[]}");
+                if (System.IO.File.Exists(ap)) System.IO.File.Delete(ap);
+                System.IO.File.Move(tmp, ap);
+            }
+            catch { }
+        }
+
         private static void SetTarget(Vector3 pos, float arrive, bool projectToNav = false)
         {
             // Navmesh projection: sweep targets (orbit ring) can land inside
@@ -780,9 +817,11 @@ namespace ThronefallTrainer
                     PlaceArmy();
                     break;
                 case IntentKind.PlaceSquad:
-                    if (s.HasUncoveredDoor)
+                    // Claim only AFTER units actually post — a 0-unit post
+                    // used to stamp the door "en route" for 25 s while the
+                    // perimeter stayed open.
+                    if (PlaceSquad(in s) > 0 && s.HasUncoveredDoor)
                         BotPerception.MarkDoorClaim(s.UncoveredDoorPos);
-                    PlaceSquad(in s);
                     break;
                 case IntentKind.RecallToBreach:
                     RecallToBreach(in s);
@@ -875,7 +914,7 @@ namespace ThronefallTrainer
         /// each free unit's HomePosition + hold and let its own AI walk the
         /// corridor. The hero never leaves the build loop for posting trips.
         /// HoldPosition makes them engage anything within ~7 m of the door.</summary>
-        private static void PlaceSquad(in BotPerception.Snapshot s)
+        private static int PlaceSquad(in BotPerception.Snapshot s)
         {
             int target = s.UncoveredDoorTarget > 0 ? s.UncoveredDoorTarget : 4;
             int posted = 0;
@@ -903,6 +942,7 @@ namespace ThronefallTrainer
                     s.PolicyKey ?? "", new[] { "3", "4", "5", "6", "8" });
                 Plugin.Log?.LogInfo($"[bot] posted squad {posted}/{target} remotely at door '{s.UncoveredDoorLine}'");
             }
+            return posted;
         }
 
         /// <summary>RED ALERT: an enemy is inside the ring — EVERY unit

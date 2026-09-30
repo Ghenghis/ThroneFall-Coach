@@ -105,7 +105,7 @@ namespace ThronefallTrainer
             if (!tried) { tried = true; Init(); }
             if (!Loaded) return;
             int m = Predict(Features(in s), out float conf);
-            if (m < 0) return;
+            if (m < 0 || m >= Modes.Length) return;   // OOB argmax → per-tick crash
             bool same = pickedMode == Modes[m];
             if (same) agree++; else disagree++;
             if (Time.unscaledTime > logAt)

@@ -99,6 +99,7 @@ namespace ThronefallTrainer
             public int DoorCount;
             public int DoorsCovered;   // doors with >=2 manned units
             public int FreeUnits;      // units not within 10 m of a door
+        public int EscortUnits;    // units on hero escort (not squad-available)
             public Vector3 UncoveredDoorPos;
             public string UncoveredDoorLine;
             public int UncoveredDoorTarget;
@@ -1020,16 +1021,27 @@ namespace ThronefallTrainer
                     // corridor count so a door isn't re-posted while its
                     // squad is en route. Everything else is free.
                     bool nearDoor = false;
+                    var pu = u.GetComponent<PathfindMovementPlayerunit>();
                     if (s.DoorAnchors != null)
                     {
                         for (int d = 0; d < s.DoorAnchors.Length; d++)
                         {
                             float dx = s.DoorAnchors[d].x - u.transform.position.x;
                             float dz = s.DoorAnchors[d].z - u.transform.position.z;
-                            if (dx * dx + dz * dz < 625f) { nearDoor = true; if (doorUnit != null && d < doorUnit.Length) doorUnit[d]++; break; }
+                            // Escorts walking past a corridor must NOT count
+                            // as manning it — only a unit ordered to HOLD or
+                            // stand its home post counts toward coverage.
+                            bool manned = pu != null && (pu.HoldPosition ||
+                                (pu.HomePosition - s.DoorAnchors[d]).sqrMagnitude < 64f);
+                            if (dx * dx + dz * dz < 625f && manned) { nearDoor = true; if (doorUnit != null && d < doorUnit.Length) doorUnit[d]++; break; }
                         }
                     }
-                    if (!nearDoor) s.FreeUnits++;
+                    // Escorts are NOT free — PlaceSquad skips FollowingPlayer
+                    // units, so counting them as "free" made the brain think
+                    // it had a squad to post while every unit was on escort.
+                    bool escortU = pu != null && pu.FollowingPlayer;
+                    if (!nearDoor && !escortU) s.FreeUnits++;
+                    else if (escortU) s.EscortUnits++;
                 }
                 if (s.AllyCount > 0) s.AllyCentroid = allySum / s.AllyCount;
             }

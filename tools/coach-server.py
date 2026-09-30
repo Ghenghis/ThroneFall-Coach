@@ -180,7 +180,9 @@ def mm_watch_loop():
                     pass
             if sig == last_sig and not urgent:
                 time.sleep(WATCH_EVERY); continue
-            last_sig = sig
+            # DON'T commit last_sig until the call succeeds — a transient
+            # MiniMax error used to poison the dedupe and silence steering
+            # until telemetry changed (sometimes never on a stuck run).
             m = metrics()
             audit = {}
             af = AGENT / "audit.json"
@@ -201,6 +203,7 @@ def mm_watch_loop():
             reply, usage = mm_chat(
                 [{"role": "system", "content": MM_SYS},
                  {"role": "user", "content": prompt}])
+            last_sig = sig   # commit ONLY after the call succeeds
             # extract first {...} block
             i0, i1 = reply.find("{"), reply.rfind("}")
             patch = validate_patch(
@@ -220,7 +223,7 @@ def mm_watch_loop():
                 if sig != mm_watch_loop.last_patch:
                     mm_watch_loop.last_patch = sig
                     if patch:
-                        CMDFILE.write_text(json.dumps(patch))
+                        write_cmd(patch)
                         entry["note"] = note
                         _watch_log(entry)
                         # Proof: the game log's own "[coach] user-cmd ->"
@@ -238,6 +241,11 @@ def mm_watch_loop():
                         entry["applied"] = applied
                         _watch_log({"t": round(time.time(), 1),
                                     "kind": "proof", **entry})
+                        if not applied:
+                            # Failed apply must not be deduped away — clear
+                            # the sig so the next cycle re-issues the same
+                            # fix instead of skipping it forever.
+                            mm_watch_loop.last_patch = ""
             else:
                 entry["note"] = "no-change or unparseable"
                 if entry.get("raw") and entry["raw"] != mm_watch_loop.last_raw:
@@ -405,12 +413,21 @@ def audit_alerts(a):
 
 _activity = []           # [(tick_t, mode)] mode-edge timeline, capped 12
 _lastcats = {"sum": 0, "since": time.time()}
+import threading as _threading
+_loglock = _threading.Lock()
+_cmdlock = _threading.Lock()
 
 def append_log(role, text):
     CHATLOG.parent.mkdir(parents=True, exist_ok=True)
-    with open(CHATLOG, "a", encoding="utf-8") as f:
-        f.write(json.dumps({"t": time.time(), "role": role,
-                            "text": text[:8000]}) + "\n")
+    with _loglock:
+        with open(CHATLOG, "a", encoding="utf-8") as f:
+            f.write(json.dumps({"t": time.time(), "role": role,
+                                "text": text[:8000]}) + "\n")
+
+def write_cmd(cmd):
+    """All command-file writes through one lock — torn JSON = plugin skip."""
+    with _cmdlock:
+        CMDFILE.write_text(json.dumps(cmd))
 
 def extract_cmd(reply):
     i0 = reply.find("<cmd>")
@@ -420,7 +437,7 @@ def extract_cmd(reply):
     try:
         cmd = json.loads(raw[raw.find("{"):raw.rfind("}") + 1])
         cmd["note"] = cmd.get("note", "") or "user-directed"
-        CMDFILE.write_text(json.dumps(cmd, indent=1))
+        write_cmd(cmd)
         clean = (reply[:i0] + reply[i1 + 6:]).strip()
         return cmd, clean
     except Exception:
@@ -434,7 +451,10 @@ class H(BaseHTTPRequestHandler):
         self.send_response(code)
         self.send_header("Content-Type", ct)
         self.send_header("Content-Length", str(len(body)))
-        self.send_header("Access-Control-Allow-Origin", "*")
+        # localhost-only — a wildcard let ANY website drive /order and
+        # /chat on this port from the user's browser.
+        self.send_header("Access-Control-Allow-Origin",
+                         "http://127.0.0.1:8099")
         self.end_headers()
         self.wfile.write(body)
 
@@ -471,6 +491,7 @@ class H(BaseHTTPRequestHandler):
             from urllib.parse import parse_qs
             q = parse_qs(self.path.split("?", 1)[1])
             name = (q.get("name") or [""])[0]
+            name = pathlib.Path(name).name          # traversal-safe
             tk = AGENT / "runs" / name / "ticks.jsonl"
             out = {"ticks": []}
             if tk.exists():
@@ -496,7 +517,7 @@ class H(BaseHTTPRequestHandler):
                     r"K:\Downloads-IDM\Thronefall\BepInEx\LogOutput.log")
                 before = log.read_text(errors="replace")[-80000:].count(
                     "[coach] user-cmd") if log.exists() else 0
-                CMDFILE.write_text(json.dumps({"note": tag}))
+                write_cmd({"note": tag})
                 out["stage"] = "wait-apply"
                 ok = False
                 for _ in range(20):          # ~10 s window
@@ -523,6 +544,19 @@ class H(BaseHTTPRequestHandler):
                     # writer doesn't carry it, and the strip needs it.
                     st0 = live_state()
                     a["army_target"] = st0.get("army_target")
+                    # Last MiniMax steer for the panel/chip — the audit had
+                    # no mm_note, so the UI showed '—' forever.
+                    try:
+                        for ln in MMWATCH.read_text(errors="replace") \
+                                .strip().splitlines()[::-1][:8]:
+                            e = json.loads(ln)
+                            if e.get("patch") or e.get("kind") == "proof":
+                                a["mm_note"] = (
+                                    ("applied " if e.get("applied") else "") +
+                                    json.dumps(e.get("patch") or e.get("raw", ""))[:80])
+                                break
+                    except Exception:
+                        pass
                     # Activity timeline: mode edges, newest first, capped.
                     global _activity, _lastcats
                     if not _activity or _activity[-1][1] != a.get("mode"):
@@ -570,9 +604,11 @@ class H(BaseHTTPRequestHandler):
         elif self.path == "/mmwatch":
             if MMWATCH.exists():
                 lines = MMWATCH.read_text(errors="replace").strip().splitlines()[-30:]
-                self._send(200, json.dumps([json.loads(x) for x in lines
-                                            if x.strip().startswith("{")]),
-                           "application/json")
+                rows = []
+                for x in lines:
+                    try: rows.append(json.loads(x))
+                    except Exception: pass
+                self._send(200, json.dumps(rows), "application/json")
             else:
                 self._send(200, "[]", "application/json")
         elif self.path.startswith("/playbook"):
@@ -591,9 +627,11 @@ class H(BaseHTTPRequestHandler):
         elif self.path == "/history":
             if CHATLOG.exists():
                 lines = CHATLOG.read_text(errors="replace").strip().splitlines()[-60:]
-                self._send(200, json.dumps([json.loads(x) for x in lines
-                                            if x.strip().startswith("{")]),
-                           "application/json")
+                rows = []
+                for x in lines:
+                    try: rows.append(json.loads(x))
+                    except Exception: pass
+                self._send(200, json.dumps(rows), "application/json")
             else:
                 self._send(200, "[]", "application/json")
         else:
@@ -620,7 +658,7 @@ class H(BaseHTTPRequestHandler):
                     r"K:\Downloads-IDM\Thronefall\BepInEx\LogOutput.log")
                 before = log.read_text(errors="replace")[-80000:].count(
                     "[coach] user-cmd") if log.exists() else 0
-                CMDFILE.write_text(json.dumps(cmd))
+                write_cmd(cmd)
                 ok = False
                 for _ in range(20):
                     time.sleep(0.5)
@@ -1095,13 +1133,19 @@ async function j(u,o){const r=await fetch(u,o);return r.json()}
 /* ── THE ONE LIVE LOOP: audit.json every 1 s drives EVERYTHING ── */
 async function tick(){try{const a=await j('/audit');A=a;paint()}catch(e){}}
 function paint(){
- const a=A;if(!a.mode)return;
+ const a=A;if(!a.mode){
+  const chip=document.getElementById('stchip');
+  chip.textContent='OFFLINE — no audit feed';chip.classList.remove('on');
+  document.getElementById('agechip').textContent='plugin not writing audit.json';
+  document.getElementById('strip').innerHTML=
+   '<div class="st"><div class="k">status</div><div class="v red">OFFLINE</div></div>';
+  return}
  const chip=document.getElementById('stchip');
  const stale=(a.age_s??99)>8;
  chip.textContent=stale?'STALE '+a.age_s+'s':'LIVE · '+a.scene;
  chip.classList.toggle('on',!stale);
  document.getElementById('agechip').textContent=`t=${a.t}s · mode ${a.mode} (${a.mode_since}s) · seen ${a.age_s}s ago`;
- document.getElementById('mmchip').textContent='MiniMax · '+(A.mm_note||'watching');
+ // mmchip is owned by healthCheck() — paint() must not fight it.
  const cell=(k,v,cls)=>`<div class="st"><div class="k">${k}</div><div class="v ${cls||''}">${v}</div></div>`;
  document.getElementById('strip').innerHTML=
   cell('action',a.mode+(a.mode_since>60?` <span style="font-size:10px;color:var(--bad)">${a.mode_since}s</span>`:`<span style="font-size:10px;color:var(--dim)">${a.mode_since}s</span>`),'small')
@@ -1116,7 +1160,7 @@ function paint(){
   +cell('foes',a.foes)
   +cell('breach',a.breaches,a.breaches>0?'red':'')
   +cell('night',a.night?'YES':'no',a.night?'red':'')
-  +cell('hp',a.red?'RED':(a.alerts&&a.alerts.length?a.alerts.length+' alerts':'—'),a.red?'red':'ok');
+  +cell('status',a.red?'RED':(a.alerts&&a.alerts.length?a.alerts.length+' alerts':'—'),a.red?'red':'ok');
  // door chips in audit pane
  const du=a.door_units||[],dl=a.door_lines||[];
  document.getElementById('auDoor').innerHTML=dl.length?dl.map((l,i)=>
@@ -1136,7 +1180,7 @@ function paint(){
  // alert bar — highest severity wins
  const al=(a.alerts||[]);
  const bar=document.getElementById('alertbar');
- if(al.length){const top=al[0].sev=='crit'?'crit':'warn';
+ if(al.length){const top=al.some(x=>x.sev=='crit')?'crit':'warn';
   bar.className=top;bar.textContent=al.map(x=>x.msg).join(' · ')}
  else bar.className='';
 }
@@ -1158,7 +1202,9 @@ async function send(){
  const m=txt.value.trim();if(!m&&!pending)return;txt.value='';txt.style.height='auto';
  add('u',m+(pending?' [image]':''),'you',new Date().toLocaleTimeString());
  const body={message:m||'look at this'};if(pending){body.image=pending;pending=null}
- const r=await j('/chat',{method:'POST',body:JSON.stringify(body)});
+ let r;
+ try{r=await j('/chat',{method:'POST',body:JSON.stringify(body)})}
+ catch(e){add('err','/chat failed: '+e,'LINK');return}
  add('a',r.reply,'Grandmaster');
  if(r.cmd){add('c','BOT ORDERED: '+JSON.stringify(r.cmd),'order');verifyCmd(r.cmd)}}
 async function verifyCmd(cmd){
@@ -1245,7 +1291,7 @@ async function refresh(){try{const m=await j('/metrics');
   ['mm apply-rate',m.mm_rate+'% of '+m.mm_total]]
   .map(([k,v])=>`<div class="kv"><span>${k}</span><b>${v}</b></div>`).join('');
  document.getElementById('trendline').textContent=
-  `trend ${m.trend>=0?'+':''}${m.trend} · net: ${N.last_net||'—'} vs bot ${N.last_bot||'—'} conf ${N.conf||0}`;
+  `trend ${(m.trend??0)>=0?'+':''}${m.trend??'—'} · net: ${N.last_net||'—'} vs bot ${N.last_bot||'—'} conf ${N.conf||0}`;
  document.getElementById('weak').innerHTML=(m.weaknesses||[]).length?
   m.weaknesses.map(w=>`<div class="wk"><b>${w.type}</b> — ${w.where} (${w.count})<div class="hint">→ ${w.fix}</div></div>`).join('')
   :'<div class="hint">none detected</div>';

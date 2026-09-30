@@ -1,55 +1,64 @@
-# Component audit — truth status, not claims
+# Component audit — corrections ledger
 
-Verified = observed in a live log/telemetry. Broken = known defect.
-Unproven = code exists, no live evidence it works.
+Legend: ✅ fixed+deployed · 🔧 fixed, not yet proven live · 🔴 open · 📋 open (lower priority)
 
-## Game-side executor (`src/`)
+## Fixes shipped this session (verified at build/deploy)
 
-| Component | Status | Evidence |
-|---|---|---|
-| Hold-to-pay (`InteractionHold` per-frame) | ✅ works | `hold-diag: state=Upgrade started=True` |
-| Choice-frame picks | ⚠️ fixed unverified | was closing frame mid-coroutine → upgrade refunds. Fix deployed `08e2dea+` |
-| Build executor completes | 🔴 unproven | `CatBuilt` rarely grew; gold sat ~500 for 60+ min |
-| Stuck watchdog | ⚠️ partial | `stuck:1..3` + `snap` fire, but hero idles "arrived" at dead targets with zero strikes |
-| Squad posting / doors | 🔴 unproven | `doors_cov` pinned 0/6 in every recent run |
-| Horn / night call | ⚠️ partial | horn fallback exists; budget-forced night worked once; horn identity still unresolved |
-| Defeat→retry loop | ✅ works | `defeat (x8)` → `_LevelSelect` → `Durststein` re-entry observed |
-| Coach command intake | ✅ works | `[coach] user-cmd ->` appears in LogOutput.log on write |
-| Playbook loader | ✅ parses | `strategy 'Durststein': squad=5 reserve=4 ... order=16` in log |
-| Playbook **enforcement** | 🔴 unproven | build order not visibly followed (no cat progression) |
-| audit.json writer | ✅ works | verified live: t/wave/ally/pos updating |
-| live.png frames | ✅ works | file refreshes ~2 s when game focused |
+| # | Bug | Fix | Status |
+|---|---|---|---|
+| 1 | `/chat` returned 501 — `do_POST` nested inside `metrics()` | moved back into handler class | ✅ verified 200 |
+| 2 | Choice-frame Escape-closed mid-coroutine → upgrade refunds | `ChoiceCoroutineRunning` guard + `Apply()` confirm | 🔧 deployed |
+| 3 | Held-build dropped during `waitChoice` (CanBeInteractedWith false → skip) → hold released, fill refunded | held-match hoisted before interactable filter | 🔧 deployed |
+| 4 | Playbook never won the pick (harvest +1000 vs playbook +150) | next open category +1200 when funded — playbook is the default policy | 🔧 deployed |
+| 5 | Ungated horn path rang night at t=13 (ally=0) | `readyForNight` gate | 🔧 deployed |
+| 6 | Ungated switch-night fallback fired at t=0 | same gate | � deployed |
+| 7 | `DayStartAt` stale on same-scene retry → budget instantly "expired" → instant night | wave-rollover `PrevWave` + `DayStartAt<=0` resets | 🔧 deployed |
+| 8 | **`Coach.Apply` wiped all fields on partial patches** (`Num()=0` for missing keys — a `{"build_focus":"military"}` deleted the entire army plan — THE "commands don't work" bug) | present-keys-only `TryNum`/`TryStr` | 🔧 deployed |
+| 9 | Coach overrides persisted across matches | `Coach.ResetRun()` on `BeginRun` | 🔧 deployed |
+| 10 | `MarkDoorClaim` stamped before posting → 0-unit posts hid uncovered doors 25 s | claim only when `posted > 0` | 🔧 deployed |
+| 11 | Escorts walking past corridors inflated `DoorsCovered` → fake night-readiness | coverage counts only `HoldPosition`/home-posted units | 🔧 deployed |
+| 12 | HeroDead corpse ran the stuck watchdog → teleport attempts + warn spam | watchdog early-return when `s.HeroDead` | 🔧 deployed |
+| 13 | MiniMax replies missing `content` → silent `'content'` KeyError loop | reasoning fallback + real error text | ✅ verified |
+| 14 | `live.png` served mid-plugin-write → broken img glyphs | last-good-frame cache + `/live.json` mtime | ✅ verified |
+| 15 | Run dirs `*-unknown` polluted grades (level-select transitions) | scene names from ticks, transit excluded | ✅ verified |
+| 16 | MiniMax failures silent | `[mm-watch ERROR]` + `NOT APPLIED`/`BROKEN` mirror to chat | ✅ verified |
+| 17 | No link-failure surfacing | `/health` + LINK DOWN/UP chat entries + red banner | ✅ verified |
+| 18 | No command round-trip proof | `/ping` endpoint + PING button (verified `ok:true`) | ✅ verified |
+| 19 | Steering stalled forever after one MiniMax error (`last_sig` set pre-call) | commit sig only after successful reply | 🔧 deployed |
+| 20 | Failed-apply patch deduped forever | `last_patch` reset when `applied=false` | 🔧 deployed |
+| 21 | Torn writes: CMDFILE/chatlog concurrent | `write_cmd` + `append_log` locks | 🔧 deployed |
+| 22 | `/mmwatch` + `/history` crash on torn jsonl line | guarded `json.loads` | 🔧 deployed |
+| 23 | `/run` path traversal + `Access-Control-Allow-Origin: *` | `Path(name).name` + localhost-only CORS | 🔧 deployed |
+| 24 | Page froze on missing audit (silent stale UI) | OFFLINE state paints | 🔧 deployed |
+| 25 | `mmchip` written by two pollers (flicker) + `mm_note` never populated | single owner + `/audit` serves last steer | 🔧 deployed |
 
-## Coach server (`tools/coach-server.py`)
+## Open items from the audits
 
-| Endpoint | Status | Evidence |
-|---|---|---|
-| `GET /` page | ✅ 200 | served |
-| `POST /chat` | ✅ fixed | was 501 (do_POST nested in metrics) — verified reply |
-| `GET /audit` | ✅ real | plugin data + alerts + mm_note |
-| `GET /live.png` | ✅ fixed | was serving mid-write frames → cached |
-| `GET /live.json` | ✅ new | mtime tag for flicker-free repaint |
-| `GET /health` | ✅ new | plugin feed / live frames / local LLM / MiniMax — already caught `'content'` crash |
-| `GET /metrics` | ⚠️ fixed | scene names now from ticks; transit runs excluded |
-| `GET /run` | ✅ new | last 12 ticks per run |
-| `GET /playbook`, `POST /regen` | ✅ works | MiniMax rewrite runs |
+| # | Item | Where | Priority |
+|---|---|---|---|
+| 26 | `Coach.ReserveSize`/`Strat.Reserve` written but never consumed | Coach.cs:171 / BotPerception.cs:414 | 📋 wire into post/escort split or drop |
+| 27 | `night_call` parsed server-side only — `Apply()` ignores it | Coach.cs:165 | 📋 map to posture or log "unhandled" |
+| 28 | `army_target` applied as floor only — can't lower | BotPerception.cs:1088 | 📋 add `ArmyTargetCap` semantics |
+| 29 | Coach worker threads call `Time.unscaledTime` + unsynchronized statics | Coach.cs:154/177 | 📋 move to main thread |
+| 30 | audit writer silent outside InMatch (stale mode shown) | Bot.cs:367 | 📋 write `mode:"ui"` when !Valid |
+| 31 | `Strat.BuildOrder`/`CatBuilt` not cleared on missing playbook | BotPerception.cs:411 | 📋 clear on early return |
+| 32 | `Memory.Park` permanent, unbounded → can brick every slot | Memory.cs:45 | 🔴 cap + expiry |
+| 33 | `NetPolicy.Shadow` argmax can index OOB → per-tick crash | NetPolicy.cs:103 | 🔴 bounds check |
+| 34 | arrived-but-failing watchdog blind spot (coin/horn in range but failing) | Bot.cs:585 | 🔴 soft-strike timer |
+| 35 | legit-mode hard-stuck teleports (violates legit promise) | Bot.cs:611 | 🔴 gate behind !Legit |
+| 36 | `engageTarget` set when `Pursue==0` | Bot.cs:440 | 📋 strict-null |
+| 37 | Policy: pendingReward dropped at MatchEnd; traj leaks on abandoned runs | Policy.cs:115 | 📋 |
+| 38 | Log spam: 4 Hz tick JSONL + 1 Hz hold-diag + unbounded strikes | Bot.cs | 📋 rate-limit |
+| 39 | Overlay OnGUI no try/catch; StrategyText file IO on GUI thread | Overlay.cs | � |
+| 40 | JSON writes non-atomic (audit/state/policy/netstats/mishaps) | multiple | 📋 tmp+move |
+| 41 | `doorFoes` indexed before `BuildDoors` on scene change | BotPerception.cs:943 | 📋 reorder |
+| 42 | `s.FreeUnits` counts escorts → squad posting starved | BotPerception.cs:1032 | 🔴 exclude `FollowingPlayer` |
+| 43 | "army producing?" sanity: military built>60 s but AllyCount==0 → flag | new | 📋 anomaly event |
+| 44 | verify.ps1 doesn't exercise e2e chain | tools/ | 📋 merge e2e-audit.ps1 |
 
-## MiniMax watch loop
+## Evidence summary (live-verified today)
 
-| Behavior | Status |
-|---|---|
-| Reads live telemetry | ✅ real state in prompts |
-| Strict JSON validation | ✅ rejects out-of-schema |
-| Writes coach-commands.json | ✅ file lands |
-| Game applies | ✅ `[coach] user-cmd` in log |
-| **Bot obeys** | 🔴 commands apply but behavior didn't change (executor bugs) |
-| Error surfacing | ✅ fixed — errors + NOT APPLIED now mirror to chat |
-| M3 `content` KeyError | ✅ fixed — reasoning fallback + real error text |
-
-## Honest summary
-
-The chain works end to end: MiniMax → file → plugin apply. What failed
-was the *last mile*: the executor couldn't complete builds (choice-frame
-cancel + dead-aim parking). With the choice-frame fix deployed, the next
-live run is the real test — watch `playbook: built` lines and `gold`
-actually decreasing.
+- `user-cmd` round-trip: write → `[coach] user-cmd ->` in LogOutput.log ≤ 8 s ✅
+- Builds completing: `playbook: built 'Castle Center'`, `'Defense Tower'`, `'Wall'`, `'Gold Mine'` ✅
+- Failure pattern that broke runs: `switch-night` at t=0 (ally=0 → wipe) — root cause chain: ungated paths + stale DayStartAt + partial-patch wipe ✅ fixed
+- 14/15 e2e checks passing (`tools/e2e-audit.ps1`); 15th fails only because newest run predates the fix

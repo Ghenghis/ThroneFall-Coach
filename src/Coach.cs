@@ -167,13 +167,18 @@ namespace ThronefallTrainer
             int i0 = content.IndexOf('{'), i1 = content.LastIndexOf('}');
             if (i0 < 0 || i1 <= i0) { Plugin.Log?.LogWarning("[coach] advice not JSON"); return; }
             string j = content.Substring(i0, i1 - i0 + 1);
-            SquadSize = ClampInt(Num(j, "squad_size"), 0, 12);
-            ReserveSize = ClampInt(Num(j, "reserve_size"), 0, 16);
-            EscortSize = ClampInt(Num(j, "escort_size"), 0, 8);
-            ArmyTargetFloor = ClampInt(Num(j, "army_target"), 0, 120);
-            BuildFocus = Str(j, "build_focus");
-            HeroPosture = Str(j, "hero_posture");
-            LastAdvice = Str(j, "note");
+            // PRESENT-KEYS-ONLY semantics: Num() returns 0 for a missing key,
+            // so a partial patch like {"build_focus":"military"} used to wipe
+            // every other override to 0 — the silent "commands apply but the
+            // army plan vanishes" bug. Only a key that's actually present
+            // changes its field.
+            if (TryNum(j, "squad_size", out int v1)) SquadSize = ClampInt(v1, 0, 12);
+            if (TryNum(j, "reserve_size", out int v2)) ReserveSize = ClampInt(v2, 0, 16);
+            if (TryNum(j, "escort_size", out int v3)) EscortSize = ClampInt(v3, 0, 8);
+            if (TryNum(j, "army_target", out int v4)) ArmyTargetFloor = ClampInt(v4, 0, 120);
+            if (TryStr(j, "build_focus", out string f)) BuildFocus = f;
+            if (TryStr(j, "hero_posture", out string hp)) HeroPosture = hp;
+            if (TryStr(j, "note", out string note)) LastAdvice = note;
             LastAdviceAt = Time.unscaledTime;
             Plugin.Log?.LogInfo(
                 $"[coach] {trigger} -> squad={SquadSize} reserve={ReserveSize} " +
@@ -193,6 +198,31 @@ namespace ThronefallTrainer
             var m = System.Text.RegularExpressions.Regex.Match(
                 j, "\"" + key + "\"\\s*:\\s*\"([^\"]*)\"");
             return m.Success ? m.Groups[1].Value : "";
+        }
+
+        private static bool TryNum(string j, string key, out int v)
+        {
+            var m = System.Text.RegularExpressions.Regex.Match(
+                j, "\"" + key + "\"\\s*:\\s*(-?\\d+)");
+            v = m.Success ? int.Parse(m.Groups[1].Value) : 0;
+            return m.Success;
+        }
+
+        private static bool TryStr(string j, string key, out string v)
+        {
+            var m = System.Text.RegularExpressions.Regex.Match(
+                j, "\"" + key + "\"\\s*:\\s*\"([^\"]*)\"");
+            v = m.Success ? m.Groups[1].Value : null;
+            return m.Success;
+        }
+
+        /// <summary>Run-start reset: coach overrides were persisting across
+        /// matches/scenes — a squad_size issued hours ago silently steered the
+        /// next run. Clear them at each BeginRun; notes stay (advice history).</summary>
+        public static void ResetRun()
+        {
+            SquadSize = 0; ReserveSize = 0; EscortSize = 0;
+            ArmyTargetFloor = 0; BuildFocus = ""; HeroPosture = "";
         }
 
         /// <summary>Defeat screenshot -> local vision model. One call per
