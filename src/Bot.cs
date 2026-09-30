@@ -164,6 +164,7 @@ namespace ThronefallTrainer
         // close — a stubborn one with a back-to-map button gets followed.
         private static string lastFrameName = "";
         private static int frameSeen;
+        private static float lastFrameAt;   // sticky across close/re-open flicker
 
         private static StreamWriter botLog;
         private static bool logFailed;
@@ -173,6 +174,26 @@ namespace ThronefallTrainer
         // (each defeat −45, so 3 losses drops any node below everything else).
         static Bot()
         {
+            // One-shot API discovery: which FrameManager methods can open a
+            // pause frame? The vacuum exit needs the game's own abandon path
+            // (pause menu's BackToLevelSelectHelper) — a raw scene transition
+            // leaves the dead match 'resumable'.
+            try
+            {
+                var meths = typeof(UIFrameManager).GetMethods(
+                    System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
+                var names = new System.Text.StringBuilder();
+                foreach (var mi in meths)
+                    if (mi.GetParameters().Length <= 1 &&
+                        (mi.Name.IndexOf("Escape", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+                         mi.Name.IndexOf("Pause", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+                         mi.Name.IndexOf("Open", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+                         mi.Name.IndexOf("Level", System.StringComparison.OrdinalIgnoreCase) >= 0))
+                        names.Append(mi.Name).Append("; ");
+                Plugin.Log?.LogInfo("[bot] uiframe api: " + names);
+            }
+            catch { }
+
             BotPerception.LevelScore = (li, beaten) =>
             {
                 string scene = li.levelInfo != null ? li.levelInfo.sceneName : null;
@@ -452,8 +473,11 @@ namespace ThronefallTrainer
             // Durststein has none from t=0 (and waves still pass!). Any
             // build/coin ever observed proves the scene is alive, and an
             // idle stretch mid-plan must NOT be mistaken for corruption.
-            if (s.InteractorCount > 0 || s.NearestBuild != null ||
-                s.CoinCount > 0 || s.AllyCount > 0)
+            // Coins/allies do NOT prove life — the dead Durststein still
+            // drops coins and runs waves while every slot stays gone. Only
+            // a live buildable slot (or a finished building) marks a match.
+            if (s.NearestBuild != null || s.BuildCount > 0 ||
+                BotPerception.CatBuilt.Count > 0)
                 sawInteractables = true;
             if (s.GameState == "InMatch" && !s.IsNight && !sawInteractables &&
                 s.NearestBuild == null && s.InteractorCount == 0)
@@ -1353,7 +1377,17 @@ namespace ThronefallTrainer
                 return true;
             }
 
-            if (frame == null || !frame.freezePlayer) { lastFrameName = ""; frameSeen = 0; return false; }
+            // Frame-name tracking is STICKY: the 'After Match Frame' closes
+            // and instantly re-opens (the game re-shows the match summary)
+            // — resetting on every null frame kept frameSeen at 0 forever,
+            // so the AfterMatch->level-select gate could never escalate.
+            if (frame == null || !frame.freezePlayer)
+            {
+                if (Time.unscaledTime - lastFrameAt > 3f)
+                { lastFrameName = ""; frameSeen = 0; }
+                return false;
+            }
+            lastFrameAt = Time.unscaledTime;
             if (frame.name != lastFrameName) { lastFrameName = frame.name; frameSeen = 0; }
 
             // A Choice frame mid-resolution must NOT be closed — the pick is
