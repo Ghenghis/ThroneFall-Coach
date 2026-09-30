@@ -20,6 +20,10 @@ namespace ThronefallTrainer
     {
         private static readonly HashSet<string> parked = new HashSet<string>();
         private static readonly HashSet<string> parkedWhy = new HashSet<string>();
+        // Scene-level quarantine: a persisted dead match (interactables
+        // never spawn — the game resumes the same corrupt save on every
+        // reload) must not be re-entered across sessions.
+        private static readonly HashSet<string> badScenes = new HashSet<string>();
         // Insertion order for fair eviction — HashSet enumeration can pick
         // the JUST-ADDED key as victim (was silently discarding newest).
         private static readonly System.Collections.Generic.List<string> parkOrder =
@@ -31,7 +35,7 @@ namespace ThronefallTrainer
         {
             if (loaded) return;
             loaded = true;
-            try { file = Path.Combine(Recorder.AgentDir, "mishaps.json"); Load(); }
+            try { file = Path.Combine(Recorder.AgentDir, "mishaps.json"); Load(); LoadBadScenes(); }
             catch { }
         }
 
@@ -103,6 +107,64 @@ namespace ThronefallTrainer
         }
 
         public static int Count => parked.Count;
+
+        /// <summary>Scene-level quarantine (interactor-vacuum matches resume
+        /// the same corrupt save every reload — never re-enter).</summary>
+        public static void MarkBadScene(string scene)
+        {
+            EnsureInit();
+            if (string.IsNullOrEmpty(scene)) return;
+            if (badScenes.Add(scene))
+            {
+                SaveBadScenes();
+                Plugin.Log?.LogWarning($"[memory] scene quarantined '{scene}' — bad match state persisted");
+            }
+        }
+
+        public static bool IsBadScene(string scene)
+        {
+            EnsureInit();
+            return scene != null && badScenes.Contains(scene);
+        }
+
+        /// <summary>Debug/manual: clear a quarantine.</summary>
+        public static void ForgiveScene(string scene)
+        {
+            if (badScenes.Remove(scene)) SaveBadScenes();
+        }
+
+        private static void SaveBadScenes()
+        {
+            try
+            {
+                var sb = new System.Text.StringBuilder("[");
+                bool first = true;
+                foreach (var w in badScenes)
+                {
+                    if (!first) sb.Append(",");
+                    first = false;
+                    sb.Append("\"").Append(w).Append('"');
+                }
+                sb.Append("]");
+                Recorder.WriteAtomic(
+                    Path.Combine(Recorder.AgentDir, "badscenes.json"), sb.ToString());
+            }
+            catch { }
+        }
+
+        private static void LoadBadScenes()
+        {
+            try
+            {
+                var bf = Path.Combine(Recorder.AgentDir, "badscenes.json");
+                if (File.Exists(bf))
+                    foreach (System.Text.RegularExpressions.Match m in
+                        System.Text.RegularExpressions.Regex.Matches(
+                            File.ReadAllText(bf), "\"([^\"]+)\""))
+                        badScenes.Add(m.Groups[1].Value);
+            }
+            catch { }
+        }
 
         private static void Save()
         {

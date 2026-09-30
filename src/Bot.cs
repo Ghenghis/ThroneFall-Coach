@@ -179,6 +179,10 @@ namespace ThronefallTrainer
                 int defeats = scene != null && sessionDefeats.TryGetValue(scene, out int d) ? d : 0;
                 float sc = beaten ? 0f : 100f;
                 if (scene == null || !playedThisSession.Contains(scene)) sc += 15f;
+                // Persisted quarantine: a scene whose match-state save is
+                // corrupt (inter-vacuum) is never re-entered — session and
+                // process restarts don't heal it.
+                if (Memory.IsBadScene(scene)) sc -= 1000f;
                 return sc - defeats * 45f;
             };
             BotPerception.CoinSkip = c => coinIgnore.Contains(c);
@@ -476,6 +480,8 @@ namespace ThronefallTrainer
                     {
                         sessionDefeats[s.SceneName] =
                             sessionDefeats.TryGetValue(s.SceneName, out int vd) ? vd + 1 : 1;
+                        Memory.MarkBadScene(s.SceneName);   // persists across restarts —
+                        // the corrupt save reloads itself forever otherwise
                     }
                     Plugin.Log?.LogWarning(
                         "[bot] interactor vacuum — no interactables/coins 40 s " +
