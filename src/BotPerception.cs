@@ -261,6 +261,27 @@ namespace ThronefallTrainer
                 if ((sceneDoorAnchors[i] - pos).sqrMagnitude < 400f)
                 { doorClaim[i] = UnityEngine.Time.unscaledTime; return; }
         }
+
+        private static float[] doorParked;   // aim-stall proved unwalkable
+
+        /// <summary>Park a door anchor for 5 min — the hero-door aim proved
+        /// the point unwalkable (terrain wedge); re-picking it every 25 s
+        /// produced the endless aim-stall loop on High Back Road.</summary>
+        public static void ParkDoorAnchor(Vector3 pos)
+        {
+            if (sceneDoorAnchors == null) return;
+            if (doorParked == null || doorParked.Length != sceneDoorAnchors.Length)
+                doorParked = new float[sceneDoorAnchors.Length];
+            for (int i = 0; i < sceneDoorAnchors.Length; i++)
+                if ((sceneDoorAnchors[i] - pos).sqrMagnitude < 400f)
+                { doorParked[i] = UnityEngine.Time.unscaledTime; return; }
+        }
+
+        private static bool DoorParked(int i)
+        {
+            if (doorParked == null || i >= doorParked.Length) return false;
+            return UnityEngine.Time.unscaledTime - doorParked[i] < 300f;
+        }
         private static Vector3[] sceneDoorAnchors;
         private static string[] sceneDoorLines;
         private static string doorScene = "";
@@ -1137,6 +1158,7 @@ namespace ThronefallTrainer
                 {
                     for (int d = 0; d < s.DoorAnchors.Length; d++)
                     {
+                        if (DoorParked(d)) continue;   // aim-stall proved it
                         if (doorUnit[d] >= DoorTarget(d, pk)) { if (hot == 1) s.DoorsCovered++; continue; }
                         // Claimed + walking — skip re-posting for 25 s.
                         if (doorClaim != null && d < doorClaim.Length &&

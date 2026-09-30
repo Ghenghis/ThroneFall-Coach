@@ -730,6 +730,11 @@ namespace ThronefallTrainer
                         coinIgnore.Add(s.NearestCoin);
                     else if (Mode == BotMode.SpendGold && s.NearestBuild != null)
                         BotPerception.IgnoreBuild(s.NearestBuild, 300f);
+                    else if (Mode == BotMode.PositionArmy && s.HasUncoveredDoor)
+                        // Hero-door aims at terrain-unwalkable door anchors
+                        // wedge into an endless stall/re-aim loop — park that
+                        // door like a dead slot; the next-uncovered takes over.
+                        BotPerception.ParkDoorAnchor(s.UncoveredDoorPos);
                     ClearTarget();
                     return;
                 }
