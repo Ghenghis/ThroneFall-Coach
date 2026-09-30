@@ -455,6 +455,15 @@ namespace ThronefallTrainer
                 {
                     interVacuumAt = Time.unscaledTime + 120f;   // one try/2min
                     interZeroSince = -1f;
+                    // A vacuum costs the node like a defeat would — the map
+                    // scorer then picks a DIFFERENT unbeaten node with fresh
+                    // interactables instead of resuming this dead match
+                    // forever (observed: vacuum→reload→vacuum loop).
+                    if (s.SceneName != null)
+                    {
+                        sessionDefeats[s.SceneName] =
+                            sessionDefeats.TryGetValue(s.SceneName, out int vd) ? vd + 1 : 1;
+                    }
                     Plugin.Log?.LogWarning(
                         "[bot] interactor vacuum — no interactables/coins 40 s " +
                         "into day; match is corrupt → level select via frame");
