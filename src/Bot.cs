@@ -123,6 +123,7 @@ namespace ThronefallTrainer
         private static float interZeroSince = -1f;  // no-interactables timer
         private static float interVacuumAt;         // vacuum exit cooldown
         private static float nonVacSince = -1f;     // sustained-healthy window
+        private static bool sawInteractables;       // ever-seen interactables this match
         private static float navRepathAt;
         private static bool navInFlight;
         private static float navSteerArrive = 0.5f;
@@ -323,6 +324,8 @@ namespace ThronefallTrainer
                     Policy.BeginRun();
                     Coach.ResetRun();
                     stuckStrikeTotal = 0;
+                    sawInteractables = false;   // new match: vacuum detector re-arms
+                    interZeroSince = -1f;
                 }
                 if (s.GameState == "AfterMatchVictory" && lastMatchScene != null)
                 {
@@ -437,9 +440,19 @@ namespace ThronefallTrainer
             // inter=0 alone is NOT proof — the metric itself is unreliable
             // (healthy runs show inter:0 while building). Require the real
             // signals: nothing buildable AND nothing collectible AND no army
-            // for a sustained day stretch.
-            if (s.GameState == "InMatch" && !s.IsNight && s.AllyCount == 0 &&
-                s.CoinCount == 0 && s.NearestBuild == null && s.InteractorCount == 0)
+            // for a sustained day stretch — and ONLY before wave 1: a
+            // running wave count means a live match (Nordfels built 7
+            // structures then idled into the same field pattern mid-plan;
+            // waves progressing = alive).
+            // and ONLY when the match NEVER spawned interactables — a dead
+            // Durststein has none from t=0 (and waves still pass!). Any
+            // build/coin ever observed proves the scene is alive, and an
+            // idle stretch mid-plan must NOT be mistaken for corruption.
+            if (s.InteractorCount > 0 || s.NearestBuild != null ||
+                s.CoinCount > 0 || s.AllyCount > 0)
+                sawInteractables = true;
+            if (s.GameState == "InMatch" && !s.IsNight && !sawInteractables &&
+                s.NearestBuild == null && s.InteractorCount == 0)
             {
                 nonVacSince = -1f;
                 if (interZeroSince < 0)
