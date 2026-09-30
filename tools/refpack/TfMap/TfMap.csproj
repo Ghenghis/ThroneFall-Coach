@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- TfMap: offline metadata / IL / Unity-serialization mapper for the Thronefall Mono build.
+       No PackageReferences on purpose: System.Reflection.Metadata ships with the .NET 8 runtime. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <ServerGarbageCollection>false</ServerGarbageCollection>
+    <NoWarn>$(NoWarn);CS8618;SYSLIB0050</NoWarn>
+  </PropertyGroup>
+</Project>

@@ -100,11 +100,21 @@ namespace ThronefallTrainer
             pendingReward += r;
         }
 
+        /// <summary>New run — an abandoned trajectory (scene unloaded without
+        /// MatchEnd) used to leak into the next run's learning window.</summary>
+        public static void BeginRun()
+        {
+            traj.Clear();
+            pendingReward = 0f;
+        }
+
         /// <summary>Match end: propagate outcome back along the trajectory
         /// (discounted), then flush to disk.</summary>
         public static void MatchEnd(bool victory, float castleHpFrac, int breaches)
         {
-            float r = (victory ? 10f : -10f) + castleHpFrac * 5f - breaches * 0.4f;
+            float r = (victory ? 10f : -10f) + castleHpFrac * 5f - breaches * 0.4f
+                      + pendingReward;        // folded pulses — a defeat mid-day
+                                             // used to drop Reward() entirely
             for (int i = traj.Count - 1; i >= 0; i--)
             {
                 var (s, a) = traj[i];
@@ -166,8 +176,7 @@ namespace ThronefallTrainer
                 foreach (var row in Q.Values)
                     foreach (var v in row.Values)
                     { nonzero++; qSum += Mathf.Abs(v); }
-                File.WriteAllText(
-                    Path.Combine(Recorder.AgentDir, "policystats.json"),
+                Recorder.WriteAtomic(Path.Combine(Recorder.AgentDir, "policystats.json"),
                     "{\"states\":" + Q.Count + ",\"cells\":" + nonzero +
                     ",\"decisions\":" + Decisions + ",\"updates\":" + Updates +
                     ",\"mean_abs_q\":" + (nonzero > 0
@@ -227,7 +236,7 @@ namespace ThronefallTrainer
                     sb.Append('}');
                 }
                 sb.Append("\n}");
-                File.WriteAllText(file, sb.ToString());
+                Recorder.WriteAtomic(file, sb.ToString());
             }
             catch (Exception ex)
             { Plugin.Log?.LogWarning($"[policy] save: {ex.Message}"); }

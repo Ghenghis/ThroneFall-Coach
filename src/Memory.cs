@@ -41,7 +41,11 @@ namespace ThronefallTrainer
             return parked.Contains(scene + "|" + Cell(pos));
         }
 
-        /// <summary>Record a mishap; persists immediately.</summary>
+        /// <summary>Record a mishap; persists immediately. Per-scene cap —
+        /// an unbounded park list could brick every build slot on a level
+        /// forever. At the cap, the newest reason replaces the oldest so the
+        /// memory keeps covering the most recent failures.</summary>
+        private const int MaxPerScene = 24;
         public static void Park(string scene, Vector3 pos, string why)
         {
             EnsureInit();
@@ -49,8 +53,42 @@ namespace ThronefallTrainer
             if (parked.Add(key))
             {
                 parkedWhy.Add(key + "|" + (why ?? "?"));
+                // Cap per scene: drop the oldest reason entries until under
+                // the limit. parked is a HashSet so "oldest" = first pruned.
+                int count = 0;
+                foreach (var p in parked) if (p.StartsWith(scene + "|")) count++;
+                while (count > MaxPerScene)
+                {
+                    string victim = null;
+                    foreach (var p in parked)
+                        if (p.StartsWith(scene + "|")) { victim = p; break; }
+                    if (victim == null) break;
+                    parked.Remove(victim);
+                    string v2 = null;
+                    foreach (var w in parkedWhy)
+                        if (w.StartsWith(victim + "|")) { v2 = w; break; }
+                    if (v2 != null) parkedWhy.Remove(v2);
+                    count--;
+                }
                 Save();
                 Plugin.Log?.LogInfo($"[memory] parked '{key}' ({why}) — never retrying");
+            }
+        }
+
+        /// <summary>Un-learn a cell — used when a build succeeds near a
+        /// previously parked spot (the stall was transient, not broken).</summary>
+        public static void Unpark(string scene, Vector3 pos)
+        {
+            EnsureInit();
+            string key = scene + "|" + Cell(pos);
+            if (parked.Remove(key))
+            {
+                string v2 = null;
+                foreach (var w in parkedWhy)
+                    if (w.StartsWith(key + "|")) { v2 = w; break; }
+                if (v2 != null) parkedWhy.Remove(v2);
+                Save();
+                Plugin.Log?.LogInfo($"[memory] unparked '{key}' — slot redeemed");
             }
         }
 
@@ -69,7 +107,7 @@ namespace ThronefallTrainer
                     sb.Append("  \"").Append(w).Append('"');
                 }
                 sb.Append("\n]\n");
-                File.WriteAllText(file, sb.ToString());
+                Recorder.WriteAtomic(file, sb.ToString());
             }
             catch (Exception ex)
             { Plugin.Log?.LogWarning($"[memory] save: {ex.Message}"); }

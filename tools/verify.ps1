@@ -37,6 +37,19 @@ try {
     $results['metrics'] = ($null -ne $mt.grades)
 } catch { $results['server'] = "offline (start: tools\coach-chat.ps1)" }
 
+# 5. end-to-end link chain (plugin feed → LLM → MiniMax → command apply →
+# telemetry) — only when the game + server are live. This is the audit's
+# "proof harness"; the static checks above can't see runtime behavior.
+try {
+    $hc = Invoke-RestMethod 'http://127.0.0.1:8099/health' -TimeoutSec 5
+    if ($hc.ok) {
+        $e2e = & (Join-Path $PSScriptRoot 'e2e-audit.ps1') 2>&1 | Out-String
+        $fails = ([regex]::Matches($e2e, 'FAIL:')).Count
+        $results['e2e-chain'] = $fails -eq 0
+        if ($fails -gt 0) { Write-Host $e2e }
+    } else { $results['e2e-chain'] = 'plugin feed not live' }
+} catch { $results['e2e-chain'] = 'server offline' }
+
 # verdict
 Write-Host ''
 $results.GetEnumerator() | ForEach-Object {

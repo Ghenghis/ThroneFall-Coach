@@ -272,7 +272,7 @@ namespace ThronefallTrainer
         /// <summary>M3 grandmaster playbook for the scene (tools/mm-coach.py
         /// writes botpack/strategy_&lt;scene&gt;.json). Hand-parsed like the
         /// botpack itself — JsonUtility is not trusted on this runtime.</summary>
-        private static class Strat
+        internal static class Strat   // Bot.PlaceSquad reads Strat.Reserve
         {
             public static int Squad, Reserve, Escort, ArmyTarget;
             public static string Focus = "";
@@ -286,6 +286,7 @@ namespace ThronefallTrainer
         public static readonly System.Collections.Generic.Dictionary<string, int>
             CatBuilt = new System.Collections.Generic.Dictionary<string, int>();
         private static string catBuiltScene;
+        private static float milFirstAt = -1f;   // first military build (anomaly D3)
 
         /// <summary>Classify a buildable by name — the categories the
         /// playbook's build_order speaks in.</summary>
@@ -306,17 +307,28 @@ namespace ThronefallTrainer
 
         /// <summary>Called when a hold-to-pay completes — advances the
         /// playbook build order by counting built categories per scene.</summary>
-        public static void BuildDone(string buildingName)
+        public static void BuildDone(string buildingName, Vector3 pos = default)
         {
+            // Redemption: a slot that completes unparks its cell — transient
+            // stalls (occupants, temporary walls) shouldn't be remembered.
+            if (pos != default)
+                Memory.Unpark(slotPackScene ?? "", pos);
             if (catBuiltScene != slotPackScene)
             {
                 catBuiltScene = slotPackScene;
                 CatBuilt.Clear();
+                milFirstAt = -1f;
             }
             string cat = BuildCat(buildingName);
+            if (cat == "military" && milFirstAt < 0f)
+                milFirstAt = Time.unscaledTime;
             CatBuilt[cat] = (CatBuilt.TryGetValue(cat, out int c) ? c : 0) + 1;
             Plugin.Log?.LogInfo($"[bot] playbook: built '{buildingName}' (cat {cat} #{CatBuilt[cat]})");
         }
+
+        public static int MilitaryCount() =>
+            CatBuilt.TryGetValue("military", out int v) ? v : 0;
+        public static float MilitaryFirstAt => milFirstAt;
 
         /// <summary>Next playbook build categories not yet satisfied —
         /// [0] = the current build target, [1..2] = soon.</summary>
@@ -349,6 +361,10 @@ namespace ThronefallTrainer
               .Append(",\"gold\":").Append(Mathf.RoundToInt(s.Balance))
               .Append(",\"ally\":").Append(s.AllyCount)
               .Append(",\"free\":").Append(s.FreeUnits)
+              .Append(",\"escort\":").Append(s.EscortUnits)
+              .Append(",\"army_target\":").Append(s.ArmyTarget)
+              .Append(",\"bmil\":").Append(MilitaryCount())
+              .Append(",\"bmil_first\":").Append(Mathf.RoundToInt(milFirstAt))
               .Append(",\"foes\":").Append(s.NextWaveCount)
               .Append(",\"night\":").Append(s.IsNight ? "true" : "false")
               .Append(",\"wave\":").Append(s.Wave)
@@ -405,6 +421,10 @@ namespace ThronefallTrainer
         {
             Strat.Squad = Strat.Reserve = Strat.Escort = Strat.ArmyTarget = 0;
             Strat.Focus = "";
+            // Clear order data too — a missing playbook used to leave the
+            // PREVIOUS scene's build order + checklist in the audit feed.
+            Strat.BuildOrder = new string[0];
+            Strat.LineSquad.Clear();
             try
             {
                 var p = System.IO.Path.Combine(Recorder.AgentDir, "botpack",
@@ -938,6 +958,10 @@ namespace ThronefallTrainer
                 s.EnemyCount = tm.EnemyUnits.Count;
             }
 
+            // Doors first — on a scene-change capture the enemy loop below
+            // once ran before BuildDoors and produced one tick of zero foe
+            // counts, which read as "safe corridor" for a full decision.
+            if (s.DoorAnchors == null) BuildDoors(ref s);
             // Nearest live enemy to the hero AND nearest to the castle — the
             // castle-proximate one is what actually loses the run, so it wins
             // target priority for legit defense play.
@@ -1097,7 +1121,7 @@ namespace ThronefallTrainer
                 }
                 if (s.NextWaveCount > 0) at = Mathf.Max(at, (int)(s.NextWaveCount * 1.2f));
                 if (Strat.ArmyTarget > at) at = Strat.ArmyTarget;          // M3 playbook floor
-                if (Coach.ArmyTargetFloor > at) at = Coach.ArmyTargetFloor; // live advisor floor
+                if (Coach.ArmyTargetFloor > 0) at = Coach.ArmyTargetFloor; // live advisor SET (floor semantics broke "reduce army" orders)
                 s.ArmyTarget = at;
             }
             // Coach posture: "fighter" widens the hero's self-defense bubble.

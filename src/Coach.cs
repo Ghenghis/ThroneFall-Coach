@@ -38,7 +38,7 @@ namespace ThronefallTrainer
         public static string LastAdvice = "";
         public static float LastAdviceAt;
         public static int CallsMade, TokensUsed;
-        public static bool Busy;
+        public static volatile bool Busy;   // written by the worker thread
         public static bool LiveShot;             // dump agent/live.png for the chat UI
         public static float LiveShotEvery = 2f;
         private static float nextLiveShot;
@@ -103,7 +103,7 @@ namespace ThronefallTrainer
                 string h = j.GetHashCode().ToString();
                 if (h == lastCmdHash) return;
                 lastCmdHash = h;
-                Apply(j, "user-cmd");
+                Apply(j, "user-cmd", Time.unscaledTime);
             }
             catch (Exception ex)
             { Plugin.Log?.LogWarning($"[coach] cmd poll: {ex.Message}"); }
@@ -116,12 +116,14 @@ namespace ThronefallTrainer
             if (!Enabled || hostRef == null || Busy) return;
             if (Time.unscaledTime - lastCallAt < MinIntervalS) return;
             lastCallAt = Time.unscaledTime; Busy = true;
-            var t = new System.Threading.Thread(() => Call(trigger, digestJson));
+            float callNow = Time.unscaledTime;   // captured on the main thread —
+            // Unity API is forbidden on the worker below
+            var t = new System.Threading.Thread(() => Call(trigger, digestJson, callNow));
             t.IsBackground = true;
             t.Start();
         }
 
-        private static void Call(string trigger, string digest)
+        private static void Call(string trigger, string digest, float callNow)
         {
             try
             {
@@ -151,7 +153,7 @@ namespace ThronefallTrainer
                 if (um.Success) TokensUsed += int.Parse(um.Groups[1].Value);
                 var cm = System.Text.RegularExpressions.Regex.Match(
                     resp, "\"content\"\\s*:\\s*\"((?:[^\"\\\\]|\\\\.)*)\"");
-                if (cm.Success) Apply(Unesc(cm.Groups[1].Value), trigger);
+                if (cm.Success) Apply(Unesc(cm.Groups[1].Value), trigger, callNow);
                 else Plugin.Log?.LogWarning("[coach] no content in response");
             }
             catch (Exception ex)
@@ -162,7 +164,7 @@ namespace ThronefallTrainer
         }
 
         /// <summary>Parse the JSON patch and apply overrides (clamped sane).</summary>
-        private static void Apply(string content, string trigger)
+        private static void Apply(string content, string trigger, float callNow)
         {
             int i0 = content.IndexOf('{'), i1 = content.LastIndexOf('}');
             if (i0 < 0 || i1 <= i0) { Plugin.Log?.LogWarning("[coach] advice not JSON"); return; }
@@ -179,7 +181,16 @@ namespace ThronefallTrainer
             if (TryStr(j, "build_focus", out string f)) BuildFocus = f;
             if (TryStr(j, "hero_posture", out string hp)) HeroPosture = hp;
             if (TryStr(j, "note", out string note)) LastAdvice = note;
-            LastAdviceAt = Time.unscaledTime;
+            if (TryBool(j, "night_call", out bool nc) && nc)
+                NightCallRequested = true;            // advisory flag — brain still gates
+            var rest = new System.Collections.Generic.List<string>();
+            foreach (System.Text.RegularExpressions.Match xm in
+                new System.Text.RegularExpressions.Regex("\"(\\w+)\"\\s*:").Matches(j))
+                if (!KnownKeys.Contains(xm.Groups[1].Value))
+                    rest.Add(xm.Groups[1].Value);
+            if (rest.Count > 0)
+                Plugin.Log?.LogWarning("[coach] unhandled keys: " + string.Join(",", rest));
+            LastAdviceAt = callNow;   // worker thread — no Unity API here
             Plugin.Log?.LogInfo(
                 $"[coach] {trigger} -> squad={SquadSize} reserve={ReserveSize} " +
                 $"escort={EscortSize} army>={ArmyTargetFloor} focus={BuildFocus} " +
@@ -198,6 +209,20 @@ namespace ThronefallTrainer
             var m = System.Text.RegularExpressions.Regex.Match(
                 j, "\"" + key + "\"\\s*:\\s*\"([^\"]*)\"");
             return m.Success ? m.Groups[1].Value : "";
+        }
+
+        public static bool NightCallRequested;
+        private static readonly System.Collections.Generic.HashSet<string> KnownKeys =
+            new System.Collections.Generic.HashSet<string>
+            { "squad_size", "reserve_size", "escort_size", "army_target",
+              "build_focus", "hero_posture", "night_call", "note" };
+
+        private static bool TryBool(string j, string key, out bool v)
+        {
+            var m = System.Text.RegularExpressions.Regex.Match(
+                j, "\"" + key + "\"\\s*:\\s*(true|false)");
+            v = m.Success && m.Groups[1].Value == "true";
+            return m.Success;
         }
 
         private static bool TryNum(string j, string key, out int v)
@@ -223,6 +248,7 @@ namespace ThronefallTrainer
         {
             SquadSize = 0; ReserveSize = 0; EscortSize = 0;
             ArmyTargetFloor = 0; BuildFocus = ""; HeroPosture = "";
+            NightCallRequested = false;
         }
 
         /// <summary>Defeat screenshot -> local vision model. One call per

@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Regression test for reference/botpack/BotPackLoader.cs.txt. Uses the game's own Unity assemblies (math types only; JsonUtility is not exercised). -->
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <OutputType>Exe</OutputType>
+    <GameDir Condition="'$(GameDir)' == ''">K:\Downloads-IDM\Thronefall</GameDir>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\..\reference\botpack\BotPackLoader.cs.txt" Link="BotPackLoader.cs" />
+    <Reference Include="UnityEngine.CoreModule"><HintPath>$(GameDir)\Thronefall_Data\Managed\UnityEngine.CoreModule.dll</HintPath><Private>true</Private></Reference>
+    <Reference Include="UnityEngine.JSONSerializeModule"><HintPath>$(GameDir)\Thronefall_Data\Managed\UnityEngine.JSONSerializeModule.dll</HintPath></Reference>
+  </ItemGroup>
+</Project>

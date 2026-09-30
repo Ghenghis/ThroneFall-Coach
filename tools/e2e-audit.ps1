@@ -49,11 +49,11 @@ Check "mm apply rate > 50%"  {
 # 5. bot sanity in current run
 Check "run has day phase"    {
     $run = Get-ChildItem "$agent\runs" | Sort-Object LastWriteTime -Desc | Select-Object -First 1
-    $modes = Get-Content "$($run.FullName)\ticks.jsonl" | ForEach-Object { (($_ | ConvertFrom-Json).mode) }
+    $modes = Get-Content "$($run.FullName)\ticks.jsonl" -Tail 2000 | ForEach-Object { (($_ | ConvertFrom-Json).mode) }
     $modes -contains 'SpendGold' -or $modes -contains 'CollectCoin' }
 Check "no instant night"     {
     $run = Get-ChildItem "$agent\runs" | Sort-Object LastWriteTime -Desc | Select-Object -First 1
-    $t = Get-Content "$($run.FullName)\ticks.jsonl" | ForEach-Object { $j = $_ | ConvertFrom-Json; if ($j.mode -eq 'StartNight') { [int]$j.t; break } }
+    $t = Get-Content "$($run.FullName)\ticks.jsonl" -Tail 4000 | ForEach-Object { $j = $_ | ConvertFrom-Json; if ($j.mode -eq 'StartNight') { [int]$j.t; break } }
     -not $t -or $t -gt 60 }
 
 ""

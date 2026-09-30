@@ -58,7 +58,7 @@ def mm_key():
             continue
     return os.environ.get("MINIMAX_API_KEY", "")
 
-def mm_chat(messages, max_tokens=900):
+def mm_chat(messages, max_tokens=3000):
     key = mm_key()
     if not key:
         raise RuntimeError("MINIMAX_API_KEY missing")
@@ -189,16 +189,29 @@ def mm_watch_loop():
             if af.exists():
                 try: audit = json.loads(af.read_text(errors="replace"))
                 except Exception: pass
+            # Full-context prompt — the model has ~262k tokens; the old
+            # digest clipped doors/checklist/alerts to 5 items and blinded
+            # it to per-door detail. Feed everything real instead.
+            door_detail = [{"line": l, "units": u}
+                           for l, u in zip(audit.get("door_lines", []),
+                                           audit.get("door_units", []))]
             prompt = (
-                "TELEMETRY: " + json.dumps(st, separators=(",", ":")) +
-                "\nACTION: " + json.dumps({k: audit.get(k) for k in
-                    ("mode", "mode_since", "cur_build", "doors_cov",
-                     "ally", "free", "night", "wave", "red")}) +
-                "\nPLAYBOOK CHECKLIST: " + json.dumps(
-                    [c for c in audit.get("checklist", []) if not c.get("done")][:5]) +
-                "\nALERTS: " + json.dumps(audit_alerts(audit)[:4]) +
-                "\nGRADES: " + json.dumps(m.get("grades", {})) +
-                "\nWEAKNESSES: " + json.dumps(m.get("weaknesses", [])[:3]) +
+                "FULL AUDIT SNAPSHOT: " + json.dumps(
+                    {k: audit.get(k) for k in
+                     ("t", "mode", "mode_since", "gold", "ally", "free",
+                      "foes", "night", "wave", "wave_total", "red",
+                      "breaches", "bld", "cur_build", "army_target",
+                      "cat_built", "open_order", "build_stale_s")}) +
+                "\nDOOR POSTS (per-corridor units): " + json.dumps(door_detail) +
+                "\nFULL PLAYBOOK CHECKLIST: " + json.dumps(
+                    audit.get("checklist", [])) +
+                "\nACTIVITY TIMELINE: " + json.dumps(audit.get("activity", [])[:6]) +
+                "\nALERTS (all): " + json.dumps(audit_alerts(audit)) +
+                "\nGRADES + INPUTS: " + json.dumps(m.get("grades", {})) +
+                "\nGRADE FORMULAS: " + json.dumps(m.get("grade_src", {})) +
+                "\nWEAKNESSES: " + json.dumps(m.get("weaknesses", [])[:5]) +
+                "\nBREACH-PRONE DOORS: " + json.dumps(m.get("breach_doors", [])) +
+                "\nNET vs BOT: " + json.dumps(m.get("learning", {}).get("net", {})) +
                 "\nCorrect the FAILED checklist items. Respond JSON only.")
             reply, usage = mm_chat(
                 [{"role": "system", "content": MM_SYS},
@@ -247,7 +260,11 @@ def mm_watch_loop():
                             # fix instead of skipping it forever.
                             mm_watch_loop.last_patch = ""
             else:
-                entry["note"] = "no-change or unparseable"
+                # Distinguish the three failure shapes — an EMPTY patch is
+                # a different problem (model passed the gate with no fields)
+                # than unparseable text or a deduped identical patch.
+                entry["note"] = ("empty patch (no fields)" if patch == {}
+                                 else "no-change or unparseable")
                 if entry.get("raw") and entry["raw"] != mm_watch_loop.last_raw:
                     mm_watch_loop.last_raw = entry["raw"]
                     _watch_log(entry)
@@ -373,19 +390,20 @@ def health():
     h["checks"].append({"name": "MiniMax", "ok": mm_ok, "detail": mm_det})
     h["ok"] = all(c["ok"] for c in h["checks"])
     # Edge detector: post link transitions INTO the chat log so a dead
-    # link is a red error line, not a silent banner. Runs once per call —
-    # health_watch_loop drives it every ~20 s.
+    # link is a red error line, not a silent banner. Locked — /health calls
+    # and the watch thread could otherwise interleave and double-post.
     sig = tuple(c["ok"] for c in h["checks"])
-    if health.prev_sig is not None and sig != health.prev_sig:
-        for c, now in zip(h["checks"], sig):
-            was = health.prev_sig[h["checks"].index(c)] if \
-                  len(health.prev_sig) > h["checks"].index(c) else True
-            hhmm = time.strftime("%H:%M")
-            if was and not now:
-                append_log("err", f"[{hhmm} LINK DOWN] {c['name']} — {c['detail']}")
-            elif now and not was:
-                append_log("err", f"[{hhmm} LINK UP] {c['name']} — {c['detail']}")
-    health.prev_sig = sig
+    with _healthlock:
+        if health.prev_sig is not None and sig != health.prev_sig:
+            for c, now in zip(h["checks"], sig):
+                was = health.prev_sig[h["checks"].index(c)] if \
+                      len(health.prev_sig) > h["checks"].index(c) else True
+                hhmm = time.strftime("%H:%M")
+                if was and not now:
+                    append_log("err", f"[{hhmm} LINK DOWN] {c['name']} — {c['detail']}")
+                elif now and not was:
+                    append_log("ok", f"[{hhmm} LINK UP] {c['name']} — {c['detail']}")
+        health.prev_sig = sig
     return h
 health.prev_sig = None
 
@@ -416,6 +434,7 @@ _lastcats = {"sum": 0, "since": time.time()}
 import threading as _threading
 _loglock = _threading.Lock()
 _cmdlock = _threading.Lock()
+_healthlock = _threading.Lock()   # guards health() edge detection
 
 def append_log(role, text):
     CHATLOG.parent.mkdir(parents=True, exist_ok=True)
@@ -425,9 +444,12 @@ def append_log(role, text):
                                 "text": text[:8000]}) + "\n")
 
 def write_cmd(cmd):
-    """All command-file writes through one lock — torn JSON = plugin skip."""
+    """All command-file writes through one lock + atomic tmp+rename — the
+    plugin polls this file; a torn JSON used to be skipped silently."""
     with _cmdlock:
-        CMDFILE.write_text(json.dumps(cmd))
+        tmp = CMDFILE.with_suffix(".tmp")
+        tmp.write_text(json.dumps(cmd))
+        os.replace(tmp, CMDFILE)
 
 def extract_cmd(reply):
     i0 = reply.find("<cmd>")
@@ -541,9 +563,12 @@ class H(BaseHTTPRequestHandler):
                 try:
                     a = json.loads(p.read_text(errors="replace"))
                     # Merge army_target from the tick stream — the audit
-                    # writer doesn't carry it, and the strip needs it.
+                    # writer doesn't carry it, and the strip needs it. Only
+                    # merge when the tick belongs to THIS run; else it mixes
+                    # stale values from a different match (audit finding).
                     st0 = live_state()
-                    a["army_target"] = st0.get("army_target")
+                    if st0.get("run") == a.get("run") or not a.get("run"):
+                        a["army_target"] = st0.get("army_target")
                     # Last MiniMax steer for the panel/chip — the audit had
                     # no mm_note, so the UI showed '—' forever.
                     try:
@@ -681,7 +706,7 @@ class H(BaseHTTPRequestHandler):
                 scene = data.get("scene") or "Durststein"
                 import subprocess
                 subprocess.Popen(
-                    ["python", str(ROOT / "tools" / "mm-coach.py"),
+                    [sys.executable, str(ROOT / "tools" / "mm-coach.py"),
                      "--scene", scene],
                     cwd=str(ROOT))
                 self._send(200, json.dumps({"ok": True}), "application/json")
@@ -826,7 +851,6 @@ def metrics():
     m["grades"] = {k: round(sum(v) / len(v)) if v else 0
                    for k, v in cat.items()}
     # truth inputs behind each grade — the panel can show *why*.
-    latest = curve[-1] if curve else {}
     m["grade_src"] = {
         "econ":  "spend-time % of ticks",
         "def":   "door coverage % + red-alert rate",

@@ -334,6 +334,7 @@ namespace ThronefallTrainer
         public float LastBreachAt;
         public float DayStartAt;
         public string DayScene;
+        public string PrevGameState;   // InMatch edge = new match signal
         public int PrevWave;         // wave-rollover detects same-scene retries
         public float SquadWalkAt;
         public float LastEscortAt;
@@ -592,9 +593,17 @@ namespace ThronefallTrainer
             // Wave rollover catches the same-scene retry the scene check
             // misses: any new match starts at wave -1/0 — if the previous
             // wave was deeper, this is a fresh match, reset the clock.
+            // Primary signal: GameState just became InMatch — this fires on
+            // EVERY new match regardless of scene name, wave counters, or
+            // day/night carryover (the wave-0-defeat case slipped every
+            // other check and re-called night instantly).
+            bool stateEdge = s.GameState == "InMatch" &&
+                             m.PrevGameState != "InMatch";
+            m.PrevGameState = s.GameState;
             bool newMatch = m.DayScene != s.SceneName ||
                             (s.Wave <= 0 && m.PrevWave > 0) ||
-                            (m.DayStartAt <= 0f);
+                            (m.DayStartAt <= 0f) ||
+                            stateEdge;
             if (newMatch)
             {
                 m.DayScene = s.SceneName;
@@ -602,6 +611,9 @@ namespace ThronefallTrainer
                 m.NightRequestAt = 0f;
             }
             m.PrevWave = s.Wave;
+            // Absolute floor: nothing may call the night inside the first
+            // 45 s of a match — no learned budget or stale clock overrides.
+            bool dayTooYoung = now - m.DayStartAt < 45f;
 
             // Day/night edge → re-arm night request + army + coin park.
             if (m.LastNightState != s.IsNight)
@@ -859,13 +871,13 @@ namespace ThronefallTrainer
             // forever and the night would never come. Ring the horn once the
             // army is up to target OR the day budget is spent — whichever
             // readiness signal arrives first.
-            if (m.DayStartAt > 0f &&
-                ((s.CanSwitch &&
+            if (m.DayStartAt > 0f && !dayTooYoung &&
+                ((s.CanSwitch && (Coach.NightCallRequested ||
                   // Ready = army target met AND someone actually manning the
                   // perimeter (calling night with zero posts invites the
                   // breach we saw at t≈90: 25 foes vs a lone hero).
                   (s.AllyCount >= s.ArmyTarget && (s.DoorCount == 0 || s.DoorsCovered > 0) ||
-                   (s.DoorCount > 0 && s.DoorsCovered >= s.DoorCount))) ||
+                   (s.DoorCount > 0 && s.DoorsCovered >= s.DoorCount)))) ||
                  // Budget expiry forces the night even when the horn isn't
                  // visible — SwitchToNight is the game's own call and rejects
                  // harmlessly if the day is still locked.
@@ -1031,8 +1043,11 @@ namespace ThronefallTrainer
             // UNGATED: the horn scan fix made HasHorn true and the bot rang
             // night at t=13 with ally=0 before a single day build. Ring only
             // when the army is up or the day budget expired.
-            bool readyForNight = m.DayStartAt > 0f &&
-                ((s.AllyCount >= s.ArmyTarget && (s.DoorCount == 0 || s.DoorsCovered > 0)) ||
+            // The coach's explicit night_call is also readiness — it still
+            // passes through s.CanSwitch, so a locked day can't fire early.
+            bool readyForNight = m.DayStartAt > 0f && !dayTooYoung &&
+                (Coach.NightCallRequested ||
+                 (s.AllyCount >= s.ArmyTarget && (s.DoorCount == 0 || s.DoorsCovered > 0)) ||
                  (s.DoorCount > 0 && s.DoorsCovered >= s.DoorCount) ||
                  now - m.DayStartAt > (s.DayBudget > 0f ? s.DayBudget : 240f));
             if (readyForNight && s.HasHorn)

@@ -55,6 +55,8 @@ namespace ThronefallTrainer
 
         private static float decisionClock;
         private static float watchClock;
+        private static float arriveSince;   // arrived-but-failing timer
+        private static int stuckStrikeTotal;  // per-run cap (log flood)
         private static Vector3 watchAnchor;
         private static bool hasAnchor;
         private static Vector3 lastFreePos; private static float lastFreeAt = -999f;
@@ -276,7 +278,8 @@ namespace ThronefallTrainer
                     bName != holdDoneName)
                 {
                     holdDoneName = bName;
-                    BotPerception.BuildDone(bName);
+                    BotPerception.BuildDone(bName,
+                        heldBuild.transform.position);
                 }
             }
 
@@ -393,6 +396,7 @@ namespace ThronefallTrainer
             {
                 recordedScene = s.SceneName;
                 Recorder.BeginRun(s.SceneName);
+                Policy.BeginRun();   // abandoned trajectories must not leak
                 // Coach overrides must not leak across matches — a squad_size
                 // issued hours ago silently steered later runs. Fresh slate.
                 Coach.ResetRun();
@@ -444,7 +448,10 @@ namespace ThronefallTrainer
             // layer can't hold Unity refs, so it returns a flag and we resolve.
             engageTarget = res.Pursue == 2
                 ? s.NearestEnemy
-                : (s.CastleThreat != null ? s.CastleThreat : s.NearestEnemy);
+                : res.Pursue == 1
+                    ? (s.CastleThreat != null ? s.CastleThreat : s.NearestEnemy)
+                    : null;   // Pursue==0 → no target: stale refs fed the
+                              // weaponless TakeDamage fallback + move-diag
             if (res.HasAim) SetTarget(new Vector3(res.AimPos.X, 0f, res.AimPos.Z), res.Arrive, res.ProjectToNav);
             else ClearTarget();
             foreach (var note in res.Notes) LogLine(in s, note);
@@ -554,6 +561,19 @@ namespace ThronefallTrainer
                 }
             }
             else nightParkSince = -1f;
+
+            // D3 army-starved: a military building stood >90 s yet zero
+            // units ever came out — production stall that used to die
+            // silently (mm-watch could only see ally=0, not the cause).
+            if (BotPerception.MilitaryFirstAt > 0f && s.AllyCount == 0 &&
+                now - BotPerception.MilitaryFirstAt > 90f)
+            {
+                lastAnomalyAt = now;
+                LogLine(in s, "anomaly:army-starved");
+                Plugin.Log?.LogWarning(
+                    "[bot] anomaly army-starved: military building 90s, ally=0");
+                return;
+            }
         }
 
         /// <summary>
@@ -595,10 +615,37 @@ namespace ThronefallTrainer
             lastWatchDist = aimDist;
             bool stillFar = aimDist > arriveDist + 0.5f;
 
+            // Arrived-but-failing watchdog: reached the aim radius yet the
+            // interaction never completes (coin on a collider, slot behind a
+            // wall edge, unreachable horn). stillFar is false so strikes
+            // never accrue — the hero used to stand there forever. Give an
+            // arrived aim 20 s to resolve, then park it like a stall.
+            if (!stillFar)
+            {
+                if (arriveSince <= 0f) arriveSince = Time.unscaledTime;
+                if (Time.unscaledTime - arriveSince > 20f)
+                {
+                    arriveSince = 0f;
+                    Plugin.Log?.LogWarning($"[bot] aim-stall in {Mode} — parked aim");
+                    LogLine(in s, "aim-stall");
+                    if (Mode == BotMode.CollectCoin && s.NearestCoin != null)
+                        coinIgnore.Add(s.NearestCoin);
+                    else if (Mode == BotMode.SpendGold && s.NearestBuild != null)
+                        BotPerception.IgnoreBuild(s.NearestBuild, 300f);
+                    ClearTarget();
+                    return;
+                }
+            }
+            else arriveSince = 0f;
+
             if (moved < StuckEpsilon && stillFar && !closing)
             {
                 StuckStrikes++;
-                Plugin.Log?.LogWarning($"[bot] stuck strike {StuckStrikes} (mode={Mode}, moved {moved:0.00} m)");
+                stuckStrikeTotal++;
+                if (stuckStrikeTotal == 60)
+                    Plugin.Log?.LogWarning("[bot] 60 stuck strikes — per-strike logging capped this run");
+                else if (stuckStrikeTotal < 60)
+                    Plugin.Log?.LogWarning($"[bot] stuck strike {StuckStrikes} (mode={Mode}, moved {moved:0.00} m)");
                 LogLine(in s, $"stuck:{StuckStrikes}");
                 if (StuckStrikes >= MaxStrikesBeforeTeleport)
                 {
@@ -623,30 +670,26 @@ namespace ThronefallTrainer
                     if (Legit)
                     {
                         Vector3 toAim = AimPos - s.HeroPos; toAim.y = 0f;
-                        if (moved < 0.05f && pm != null && AstarPath.active != null)
+                        if (moved < 0.05f && pm != null)
                         {
+                            // LEGIT MODE: no teleport — players can't warp out
+                            // of a collider cage. Escalate the detour reach
+                            // instead (3→12 m) and park the aim if it stays
+                            // unreachable; teleport nudges violated the
+                            // legit-mode contract (audit finding).
                             var ctrl = pm.GetComponent<CharacterController>();
                             Plugin.Log?.LogWarning($"[bot] hard-stuck diag: type={pm.GetType().Name} " +
                                 $"ctrlEnabled={ctrl != null && ctrl.enabled} grounded={ctrl != null && ctrl.isGrounded} " +
                                 $"vel={pm.Velocity} dead={pm.Dead} scene={s.SceneName}");
-                            // Zero displacement = embedded inside a collider
-                            // cage (vel reads ~30 m/s, pos never changes).
-                            // Escape BACKWARD to the last provably-free spot —
-                            // snapping toward the aim re-drops him in the same
-                            // cage 0.2 m away, the snap-loop the runs showed.
-                            bool hasEscape = Time.unscaledTime - lastFreeAt < 60f &&
-                                             FlatDist(lastFreePos, s.HeroPos) > 2.5f;
-                            Vector3 snap = AstarPath.active.GetNearest(
-                                hasEscape ? lastFreePos
-                                          : s.HeroPos + (toAim.sqrMagnitude > 0.01f ? toAim.normalized : Vector3.forward) * 1.5f,
-                                new Pathfinding.NNConstraint()).position;
-                            pm.TeleportTo(snap);
-                            // Drop any stale path — its origin no longer matches
-                            // where the hero stands after the escape.
-                            navPath = null; navIndex = 0; navInFlight = false; navGoal = Vector3.zero;
-                            Plugin.Log?.LogWarning($"[bot] stuck (no movement possible) → " +
-                                $"{(hasEscape ? "escape-snap" : "navmesh snap")} to {snap}");
-                            LogLine(in s, hasEscape ? "snap-escape" : "snap");
+                            detourCount++;
+                            if (detourCount > 4) { detourCount = 1; detourSide = -detourSide; }
+                            float reach = 3f * detourCount;
+                            Vector3 fwd = toAim.sqrMagnitude > 0.01f ? toAim.normalized : Vector3.forward;
+                            detourPos = s.HeroPos + fwd * 2f +
+                                Vector3.Cross(Vector3.up, fwd) * (reach * detourSide);
+                            detourUntil = Time.unscaledTime + 1.2f + 0.6f * detourCount;
+                            Plugin.Log?.LogWarning($"[bot] hard-stuck (legit) → detour x{detourCount} to {detourPos}");
+                            LogLine(in s, $"unstick:{detourCount}");
 
                             // If the aim itself is unreachable (nav island /
                             // one-way drop — A* returns a 1-wp degenerate
@@ -918,8 +961,13 @@ namespace ThronefallTrainer
         {
             int target = s.UncoveredDoorTarget > 0 ? s.UncoveredDoorTarget : 4;
             int posted = 0;
+            // Coach/playbook RESERVE: never post the last N units — they stay
+            // at the castle as the emergency garrison (field was previously
+            // parsed but never consumed).
+            int reserve = Mathf.Max(Coach.ReserveSize, BotPerception.Strat.Reserve);
+            int postable = Mathf.Max(0, s.AllyCount - reserve);
             var units = TagManager.instance.PlayerUnits;
-            for (int i = 0; i < units.Count && posted < target; i++)
+            for (int i = 0; i < units.Count && posted < target && posted < postable; i++)
             {
                 var t = units[i];
                 if (t == null || t.Hp == null || !t.Hp.Alive) continue;

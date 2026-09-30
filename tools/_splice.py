@@ -1,0 +1,10 @@
+import pathlib
+srv = pathlib.Path(r"K:\Downloads-IDM\Thronefall\Trainer\tools\coach-server.py")
+new = pathlib.Path(r"K:\Downloads-IDM\Thronefall\Trainer\tools\_newpage.html").read_text(encoding="utf-8")
+src = srv.read_text(encoding="utf-8")
+i0 = src.find('PAGE = r"""')
+i1 = src.find('</script></body></html>"""')
+assert 0 < i0 < i1, (i0, i1)
+i1 += len('</script></body></html>"""')
+srv.write_text(src[:i0] + new + src[i1:], encoding="utf-8")
+print("spliced", i0, "->", i1)

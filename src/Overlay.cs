@@ -30,9 +30,19 @@ namespace ThronefallTrainer
 
         private void OnGUI()
         {
+            // An OnGUI exception fires EVERY frame (log flood + broken GUI
+            // state) — the audit found it unguarded. Fail once, self-disable.
             if (!Visible) return;
-            if (big == null) Styles();
-            win = GUI.Window(0xD41B, win, Draw, "Grandmaster  [F1]");
+            try
+            {
+                if (big == null) Styles();
+                win = GUI.Window(0xD41B, win, Draw, "Grandmaster  [F1]");
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.Log?.LogError($"[overlay] OnGUI failed — disabled: {ex}");
+                Visible = false;
+            }
         }
 
         private void Styles()

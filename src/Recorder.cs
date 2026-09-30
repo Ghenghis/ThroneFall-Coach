@@ -224,7 +224,7 @@ namespace ThronefallTrainer
                         ruleFires.ToArray(), kv => "\"" + J(kv.Key) + "\":" + kv.Value)) + "}," +
                     "\"recorder\":{\"ticks\":" + tickCount + ",\"dropped\":" + dropped +
                     ",\"ioErrors\":" + ioErrors + "}}";
-                File.WriteAllText(summaryPath, json);
+                WriteAtomic(summaryPath, json);
                 Event("match-end", "\"result\":\"" + J(result) + "\"");
                 // Index line into episodic memory (spec §5: one line per run).
                 Enq(Path.Combine(AgentDir, Path.Combine("memory", "episodic"), "index.jsonl"), json);
@@ -287,6 +287,17 @@ namespace ThronefallTrainer
                 if (!char.IsLetterOrDigit(chars[i]) && chars[i] != '-' && chars[i] != '_')
                     chars[i] = '_';
             return new string(chars);
+        }
+
+        /// <summary>Atomic write: tmp + move. The coach server polls these
+        /// files every second — a torn write once poisoned a whole metric.
+        /// </summary>
+        public static void WriteAtomic(string path, string text)
+        {
+            string tmp = path + ".tmp";
+            File.WriteAllText(tmp, text);
+            if (File.Exists(path)) File.Delete(path);
+            File.Move(tmp, path);
         }
     }
 
@@ -372,7 +383,7 @@ namespace ThronefallTrainer
                     string text = JVal(order, "\"text\":", true);
                     if (text == null) throw new InvalidDataException("policy op needs text");
                     var p = Path.Combine(Recorder.AgentDir, "policy.txt");
-                    File.WriteAllText(p, text);
+                    WriteAtomic(p, text);
                     Bot.LogLine(in s, "mailbox-policy");
                     Plugin.Log?.LogInfo("[bot] mailbox: policy.txt replaced by sidecar");
                     break;
@@ -423,7 +434,7 @@ namespace ThronefallTrainer
                     "\"gold\":" + s.Balance + ",\"core\":" + s.CoreBalance + "," +
                     "\"army\":" + s.AllyCount + "," +
                     "\"frame\":\"" + J(Bot.UiFrame) + "\"}";
-                File.WriteAllText(file, json);
+                WriteAtomic(file, json);
             }
             catch { }
         }
@@ -449,5 +460,16 @@ namespace ThronefallTrainer
         }
         private static string J(string s) => s == null ? "" : s.Replace("\\", "\\\\").Replace("\"", "\\\"");
         private static string F(float v) => v.ToString("0.###", CultureInfo.InvariantCulture);
+
+        /// <summary>Atomic write: tmp + move. The coach server polls these
+        /// files every second — a torn write once poisoned a whole metric.
+        /// </summary>
+        public static void WriteAtomic(string path, string text)
+        {
+            string tmp = path + ".tmp";
+            File.WriteAllText(tmp, text);
+            if (File.Exists(path)) File.Delete(path);
+            File.Move(tmp, path);
+        }
     }
 }

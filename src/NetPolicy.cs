@@ -116,8 +116,7 @@ namespace ThronefallTrainer
                     $" (last: net={Modes[m]}@{conf:0.##} bot={pickedMode})");
                 try
                 {
-                    File.WriteAllText(
-                        Path.Combine(Recorder.AgentDir, "netstats.json"),
+                    Recorder.WriteAtomic(Path.Combine(Recorder.AgentDir, "netstats.json"),
                         "{\"agree\":" + agree + ",\"disagree\":" + disagree +
                         ",\"ratio\":" + ((agree + disagree) > 0
                             ? ((float)agree / (agree + disagree)).ToString("0.###",
