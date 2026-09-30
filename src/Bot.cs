@@ -1637,13 +1637,21 @@ namespace ThronefallTrainer
                 s.HasHorn ? "true" : "false", s.HornDist, s.BuildCount, s.EnemiesNearHero, note);
         }
 
+        private static string lastEvtNote; private static float lastEvtAt;
+
         internal static void LogLine(in BotPerception.Snapshot s, string note)
         {
             EnsureLog();
             // Event stream + derived counters feed the recorder regardless of
             // the main log being available. "tick" is the 4 Hz heartbeat —
-            // it belongs in ticks.jsonl, not the event stream.
-            if (note != "tick") Recorder.Event(note);
+            // it belongs in ticks.jsonl, not the event stream. Identical
+            // notes flood at ~4 Hz (invalid ×80, hero-door ×18) — collapse
+            // repeats to one entry per 4 s; counters still count every one.
+            if (note != "tick")
+            {
+                if (note == lastEvtNote && Time.unscaledTime - lastEvtAt < 4f) { }
+                else { Recorder.Event(note); lastEvtNote = note; lastEvtAt = Time.unscaledTime; }
+            }
             if (note == "snap")
             {
                 Recorder.CountSnap();
