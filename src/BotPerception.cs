@@ -1397,7 +1397,28 @@ namespace ThronefallTrainer
             for (int i = 0; i < builds.Count; i++)
             {
                 var bi = builds[i];
-                if (bi == null || !bi.isActiveAndEnabled || !bi.CanBeInteractedWith) continue;
+                if (bi == null || !bi.isActiveAndEnabled) continue;
+                // Held-hold stickiness must outrank the interactable filter:
+                // mid-choice slots report CanBeInteractedWith=false while the
+                // unit pick resolves — skipping them here releases the hold
+                // and refunds the partial fill (observed: Archery Range →
+                // waitChoice → brain re-picked Barracks → refund → never
+                // completes). Keep the held slot selected until done.
+                bool heldMatch0 = preferBuildKey >= 0 &&
+                                  bi.GetInstanceID() == preferBuildKey;
+                if (heldMatch0)
+                {
+                    float hd0 = (bi.transform.position - s.HeroPos).sqrMagnitude;
+                    if (hd0 <= 6f * 6f && !IsInteractorFinished(bi))
+                    {
+                        s.NearestBuildDist = hd0;
+                        s.NearestBuild = bi;
+                        s.NearestBuildScore = 100000;
+                        bestBuildScore = int.MaxValue;
+                        continue;
+                    }
+                }
+                if (!bi.CanBeInteractedWith) continue;
                 // "Complete" or choice-wedged interactors still report
                 // CanBeInteractedWith — their InteractionHold early-returns
                 // forever (diag: state=Upgrade complete=True on the Castle

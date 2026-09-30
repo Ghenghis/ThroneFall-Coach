@@ -1104,6 +1104,12 @@ namespace ThronefallTrainer
             if (frame == null || !frame.freezePlayer) { lastFrameName = ""; frameSeen = 0; return false; }
             if (frame.name != lastFrameName) { lastFrameName = frame.name; frameSeen = 0; }
 
+            // A Choice frame mid-resolution must NOT be closed — the pick is
+            // already set but the coroutine needs a beat to resume; slamming
+            // the frame shut cancels the hold and refunds the fill (the
+            // "never finishes upgrades" bug). Wait for the coroutine to end.
+            if (cm != null && cm.ChoiceCoroutineRunning) return true;
+
             // End-of-match screens carry a BackToLevelSelectHelper button and
             // are unescapable — follow it to return to the campaign map where
             // EnterLevel picks the next unbeaten node. Pause menus carry the
