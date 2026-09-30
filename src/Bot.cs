@@ -122,6 +122,7 @@ namespace ThronefallTrainer
         private static float navDirectUntil; // beeline window — navmesh lies, feet don't
         private static float interZeroSince = -1f;  // no-interactables timer
         private static float interVacuumAt;         // vacuum exit cooldown
+        private static float nonVacSince = -1f;     // sustained-healthy window
         private static float navRepathAt;
         private static bool navInFlight;
         private static float navSteerArrive = 0.5f;
@@ -440,7 +441,15 @@ namespace ThronefallTrainer
             if (s.GameState == "InMatch" && !s.IsNight && s.AllyCount == 0 &&
                 s.CoinCount == 0 && s.NearestBuild == null && s.InteractorCount == 0)
             {
-                if (interZeroSince < 0) interZeroSince = Time.unscaledTime;
+                nonVacSince = -1f;
+                if (interZeroSince < 0)
+                {
+                    interZeroSince = Time.unscaledTime;
+                    Plugin.Log?.LogWarning(
+                        $"[bot] vacuum-diag ARMED: gs={s.GameState} night={s.IsNight} " +
+                        $"ally={s.AllyCount} coins={s.CoinCount} nb={(s.NearestBuild == null ? "null" : s.NearestBuildName)} " +
+                        $"inter={s.InteractorCount}");
+                }
                 else if (Time.unscaledTime - interZeroSince > 40f &&
                          Time.unscaledTime >= interVacuumAt)
                 {
@@ -454,7 +463,13 @@ namespace ThronefallTrainer
                         SceneTransitionManager.instance.TransitionToLevelSelect();
                 }
             }
-            else interZeroSince = -1f;
+            else
+            {
+                // Fields flicker (ally/coin/gs bounce between captures) —
+                // only a SUSTAINED healthy window disarms the vacuum timer.
+                if (nonVacSince < 0) nonVacSince = Time.unscaledTime;
+                if (Time.unscaledTime - nonVacSince > 3f) interZeroSince = -1f;
+            }
 
             // Sidecar bridge (Phase 3): poll inbox orders (1 Hz), publish
             // state.json for the external agent (0.2 Hz).
