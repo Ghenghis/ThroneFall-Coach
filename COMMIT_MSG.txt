@@ -1,20 +1,14 @@
-GPS wall-gate escape (Claude) + night-readiness/rescan/thrash fixes
+Replay purity fix + tick fields; Frostsee victory verified live
 
-Gates.cs/GatePlanner.cs: on a real pathfinder failure, BFS over gate-linked
-nav areas (unit-tested) or a label-free heuristic picks the wall gate out of
-an enclosure; the hero walks to the near side and pushes through (the gate
-auto-opens at 5 m). Verified live: gps plan fired + dropped on reachable.
+BotBrain no longer references BotPerception (DoorUnitAt -> UncoveredDoorUnits,
+OpenBuildOrder -> OpenOrder on SnapshotData) so tests/Replay compiles again;
+tick JSON gains drp/drcl/udu/bldb/mwa keys and the parser reads them.
 
-Night readiness counts manned doors only (DoorsParked/DoorsClaimed split
-out of DoorsCovered); rescan-slots now fires when every slot is parked
-(new BlockedBuilds counter); approach-timeout keeps its clock across
-sub-20 m retargets; army target looks two waves ahead via
-GetWaveInfoByNumber; choice picks are ranked (commander > castle/royal >
-units > defense > build > economy > hero buffs); perks are curated
-(mutations skipped, one weapon, top-4 perks); ticks.jsonl gains nav status.
-
-build-and-deploy.ps1: taskkill /F (Stop-Process silently failed), and the
-plugin-load check handles log rotation. File must keep UTF-8 BOM.
+Live evidence on this build: Frostsee run 20261001T111053Z won all waves
+(0 hero deaths, castle 87% at wave 12), 9 gps-cross in 1-4.1 s each,
+rescan-slots firing on cooldown, pin share 18.6% vs 37.5% baseline.
+The durststein-dto fixture needs re-capture under this build (idle-night
+is intentionally slower while gold and blocked slots remain).
 
 Generated with [Devin](https://devin.ai)
 

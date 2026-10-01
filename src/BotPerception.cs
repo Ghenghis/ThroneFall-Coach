@@ -110,6 +110,7 @@ namespace ThronefallTrainer
             // deduped within 20 m (Forest stalls kept parking 'Spawn')
             public int UncoveredDoorTarget;
             public bool UncoveredDoorHot;
+            public int UncoveredDoorUnits;   // units at the picked uncovered door (-1 none)
             public bool HasUncoveredDoor;
             public int ArmyTarget;
             public float SelfDefendRange;   // hero fights inside this radius
@@ -204,6 +205,8 @@ namespace ThronefallTrainer
                 UncoveredDoorTarget = s.UncoveredDoorTarget,
                 UncoveredDoorHot = s.UncoveredDoorHot,
                 UncoveredDoorIdx = s.UncoveredDoorIdx,
+                UncoveredDoorUnits = s.UncoveredDoorUnits,
+                OpenOrder = OpenBuildOrder(),
                 GateCount = s.GateCount,
                 GatePos = V(s.GatePos),
                 GateDist = s.GateDist,
@@ -1565,6 +1568,10 @@ namespace ThronefallTrainer
                 // Sentinel bug: an anchor legitimately AT world origin read
                 // as "no uncovered door" — the index is the truth.
                 s.HasUncoveredDoor = s.UncoveredDoorIdx >= 0;
+                // Unit count at the picked door — projected so the pure layer
+                // does not need DoorUnitAt (it broke the Replay build).
+                s.UncoveredDoorUnits = s.UncoveredDoorIdx >= 0 && doorUnit != null &&
+                    s.UncoveredDoorIdx < doorUnit.Length ? doorUnit[s.UncoveredDoorIdx] : -1;
                 // Army target: squad-size per door (breach doubles), at least
                 // 16, plus headroom for the incoming wave — production runs
                 // until met.

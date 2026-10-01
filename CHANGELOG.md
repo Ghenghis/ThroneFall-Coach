@@ -36,6 +36,13 @@
   twice), refuses to deploy while the exe still lives, and the plugin-load check scans from byte 0 when BepInEx rotated
   the log. NOTE: the file must keep a UTF-8 BOM or ASCII-only — PS 5.1 reads BOM-less files as ANSI and em-dashes decode
   to `"` and break the parse.
+- **Result:** fresh-run Frostsee **victory** (run 20261001T111053Z, all 12/13 waves, 0 hero deaths, castle 87 % at the
+  143-foe wave, 2601 s). Live in that run: 9 gps-cross (1.0-4.1 s each, incl. a 2-hop chain), 5 rescan-slots on the 30 s
+  cooldown, pin share 18.6 % vs the 37.5 % baseline. Second Frostsee win; first under GPS + night-readiness.
+- **Replay harness fixed + green path:** `BotBrain` no longer touches `BotPerception` (`DoorUnitAt`/`OpenBuildOrder`
+  are projected onto `SnapshotData` as `UncoveredDoorUnits`/`OpenOrder`), so `tests/Replay` compiles again and its
+  parser understands drp/drcl/udu/bldb/mwa. The shipped durststein-dto fixture now drifts 1/163 ticks (intended:
+  idle-night needs 40 s while gold + blocked slots remain); re-capture under this build to re-baseline.
 
 ## Pin-park pass (live evidence)
 

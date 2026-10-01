@@ -135,6 +135,8 @@ namespace ThronefallTrainer
         public int UncoveredDoorTarget;
         public bool UncoveredDoorHot;
         public int UncoveredDoorIdx;
+        public int UncoveredDoorUnits;  // units actually manning the picked door (-1 none picked)
+        public string[] OpenOrder;      // playbook build categories still open
         public int GateCount;             // interactable path-unlock pads
         public Vec2 GatePos;
         public float GateDist;
@@ -256,6 +258,7 @@ namespace ThronefallTrainer
             Append(sb, ",\"hpos\":", HornPos, HasHorn, ci);
             Append(sb, ",\"hd\":", HornDist, ci);
             Append(sb, ",\"bld\":", BuildCount);
+            Append(sb, ",\"bldb\":", BlockedBuilds);
             Append(sb, ",\"bldk\":", BuildKey);
             sb.Append(",\"bn\":\"").Append(Esc(BuildName)).Append('\"');
             Append(sb, ",\"bpos\":", BuildPos, HasBuild, ci);
@@ -266,6 +269,9 @@ namespace ThronefallTrainer
             Append(sb, ",\"free\":", FreeUnits);
             Append(sb, ",\"drc\":", DoorsCovered);
             Append(sb, ",\"drn\":", DoorCount);
+            Append(sb, ",\"drp\":", DoorsParked);
+            Append(sb, ",\"drcl\":", DoorsClaimed);
+            Append(sb, ",\"udu\":", UncoveredDoorUnits);
             Append(sb, ",\"ra\":", RedAlert);
             Append(sb, ",\"at\":", ArmyTarget);
             Append(sb, ",\"hot\":", UncoveredDoorHot);
@@ -277,6 +283,7 @@ namespace ThronefallTrainer
             Append(sb, ",\"wrng\":", ActiveRange, ci);
             Append(sb, ",\"wfm\":", ActiveFiresMoving);
             Append(sb, ",\"nwc\":", NextWaveCount);
+            Append(sb, ",\"mwa\":", MaxWaveAhead);
             Append(sb, ",\"nwe\":", NextWaveElites);
             Append(sb, ",\"nwh\":", NextWaveMaxHp, ci);
             Append(sb, ",\"nws\":", NextWaveSpeed, ci);
@@ -783,7 +790,7 @@ namespace ThronefallTrainer
                 // ends and the units go to a lane they can actually reach.
                 if (s.HasUncoveredDoor && m.DoorPostStreak >= 4 &&
                     s.UncoveredDoorIdx >= 0 &&
-                    BotPerception.DoorUnitAt(s.UncoveredDoorIdx) == 0)
+                    s.UncoveredDoorUnits == 0)
                 {
                     r.Intents.Add(Intent.At(IntentKind.ParkDoor, s.UncoveredDoorIdx));
                     r.Notes.Add("door-park:" + s.UncoveredDoorLine);
@@ -1084,7 +1091,7 @@ namespace ThronefallTrainer
                 // (doorUnit==0 after 4 tries) = unwalkable anchor — park it.
                 if (s.HasUncoveredDoor && m.DoorPostStreak >= 4 &&
                     s.UncoveredDoorIdx >= 0 &&
-                    BotPerception.DoorUnitAt(s.UncoveredDoorIdx) == 0)
+                    s.UncoveredDoorUnits == 0)
                 {
                     r.Intents.Add(Intent.At(IntentKind.ParkDoor, s.UncoveredDoorIdx));
                     r.Notes.Add("door-park:" + s.UncoveredDoorLine);
@@ -1117,7 +1124,7 @@ namespace ThronefallTrainer
             // mechanic — hold-to-fill, costs toggleCost. Hard rule: when the
             // playbook wants a gate (or no build work is left), walk to the
             // nearest pad and hold it until the path opens.
-            var openOrder = BotPerception.OpenBuildOrder();
+            var openOrder = s.OpenOrder ?? System.Array.Empty<string>();
             bool wantGate = s.GateCount > 0 && now >= m.GateIgnoreUntil &&
                 (System.Array.IndexOf(openOrder, "gate") >= 0 || !s.HasBuild);
             if (!wantGate) m.GateWalkSince = 0f;
