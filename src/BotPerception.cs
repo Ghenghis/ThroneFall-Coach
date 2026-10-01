@@ -658,6 +658,15 @@ namespace ThronefallTrainer
             {
                 var p = System.IO.Path.Combine(Recorder.AgentDir, "botpack",
                     "strategy_" + scene.ToLowerInvariant() + ".json");
+                if (!System.IO.File.Exists(p))
+                {
+                    // Map-intel draft (gen-mapintel.py): auto-derived playbook
+                    // for scenes with no hand-tuned strategy — squad sizes,
+                    // wave_priority and door_distance_m computed from the
+                    // extracted spawn corridors + wave tables.
+                    p = System.IO.Path.Combine(Recorder.AgentDir, "botpack",
+                        "strategy_" + scene.ToLowerInvariant() + ".auto.json");
+                }
                 if (!System.IO.File.Exists(p)) return;
                 string j = System.IO.File.ReadAllText(p);
                 Strat.Squad = JInt(j, "squad_size");

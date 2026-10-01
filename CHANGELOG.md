@@ -317,3 +317,9 @@ AUTOPILOT §8–9 for the full list and next actions.
 - **Elite stall posture:** `elite_stall_hp` (0.62) — an elite on the hero with troops alive routes to the retreat
   lane instead of Engage ("stall, don't duel the Ram").
 - **Revive edge:** `revived-reset` re-arms door posts, restarts army phase and drops stale build clocks on respawn.
+- **Map-intel generator (v3.5):** `tools/gen-mapintel.py` synthesizes `strategy_<scene>.auto.json` for all 37 scenes
+  from extracted botpack data — per-line squad sizes weighted by foes/elites/flyers + chokepoint width,
+  `army_target` from the biggest night, `door_distance_m` from corridor narrow-points, `build_order` from slot
+  inventory, plus hero/breach/economy rules and objective kind. `LoadStrategy` falls back to the `.auto.json`
+  when no hand-tuned pack exists — never-seen maps get a competent playbook instead of blind defaults.
+  bot-lint guards the fallback; 37 drafts on disk.

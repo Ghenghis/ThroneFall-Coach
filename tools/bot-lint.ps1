@@ -234,6 +234,19 @@ foreach ($pin in @('Memory\.(Park|Bump|NearMishap|Count|Init)',
     }
 }
 
+# Map-intel fallback: scenes without a hand strategy_*.json must still get a
+# generated playbook — regression = losing the .auto.json fallback and an
+# unseen map running blind.
+$agentDir = 'K:\Downloads-IDM\Thronefall\BepInEx\plugins\agent'
+$autos = (Get-ChildItem (Join-Path $agentDir 'botpack\strategy_*.auto.json') -EA SilentlyContinue |
+          Measure-Object).Count
+if ($autos -gt 0 -and $bp -match '\.auto\.json') {
+    Report 'PASS' "map-intel: $autos auto strategies + LoadStrategy fallback" $null $null
+} else {
+    Report 'WARN' 'map-intel: auto strategy fallback missing' '' `
+           'run tools/gen-mapintel.py; keep the .auto.json fallback in LoadStrategy'
+}
+
 Write-Host ''
 # PS 5.1-safe: the ternary `? :` is PS7-only and made the whole script a
 # parse error (every lint check silently never ran — audit round 7).
