@@ -1813,6 +1813,16 @@ internal static class Bot
 			break;
 		case IntentKind.SwitchNight:
 		{
+			// Call-night precondition (decompiled PlayerInteraction.IsFreeToCallNight):
+			// no focussed interactor, not frozen, castle alive, tutorial allows,
+			// match running. Calling SwitchToNight while blocked just no-ops —
+			// the brain burned the 15 s retry window on silent rejects.
+			var pi = PlayerInteraction.instance;
+			if ((UnityEngine.Object)(object)pi != (UnityEngine.Object)null && !pi.IsFreeToCallNight)
+			{
+				LogLine(in s, "night-blocked");
+				break;
+			}
 			Policy.Commit("night", ((int)s.DayBudget).ToString(), s.PolicyKey ?? "", new string[3] { "150", "240", "330" });
 			DayNightCycle instance3 = DayNightCycle.Instance;
 			if (instance3 != null)

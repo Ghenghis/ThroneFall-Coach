@@ -369,6 +369,42 @@ def mm_watch_loop():
             if mode == "off":
                 # heartbeat keeps beating so the UI can tell "paused" from "dead"
                 time.sleep(min(60.0, wsec)); continue
+            # Postmortem: a run finished (summary.json exists on a run dir we
+            # haven't autopsied). One MiniMax call per finished run — notes +
+            # proposals feed the next playbook iteration.
+            try:
+                runs_dir = AGENT / "runs"
+                if runs_dir.exists():
+                    done = [d for d in runs_dir.iterdir()
+                            if (d / "summary.json").exists()]
+                    if done:
+                        newest = max(done, key=lambda d: d.stat().st_mtime)
+                        if newest.name != getattr(mm_watch_loop, "pm_run", None):
+                            mm_watch_loop.pm_run = newest.name
+                            summ = json.loads(
+                                (newest / "summary.json").read_text(errors="replace"))
+                            pmr, _u = mm_chat(
+                                [{"role": "system", "content": MM_SYS},
+                                 {"role": "user", "content":
+                                  "POSTMORTEM — the run just ended. Reply JSON only: "
+                                  '{"note":"<result, cause, one concrete fix>"} and '
+                                  'optionally "proposal":{"bug","evidence","fix"} if a '
+                                  "code change is needed.\nSUMMARY: "
+                                  + json.dumps(summ)[:4000]}],
+                                max_tokens=2000)
+                            _watch_log({"t": round(time.time(), 1),
+                                        "kind": "postmortem",
+                                        "run": newest.name, "raw": pmr[:500]})
+                            try:
+                                i0, i1 = pmr.find("{"), pmr.rfind("}")
+                                pobj = json.loads(pmr[i0:i1 + 1])
+                                if pobj.get("proposal"):
+                                    record_proposal(pobj["proposal"], st)
+                            except Exception:
+                                pass
+            except Exception as ex:
+                _watch_log({"t": round(time.time(), 1),
+                            "kind": "postmortem-err", "error": str(ex)})
             # Skip mid-call spam: re-steer on stable signals only — `ally`
             # fluctuated every tick so sig==last_sig almost never deduped.
             sig = (st.get("mode"), st.get("night"), st.get("wave"),

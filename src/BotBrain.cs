@@ -382,6 +382,7 @@ namespace ThronefallTrainer
         public int[] DoorPostCounts;    // per-door consecutive PlaceSquad posts
         public float[] DoorPostAts;     // per-door last PlaceSquad time
         public bool WasDead;            // revive edge: re-arm coverage on respawn
+        public float ShrineIgnoreUntil; // shrine visit cooldown — charging takes time
 
         // level-select transition hang detector
         public float BusySince;
@@ -1168,6 +1169,30 @@ namespace ThronefallTrainer
             {
                 m.Mode = BotMode.CollectCoin; r.Mode = m.Mode;
                 Aim(ref r, s.CoinPos, ArriveCoin);
+                return r;
+            }
+
+            // ---- day: shrine charge — shrines fill from unit deaths inside
+            // their collectionRange (decompiled Shrine.cs: DeathOfUnitAt).
+            // Walk the commanded blob to the shrine and PlaceArmy so the
+            // fighting happens in the circle. Low priority: only when the
+            // war machine is basically ready and nothing is on fire.
+            if (!s.IsNight && s.ShrineCount > 0 && s.ShrineDist < 80f &&
+                now >= m.ShrineIgnoreUntil &&
+                s.AllyCount * 10 >= s.ArmyTarget * 7 &&
+                !s.RedAlert && !s.HasCastleThreat && !s.UncoveredDoorHot &&
+                s.FreeUnits >= 2)
+            {
+                m.Mode = BotMode.CollectCoin; r.Mode = m.Mode;
+                Aim(ref r, s.ShrinePos, 6f);
+                r.ProjectToNav = true;
+                r.Notes.Add("shrine-visit");
+                if (s.ShrineDist < 12f)
+                {
+                    r.Intents.Add(Intent.Of(IntentKind.CommandArmy));
+                    r.Intents.Add(Intent.Of(IntentKind.PlaceArmy));
+                    if (s.ShrineDist < 8f) m.ShrineIgnoreUntil = now + 180f;
+                }
                 return r;
             }
 
