@@ -430,3 +430,8 @@ AUTOPILOT §8–9 for the full list and next actions.
   audit-fresh (full game load + first capture can exceed 90 s; the first live relaunch reported
   verified:false because the window was tight, not because it failed).
 - **Desktop app launched + verified:** window responding, WebView2 spawned, menu bar live.
+- **Phase-2 live findings -> fixes:** Frostsee wave-1 night survived (doors 5/5, HoldCastle correct).
+  - Anomaly debounce: per-type cooldowns (stuck-spam 45s, night-park 45s, army-starved 90s) via AnomalyAllowed() -
+    the guard was the spammiest log source (28 events/600s at max global rate).
+  - Pin-probe skip list widened: "parent|container|holder|group|root" container transforms misclassified as
+    blockers ("obj:Alive Parent") - they can never pin, don't mask the real blocker.

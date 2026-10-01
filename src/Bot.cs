@@ -209,6 +209,22 @@ internal static class Bot
 
 	private static float lastAnomalyAt;
 
+	// Per-type anomaly debounce: the global gate above throttles rate, but a
+	// repeating anomaly (stuck-spam under door-park thrash) still fired at max
+	// rate — 28 times in 600 s, becoming the spammiest log source itself.
+	// Each kind gets its own cooldown window.
+	private static readonly Dictionary<string, float> anomalyAt = new Dictionary<string, float>();
+
+	private static bool AnomalyAllowed(string kind, float cooldown = 45f)
+	{
+		float now = Time.unscaledTime;
+		if (anomalyAt.TryGetValue(kind, out float prev) && now - prev < cooldown)
+			return false;
+		anomalyAt[kind] = now;
+		lastAnomalyAt = now;
+		return true;
+	}
+
 	private static Vector3 nightParkPos;
 
 	private static string requestedWeapon;
@@ -1024,7 +1040,7 @@ internal static class Bot
 			if (++stuckSpamCount >= 3)
 			{
 				stuckSpamCount = 0;
-				lastAnomalyAt = unscaledTime;
+				if (!AnomalyAllowed("stuck-spam")) return;
 				LogLine(in s, "anomaly:stuck-spam");
 				ManualLogSource log = Plugin.Log;
 				if (log != null)
@@ -1052,7 +1068,7 @@ internal static class Bot
 				else if (unscaledTime - nightParkSince > 15f)
 				{
 					nightParkSince = -1f;
-					lastAnomalyAt = unscaledTime;
+					if (!AnomalyAllowed("night-park")) return;
 					LogLine(in s, "anomaly:night-park");
 					ManualLogSource log2 = Plugin.Log;
 					if (log2 != null)
@@ -1071,7 +1087,7 @@ internal static class Bot
 		{
 			return;
 		}
-		lastAnomalyAt = unscaledTime;
+		if (!AnomalyAllowed("army-starved", 90f)) return;
 		LogLine(in s, "anomaly:army-starved");
 		ManualLogSource log3 = Plugin.Log;
 		if (log3 != null)
@@ -2659,8 +2675,11 @@ internal static class Bot
 					else if (n.Contains("tree") || n.Contains("stump") || n.Contains("bush")) cls = "terrain:" + go.name;
 					else if (n.Contains("water") || n.Contains("river") || n.Contains("lake")) cls = "terrain:" + go.name;
 					else if (n.Contains("path") || n.Contains("decal") || n.Contains("road") ||
-					         n.Contains("grass") || n.Contains("fx") || n.Contains("particle"))
-						continue;   // decorative ground art can't pin — don't mask the real blocker
+					         n.Contains("grass") || n.Contains("fx") || n.Contains("particle") ||
+					         n.Contains("parent") || n.Contains("container") || n.Contains("holder") ||
+					         n.Contains("group") || n.Contains("root"))
+						continue;   // decorative art AND container transforms can't pin —
+					            // "Alive Parent" misclassified a grouping node as a blocker
 					else cls = "obj:" + go.name;
 				}
 				float d = (go.transform.position - hero).sqrMagnitude;
