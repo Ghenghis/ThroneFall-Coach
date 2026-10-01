@@ -546,6 +546,7 @@ namespace ThronefallTrainer
               .Append(",\"doors_claimed\":").Append(s.DoorsClaimed)
               .Append(",\"doors_parked\":").Append(s.DoorsParked)
               .Append(",\"doors\":").Append(s.DoorCount)
+              .Append(",\"castles\":").Append(s.CastleCount)
               .Append(",\"red\":").Append(s.RedAlert ? "true" : "false")
               .Append(",\"breaches\":").Append(BreachCount)
               .Append(",\"blost\":").Append(s.BuildsLost)

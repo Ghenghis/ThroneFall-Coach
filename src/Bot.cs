@@ -2677,7 +2677,8 @@ internal static class Bot
 					else if (n.Contains("path") || n.Contains("decal") || n.Contains("road") ||
 					         n.Contains("grass") || n.Contains("fx") || n.Contains("particle") ||
 					         n.Contains("parent") || n.Contains("container") || n.Contains("holder") ||
-					         n.Contains("group") || n.Contains("root"))
+					         n.Contains("group") || n.Contains("root") ||
+					         n.Contains("damage collider") || n.Contains("projectile collider"))
 						continue;   // decorative art AND container transforms can't pin —
 					            // "Alive Parent" misclassified a grouping node as a blocker
 					else cls = "obj:" + go.name;

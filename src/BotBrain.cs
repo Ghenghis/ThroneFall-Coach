@@ -254,7 +254,7 @@ namespace ThronefallTrainer
             Append(sb, ",\"ls\":", OnLevelSelect);
             Append(sb, ",\"inter\":", InteractorCount);
             Append(sb, ",\"lvln\":", LevelCount);
-            if (CastleCount > 1) Append(sb, ",\"castles\":", CastleCount);
+            Append(sb, ",\"castles\":", CastleCount);
             Append(sb, ",\"lvlp\":", LevelPos, HasLevel, ci);
             Append(sb, ",\"lvld\":", LevelDist, ci);
             Append(sb, ",\"busy\":", SceneBusy);
