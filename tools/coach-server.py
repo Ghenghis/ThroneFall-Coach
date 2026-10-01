@@ -163,7 +163,7 @@ def eng_digest():
             tl = tail_lines(run / "ticks.jsonl", 1)
             if tl:
                 t = json.loads(tl[-1])
-                d["tick"] = {k: t.get(k) for k in ("nav", "bld", "bldb", "bn", "bd", "at", "mwa",
+                d["tick"] = {k: t.get(k) for k in ("nav", "bld", "bldb", "blost", "bn", "bd", "at", "mwa",
                              "drc", "drn", "drp", "drcl", "udu", "free", "ally", "gold", "dtl")}
     except Exception as ex:
         d["events_err"] = str(ex)[:80]

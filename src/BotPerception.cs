@@ -76,6 +76,7 @@ namespace ThronefallTrainer
 
             public int BuildCount;        // building slots currently interactable
             public int BlockedBuilds;     // slots skipped ONLY because they are ignored/parked (retry candidates)
+            public int BuildsLost;        // buildings knocked out tonight (Hp.KnockedOut), restored at dawn
             public BuildingInteractor NearestBuild;    // best-scoring spendable building
             public Vector3 NearestBuildPos;
             public float NearestBuildDist;
@@ -207,6 +208,7 @@ namespace ThronefallTrainer
                 UncoveredDoorIdx = s.UncoveredDoorIdx,
                 UncoveredDoorUnits = s.UncoveredDoorUnits,
                 OpenOrder = OpenBuildOrder(),
+                BuildsLost = s.BuildsLost,
                 GateCount = s.GateCount,
                 GatePos = V(s.GatePos),
                 GateDist = s.GateDist,
@@ -437,6 +439,16 @@ namespace ThronefallTrainer
                 NameBuilt.Clear();
                 milFirstAt = -1f;
             }
+            // A KO'd slot that gets repaired through the interactor completes
+            // here — drop its lost marker or the dawn-revive restore would
+            // double-count it (BuildDone already incremented the category).
+            if (pos != default && lostBuilds.Count > 0)
+            {
+                var rm = new System.Collections.Generic.List<int>();
+                foreach (var kv in lostBuilds)
+                    if ((kv.Value.Key - pos).sqrMagnitude < 64f) rm.Add(kv.Key);
+                foreach (var k in rm) lostBuilds.Remove(k);
+            }
             string cat = BuildCat(buildingName);
             nonDefenseStreak = (cat == "wall" || cat == "gate" || cat == "tower") ? 0 : nonDefenseStreak + 1;
             // "Gate Wide Variant" objects report buildingName "Wall" — the
@@ -484,6 +496,14 @@ namespace ThronefallTrainer
         private static readonly System.Collections.Generic.Dictionary<string, int> catStuck =
             new System.Collections.Generic.Dictionary<string, int>();
 
+        /// <summary>interactor-id -> (pos, category) of a knocked-out building
+        /// we already subtracted from CatBuilt. A KO'd building stays "Built"
+        /// in BuildSlot.State but its Hp goes KnockedOut until the dawn revive —
+        /// without this, the checklist counts a fallen wall as standing forever
+        /// and breach_rules ("rebuild breached walls") can never fire.</summary>
+        private static readonly System.Collections.Generic.Dictionary<int, KeyValuePair<Vector3, string>> lostBuilds =
+            new System.Collections.Generic.Dictionary<int, KeyValuePair<Vector3, string>>();
+
         /// <summary>Count a failure against a build category (unreachable park,
         /// wrong-layer retry, stall). At 4+ the playbook skips it — the plan
         /// degrades to the next category instead of starving.</summary>
@@ -525,6 +545,7 @@ namespace ThronefallTrainer
               .Append(",\"doors\":").Append(s.DoorCount)
               .Append(",\"red\":").Append(s.RedAlert ? "true" : "false")
               .Append(",\"breaches\":").Append(BreachCount)
+              .Append(",\"blost\":").Append(s.BuildsLost)
               .Append(",\"bld\":").Append(s.BuildCount)
               .Append(",\"bld_blocked\":").Append(s.BlockedBuilds)
               .Append(",\"gates\":").Append(s.GateCount)
@@ -622,6 +643,7 @@ namespace ThronefallTrainer
             CatBuilt.Clear();
             NameBuilt.Clear();
             catStuck.Clear();
+            lostBuilds.Clear();
             milFirstAt = -1f;
             catBuiltScene = null;
             badStands.Clear();       // per-scene stand blacklist (PosKey has no scene)
@@ -1968,6 +1990,38 @@ namespace ThronefallTrainer
             {
                 var bi = builds[i];
                 if (bi == null) continue;
+                // Wall-loss tracking: knocked-out buildings keep State==Built
+                // but Hp goes KnockedOut until the dawn revive. Reflect the
+                // loss in CatBuilt so open_order/checklist see the breach;
+                // restored when the building comes back (or cleared by the
+                // repair path's BuildDone above).
+                var bhp = bi.buildingHP;
+                if (bhp != null)
+                {
+                    int bid = bi.GetInstanceID();
+                    if (bhp.KnockedOut)
+                    {
+                        if (!lostBuilds.ContainsKey(bid))
+                        {
+                            string lcat = BuildCat(bi.targetBuilding != null
+                                ? bi.targetBuilding.buildingName : bi.name);
+                            if (lcat == "wall" && bi.name != null &&
+                                bi.name.IndexOf("gate", System.StringComparison.OrdinalIgnoreCase) >= 0)
+                                lcat = "gate";
+                            lostBuilds[bid] = new KeyValuePair<Vector3, string>(bi.transform.position, lcat);
+                            if (CatBuilt.TryGetValue(lcat, out int lc) && lc > 0) CatBuilt[lcat] = lc - 1;
+                            Plugin.Log?.LogInfo($"[bot] build-lost: '{lcat}' knocked out");
+                            Recorder.Event("build-lost", "\"cat\":\"" + lcat + "\"");
+                        }
+                    }
+                    else if (lostBuilds.TryGetValue(bid, out var lb))
+                    {
+                        lostBuilds.Remove(bid);
+                        CatBuilt.TryGetValue(lb.Value, out int rc);
+                        CatBuilt[lb.Value] = rc + 1;
+                        Plugin.Log?.LogInfo($"[bot] build-restored: '{lb.Value}' revived");
+                    }
+                }
                 // Do NOT gate on isActiveAndEnabled — Thronefall's build pads
                 // report act=False while still fully interactable (live diag:
                 // Barracks(act=False, can=True) sat unbuildable for the whole
@@ -2192,6 +2246,7 @@ namespace ThronefallTrainer
                     s.NearestBuildScore = score;
                 }
             }
+            s.BuildsLost = lostBuilds.Count;
             // Slot-scan diagnostic: WHY did the military never build? Dump the
             // filtered interactables once per 30 s of day — the audit found
             // 406 day ticks with bld=0 and barracks never appearing as `bn`.

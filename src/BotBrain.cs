@@ -118,6 +118,7 @@ namespace ThronefallTrainer
         public bool HasCastleThreat;
         public Vec2 CastleThreatPos;
         public float CastleThreatDist;
+        public int BuildsLost;
 
         public bool HasThreatAnchor;
         public Vec2 ThreatAnchor;
@@ -259,6 +260,7 @@ namespace ThronefallTrainer
             Append(sb, ",\"hd\":", HornDist, ci);
             Append(sb, ",\"bld\":", BuildCount);
             Append(sb, ",\"bldb\":", BlockedBuilds);
+            Append(sb, ",\"blost\":", BuildsLost);
             Append(sb, ",\"bldk\":", BuildKey);
             sb.Append(",\"bn\":\"").Append(Esc(BuildName)).Append('\"');
             Append(sb, ",\"bpos\":", BuildPos, HasBuild, ci);

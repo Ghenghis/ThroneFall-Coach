@@ -309,3 +309,11 @@ AUTOPILOT §8–9 for the full list and next actions.
   `LocalGamestate.SetState`, `Weapon.Attack`.
 - `tools\build-and-deploy.ps1`, `tools\decompile.ps1`, ilspycmd reference dumps.
 
+- **Wall-loss tracking (`blost`):** `bi.buildingHP.KnockedOut` now detects knocked-out buildings during the slot scan.
+  `CatBuilt` decrements on knockout (checklist/open_order see the breach — `breach_rules` rebuild can now trigger),
+  restores on the dawn revive, and drops the marker if a repair completes via `BuildDone`. Emits `build-lost`/
+  `build-restored` log lines + `build-lost` event, surfaces in `audit.json`, ticks (`blost`) and the MiniMax
+  engineering digest. Fixes the v3 blocker: destroyed walls previously counted as built forever.
+- **Elite stall posture:** `elite_stall_hp` (0.62) — an elite on the hero with troops alive routes to the retreat
+  lane instead of Engage ("stall, don't duel the Ram").
+- **Revive edge:** `revived-reset` re-arms door posts, restarts army phase and drops stale build clocks on respawn.
