@@ -1278,6 +1278,16 @@ internal static class Bot
 				}
 			}
 			LogLine(in s, $"stuck:{StuckStrikes}");
+			// Pinned en route to a build slot (live data: hero stood 13-20 s at a wall, 27-67 m short of towers beyond it):
+			// two still windows (~4 s) -> park that slot now instead of waiting for 3 strikes / the 18 s approach timeout.
+			if (StuckStrikes >= 2 && Mode == BotMode.SpendGold && (UnityEngine.Object)(object)heldBuild == (UnityEngine.Object)null && (UnityEngine.Object)(object)s.NearestBuild != (UnityEngine.Object)null)
+			{
+				BotPerception.IgnoreBuild(s.NearestBuild, 300f);
+				ClearTarget();
+				StuckStrikes = 0;
+				LogLine(in s, "pin-park");
+				return;
+			}
 			if (StuckStrikes < 3)
 			{
 				return;
