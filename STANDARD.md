@@ -60,3 +60,17 @@ so the work is retried instead of staying quarantined.
 - `useful` is a proxy; it does not prove each action was the best one, only that time was not obviously wasted.
 - Game speed-ups change wall-clock speeds; the 16 m/s figure is wall-clock for this install.
 
+
+## Strict metric (the headline) - added after review
+
+The "useful %" above is lenient: it counts walking and night spans with foes as useful, so it read 93 % while the bot
+visibly stood around. It is NOT the goal metric and the 75.2 % baseline for it should not be quoted as "efficiency".
+
+**ACTIVE %** = share of match time within 2 s of a `pay` or `build-done` event (the bot actually spending on building,
+upgrading or troops). Measured baseline before this change: **7.3 %** (85 runs, 17.9 h; same rule applied to history).
+That is the same order as the 3-4 % the operator observed. Target 50 % (estimate: walking between slots and the fill time
+mean it cannot reach 100 %; est. ceiling 65 %). Shown first on the dashboard; also in day/night reports (`active_pct`).
+
+Correction: a "night building" change was tried and removed - decompiled `BuildingInteractor.UpdateInteractionState` sets the state to `None` at night, so slots cannot be used then. Nights (~35 % of match time) are therefore unavoidable idle time for the hero; ACTIVE % is bounded by day length, so the realistic target is measured against **day** time (day reports carry `active_pct` per phase).
+
+Change made instead: **war prep** - when ally count is under 70 % of the army target, troop buildings score +14000 and their enablers (castle / wall roots) +14500, above every playbook pin; the forced night is delayed 2.5x while under-armed with work and gold left.

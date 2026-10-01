@@ -1386,7 +1386,7 @@ function effPaint(){const a=A;if(a.eff===undefined)return;
  const col=v=>v>=80?'#7bc96f':v>=60?'#e5c07b':'#e5534b';
  const kv=(k,v,c)=>`<div class="kv"><span>${k}</span><b${c?` style="color:${c}"`:''}>${v}</b></div>`;
  document.getElementById('effLive').innerHTML=
-  kv('efficiency score (target 80)',a.eff,col(a.eff))+kv('useful time % (target 85)',(a.useful_pct??0)+'%',col(a.useful_pct||0))
+  kv('<b>ACTIVE % strict (was 7.3, goal 50)</b>',(a.active_pct??0)+'%',(a.active_pct>=40?'#7bc96f':a.active_pct>=20?'#e5c07b':'#e5534b'))+kv('efficiency score (target 80)',a.eff,col(a.eff))+kv('lenient useful % (not the goal metric)',(a.useful_pct??0)+'%',col(a.useful_pct||0))
   +kv('maxed %',(a.maxed_pct??0)+'%')+kv('idle since progress',(a.since_prog??0)+'s',(a.since_prog>20?'#e5534b':''))
   +kv('drain',esc(a.eff_drain||'none'))+kv('spend ratio',a.spend_r)+kv('hot cells',a.hot_cells)
   +kv('tasks (verified / missed / micro)',`${a.task_total||0} (${a.task_verified||0} / ${a.task_misses||0} / ${a.task_micro||0})`,a.task_misses>0?'#e5c07b':'')
@@ -1400,10 +1400,10 @@ function effPaint(){const a=A;if(a.eff===undefined)return;
   +kv('tokens',c.tokens||0)
   +(a.coach_fx||[]).map(f=>kv('fx '+esc(f.trigger),`${f.eff_before} → ${f.eff_after}`,f.eff_after>=f.eff_before?'#7bc96f':'#e5534b')).join('');}
 async function effCmp(){try{const e=await j('/efficiency');const W=e.windows,names=['last_1h','last_16h','last_48h','all'];
- const rows=[['useful %','useful_pct'],['build eff','build_eff'],['build ok %','build_ok_pct'],['gold/min','gold_per_min'],['builds/day','builds_per_day'],['ally gain/day','ally_gain_per_day'],['maxed gain/day','maxed_gain_per_day'],['task misses','task_misses'],['coach fx Δeff','coach_fx_avg_delta'],['coach latency ms','coach_latency_ms']];
+ const rows=[['ACTIVE % strict (day reports)','day_active_pct'],['lenient useful %','useful_pct'],['build eff','build_eff'],['build ok %','build_ok_pct'],['gold/min','gold_per_min'],['builds/day','builds_per_day'],['ally gain/day','ally_gain_per_day'],['maxed gain/day','maxed_gain_per_day'],['task misses','task_misses'],['coach fx Δeff','coach_fx_avg_delta'],['coach latency ms','coach_latency_ms']];
  let h='<table style="width:100%;font-size:11px"><tr><th></th>'+names.map(n=>`<th>${n.replace('last_','')}</th>`).join('')+'<th>base</th><th>goal</th></tr>';
  for(const[l,k]of rows){h+=`<tr><td>${l}</td>`+names.map(n=>`<td>${W[n][k]??'—'}</td>`).join('')
-  +`<td>${k=='useful_pct'?e.baseline.useful_pct:''}</td><td>${k=='useful_pct'?e.target.useful_pct:k=='build_eff'?e.target.build_eff:''}</td></tr>`}
+  +`<td>${k=='day_active_pct'?e.baseline.active_pct:k=='useful_pct'?e.baseline.useful_pct:''}</td><td>${k=='day_active_pct'?e.target.active_pct:k=='useful_pct'?e.target.useful_pct:k=='build_eff'?e.target.build_eff:''}</td></tr>`}
  h+='</table><div class="hint" style="margin-top:4px">by bot build: '+(e.builds||[]).map(b=>`${new Date(b.build*1000).toLocaleString()} → useful ${b.useful_pct??'—'}% / build eff ${b.build_eff??'—'} (${b.tasks} tasks)`).join(' | ')+'</div>'
  +'<div class="hint">worst wasters: '+((W.all.worst||[]).map(x=>x[0]+' '+x[1]+'s').join(', ')||'—')+'</div>';
  document.getElementById('effCmp').innerHTML=h}catch(x){document.getElementById('effCmp').textContent='no efficiency data yet'}}

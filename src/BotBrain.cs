@@ -1004,7 +1004,7 @@ namespace ThronefallTrainer
             // forever and the night would never come. Ring the horn once the
             // army is up to target OR the day budget is spent — whichever
             // readiness signal arrives first.
-            if (m.DayStartAt > 0f && !dayTooYoung &&
+            if (!s.IsNight && m.DayStartAt > 0f && !dayTooYoung &&
                 ((s.CanSwitch && (s.NightCall ||
                   // Ready = army target met AND someone actually manning the
                   // perimeter (calling night with zero posts invites the
@@ -1019,7 +1019,9 @@ namespace ThronefallTrainer
                  // Budget expiry forces the night even when the horn isn't
                  // visible — SwitchToNight is the game's own call and rejects
                  // harmlessly if the day is still locked.
-                 now - m.DayStartAt > (s.DayBudget > 0f ? s.DayBudget : 240f)))
+                 now - m.DayStartAt > (s.DayBudget > 0f ? s.DayBudget : 240f) *
+                    // far under the army target with work + gold left: do not force a lethal night early
+                    (s.ArmyTarget > 0 && s.AllyCount * 10 < s.ArmyTarget * 7 && s.HasBuild && s.Balance > 0 ? 2.5f : 1f)))
             {
                 m.Mode = BotMode.StartNight; r.Mode = m.Mode;
                 if (m.HeldBuild >= 0) { r.Intents.Add(Intent.Of(IntentKind.ReleaseHold)); m.HeldBuild = -1; m.SlotVisitKey = -1; }
@@ -1047,7 +1049,7 @@ namespace ThronefallTrainer
             // Remote posts don't need the hero — emit them alongside economy
             // work (this used to sit after SpendGold, which always returned
             // first, so squads only ever posted at night).
-            if (legit)
+            if (legit && !s.IsNight)
             {
                 if (s.HasUncoveredDoor &&
                     s.FreeUnits >= (s.UncoveredDoorHot ? 2 : Math.Max(4, s.UncoveredDoorTarget))
@@ -1085,7 +1087,7 @@ namespace ThronefallTrainer
                 ? pol.K("coin_seek_big") : pol.K("coin_seek");
             // Broke: scavenge wider — the economy has to fund the war machine.
             if (s.Balance < 10f) coinRange *= 1.5f;
-            if (s.HasCoin && s.CoinDist <= coinRange)
+            if (!s.IsNight && s.HasCoin && s.CoinDist <= coinRange)
             {
                 m.Mode = BotMode.CollectCoin; r.Mode = m.Mode;
                 Aim(ref r, s.CoinPos, ArriveCoin);

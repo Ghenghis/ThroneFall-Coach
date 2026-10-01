@@ -10,8 +10,8 @@ from pathlib import Path
 AGENT = Path(os.environ.get("TF_AGENT", r"K:\Downloads-IDM\Thronefall\BepInEx\plugins\agent"))
 
 # Measured by tools/efficiency-report.py over 196 runs / 36 h (see EFFICIENCY.md).
-BASELINE = {"useful_pct": 75.2, "productive_pct": 65.2}
-TARGET = {"useful_pct": 85.0, "build_eff": 60.0, "eff_score": 80.0}
+BASELINE = {"useful_pct": 75.2, "productive_pct": 65.2, "active_pct": 7.3}
+TARGET = {"active_pct": 50.0, "useful_pct": 85.0, "build_eff": 60.0, "eff_score": 80.0}
 
 
 def load(agent=AGENT):
@@ -77,6 +77,7 @@ def summarize(recs):
         "gold_per_min": round(sum(v["gold"] for v in kinds.values()) / (secs / 60), 1) if secs > 60 else None,
         "task_misses": misses,
         "days": len(days),
+        "day_active_pct": round(sum(d.get("active_pct", 0) * d.get("dur", 0) for d in days) / max(1, sum(d.get("dur", 0) for d in days)), 1) if days else None,
         "day_useful_pct": round(sum(d.get("useful_pct", 0) for d in days if d.get("useful_pct", -1) >= 0) /
                                 max(1, sum(1 for d in days if d.get("useful_pct", -1) >= 0)), 1) if days else None,
         "day_avg_eff": round(sum(d.get("avg_eff", 0) for d in days) / len(days), 1) if days else None,

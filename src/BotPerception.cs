@@ -2067,8 +2067,11 @@ namespace ThronefallTrainer
                         float cst = Mathf.Max(1f, bs.NextUpgradeOrBuildCost);
                         score += Mathf.Min(600, (int)(300f * incomeDelta / cst));
                     }
-                    if (armyShort && military > 0) score += 6500;
-                    if (enablersPrev.Contains(bs)) score += 7000;
+                    // WAR PREP: far under the army target (<70 %) the next wave is lethal — troops and the
+                    // buildings that unlock troops outrank every playbook pin (max 7500) and all economy.
+                    bool underArmed = s.ArmyTarget > 0 && s.AllyCount * 10 < s.ArmyTarget * 7;
+                    if (armyShort && military > 0) score += underArmed ? 14000 : 6500;
+                    if (enablersPrev.Contains(bs)) score += underArmed ? 14500 : 7000;
                     // PLAYBOOK ORDER: the M3 plan's literal build sequence —
                     // the next unsatisfied category gets a heavy bonus so
                     // walls/gates/barracks go up in the playbook's order,

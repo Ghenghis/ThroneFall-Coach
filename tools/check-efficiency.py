@@ -36,7 +36,7 @@ except Exception as e:
     au, age = {}, 999
     print("audit.json unreadable:", e)
 res(age < 10, f"audit.json fresh ({age:.0f}s)", "game not running or plugin not writing; relaunch via tools/build-and-deploy.ps1")
-need = ["eff", "useful_pct", "task_agg", "coach", "maxed_pct", "task_total"]
+need = ["eff", "active_pct", "useful_pct", "task_agg", "coach", "maxed_pct", "task_total"]
 miss = [k for k in need if k not in au]
 res(not miss, "audit.json has efficiency keys", f"missing {miss}; deploy the latest DLL")
 
@@ -65,7 +65,9 @@ try:
     ok = (b["target_useful_pct"]["v"] == eff_lib.TARGET["useful_pct"] and
           b["target_build_eff"]["v"] == eff_lib.TARGET["build_eff"] and
           b["target_eff_score"]["v"] == eff_lib.TARGET["eff_score"] and
-          b["baseline_useful_pct"]["v"] == eff_lib.BASELINE["useful_pct"])
+          b["baseline_useful_pct"]["v"] == eff_lib.BASELINE["useful_pct"] and
+          b["baseline_active_pct"]["v"] == eff_lib.BASELINE["active_pct"] and
+          b["target_active_pct"]["v"] == eff_lib.TARGET["active_pct"])
 except Exception:
     ok = False
 res(ok, "benchmarks.json matches eff_lib constants", "update Bench in src/Tasks.cs and TARGET/BASELINE in tools/eff_lib.py together")

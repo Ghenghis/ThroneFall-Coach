@@ -19,6 +19,8 @@ namespace ThronefallTrainer
         public const float TargetEffScore = 80f;  // live Efficiency.Score target
         public const float BaselineUsefulPct = 75.2f; // measured: same tick classifier back-tested on the 60 runs (13.3 h) before this change
         public const float BaselineProductivePct = 65.2f;
+        public const float BaselineActivePct = 7.3f;  // measured: seconds within 2 s of a pay/build-done event, 85 runs / 17.9 h
+        public const float TargetActivePct = 50f;     // estimate: walk + hold cycle cannot be 100 %; ceiling est. ~65 %
 
         public static string Json() => "{\"walk_speed_mps\":{\"v\":16,\"src\":\"measured p90, 17477 ticks\"}," +
             "\"fill_s\":{\"v\":4.5,\"src\":\"measured median first pay to build-done, 143 builds\"}," +
@@ -26,6 +28,8 @@ namespace ThronefallTrainer
             "\"target_build_eff\":{\"v\":60,\"src\":\"estimate\"}," +
             "\"target_eff_score\":{\"v\":80,\"src\":\"estimate\"}," +
             "\"baseline_useful_pct\":{\"v\":75.2,\"src\":\"measured: tick classifier back-tested on 60 pre-change runs, 13.3h\"}," +
+            "\"baseline_active_pct\":{\"v\":7.3,\"src\":\"measured strict: 2s buckets with pay/build-done, 85 runs 17.9h\"}," +
+            "\"target_active_pct\":{\"v\":50,\"src\":\"estimate; ceiling est. 65\"}," +
             "\"baseline_productive_pct\":{\"v\":65.2,\"src\":\"measured 196 runs 36h\"}," +
             "\"human_ref\":{\"v\":236,\"src\":\"Steam Duststein bonus-mode gold puzzle best score thread (gold), not a speed figure\"}}";
     }
@@ -64,14 +68,16 @@ namespace ThronefallTrainer
         static long buildStamp;
         static readonly Queue<Vector2> maxHist = new Queue<Vector2>();
         public static int Misses, Verified, Micro, TotalTasks;
-        public static float Useful, Wasted;
+        public static float Useful, Wasted, ActiveS, TotalS, lastActAt = -99f;
+        static float phActive;
+        public static float ActivePct => TotalS > 5f ? 100f * ActiveS / TotalS : 0f;
         public static string WorstKind = "";
 
         public static float UsefulPct => (Useful + Wasted) > 1f ? 100f * Useful / (Useful + Wasted) : 0f;
 
         public static void Reset()
         {
-            cur = null; havePos = false; lastT = -1f; lastBal = -1; havePhase = false;
+            ActiveS = 0f; TotalS = 0f; lastActAt = -99f; cur = null; havePos = false; lastT = -1f; lastBal = -1; havePhase = false;
             verifyAt = 0f; goldIdleSince = -1f; failTimes.Clear(); maxHist.Clear(); pending.Clear();
         }
 
@@ -176,6 +182,7 @@ namespace ThronefallTrainer
                 var sb = new StringBuilder(200);
                 sb.Append("{\"kind\":\"").Append(wasNight ? "night" : "day").Append("\",\"t\":").Append(now.ToString("0.0", CultureInfo.InvariantCulture))
                   .Append(",\"dur\":").Append(dur.ToString("0.0", CultureInfo.InvariantCulture))
+                  .Append(",\"active_pct\":").Append((100f * phActive / dur).ToString("0.0", CultureInfo.InvariantCulture))
                   .Append(",\"useful_pct\":").Append(pct.ToString("0.0", CultureInfo.InvariantCulture))
                   .Append(",\"avg_eff\":").Append(phSec > 0 ? Mathf.RoundToInt(phEffSum / phSec) : 0)
                   .Append(",\"gold_spent\":").Append((int)phSpent)
@@ -192,7 +199,7 @@ namespace ThronefallTrainer
 
         static void StartPhase(bool night, float now, in BotPerception.Snapshot s)
         {
-            phT0 = now; phWaste0 = Efficiency.WasteSeconds; phSpent = 0; phEffSum = 0; phSec = 0; phUseful = 0; phWasted = 0; phBuilds = 0;
+            phActive = 0; phT0 = now; phWaste0 = Efficiency.WasteSeconds; phSpent = 0; phEffSum = 0; phSec = 0; phUseful = 0; phWasted = 0; phBuilds = 0;
             phAlly0 = s.AllyCount; phMaxed0 = BotPerception.MaxLevelSum; prevNight = night; havePhase = true;
         }
 
@@ -220,8 +227,11 @@ namespace ThronefallTrainer
                 string n = notes[i];
                 if (n == "build-done") done = true;
                 else if (n == "build-stall" || n == "slot-abandon") fail = true;
+                if (n == "pay" || n == "build-done") lastActAt = now;
             }
 
+            TotalS += dt; phActive += 0f;
+            if (now - lastActAt < 2f) { ActiveS += dt; phActive += dt; }
             bool isBuild = mode == "SpendGold" && (s.NearestBuild != null);
             string kind = isBuild ? "build" : mode;
             string label = isBuild ? (s.NearestBuildName ?? "?") : "";
@@ -325,7 +335,8 @@ namespace ThronefallTrainer
         public static string Json()
         {
             var sb = new StringBuilder(1500);
-            sb.Append("\"useful_pct\":").Append(UsefulPct.ToString("0.0", CultureInfo.InvariantCulture))
+            sb.Append("\"active_pct\":").Append(ActivePct.ToString("0.0", CultureInfo.InvariantCulture))
+              .Append(",\"useful_pct\":").Append(UsefulPct.ToString("0.0", CultureInfo.InvariantCulture))
               .Append(",\"task_total\":").Append(TotalTasks).Append(",\"task_micro\":").Append(Micro)
               .Append(",\"task_verified\":").Append(Verified).Append(",\"task_misses\":").Append(Misses)
               .Append(",\"worst_kind\":").Append(BotPerception.JsonStr(WorstKind))
