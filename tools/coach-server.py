@@ -117,12 +117,20 @@ is retried and abandoned, a popup that never closes, gps-fail, idle with gold),
 add a "proposal" with the evidence and the code-level fix you recommend. The
 engineer reads proposals.jsonl every pass and ships the fixes; do not repeat
 a proposal that is already in RECENT PROPOSALS.
+PILOT POWERS (use sparingly, the user set your mode):
+- "relaunch":true restarts the game session — only when telemetry proves the
+  session is dead or wedged past recovery (frame open >60 s, no progress).
+- "schedule":[{"every_s":N,"patch":{...},"note":"why"}] adds recurring cron
+  actions you program for yourself (e.g. a pre-night squad push). Max a few.
+- "frame" in the audit shows the open UI frame — a wedged victory/defeat/
+  popup is a real signal; propose a fix or relaunch if it will not close.
 """
 
 MMHB = AGENT / "mm-heartbeat.json"
 PROPOSALS = AGENT / "proposals.jsonl"
 MM_CFG_FILE = AGENT / "mm-config.json"
 MM_PENDING_FILE = AGENT / "mm-pending.json"
+MM_SCHED_FILE = AGENT / "mm-schedule.json"
 _hb = {"cycles": 0, "ok": 0, "errors": 0, "applied": 0, "not_applied": 0,
        "proposals": 0, "last_ok": 0, "last_error": "", "live": False,
        "mode": "auto", "interval_s": WATCH_EVERY}
@@ -164,10 +172,70 @@ def pending_list():
         return []
 
 def pending_write(p):
+    # Atomic like write_cmd/hb — a torn write used to lose the whole queue
     try:
-        MM_PENDING_FILE.write_text(json.dumps(p))
+        tmp = MM_PENDING_FILE.with_suffix(".tmp")
+        tmp.write_text(json.dumps(p))
+        os.replace(tmp, MM_PENDING_FILE)
     except OSError:
         pass
+
+# ---- MiniMax cron — the model programs its own recurring actions ----
+# Job: {"t_next": epoch, "every_s": N, "patch": {...}, "note": "why"}.
+# MiniMax adds them via a "schedule":[...] key in any watch reply; the user
+# sees/deletes them in the command center. Mode rules: off skips, semi queues.
+def sched_list():
+    try:
+        return json.loads(MM_SCHED_FILE.read_text(encoding="utf-8", errors="replace"))
+    except Exception:
+        return []
+
+def sched_write(s):
+    try:
+        MM_SCHED_FILE.write_text(json.dumps(s))
+    except OSError:
+        pass
+
+def sched_merge(jobs):
+    """MiniMax 'schedule':[{every_s,patch,note}] — upsert by note, clamped."""
+    if not isinstance(jobs, list):
+        return
+    cur = sched_list()
+    for j in jobs[:8]:
+        try:
+            every = max(30, min(21600, float(j.get("every_s", 600))))
+        except Exception:
+            continue
+        patch = validate_patch(j.get("patch"))
+        if not patch:
+            continue
+        note = str(j.get("note", ""))[:120]
+        found = next((x for x in cur if x.get("note") == note), None)
+        if found:
+            found.update({"every_s": every, "patch": patch})
+        else:
+            cur.append({"t_next": time.time() + every, "every_s": every,
+                        "patch": patch, "note": note})
+    sched_write(cur[-20:])
+
+def apply_side_effects(patch, mode, st):
+    """Real-world patch actions that are NOT plugin commands: relaunch restarts
+    the game session (auto/aggressive apply it; semi waits for approval).
+    Returns a note string for the feed or None."""
+    if patch.get("relaunch") and mode in ("auto", "aggressive"):
+        try:
+            import subprocess
+            subprocess.run(["taskkill", "/F", "/IM", "thronefall.exe"],
+                           capture_output=True, timeout=10)
+            time.sleep(4)
+            subprocess.Popen([r"K:\Downloads-IDM\Thronefall\thronefall.exe"],
+                             cwd=r"K:\Downloads-IDM\Thronefall")
+            _watch_log({"t": round(time.time(), 1), "kind": "relaunch",
+                        "by": "mm", "mode": mode})
+            return "session relaunched by MiniMax"
+        except Exception as ex:
+            return f"relaunch failed: {ex}"
+    return None
 
 def hb(**kw):
     """Heartbeat the engineer + /health can read: loop alive, last good call,
@@ -284,6 +352,7 @@ MM_FIELDS = {
     "build_focus":  (str,  {"military", "income", "defense", "balanced"}),
     "hero_posture": (str,  {"builder", "fighter"}),
     "night_call":   (bool, None),
+    "relaunch":     (bool, None),   # true = restart the game session
     "clear":        (bool, None),   # true = release all overrides to defaults
     "note":         (str,  160),
 }
@@ -364,11 +433,46 @@ def mm_watch_loop():
                 last_run = st.get("run")
                 mm_watch_loop.last_patch = ""
                 last_sig = ""
+                # The plugin-side ResetRun cleared overrides — the army_target
+                # floor ratchet must reset too or the first patch of the new
+                # run silently loses its army_target (audit finding).
+                _last_at["v"] = 0
             cfg = mm_cfg(); mode = cfg.get("mode", "auto"); wsec = watch_secs()
             hb(mode=mode, interval_s=int(wsec))
             if mode == "off":
                 # heartbeat keeps beating so the UI can tell "paused" from "dead"
                 time.sleep(min(60.0, wsec)); continue
+            # Cron: due schedule jobs fire here — semi queues them, auto and
+            # aggressive apply them like normal MiniMax patches.
+            _now = time.time()
+            _jobs = sched_list(); _jobs_dirty = False
+            for jb in _jobs:
+                if jb.get("t_next", 0) > _now:
+                    continue
+                jb["t_next"] = _now + jb.get("every_s", 600)
+                _jobs_dirty = True
+                jp = dict(jb.get("patch") or {})
+                se_note = apply_side_effects(jp, mode, st)
+                jp.pop("relaunch", None)
+                if mode == "semi":
+                    pend = pending_list()
+                    jp["note"] = (jp.get("note") or "") + "#sched"
+                    pend.append({"t": round(_now, 1), "patch": jp,
+                                 "note": f"sched: {jb.get('note','')}"})
+                    pending_write(pend[-20:])
+                elif jp:
+                    try:
+                        jp["note"] = (jp.get("note") or "") + f"#sched{int(_now)}"
+                        write_cmd(jp)
+                        _watch_log({"t": round(_now, 1), "kind": "sched",
+                                    "patch": jp, "note": jb.get("note", "")})
+                    except Exception as ex:
+                        _watch_log({"t": round(_now, 1), "kind": "sched-err",
+                                    "error": str(ex)})
+                if se_note:
+                    append_log("mm", f"[{time.strftime('%H:%M')} mm-sched] {se_note}")
+            if _jobs_dirty:
+                sched_write(_jobs)
             # Postmortem: a run finished (summary.json exists on a run dir we
             # haven't autopsied). One MiniMax call per finished run — notes +
             # proposals feed the next playbook iteration.
@@ -495,6 +599,9 @@ def mm_watch_loop():
             robj = json.loads(reply[i0:i1 + 1]) if 0 <= i0 < i1 else None
             if isinstance(robj, dict):
                 record_proposal(robj.get("proposal"), st)
+                # MiniMax can program its own cron — recurring actions it
+                # decides the run needs (pre-night squad push etc.)
+                sched_merge(robj.get("schedule"))
             patch = guard_patch(validate_patch(robj), st)
             last_sig = sig   # commit ONLY after call+parse both succeed
             hb(ok=_hb["ok"] + 1, cycles=_hb["cycles"] + 1, last_ok=round(time.time(), 1))
@@ -511,6 +618,13 @@ def mm_watch_loop():
                 # but skipping it keeps the feed readable.
                 sig = json.dumps(patch, sort_keys=True)
                 if sig != mm_watch_loop.last_patch:
+                    # Real-world side effects (relaunch) are server actions,
+                    # not plugin commands — run them before write_cmd and
+                    # strip them so the plugin never sees an unknown key.
+                    se_note = apply_side_effects(patch, mode, st)
+                    if se_note:
+                        append_log("mm", f"[{time.strftime('%H:%M')} mm-side] {se_note}")
+                    patch.pop("relaunch", None)
                     if mode == "semi":
                         # SEMI-AUTO: queue for the command center — nothing
                         # reaches the game until the user approves it there.
@@ -1096,6 +1210,8 @@ class H(BaseHTTPRequestHandler):
                     "GET /health": "5-part health check",
                     "GET /live.png": "current game frame (PNG)",
                     "GET /mmwatch": "MiniMax watch feed",
+                    "GET /proposals": "MiniMax bug proposals (open/ship status)",
+                    "GET /engdigest": "raw engineering digest the model sees",
                     "GET /mmconfig": "mode, interval, pending, outcome, hb",
                     "GET /playbook?scene=X": "loaded strategy for scene",
                     "GET /history": "chat feed tail",
@@ -1105,11 +1221,21 @@ class H(BaseHTTPRequestHandler):
                         "off|semi|auto|aggressive + 15..10800 s scheduler",
                     "POST /mmapprove {idx}": "apply a semi-mode queued patch",
                     "POST /mmreject {idx}": "discard a queued patch",
+                    "POST /mmschedule {action:add|delete,...}":
+                        "cron jobs — MiniMax can program its own schedule",
                     "POST /regen {scene}": "MiniMax rewrites a playbook"},
                 "modes": {"off": "heartbeat only", "semi": "propose->approve",
                           "auto": "apply validated patches",
                           "aggressive": "auto + no dedupe, every cycle"},
                 "patch_fields": sorted(MM_FIELDS.keys())}), "application/json")
+        elif self.path == "/proposals":
+            rows = []
+            for ln in tail_lines(PROPOSALS, 40, cap=60000):
+                try: rows.append(json.loads(ln))
+                except Exception: pass
+            self._send(200, json.dumps(rows), "application/json")
+        elif self.path == "/engdigest":
+            self._send(200, json.dumps(eng_digest()), "application/json")
         elif self.path.startswith("/mmconfig"):
             # Command-center state: mode, scheduler interval, pending
             # approvals (semi mode) and the last measured patch outcome.
@@ -1123,6 +1249,7 @@ class H(BaseHTTPRequestHandler):
                 except Exception:
                     pass
             self._send(200, json.dumps({**mm_cfg(), "pending": pending_list(),
+                                        "schedule": sched_list(),
                                         "last_outcome": oc, "hb": dict(_hb)}),
                        "application/json")
         elif self.path == "/history":
@@ -1229,15 +1356,60 @@ class H(BaseHTTPRequestHandler):
                     patch = dict(item.get("patch") or {})
                     patch["note"] = (patch.get("note") or "") + f"#ok{int(time.time())}"
                     try:
+                        # Server-side actions (relaunch) fire on approval too.
+                        se_note = apply_side_effects(patch, "auto", live_state())
+                        patch.pop("relaunch", None)
+                        glog = pathlib.Path(
+                            r"K:\Downloads-IDM\Thronefall\BepInEx\LogOutput.log")
+                        before = glog.stat().st_size if glog.exists() else -1
                         write_cmd(patch)
-                        append_log("mm", f"[semi-approved] {json.dumps(patch)}")
-                        self._send(200, json.dumps({"ok": True, "applied": True}),
+                        # Same apply-proof as /order — "applied" without the
+                        # [coach] user-cmd marker was a lie (audit finding).
+                        applied = False
+                        for _ in range(14):
+                            time.sleep(0.5)
+                            if glog.exists():
+                                size = glog.stat().st_size
+                                start = before if 0 <= before <= size else 0
+                                with open(glog, "rb") as fh:
+                                    fh.seek(start)
+                                    if "[coach] user-cmd" in fh.read().decode(
+                                            "utf-8", errors="replace"):
+                                        applied = True; break
+                        append_log("mm", f"[semi-approved {'APPLIED' if applied else 'UNPROVEN'}] {json.dumps(patch)}")
+                        if se_note: append_log("mm", f"[mm-side] {se_note}")
+                        self._send(200, json.dumps({"ok": True, "applied": applied}),
                                    "application/json"); return
                     except Exception as ex:
                         self._send(200, json.dumps({"ok": False, "err": str(ex)}),
                                    "application/json"); return
                 append_log("mm", f"[semi-rejected] {json.dumps(item.get('patch'))}")
+                # Reject must free the dedupe — otherwise MiniMax could never
+                # re-propose a rejected patch (audit finding).
+                mm_watch_loop.last_patch = ""
             self._send(200, json.dumps({"ok": True, "applied": False}),
+                       "application/json")
+            return
+        if self.path == "/mmschedule":
+            # user-side cron management: delete a job, or add one directly
+            try:
+                data = json.loads(self.rfile.read(_n) or b"{}")
+            except Exception:
+                data = {}
+            jobs = sched_list()
+            if data.get("action") == "delete":
+                idx = int(data.get("idx", -1))
+                if 0 <= idx < len(jobs):
+                    jobs.pop(idx); sched_write(jobs)
+            elif data.get("action") == "add":
+                patch = validate_patch(data.get("patch"))
+                if patch:
+                    every = max(30, min(21600, float(data.get("every_s", 600))))
+                    jobs.append({"t_next": time.time() + every,
+                                 "every_s": every, "patch": patch,
+                                 "note": str(data.get("note", ""))[:120]})
+                    sched_write(jobs[-20:])
+            self._send(200, json.dumps({"ok": True, "jobs": len(sched_list())}),
                        "application/json")
             return
         if self.path != "/chat":
@@ -1699,6 +1871,16 @@ pre.book{background:#150e0a;border:1px solid var(--bord);border-radius:9px;
     <input type="range" id="mmRange" min="15" max="10800" step="15" style="width:100%;accent-color:var(--acc)"
      oninput="mmIntShow(this.value)" onchange="mmInterval(this.value)"></div>
    <div class="card"><h4>Awaiting your approval (semi mode)</h4><div id="mmPend"></div></div>
+   <div class="card"><h4>Direct knobs (same API MiniMax uses)</h4>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;font-size:11px;color:var(--dim)">
+     <label>squad <input id="kSq" type="number" min="0" max="8" style="width:100%"></label>
+     <label>reserve <input id="kRs" type="number" min="0" max="10" style="width:100%"></label>
+     <label>escort <input id="kEs" type="number" min="0" max="6" style="width:100%"></label>
+     <label>army floor <input id="kAt" type="number" min="0" max="60" style="width:100%"></label></div>
+    <label style="font-size:11px;color:var(--dim)"><input id="kNc" type="checkbox"> call night</label>
+    <div class="pb" style="margin-top:5px"><button onclick="orderKnobs()">Apply knobs</button>
+     <button onclick="orderClear()" title="release every override to bot defaults">Release all</button></div></div>
+   <div class="card"><h4>MiniMax schedule (cron — it programs itself)</h4><div id="mmSched"></div></div>
    <div class="card"><h4>Last patch outcome (measured, not assumed)</h4><div id="mmOut"></div></div>
    <div class="card"><h4>Heartbeat</h4><div id="mmHb" class="hint"></div></div>
   </div>
@@ -1808,7 +1990,7 @@ async function healthCheck(){try{const h=await j('/health');
   bar.innerHTML='<b>DISCONNECTED:</b> '+bad.map(c=>`<b>${esc(c.name)}</b> — ${esc(c.detail)}`).join(' &nbsp;·&nbsp; ')}
  else bar.className='';
  document.getElementById('mmchip').textContent='MiniMax · '+
-  ((h.checks||[]).find(c=>c.name=='MiniMax')||{}).detail;}catch(e){
+  (((h.checks||[]).find(c=>c.name=='MiniMax')||{}).detail??'unknown');}catch(e){
  document.getElementById('healthbar').className='bad';
  document.getElementById('healthbar').textContent='SERVER UNREACHABLE — coach-server.py down'}}
 setInterval(healthCheck,8000);healthCheck();
@@ -1867,25 +2049,34 @@ setInterval(async()=>{try{const l=await j('/live.json');
  const w=x.role=='user'?'you':x.role=='assistant'?'Grandmaster':x.role=='mm'?'MiniMax Watch':x.role=='err'?'LINK':'system';
  add(r,x.text,w,x.t?new Date(x.t*1000).toLocaleTimeString():'')})})();
 /* runs — preserve selection+expansion across refreshes */
-let selRun=-1,runFilter='all';
+let selRun=-1,runFilter='all',openRun=null;
 async function runs(){
  try{const m=await j('/metrics');runRows=(m.curve||[]).slice(-40).reverse();
  const q=document.getElementById('rq').value.toLowerCase();
  document.getElementById('runlist').innerHTML=runRows
   .filter(r=>runFilter=='all'||(runFilter=='tr' ? r.transit : !r.transit && r.outcome==runFilter))
   .filter(r=>!q||(r.scene||'').toLowerCase().includes(q))
-  .map((r,i)=>`<div class="rl ${r.transit?'tr':''} ${r.run==selRun?'on':''}" onclick='pickRun(${JSON.stringify?JSON.stringify(r.run):'"'+r.run+'"'},${i})'>
+  .map((r,i)=>`<div class="rl ${r.transit?'tr':''} ${r.run==selRun?'on':''}" data-run="${esc(r.run||'')}" onclick='pickRun(${JSON.stringify?JSON.stringify(r.run):'"'+r.run+'"'},${i})'>
    <span class="rn"><span class="dot ${r.outcome=='victory'?'win':r.outcome=='defeat'?'lose':'run'}"></span>
    ${esc(r.scene||'unknown')}</span>
    <span class="rm">${r.transit?'transition':esc(r.outcome||'')} · wave ${r.wave} · score ${r.score}</span>
    <div class="det" id="det${i}" style="display:none"></div></div>`).join('');
  document.getElementById('sideft').textContent=`${runRows.length} runs · squads ${m.squads_posted} · memory ${(m.mishaps||[]).length}`;
- if(selRun)pickRun(selRun)}catch(e){}}
+ // re-open the expanded row after refresh (used to call pickRun with no
+ // idx -> null element -> expansion silently lost every 15 s)
+ if(openRun){const row=document.querySelector(`.rl[data-run="${openRun}"]`);
+  const d=row&&row.querySelector('.det');
+  const rr=runRows.find(x=>x.run===openRun);
+  if(d&&rr){d.style.display='block';d.dataset.open='1';
+   j('/run?name='+encodeURIComponent(rr.run)).then(t=>{
+    d.innerHTML=(t.ticks||[]).map(x=>`t=${x.t} · ${esc(x.mode)} · ally ${x.ally} · doors ${x.drc}/${x.drn} · ${x.gold}g`).join('<br>')
+     ||'no ticks'}).catch(()=>{d.textContent='err'})}}
+ }catch(e){}}
 async function pickRun(runId,idx){const r=runRows.find(x=>x.run===runId);if(!r)return;selRun=runId;
  document.querySelectorAll('.rl').forEach(x=>x.classList.toggle('on',x.onclick&&x.onclick.toString().includes(`'${runId}'`)));
  const d=document.getElementById('det'+idx);if(!d)return;
- if(d.dataset.open){d.style.display='none';d.dataset.open='';return}
- d.style.display='block';d.dataset.open='1';d.textContent='loading…';
+ if(d.dataset.open){d.style.display='none';d.dataset.open='';openRun=null;return}
+ d.style.display='block';d.dataset.open='1';d.textContent='loading…';openRun=runId;
  try{const t=await j('/run?name='+encodeURIComponent(r.run));
   d.innerHTML=(t.ticks||[]).map(x=>`t=${x.t} · ${esc(x.mode)} · ally ${x.ally} · doors ${x.drc}/${x.drn} · ${x.gold}g`).join('<br>')
    ||'no ticks'}catch(e){d.textContent='err'}}
@@ -1908,6 +2099,12 @@ async function mmCfg(){try{const c=await j('/mmconfig');
    <button onclick="mmOk(${i},0)">reject</button></div></div>`).join(''):
   '<div class="hint">none queued</div>');
  const o=c.last_outcome;
+ document.getElementById('mmSched').innerHTML=(c.schedule&&c.schedule.length?
+  c.schedule.map((x,i)=>{const in_s=Math.max(0,Math.round(x.t_next-Date.now()/1000));
+   return `<div class="kv"><span>every ${x.every_s}s · next ${in_s}s · ${esc(x.note||'')}</span>
+   <b>${esc(JSON.stringify(x.patch))} <a style="color:var(--bad);cursor:pointer"
+   onclick="mmSchedDel(${i})">✕</a></b></div>`}).join(''):
+  '<div class="hint">no jobs — MiniMax adds them via "schedule" in replies</div>');
  document.getElementById('mmOut').innerHTML=o?
   `<div class="kv"><span>patch</span><b>${esc(JSON.stringify(o.patch))}</b></div>
    <div class="kv"><span>after ${o.s}s</span><b>${esc(JSON.stringify(o.d))}</b></div>`:
@@ -1921,7 +2118,18 @@ async function mmCfg(){try{const c=await j('/mmconfig');
 async function mmMode(mo){await j('/mmconfig',{method:'POST',body:JSON.stringify({mode:mo})});mmCfg()}
 async function mmInterval(s){await j('/mmconfig',{method:'POST',body:JSON.stringify({interval_s:+s})})}
 async function mmOk(i,ok){await j(ok?'/mmapprove':'/mmreject',{method:'POST',body:JSON.stringify({idx:i})});mmCfg()}
-setInterval(mmCfg,5000);mmCfg();
+async function mmSchedDel(i){await j('/mmschedule',{method:'POST',body:JSON.stringify({action:'delete',idx:i})});mmCfg()}
+/* Knobs card: every patch field the model can set, now reachable by the
+   user too — same /order endpoint, same validation clamps. */
+function knob(id){const v=document.getElementById(id).value;
+ return v===''?null:+v}
+async function orderKnobs(){const cmd={note:'ui-knobs'};
+ const m={squad_size:'kSq',reserve_size:'kRs',escort_size:'kEs',army_target:'kAt'};
+ for(const k in m){const v=knob(m[k]);if(v!=null)cmd[k]=v}
+ if(document.getElementById('kNc').checked)cmd.night_call=true;
+ order(cmd);mmCfg()}
+async function orderClear(){order({clear:true,note:'ui-release-all'})}
+setInterval(()=>{if(document.getElementById('p-mm').classList.contains('on'))mmCfg()},5000);
 /* metrics */
 function gc(v){return v>=80?'gA':v>=60?'gB':v>=40?'gC':v>=20?'gD':'gF'}
 async function refresh(){try{const m=await j('/metrics');

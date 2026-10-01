@@ -383,6 +383,8 @@ namespace ThronefallTrainer
         public float[] DoorPostAts;     // per-door last PlaceSquad time
         public bool WasDead;            // revive edge: re-arm coverage on respawn
         public float ShrineIgnoreUntil; // shrine visit cooldown — charging takes time
+        public float HornWalkSince;     // horn approach watchdog
+        public float HornIgnoreUntil;   // horn proven unreachable -> SwitchNight fallback
 
         // level-select transition hang detector
         public float BusySince;
@@ -789,6 +791,40 @@ namespace ThronefallTrainer
                 return r;
             }
 
+            // RED ALERT — day too (audit F4): dawn revives units but leftover
+            // enemies and daytime roamers still hit buildings inside the ring;
+            // this response used to exist only inside the night block and the
+            // bot went coin-running while the walls burned.
+            if (s.RedAlert && s.HasThreatAnchor)
+            {
+                if (s.AllyCount > 0 && now - m.LastBreachAt > 8f)
+                {
+                    m.LastBreachAt = now;
+                    r.Intents.Add(Intent.Of(IntentKind.RecallToBreach));
+                    r.Notes.Add("breach-response");
+                }
+                bool heroMust0 = (s.HasNearEnemy && s.NearEnemyDist <=
+                        (s.SelfDefendRange > 0f ? s.SelfDefendRange : 7f))
+                    || s.NearFoeCount >= 2;
+                if (heroMust0)
+                {
+                    m.Mode = BotMode.Engage; r.Mode = m.Mode;
+                    m.Pursue = r.Pursue = 1;
+                    Aim(ref r, s.ThreatAnchor, 1.5f);
+                    r.Intents.Add(Intent.Of(IntentKind.PumpAttack));
+                    r.Notes.Add("red-alert");
+                }
+                else
+                {
+                    m.Mode = BotMode.HoldCastle; r.Mode = m.Mode;
+                    Vec2 away0 = s.CastlePos - s.ThreatAnchor;
+                    Vec2 safe0 = away0.SqrMag > 0.01f ? s.CastlePos + away0.Norm * 5f : s.CastlePos;
+                    Aim(ref r, s.HasCastleStand ? s.CastleStandPos : safe0, ArriveHold);
+                    r.Notes.Add("red-hold");
+                }
+                return r;
+            }
+
             if (s.IsNight)
             {
                 // Hot-door posting at NIGHT: a corridor under attack that's
@@ -834,44 +870,8 @@ namespace ThronefallTrainer
                     r.Notes.Add("squad-post:" + s.UncoveredDoorLine);
                 }
 
-                // RED ALERT: an enemy is inside the building ring — the ARMY
-                // converges on the breach; the hero only fights when there's
-                // nobody to send or he's personally under attack.
-                if (s.RedAlert && s.HasThreatAnchor)
-                {
-                    if (s.AllyCount > 0 && now - m.LastBreachAt > 8f)
-                    {
-                        m.LastBreachAt = now;
-                        r.Intents.Add(Intent.Of(IntentKind.RecallToBreach));
-                        r.Notes.Add("breach-response");
-                    }
-                    // Sissy rule: the hero NEVER substitutes for an army —
-                    // with zero troops he holds at the castle and lets the
-                    // walls/towers work. Fighting solo is how he keeps dying.
-                    // He only fights what's already ON him.
-                    bool heroMust = (s.HasNearEnemy && s.NearEnemyDist <=
-                            (s.SelfDefendRange > 0f ? s.SelfDefendRange : 7f))
-                        || s.NearFoeCount >= 2;
-                    if (heroMust)
-                    {
-                        m.Mode = BotMode.Engage; r.Mode = m.Mode;
-                        m.Pursue = r.Pursue = 1;
-                        Aim(ref r, s.ThreatAnchor, 1.5f);
-                        r.Intents.Add(Intent.Of(IntentKind.PumpAttack));
-                        r.Notes.Add("red-alert");
-                    }
-                    else
-                    {
-                        // Sissy hold: far side of the castle while the
-                        // converging squads do the fighting.
-                        m.Mode = BotMode.HoldCastle; r.Mode = m.Mode;
-                        Vec2 away = s.CastlePos - s.ThreatAnchor;
-                        Vec2 safe = away.SqrMag > 0.01f ? s.CastlePos + away.Norm * 5f : s.CastlePos;
-                        Aim(ref r, s.HasCastleStand ? s.CastleStandPos : safe, ArriveHold);
-                        r.Notes.Add("red-hold");
-                    }
-                    return r;
-                }
+                // Red alert is handled above the night gate now (day+dawn
+                // breaches were escaping — audit F4).
 
                 bool hasThreat = s.HasCastleThreat || s.HasNearEnemy;
                 Vec2 threatPos = s.HasCastleThreat ? s.CastleThreatPos : s.NearEnemyPos;
@@ -1105,7 +1105,22 @@ namespace ThronefallTrainer
             {
                 m.Mode = BotMode.StartNight; r.Mode = m.Mode;
                 if (m.HeldBuild >= 0) { r.Intents.Add(Intent.Of(IntentKind.ReleaseHold)); m.HeldBuild = -1; m.SlotVisitKey = -1; }
-                if (s.HasHorn)
+                // Horn watchdog (audit F2): walking at a walled-off horn used
+                // to wedge the run in StartNight forever — after 25 s of
+                // approach without getting near, back off 60 s and let the
+                // SwitchNight fallback fire instead.
+                bool hornOk = s.HasHorn && now >= m.HornIgnoreUntil;
+                if (hornOk)
+                {
+                    if (m.HornWalkSince <= 0f) m.HornWalkSince = now;
+                    else if (now - m.HornWalkSince > 25f && s.HornDist > 4f)
+                    {
+                        m.HornIgnoreUntil = now + 60f; m.HornWalkSince = 0f;
+                        hornOk = false;
+                        r.Notes.Add("horn-unreachable");
+                    }
+                }
+                if (hornOk)
                 {
                     Aim(ref r, s.HornPos, 2f);
                     if (s.HornDist <= 2.8f && now >= m.HornInteractAt)
@@ -1114,9 +1129,10 @@ namespace ThronefallTrainer
                         r.Intents.Add(Intent.Of(IntentKind.HornInteract));
                         r.Notes.Add("horn-interact");
                     }
+                    return r;
                 }
-                else if (!(s.SceneName != null && s.SceneName.StartsWith("_"))
-                         && now >= m.NightRequestAt)
+                if (!(s.SceneName != null && s.SceneName.StartsWith("_"))
+                    && now >= m.NightRequestAt)
                 {
                     m.NightRequestAt = now + 15f;
                     r.Notes.Add("switch-night");
@@ -1434,18 +1450,31 @@ namespace ThronefallTrainer
                   (s.DoorCount == 0 || realDoors > 0)) ||
                  (s.DoorCount > 0 && realDoors + s.DoorsParked >= s.DoorCount && s.AllyCount > 0) ||
                  now - m.DayStartAt > (s.DayBudget > 0f ? s.DayBudget : 240f));
-            if (readyForNight && s.HasHorn)
+            if (readyForNight && s.HasHorn && now >= m.HornIgnoreUntil)
             {
                 m.Mode = BotMode.StartNight; r.Mode = m.Mode;
-                Aim(ref r, s.HornPos, 2f);
-                if (s.HornDist <= 2.8f && now >= m.HornInteractAt)
+                // Same watchdog as the first horn block: 25 s of approach
+                // without closing below 4 m = unreachable — back off so the
+                // SwitchNight branch below can fire.
+                if (m.HornWalkSince <= 0f) m.HornWalkSince = now;
+                else if (now - m.HornWalkSince > 25f && s.HornDist > 4f)
                 {
-                    m.HornInteractAt = now + 2f;
-                    r.Intents.Add(Intent.Of(IntentKind.HornInteract));
-                    r.Notes.Add("horn-interact");
+                    m.HornIgnoreUntil = now + 60f; m.HornWalkSince = 0f;
+                    r.Notes.Add("horn-unreachable");
                 }
-                return r;
+                else
+                {
+                    Aim(ref r, s.HornPos, 2f);
+                    if (s.HornDist <= 2.8f && now >= m.HornInteractAt)
+                    {
+                        m.HornInteractAt = now + 2f;
+                        r.Intents.Add(Intent.Of(IntentKind.HornInteract));
+                        r.Notes.Add("horn-interact");
+                    }
+                    return r;
+                }
             }
+            else if (s.HasHorn) m.HornWalkSince = 0f;
             // Same gate — the horn-less fallback was firing switch-night on
             // the FIRST tick of a fresh run (NightRequestAt starts at 0 →
             // now >= 0 → instant night, ally=0, wave 1 wipe). Readiness

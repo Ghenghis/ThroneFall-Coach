@@ -556,6 +556,9 @@ namespace ThronefallTrainer
               .Append(",\"slots_built\":").Append(SlotsBuilt)
               .Append(",\"slots_total\":").Append(SlotsTotal)
               .Append(",\"cur_build\":").Append(JsonStr(s.NearestBuildName))
+              // open UI frame (victory/defeat/perk/choice popups) — the coach
+              // and MiniMax were blind to wedged frames without this
+              .Append(",\"frame\":").Append(JsonStr(Bot.UiFrame ?? ""))
               .Append(",\"open_order\":[");
             var open = OpenBuildOrder();
             for (int i = 0; i < open.Length; i++)

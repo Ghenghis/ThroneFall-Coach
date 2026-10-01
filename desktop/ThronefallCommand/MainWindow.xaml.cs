@@ -135,12 +135,15 @@ namespace ThronefallCommand
         }
 
         // ---------- server lifecycle ----------
-        bool ServerUp(int port)
+        static readonly HttpClient _http = new HttpClient
+        { Timeout = TimeSpan.FromSeconds(2) };
+
+        static async Task<bool> ServerUp(int port)
         {
             try
             {
-                using var http = new HttpClient { Timeout = TimeSpan.FromSeconds(2) };
-                return http.GetAsync($"http://127.0.0.1:{port}/health").Result.IsSuccessStatusCode;
+                var r = await _http.GetAsync($"http://127.0.0.1:{port}/health");
+                return r.IsSuccessStatusCode;
             }
             catch { return false; }
         }
@@ -150,15 +153,15 @@ namespace ThronefallCommand
             if (!File.Exists(script)) { Status.Text = $"no coach-server.py at {_cfg.TrainerRoot}"; return; }
             try
             {
+                // No stdio redirects: unread pipes fill (~4 KB) and deadlocked
+                // the python child (audit finding).
                 _server = Process.Start(new ProcessStartInfo("python", $"\"{script}\" --port {port}")
                 {
                     WorkingDirectory = _cfg.TrainerRoot,
                     UseShellExecute = false,
-                    CreateNoWindow = true,
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true
+                    CreateNoWindow = true
                 });
-                Status.Text = $"coach-server.py launched on :{port}";
+                Status.Text = $"coach-server.py launched on :{port} (PID {_server?.Id})";
             }
             catch (Exception ex) { Status.Text = "server start failed: " + ex.Message; }
         }
@@ -166,15 +169,21 @@ namespace ThronefallCommand
         async void ConnectNow()
         {
             int port = ResolvePort();
+            // 'auto' must ATTACH to an already-running server before spawning a
+            // second one — a duplicate watch loop doubles MiniMax spend and the
+            // two writers duel over coach-commands.json (audit finding).
+            if (PortBox.Text.Trim().ToLowerInvariant() == "auto")
+                for (int p = 8090; p <= 8140; p++)
+                    if (await ServerUp(p)) { port = p; break; }
             PortBox.Text = port.ToString();
-            if (!ServerUp(port))
+            if (!await ServerUp(port))
             {
                 Status.Text = "starting coach-server…";
                 StartServer(port);
-                for (int i = 0; i < 40 && !ServerUp(port); i++)
+                for (int i = 0; i < 40 && !await ServerUp(port); i++)
                     await Task.Delay(500);
             }
-            if (ServerUp(port))
+            if (await ServerUp(port))
             {
                 Web.Source = new Uri($"http://127.0.0.1:{port}/");
                 Status.Text = $"connected :{port}";
@@ -241,6 +250,9 @@ namespace ThronefallCommand
         void LoadProfile_Click(object s, RoutedEventArgs e)
         {
             var name = string.IsNullOrWhiteSpace(ProfileBox.Text) ? "default" : ProfileBox.Text.Trim();
+            // Sanitize — profile names come from a free-text combo; '../' must
+            // never escape the profiles dir (audit finding).
+            name = Path.GetFileName(name);
             var f = Path.Combine(ProfilesDir, name + ".json");
             if (!File.Exists(f)) { Status.Text = "no profile: " + name; return; }
             try

@@ -1742,7 +1742,10 @@ internal static class Bot
 					log6.LogWarning((object)("[bot] build-stall diag '" + s.NearestBuildName + "': " + $"state={text} started={obj} waitChoice={obj2} complete={obj3} filled={obj4} " + $"dist={s.NearestBuildDist:0.#} balance={s.Balance} harvest={s.NearestBuild.canBeHarvested} " + $"canInteract={((InteractorBase)s.NearestBuild).CanBeInteractedWith}"));
 				}
 			}
-			BotPerception.IgnoreBuild(s.NearestBuild, 600f);
+			// Scaled ignore (audit): a real wedge parks 10 min; a far approach
+			// stall (behind an unopened gate) only hides the slot 60 s — the
+			// gate may open, and 600 s used to outlast whole days.
+			BotPerception.IgnoreBuild(s.NearestBuild, s.NearestBuildDist <= 14f ? 600f : 60f);
 			if (!((UnityEngine.Object)(object)s.NearestBuild != (UnityEngine.Object)null))
 			{
 				break;
@@ -2401,6 +2404,11 @@ internal static class Bot
 		{
 			lastFrameName = ((UnityEngine.Object)val).name;
 			frameSeen = 0;
+			// Escalation counters are per-frame — a choice frame closing into a
+			// perk frame used to inherit the confirm streak and force-close the
+			// new frame at streak>=2 (audit F8). frameCloseStreak persists on
+			// purpose: it is the ping-pong breaker.
+			choiceConfirmStreak = 0;
 		}
 		if ((UnityEngine.Object)(object)instance2 != (UnityEngine.Object)null && instance2.ChoiceCoroutineRunning)
 		{

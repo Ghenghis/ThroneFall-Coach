@@ -359,3 +359,19 @@ AUTOPILOT §8–9 for the full list and next actions.
   pins were mislabeled "obj:Path" while the real blocker was a wall.
 - **Stuck->GPS escalation threshold:** strike 1 -> strike 2 — single-strike unit bumps were marking interior
   goals nav-failed and sending the hero on spurious gate detours.
+- **Audit round (two agents, real findings, all fixed):**
+  - Bot: horn-approach watchdog (25 s no-progress -> HornIgnoreUntil -> SwitchNight fallback; unreachable horns
+    no longer wedge StartNight forever); red-alert response hoisted ABOVE the night gate (dawn roamers used to
+    chew buildings while the bot coin-ran); build-stall ignore scaled by distance (far approach stall = 60 s,
+    arrived wedge = 600 s); choice/perk frame streaks reset on frame-name change.
+  - Coach server: `_last_at` army-floor ratchet resets on new run; pending queue writes atomically; /mmreject
+    frees the dedupe (rejected patches can be re-proposed); /mmapprove now waits for the [coach] user-cmd
+    marker like /order; /proposals + /engdigest endpoints; UI knobs card (squad/reserve/escort/army/night_call/
+    release-all) — every MiniMax field reachable by the user; run detail stays expanded across refreshes;
+    mmchip 'unknown' fix; mm-pane polling gated on the pane being open.
+  - Desktop: python child stdio pipes no longer redirected (the ~4 KB pipe-fill deadlock); ServerUp fully async;
+    'auto' port ATTACHES to a running server instead of spawning a second watch loop; profile names sanitized.
+  - Bot frame state now visible: audit.json exposes `frame` (open UI frame name) for the digest.
+- **MiniMax self-scheduling (cron) + relaunch power:** reply key "schedule":[{every_s,patch,note}] programs
+  recurring actions (clamped 30 s - 6 h, semi mode queues them); patch field "relaunch":true restarts the game
+  session in auto/aggressive. UI: schedule card with delete buttons; MM_SYS documents the powers.
