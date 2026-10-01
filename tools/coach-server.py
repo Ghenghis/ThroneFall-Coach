@@ -807,7 +807,7 @@ class H(BaseHTTPRequestHandler):
             self._send(200, PAGE, "text/html; charset=utf-8")
         elif self.path == "/state":
             self._send(200, json.dumps(live_state()), "application/json")
-        elif self.path == "/live.png":
+        elif self.path.startswith("/live.png"):   # UI polls /live.png?x=<ts>
             p = AGENT / "live.png"
             try:
                 if p.exists():
@@ -825,7 +825,7 @@ class H(BaseHTTPRequestHandler):
                     self._send(200, _live_cache["b"], "image/png")
                 else:
                     self._send(404, "no frame yet")
-        elif self.path == "/live.json":
+        elif self.path.startswith("/live.json"):
             p = AGENT / "live.png"
             ts = p.stat().st_mtime if p.exists() else 0
             self._send(200, json.dumps({"ts": ts}), "application/json")

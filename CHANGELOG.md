@@ -331,3 +331,9 @@ AUTOPILOT §8–9 for the full list and next actions.
   strike, so gate planning engages instead of burning sidestep strikes. MiniMax proposal #8.
 - **Upgrade urgency ("pens"):** an already-Built slot that CanBeUpgraded scores +(900/2200 by idle gold) +
   +1500 when the playbook is fully satisfied — upgrades starved for minutes against the open[0] +5000 pin.
+- **Command-center live view fixed:** `/live.png?x=<ts>` polls 404'd because the route matched the path exactly —
+  Playwright QA caught it (real browser: 10x 404s); now `startswith` matched, verified 200 + live frame in-page,
+  console clean, "LIVE - Frostsee" banner fresh.
+- **Pin awareness (`pin-type`):** every stuck strike now classifies the collider in front of the hero —
+  `pen:<building>(upgradeable)`, `gate`, `wall`, `terrain:<name>` (rock/tree/water), `enemy`, `obj:<name>` —
+  logged + `pin-type` events for MiniMax/digest. The bot now knows WHAT it bumped, not just THAT it bumped.

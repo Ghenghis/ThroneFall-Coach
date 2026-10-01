@@ -1293,6 +1293,16 @@ internal static class Bot
 			// fired repeatedly while gps-plan never engaged).
 			if (StuckStrikes >= 1 && !Gates.Active) Gates.NoteNavFail(AimPos);
 			StuckStrikes++; SpatialMemory.Bump(s.SceneName, s.HeroPos);
+			// Awareness probe: WHAT is the hero pinned on? Classifies the
+			// collider ahead — pen (buildable/upgradeable), gate, wall,
+			// terrain rock/tree, enemy, other object — so pins learn the
+			// structure instead of an anonymous "stuck".
+			string pinCls = PinProbe(s.HeroPos, AimPos);
+			if (pinCls != null)
+			{
+				LogLine(in s, "pin:" + pinCls);
+				Recorder.Event("pin-type", "\"what\":\"" + pinCls + "\"");
+			}
 			stuckStrikeTotal++;
 			if (stuckStrikeTotal == 60)
 			{
@@ -2526,6 +2536,49 @@ internal static class Bot
 
 	private static CutOpenPathInteractor heldGate;
 	private static float heldGateAt;
+
+	/// <summary>Classify what the hero is pinned on: nearest collider ~1.6 m
+	/// ahead toward the aim. Returns a short tag ("pen:Barracks", "gate",
+	/// "wall", "terrain:Rock", "enemy", "obj:<name>") or null if nothing
+	/// recognizable — runs only on stuck strikes so the sphere is cheap.</summary>
+	private static string PinProbe(Vector3 hero, Vector3 aim)
+	{
+		try
+		{
+			Vector3 dir = aim - hero; dir.y = 0f;
+			if (dir.sqrMagnitude < 0.01f) dir = Vector3.forward; else dir.Normalize();
+			var hits = Physics.OverlapSphere(hero + dir * 1.6f + Vector3.up * 0.5f, 1.4f);
+			string best = null; float bd = float.MaxValue;
+			foreach (var c in hits)
+			{
+				if ((UnityEngine.Object)(object)c == (UnityEngine.Object)null) continue;
+				var go = c.gameObject;
+				var tg = go.GetComponentInParent<TaggedObject>();
+				if (tg != null && tg.Contains(TagManager.ETag.Player)) continue;
+				var bi = go.GetComponentInParent<BuildingInteractor>();
+				string cls;
+				if (bi != null)
+					cls = "pen:" + (bi.targetBuilding != null ? bi.targetBuilding.buildingName : bi.name) +
+					      (bi.CanBeInteractedWith ? "(upgradeable)" : "");
+				else if ((UnityEngine.Object)(object)go.GetComponentInParent<GateOpener>() != (UnityEngine.Object)null) cls = "gate";
+				else if (tg != null && tg.Contains(TagManager.ETag.EnemyOwned)) cls = "enemy";
+				else
+				{
+					string n = (go.name ?? "").ToLowerInvariant();
+					if (n.Contains("wall")) cls = "wall";
+					else if (n.Contains("rock") || n.Contains("stone") || n.Contains("boulder") ||
+					         n.Contains("mountain") || n.Contains("cliff") || n.Contains("ore")) cls = "terrain:" + go.name;
+					else if (n.Contains("tree") || n.Contains("stump") || n.Contains("bush")) cls = "terrain:" + go.name;
+					else if (n.Contains("water") || n.Contains("river") || n.Contains("lake")) cls = "terrain:" + go.name;
+					else cls = "obj:" + go.name;
+				}
+				float d = (go.transform.position - hero).sqrMagnitude;
+				if (d < bd) { bd = d; best = cls; }
+			}
+			return best;
+		}
+		catch { return null; }
+	}
 
 	private static Vector3 ChooseDetour(in BotPerception.Snapshot s, Vector3 toAim, Vector3 fallback)
 	{
