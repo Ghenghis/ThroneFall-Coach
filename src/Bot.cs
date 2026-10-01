@@ -362,6 +362,18 @@ internal static class Bot
 			{
 				num2 -= 1000f;
 			}
+			// Quest-aware (v3): a level with uncompleted quests beats an equally
+			// unbeaten level with none — quests are the campaign-progress unit.
+			if ((UnityEngine.Object)(object)li.levelInfo != (UnityEngine.Object)null)
+			{
+				try
+				{
+					num2 += 12f * (li.levelInfo.QuestsTotal() - li.levelInfo.QuestsComplete());
+				}
+				catch
+				{
+				}
+			}
 			return num2 - (float)num * 45f;
 		};
 		BotPerception.CoinSkip = (Coin c) => coinIgnore.Contains(c);

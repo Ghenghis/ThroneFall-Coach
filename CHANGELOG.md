@@ -405,3 +405,8 @@ AUTOPILOT §8–9 for the full list and next actions.
   image parts; a bad pick no longer kills the eyes channel.
 - **tools/package-desktop.ps1:** dist/ThronefallCommand.zip release artifact (0.6 MB) + INSTALL.txt.
   Inno Setup absent on this machine; swap Compress-Archive for iscc when it lands.
+- **Quest-aware level scoring:** LevelScore now adds +12 per uncompleted quest (LevelInfo.QuestsTotal() -
+  QuestsComplete()) — campaign progress beats bare unbeaten-first ordering.
+- **Ability intents verified:** PumpAttack already calls heroAttack.TryToAttack() — ManualAttack IS the hero
+  ability (self-targets, cooldown-gated, assassins-training timing respected). No new code needed; verified
+  against decompiled ManualAttack.cs.
