@@ -75,6 +75,7 @@ namespace ThronefallTrainer
             public float HornDist;
 
             public int BuildCount;        // building slots currently interactable
+            public int BlockedBuilds;     // slots skipped ONLY because they are ignored/parked (retry candidates)
             public BuildingInteractor NearestBuild;    // best-scoring spendable building
             public Vector3 NearestBuildPos;
             public float NearestBuildDist;
@@ -99,6 +100,7 @@ namespace ThronefallTrainer
             public int DoorCount;
             public int DoorsCovered;   // doors with >=2 manned units
         public int DoorsClaimed;   // covered only because a squad is en route
+        public int DoorsParked;    // covered only because the anchor is parked (unwalkable)
             public int FreeUnits;      // units not within 10 m of a door
         public int EscortUnits;    // units on hero escort (not squad-available)
             public Vector3 UncoveredDoorPos;
@@ -141,6 +143,7 @@ namespace ThronefallTrainer
             // ---- Phase 1 awareness (v3 design §P1/P3/P4/P5/P7) ----
             // P1 next-wave intel via EnemySpawner.GetWaveInfoForNextWave()
             public int NextWaveCount;          // total foes in the upcoming wave
+            public int MaxWaveAhead;           // biggest wave within the next two nights
             public int NextWaveElites;         // elite foes in it
             public float NextWaveMaxHp;        // toughest foe hp
             public float NextWaveSpeed;        // fastest foe speed
@@ -193,6 +196,7 @@ namespace ThronefallTrainer
                 HasArmyAnchor = s.HasArmyAnchor, ArmyAnchor = V(s.ArmyAnchor),
                 ArmyAnchorLine = s.ArmyAnchorLine ?? "",
                 DoorCount = s.DoorCount, DoorsCovered = s.DoorsCovered,
+                DoorsParked = s.DoorsParked, DoorsClaimed = s.DoorsClaimed,
                 FreeUnits = s.FreeUnits,
                 HasUncoveredDoor = s.HasUncoveredDoor,
                 UncoveredDoorPos = V(s.UncoveredDoorPos),
@@ -213,6 +217,7 @@ namespace ThronefallTrainer
                 SceneBusy = s.SceneBusy,
                 HasHorn = s.HasHorn, HornPos = V(s.HornPos), HornDist = s.HornDist,
                 BuildCount = s.BuildCount, HasBuild = s.NearestBuild != null,
+                BlockedBuilds = s.BlockedBuilds,
                 BuildKey = s.NearestBuild != null ? s.NearestBuild.GetInstanceID() : -1,
                 BuildName = s.NearestBuildName, BuildPos = V(s.NearestBuildPos),
                 BuildDist = s.NearestBuildDist, BuildScore = s.NearestBuildScore,
@@ -224,6 +229,7 @@ namespace ThronefallTrainer
                 HasWeapon = s.HasWeapon, ActiveRange = s.ActiveRange,
                 ActiveFiresMoving = s.ActiveFiresMoving,
                 NextWaveCount = s.NextWaveCount, NextWaveElites = s.NextWaveElites,
+                MaxWaveAhead = s.MaxWaveAhead,
                 NextWaveMaxHp = s.NextWaveMaxHp, NextWaveSpeed = s.NextWaveSpeed,
                 NextWaveFoeRange = s.NextWaveFoeRange, NextWaveGold = s.NextWaveGold,
                 FinalWaveNext = s.FinalWaveNext,
@@ -249,6 +255,7 @@ namespace ThronefallTrainer
         private static Shrine[] shrineCache;
         private static float shrineScanAt;
         private static CutOpenPathInteractor[] gateCache;
+        private static string lastGateSig = "";
         private static float gateScanAt;
         private static List<BuildingInteractor> gateBuilds =
             new List<BuildingInteractor>();   // Gate slots NOT on TagManager's
@@ -505,15 +512,18 @@ namespace ThronefallTrainer
               // wave size as live foes during the day; audit round 7).
               .Append(",\"foes\":").Append(s.EnemyCount)
               .Append(",\"next_foes\":").Append(s.NextWaveCount)
+              .Append(",\"wave_ahead\":").Append(s.MaxWaveAhead)
               .Append(",\"night\":").Append(s.IsNight ? "true" : "false")
               .Append(",\"wave\":").Append(s.Wave)
               .Append(",\"wave_total\":").Append(s.WaveTotal)
               .Append(",\"doors_cov\":").Append(s.DoorsCovered)
               .Append(",\"doors_claimed\":").Append(s.DoorsClaimed)
+              .Append(",\"doors_parked\":").Append(s.DoorsParked)
               .Append(",\"doors\":").Append(s.DoorCount)
               .Append(",\"red\":").Append(s.RedAlert ? "true" : "false")
               .Append(",\"breaches\":").Append(BreachCount)
               .Append(",\"bld\":").Append(s.BuildCount)
+              .Append(",\"bld_blocked\":").Append(s.BlockedBuilds)
               .Append(",\"gates\":").Append(s.GateCount)
               .Append(',').Append(Efficiency.Json())
               .Append(',').Append(Tasks.Json())
@@ -1272,6 +1282,7 @@ namespace ThronefallTrainer
                 }
                 MaxLevelSum = lvSum; MaxLevelTotal = lvMax; SlotsBuilt = built; SlotsTotal = total;
                 gateBuilds.Clear();
+                var gateSig = new System.Text.StringBuilder(); var gateLines = new List<string>();
                 foreach (var gb in Object.FindObjectsOfType<BuildingInteractor>(true))
                 {
                     if (gb == null) continue;
@@ -1279,9 +1290,15 @@ namespace ThronefallTrainer
                     if (gn != null && gn.IndexOf("gate", System.StringComparison.OrdinalIgnoreCase) >= 0)
                     {
                         gateBuilds.Add(gb);
+                        gateSig.Append(gn).Append('|').Append(gb.CanBeInteractedWith ? '1' : '0').Append(';');   // logged only when the set changes (was 6 lines per second)
                         if (gateBuilds.Count <= 8)
-                            Plugin.Log?.LogInfo($"[bot] gate-slot '{gn}' cat={BuildCat(gb.targetBuilding != null ? gb.targetBuilding.buildingName : gn)} bn='{(gb.targetBuilding != null ? gb.targetBuilding.buildingName : "?")}' can={gb.CanBeInteractedWith}");
+                            gateLines.Add($"[bot] gate-slot '{gn}' cat={BuildCat(gb.targetBuilding != null ? gb.targetBuilding.buildingName : gn)} bn='{(gb.targetBuilding != null ? gb.targetBuilding.buildingName : "?")}' can={gb.CanBeInteractedWith}");
                     }
+                }
+                if (gateSig.ToString() != lastGateSig)
+                {
+                    lastGateSig = gateSig.ToString();
+                    foreach (var gl in gateLines) Plugin.Log?.LogInfo(gl);
                 }
             }
             s.GateCount = 0; s.GateDist = float.MaxValue; s.NearestGate = null;
@@ -1332,6 +1349,19 @@ namespace ThronefallTrainer
                 int w = spawner.Wavenumber;
                 s.FinalWaveNext = spawner.FinalWaveComingUp(w) || w >= spawner.WaveCount - 1;
                 s.WaveBeforeFinalNext = spawner.WaveBeforeFinalWaveComingUp(w);
+                // Army planning horizon: troop production takes days, so the
+                // army target must look past tonight's wave. Biggest wave in
+                // the next two nights drives it (Frostsee w12 = 143 foes ate
+                // 36-man armies that were sized for the 17-foe wave in front).
+                int nextIdx = s.IsNight ? w : w + 1;
+                for (int ahead = 0; ahead <= 2; ahead++)
+                {
+                    var wa = EnemySpawner.GetWaveInfoByNumber(nextIdx + ahead);
+                    if (wa == null || wa.enemies == null) continue;
+                    int c = 0;
+                    foreach (var en in wa.enemies) { if (en != null) c += en.enemyCount; }
+                    if (c > s.MaxWaveAhead) s.MaxWaveAhead = c;
+                }
             }
             else
             {
@@ -1498,7 +1528,9 @@ namespace ThronefallTrainer
                             // Parked = unwalkable proof — count it covered so
                             // doors_cov can still reach doors and defenseFirst
                             // doesn't latch permanently on a dead anchor.
-                            if (hot == 1) s.DoorsCovered++;
+                            // Tracked separately: a parked door is NOT a manned
+                            // door for night readiness (premature-night audit).
+                            if (hot == 1) { s.DoorsCovered++; s.DoorsParked++; }
                             continue;
                         }
                         if (doorUnit != null && d < doorUnit.Length &&
@@ -1543,7 +1575,7 @@ namespace ThronefallTrainer
                     for (int d = 0; d < s.DoorAnchors.Length; d++) doorNeed += DoorTarget(d, pk);
                     at = Mathf.Min(Mathf.Max(doorNeed, 16), 60);
                 }
-                if (s.NextWaveCount > 0) at = Mathf.Max(at, (int)(s.NextWaveCount * 1.2f));
+                if (s.MaxWaveAhead > 0) at = Mathf.Max(at, (int)(s.MaxWaveAhead * 1.1f));
                 if (Strat.ArmyTarget > at) at = Strat.ArmyTarget;          // M3 playbook floor
                 if (Coach.ArmyTargetFloor > 0) at = Coach.ArmyTargetFloor; // live advisor SET (floor semantics broke "reduce army" orders)
                 s.ArmyTarget = at;
@@ -1994,12 +2026,15 @@ namespace ThronefallTrainer
                 if (IsInteractorFinished(bi)) continue;
                 if (buildIgnore.Count > 0 && buildIgnore.TryGetValue(bi, out float until))
                 {
-                    if (until > Time.unscaledTime) continue;   // still parked
+                    if (until > Time.unscaledTime) { s.BlockedBuilds++; continue; }   // still parked
                     buildIgnore.Remove(bi);                    // expired -> retry
                 }
                 // Episodic memory: this slot failed before — never retry.
                 if (Memory.IsParked(s.SceneName ?? "", bi.transform.position))
+                {
+                    s.BlockedBuilds++;   // retryable in principle — the rescan loop forgives stale parks
                     continue;
+                }
                 var bs = bi.targetBuilding;
                 if (bs != null)
                 {
@@ -2058,7 +2093,7 @@ namespace ThronefallTrainer
                     else if (focus == "income" && incomeDelta > 0) score += incomeDelta * 60;
                     else if (focus == "defense") score += military * 120;
                     if (broke && incomeDelta > 0) score += Mathf.Min(incomeDelta, 15) * 40;
-                    if (military > 0 && (s.FinalWaveNext || s.NextWaveCount >= 30))
+                    if (military > 0 && (s.FinalWaveNext || s.MaxWaveAhead >= 30))
                         score += military * 100;
                     if (incomeDelta > 0)
                     {

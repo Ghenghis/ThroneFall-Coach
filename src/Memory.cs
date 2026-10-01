@@ -178,6 +178,24 @@ namespace ThronefallTrainer
             }
         }
 
+        /// <summary>Forgive the parks made since <paramref name="sinceT"/> (Time.unscaledTime) - used after the hero got out of an enclosure:
+        /// everything parked while it could not leave was parked for the wrong reason (unreachable FROM THERE, not unreachable).</summary>
+        public static void ForgiveParksSince(string scene, float sinceT)
+        {
+            EnsureInit();
+            scene = Sanitize(scene);
+            int n = 0;
+            foreach (var p in parkOrder.ToArray())
+                if (p.StartsWith(scene + "|") && parkedAt.TryGetValue(p, out float at) && at >= sinceT && parked.Remove(p))
+                {
+                    parkOrder.Remove(p); parkedAt.Remove(p); n++;
+                    string v2 = null;
+                    foreach (var w in parkedWhy) if (w.StartsWith(p + "|")) { v2 = w; break; }
+                    if (v2 != null) parkedWhy.Remove(v2);
+                }
+            if (n > 0) { Save(); Plugin.Log?.LogInfo($"[memory] forgave {n} parked cells for '{scene}' (made while the hero was enclosed)"); }
+        }
+
         /// <summary>Debug/manual: clear a quarantine.</summary>
         public static void ForgiveScene(string scene)
         {

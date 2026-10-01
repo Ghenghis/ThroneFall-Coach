@@ -849,7 +849,7 @@ internal static class Bot
 			new Vector2(s.HeroPos.x, s.HeroPos.z), s.GameState == "InMatch", decideResult.Notes);
 		Tasks.Update(in s, Mode.ToString(), decideResult.Notes);
 		// Rescue rescan: slots exist and gold is in hand but nothing is pickable (every slot parked/ignored) -> forgive and retry.
-		if (!s.IsNight && s.GameState == "InMatch" && s.BuildCount > 0 && (UnityEngine.Object)(object)s.NearestBuild == (UnityEngine.Object)null && s.Balance >= 20)
+		if (!s.IsNight && s.GameState == "InMatch" && (s.BuildCount > 0 || s.BlockedBuilds > 0) && (UnityEngine.Object)(object)s.NearestBuild == (UnityEngine.Object)null && s.Balance >= 20)
 		{
 			if (noPickSince < 0f) noPickSince = Time.unscaledTime;
 			else if (Time.unscaledTime - noPickSince > 8f && Time.unscaledTime >= nextRescan)
@@ -1280,6 +1280,12 @@ internal static class Bot
 		}
 		if ((((num < 0.35f) & flag2) && !flag) || slideStuck)
 		{
+			// GPS: a pin on a gate leg counts against that gate (Gates.cs); nothing is parked or learned as a wall for it.
+			if (Gates.Active && Gates.OnPinned(s.HeroPos, slideStuck && !(((num < 0.35f) & flag2) && !flag)))
+			{
+				return;
+			}
+			Gates.NotePin();
 			StuckStrikes++; SpatialMemory.Bump(s.SceneName, s.HeroPos);
 			stuckStrikeTotal++;
 			if (stuckStrikeTotal == 60)
@@ -2211,6 +2217,50 @@ internal static class Bot
 		holdDoneName = "";
 	}
 
+	// Ranked choice pick (was: first pickable, or any name containing a military
+	// keyword — which grabbed "Guard House" over "Commander"). Army-first: unit
+	// unlocks and command/control upgrades lead, defense and castle tiers next,
+	// economy funds the machine, hero self-buffs last (the hero builds, the
+	// army fights).
+	private static int ChoiceRank(string n)
+	{
+		string t = n.ToLowerInvariant();
+		if (t.Contains("commander") || t.Contains("command")) return 100;                    // hold-position control
+		if (t.Contains("castle") || t.Contains("royal") || t.Contains("fortif")) return 85;  // Castle Up, Royal Mastery/Training
+		if (t.Contains("barrack") || t.Contains("archer") || t.Contains("knight") || t.Contains("militia") ||
+		    t.Contains("guard") || t.Contains("squad") || t.Contains("troop") || t.Contains("soldier") ||
+		    t.Contains("rider") || t.Contains("spear") || t.Contains("crossbow") || t.Contains("longbow")) return 80;
+		if (t.Contains("tower") || t.Contains("wall") || t.Contains("ballista") || t.Contains("defen") || t.Contains("barricade")) return 70;
+		if (t.Contains("builder") || t.Contains("guild") || t.Contains("engineer") || t.Contains("mastery") || t.Contains("training")) return 60;
+		if (t.Contains("income") || t.Contains("field") || t.Contains("house") || t.Contains("gold") || t.Contains("interest") ||
+		    t.Contains("harvest") || t.Contains("tax") || t.Contains("farm") || t.Contains("market") || t.Contains("mine") ||
+		    t.Contains("harbour") || t.Contains("harbor") || t.Contains("fish")) return 50;
+		if (t.Contains("damage") || t.Contains("health") || t.Contains("armor") || t.Contains("regen") ||
+		    t.Contains("speed") || t.Contains("weapon") || t.Contains("sword")) return 20;   // hero buffs last
+		return 45;
+	}
+
+	private static int WeaponRank(string n)
+	{
+		string t = n.ToLowerInvariant();
+		if (t.Contains("bow") || t.Contains("crossbow") || t.Contains("gun") || t.Contains("staff") || t.Contains("wand")) return 10;  // stay out of melee
+		if (t.Contains("spear") || t.Contains("javelin") || t.Contains("lance")) return 6;
+		if (t.Contains("sword") || t.Contains("axe") || t.Contains("hammer") || t.Contains("scythe") || t.Contains("dagger")) return 3;
+		return 5;
+	}
+
+	private static int PerkRank(string n)
+	{
+		string t = n.ToLowerInvariant();
+		if (t.Contains("interest") || t.Contains("income") || t.Contains("gold") || t.Contains("tax") || t.Contains("economy") || t.Contains("harvest")) return 10;
+		if (t.Contains("tower") || t.Contains("wall") || t.Contains("defen") || t.Contains("ballista") || t.Contains("outpost")) return 9;
+		if (t.Contains("unit") || t.Contains("soldier") || t.Contains("squad") || t.Contains("army") || t.Contains("respawn") || t.Contains("command") || t.Contains("last stand")) return 8;
+		if (t.Contains("build") || t.Contains("cost") || t.Contains("repair") || t.Contains("engineer") || t.Contains("cheap") || t.Contains("upgrade")) return 7;
+		if (t.Contains("hp") || t.Contains("health") || t.Contains("armor") || t.Contains("regen") || t.Contains("indestruct")) return 5;
+		if (t.Contains("damage") || t.Contains("weapon") || t.Contains("attack") || t.Contains("speed") || t.Contains("knockback")) return 4;
+		return 3;
+	}
+
 	private static bool HandleBlockingFrame(in BotPerception.Snapshot s)
 	{
 		UIFrameManager instance = UIFrameManager.instance;
@@ -2239,19 +2289,16 @@ internal static class Bot
 			{
 				frameActionAt = Time.unscaledTime + 0.2f;
 				Choice val2 = null;
-				Choice val3 = null;
+				int bestRank = -1;
 				foreach (Choice availableChoice in instance2.availableChoices)
 				{
 					if (availableChoice != null && availableChoice.CanBePicked)
 					{
-						if (val2 == null)
+						int r = ChoiceRank(availableChoice.name ?? "");
+						if (val2 == null || r > bestRank)
 						{
 							val2 = availableChoice;
-						}
-						string text = availableChoice.name ?? "";
-						if (val3 == null && (text.IndexOf("barrack", StringComparison.OrdinalIgnoreCase) >= 0 || text.IndexOf("archer", StringComparison.OrdinalIgnoreCase) >= 0 || text.IndexOf("militia", StringComparison.OrdinalIgnoreCase) >= 0 || text.IndexOf("guard", StringComparison.OrdinalIgnoreCase) >= 0 || text.IndexOf("tower", StringComparison.OrdinalIgnoreCase) >= 0 || text.IndexOf("wall", StringComparison.OrdinalIgnoreCase) >= 0 || text.IndexOf("knight", StringComparison.OrdinalIgnoreCase) >= 0 || text.IndexOf("squad", StringComparison.OrdinalIgnoreCase) >= 0 || text.IndexOf("troop", StringComparison.OrdinalIgnoreCase) >= 0 || text.IndexOf("soldier", StringComparison.OrdinalIgnoreCase) >= 0))
-						{
-							val3 = availableChoice;
+							bestRank = r;
 						}
 					}
 				}
@@ -2264,11 +2311,11 @@ internal static class Bot
 				}
 				else
 				{
-					instance2.choiceToReturn = val3 ?? val2;
+					instance2.choiceToReturn = val2;
 					ManualLogSource log = Plugin.Log;
 					if (log != null)
 					{
-						log.LogInfo((object)("[bot] choice frame -> '" + ((instance2.choiceToReturn != null) ? instance2.choiceToReturn.name : "none") + "'"));
+						log.LogInfo((object)("[bot] choice frame -> '" + ((instance2.choiceToReturn != null) ? instance2.choiceToReturn.name : "none") + "' rank=" + bestRank));
 					}
 					LogLine(in s, "choice-pick");
 				}
@@ -2354,15 +2401,43 @@ internal static class Bot
 			{
 				frameActionAt = Time.unscaledTime + 1.5f;
 				int num = 0;
-				PerkSelectionItem[] array = componentsInChildren;
-				foreach (PerkSelectionItem val4 in array)
+				// Curated selection (was: equip EVERYTHING unlocked — mutations are
+				// challenge modifiers that only make the run harder, and a full
+				// weapon group pick churns the one weapon slot).
+				var perkRanked = new List<KeyValuePair<int, PerkSelectionItem>>();
+				var weaponByGroup = new Dictionary<PerkSelectionGroup, KeyValuePair<int, PerkSelectionItem>>();
+				var weaponTaken = new HashSet<PerkSelectionGroup>();
+				foreach (PerkSelectionItem pre in componentsInChildren)
+				{
+					PerkSelectionGroup pg = ((Component)pre).GetComponentInParent<PerkSelectionGroup>();
+					if ((UnityEngine.Object)(object)pg != (UnityEngine.Object)null && pre.Selected &&
+					    !((UnityEngine.Object)(object)pre.Equippable == (UnityEngine.Object)null) && pre.Equippable is EquippableWeapon)
+						weaponTaken.Add(pg);              // the group already has its weapon
+				}
+				foreach (PerkSelectionItem val4 in componentsInChildren)
 				{
 					PerkSelectionGroup componentInParent = ((Component)val4).GetComponentInParent<PerkSelectionGroup>();
-					if (!((UnityEngine.Object)(object)componentInParent == (UnityEngine.Object)null) && !val4.Selected && !((UnityEngine.Object)(object)val4.Equippable == (UnityEngine.Object)null) && val4.Equippable.IsUnlocked)
+					if ((UnityEngine.Object)(object)componentInParent == (UnityEngine.Object)null || val4.Selected ||
+					    (UnityEngine.Object)(object)val4.Equippable == (UnityEngine.Object)null || !val4.Equippable.IsUnlocked)
+						continue;
+					if (val4.Equippable is EquippableMutation)
+						continue;                       // mutators add difficulty, not power
+					if (val4.Equippable is EquippableWeapon)
 					{
-						componentInParent.SelectPerk(val4);
-						num++;
+						if (weaponTaken.Contains(componentInParent)) continue;    // one weapon per group
+						int wr = WeaponRank(val4.Equippable.name ?? "");
+						if (!weaponByGroup.TryGetValue(componentInParent, out var cur) || wr > cur.Key)
+							weaponByGroup[componentInParent] = new KeyValuePair<int, PerkSelectionItem>(wr, val4);
+						continue;
 					}
+					perkRanked.Add(new KeyValuePair<int, PerkSelectionItem>(PerkRank(val4.Equippable.name ?? ""), val4));
+				}
+				foreach (var wg in weaponByGroup) { wg.Value.Value.GetComponentInParent<PerkSelectionGroup>().SelectPerk(wg.Value.Value); num++; weaponTaken.Add(wg.Key); }
+				perkRanked.Sort((x, y) => y.Key.CompareTo(x.Key));
+				for (int pi = 0; pi < perkRanked.Count && pi < 4; pi++)
+				{
+					perkRanked[pi].Value.GetComponentInParent<PerkSelectionGroup>().SelectPerk(perkRanked[pi].Value);
+					num++;
 				}
 				ManualLogSource log4 = Plugin.Log;
 				if (log4 != null)
@@ -2680,7 +2755,39 @@ internal static class Bot
 		return target + val.normalized * radius;
 	}
 
+	private static int gpsLegPrev;
+
+	/// <summary>GPS wrapper: when the goal lies behind a closed wall gate, steer at the near / far side of the gate that leads there (see Gates.cs).</summary>
 	private static Vector3 NavSteerPoint(Vector3 hero, Vector3 goal)
+	{
+		Vector3 gpsGoal = Gates.Redirect(hero, goal);
+		int gpsLeg = Gates.LegKey;
+		if (gpsLeg != gpsLegPrev)
+		{
+			// a gate leg started / changed / ended: the stored path leads to the previous steering point, drop it (same reset as a new match)
+			gpsLegPrev = gpsLeg;
+			navPath = null;
+			navIndex = 0;
+			navGoal = Vector3.zero;
+			navWrongLayer = false;
+			navInFlight = false;
+			navRepathAt = 0f;
+			navRequestId++;
+			frontierLatch = false;
+		}
+		if (Gates.Active && Gates.Direct)
+		{
+			navDirectUntil = Time.unscaledTime + 0.35f;   // push through the opening in a straight line: the pathfinder still sees the gate as closed
+		}
+		Vector3 steer = NavSteerPointCore(hero, gpsGoal);
+		if (Gates.Active)
+		{
+			navSteerArrive = Gates.Arrive;
+		}
+		return steer;
+	}
+
+	private static Vector3 NavSteerPointCore(Vector3 hero, Vector3 goal)
 	{
 		//IL_0011: Unknown result type (might be due to invalid IL or missing references)
 		//IL_0012: Unknown result type (might be due to invalid IL or missing references)
@@ -2839,6 +2946,7 @@ internal static class Bot
 				{
 					navPath = null;
 					navWrongLayer = false;
+					Gates.NoteNavFail(goal);   // GPS: the pathfinder cannot reach this goal from here (cut off by walls / closed gates)
 					ManualLogSource log2 = Plugin.Log;
 					if (log2 != null)
 					{
@@ -2917,7 +3025,7 @@ internal static class Bot
 
 	private static string FormatTickJson(in BotPerception.Snapshot s, string note)
 	{
-		return string.Format(CultureInfo.InvariantCulture, "{{\"t\":{0:0.00},\"mode\":{1},\"state\":{2},\"scene\":{3},\"night\":{4},\"wave\":\"{5}/{6}\",\"foes\":{7},\"coins\":{8},\"gold\":{9},\"hp\":{10:0.###},\"hpPct\":{22:0},\"pos\":[{11:0.#},{12:0.#}],\"ls\":{13},\"lvln\":{14},\"inter\":{15},\"lvld\":{16:0.#},\"horn\":{17},\"hd\":{18:0.#},\"bld\":{19},\"nf\":{20},\"note\":{21}}}", Time.unscaledTime, BotPerception.JsonStr(Mode.ToString()), BotPerception.JsonStr(s.GameState), BotPerception.JsonStr(s.SceneName), s.IsNight ? "true" : "false", s.Wave, s.WaveTotal, s.EnemyCount, s.CoinCount, s.Balance, s.HeroHpPct, s.HeroPos.x, s.HeroPos.z, s.OnLevelSelect ? "true" : "false", s.LevelCount, s.InteractorCount, s.NearestLevelDist, s.HasHorn ? "true" : "false", s.HornDist, s.BuildCount, s.EnemiesNearHero, BotPerception.JsonStr(note), (int)(s.HeroHpPct * 100f));
+		return string.Format(CultureInfo.InvariantCulture, "{{\"t\":{0:0.00},\"mode\":{1},\"state\":{2},\"scene\":{3},\"night\":{4},\"wave\":\"{5}/{6}\",\"foes\":{7},\"coins\":{8},\"gold\":{9},\"hp\":{10:0.###},\"hpPct\":{22:0},\"pos\":[{11:0.#},{12:0.#}],\"ls\":{13},\"lvln\":{14},\"inter\":{15},\"lvld\":{16:0.#},\"horn\":{17},\"hd\":{18:0.#},\"bld\":{19},\"nf\":{20},\"note\":{21},\"nav\":{23}}}", Time.unscaledTime, BotPerception.JsonStr(Mode.ToString()), BotPerception.JsonStr(s.GameState), BotPerception.JsonStr(s.SceneName), s.IsNight ? "true" : "false", s.Wave, s.WaveTotal, s.EnemyCount, s.CoinCount, s.Balance, s.HeroHpPct, s.HeroPos.x, s.HeroPos.z, s.OnLevelSelect ? "true" : "false", s.LevelCount, s.InteractorCount, s.NearestLevelDist, s.HasHorn ? "true" : "false", s.HornDist, s.BuildCount, s.EnemiesNearHero, BotPerception.JsonStr(note), (int)(s.HeroHpPct * 100f), BotPerception.JsonStr(Gates.Status ?? ""));
 	}
 
 	internal static void LogLine(in BotPerception.Snapshot s, string note)

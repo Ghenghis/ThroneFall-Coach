@@ -1,5 +1,42 @@
 # Changelog
 
+## GPS wall-gate escape + night-readiness fix (Claude handoff + verification pass)
+
+- **GPS (Claude's work, audited + deployed here):** `src/Gates.cs`/`src/GatePlanner.cs` — when the pathfinder fails for a goal
+  (`NoteNavFail` from the path callback, not area labels — labels renumber per frame and produced ~35 false plans in 3 min),
+  a BFS over gate-connected nav areas (`GatePlanner.Plan`, unit-tested 19/19 in `tests/GatePlanner.Tests`) or a label-free
+  geometric fallback (`PlanHeuristic`, max 2 tries/goal/min, only while pinned) picks the wall gate leading toward the goal.
+  The hero walks to the near side (normal A*), pushes straight through (`Direct` leg: the pathfinder still sees the gate
+  as closed — `navDirectUntil` is pushed 0.35 s ahead each frame). 3 pins or a 22 s/5 s timeout -> 90 s gate cool-down.
+  `Gates.OnPinned` suppresses stuck strikes/parks while a gate leg is active. Docs: `docs/GPS.md`.
+- **Live evidence:** `[gps] plan #1 (areas) via gate #203888 at (-90.0,-65.9) hops=1` fired in the deployed build, then
+  `goal is reachable from here now -> gate plan dropped` — the trigger and the drop-on-reachable path both verified live.
+  A real `gps-cross` (hero actually pushed through a gate) still not observed.
+- **Night readiness now counts manned doors, not parked ones:** `Snapshot.DoorsParked`/`DoorsClaimed` are projected to the
+  brain (`DoorsCovered` also counted parked unwalkable anchors — a fully-parked perimeter read as "defended" and the
+  night was called with nobody manning it, cf. Frostsee losses). `realDoors = covered - parked - claimed`; parked anchors
+  still satisfy the "all doors handled" clause (unwalkable = nothing more to post).
+- **Rescue rescan fixed:** `rescan-slots` required `BuildCount > 0`, but `BuildCount` only counts UNIGNORED slots — a fully
+  parked slot list read 0 and the rescan could never fire. Now counts `BlockedBuilds` (slots skipped only for
+  ignore/park) and fires when `BlockedBuilds > 0 && NearestBuild == null && gold >= 20` for 8 s.
+- **Idle-night delay** while gold >= 20 and any blocked/buildable slot remains: 12 s -> 40 s (gives rescan room).
+- **Approach-timeout cluster hysteresis:** retargeting between neighbours (<20 m, no payment) no longer resets the 18 s
+  clock — A/B slot thrashing previously made the timeout unreachable.
+- **Army target looks 2 waves ahead** (`EnemySpawner.GetWaveInfoByNumber`, public): `MaxWaveAhead` drives the target
+  (Frostsee wave 12 = 143 foes vs the previous next-wave-only sizing). Also drives the big-wave coin-range gate and the
+  military build-score bump.
+- **Ranked choice selection:** `ChoiceRank` replaces first-pickable-or-military-keyword. Order: commander/command 100,
+  castle/royal 85, unit unlocks 80, defense 70, builder/guild/mastery 60, economy 50, unknown 45, hero self-buffs 20.
+  The pick logs its rank.
+- **Curated perks:** mutations (`EquippableMutation`) are never equipped (challenge modifiers); weapons pick one per
+  group preferring ranged (`WeaponRank`), and only when the group has no weapon selected; perks ranked (`PerkRank`),
+  top 4.
+- **ticks.jsonl** gained `"nav"` (Gates.Status) for enclosure diagnosis.
+- `tools/build-and-deploy.ps1`: `taskkill /F` replaces `Stop-Process` (it returned success while the process kept running,
+  twice), refuses to deploy while the exe still lives, and the plugin-load check scans from byte 0 when BepInEx rotated
+  the log. NOTE: the file must keep a UTF-8 BOM or ASCII-only — PS 5.1 reads BOM-less files as ANSI and em-dashes decode
+  to `"` and break the parse.
+
 ## Pin-park pass (live evidence)
 
 - `pin-park`: pinned ~4 s en route to a build slot (SpendGold, nothing held) -> park the slot (was 18 s approach-timeout). Frostsee data showed the hero standing 13-20 s at a wall 27-67 m short of towers beyond it.

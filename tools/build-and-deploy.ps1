@@ -1,5 +1,5 @@
-# Builds the trainer and deploys it into the game's BepInEx plugins folder.
-# Stops thronefall.exe first — the plugin DLL is locked while the game runs.
+﻿# Builds the trainer and deploys it into the game's BepInEx plugins folder.
+# Stops thronefall.exe first - the plugin DLL is locked while the game runs.
 # Usage: .\tools\build-and-deploy.ps1 [-GameRoot "K:\Downloads-IDM\Thronefall"] [-NoRelaunch]
 param(
     [string]$GameRoot = (Split-Path $PSScriptRoot -Parent | Split-Path -Parent),
@@ -18,13 +18,18 @@ finally { Pop-Location }
 
 $proc = Get-Process thronefall -ErrorAction SilentlyContinue
 if ($proc) {
-    Write-Host "Stopping thronefall.exe (PID $($proc[0].Id)) — plugin DLL is locked while running"
-    Stop-Process -Name thronefall -Force
-    # Wait for the DLL handle to actually release — a fixed 2 s could race
+    Write-Host "Stopping thronefall.exe (PID $($proc[0].Id)) - plugin DLL is locked while running"
+    # taskkill /F: Stop-Process returned success twice while the process kept
+    # running and the copy then failed on the locked DLL.
+    & taskkill /F /IM thronefall.exe 2>$null | Out-Null
+    # Wait for the DLL handle to actually release - a fixed 2 s could race
     # a slow disk flush and the Copy-Item threw under -ErrorAction Stop.
     foreach ($i in 1..20) {
         if (-not (Get-Process thronefall -ErrorAction SilentlyContinue)) { break }
         Start-Sleep -Milliseconds 500
+    }
+    if (Get-Process thronefall -ErrorAction SilentlyContinue) {
+        throw "thronefall.exe is still running after taskkill /F - refusing to deploy onto a locked DLL"
     }
 }
 
@@ -32,7 +37,7 @@ $dll = Join-Path $src '..\bin\ThronefallTrainer.dll'
 $dest = Join-Path $GameRoot 'BepInEx\plugins'
 New-Item -ItemType Directory -Force -Path $dest | Out-Null
 
-# Copy with retry + HASH verification — a partial/failed copy used to
+# Copy with retry + HASH verification - a partial/failed copy used to
 # print "Deployed" anyway (audit: no post-deploy check at all).
 $copied = $false
 foreach ($i in 1..6) {
@@ -53,28 +58,29 @@ if ($NoRelaunch) {
     $logPath = Join-Path $GameRoot 'BepInEx\LogOutput.log'
     $logLen = if (Test-Path $logPath) { (Get-Item $logPath).Length } else { 0 }
     Start-Process (Join-Path $GameRoot 'thronefall.exe') -WorkingDirectory $GameRoot
-    # Prove the plugin actually LOADED — relaunch+crash used to look identical
+    # Prove the plugin actually LOADED - relaunch+crash used to look identical
     # to a good deploy from this script's output.
     $loaded = $false
     foreach ($i in 1..30) {
         Start-Sleep -Seconds 1
         if (Test-Path $logPath) {
-            # Only scan bytes APPENDED after launch — a stale 'loaded' line
+            # Only scan bytes APPENDED after launch - a stale 'loaded' line
             # from the previous session used to produce a false PASS.
             $fs = [IO.File]::Open($logPath, 'Open', 'Read', 'ReadWrite')
             try {
-                if ($fs.Length -gt $logLen) {
-                    $fs.Seek($logLen, 'Begin') | Out-Null
-                    $buf = New-Object byte[] ($fs.Length - $logLen)
-                    $fs.Read($buf, 0, $buf.Length) | Out-Null
-                    $tail = [Text.Encoding]::UTF8.GetString($buf)
-                    if ($tail -match 'Thronefall Trainer|trainer\.dll|BepInEx.*loaded') {
-                        $loaded = $true; break
-                    }
+                # BepInEx truncates/rotates the log on launch — when the new
+                # file is SHORTER than the remembered length, scan from 0.
+                $from = if ($fs.Length -gt $logLen) { $logLen } else { 0 }
+                $fs.Seek($from, 'Begin') | Out-Null
+                $buf = New-Object byte[] ($fs.Length - $from)
+                $fs.Read($buf, 0, $buf.Length) | Out-Null
+                $tail = [Text.Encoding]::UTF8.GetString($buf)
+                if ($tail -match 'Thronefall Trainer|trainer\.dll|BepInEx.*loaded') {
+                    $loaded = $true; break
                 }
             } finally { $fs.Close() }
         }
     }
-    Write-Host ($(if ($loaded) { 'Relaunched — plugin load line present in log.' }
-                  else { 'Relaunched — WARNING: no plugin load line in LogOutput.log yet (check manually).' })) -ForegroundColor ($(if ($loaded) { 'Green' } else { 'Yellow' }))
+    Write-Host ($(if ($loaded) { 'Relaunched - plugin load line present in log.' }
+                  else { 'Relaunched - WARNING: no plugin load line in LogOutput.log yet (check manually).' })) -ForegroundColor ($(if ($loaded) { 'Green' } else { 'Yellow' }))
 }

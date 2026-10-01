@@ -1,0 +1,21 @@
+GPS wall-gate escape (Claude) + night-readiness/rescan/thrash fixes
+
+Gates.cs/GatePlanner.cs: on a real pathfinder failure, BFS over gate-linked
+nav areas (unit-tested) or a label-free heuristic picks the wall gate out of
+an enclosure; the hero walks to the near side and pushes through (the gate
+auto-opens at 5 m). Verified live: gps plan fired + dropped on reachable.
+
+Night readiness counts manned doors only (DoorsParked/DoorsClaimed split
+out of DoorsCovered); rescan-slots now fires when every slot is parked
+(new BlockedBuilds counter); approach-timeout keeps its clock across
+sub-20 m retargets; army target looks two waves ahead via
+GetWaveInfoByNumber; choice picks are ranked (commander > castle/royal >
+units > defense > build > economy > hero buffs); perks are curated
+(mutations skipped, one weapon, top-4 perks); ticks.jsonl gains nav status.
+
+build-and-deploy.ps1: taskkill /F (Stop-Process silently failed), and the
+plugin-load check handles log rotation. File must keep UTF-8 BOM.
+
+Generated with [Devin](https://devin.ai)
+
+Co-Authored-By: Devin <158243242+devin-ai-integration[bot]@users.noreply.github.com>

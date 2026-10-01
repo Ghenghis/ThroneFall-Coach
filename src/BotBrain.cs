@@ -126,6 +126,8 @@ namespace ThronefallTrainer
         public string ArmyAnchorLine;
         public int DoorCount;
         public int DoorsCovered;
+        public int DoorsParked;     // of DoorsCovered: anchors parked as unwalkable, not manned
+        public int DoorsClaimed;    // of DoorsCovered: a squad is en route, nobody there yet
         public int FreeUnits;
         public bool HasUncoveredDoor;
         public Vec2 UncoveredDoorPos;
@@ -156,6 +158,7 @@ namespace ThronefallTrainer
         public float HornDist;
 
         public int BuildCount;          // interactable slots this scan
+        public int BlockedBuilds;       // slots skipped only because ignored/parked
         public bool HasBuild;           // best-scoring slot exists
         public int BuildKey;            // instance id — held-slot matching
         public string BuildName;
@@ -179,6 +182,7 @@ namespace ThronefallTrainer
 
         // ---- Phase 1 awareness (design §P1/P3/P4/P5/P7) ----
         public int NextWaveCount;
+        public int MaxWaveAhead;        // biggest wave within the next two nights
         public int NextWaveElites;
         public float NextWaveMaxHp;
         public float NextWaveSpeed;
@@ -367,6 +371,7 @@ namespace ThronefallTrainer
         public int SlotVisitKey;
         public float SlotVisitSince;
         public int ApprKeyP1; public float ApprSince; public int ApprGold;
+        public Vec2 ApprPos;            // target pos at the last retarget (cluster hysteresis)
 
         // level-select transition hang detector
         public float BusySince;
@@ -1009,8 +1014,12 @@ namespace ThronefallTrainer
             // BUSY DAY: buildable slots exist, gold is in hand and the bot is still making progress -> the day
             // is not over. Calling night with a full wallet and open slots wastes the only time the hero can build.
             // Under-armed (<70 % of target) with buildable work and recent progress also blocks the early call.
-            bool busyDay = (s.HasBuild || s.BuildCount > 0) && s.Balance >= 20 &&
+            bool busyDay = (s.HasBuild || s.BuildCount > 0 || s.BlockedBuilds > 0) && s.Balance >= 20 &&
                 (s.SinceProg < 25f || (s.Balance >= 500 && s.SinceProg < 90f) || (s.ArmyTarget > 0 && s.AllyCount * 10 < s.ArmyTarget * 7 && s.SinceProg < 60f));
+            // Doors actually manned RIGHT NOW: DoorsCovered also counts parked
+            // (unwalkable) anchors and en-route claims — neither is a defender,
+            // and counting them called the night early with the walls unmanned.
+            int realDoors = s.DoorsCovered - s.DoorsParked - s.DoorsClaimed;
             if (!s.IsNight && m.DayStartAt > 0f && !dayTooYoung &&
                 ((s.CanSwitch && (s.NightCall || !busyDay &&
                   // Ready = army target met AND someone actually manning the
@@ -1020,9 +1029,11 @@ namespace ThronefallTrainer
                   // x >= 0 trivially true called night with ZERO troops.
                   // Zero is "unknown", not "ready": require a real target
                   // AND a nonzero army before readiness counts.
+                  // Parked anchors still satisfy "all handled" — they are
+                  // proven unwalkable, so there is nothing more to post.
                   (s.ArmyTarget > 0 && s.AllyCount >= s.ArmyTarget &&
-                   (s.DoorCount == 0 || s.DoorsCovered > 0) ||
-                   (s.DoorCount > 0 && s.DoorsCovered >= s.DoorCount && s.AllyCount > 0)))) ||
+                   (s.DoorCount == 0 || realDoors > 0) ||
+                   (s.DoorCount > 0 && realDoors + s.DoorsParked >= s.DoorCount && s.AllyCount > 0)))) ||
                  // Budget expiry forces the night even when the horn isn't
                  // visible — SwitchToNight is the game's own call and rejects
                  // harmlessly if the day is still locked.
@@ -1090,7 +1101,7 @@ namespace ThronefallTrainer
             // ---- day: coins ----
             // P1 use: a huge or final wave coming up tightens the seek range —
             // no long-range coin runs when the run is on the line.
-            float coinRange = (s.FinalWaveNext || s.NextWaveCount >= pol.K("big_wave_nwc"))
+            float coinRange = (s.FinalWaveNext || s.MaxWaveAhead >= pol.K("big_wave_nwc"))
                 ? pol.K("coin_seek_big") : pol.K("coin_seek");
             // Broke: scavenge wider — the economy has to fund the war machine.
             if (s.Balance < 10f) coinRange *= 1.5f;
@@ -1189,7 +1200,17 @@ namespace ThronefallTrainer
                 // is a time sink (live data: Mills burned 20-36 s each at ~5 s of real work) - park it and rotate.
                 if (s.BuildKey >= 0)
                 {
-                    if (s.BuildKey + 1 != m.ApprKeyP1 || s.Balance != m.ApprGold) { m.ApprKeyP1 = s.BuildKey + 1; m.ApprSince = now; m.ApprGold = s.Balance; }
+                    if (s.BuildKey + 1 != m.ApprKeyP1 || s.Balance != m.ApprGold)
+                    {
+                        // Cluster hysteresis: retargeting between neighbours with no
+                        // payment kept resetting this clock — thrashing inside one
+                        // slot cluster made the 18 s timeout unreachable. A retarget
+                        // within 20 m and no gold spent does NOT restart the window.
+                        if (m.ApprKeyP1 <= 0 || s.Balance != m.ApprGold ||
+                            (s.BuildPos - m.ApprPos).SqrMag > 400f)
+                            m.ApprSince = now;
+                        m.ApprKeyP1 = s.BuildKey + 1; m.ApprGold = s.Balance; m.ApprPos = s.BuildPos;
+                    }
                     else if (now - m.ApprSince > 18f)
                     {
                         r.Intents.Add(Intent.Of(IntentKind.ParkSlot));
@@ -1324,9 +1345,10 @@ namespace ThronefallTrainer
             bool readyForNight = m.DayStartAt > 0f && !dayTooYoung &&
                 (s.NightCall ||
                  // ArmyTarget==0 = door scan empty = "unknown", not "ready".
+                 // realDoors = manned NOW (parked/claimed anchors don't defend).
                  (s.ArmyTarget > 0 && s.AllyCount >= s.ArmyTarget &&
-                  (s.DoorCount == 0 || s.DoorsCovered > 0)) ||
-                 (s.DoorCount > 0 && s.DoorsCovered >= s.DoorCount && s.AllyCount > 0) ||
+                  (s.DoorCount == 0 || realDoors > 0)) ||
+                 (s.DoorCount > 0 && realDoors + s.DoorsParked >= s.DoorCount && s.AllyCount > 0) ||
                  now - m.DayStartAt > (s.DayBudget > 0f ? s.DayBudget : 240f));
             if (readyForNight && s.HasHorn)
             {
@@ -1394,8 +1416,13 @@ namespace ThronefallTrainer
             // budget. Neuland day phases used to burn 3+ minutes of dead
             // time per wave.
             if (m.IdleSince < 0f) m.IdleSince = now;
+            // Gold in hand + slots parked/ignored is NOT "done for the day" —
+            // the rescan loop forgives stale parks every ~30 s. Give it room
+            // before ringing the horn on a funded day (idle-night fired while
+            // 5k+ gold sat unspent behind parked slots, Frostsee audit).
+            float idleNightAfter = s.Balance >= 20 && (s.BuildCount > 0 || s.BlockedBuilds > 0) ? 40f : 12f;
             if (!s.IsNight && m.DayStartAt > 0f && !dayTooYoung &&
-                s.CanSwitch && now - m.IdleSince > 12f &&
+                s.CanSwitch && now - m.IdleSince > idleNightAfter &&
                 now >= m.NightRequestAt)
             {
                 m.NightRequestAt = now + 15f;
