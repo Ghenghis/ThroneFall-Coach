@@ -346,3 +346,14 @@ Open:
 - Defence Tower task ledger: 206 abandoned + 92 fail + 83 partial vs 157 ok — cluster hysteresis +
   GPS should cut this; re-measure after a few Durststein runs.
 - Re-capture replay fixtures under this build (durststein-dto drifts 1/163 by design).
+
+## Round 10 (2026-10-01): hero-door timeouts and match-end popup
+
+Commits `0ea0587`, `9219f34`.
+
+| Change | Evidence |
+|---|---|
+| `PositionArmy`/`HoldCastle` hero hold points project to walkable nodes (`r.ProjectToNav`) | deployed; awaiting fresh pin-report |
+| 12 s hero-door timeout + 45 s ignore, then re-try clock restarts at end of ignore | `HoldCastle` now updates `HeroDoorSince` when it holds a hot door |
+| Match-end `BackToLevelSelectHelper` frame now counts close attempts and forces `TransitionToLevelSelect()` after 5 attempts | deployed; awaiting next victory popup |
+| `bot-lint` overlay warning fixed (F8 is the chosen key) | 0 FAIL, 0 WARN |
