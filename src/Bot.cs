@@ -99,6 +99,10 @@ internal static class Bot
 
 	private static float aimBlockedSince;
 
+	private static int aimFlapStreak;
+
+	private static float flapHold = 2.5f;
+
 	private static Vector3 lastAimPos;
 
 	private static float lastAimAt;
@@ -420,7 +424,7 @@ internal static class Bot
 			detourCount = 0;
 			weaponRange = 0f;
 			heroAttack = null;
-			ReleaseGate("reset"); Efficiency.Reset(); aimBlockedSince = 0f; lastAimAt = 0f;
+			ReleaseGate("reset"); Efficiency.Reset(); aimBlockedSince = 0f; lastAimAt = 0f; flapHold = 2.5f; aimFlapStreak = 0;
 			navPath = null;
 			navIndex = 0;
 			navInFlight = false;
@@ -600,7 +604,7 @@ internal static class Bot
 				navInFlight = false;
 				navRequestId++;
 				heroAttack = null;
-				ReleaseGate("match"); Efficiency.Reset(); Tasks.Reset(); aimBlockedSince = 0f; lastAimAt = 0f; SpatialMemory.Decay(s.SceneName);
+				ReleaseGate("match"); Efficiency.Reset(); Tasks.Reset(); aimBlockedSince = 0f; lastAimAt = 0f; flapHold = 2.5f; aimFlapStreak = 0; SpatialMemory.Decay(s.SceneName);
 				mem = BotMemory.Fresh();
 				arriveSince = 0f;
 				detourUntil = 0f;
@@ -856,7 +860,7 @@ internal static class Bot
 			bool urgent = decideResult.Mode == BotMode.Engage ||
 			              decideResult.Mode == BotMode.HeroDead ||
 			              decideResult.Mode == BotMode.ReturnHome || s.RedAlert;
-			if (!urgent && Time.unscaledTime - lastAimAt < 2.5f && s.HeroPos.sqrMagnitude > 0.01f)
+			if (!urgent && Time.unscaledTime - lastAimAt < flapHold && s.HeroPos.sqrMagnitude > 0.01f)
 			{
 				Vector3 toNew = val3 - s.HeroPos, toOld = lastAimPos - s.HeroPos;
 				toNew.y = 0f; toOld.y = 0f;
@@ -867,12 +871,17 @@ internal static class Bot
 					val3 = lastAimPos;
 					LogLine(in s, "aim-flap-blocked");
 					aimBlockedSince = aimBlockedSince <= 0f ? Time.unscaledTime : aimBlockedSince;
+					// Escalating hysteresis: the same oscillating pair
+					// re-fires the blocker every 2.5 s forever — extend the
+					// commit window so the hero actually walks somewhere.
+					if (++aimFlapStreak > 3) flapHold = Mathf.Min(8f, flapHold * 1.5f);
 				}
-				else aimBlockedSince = 0f;
+				else { aimBlockedSince = 0f; aimFlapStreak = 0; }
 			}
+			else if (!urgent) aimFlapStreak = 0;
 			// A reused (blocked) aim must NOT refresh the window, otherwise a
 			// stable opposite target is "a reversal" forever (A12 finding).
-			if (aimBlockedSince <= 0f || Time.unscaledTime - aimBlockedSince > 2.5f)
+			if (aimBlockedSince <= 0f || Time.unscaledTime - aimBlockedSince > flapHold)
 			{
 				lastAimPos = val3; lastAimAt = Time.unscaledTime; aimBlockedSince = 0f;
 			}

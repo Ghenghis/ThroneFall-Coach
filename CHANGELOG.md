@@ -452,3 +452,9 @@ AUTOPILOT §8–9 for the full list and next actions.
 - **Net v2 (15 feats):** added day-progress (dtl/600), next-wave size (nwc/60), army-floor ratio
   (ally/army_target). Dataset regen 284,192 rows; acc ~0.53. The shadow's StartNight spam during early day
   should drop - it could not see day progress before.
+- **Aim-flap hysteresis (proposals 18/37/38):** escalating commit window - each repeated reversal inside the
+  hold extends it x1.5 to max 8 s (was a fixed 2.5 s: the same oscillating pair re-fired the blocker
+  forever). Resets on mode change / run reset.
+- **Army-target cap (proposal 19):** MaxWaveAhead*1.1 had no ceiling - a 143-foe wave asked for a 157-unit
+  army vs ~48 achievable -> armyShort fired forever, every build score skewed to military. Capped at
+  postable door-need + 24 headroom.

@@ -1661,9 +1661,9 @@ namespace ThronefallTrainer
                 // 16, plus headroom for the incoming wave — production runs
                 // until met.
                 int at = 16;
+                int doorNeed = 0;
                 if (s.DoorAnchors != null)
                 {
-                    int doorNeed = 0;
                     for (int d = 0; d < s.DoorAnchors.Length; d++) doorNeed += DoorTarget(d, pk);
                     at = Mathf.Min(Mathf.Max(doorNeed, 16), 60);
                 }
@@ -1672,6 +1672,12 @@ namespace ThronefallTrainer
                 // Advisor value is a true FLOOR: as a SET it overwrote the lookahead/playbook
                 // target (live ticks showed at=15/20/25 on Frostsee with a 17-foe wave ahead).
                 if (Coach.ArmyTargetFloor > 0) at = Mathf.Max(at, Coach.ArmyTargetFloor);
+                // Proposal [19]: an unreachable target (157 vs 48 actual
+                // allies) fires armyShort FOREVER and skews every build
+                // score toward military. Cap at postable capacity + 24
+                // headroom for escorts/respawns in the pipe.
+                int cap = doorNeed > 0 ? doorNeed + 24 : 60;
+                if (at > cap) at = cap;
                 s.ArmyTarget = at;
             }
             // Coach posture: "fighter" widens the hero's self-defense bubble.
