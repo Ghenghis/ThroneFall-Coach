@@ -1098,6 +1098,7 @@ namespace ThronefallTrainer
         private static readonly Dictionary<BuildingInteractor, float> buildIgnore =
             new Dictionary<BuildingInteractor, float>();
 
+        public static void ClearIgnores() { buildIgnore.Clear(); }
         public static void IgnoreBuild(BuildingInteractor bi, float seconds)
         {
             if (bi != null) buildIgnore[bi] = Time.unscaledTime + seconds;

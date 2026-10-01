@@ -1009,8 +1009,8 @@ namespace ThronefallTrainer
             // BUSY DAY: buildable slots exist, gold is in hand and the bot is still making progress -> the day
             // is not over. Calling night with a full wallet and open slots wastes the only time the hero can build.
             // Under-armed (<70 % of target) with buildable work and recent progress also blocks the early call.
-            bool busyDay = s.HasBuild && s.Balance >= 20 &&
-                (s.SinceProg < 25f || (s.ArmyTarget > 0 && s.AllyCount * 10 < s.ArmyTarget * 7 && s.SinceProg < 60f));
+            bool busyDay = (s.HasBuild || s.BuildCount > 0) && s.Balance >= 20 &&
+                (s.SinceProg < 25f || (s.Balance >= 500 && s.SinceProg < 90f) || (s.ArmyTarget > 0 && s.AllyCount * 10 < s.ArmyTarget * 7 && s.SinceProg < 60f));
             if (!s.IsNight && m.DayStartAt > 0f && !dayTooYoung &&
                 ((s.CanSwitch && (s.NightCall || !busyDay &&
                   // Ready = army target met AND someone actually manning the

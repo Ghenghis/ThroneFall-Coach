@@ -87,6 +87,7 @@ internal static class Bot
 	private static float maScanAt;
 
 	private static float lastWatchDist;
+	private static float slideDist0 = float.MaxValue, slideT0;
 
 	private static float idleWatchSince = -1f;
 
@@ -94,7 +95,7 @@ internal static class Bot
 
 	private static int choiceConfirmStreak;
 
-	private static float nextEffBeat;
+	private static float nextEffBeat, noPickSince = -1f, nextRescan;
 
 	private static float aimBlockedSince;
 
@@ -847,6 +848,19 @@ internal static class Bot
 			(UnityEngine.Object)(object)heldBuild != (UnityEngine.Object)null, Mode.ToString(),
 			new Vector2(s.HeroPos.x, s.HeroPos.z), s.GameState == "InMatch", decideResult.Notes);
 		Tasks.Update(in s, Mode.ToString(), decideResult.Notes);
+		// Rescue rescan: slots exist and gold is in hand but nothing is pickable (every slot parked/ignored) -> forgive and retry.
+		if (!s.IsNight && s.GameState == "InMatch" && s.BuildCount > 0 && (UnityEngine.Object)(object)s.NearestBuild == (UnityEngine.Object)null && s.Balance >= 20)
+		{
+			if (noPickSince < 0f) noPickSince = Time.unscaledTime;
+			else if (Time.unscaledTime - noPickSince > 8f && Time.unscaledTime >= nextRescan)
+			{
+				nextRescan = Time.unscaledTime + 30f;
+				BotPerception.ClearIgnores();
+				Memory.ForgiveParks(s.SceneName);
+				LogLine(in s, "rescan-slots");
+			}
+		}
+		else noPickSince = -1f;
 		{
 			string wt = Tasks.Watch();
 			if (wt != null && s.GameState == "InMatch")
@@ -1210,7 +1224,7 @@ internal static class Bot
 			return;
 		}
 		watchClock += 0.25f;
-		if (watchClock < 2f)
+		if (watchClock < 1.5f)
 		{
 			return;
 		}
@@ -1257,7 +1271,14 @@ internal static class Bot
 		{
 			arriveSince = 0f;
 		}
-		if (((num < 0.35f) & flag2) && !flag)
+		// Wall-slide detector: moving but not getting closer (sliding along a wall) for >3 s is a pin too.
+		bool slideStuck = false;
+		if (!flag2 || num2 < slideDist0 - 1.5f || Time.unscaledTime - slideT0 > 30f) { slideDist0 = num2; slideT0 = Time.unscaledTime; }
+		else if (Time.unscaledTime - slideT0 > 3f && Mode != BotMode.Engage && (UnityEngine.Object)(object)heldBuild == (UnityEngine.Object)null)
+		{
+			slideStuck = true; slideDist0 = num2; slideT0 = Time.unscaledTime;
+		}
+		if ((((num < 0.35f) & flag2) && !flag) || slideStuck)
 		{
 			StuckStrikes++; SpatialMemory.Bump(s.SceneName, s.HeroPos);
 			stuckStrikeTotal++;
@@ -1287,6 +1308,22 @@ internal static class Bot
 				StuckStrikes = 0;
 				LogLine(in s, "pin-park");
 				return;
+			}
+			// First strike (~1.5 s pinned): immediate sidestep along the learned-cool side instead of waiting 3 strikes.
+			if (StuckStrikes == 1 && Legit && Mode != BotMode.Engage)
+			{
+				Vector3 qv = AimPos - s.HeroPos;
+				qv.y = 0f;
+				Vector3 qd = qv.sqrMagnitude > 0.01f ? qv.normalized : Vector3.forward;
+				Vector3 qp = s.HeroPos - qd * 1.5f + Vector3.Cross(Vector3.up, qd) * (4f * (float)detourSide);
+				if ((UnityEngine.Object)(object)AstarPath.active != (UnityEngine.Object)null)
+				{
+					qp = AstarPath.active.GetNearest(qp, new NNConstraint()).position;
+				}
+				detourPos = ChooseDetour(in s, qd, qp);
+				detourUntil = Time.unscaledTime + 1.2f;
+				detourSide = -detourSide;
+				LogLine(in s, "quick-sidestep");
 			}
 			if (StuckStrikes < 3)
 			{
