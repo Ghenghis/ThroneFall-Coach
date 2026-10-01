@@ -119,6 +119,28 @@ namespace ThronefallCommand
             }
         }
 
+        // ---------- menu handlers (same actions as the hotkeys) ----------
+        void Reload_Click(object s, RoutedEventArgs e)
+        { try { Web.CoreWebView2?.Reload(); } catch { } }
+        void Exit_Click(object s, RoutedEventArgs e) => Close();
+        void Pin_Click(object s, RoutedEventArgs e)
+            => TopMostBox.IsChecked = !TopMostBox.IsChecked;
+        void Keys_Click(object s, RoutedEventArgs e)
+            => KeysFlyout.Visibility = KeysFlyout.Visibility == Visibility.Visible
+                ? Visibility.Collapsed : Visibility.Visible;
+        async void Pane_Click(object s, RoutedEventArgs e)
+        {
+            var tag = (s as MenuItem)?.Tag as string;
+            if (tag == null) return;
+            try { await Web.ExecuteScriptAsync($"tool('{tag}')"); } catch { }
+        }
+        async void Mode_Click(object s, RoutedEventArgs e)
+        {
+            var tag = (s as MenuItem)?.Tag as string;
+            if (tag == null) return;
+            try { await Web.ExecuteScriptAsync($"mmMode('{tag}')"); } catch { }
+        }
+
         // ---------- MiniMax "agent connected" glow ----------
         // Blue border + halo while MiniMax's heartbeat is fresh and a steering
         // mode is on; amber while patches sit in the semi queue or a write is

@@ -410,3 +410,17 @@ AUTOPILOT §8–9 for the full list and next actions.
 - **Ability intents verified:** PumpAttack already calls heroAttack.TryToAttack() — ManualAttack IS the hero
   ability (self-targets, cooldown-gated, assassins-training timing respected). No new code needed; verified
   against decompiled ManualAttack.cs.
+- **MiniMax proposals -> shipped fixes (acceptance loop live):**
+  - rule-test purge: agent/policy.txt carried 'rule-test | Wave >= 0 -> coin_seek = 90' firing every tick —
+    coin collection priority was hard-pinned for every run. Removed; orbit_spin knob kept.
+  - Enabler slots (castle center / activator root gating the tech tree) now BYPASS park/ignore filters —
+    parking the gating building starved the whole upgrade chain (Durststein army capped 32/78).
+  - relaunch:true cooldown 300 s + post-relaunch proof (fresh log bytes + fresh audit.json) before claiming ok.
+  - POST /proposals {idx,status} marks open/shipped/rejected; shipped proposals get a live efficiency verdict
+    (+/- pts vs at-ship baseline) — the UI proposals card shows the verdict and has ship/reject buttons.
+  - Native menu bar: File/View/Panes/MiniMax mirroring every F-key and Ctrl+F* action.
+- **Durststein root cause (from run history + MiniMax proposals):** 13/44 defeats are wave-1 night wipes —
+  the bot arrives at night under-built (castle tier gates barracks output) holding 4900 gold with 12 allies.
+  Daytime build-lost events (roamers) compounded it; the day red-alert fix + enabler bypass target both.
+- **Frostsee 27 min is map pacing, not waste:** ~10 min day budgets x multi-day waves; SpendGold dominates day,
+  HoldCastle night. speedrun:true is the pace lever.

@@ -220,21 +220,40 @@ def sched_merge(jobs):
                         "patch": patch, "note": note})
     sched_write(cur[-20:])
 
+_relaunch_last = {"t": 0.0}
 def apply_side_effects(patch, mode, st):
     """Real-world patch actions that are NOT plugin commands: relaunch restarts
     the game session (auto/aggressive apply it; semi waits for approval).
-    Returns a note string for the feed or None."""
+    Cooldown 300 s + post-relaunch plugin-load proof — a relaunch that didn't
+    produce a fresh audit.json is a failure, not a success."""
     if patch.get("relaunch") and mode in ("auto", "aggressive"):
+        if time.time() - _relaunch_last["t"] < 300:
+            return "relaunch skipped: 300 s cooldown"
         try:
             import subprocess
+            glog = pathlib.Path(
+                r"K:\Downloads-IDM\Thronefall\BepInEx\LogOutput.log")
+            before_size = glog.stat().st_size if glog.exists() else 0
             subprocess.run(["taskkill", "/F", "/IM", "thronefall.exe"],
                            capture_output=True, timeout=10)
             time.sleep(4)
             subprocess.Popen([r"K:\Downloads-IDM\Thronefall\thronefall.exe"],
                              cwd=r"K:\Downloads-IDM\Thronefall")
+            _relaunch_last["t"] = time.time()
+            # Proof window: fresh bytes appended to the game log beyond the
+            # kill point = BepInEx+plugin actually came back up.
+            ok = False
+            for _ in range(90):
+                time.sleep(1)
+                if glog.exists() and glog.stat().st_size > before_size + 512:
+                    af = AGENT / "audit.json"
+                    if af.exists() and time.time() - af.stat().st_mtime < 30:
+                        ok = True
+                        break
             _watch_log({"t": round(time.time(), 1), "kind": "relaunch",
-                        "by": "mm", "mode": mode})
-            return "session relaunched by MiniMax"
+                        "by": "mm", "mode": mode, "verified": ok})
+            return ("session relaunched by MiniMax, plugin confirmed"
+                    if ok else "relaunch issued but plugin not verified in 90 s")
         except Exception as ex:
             return f"relaunch failed: {ex}"
     return None
@@ -1276,6 +1295,13 @@ class H(BaseHTTPRequestHandler):
             for ln in tail_lines(PROPOSALS, 40, cap=60000):
                 try: rows.append(json.loads(ln))
                 except Exception: pass
+            # shipped proposals carry their post-ship verdict
+            for r in rows:
+                if r.get("status") == "shipped" and "eff_at_ship" in r:
+                    cur = (live_state().get("eff") or {}).get("last_1h") or {}
+                    was = (r.get("eff_at_ship") or {}).get("last_1h") or {}
+                    if cur.get("useful_pct") is not None and was.get("useful_pct") is not None:
+                        r["verdict"] = cur["useful_pct"] - was["useful_pct"]
             self._send(200, json.dumps(rows), "application/json")
         elif self.path == "/engdigest":
             self._send(200, json.dumps(eng_digest()), "application/json")
@@ -1388,6 +1414,14 @@ class H(BaseHTTPRequestHandler):
             append_log("c", f"[MM CONFIG] mode={c['mode']} every {c['interval_s']}s")
             self._send(200, json.dumps({"ok": True, **c}), "application/json")
             return
+        if self.path == "/proposals":
+            try:
+                _d = json.loads(self.rfile.read(_n) or b"{}")
+            except Exception:
+                _d = {}
+            ok = proposal_set(int(_d.get("idx", -1)),
+                              str(_d.get("status", "open")))
+            self._send(200, json.dumps({"ok": ok}), "application/json"); return
         if self.path == "/mmlook":
             # MiniMax (or the user) requests a vision read of live.png — the
             # "eyes" channel. Returns the model's description; also logged to
@@ -1663,6 +1697,26 @@ def recent_vision(n=3):
             try: out.append(json.loads(ln))
             except Exception: pass
     return out
+
+def proposal_set(idx, status):
+    """Mark a proposal open/shipped/rejected — the acceptance tracker: when a
+    proposal ships, the next postmortem's efficiency delta is the verdict."""
+    if not PROPOSALS.exists():
+        return False
+    rows = []
+    for ln in PROPOSALS.read_text(encoding="utf-8", errors="replace").splitlines():
+        try: rows.append(json.loads(ln))
+        except Exception: pass
+    if not (0 <= idx < len(rows)):
+        return False
+    rows[idx]["status"] = status
+    if status == "shipped":
+        # baseline snapshot — the next run's useful_pct will be compared
+        rows[idx]["shipped_at"] = round(time.time(), 1)
+        rows[idx]["eff_at_ship"] = (live_state().get("eff") or {})
+    PROPOSALS.write_text("\n".join(json.dumps(r) for r in rows) + "\n",
+                         encoding="utf-8")
+    return True
 
 def metrics():
     """Full dashboard payload — grades, learning, weaknesses, curve.
@@ -2083,6 +2137,7 @@ pre.book{background:#150e0a;border:1px solid var(--bord);border-radius:9px;
     <div class="pb" style="margin-top:5px"><button onclick="orderKnobs()">Apply knobs</button>
      <button onclick="orderClear()" title="release every override to bot defaults">Release all</button>
      <button id="btnSpeedrun" onclick="speedrunToggle()" title="MiniMax steers for fast clears">⚡ Speedrun</button></div></div>
+   <div class="card"><h4>Engineering proposals (did they help?)</h4><div id="mmProps"></div></div>
    <div class="card"><h4>MiniMax schedule (cron — it programs itself)</h4><div id="mmSched"></div></div>
    <div class="card"><h4>Last patch outcome (measured, not assumed)</h4><div id="mmOut"></div></div>
    <div class="card"><h4>Heartbeat</h4><div id="mmHb" class="hint"></div></div>
@@ -2329,6 +2384,14 @@ async function mmCfg(){try{const c=await j('/mmconfig');
   `<div class="kv"><span>patch</span><b>${esc(JSON.stringify(o.patch))}</b></div>
    <div class="kv"><span>after ${o.s}s</span><b>${esc(JSON.stringify(o.d))}</b></div>`:
   '<div class="hint">no applied patch yet</div>';
+ fetch('/proposals').then(r=>r.json()).then(ps=>{
+  const el=document.getElementById('mmProps');if(!el)return;
+  el.innerHTML=ps.length?ps.map((p,i)=>{
+   const vd=p.verdict==null?'':(p.verdict>=0?` <b style="color:var(--ok)">+${p.verdict}pts eff</b>`:` <b style="color:var(--bad)">${p.verdict}pts eff</b>`);
+   const st=p.status||'open';
+   const act=st=='open'?` <a style="cursor:pointer;color:var(--ok)" onclick="propSet(${i},'shipped')">ship</a> <a style="cursor:pointer;color:var(--bad)" onclick="propSet(${i},'rejected')">reject</a>`:'';
+   return `<div class="wk"><b>[${st}]</b> ${esc(p.bug||'')}${vd}<div>${esc((p.fix||'').slice(0,140))}</div>${act}</div>`}).join('')
+   :'<div class="hint">none</div>'}).catch(()=>{});
  const h=c.hb||{};
  document.getElementById('mmHb').innerHTML=
   `mode ${h.mode||c.mode} · every ${h.interval_s||c.interval_s}s · ok ${h.ok||0} · `+
@@ -2349,6 +2412,7 @@ async function orderKnobs(){const cmd={note:'ui-knobs'};
  if(document.getElementById('kNc').checked)cmd.night_call=true;
  order(cmd);mmCfg()}
 async function orderClear(){order({clear:true,note:'ui-release-all'})}
+async function propSet(i,st){await j('/proposals',{method:'POST',body:JSON.stringify({idx:i,status:st})});mmCfg()}
 async function speedrunToggle(){const on=!document.getElementById('btnSpeedrun').classList.contains('live');
  await j('/mmconfig',{method:'POST',body:JSON.stringify({speedrun:on})});
  document.getElementById('btnSpeedrun').classList.toggle('live',on);mmCfg()}

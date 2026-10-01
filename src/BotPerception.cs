@@ -2149,18 +2149,23 @@ namespace ThronefallTrainer
                 // forever (diag: state=Upgrade complete=True on the Castle
                 // Center). Skip them in the scan instead of stalling on them.
                 if (IsInteractorFinished(bi)) continue;
-                if (buildIgnore.Count > 0 && buildIgnore.TryGetValue(bi, out float until))
+                var bs = bi.targetBuilding;
+                // Enabler slots (the castle center / activator root that a
+                // gated slot is waiting on) bypass the park & ignore filters —
+                // parking the gating building used to starve the whole tech
+                // tree (audit proposal: army capped while towers spammed).
+                bool isEnabler = bs != null && enablersPrev != null && enablersPrev.Contains(bs);
+                if (!isEnabler && buildIgnore.Count > 0 && buildIgnore.TryGetValue(bi, out float until))
                 {
                     if (until > Time.unscaledTime) { s.BlockedBuilds++; continue; }   // still parked
                     buildIgnore.Remove(bi);                    // expired -> retry
                 }
                 // Episodic memory: this slot failed before — never retry.
-                if (Memory.IsParked(s.SceneName ?? "", bi.transform.position))
+                if (!isEnabler && Memory.IsParked(s.SceneName ?? "", bi.transform.position))
                 {
                     s.BlockedBuilds++;   // retryable in principle — the rescan loop forgives stale parks
                     continue;
                 }
-                var bs = bi.targetBuilding;
                 if (bs != null)
                 {
                     // Deactivated slots accept payment through the interactor
