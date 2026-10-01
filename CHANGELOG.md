@@ -380,3 +380,18 @@ AUTOPILOT §8–9 for the full list and next actions.
   in the !s.Valid path and calls `TransitionFromLevelSelectToLevel` directly — the node map needs no walking.
   DoorPostAts/DoorPostCounts indexing is bounds-guarded at all 5 sites (a >63-door map would have thrown inside
   Decide). F5/F3 covered by the horn-first preference + the earlier IsFreeToCallNight executor gate.
+- **MiniMax vision loop:** local LM Studio VL models (:1234, OpenAI-compatible) now read live.png — qwen3-vl-4b
+  verified ("isometric village, no overlays, hero near center"). Model picker has a preference order + 3-model
+  fallback; snapshots land in agent/snaps/ with a 2 h auto-purge; reads append to vision.jsonl which feeds
+  eng_digest() into the next steering prompt. POST /mmlook {q} = on-demand look; GET /mmvision lists reads+models.
+- **Efficiency regression = urgent:** when live 1 h useful_pct drops 12+ pts under the 16 h baseline the watch
+  loop flags urgent and forces a steering call — MiniMax is compelled to fix wasted-time regressions, not
+  allowed to idle through them.
+- **Speedrun records:** GET /speedrun aggregates runs/*/summary.json per scene — attempts, win%, best/avg
+  duration, waves, composite grade (speed 60% + clean 40%). Stats pane shows the table; current records:
+  Neuland 37/37 best 12:59 · Nordfels 5/9 best 2:03 · Durststein 8/44 best 3:57 · Frostsee 5/10 best 27:06.
+- **Desktop F-key map (every modifier):** F1 shortcut reference overlay, F2 connect, F3 zoom cycle, F4 lock,
+  F5 reload, F6 pin, F11 fullscreen, F12 compact; Ctrl+F1..7 = panes chat/live/stats/book/weak/audit/mm;
+  Ctrl+F8..11 = MiniMax off/semi/auto/aggressive; Shift+F1..3 profile presets; Alt+F5 hard reload.
+- **AI-active border glow:** blue halo while MiniMax heartbeat is fresh in an active mode, amber when the
+  semi queue has items awaiting you, none when offline — the computer-use cue.

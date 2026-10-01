@@ -7,6 +7,10 @@ using System.Net.Sockets;
 using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Effects;
+using System.Windows.Threading;
 using Microsoft.Web.WebView2.Core;
 
 namespace ThronefallCommand
@@ -57,8 +61,108 @@ namespace ThronefallCommand
             if (_cfg.Locked) ApplyLock();
             RefreshProfileBox();
             RefreshPorts();
-            Loaded += async (_, __) => { await InitWeb(); ConnectNow(); };
+            Loaded += async (_, __) => { await InitWeb(); ConnectNow(); StartGlowTimer(); };
             Closing += (_, __) => SaveSettings();
+            KeyDown += OnKeyDown;
+        }
+
+        // ---------- keyboard shortcuts: every F* + modifiers ----------
+        // F1 help · F2 connect · F3 zoom cycle · F4 lock · F5 reload
+        // F6 pin · F11 fullscreen · F12 compact
+        // Ctrl+F1..6 panes chat/live/stats/book/weak/audit · Ctrl+F7 mm pane
+        // Ctrl+F8..11 MiniMax off/semi/auto/aggressive
+        // Shift+F1..3 profile presets · Alt+F5 hard reload
+        async void OnKeyDown(object sender, KeyEventArgs e)
+        {
+            var mod = Keyboard.Modifiers;
+            if ((mod & ModifierKeys.Alt) != 0 && e.Key == Key.F5)
+            { try { Web.CoreWebView2?.Reload(); } catch { } e.Handled = true; return; }
+            if ((mod & ModifierKeys.Shift) != 0)
+            {
+                int pi = e.Key switch { Key.F1 => 0, Key.F2 => 1, Key.F3 => 2, _ => -1 };
+                if (pi >= 0 && pi < ProfileBox.Items.Count)
+                { ProfileBox.SelectedIndex = pi; LoadProfile_Click(null!, null!); }
+                e.Handled = pi >= 0; return;
+            }
+            if ((mod & ModifierKeys.Control) != 0)
+            {
+                string? js = e.Key switch
+                {
+                    Key.F1 => "tool('chat')",  Key.F2 => "tool('live')",
+                    Key.F3 => "tool('stats')", Key.F4 => "tool('book')",
+                    Key.F5 => "tool('weak')",  Key.F6 => "tool('audit')",
+                    Key.F7 => "tool('mm')",
+                    Key.F8 => "mmMode('off')",       Key.F9 => "mmMode('semi')",
+                    Key.F10 => "mmMode('auto')",     Key.F11 => "mmMode('aggressive')",
+                    _ => null
+                };
+                if (js != null)
+                { try { await Web.ExecuteScriptAsync(js); } catch { } e.Handled = true; }
+                return;
+            }
+            switch (e.Key)
+            {
+                case Key.F1:
+                    KeysFlyout.Visibility = KeysFlyout.Visibility == Visibility.Visible
+                        ? Visibility.Collapsed : Visibility.Visible;
+                    e.Handled = true; break;
+                case Key.F2: ConnectNow(); e.Handled = true; break;
+                case Key.F3:
+                    ZoomSlider.Value = ZoomSlider.Value < 0.9 ? 1.0
+                                     : ZoomSlider.Value < 1.3 ? 1.4 : 0.7;
+                    e.Handled = true; break;
+                case Key.F4: Lock_Click(this, e); e.Handled = true; break;
+                case Key.F5: try { Web.CoreWebView2?.Reload(); } catch { } e.Handled = true; break;
+                case Key.F6: TopMostBox.IsChecked = !TopMostBox.IsChecked; e.Handled = true; break;
+                case Key.F11: Full_Click(this, e); e.Handled = true; break;
+                case Key.F12: Compact_Click(this, e); e.Handled = true; break;
+            }
+        }
+
+        // ---------- MiniMax "agent connected" glow ----------
+        // Blue border + halo while MiniMax's heartbeat is fresh and a steering
+        // mode is on; amber while patches sit in the semi queue or a write is
+        // in flight; nothing when OFF/disconnected — same cue as computer-use.
+        DispatcherTimer? _glow;
+        void StartGlowTimer()
+        {
+            _glow = new DispatcherTimer { Interval = TimeSpan.FromSeconds(3) };
+            _glow.Tick += async (_, __) => await UpdateGlow();
+            _glow.Start();
+        }
+        async Task UpdateGlow()
+        {
+            try
+            {
+                var doc = await _http.GetStringAsync(
+                    $"http://127.0.0.1:{Port()}/mmconfig");
+                using var j = JsonDocument.Parse(doc);
+                var root = j.RootElement;
+                string mode = root.TryGetProperty("mode", out var mo)
+                    ? mo.GetString() ?? "off" : "off";
+                // hb.t = epoch seconds of the last watch-loop beat
+                double hbAt = root.TryGetProperty("hb", out var hb)
+                    && hb.TryGetProperty("t", out var ht) ? ht.GetDouble() : 0;
+                double age = hbAt > 0
+                    ? DateTimeOffset.Now.ToUnixTimeSeconds() - hbAt : 9999;
+                int pending = root.TryGetProperty("pending", out var pd)
+                    && pd.ValueKind == JsonValueKind.Array ? pd.GetArrayLength() : 0;
+                Color c;
+                if (mode == "off" || age > 60)
+                    c = Color.FromArgb(0, 0, 0, 0);            // disconnected
+                else if (pending > 0)
+                    c = Color.FromRgb(255, 170, 60);           // amber: waiting on you
+                else
+                    c = Color.FromRgb(64, 150, 255);           // blue: agent active
+                GlowFx.Color = c;
+                GlowFrame.BorderBrush = new SolidColorBrush(
+                    Color.FromArgb(c.A == 0 ? (byte)0 : (byte)200, c.R, c.G, c.B));
+            }
+            catch
+            {
+                GlowFx.Color = Colors.Transparent;
+                GlowFrame.BorderBrush = Brushes.Transparent;
+            }
         }
 
         // ---------- settings / profiles ----------

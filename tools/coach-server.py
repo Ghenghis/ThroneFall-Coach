@@ -18,7 +18,7 @@ Endpoints:
 Usage: python tools/coach-server.py [--port 8099]
 Env:  COACH_LLM_URL, COACH_LLM_MODEL, COACH_VISION_MODEL, COACH_LLM_KEY
 """
-import base64, json, os, sys, time, urllib.request, urllib.error, urllib.parse, pathlib, glob
+import base64, json, os, shutil, sys, time, urllib.request, urllib.error, urllib.parse, pathlib, glob
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -296,6 +296,11 @@ def eng_digest():
             ("stuck strike", "anomaly", "[gps] failed", "[gps] crossed", "Exception", "match-escape")}
     except Exception:
         pass
+    try:
+        v = recent_vision(3)
+        if v: d["vision"] = [{"t": x.get("t"), "text": x.get("text", x.get("error", ""))[:300]} for x in v]
+    except Exception:
+        pass
     _eng_cache.update(t=time.time(), v=d)
     return d
 
@@ -429,6 +434,7 @@ def mm_watch_loop():
             _hb["live"] = True
             # New run => the plugin-side ResetRun() cleared all overrides —
             # re-issue steering instead of deduping it away forever.
+            purge_snaps()   # 2 h TTL — keeps agent/snaps/ from collecting cruft
             if st.get("run") != last_run:
                 last_run = st.get("run")
                 mm_watch_loop.last_patch = ""
@@ -528,6 +534,29 @@ def mm_watch_loop():
                                      for x in audit_alerts(au))
                 except Exception:
                     pass
+            # Efficiency regression = urgent. "Forced to improve": when the
+            # live 1 h useful-time ratio drops 12+ pts under the 16 h
+            # baseline, wasted time is climbing and the model must act.
+            if not urgent:
+                try:
+                    eff = st.get("eff") or {}
+                    e1, e16 = eff.get("last_1h") or {}, eff.get("last_16h") or {}
+                    if e1.get("n", 0) > 5 and e16.get("n", 0) > 10 and \
+                            e1.get("useful_pct", 100) < e16.get("useful_pct", 0) - 12:
+                        urgent = True
+                        append_log("mm", f"[{time.strftime('%H:%M')} eff-regression] "
+                            f"1h {e1['useful_pct']}% vs 16h {e16['useful_pct']}% — forcing a look")
+                except Exception:
+                    pass
+            # Eyes: a fresh urgent beat or every ~10 min in an active mode —
+            # snapshot live.png and have the local vision model describe it;
+            # the text lands in eng_digest() for the next steering call.
+            now_t = time.time()
+            look_due = now_t - _vision_state["last_look"] > \
+                (30 if urgent else 600)
+            if mode != "off" and look_due:
+                _vision_state["last_look"] = now_t
+                _threading.Thread(target=vision_look, daemon=True).start()
             if sig == last_sig and not urgent and mode != "aggressive":
                 time.sleep(wsec); continue
             # DON'T commit last_sig until the call succeeds — a transient
@@ -1212,6 +1241,9 @@ class H(BaseHTTPRequestHandler):
                     "GET /mmwatch": "MiniMax watch feed",
                     "GET /proposals": "MiniMax bug proposals (open/ship status)",
                     "GET /engdigest": "raw engineering digest the model sees",
+                    "GET /speedrun": "per-scene speedrun records + grades",
+                    "GET /mmvision": "vision reads + local VL models",
+                    "POST /mmlook {q}": "ask the local vision model to read live.png",
                     "GET /mmconfig": "mode, interval, pending, outcome, hb",
                     "GET /playbook?scene=X": "loaded strategy for scene",
                     "GET /history": "chat feed tail",
@@ -1228,6 +1260,11 @@ class H(BaseHTTPRequestHandler):
                           "auto": "apply validated patches",
                           "aggressive": "auto + no dedupe, every cycle"},
                 "patch_fields": sorted(MM_FIELDS.keys())}), "application/json")
+        elif self.path == "/speedrun":
+            self._send(200, json.dumps(speedrun()), "application/json")
+        elif self.path == "/mmvision":
+            self._send(200, json.dumps({"models": vision_models(),
+                "recent": recent_vision(10)}), "application/json")
         elif self.path == "/proposals":
             rows = []
             for ln in tail_lines(PROPOSALS, 40, cap=60000):
@@ -1341,6 +1378,19 @@ class H(BaseHTTPRequestHandler):
             append_log("c", f"[MM CONFIG] mode={c['mode']} every {c['interval_s']}s")
             self._send(200, json.dumps({"ok": True, **c}), "application/json")
             return
+        if self.path == "/mmlook":
+            # MiniMax (or the user) requests a vision read of live.png — the
+            # "eyes" channel. Returns the model's description; also logged to
+            # vision.jsonl for the next digest.
+            try:
+                _d = json.loads(self.rfile.read(_n) or b"{}")
+            except Exception:
+                _d = {}
+            q = _d.get("q") or _d.get("question") or ""
+            rec = vision_look(q)
+            self._send(200, json.dumps(rec or {"ok": False,
+                "why": "no vision model or stale live.png"}),
+                "application/json"); return
         if self.path == "/mmapprove" or self.path == "/mmreject":
             # semi-auto queue: approve applies the queued patch for real
             # (same write_cmd + /order proof path), reject discards it.
@@ -1464,6 +1514,145 @@ def readj(p, dflt):
         return dflt
 
 _metrics_cache = {"m": None, "at": 0.0}
+
+def speedrun():
+    """Per-scene speedrun grading — attempts, wins, best/avg duration,
+    best score, hero deaths, stalls. Aggregates runs/*/summary.json."""
+    by_scene = {}
+    for sp in glob.glob(str(AGENT / "runs" / "*" / "summary.json")):
+        try:
+            s = json.loads(open(sp, encoding="utf-8").read())
+        except Exception:
+            continue
+        if not s.get("legit", True):
+            continue  # trainer-mode runs don't count for speedrun records
+        sc = s.get("scene") or "?"
+        e = by_scene.setdefault(sc, {"scene": sc, "attempts": 0, "wins": 0,
+                                     "best_s": None, "tot_s": 0.0,
+                                     "best_waves": 0, "best_castle": 0,
+                                     "deaths": 0, "stalls": 0})
+        e["attempts"] += 1
+        won = s.get("result") == "victory"
+        e["wins"] += won
+        dur = float(s.get("durationS") or 0)
+        if won and dur > 0:
+            e["best_s"] = dur if e["best_s"] is None else min(e["best_s"], dur)
+            e["tot_s"] += dur
+        e["best_waves"] = max(e["best_waves"], int(s.get("waves") or 0))
+        e["best_castle"] = max(e["best_castle"], int(s.get("castleHpMin") or 0))
+        e["deaths"] += int(s.get("heroDeaths") or 0)
+        e["stalls"] += int(s.get("stalls") or 0)
+    rows = list(by_scene.values())
+    for e in rows:
+        e["avg_s"] = round(e["tot_s"] / e["wins"]) if e["wins"] else None
+        e.pop("tot_s", None)
+        # Composite grade 0-100: speed (60%) + clean run (40%).
+        if e["best_s"]:
+            spd = max(0, min(60, 60 - (e["best_s"] - 300) / 60))
+            e["grade"] = round(spd + 20 * (e["wins"] / e["attempts"])
+                               + 10 * (e["best_castle"] / 100)
+                               + 10 * (1 if e["deaths"] == 0 else 0))
+        else:
+            e["grade"] = round(20 * (e["wins"] / e["attempts"])
+                               + 10 * (e["best_castle"] / 100)
+                               + e["best_waves"] * 4)
+    rows.sort(key=lambda r: -r["grade"])
+    return rows
+
+VISION_URL = "http://127.0.0.1:1234/v1"
+SNAPDIR = AGENT / "snaps"
+SNAP_TTL = 7200.0            # snapshots auto-purge after 2 h (user asked)
+VISION_LOG = AGENT / "vision.jsonl"
+_vision_state = {"models": [], "probed": 0, "last_look": 0}
+
+def vision_models():
+    """Vision-capable models loaded in LM Studio (:1234 OpenAI-compat)."""
+    if time.time() - _vision_state["probed"] < 300:
+        return _vision_state["models"]
+    try:
+        with urllib.request.urlopen(VISION_URL + "/models", timeout=3) as r:
+            ids = [m.get("id", "") for m in
+                   json.loads(r.read().decode()).get("data", [])]
+        vls = [i for i in ids
+               if any(k in i.lower() for k in ("vl", "vision", "6v", "ocr"))]
+        # Preference order — first in the list isn't necessarily loadable
+        # (qwen2-vl-2b 400'd on image parts here; qwen3-vl-4b works).
+        pref = ("qwen3-vl-4b", "qwen3-vl-2b", "glm-4.6v", "qwen2-vl",
+                "unhinged-vision", "phi-3.5-vision")
+        vls.sort(key=lambda i: next((n for n, p in enumerate(pref)
+                                     if p in i.lower()), 99))
+        _vision_state["models"] = vls
+        _vision_state["probed"] = time.time()
+    except Exception:
+        _vision_state["models"] = []
+        _vision_state["probed"] = time.time()
+    return _vision_state["models"]
+
+def purge_snaps():
+    try:
+        for f in SNAPDIR.glob("*.png"):
+            if time.time() - f.stat().st_mtime > SNAP_TTL:
+                f.unlink(missing_ok=True)
+    except Exception:
+        pass
+
+def vision_look(question=""):
+    """Ask a local vision model to read the current live.png. Stores the
+    timestamped snapshot in agent/snaps/ (2 h TTL) and appends the read to
+    vision.jsonl which the next MiniMax prompt digests."""
+    models = vision_models()
+    if not models:
+        return None
+    img = AGENT / "live.png"
+    if not img.exists() or time.time() - img.stat().st_mtime > 20:
+        return None
+    try:
+        SNAPDIR.mkdir(exist_ok=True)
+        stamp = time.strftime("%Y%m%d-%H%M%S")
+        dest = SNAPDIR / f"snap-{stamp}.png"
+        shutil.copy2(img, dest)
+        b64 = base64.b64encode(dest.read_bytes()).decode()
+        want = mm_cfg().get("vision_model")
+        order = ([want] if want else []) + [m for m in models if m != want]
+        q = question or ("One line each: what is on screen? Any UI popup/"
+            "victory/defeat overlay blocking play? Where is the hero? Be terse.")
+        text = model = None
+        last_err = ""
+        for m in order[:3]:   # try up to 3 models — a listed model can 400
+            try:
+                body = {"model": m, "max_tokens": 160, "temperature": 0.2,
+                    "messages": [{"role": "user", "content": [
+                        {"type": "image_url", "image_url": {
+                            "url": f"data:image/png;base64,{b64}"}},
+                        {"type": "text", "text": q}]}]}
+                req = urllib.request.Request(VISION_URL + "/chat/completions",
+                    data=json.dumps(body).encode(),
+                    headers={"Content-Type": "application/json"})
+                with urllib.request.urlopen(req, timeout=60) as r:
+                    text = (json.loads(r.read().decode())["choices"][0]
+                            ["message"]["content"] or "").strip()
+                model = m
+                break
+            except Exception as ex:
+                last_err = str(ex)[:200]
+        if text is None:
+            return {"t": round(time.time(), 1), "error": last_err}
+        rec = {"t": round(time.time(), 1), "model": model, "q": q[:120],
+               "text": text[:800]}
+        with open(VISION_LOG, "a", encoding="utf-8") as f:
+            f.write(json.dumps(rec) + "\n")
+        append_log("mm", f"[vision:{model}] {text[:160]}")
+        return rec
+    except Exception as ex:
+        return {"t": round(time.time(), 1), "error": str(ex)[:200]}
+
+def recent_vision(n=3):
+    out = []
+    if VISION_LOG.exists():
+        for ln in tail_lines(VISION_LOG, n, cap=40000):
+            try: out.append(json.loads(ln))
+            except Exception: pass
+    return out
 
 def metrics():
     """Full dashboard payload — grades, learning, weaknesses, curve.
@@ -1837,6 +2026,8 @@ pre.book{background:#150e0a;border:1px solid var(--bord);border-radius:9px;
    <div class="card"><h4>Learning</h4><div id="learnKV"></div></div>
    <div class="card"><h4>Reward curve</h4><canvas id="curve" style="width:100%;height:130px"></canvas>
     <div class="hint" id="trendline"></div></div>
+   <div class="card"><h4>Speedrun records — per scene (speed 60% + clean 40%)</h4>
+    <div id="speedRun"><div class="hint">loading…</div></div></div>
   </div>
   <div class="pane" id="p-book">
    <div class="pb" style="margin-bottom:8px"><button onclick="book()">Refresh</button>
@@ -2081,6 +2272,21 @@ async function pickRun(runId,idx){const r=runRows.find(x=>x.run===runId);if(!r)r
   d.innerHTML=(t.ticks||[]).map(x=>`t=${x.t} · ${esc(x.mode)} · ally ${x.ally} · doors ${x.drc}/${x.drn} · ${x.gold}g`).join('<br>')
    ||'no ticks'}catch(e){d.textContent='err'}}
 setInterval(runs,15000);
+/* Speedrun records — the test-grade table: per scene, attempts, wins, best
+   time, avg time, composite grade. */
+async function speedrun(){try{const rows=await j('/speedrun');
+ const el=document.getElementById('speedRun');if(!el)return;
+ if(!rows.length){el.innerHTML='<div class="hint">no finished runs yet</div>';return}
+ const fmt=s=>s==null?'—':Math.floor(s/60)+':'+String(Math.floor(s%60)).padStart(2,'0');
+ el.innerHTML='<table style="width:100%;font-size:11px"><tr style="color:var(--dim)">'
+  +'<td>scene</td><td>runs</td><td>win%</td><td>best</td><td>avg</td><td>waves</td><td>grade</td></tr>'
+  +rows.map(r=>{const c=r.grade>70?'var(--ok)':r.grade>40?'var(--warn)':'var(--bad)';
+   return `<tr><td>${esc(r.scene)}</td><td>${r.attempts}(${r.wins}w)</td>`
+   +`<td>${Math.round(r.wins/r.attempts*100)}%</td><td>${fmt(r.best_s)}</td>`
+   +`<td>${fmt(r.avg_s)}</td><td>${r.best_waves}</td>`
+   +`<td style="color:${c};font-weight:700">${r.grade}</td></tr>`}).join('')
+  +'</table>'}catch(e){}}
+setInterval(speedrun,30000);speedrun();
 /* MiniMax control center: modes (off/semi/auto/aggressive), scheduler
    interval, semi-auto approval queue, last measured patch outcome. */
 const MM_MODES=['off','semi','auto','aggressive'];
