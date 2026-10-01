@@ -357,3 +357,16 @@ Commits `0ea0587`, `9219f34`.
 | 12 s hero-door timeout + 45 s ignore, then re-try clock restarts at end of ignore | `HoldCastle` now updates `HeroDoorSince` when it holds a hot door |
 | Match-end `BackToLevelSelectHelper` frame now counts close attempts and forces `TransitionToLevelSelect()` after 5 attempts | deployed; awaiting next victory popup |
 | `bot-lint` overlay warning fixed (F8 is the chosen key) | 0 FAIL, 0 WARN |
+
+## Round 11 (2026-10-01): subagent-audit top 3 fixes
+
+Commits `f948ba4`.
+
+| # | Bug | Fix | Status |
+|---|---|---|---|
+| 1 | `CastleThreat` fell back to `NearestEnemy` (hero distance) and corrupted `HasCastleThreat`/`CastleThreatDist` | Removed fallback; `CastleThreat` is now strictly nearest-to-castle, `CastleThreatDist = 9999` when none | deployed, pending live proof |
+| 2 | Global `DoorPostStreak` reset when alternating between two unwalkable uncovered doors, so `PlaceSquad` spammed forever and never parked | `DoorPostCounts[64]`/`DoorPostAts[64]` per-door arrays; hot and proactive posts throttle per index, ParkDoor after count >= 4 | deployed, pending live proof |
+| 3 | Night `HoldCastle` hot-door 12 s lockout never re-tried | `HoldCastle` now sets `HeroDoorIgnUntil = now + 45` and `HeroDoorSince = now + 45` when the hot door times out, so re-try starts at the end of the ignore window | deployed, pending live proof |
+| 4 | `ChoiceCoroutine` wedge >20 s had no cancel fallback | New `flag` block calls `CancelChoice()` once and resets `choiceSince`/`choiceConfirmStreak` | deployed, pending live proof |
+
+Pending audit items: `bot-log.jsonl` rotation, `Recorder` per-line open/close, `beganRunThisTick` dead guard, telemetry gaps.
