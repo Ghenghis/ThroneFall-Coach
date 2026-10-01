@@ -121,8 +121,53 @@ a proposal that is already in RECENT PROPOSALS.
 
 MMHB = AGENT / "mm-heartbeat.json"
 PROPOSALS = AGENT / "proposals.jsonl"
+MM_CFG_FILE = AGENT / "mm-config.json"
+MM_PENDING_FILE = AGENT / "mm-pending.json"
 _hb = {"cycles": 0, "ok": 0, "errors": 0, "applied": 0, "not_applied": 0,
-       "proposals": 0, "last_ok": 0, "last_error": "", "live": False}
+       "proposals": 0, "last_ok": 0, "last_error": "", "live": False,
+       "mode": "auto", "interval_s": WATCH_EVERY}
+
+# ---- MiniMax control modes + scheduler (command center) ----
+#   off        : loop alive, heartbeat beats, no MiniMax calls
+#   semi       : MiniMax proposes; patches queue in mm-pending.json until the
+#                user approves them from the command center
+#   auto       : validated patches apply automatically (the default)
+#   aggressive : auto + no state-dedupe (calls MiniMax every cycle while live)
+def mm_cfg():
+    try:
+        c = json.loads(MM_CFG_FILE.read_text(encoding="utf-8", errors="replace"))
+    except Exception:
+        c = {}
+    c.setdefault("mode", "auto")
+    c.setdefault("interval_s", WATCH_EVERY)
+    return c
+
+def mm_cfg_write(c):
+    try:
+        tmp = MM_CFG_FILE.with_suffix(".tmp")
+        tmp.write_text(json.dumps(c))
+        os.replace(tmp, MM_CFG_FILE)
+    except OSError:
+        pass
+
+def watch_secs():
+    # UI slider: 15 s .. 3 h. 15 s floor keeps 'aggressive' from hot-looping.
+    try:
+        return max(15.0, min(10800.0, float(mm_cfg().get("interval_s", WATCH_EVERY))))
+    except Exception:
+        return WATCH_EVERY
+
+def pending_list():
+    try:
+        return json.loads(MM_PENDING_FILE.read_text(encoding="utf-8", errors="replace"))
+    except Exception:
+        return []
+
+def pending_write(p):
+    try:
+        MM_PENDING_FILE.write_text(json.dumps(p))
+    except OSError:
+        pass
 
 def hb(**kw):
     """Heartbeat the engineer + /health can read: loop alive, last good call,
@@ -319,6 +364,11 @@ def mm_watch_loop():
                 last_run = st.get("run")
                 mm_watch_loop.last_patch = ""
                 last_sig = ""
+            cfg = mm_cfg(); mode = cfg.get("mode", "auto"); wsec = watch_secs()
+            hb(mode=mode, interval_s=int(wsec))
+            if mode == "off":
+                # heartbeat keeps beating so the UI can tell "paused" from "dead"
+                time.sleep(min(60.0, wsec)); continue
             # Skip mid-call spam: re-steer on stable signals only — `ally`
             # fluctuated every tick so sig==last_sig almost never deduped.
             sig = (st.get("mode"), st.get("night"), st.get("wave"),
@@ -338,8 +388,8 @@ def mm_watch_loop():
                                      for x in audit_alerts(au))
                 except Exception:
                     pass
-            if sig == last_sig and not urgent:
-                time.sleep(WATCH_EVERY); continue
+            if sig == last_sig and not urgent and mode != "aggressive":
+                time.sleep(wsec); continue
             # DON'T commit last_sig until the call succeeds — a transient
             # MiniMax error used to poison the dedupe and silence steering
             # until telemetry changed (sometimes never on a stuck run).
@@ -425,6 +475,19 @@ def mm_watch_loop():
                 # but skipping it keeps the feed readable.
                 sig = json.dumps(patch, sort_keys=True)
                 if sig != mm_watch_loop.last_patch:
+                    if mode == "semi":
+                        # SEMI-AUTO: queue for the command center — nothing
+                        # reaches the game until the user approves it there.
+                        patch["note"] = f"{note}#semi" if note else "#semi"
+                        pend = pending_list()
+                        pend.append({"t": round(time.time(), 1),
+                                     "patch": dict(patch), "note": note})
+                        pending_write(pend[-20:])
+                        mm_watch_loop.last_patch = sig
+                        entry["note"] = (note + " " if note else "") + "[awaiting approval]"
+                        _watch_log({**entry, "kind": "pending"})
+                        hb(pending=len(pend[-20:]))
+                        time.sleep(wsec); continue
                     if patch:
                         # Proof must count NEW applies — an old "[coach]
                         # user-cmd ->" marker in the tail made every later
@@ -451,7 +514,7 @@ def mm_watch_loop():
                             # sleep and burned MiniMax tokens in a hot loop.
                             last_sig = ""
                             append_log("mm", f"write_cmd failed: {ex}")
-                            time.sleep(WATCH_EVERY)
+                            time.sleep(wsec)
                             continue
                         mm_watch_loop.last_patch = sig   # commit post-write
                         entry["note"] = note
@@ -511,7 +574,7 @@ def mm_watch_loop():
             hb(errors=_hb["errors"] + 1, last_error=str(ex)[:120])
             _watch_log({"t": round(time.time(), 1), "error": str(ex)})
         hb()
-        time.sleep(WATCH_EVERY)
+        time.sleep(watch_secs())
 
 
 def health_watch_loop():
@@ -985,6 +1048,21 @@ class H(BaseHTTPRequestHandler):
                 "playbook": readj(pb, None),
                 "raw": pb.read_text(errors="replace") if pb.exists() else ""}),
                 "application/json")
+        elif self.path.startswith("/mmconfig"):
+            # Command-center state: mode, scheduler interval, pending
+            # approvals (semi mode) and the last measured patch outcome.
+            oc = None
+            for ln in reversed(tail_lines(MMWATCH, 80)):
+                try:
+                    e = json.loads(ln)
+                    if e.get("kind") == "outcome":
+                        oc = {k: e.get(k) for k in ("patch", "d", "after", "s")}
+                        break
+                except Exception:
+                    pass
+            self._send(200, json.dumps({**mm_cfg(), "pending": pending_list(),
+                                        "last_outcome": oc, "hb": dict(_hb)}),
+                       "application/json")
         elif self.path == "/history":
             if CHATLOG.exists():
                 lines = tail_lines(CHATLOG, 60)
@@ -1058,6 +1136,47 @@ class H(BaseHTTPRequestHandler):
             except Exception as ex:
                 self._send(200, json.dumps({"ok": False, "err": str(ex)}),
                            "application/json")
+            return
+        if self.path == "/mmconfig":
+            # mode switch + scheduler interval from the command center
+            try:
+                data = json.loads(self.rfile.read(_n) or b"{}")
+            except Exception:
+                self._send(400, "bad json"); return
+            c = mm_cfg()
+            if data.get("mode") in ("off", "semi", "auto", "aggressive"):
+                c["mode"] = data["mode"]
+            if isinstance(data.get("interval_s"), (int, float)):
+                c["interval_s"] = max(15, min(10800, data["interval_s"]))
+            mm_cfg_write(c)
+            append_log("c", f"[MM CONFIG] mode={c['mode']} every {c['interval_s']}s")
+            self._send(200, json.dumps({"ok": True, **c}), "application/json")
+            return
+        if self.path == "/mmapprove" or self.path == "/mmreject":
+            # semi-auto queue: approve applies the queued patch for real
+            # (same write_cmd + /order proof path), reject discards it.
+            try:
+                data = json.loads(self.rfile.read(_n) or b"{}")
+            except Exception:
+                data = {}
+            idx = int(data.get("idx", -1))
+            pend = pending_list()
+            if 0 <= idx < len(pend):
+                item = pend.pop(idx); pending_write(pend)
+                if self.path == "/mmapprove":
+                    patch = dict(item.get("patch") or {})
+                    patch["note"] = (patch.get("note") or "") + f"#ok{int(time.time())}"
+                    try:
+                        write_cmd(patch)
+                        append_log("mm", f"[semi-approved] {json.dumps(patch)}")
+                        self._send(200, json.dumps({"ok": True, "applied": True}),
+                                   "application/json"); return
+                    except Exception as ex:
+                        self._send(200, json.dumps({"ok": False, "err": str(ex)}),
+                                   "application/json"); return
+                append_log("mm", f"[semi-rejected] {json.dumps(item.get('patch'))}")
+            self._send(200, json.dumps({"ok": True, "applied": False}),
+                       "application/json")
             return
         if self.path != "/chat":
             self._send(404, "?"); return
@@ -1421,6 +1540,7 @@ pre.book{background:#150e0a;border:1px solid var(--bord);border-radius:9px;
  <button class="ri" id="r3" onclick="tool('book')" title="Playbook">&#128218;</button>
  <button class="ri" id="r4" onclick="tool('weak')" title="Weaknesses">&#9888;</button>
  <button class="ri" id="r5" onclick="tool('audit')" title="Audit">&#9878;</button>
+ <button class="ri" id="r6" onclick="tool('mm')" title="MiniMax control">&#129504;</button>
 </div>
 <div id="side">
  <div class="sh"><input id="rq" placeholder="Search runs" oninput="runs()">
@@ -1504,6 +1624,21 @@ pre.book{background:#150e0a;border:1px solid var(--bord);border-radius:9px;
    <div class="card"><h4>Built so far</h4><div id="auCat"></div></div>
    <div class="card"><h4>Action timeline</h4><div id="auAct"></div></div>
    <div class="card"><h4>Last MiniMax command</h4><div id="auMm" class="hint"></div></div>
+  </div>
+  <div class="pane" id="p-mm">
+   <div class="card"><h4>MiniMax mode</h4>
+    <div class="pb" id="mmModes">
+     <button onclick="mmMode('off')" title="heartbeat only — no calls">OFF</button>
+     <button onclick="mmMode('semi')" title="proposes; you approve each patch">SEMI</button>
+     <button onclick="mmMode('auto')" title="validated patches apply themselves">AUTO</button>
+     <button onclick="mmMode('aggressive')" title="auto + checks every interval, no dedupe">AGGRO</button></div>
+    <div class="hint">checks the bot every <b id="mmInt">30</b>s —
+     slide to reschedule (15 s … 3 h)</div>
+    <input type="range" id="mmRange" min="15" max="10800" step="15" style="width:100%;accent-color:var(--acc)"
+     oninput="mmIntShow(this.value)" onchange="mmInterval(this.value)"></div>
+   <div class="card"><h4>Awaiting your approval (semi mode)</h4><div id="mmPend"></div></div>
+   <div class="card"><h4>Last patch outcome (measured, not assumed)</h4><div id="mmOut"></div></div>
+   <div class="card"><h4>Heartbeat</h4><div id="mmHb" class="hint"></div></div>
   </div>
  </div>
 </div></div>
@@ -1649,14 +1784,14 @@ grab.onmousedown=e=>{e.preventDefault();
  const up=()=>{document.removeEventListener('mousemove',mv);document.removeEventListener('mouseup',up)};
  document.addEventListener('mousemove',mv);document.addEventListener('mouseup',up)};
 function tool(t){
- const names={chat:'',live:'Live View',stats:'Stats',book:'Playbook',weak:'Weaknesses',audit:'Audit'};
+ const names={chat:'',live:'Live View',stats:'Stats',book:'Playbook',weak:'Weaknesses',audit:'Audit',mm:'MiniMax Control'};
  if(t=='chat'){panel.classList.remove('open');return}
  panel.classList.add('open');document.getElementById('pttl').textContent=names[t];
  document.querySelectorAll('.pane').forEach(x=>x.classList.remove('on'));
  document.getElementById('p-'+t).classList.add('on');
  document.querySelectorAll('#rail .ri').forEach((b,i)=>b.classList.toggle('on',
-   ['chat','live','stats','book','weak','audit'][i]==t));
- if(t=='book')book();else if(t=='stats'||t=='weak')refresh();}
+   ['chat','live','stats','book','weak','audit','mm'][i]==t));
+ if(t=='book')book();else if(t=='stats'||t=='weak')refresh();else if(t=='mm')mmCfg();}
 /* live frame — swap only on real new frame */
 let lastTs=0,frameCt=0,lastFpsT=Date.now();
 setInterval(async()=>{try{const l=await j('/live.json');
@@ -1693,6 +1828,38 @@ async function pickRun(runId,idx){const r=runRows.find(x=>x.run===runId);if(!r)r
   d.innerHTML=(t.ticks||[]).map(x=>`t=${x.t} · ${esc(x.mode)} · ally ${x.ally} · doors ${x.drc}/${x.drn} · ${x.gold}g`).join('<br>')
    ||'no ticks'}catch(e){d.textContent='err'}}
 setInterval(runs,15000);
+/* MiniMax control center: modes (off/semi/auto/aggressive), scheduler
+   interval, semi-auto approval queue, last measured patch outcome. */
+const MM_MODES=['off','semi','auto','aggressive'];
+function mmIntShow(v){const s=+v;
+ document.getElementById('mmInt').textContent=
+  s>=3600?(s/3600)+'h':s>=120?(s/60)+'m':s;}
+async function mmCfg(){try{const c=await j('/mmconfig');
+ [...document.querySelectorAll('#mmModes button')].forEach((b,i)=>
+  b.classList.toggle('on',MM_MODES[i]==c.mode));
+ const r=document.getElementById('mmRange');if(document.activeElement!=r)r.value=c.interval_s;
+ mmIntShow(c.interval_s);
+ document.getElementById('mmPend').innerHTML=(c.pending&&c.pending.length?
+  c.pending.map((x,i)=>`<div class="wk" style="border-color:var(--acc)">
+   <b>${esc(JSON.stringify(x.patch))}</b><div>${esc(x.note||'')}</div>
+   <div class="pb" style="margin-top:4px"><button onclick="mmOk(${i},1)">APPLY</button>
+   <button onclick="mmOk(${i},0)">reject</button></div></div>`).join(''):
+  '<div class="hint">none queued</div>');
+ const o=c.last_outcome;
+ document.getElementById('mmOut').innerHTML=o?
+  `<div class="kv"><span>patch</span><b>${esc(JSON.stringify(o.patch))}</b></div>
+   <div class="kv"><span>after ${o.s}s</span><b>${esc(JSON.stringify(o.d))}</b></div>`:
+  '<div class="hint">no applied patch yet</div>';
+ const h=c.hb||{};
+ document.getElementById('mmHb').innerHTML=
+  `mode ${h.mode||c.mode} · every ${h.interval_s||c.interval_s}s · ok ${h.ok||0} · `+
+  `err ${h.errors||0} · applied ${h.applied||0}/${h.not_applied||0} · `+
+  `props ${h.proposals||0} · beat ${h.t?Math.round(Date.now()/1000-h.t)+'s ago':'—'}`;
+}catch(e){}}
+async function mmMode(mo){await j('/mmconfig',{method:'POST',body:JSON.stringify({mode:mo})});mmCfg()}
+async function mmInterval(s){await j('/mmconfig',{method:'POST',body:JSON.stringify({interval_s:+s})})}
+async function mmOk(i,ok){await j(ok?'/mmapprove':'/mmreject',{method:'POST',body:JSON.stringify({idx:i})});mmCfg()}
+setInterval(mmCfg,5000);mmCfg();
 /* metrics */
 function gc(v){return v>=80?'gA':v>=60?'gB':v>=40?'gC':v>=20?'gD':'gF'}
 async function refresh(){try{const m=await j('/metrics');

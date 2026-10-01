@@ -23,6 +23,21 @@ So while MiniMax heartbeats, it is the single steering writer; if it dies for >2
 steering until the next user-cmd. This fixed the observed stomps (`eff-collapse` overwrote `army>=60` with
 `army>=40`, `squad=12` from advisory replies that out-clamped the server validation).
 
+## Command-center modes + scheduler
+
+`GET/POST /mmconfig` controls the watch loop live (`agent/mm-config.json` persists):
+
+- `mode: off` — heartbeat keeps beating (UI can tell "paused" from "dead"), no MiniMax calls.
+- `mode: semi` — MiniMax proposes; patches queue in `mm-pending.json` until the user hits
+  APPLY/reject in the command center (`/mmapprove`, `/mmreject`).
+- `mode: auto` — validated patches apply automatically (default).
+- `mode: aggressive` — auto + bypasses the state-dedupe, calls MiniMax every cycle while live.
+- `interval_s: 15..10800` — slider range 15 s to 3 h; the loop reads the config each cycle.
+
+Every applied patch now records a metric snapshot; the next cycle (>45 s) computes deltas and
+feeds "EFFECT OF YOUR LAST PATCH" back into the prompt — plus `kind:"outcome"` entries in
+`mmwatch.jsonl`, surfaced in the control-center pane.
+
 ## What MiniMax can and cannot do
 
 MiniMax is a **steering advisor + bug reporter**, not a code editor:

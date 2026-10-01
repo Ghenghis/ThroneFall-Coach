@@ -337,3 +337,9 @@ AUTOPILOT §8–9 for the full list and next actions.
 - **Pin awareness (`pin-type`):** every stuck strike now classifies the collider in front of the hero —
   `pen:<building>(upgradeable)`, `gate`, `wall`, `terrain:<name>` (rock/tree/water), `enemy`, `obj:<name>` —
   logged + `pin-type` events for MiniMax/digest. The bot now knows WHAT it bumped, not just THAT it bumped.
+- **MiniMax command center (UI + scheduler):** new pane — OFF/SEMI/AUTO/AGGRO mode buttons, interval slider
+  (15 s - 3 h, `mm-config.json` persisted, loop reads it each cycle), semi-auto approval queue
+  (`mm-pending.json` + `/mmapprove` `/mmreject`), last-patch outcome card (measured deltas), live heartbeat card.
+  Playwright-verified: mode buttons POST and the loop honors them; config changes land in the chat feed.
+- **Closed loop on display:** first measured outcome already live — MiniMax's `squad 5/army 60/military` patch
+  produced ally 20 -> 40, gold -153 in 150 s.
