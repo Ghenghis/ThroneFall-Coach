@@ -1,13 +1,17 @@
-Hero-door timeout fixes: night HoldCastle + re-try clock
+Subagent audit fixes: CastleThreat, per-door squad counts, choice wedge
 
-HoldCastle now starts/updates HeroDoorSince when it holds a hot door, so
-a 12 s timeout falls back to the castle. The same-door re-try clock now
-starts at the end of the 45 s ignore window (HeroDoorSince = now + 45)
-instead of the old 'now' which let the 12 s timer expire during the
-ignore and never re-try.
+CastleThreat no longer falls back to the nearest enemy to hero - it is now
+strictly the nearest foe to the castle, so HasCastleThreat correctly gates
+night coin scavenging and red-alert checks.
 
-Also: bot-lint now accepts F8 as the overlay toggle (F1 collides with
-Plugin.ToggleMenu).
+Squad posting uses per-door DoorPostCounts/DoorPostAts arrays instead of a
+global consecutive-line streak. Two alternating uncovered unwalkable doors
+used to reset the count forever; now each anchor accumulates its own posts
+and ParkDoor fires after 4 failures.
+
+Choice coroutine wedge: if ChoiceCoroutine is running >20 s, the bot now
+calls CancelChoice() once and resets the watchdog instead of bouncing
+CloseActiveFrame() on a frozen frame.
 
 Generated with [Devin](https://devin.ai)
 

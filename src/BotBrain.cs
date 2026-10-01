@@ -345,8 +345,6 @@ namespace ThronefallTrainer
         public int HeldMisses;          // consecutive ticks the slot was missing
         public float BuildInteractAt;
         public float IdleSince;         // continuous-idle timer (-1 = working)
-        public string LastDoorLine;     // last lane a squad was posted to
-        public int DoorPostStreak;      // consecutive posts to the same lane
         public float GateWalkSince;     // start of the current gate-pad approach
         public float GateIgnoreUntil;   // backoff after an approach that never opened
         public int SpendWatchGold;
@@ -363,7 +361,6 @@ namespace ThronefallTrainer
         // army two-step
         public int ArmyPhase;
         public float ArmyWalkAt;
-        public float LastSquadAt;
         public float LastBreachAt;
         public float DayStartAt;
         public string DayScene;
@@ -380,6 +377,8 @@ namespace ThronefallTrainer
         public int ApprKeyP1; public float ApprSince; public int ApprGold;
         public Vec2 ApprPos;            // target pos at the last retarget (cluster hysteresis)
         public int HeroDoorIdx; public float HeroDoorSince; public float HeroDoorIgnUntil;
+        public int[] DoorPostCounts;    // per-door consecutive PlaceSquad posts
+        public float[] DoorPostAts;     // per-door last PlaceSquad time
 
         // level-select transition hang detector
         public float BusySince;
@@ -405,6 +404,8 @@ namespace ThronefallTrainer
                 OrbitDir = 1f,
                 LastNightState = true,   // assume night so the first day-edge fires cleanly
                 ArmyPhase = 0,
+                DoorPostCounts = new int[64],
+                DoorPostAts = new float[64],
             };
         }
     }
@@ -777,13 +778,14 @@ namespace ThronefallTrainer
                 // a squad that never sticks (dies on arrival / can't reach).
                 // After 3 posts to the same lane the hero walks there and
                 // holds it himself — he IS the reinforcement unit.
+                // Per-index counts: alternating uncovered doors used to reset
+                // the streak, so unwalkable pairs were spammed forever.
                 if (legit && s.HasUncoveredDoor && s.UncoveredDoorHot &&
-                    s.FreeUnits >= 2 && now - m.LastSquadAt > 6f + 4f * m.DoorPostStreak)
+                    s.UncoveredDoorIdx >= 0 && s.FreeUnits >= 2 &&
+                    now - m.DoorPostAts[s.UncoveredDoorIdx] > 6f + 4f * m.DoorPostCounts[s.UncoveredDoorIdx])
                 {
-                    if (m.LastDoorLine == s.UncoveredDoorLine)
-                        m.DoorPostStreak++;
-                    else { m.LastDoorLine = s.UncoveredDoorLine; m.DoorPostStreak = 1; }
-                    m.LastSquadAt = now;
+                    m.DoorPostCounts[s.UncoveredDoorIdx]++;
+                    m.DoorPostAts[s.UncoveredDoorIdx] = now;
                     r.Intents.Add(Intent.Of(IntentKind.PlaceSquad));
                     r.Notes.Add("squad-door:" + s.UncoveredDoorLine);
                 }
@@ -791,21 +793,23 @@ namespace ThronefallTrainer
                 // is unwalkable (behind a wall / off-navmesh). Park it: the
                 // coverage loop counts parked doors covered, so the spam
                 // ends and the units go to a lane they can actually reach.
-                if (s.HasUncoveredDoor && m.DoorPostStreak >= 4 &&
-                    s.UncoveredDoorIdx >= 0 &&
+                if (s.HasUncoveredDoor && s.UncoveredDoorIdx >= 0 &&
+                    m.DoorPostCounts[s.UncoveredDoorIdx] >= 4 &&
                     s.UncoveredDoorUnits == 0)
                 {
                     r.Intents.Add(Intent.At(IntentKind.ParkDoor, s.UncoveredDoorIdx));
                     r.Notes.Add("door-park:" + s.UncoveredDoorLine);
-                    m.DoorPostStreak = 0;
+                    m.DoorPostCounts[s.UncoveredDoorIdx] = 0;
                 }
                 // Proactive night posting: quiet corridors still get manned —
                 // squads stand at their posts BEFORE the next wave leaks.
                 else if (legit && s.HasUncoveredDoor && !s.RedAlert &&
+                         s.UncoveredDoorIdx >= 0 &&
                          s.FreeUnits >= s.UncoveredDoorTarget &&
-                         now - m.LastSquadAt > 4f)
+                         now - m.DoorPostAts[s.UncoveredDoorIdx] > 4f)
                 {
-                    m.LastSquadAt = now;
+                    m.DoorPostAts[s.UncoveredDoorIdx] = now;
+                    m.DoorPostCounts[s.UncoveredDoorIdx]++;
                     r.Intents.Add(Intent.Of(IntentKind.PlaceSquad));
                     r.Notes.Add("squad-post:" + s.UncoveredDoorLine);
                 }
@@ -970,6 +974,15 @@ namespace ThronefallTrainer
                         // back to the castle after 12 s.
                         if (s.UncoveredDoorIdx != m.HeroDoorIdx) { m.HeroDoorIdx = s.UncoveredDoorIdx; m.HeroDoorSince = now; }
                     }
+                    // The hot door just exceeded 12 s and we are not already
+                    // ignoring it: lock it for 45 s so the hero can re-try later
+                    // in the night instead of going permanently dark.
+                    else if (s.HasUncoveredDoor && s.UncoveredDoorHot &&
+                             s.UncoveredDoorIdx == m.HeroDoorIdx && now >= m.HeroDoorIgnUntil)
+                    {
+                        m.HeroDoorIgnUntil = now + 45f;
+                        m.HeroDoorSince = now + 45f;
+                    }
                     Vec2 holdPos = holdAtDoor
                         ? s.UncoveredDoorPos
                         : (s.HasThreatAnchor ? s.ThreatAnchor : s.CastlePos);
@@ -1091,26 +1104,24 @@ namespace ThronefallTrainer
             // first, so squads only ever posted at night).
             if (legit && !s.IsNight)
             {
-                if (s.HasUncoveredDoor &&
+                if (s.HasUncoveredDoor && s.UncoveredDoorIdx >= 0 &&
                     s.FreeUnits >= (s.UncoveredDoorHot ? 2 : Math.Max(4, s.UncoveredDoorTarget))
-                    && now - m.LastSquadAt > 6f + 4f * m.DoorPostStreak)
+                    && now - m.DoorPostAts[s.UncoveredDoorIdx] > 6f + 4f * m.DoorPostCounts[s.UncoveredDoorIdx])
                 {
-                    if (m.LastDoorLine == s.UncoveredDoorLine)
-                        m.DoorPostStreak++;
-                    else { m.LastDoorLine = s.UncoveredDoorLine; m.DoorPostStreak = 1; }
-                    m.LastSquadAt = now;
+                    m.DoorPostCounts[s.UncoveredDoorIdx]++;
+                    m.DoorPostAts[s.UncoveredDoorIdx] = now;
                     r.Intents.Add(Intent.Of(IntentKind.PlaceSquad));
                     r.Notes.Add("squad-door:" + s.UncoveredDoorLine);
                 }
                 // Same-day version: posts to a door whose units never arrive
                 // (doorUnit==0 after 4 tries) = unwalkable anchor — park it.
-                if (s.HasUncoveredDoor && m.DoorPostStreak >= 4 &&
-                    s.UncoveredDoorIdx >= 0 &&
+                if (s.HasUncoveredDoor && s.UncoveredDoorIdx >= 0 &&
+                    m.DoorPostCounts[s.UncoveredDoorIdx] >= 4 &&
                     s.UncoveredDoorUnits == 0)
                 {
                     r.Intents.Add(Intent.At(IntentKind.ParkDoor, s.UncoveredDoorIdx));
                     r.Notes.Add("door-park:" + s.UncoveredDoorLine);
-                    m.DoorPostStreak = 0;
+                    m.DoorPostCounts[s.UncoveredDoorIdx] = 0;
                 }
                 if (s.FreeUnits > 0 && now - m.LastEscortAt > 20f)
                 {

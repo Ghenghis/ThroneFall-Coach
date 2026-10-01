@@ -2279,6 +2279,22 @@ internal static class Bot
 			choiceSince = 0f;
 		}
 		bool flag = choiceSince > 0f && Time.unscaledTime - choiceSince > 20f;
+		// Choice coroutine stuck >20 s without resolving — the UI is frozen and
+		// the generic close path will just bounce on an unresponsive frame.
+		// Cancel the coroutine once and reset the watchdog.
+		if (flag && (UnityEngine.Object)(object)instance2 != (UnityEngine.Object)null)
+		{
+			if (Time.unscaledTime >= frameActionAt)
+			{
+				frameActionAt = Time.unscaledTime + 1f;
+				Plugin.Log?.LogWarning("[bot] choice coroutine wedged >20 s -> CancelChoice()");
+				instance2.CancelChoice();
+				LogLine(in s, "choice-coroutine-wedge");
+				choiceSince = 0f;
+				choiceConfirmStreak = 0;
+			}
+			return true;
+		}
 		if ((UnityEngine.Object)(object)instance2 != (UnityEngine.Object)null && instance2.ChoiceCoroutineRunning && instance2.ChoiceCoroutineWaiting && !flag)
 		{
 			// Multi-tier slots re-present after EVERY pick — a 1 s throttle

@@ -46,6 +46,14 @@
   hot door, so a 12 s timeout falls back to the castle. The re-try clock now starts at the end of the 45 s ignore
   window instead of 45 s in the past (the old `HeroDoorSince = now` made the door ignore-locked forever after one
   timeout).
+- **CastleThreat no longer falls back to the nearest enemy to the hero** — `CastleThreat` is now strictly the
+  nearest foe to the castle (`HasCastleThreat` false when none). The old fallback made every live foe look like a
+  castle threat, disabling the safe night coin-scavenge branch and corrupting red-alert `CastleThreatDist` checks.
+- **Per-door squad posting counts** — `DoorPostCounts`/`DoorPostAts` arrays replace the global `DoorPostStreak`.
+  Alternating between two uncovered unwalkable doors no longer resets the count, so `PlaceSquad` spam now parks the
+  bad anchors after 4 posts as intended.
+- **Choice coroutine wedge cancel** — if `ChoiceCoroutine` is running >20 s, the bot now calls `CancelChoice()` once
+  and resets the watchdog instead of looping `CloseActiveFrame()` on a frozen player.
 - **Result:** fresh-run Frostsee **victory** (run 20261001T111053Z, all 12/13 waves, 0 hero deaths, castle 87 % at the
   143-foe wave, 2601 s). Live in that run: 9 gps-cross (1.0-4.1 s each, incl. a 2-hop chain), 5 rescan-slots on the 30 s
   cooldown, pin share 18.6 % vs the 37.5 % baseline. Second Frostsee win; first under GPS + night-readiness.

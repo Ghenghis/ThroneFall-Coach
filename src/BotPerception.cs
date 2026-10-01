@@ -1426,7 +1426,11 @@ namespace ThronefallTrainer
             else s.NearestEnemyDist = 0f;
             if (s.CastleThreat != null)
                 s.CastleThreatDist = Mathf.Sqrt(castleThreatSq);
-            else { s.CastleThreatDist = s.NearestEnemyDist; s.CastleThreat = s.NearestEnemy; }
+            // Do NOT fall back to the nearest enemy to hero — CastleThreat* is
+            // consumed as "nearest foe to the castle" and HasCastleThreat gates
+            // night scavenging and red-alert. A false fallback made every live
+            // foe read as a castle threat, killing night coin runs.
+            else { s.CastleThreatDist = 9999f; s.CastleThreat = null; }
             // NearestEnemyDist is already sqrt'd above — a 0 here told every
             // consumer "enemy on top of the castle" for a distant live foe.
 
