@@ -137,6 +137,7 @@ namespace ThronefallTrainer
         public Vec2 GatePos;
         public float GateDist;
         public int ArmyTarget;
+        public float SinceProg;   // seconds since the last real accomplishment (Efficiency)
         public float SelfDefendRange;   // hero self-defense radius (posture)
         public float DayBudget;         // learned day length before horn
         public bool RedAlert;
@@ -365,6 +366,7 @@ namespace ThronefallTrainer
         // visit-abandon: stood at a picked slot 10 s with no pay -> park it
         public int SlotVisitKey;
         public float SlotVisitSince;
+        public int ApprKeyP1; public float ApprSince; public int ApprGold;
 
         // level-select transition hang detector
         public float BusySince;
@@ -1004,8 +1006,13 @@ namespace ThronefallTrainer
             // forever and the night would never come. Ring the horn once the
             // army is up to target OR the day budget is spent — whichever
             // readiness signal arrives first.
+            // BUSY DAY: buildable slots exist, gold is in hand and the bot is still making progress -> the day
+            // is not over. Calling night with a full wallet and open slots wastes the only time the hero can build.
+            // Under-armed (<70 % of target) with buildable work and recent progress also blocks the early call.
+            bool busyDay = s.HasBuild && s.Balance >= 20 &&
+                (s.SinceProg < 25f || (s.ArmyTarget > 0 && s.AllyCount * 10 < s.ArmyTarget * 7 && s.SinceProg < 60f));
             if (!s.IsNight && m.DayStartAt > 0f && !dayTooYoung &&
-                ((s.CanSwitch && (s.NightCall ||
+                ((s.CanSwitch && (s.NightCall || !busyDay &&
                   // Ready = army target met AND someone actually manning the
                   // perimeter (calling night with zero posts invites the
                   // breach we saw at t≈90: 25 foes vs a lone hero).
@@ -1021,7 +1028,7 @@ namespace ThronefallTrainer
                  // harmlessly if the day is still locked.
                  now - m.DayStartAt > (s.DayBudget > 0f ? s.DayBudget : 240f) *
                     // far under the army target with work + gold left: do not force a lethal night early
-                    (s.ArmyTarget > 0 && s.AllyCount * 10 < s.ArmyTarget * 7 && s.HasBuild && s.Balance > 0 ? 2.5f : 1f)))
+                    (busyDay ? 3.75f : (s.ArmyTarget > 0 && s.AllyCount * 10 < s.ArmyTarget * 7 && s.HasBuild && s.Balance > 0 ? 2.5f : 1f))))
             {
                 m.Mode = BotMode.StartNight; r.Mode = m.Mode;
                 if (m.HeldBuild >= 0) { r.Intents.Add(Intent.Of(IntentKind.ReleaseHold)); m.HeldBuild = -1; m.SlotVisitKey = -1; }
@@ -1178,6 +1185,20 @@ namespace ThronefallTrainer
                         big ? 6.0f : 3.0f), 1.0f);
                 }
 
+                // Approach-timeout: the same target for >18 s with no payment (walking, flapping, unreachable pocket)
+                // is a time sink (live data: Mills burned 20-36 s each at ~5 s of real work) - park it and rotate.
+                if (s.BuildKey >= 0)
+                {
+                    if (s.BuildKey + 1 != m.ApprKeyP1 || s.Balance != m.ApprGold) { m.ApprKeyP1 = s.BuildKey + 1; m.ApprSince = now; m.ApprGold = s.Balance; }
+                    else if (now - m.ApprSince > 18f)
+                    {
+                        r.Intents.Add(Intent.Of(IntentKind.ParkSlot));
+                        if (m.HeldBuild >= 0) { r.Intents.Add(Intent.Of(IntentKind.ReleaseHold)); m.HeldBuild = -1; }
+                        m.SlotVisitKey = -1; m.ApprKeyP1 = 0;
+                        r.Notes.Add("approach-timeout");
+                        return r;
+                    }
+                }
                 // Visit-abandon: stood at the picked slot 10 s with no
                 // payment -> the fill can't progress — park and rotate.
                 // NOTE: the stall watchdog below fires first in practice (7s

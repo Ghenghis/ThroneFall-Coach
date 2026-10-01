@@ -203,7 +203,7 @@ namespace ThronefallTrainer
                 GateCount = s.GateCount,
                 GatePos = V(s.GatePos),
                 GateDist = s.GateDist,
-                ArmyTarget = s.ArmyTarget,
+                ArmyTarget = s.ArmyTarget, SinceProg = Efficiency.SecondsSinceProgress,
                 SelfDefendRange = s.SelfDefendRange,
                 DayBudget = s.DayBudget,
                 RedAlert = s.RedAlert, RedAlertRadius = s.RedAlertRadius,
