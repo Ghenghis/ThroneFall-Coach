@@ -124,7 +124,7 @@ namespace ThronefallTrainer
             string key = Sanitize(scene) + "|" + Cell(pos);
             if (parked.Remove(key))
             {
-                parkOrder.Remove(key);
+                parkOrder.Remove(key); parkedAt.Remove(key);
                 string v2 = null;
                 foreach (var w in parkedWhy)
                     if (w.StartsWith(key + "|")) { v2 = w; break; }
@@ -169,7 +169,7 @@ namespace ThronefallTrainer
             int n = 0;
             foreach (var p in parkOrder.ToArray())
                 if (p.StartsWith(scene + "|") && parked.Remove(p))
-                { parkOrder.Remove(p); n++; }
+                { parkOrder.Remove(p); parkedAt.Remove(p); n++; }
             if (n > 0)
             {
                 parkedWhy.RemoveWhere(w => w.StartsWith(scene + "|"));
@@ -284,3 +284,5 @@ namespace ThronefallTrainer
         }
     }
 }
+
+

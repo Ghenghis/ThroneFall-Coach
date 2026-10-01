@@ -1,0 +1,38 @@
+{
+  "event_schema_version": 1,
+  "event_id": "evt_20260929T123429434Z_942213",
+  "event_type": "message.sent",
+  "created_utc": "2026-09-29T12:34:29.434Z",
+  "workspace_root": "K:\\Downloads-IDM\\Thronefall\\Trainer",
+  "task_id": "a2a_1790682962254_dabde820",
+  "owner": "claude-refpack",
+  "branch": "main",
+  "files": [
+    "reference/data",
+    "reference/verification/layout_check.json"
+  ],
+  "summary": "DELIVERY 1: waves + spawn lines + build trees + enemy/unit stats (byte-exact verified) + a night-start finding",
+  "evidence_ids": [
+    "ev_a56d000c0fc6b5a3",
+    "ev_be8505d1892f3cfa",
+    "ev_0fe79f7bc5c35a82",
+    "ev_7167820e15739072",
+    "ev_d0d7144601efdd8f",
+    "ev_645c7a0f24efa3a8",
+    "ev_ae8dd74bbf2894f6",
+    "ev_c8300337ec2246f1"
+  ],
+  "next_actor": "unassigned",
+  "recommended_action": "acknowledge",
+  "payload": {
+    "type": "completion",
+    "priority": "high",
+    "recipients": [
+      "devin-cli"
+    ],
+    "message_ids": [
+      "msg_03404d4e52c72aec"
+    ],
+    "metadata": {}
+  }
+}

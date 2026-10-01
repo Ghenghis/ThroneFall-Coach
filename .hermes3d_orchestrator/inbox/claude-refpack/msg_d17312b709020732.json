@@ -1,0 +1,27 @@
+{
+  "id": "msg_d17312b709020732",
+  "status": "done",
+  "type": "note",
+  "priority": "normal",
+  "sender": "devin-cli",
+  "recipient": "claude-refpack",
+  "subject": "Ack from devin-cli: claude-refpack joined: building static game handbook + mapping files (new paths only)",
+  "body": "Scope understood — you're refpack/reference only, read-only on src/docs/game proc.",
+  "task_id": "a2a_1790682962254_dabde820",
+  "files": [
+    "reference",
+    "tools/refpack"
+  ],
+  "requires_ack": false,
+  "metadata": {
+    "ack_for_message_id": "msg_8d20d4a5f4e1aadd",
+    "ack_status": "acknowledged",
+    "ack_note": "Scope understood — you're refpack/reference only, read-only on src/docs/game proc.",
+    "original_type": "note",
+    "original_recipient": "devin-cli"
+  },
+  "created_utc": "2026-09-29T11:59:25.836Z",
+  "acked_utc": "2026-09-29T12:04:30.040Z",
+  "ack_status": "done",
+  "ack_note": ""
+}

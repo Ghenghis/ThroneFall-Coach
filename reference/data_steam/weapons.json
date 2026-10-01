@@ -1,0 +1,3034 @@
+[
+ {
+  "file": "resources.assets",
+  "id": 21809,
+  "name": "E Archer",
+  "blacksmith": "#4",
+  "direct": [
+   {
+    "requiredTags": [
+     "PlayerOwned"
+    ],
+    "add": 2.5,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "Player"
+    ],
+    "add": 0.0,
+    "mult": 0.8
+   },
+   {
+    "requiredTags": [
+     "Building"
+    ],
+    "add": 0.0,
+    "mult": 0.5
+   },
+   {
+    "requiredTags": [
+     "ArmoredAgainstRanged"
+    ],
+    "add": 0.0,
+    "mult": 0.4
+   },
+   {
+    "requiredTags": [
+     "VulnerableVsRanged"
+    ],
+    "add": 0.0,
+    "mult": 1.5
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 20.0,
+  "parabola": 0.3,
+  "maxChaseRange": 22.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 2.5,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21810,
+  "name": "E BarrelKinight",
+  "blacksmith": "#3",
+  "direct": [
+   {
+    "requiredTags": [
+     "PlayerOwned"
+    ],
+    "add": 3.5,
+    "mult": 1.0
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 0.0,
+  "parabola": 0.0,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 3.5,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21811,
+  "name": "E Big Spider",
+  "blacksmith": "#3",
+  "direct": [
+   {
+    "requiredTags": [
+     "PlayerOwned"
+    ],
+    "add": 12.0,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "Building"
+    ],
+    "add": 0.0,
+    "mult": 0.3
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 0.0,
+  "parabola": 0.0,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 12.0,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21812,
+  "name": "E Bloodwing",
+  "blacksmith": "#4",
+  "direct": [
+   {
+    "requiredTags": [
+     "PlayerOwned"
+    ],
+    "add": 3.0,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "Player"
+    ],
+    "add": 0.0,
+    "mult": 0.5
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 30.0,
+  "parabola": 0.3,
+  "maxChaseRange": 17.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 3.0,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21813,
+  "name": "E Catapult",
+  "blacksmith": "#4",
+  "direct": [
+   {
+    "requiredTags": [
+     "PlayerOwned",
+     "Building"
+    ],
+    "add": 150.0,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "CastleCenter"
+    ],
+    "add": 0.0,
+    "mult": 0.2
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 20.0,
+  "parabola": 0.6,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 150.0,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21814,
+  "name": "E Corrupt King Clone",
+  "blacksmith": "#3",
+  "direct": [
+   {
+    "requiredTags": [
+     "PlayerOwned"
+    ],
+    "add": 25.0,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "CastleCenter"
+    ],
+    "add": 0.0,
+    "mult": 0.125
+   },
+   {
+    "requiredTags": [
+     "PlayerHeroUnit"
+    ],
+    "add": 0.0,
+    "mult": 1.25
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 0.0,
+  "parabola": 0.0,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 25.0,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21815,
+  "name": "E Corrupt King Jump",
+  "blacksmith": "#4",
+  "direct": [],
+  "splash": [
+   {
+    "requiredTags": [
+     "PlayerOwned"
+    ],
+    "add": 100.0,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "Tower"
+    ],
+    "add": 0.0,
+    "mult": 0.85
+   },
+   {
+    "requiredTags": [
+     "CastleCenter"
+    ],
+    "add": 0.0,
+    "mult": 0.0
+   },
+   {
+    "requiredTags": [
+     "Player"
+    ],
+    "add": 0.0,
+    "mult": 3.0
+   }
+  ],
+  "projectileSpeed": 0.0,
+  "parabola": 0.0,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 100.0,
+  "baseDamageIsSplash": true
+ },
+ {
+  "file": "resources.assets",
+  "id": 21816,
+  "name": "E Corrupt King",
+  "blacksmith": "#3",
+  "direct": [
+   {
+    "requiredTags": [
+     "PlayerOwned"
+    ],
+    "add": 80.0,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "CastleCenter"
+    ],
+    "add": 0.0,
+    "mult": 0.125
+   },
+   {
+    "requiredTags": [
+     "PlayerHeroUnit"
+    ],
+    "add": 0.0,
+    "mult": 2.25
+   },
+   {
+    "requiredTags": [
+     "Player"
+    ],
+    "add": 0.0,
+    "mult": 0.75
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 0.0,
+  "parabola": 0.0,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 80.0,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21817,
+  "name": "E Crossbow",
+  "blacksmith": "#4",
+  "direct": [
+   {
+    "requiredTags": [
+     "PlayerOwned"
+    ],
+    "add": 15.0,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "Player"
+    ],
+    "add": 0.0,
+    "mult": 0.75
+   },
+   {
+    "requiredTags": [
+     "Building"
+    ],
+    "add": 0.0,
+    "mult": 0.15
+   },
+   {
+    "requiredTags": [
+     "ArmoredAgainstRanged"
+    ],
+    "add": 0.0,
+    "mult": 0.4
+   },
+   {
+    "requiredTags": [
+     "VulnerableVsRanged"
+    ],
+    "add": 0.0,
+    "mult": 1.5
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 30.0,
+  "parabola": 0.15,
+  "maxChaseRange": 22.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 15.0,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21818,
+  "name": "E Dark Warrior",
+  "blacksmith": "#3",
+  "direct": [
+   {
+    "requiredTags": [
+     "PlayerOwned"
+    ],
+    "add": 10.0,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "MeeleFighter",
+     "PlayerUnit"
+    ],
+    "add": 0.0,
+    "mult": 0.5
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 0.0,
+  "parabola": 0.0,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 10.0,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21819,
+  "name": "E Eldermole",
+  "blacksmith": "#3",
+  "direct": [
+   {
+    "requiredTags": [
+     "PlayerOwned"
+    ],
+    "add": 22.5,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "CastleCenter"
+    ],
+    "add": 0.0,
+    "mult": 0.5
+   },
+   {
+    "requiredTags": [
+     "Player"
+    ],
+    "add": 0.0,
+    "mult": 0.5
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 0.0,
+  "parabola": 0.0,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 22.5,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21820,
+  "name": "E Enemy Tower",
+  "blacksmith": "#4",
+  "direct": [
+   {
+    "requiredTags": [
+     "PlayerOwned"
+    ],
+    "add": 4.5,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "Player"
+    ],
+    "add": 0.0,
+    "mult": 0.75
+   },
+   {
+    "requiredTags": [
+     "ArmoredAgainstRanged"
+    ],
+    "add": 0.0,
+    "mult": 0.4
+   },
+   {
+    "requiredTags": [
+     "VulnerableVsRanged"
+    ],
+    "add": 0.0,
+    "mult": 1.5
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 60.0,
+  "parabola": 0.15,
+  "maxChaseRange": 35.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 4.5,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21821,
+  "name": "E Exploder",
+  "blacksmith": "#3",
+  "direct": [],
+  "splash": [
+   {
+    "requiredTags": [
+     "PlayerOwned"
+    ],
+    "add": 90.0,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "EnemyOwned"
+    ],
+    "add": 9.0,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "Building"
+    ],
+    "add": 0.0,
+    "mult": 2.0
+   },
+   {
+    "requiredTags": [
+     "Player"
+    ],
+    "add": 0.0,
+    "mult": 0.5
+   },
+   {
+    "requiredTags": [
+     "CastleCenter"
+    ],
+    "add": 0.0,
+    "mult": 0.5
+   },
+   {
+    "requiredTags": [
+     "FireAndExplosionResistant"
+    ],
+    "add": 0.0,
+    "mult": 0.33
+   }
+  ],
+  "projectileSpeed": 0.0,
+  "parabola": 0.0,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 90.0,
+  "baseDamageIsSplash": true
+ },
+ {
+  "file": "resources.assets",
+  "id": 21822,
+  "name": "E ExploderAuotAtt",
+  "blacksmith": "#3",
+  "direct": [
+   {
+    "requiredTags": [
+     "PlayerOwned"
+    ],
+    "add": 3.5,
+    "mult": 1.0
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 0.0,
+  "parabola": 0.0,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 3.5,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21823,
+  "name": "E FinalBoss",
+  "blacksmith": "#4",
+  "direct": [],
+  "splash": [],
+  "projectileSpeed": 30.0,
+  "parabola": 0.6,
+  "maxChaseRange": 1000.0,
+  "shootWithoutTargetRange": 1000.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 0.0,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21824,
+  "name": "E Fire Snail Explosion",
+  "blacksmith": "#3",
+  "direct": [],
+  "splash": [
+   {
+    "requiredTags": [
+     "PlayerOwned"
+    ],
+    "add": 26.0,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "EnemyOwned"
+    ],
+    "add": 5.0,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "FireAndExplosionResistant"
+    ],
+    "add": 0.0,
+    "mult": 0.33
+   }
+  ],
+  "projectileSpeed": 0.0,
+  "parabola": 0.0,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 26.0,
+  "baseDamageIsSplash": true
+ },
+ {
+  "file": "resources.assets",
+  "id": 21825,
+  "name": "E Fire Snail",
+  "blacksmith": "#3",
+  "direct": [
+   {
+    "requiredTags": [
+     "PlayerOwned"
+    ],
+    "add": 1.2,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "Building"
+    ],
+    "add": 0.0,
+    "mult": 0.5
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 0.0,
+  "parabola": 0.0,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 1.2,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21826,
+  "name": "E Firestorm",
+  "blacksmith": "#4",
+  "direct": [],
+  "splash": [
+   {
+    "requiredTags": [
+     "PlayerOwned"
+    ],
+    "add": 2.16,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "Building"
+    ],
+    "add": 0.0,
+    "mult": 0.5
+   },
+   {
+    "requiredTags": [
+     "FireAndExplosionResistant"
+    ],
+    "add": 0.0,
+    "mult": 0.33
+   }
+  ],
+  "projectileSpeed": 0.0,
+  "parabola": 0.0,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 2.16,
+  "baseDamageIsSplash": true
+ },
+ {
+  "file": "resources.assets",
+  "id": 21827,
+  "name": "E Flail",
+  "blacksmith": "#3",
+  "direct": [],
+  "splash": [
+   {
+    "requiredTags": [
+     "PlayerOwned"
+    ],
+    "add": 2.2,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "Building"
+    ],
+    "add": 0.0,
+    "mult": 0.75
+   }
+  ],
+  "projectileSpeed": 0.0,
+  "parabola": 0.0,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 2.2,
+  "baseDamageIsSplash": true
+ },
+ {
+  "file": "resources.assets",
+  "id": 21828,
+  "name": "E Flogre",
+  "blacksmith": "#3",
+  "direct": [],
+  "splash": [
+   {
+    "requiredTags": [
+     "PlayerOwned"
+    ],
+    "add": 9.0,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "Building"
+    ],
+    "add": 0.0,
+    "mult": 1.5
+   }
+  ],
+  "projectileSpeed": 0.0,
+  "parabola": 0.0,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 9.0,
+  "baseDamageIsSplash": true
+ },
+ {
+  "file": "resources.assets",
+  "id": 21829,
+  "name": "E Flyer",
+  "blacksmith": "#4",
+  "direct": [
+   {
+    "requiredTags": [
+     "PlayerOwned"
+    ],
+    "add": 2.5,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "ArmoredAgainstRanged"
+    ],
+    "add": 0.0,
+    "mult": 0.4
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 20.0,
+  "parabola": 0.3,
+  "maxChaseRange": 12.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 2.5,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21830,
+  "name": "E FlyingWizzard",
+  "blacksmith": "#4",
+  "direct": [
+   {
+    "requiredTags": [
+     "PlayerOwned"
+    ],
+    "add": 2.0,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "ArmoredAgainstRanged"
+    ],
+    "add": 0.0,
+    "mult": 0.5
+   },
+   {
+    "requiredTags": [
+     "VulnerableVsRanged"
+    ],
+    "add": 0.0,
+    "mult": 1.5
+   },
+   {
+    "requiredTags": [
+     "CastleCenter"
+    ],
+    "add": 0.0,
+    "mult": 0.5
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 15.0,
+  "parabola": 0.3,
+  "maxChaseRange": 22.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 2.0,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21831,
+  "name": "E Fury",
+  "blacksmith": "#4",
+  "direct": [
+   {
+    "requiredTags": [
+     "PlayerOwned"
+    ],
+    "add": 30.0,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "ArmoredAgainstRanged"
+    ],
+    "add": 0.0,
+    "mult": 0.5
+   },
+   {
+    "requiredTags": [
+     "VulnerableVsRanged"
+    ],
+    "add": 0.0,
+    "mult": 1.5
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 10.0,
+  "parabola": 0.3,
+  "maxChaseRange": 16.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 30.0,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21832,
+  "name": "E Ghost",
+  "blacksmith": "#3",
+  "direct": [
+   {
+    "requiredTags": [
+     "PlayerOwned"
+    ],
+    "add": 6.5,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "VulnerableVsRanged"
+    ],
+    "add": 0.0,
+    "mult": 0.5
+   },
+   {
+    "requiredTags": [
+     "Player"
+    ],
+    "add": 0.0,
+    "mult": 0.5
+   },
+   {
+    "requiredTags": [
+     "Tower"
+    ],
+    "add": 0.0,
+    "mult": 1.55
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 0.0,
+  "parabola": 0.0,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 6.5,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21833,
+  "name": "E Ghostqueen",
+  "blacksmith": "#4",
+  "direct": [
+   {
+    "requiredTags": [
+     "PlayerOwned"
+    ],
+    "add": 15.6,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "Player"
+    ],
+    "add": 0.0,
+    "mult": 0.375
+   },
+   {
+    "requiredTags": [
+     "ArmoredAgainstRanged"
+    ],
+    "add": 0.0,
+    "mult": 0.5
+   },
+   {
+    "requiredTags": [
+     "VulnerableVsRanged"
+    ],
+    "add": 0.0,
+    "mult": 1.25
+   },
+   {
+    "requiredTags": [
+     "Building"
+    ],
+    "add": 0.0,
+    "mult": 0.5
+   },
+   {
+    "requiredTags": [
+     "CastleCenter"
+    ],
+    "add": 0.0,
+    "mult": 0.4
+   },
+   {
+    "requiredTags": [
+     "FireAndExplosionResistant"
+    ],
+    "add": 0.0,
+    "mult": 0.5
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 40.0,
+  "parabola": 0.3,
+  "maxChaseRange": 50.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 15.6,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21834,
+  "name": "E GiraffeSlime",
+  "blacksmith": "#4",
+  "direct": [
+   {
+    "requiredTags": [
+     "PlayerOwned"
+    ],
+    "add": 1.5,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "ArmoredAgainstRanged"
+    ],
+    "add": 0.0,
+    "mult": 0.33
+   },
+   {
+    "requiredTags": [
+     "VulnerableVsRanged"
+    ],
+    "add": 0.0,
+    "mult": 1.66
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 20.0,
+  "parabola": 0.5,
+  "maxChaseRange": 16.0,
+  "shootWithoutTargetRange": 16.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 1.5,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21835,
+  "name": "E Hunterling",
+  "blacksmith": "#3",
+  "direct": [
+   {
+    "requiredTags": [
+     "PlayerOwned"
+    ],
+    "add": 5.0,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "Player"
+    ],
+    "add": 10.0,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "InfrastructureEconomy"
+    ],
+    "add": 0.0,
+    "mult": 0.25
+   },
+   {
+    "requiredTags": [
+     "MeeleFighter"
+    ],
+    "add": 0.0,
+    "mult": 0.25
+   },
+   {
+    "requiredTags": [
+     "Wall"
+    ],
+    "add": 0.0,
+    "mult": 0.5
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 0.0,
+  "parabola": 0.0,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 5.0,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21836,
+  "name": "E Iron Caslte Main",
+  "blacksmith": "#4",
+  "direct": [
+   {
+    "requiredTags": [
+     "PlayerOwned"
+    ],
+    "add": 30.0,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "Player"
+    ],
+    "add": 0.0,
+    "mult": 0.75
+   },
+   {
+    "requiredTags": [
+     "ArmoredAgainstRanged"
+    ],
+    "add": 0.0,
+    "mult": 0.5
+   },
+   {
+    "requiredTags": [
+     "CastleCenter"
+    ],
+    "add": 0.0,
+    "mult": 0.4
+   },
+   {
+    "requiredTags": [
+     "VulnerableVsRanged"
+    ],
+    "add": 0.0,
+    "mult": 1.5
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 25.0,
+  "parabola": 0.5,
+  "maxChaseRange": 42.0,
+  "shootWithoutTargetRange": 40.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 30.0,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21837,
+  "name": "E Iron Castle Small",
+  "blacksmith": "#4",
+  "direct": [
+   {
+    "requiredTags": [
+     "PlayerOwned"
+    ],
+    "add": 3.0,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "Player"
+    ],
+    "add": 0.0,
+    "mult": 0.8
+   },
+   {
+    "requiredTags": [
+     "Building"
+    ],
+    "add": 0.0,
+    "mult": 0.6
+   },
+   {
+    "requiredTags": [
+     "ArmoredAgainstRanged"
+    ],
+    "add": 0.0,
+    "mult": 0.5
+   },
+   {
+    "requiredTags": [
+     "VulnerableVsRanged"
+    ],
+    "add": 0.0,
+    "mult": 1.5
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 50.0,
+  "parabola": 0.3,
+  "maxChaseRange": 52.0,
+  "shootWithoutTargetRange": 50.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 3.0,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21838,
+  "name": "E Iron Tower",
+  "blacksmith": "#4",
+  "direct": [
+   {
+    "requiredTags": [
+     "PlayerOwned"
+    ],
+    "add": 3.5,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "Player"
+    ],
+    "add": 0.0,
+    "mult": 0.8
+   },
+   {
+    "requiredTags": [
+     "Building"
+    ],
+    "add": 0.0,
+    "mult": 0.5
+   },
+   {
+    "requiredTags": [
+     "ArmoredAgainstRanged"
+    ],
+    "add": 0.0,
+    "mult": 0.4
+   },
+   {
+    "requiredTags": [
+     "VulnerableVsRanged"
+    ],
+    "add": 0.0,
+    "mult": 1.5
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 40.0,
+  "parabola": 0.3,
+  "maxChaseRange": 42.0,
+  "shootWithoutTargetRange": 40.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 3.5,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21839,
+  "name": "E LongSpear",
+  "blacksmith": "#3",
+  "direct": [
+   {
+    "requiredTags": [
+     "PlayerOwned"
+    ],
+    "add": 3.5,
+    "mult": 1.0
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 0.0,
+  "parabola": 0.0,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 3.5,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21840,
+  "name": "E Medium Spider",
+  "blacksmith": "#3",
+  "direct": [
+   {
+    "requiredTags": [
+     "PlayerOwned"
+    ],
+    "add": 6.0,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "Building"
+    ],
+    "add": 0.0,
+    "mult": 0.05
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 0.0,
+  "parabola": 0.0,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 6.0,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21841,
+  "name": "E Melee",
+  "blacksmith": "#3",
+  "direct": [
+   {
+    "requiredTags": [
+     "PlayerOwned"
+    ],
+    "add": 2.5,
+    "mult": 1.0
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 0.0,
+  "parabola": 0.0,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 2.5,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21842,
+  "name": "E Moleman Archer",
+  "blacksmith": "#4",
+  "direct": [
+   {
+    "requiredTags": [
+     "PlayerOwned"
+    ],
+    "add": 3.75,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "Player"
+    ],
+    "add": 0.0,
+    "mult": 0.8
+   },
+   {
+    "requiredTags": [
+     "Building"
+    ],
+    "add": 0.0,
+    "mult": 0.5
+   },
+   {
+    "requiredTags": [
+     "ArmoredAgainstRanged"
+    ],
+    "add": 0.0,
+    "mult": 0.5
+   },
+   {
+    "requiredTags": [
+     "VulnerableVsRanged"
+    ],
+    "add": 0.0,
+    "mult": 1.5
+   },
+   {
+    "requiredTags": [
+     "PlayerUnit"
+    ],
+    "add": 0.0,
+    "mult": 1.4
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 20.0,
+  "parabola": 0.3,
+  "maxChaseRange": 22.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 3.75,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21843,
+  "name": "E Moleman",
+  "blacksmith": "#3",
+  "direct": [
+   {
+    "requiredTags": [
+     "PlayerOwned"
+    ],
+    "add": 5.0,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "CastleCenter"
+    ],
+    "add": 0.0,
+    "mult": 0.25
+   },
+   {
+    "requiredTags": [
+     "Tower"
+    ],
+    "add": 0.0,
+    "mult": 0.5
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 0.0,
+  "parabola": 0.0,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 5.0,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21844,
+  "name": "E Monster Rider",
+  "blacksmith": "#3",
+  "direct": [
+   {
+    "requiredTags": [
+     "PlayerOwned"
+    ],
+    "add": 3.0,
+    "mult": 1.0
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 0.0,
+  "parabola": 0.0,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 3.0,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21845,
+  "name": "E Ogre",
+  "blacksmith": "#3",
+  "direct": [
+   {
+    "requiredTags": [
+     "PlayerOwned"
+    ],
+    "add": 20.0,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "PlayerUnit"
+    ],
+    "add": 0.0,
+    "mult": 0.5
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 0.0,
+  "parabola": 0.0,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 20.0,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21846,
+  "name": "E Quicksling",
+  "blacksmith": "#4",
+  "direct": [
+   {
+    "requiredTags": [
+     "PlayerOwned"
+    ],
+    "add": 9.775,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "Building"
+    ],
+    "add": 0.0,
+    "mult": 0.7
+   },
+   {
+    "requiredTags": [
+     "ArmoredAgainstRanged"
+    ],
+    "add": 0.0,
+    "mult": 0.5
+   },
+   {
+    "requiredTags": [
+     "VulnerableVsRanged"
+    ],
+    "add": 0.0,
+    "mult": 1.5
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 22.5,
+  "parabola": 0.4,
+  "maxChaseRange": 40.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 9.775,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21847,
+  "name": "E Racer",
+  "blacksmith": "#3",
+  "direct": [
+   {
+    "requiredTags": [
+     "PlayerOwned"
+    ],
+    "add": 2.5,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "CastleCenter"
+    ],
+    "add": 2.5,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "Wall"
+    ],
+    "add": 0.0,
+    "mult": 0.5
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 0.0,
+  "parabola": 0.0,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 2.5,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21848,
+  "name": "E Ram",
+  "blacksmith": "#3",
+  "direct": [
+   {
+    "requiredTags": [
+     "PlayerOwned"
+    ],
+    "add": 15.0,
+    "mult": 1.0
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 0.0,
+  "parabola": 0.0,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 15.0,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21849,
+  "name": "E Slime",
+  "blacksmith": "#3",
+  "direct": [
+   {
+    "requiredTags": [
+     "PlayerOwned"
+    ],
+    "add": 1.2,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "Building"
+    ],
+    "add": 0.0,
+    "mult": 0.5
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 0.0,
+  "parabola": 0.0,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 1.2,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21850,
+  "name": "E Small Spider",
+  "blacksmith": "#3",
+  "direct": [
+   {
+    "requiredTags": [
+     "PlayerOwned"
+    ],
+    "add": 2.4,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "Building"
+    ],
+    "add": 0.0,
+    "mult": 0.05
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 0.0,
+  "parabola": 0.0,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 2.4,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21851,
+  "name": "E StrongGiraffeslime",
+  "blacksmith": "#4",
+  "direct": [
+   {
+    "requiredTags": [
+     "PlayerOwned"
+    ],
+    "add": 3.5,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "ArmoredAgainstRanged"
+    ],
+    "add": 0.0,
+    "mult": 0.33
+   },
+   {
+    "requiredTags": [
+     "VulnerableVsRanged"
+    ],
+    "add": 0.0,
+    "mult": 1.66
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 20.0,
+  "parabola": 0.5,
+  "maxChaseRange": 20.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 3.5,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21852,
+  "name": "E StrongSlime",
+  "blacksmith": "#3",
+  "direct": [
+   {
+    "requiredTags": [
+     "PlayerOwned"
+    ],
+    "add": 3.6,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "Building"
+    ],
+    "add": 0.0,
+    "mult": 0.33
+   },
+   {
+    "requiredTags": [
+     "MeeleFighter"
+    ],
+    "add": 0.0,
+    "mult": 0.5
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 0.0,
+  "parabola": 0.0,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 3.6,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21853,
+  "name": "E Thing",
+  "blacksmith": "#3",
+  "direct": [],
+  "splash": [
+   {
+    "requiredTags": [
+     "PlayerOwned"
+    ],
+    "add": 2.2,
+    "mult": 1.0
+   }
+  ],
+  "projectileSpeed": 0.0,
+  "parabola": 0.0,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 2.2,
+  "baseDamageIsSplash": true
+ },
+ {
+  "file": "resources.assets",
+  "id": 21854,
+  "name": "E Weakling",
+  "blacksmith": "#3",
+  "direct": [
+   {
+    "requiredTags": [
+     "PlayerOwned"
+    ],
+    "add": 1.0,
+    "mult": 1.0
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 0.0,
+  "parabola": 0.0,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 1.0,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21855,
+  "name": "E Wheel",
+  "blacksmith": "#3",
+  "direct": [],
+  "splash": [
+   {
+    "requiredTags": [
+     "PlayerOwned"
+    ],
+    "add": 3.5,
+    "mult": 1.0
+   }
+  ],
+  "projectileSpeed": 0.0,
+  "parabola": 0.0,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 3.5,
+  "baseDamageIsSplash": true
+ },
+ {
+  "file": "resources.assets",
+  "id": 21856,
+  "name": "E Windboat Crossbow",
+  "blacksmith": "#4",
+  "direct": [
+   {
+    "requiredTags": [
+     "PlayerOwned"
+    ],
+    "add": 15.0,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "Player"
+    ],
+    "add": 0.0,
+    "mult": 0.75
+   },
+   {
+    "requiredTags": [
+     "ArmoredAgainstRanged"
+    ],
+    "add": 0.0,
+    "mult": 0.4
+   },
+   {
+    "requiredTags": [
+     "VulnerableVsRanged"
+    ],
+    "add": 0.0,
+    "mult": 1.5
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 30.0,
+  "parabola": 0.05,
+  "maxChaseRange": 22.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 15.0,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21860,
+  "name": "Fireboss Fire Bolts",
+  "blacksmith": "#0",
+  "direct": [],
+  "splash": [
+   {
+    "requiredTags": [
+     "EnemyOwned"
+    ],
+    "add": 33.0,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "PlayerUnit"
+    ],
+    "add": 20.0,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "Player"
+    ],
+    "add": 65.0,
+    "mult": 1.0
+   }
+  ],
+  "projectileSpeed": 0.0,
+  "parabola": 0.0,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 33.0,
+  "baseDamageIsSplash": true
+ },
+ {
+  "file": "resources.assets",
+  "id": 21861,
+  "name": "P Archer",
+  "blacksmith": "#2",
+  "direct": [
+   {
+    "requiredTags": [
+     "EnemyOwned"
+    ],
+    "add": 3.5,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "ArmoredAgainstRanged"
+    ],
+    "add": 0.0,
+    "mult": 0.4
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 20.0,
+  "parabola": 0.3,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 3.5,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21862,
+  "name": "P Berserk Dash Jump",
+  "blacksmith": "#1",
+  "direct": [
+   {
+    "requiredTags": [
+     "EnemyOwned"
+    ],
+    "add": 10.0,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "SiegeWeapon"
+    ],
+    "add": 0.0,
+    "mult": 1.5
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 0.0,
+  "parabola": 0.0,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 10.0,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21863,
+  "name": "P Berserk",
+  "blacksmith": "#1",
+  "direct": [
+   {
+    "requiredTags": [
+     "EnemyOwned"
+    ],
+    "add": 2.5,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "SiegeWeapon"
+    ],
+    "add": 0.0,
+    "mult": 2.0
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 0.0,
+  "parabola": 0.0,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 2.5,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21864,
+  "name": "P Castle Center",
+  "blacksmith": "#2",
+  "direct": [
+   {
+    "requiredTags": [
+     "EnemyOwned"
+    ],
+    "add": 4.5,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "ArmoredAgainstRanged"
+    ],
+    "add": 0.0,
+    "mult": 0.6
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 30.0,
+  "parabola": 0.25,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 4.5,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21865,
+  "name": "P Crossbow",
+  "blacksmith": "#2",
+  "direct": [
+   {
+    "requiredTags": [
+     "EnemyOwned"
+    ],
+    "add": 7.0,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "EnemyOwned",
+     "RangedFighter"
+    ],
+    "add": 0.0,
+    "mult": 2.25
+   },
+   {
+    "requiredTags": [
+     "ArmoredAgainstRanged"
+    ],
+    "add": 0.0,
+    "mult": 0.4
+   },
+   {
+    "requiredTags": [
+     "Flying"
+    ],
+    "add": 0.0,
+    "mult": 0.5
+   },
+   {
+    "requiredTags": [
+     "VulnerableVsRanged"
+    ],
+    "add": 0.0,
+    "mult": 1.33
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 40.0,
+  "parabola": 0.1,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 7.0,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21866,
+  "name": "P Fire Archer",
+  "blacksmith": "#2",
+  "direct": [
+   {
+    "requiredTags": [
+     "EnemyOwned",
+     "Flying"
+    ],
+    "add": 4.5,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "ArmoredAgainstRanged"
+    ],
+    "add": 0.0,
+    "mult": 0.5
+   },
+   {
+    "requiredTags": [
+     "VulnerableVsRanged"
+    ],
+    "add": 0.0,
+    "mult": 1.33
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 18.0,
+  "parabola": 0.3,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 4.5,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21867,
+  "name": "P Firewing",
+  "blacksmith": "#2",
+  "direct": [
+   {
+    "requiredTags": [
+     "EnemyOwned"
+    ],
+    "add": 4.0,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "ArmoredAgainstRanged"
+    ],
+    "add": 0.0,
+    "mult": 0.5
+   },
+   {
+    "requiredTags": [
+     "VulnerableVsRanged"
+    ],
+    "add": 0.0,
+    "mult": 1.5
+   },
+   {
+    "requiredTags": [
+     "FireAndExplosionResistant"
+    ],
+    "add": 0.0,
+    "mult": 0.5
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 30.0,
+  "parabola": 0.3,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 4.0,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21868,
+  "name": "P Golem",
+  "blacksmith": "#1",
+  "direct": [
+   {
+    "requiredTags": [
+     "EnemyOwned"
+    ],
+    "add": 33.0,
+    "mult": 1.0
+   }
+  ],
+  "splash": [
+   {
+    "requiredTags": [
+     "EnemyOwned"
+    ],
+    "add": 5.0,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "Flying"
+    ],
+    "add": 0.0,
+    "mult": 0.0
+   }
+  ],
+  "projectileSpeed": 0.0,
+  "parabola": 0.0,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 33.0,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21869,
+  "name": "P Hunter Melee",
+  "blacksmith": "#1",
+  "direct": [
+   {
+    "requiredTags": [
+     "EnemyOwned"
+    ],
+    "add": 2.739,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "EnemyOwned",
+     "Monster"
+    ],
+    "add": 0.0,
+    "mult": 2.556
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 0.0,
+  "parabola": 0.0,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 2.739,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21870,
+  "name": "P Hunter",
+  "blacksmith": "#2",
+  "direct": [
+   {
+    "requiredTags": [
+     "EnemyOwned"
+    ],
+    "add": 2.739,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "Monster"
+    ],
+    "add": 0.0,
+    "mult": 2.556
+   },
+   {
+    "requiredTags": [
+     "ArmoredAgainstRanged"
+    ],
+    "add": 0.0,
+    "mult": 0.5
+   },
+   {
+    "requiredTags": [
+     "VulnerableVsRanged"
+    ],
+    "add": 0.0,
+    "mult": 1.33
+   },
+   {
+    "requiredTags": [
+     "Flying"
+    ],
+    "add": 0.0,
+    "mult": 0.5
+   },
+   {
+    "requiredTags": [
+     "Flying",
+     "Monster"
+    ],
+    "add": 0.0,
+    "mult": 2.0
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 20.0,
+  "parabola": 0.4,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 2.739,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21871,
+  "name": "P Knight",
+  "blacksmith": "#1",
+  "direct": [
+   {
+    "requiredTags": [
+     "EnemyOwned"
+    ],
+    "add": 2.5,
+    "mult": 1.0
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 0.0,
+  "parabola": 0.0,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 2.5,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21872,
+  "name": "P LizzardR Bite",
+  "blacksmith": "#1",
+  "direct": [
+   {
+    "requiredTags": [
+     "EnemyOwned"
+    ],
+    "add": 3.15,
+    "mult": 1.0
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 0.0,
+  "parabola": 0.0,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 3.15,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21873,
+  "name": "P LizzardR Snipe",
+  "blacksmith": "#2",
+  "direct": [
+   {
+    "requiredTags": [
+     "EnemyOwned"
+    ],
+    "add": 5.4,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "ArmoredAgainstRanged"
+    ],
+    "add": 0.0,
+    "mult": 0.4
+   },
+   {
+    "requiredTags": [
+     "VulnerableVsRanged"
+    ],
+    "add": 0.0,
+    "mult": 1.33
+   },
+   {
+    "requiredTags": [
+     "RangedFighter"
+    ],
+    "add": 0.0,
+    "mult": 1.33
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 44.0,
+  "parabola": 0.3,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 5.4,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21874,
+  "name": "P Longbow",
+  "blacksmith": "#2",
+  "direct": [
+   {
+    "requiredTags": [
+     "EnemyOwned"
+    ],
+    "add": 4.0,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "Humanoid"
+    ],
+    "add": 0.0,
+    "mult": 0.5
+   },
+   {
+    "requiredTags": [
+     "Flying"
+    ],
+    "add": 0.0,
+    "mult": 1.2
+   },
+   {
+    "requiredTags": [
+     "VulnerableVsRanged"
+    ],
+    "add": 0.0,
+    "mult": 2.5
+   },
+   {
+    "requiredTags": [
+     "Humanoid"
+    ],
+    "add": 0.0,
+    "mult": 1.6
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 33.0,
+  "parabola": 0.3,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 4.0,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21875,
+  "name": "P Melee",
+  "blacksmith": "#1",
+  "direct": [
+   {
+    "requiredTags": [
+     "EnemyOwned"
+    ],
+    "add": 3.5,
+    "mult": 1.0
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 0.0,
+  "parabola": 0.0,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 3.5,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21876,
+  "name": "P Morningstar",
+  "blacksmith": "#1",
+  "direct": [],
+  "splash": [
+   {
+    "requiredTags": [
+     "EnemyOwned"
+    ],
+    "add": 1.65,
+    "mult": 1.0
+   }
+  ],
+  "projectileSpeed": 0.0,
+  "parabola": 0.0,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 1,
+  "baseDamage": 1.65,
+  "baseDamageIsSplash": true
+ },
+ {
+  "file": "resources.assets",
+  "id": 21877,
+  "name": "P Scarecrow",
+  "blacksmith": "#2",
+  "direct": [
+   {
+    "requiredTags": [
+     "EnemyOwned"
+    ],
+    "add": 25.0,
+    "mult": 1.0
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 36.0,
+  "parabola": 0.3,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 25.0,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21878,
+  "name": "P Speer",
+  "blacksmith": "#1",
+  "direct": [
+   {
+    "requiredTags": [
+     "EnemyOwned"
+    ],
+    "add": 2.021,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "FastMoving"
+    ],
+    "add": 0.0,
+    "mult": 2.0
+   },
+   {
+    "requiredTags": [
+     "RangedFighter"
+    ],
+    "add": 0.0,
+    "mult": 0.75
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 0.0,
+  "parabola": 0.0,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 2.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 2.021,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21879,
+  "name": "P SupportMage Heal",
+  "blacksmith": "#0",
+  "direct": [
+   {
+    "requiredTags": [
+     "PlayerOwned"
+    ],
+    "add": -3.5,
+    "mult": 1.0
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 50.0,
+  "parabola": 0.0,
+  "maxChaseRange": 40.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": -3.5,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21880,
+  "name": "P Wind Spirits",
+  "blacksmith": "#2",
+  "direct": [
+   {
+    "requiredTags": [
+     "EnemyOwned"
+    ],
+    "add": 2.0,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "RangedFighter"
+    ],
+    "add": 0.0,
+    "mult": 4.0
+   },
+   {
+    "requiredTags": [
+     "ArmoredAgainstRanged"
+    ],
+    "add": 0.0,
+    "mult": 0.5
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 26.0,
+  "parabola": 0.3,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 1,
+  "baseDamage": 2.0,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21881,
+  "name": "Temple Ice Bolts",
+  "blacksmith": "#0",
+  "direct": [],
+  "splash": [
+   {
+    "requiredTags": [
+     "EnemyOwned"
+    ],
+    "add": 1.0,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "PlayerUnit"
+    ],
+    "add": 1.0,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "Player"
+    ],
+    "add": 1.0,
+    "mult": 1.0
+   }
+  ],
+  "projectileSpeed": 0.0,
+  "parabola": 0.0,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 1,
+  "baseDamage": 1.0,
+  "baseDamageIsSplash": true
+ },
+ {
+  "file": "resources.assets",
+  "id": 21882,
+  "name": "Mill Explosion L",
+  "blacksmith": "#1",
+  "direct": [],
+  "splash": [
+   {
+    "requiredTags": [
+     "EnemyOwned"
+    ],
+    "add": 90.0,
+    "mult": 1.0
+   }
+  ],
+  "projectileSpeed": 0.0,
+  "parabola": 0.0,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 90.0,
+  "baseDamageIsSplash": true
+ },
+ {
+  "file": "resources.assets",
+  "id": 21883,
+  "name": "Mill Explosion M",
+  "blacksmith": "#1",
+  "direct": [],
+  "splash": [
+   {
+    "requiredTags": [
+     "EnemyOwned"
+    ],
+    "add": 60.0,
+    "mult": 1.0
+   }
+  ],
+  "projectileSpeed": 0.0,
+  "parabola": 0.0,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 60.0,
+  "baseDamageIsSplash": true
+ },
+ {
+  "file": "resources.assets",
+  "id": 21884,
+  "name": "Mill Explosion S",
+  "blacksmith": "#1",
+  "direct": [],
+  "splash": [
+   {
+    "requiredTags": [
+     "EnemyOwned"
+    ],
+    "add": 30.0,
+    "mult": 1.0
+   }
+  ],
+  "projectileSpeed": 0.0,
+  "parabola": 0.0,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 30.0,
+  "baseDamageIsSplash": true
+ },
+ {
+  "file": "resources.assets",
+  "id": 21885,
+  "name": "P FortifiedHouse",
+  "blacksmith": "#2",
+  "direct": [
+   {
+    "requiredTags": [
+     "EnemyOwned"
+    ],
+    "add": 8.0,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "ArmoredAgainstRanged"
+    ],
+    "add": 0.0,
+    "mult": 0.6
+   },
+   {
+    "requiredTags": [
+     "VulnerableVsRanged"
+    ],
+    "add": 0.0,
+    "mult": 1.7
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 20.0,
+  "parabola": 0.3,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 8.0,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21886,
+  "name": "P Shrine",
+  "blacksmith": "#2",
+  "direct": [
+   {
+    "requiredTags": [
+     "EnemyOwned"
+    ],
+    "add": 3.5,
+    "mult": 1.0
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 40.0,
+  "parabola": 0.1,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 3.5,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21887,
+  "name": "P Tower Ballista",
+  "blacksmith": "#2",
+  "direct": [
+   {
+    "requiredTags": [
+     "EnemyOwned"
+    ],
+    "add": 80.0,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "TakesIncreasedDamageFromTowers"
+    ],
+    "add": 0.0,
+    "mult": 2.0
+   },
+   {
+    "requiredTags": [
+     "ArmoredAgainstRanged"
+    ],
+    "add": 0.0,
+    "mult": 0.5
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 40.0,
+  "parabola": 0.15,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 80.0,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21888,
+  "name": "P Tower Healing",
+  "blacksmith": "#0",
+  "direct": [
+   {
+    "requiredTags": [
+     "PlayerOwned"
+    ],
+    "add": -15.0,
+    "mult": 1.0
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 30.0,
+  "parabola": 0.0,
+  "maxChaseRange": 40.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": -15.0,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21889,
+  "name": "P Tower",
+  "blacksmith": "#2",
+  "direct": [
+   {
+    "requiredTags": [
+     "EnemyOwned"
+    ],
+    "add": 8.0,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "TakesIncreasedDamageFromTowers"
+    ],
+    "add": 0.0,
+    "mult": 2.0
+   },
+   {
+    "requiredTags": [
+     "ArmoredAgainstRanged"
+    ],
+    "add": 0.0,
+    "mult": 0.6
+   },
+   {
+    "requiredTags": [
+     "Flying"
+    ],
+    "add": 0.0,
+    "mult": 1.15
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 20.0,
+  "parabola": 0.3,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 8.0,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21890,
+  "name": "P RewTower Ballista",
+  "blacksmith": "#2",
+  "direct": [
+   {
+    "requiredTags": [
+     "EnemyOwned"
+    ],
+    "add": 8.0,
+    "mult": 1.0
+   },
+   {
+    "requiredTags": [
+     "TakesIncreasedDamageFromTowers"
+    ],
+    "add": 0.0,
+    "mult": 2.0
+   },
+   {
+    "requiredTags": [
+     "Flying"
+    ],
+    "add": 0.0,
+    "mult": 1.15
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 20.0,
+  "parabola": 0.15,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 1,
+  "baseDamage": 8.0,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21891,
+  "name": "P RewTower Explosive",
+  "blacksmith": "#2",
+  "direct": [],
+  "splash": [],
+  "projectileSpeed": 20.0,
+  "parabola": 0.3,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 0.0,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21892,
+  "name": "P RewTower Healing",
+  "blacksmith": "#0",
+  "direct": [
+   {
+    "requiredTags": [
+     "PlayerOwned"
+    ],
+    "add": -8.0,
+    "mult": 1.0
+   }
+  ],
+  "splash": [],
+  "projectileSpeed": 30.0,
+  "parabola": 0.0,
+  "maxChaseRange": 40.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": -8.0,
+  "baseDamageIsSplash": false
+ },
+ {
+  "file": "resources.assets",
+  "id": 21894,
+  "name": "Wall Explosion Lvl 1",
+  "blacksmith": "#1",
+  "direct": [],
+  "splash": [
+   {
+    "requiredTags": [
+     "EnemyOwned"
+    ],
+    "add": 30.0,
+    "mult": 1.0
+   }
+  ],
+  "projectileSpeed": 0.0,
+  "parabola": 0.0,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 30.0,
+  "baseDamageIsSplash": true
+ },
+ {
+  "file": "resources.assets",
+  "id": 21895,
+  "name": "Wall Explosion Lvl 2",
+  "blacksmith": "#1",
+  "direct": [],
+  "splash": [
+   {
+    "requiredTags": [
+     "EnemyOwned"
+    ],
+    "add": 60.0,
+    "mult": 1.0
+   }
+  ],
+  "projectileSpeed": 0.0,
+  "parabola": 0.0,
+  "maxChaseRange": 10000.0,
+  "shootWithoutTargetRange": 20.0,
+  "slowsFastEnemiesFor": 0.0,
+  "isPlayerWeapon": false,
+  "extraEffects": 0,
+  "baseDamage": 60.0,
+  "baseDamageIsSplash": true
+ }
+]

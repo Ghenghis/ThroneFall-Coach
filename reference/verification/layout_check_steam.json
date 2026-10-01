@@ -1,0 +1,3743 @@
+{
+ "game": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Thronefall\\Thronefall_Data",
+ "objects": 655159,
+ "checked": 655157,
+ "byteExact": 655157,
+ "trailingBytes": 0,
+ "errors": 0,
+ "unresolvedScripts": 0,
+ "noLayout": 2,
+ "byteExactPct": 100.0,
+ "perScript": {
+  "Unity.RenderPipelines.Universal.Runtime.dll|UnityEngine.Rendering.Universal|UniversalRendererData": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Unity.RenderPipelines.Universal.Runtime.dll|UnityEngine.Rendering.Universal|UniversalRenderPipelineAsset": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Unity.RenderPipelines.Universal.Runtime.dll|UnityEngine.Rendering.Universal|UniversalRenderPipelineGlobalSettings": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Unity.RenderPipelines.Universal.Runtime.dll|UnityEngine.Rendering.Universal|PostProcessData": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Unity.RenderPipelines.Universal.Runtime.dll|UnityEngine.Rendering.Universal|XRSystemData": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Unity.RenderPipelines.Universal.Runtime.dll||FullScreenPassRendererFeature": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Unity.TextMeshPro.dll|TMPro|TextMeshProUGUI": {
+   "ok": 3525,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll|I2.Loc|LocalizeTarget_TextMeshPro_UGUI": {
+   "ok": 107,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Unity.RenderPipelines.Universal.Runtime.dll|UnityEngine.Rendering.Universal|UniversalAdditionalCameraData": {
+   "ok": 155,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||InitialSceneLoad": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll|I2.Loc|Localize": {
+   "ok": 385,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "UnityEngine.UI.dll|UnityEngine.UI|GraphicRaycaster": {
+   "ok": 30875,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "UnityEngine.UI.dll|UnityEngine.UI|Image": {
+   "ok": 773,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "UnityEngine.UI.dll|UnityEngine.UI|CanvasScaler": {
+   "ok": 30876,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||LoadingPulse": {
+   "ok": 41,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll|Rewired|InputManager": {
+   "ok": 40,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||SaveLoadManager": {
+   "ok": 40,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||SceneTransitionManager": {
+   "ok": 40,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "UnityEngine.UI.dll|UnityEngine.UI|Text": {
+   "ok": 159,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Tayx.Graphy.dll|Tayx.Graphy.Ram|G_RamManager": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "UnityEngine.UI.dll|UnityEngine.UI|Shadow": {
+   "ok": 37,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Tayx.Graphy.dll|Tayx.Graphy.Audio|G_AudioText": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Tayx.Graphy.dll|Tayx.Graphy.Fps|G_FpsMonitor": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Tayx.Graphy.dll|Tayx.Graphy.Ram|G_RamMonitor": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Tayx.Graphy.dll|Tayx.Graphy.Fps|G_FpsText": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Tayx.Graphy.dll|Tayx.Graphy.Audio|G_AudioManager": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Tayx.Graphy.dll|Tayx.Graphy.Ram|G_RamText": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Tayx.Graphy.dll|Tayx.Graphy.Audio|G_AudioMonitor": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Tayx.Graphy.dll|Tayx.Graphy.Advanced|G_AdvancedData": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Tayx.Graphy.dll|Tayx.Graphy.Audio|G_AudioGraph": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Tayx.Graphy.dll|Tayx.Graphy.Fps|G_FpsManager": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Tayx.Graphy.dll|Tayx.Graphy.Fps|G_FpsGraph": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Tayx.Graphy.dll|Tayx.Graphy|GraphyDebugger": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Tayx.Graphy.dll|Tayx.Graphy.Ram|G_RamGraph": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Tayx.Graphy.dll|Tayx.Graphy|GraphyManager": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||EGSManager": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||SwitchManager": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll|Rewired.Platforms.Switch|NintendoSwitchInputManager": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||MainThreadDispatcher": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||NintendoSwitchGamepadDisconnectionHandler": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||SetStateWhenMacOSX": {
+   "ok": 2,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||CheatMenuBootstrap": {
+   "ok": 40,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||ObjectPools": {
+   "ok": 40,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||ThronefallAudioManager": {
+   "ok": 40,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||TimeUtils": {
+   "ok": 40,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||TextTranslator": {
+   "ok": 40,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "MPUIKit.dll|MPUIKIT|MPImage": {
+   "ok": 2424,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||SteamManager": {
+   "ok": 40,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||CheatMenuIMGUI": {
+   "ok": 40,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||DaytimeDisplay": {
+   "ok": 40,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||DebugCoinDisplay": {
+   "ok": 40,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||SettingsManager": {
+   "ok": 40,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||LevelProgressManager": {
+   "ok": 40,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Tayx.Graphy.dll|Graphy.Runtime.UI|G_SafeArea": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||PerkManager": {
+   "ok": 40,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||MusicManager": {
+   "ok": 40,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||DebugController": {
+   "ok": 40,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||AchievementManager": {
+   "ok": 40,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||InputStyleSwitcher": {
+   "ok": 40,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||UIScaleHandler": {
+   "ok": 80,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||LocalMatchSaveLoad": {
+   "ok": 37,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "AstarPathfindingProject.dll||AstarPath": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "AstarPathfindingProject.dll|Pathfinding.RVO|RVOSimulator": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "AstarPathfindingProject.dll|Pathfinding.RVO|RVOController": {
+   "ok": 7431,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||TagManager": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||ColorAndLightManager": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||TaggedObject": {
+   "ok": 10263,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||HealBoostMA": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll|NGS.MeshFusionPro|StaticMeshFusionSource": {
+   "ok": 94966,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "AstarPathfindingProject.dll|Pathfinding|NavmeshCut": {
+   "ok": 2738,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "MoreMountains.Feedbacks.dll|MoreMountains.Feedbacks|MMPositionShaker": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||PathMesher": {
+   "ok": 1259,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Unity.RenderPipelines.Universal.Runtime.dll|UnityEngine.Rendering.Universal|UniversalAdditionalLightData": {
+   "ok": 82,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||TreasuryUI": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "ShapesRuntime.dll|Shapes|Line": {
+   "ok": 227,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||ManualAttack": {
+   "ok": 342,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||StabMA": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||LevelAudio": {
+   "ok": 37,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||CameraController": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||BuildingInteractor": {
+   "ok": 2441,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||BuildSlot": {
+   "ok": 2441,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||LaunchableDefenseMechanismInteractor": {
+   "ok": 287,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||EnemySpawnManager": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||BillboardAlign": {
+   "ok": 30751,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||CaslteUpReciever": {
+   "ok": 1015,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||TieBreaker": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||SpawnMA": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||SuspendPlayerCollisionUntilNoOverlap": {
+   "ok": 2441,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||EnemySpawnLine": {
+   "ok": 529,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "MPUIKit.dll|MPUIKIT|MPImageBasic": {
+   "ok": 64144,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||PositionAnimation": {
+   "ok": 701,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll|NGS.MeshFusionPro|RuntimeMeshFusion": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||UpgradeAssassinsTraining": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||EmergencyRepairs": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "MoreMountains.Feedbacks.dll|MoreMountains.Feedbacks|MMF_Player": {
+   "ok": 17490,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||BuildingMeshTracker": {
+   "ok": 1905,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||TowerUpgrade": {
+   "ok": 6588,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||NightLight": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||ScoreManager": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||FalcionMA": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||GPUInstanced": {
+   "ok": 52526,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||BuildingDestructionHandler": {
+   "ok": 2441,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||UIScaleHandlerWorld": {
+   "ok": 29744,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||CurseBlastMA": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||ScaleAnimation": {
+   "ok": 4281,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||Hp": {
+   "ok": 10258,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||PerkSpawnOnDestroy": {
+   "ok": 932,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||BuildingFXProcessor": {
+   "ok": 2441,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||ApplyUpgradeIndicatorColor": {
+   "ok": 2441,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||PlayerWeaponAudio": {
+   "ok": 342,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||SpinAnimation": {
+   "ok": 664,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||SimpleRotator": {
+   "ok": 7412,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||FromToAnimation": {
+   "ok": 6111,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||AutoAttackLowestHealth": {
+   "ok": 655,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||CostDisplay": {
+   "ok": 2441,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||UpgradePlayerHp": {
+   "ok": 228,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||SizeRectangleToMeshBounds": {
+   "ok": 2441,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||UpgradeBuildersGuild": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||SaveLoadEntity": {
+   "ok": 2590,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||DamageIndicatorUIHandler": {
+   "ok": 10296,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||WeaponEquipper": {
+   "ok": 342,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||EliteTowers": {
+   "ok": 549,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||PlayerUpgradeManager": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||PlayerAttackAnimator": {
+   "ok": 342,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||EnableAllChildren": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||GPUInstancingManager": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||PerkUnrestrictedUpgrading": {
+   "ok": 549,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||UpgradePlayerDmg": {
+   "ok": 114,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||LevelBorder": {
+   "ok": 153,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "UnityEngine.UI.dll|UnityEngine.UI|ContentSizeFitter": {
+   "ok": 296,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||PowerTowerPerk": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||MinimapRenderer": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||RangeIndicatorHandler": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||Healthbar": {
+   "ok": 10250,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||PlayerMovement": {
+   "ok": 37,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||FreezePositionOnEnable": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||AutoAttack": {
+   "ok": 10496,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||NightCall": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||PerkDestroyGameObjectModifyer": {
+   "ok": 1770,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||SpawnWithFreeMA": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||PlayerManager": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||CameraRig": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||NavmeshBakeHelper": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||PerkCostModifyer": {
+   "ok": 1425,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||BattleAxeShieldFX": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||PotionVialAutoCast": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "ShapesRuntime.dll|Shapes|Rectangle": {
+   "ok": 2441,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||AutoAttackTower": {
+   "ok": 549,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||CoinSpawner": {
+   "ok": 2441,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||UnitCommandRadiusAnimation": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||EmpireUpgrade": {
+   "ok": 152,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||UpgradeCommander": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||SettingsBrightnessHelper": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||UpgradeCastleUp": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||CastleCenter": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Unity.RenderPipelines.Core.Runtime.dll|UnityEngine.Rendering|Volume": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||BlacksmithUpgrades": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||AfterTutorialTipManager": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||ReduceChildrensBuildRequirementIfPerk": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||PlayerCameraScreenShake": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||GlobalHealing": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||ScreenMarkerManager": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||BuildingRangeIndicator": {
+   "ok": 1080,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "ShapesRuntime.dll|Shapes|Disc": {
+   "ok": 6736,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||PlayerScept": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||LocalGamestate": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||AttackCooldownAnimation": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||ShieldOnFirstDamaged": {
+   "ok": 549,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||AudioDayNightFader": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||BuildingMeshesTracker": {
+   "ok": 549,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||AutoRevive": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||PerkIncomeModifyer": {
+   "ok": 183,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||ChoiceManager": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||AutoAttackHighestHealth": {
+   "ok": 549,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll|Ara|AraTrail": {
+   "ok": 49,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Rewired_Core.dll|Rewired.ComponentControls.Effects|RotateAroundAxis": {
+   "ok": 851,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||CommandUnits": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||AutoAttackTwoTargets": {
+   "ok": 549,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||OutpostPerk": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||UpgradeMagicArmor": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||PlayerInteraction": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||WardrobePlayer": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||NightscoreUI": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||PlayerHpRegen": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||PlayerShieldMA": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||LastStandPerk": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||PlayerDeath": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||LightningWandMA": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||OnDamageFeedbackHandler": {
+   "ok": 7440,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||PlayerAttackTargetFacer": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||GateOpener": {
+   "ok": 444,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||HotOilTower": {
+   "ok": 549,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||RidingDamager": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||DelayManualAttackWhileMoving": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||UpgradeGodlyCurse": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||RevivePanel": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||SettingsPostProcessingHelper": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||PlayMusicOnStart": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||PlayerCharacterAudio": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||PlatformCRTWriter": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||PlayerAttack": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||WaveCountPopUp": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||DayNightCycle": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||PacifistPact": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "AstarPathfindingProject.dll|Pathfinding.RVO|RVONavmesh": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||InterestPerk": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||LimitDeltaTime": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||IncreaseAttackSpeedOverTime": {
+   "ok": 549,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||MaterialFlasherFX": {
+   "ok": 7440,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||EnemySpawner": {
+   "ok": 73,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||PerkDamageAutoAttackModifyer": {
+   "ok": 8680,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||PerkCooldownModifyer": {
+   "ok": 111,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||PerkRangeModifyer": {
+   "ok": 7162,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||PerkHpModifyer": {
+   "ok": 14795,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||PerkDamageModifyerPlayerunitAuto": {
+   "ok": 7860,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||PerkPlayerHealthRegen": {
+   "ok": 38,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll|NGS.MeshFusionPro|SourceTracker": {
+   "ok": 2,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||ScreenMarkerIcon": {
+   "ok": 7398,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||PathfindMovementPlayerunit": {
+   "ok": 6685,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "AstarPathfindingProject.dll|Pathfinding|Seeker": {
+   "ok": 7398,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||UnitAttackAnimator": {
+   "ok": 7720,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||UnitAudio": {
+   "ok": 7806,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||UnitDashJump": {
+   "ok": 624,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||MillRotor": {
+   "ok": 237,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||UnitTypeDisplay": {
+   "ok": 6685,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||SimpleWalk": {
+   "ok": 7353,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||UnitGroupIndicator": {
+   "ok": 6685,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||RotateForwardToRVOVelocity": {
+   "ok": 7788,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "AstarPathfindingProject.dll|Pathfinding|FunnelModifier": {
+   "ok": 7384,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||SharpCornerMidigator": {
+   "ok": 7384,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||ProductionBar": {
+   "ok": 341,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||UnitProductionSelector": {
+   "ok": 640,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||Mill_Improvement_Scarecrows": {
+   "ok": 79,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||UpgradeUnitsOnEnable": {
+   "ok": 266,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||UnitRespawnerForBuildings": {
+   "ok": 800,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||AutoAttackLowestInRangeMulti": {
+   "ok": 53,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||Mill_ImprovedPlow": {
+   "ok": 79,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||ApplyHeroUnitPerks": {
+   "ok": 212,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||BlockProjectiles": {
+   "ok": 53,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||AutoAttackRandom": {
+   "ok": 238,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||Mill_ImprovementExplosiveTrap": {
+   "ok": 79,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "MoreMountains.Feedbacks.URP.dll||Scarecrow": {
+   "ok": 404,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||Mill_ImprovementWindSpirits": {
+   "ok": 79,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||PerkSpeedModifyer": {
+   "ok": 5919,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||PerkRemoveDestroyedAtNightTag": {
+   "ok": 410,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||MineShaft": {
+   "ok": 45,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||BarricadeDamage": {
+   "ok": 43,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||AutoDayNight": {
+   "ok": 3,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||AutoUpgradeBuildingOnStart": {
+   "ok": 208,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||PushPlayer2D": {
+   "ok": 8,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||FakeChildTo": {
+   "ok": 42,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||WigglerAnimatedVelocity": {
+   "ok": 56,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||Wiggler": {
+   "ok": 36,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||SuperSimpleOceanAnimation": {
+   "ok": 29,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||DestroyOrDisableOnEnable": {
+   "ok": 20,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||ForceCameraPosOnEnable": {
+   "ok": 12,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||WigglerVelocity": {
+   "ok": 8,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||KeyframedBoss": {
+   "ok": 4,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||KeepRelativeRotationTo": {
+   "ok": 36,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||HealthbarMulti": {
+   "ok": 8,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "UnityEngine.UI.dll|UnityEngine.UI|HorizontalLayoutGroup": {
+   "ok": 53,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||WigglerAnimationState": {
+   "ok": 4,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||PlayerBallMovement": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||BoatAnimation": {
+   "ok": 147,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||BlacksmithUpgrade": {
+   "ok": 240,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||FishingHarbourUpgrade": {
+   "ok": 21,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||FishingHarbour": {
+   "ok": 21,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "UnityEngine.UI.dll|UnityEngine.EventSystems|EventSystem": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||UIFrameManager": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||SettingsDisableTooltips": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||ScrollElementID": {
+   "ok": 14,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||UIFrame": {
+   "ok": 31,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||InGameResignUIHelper": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||TFUIEnumSelectorButton": {
+   "ok": 16,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||TransitionToSelectedLevelHelper": {
+   "ok": 4,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||UIBonusLevelSelect": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "UnityEngine.UI.dll|UnityEngine.UI|VerticalLayoutGroup": {
+   "ok": 52,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "UnityEngine.UI.dll|UnityEngine.UI|GridLayoutGroup": {
+   "ok": 10,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||LevelNameDisplay": {
+   "ok": 3,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||PerkSelectionTooltipHelper": {
+   "ok": 4,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||LoadoutUIHelper": {
+   "ok": 2,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||ModeRulesDisplay": {
+   "ok": 2,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||ResetLoadoutOnCancel": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||SettingsResetUnitsMorning": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||DynamicLayoutGroupSpacing": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "UnityEngine.UI.dll|UnityEngine.UI|LayoutElement": {
+   "ok": 28,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||Checkbox": {
+   "ok": 13,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||SettingsVsync": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||EternalTrialsDefeatUI": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||SettingsUIScale": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||TFUISliderRelative": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||EnumSelector": {
+   "ok": 7,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "UnityEngine.UI.dll|UnityEngine.UI|RawImage": {
+   "ok": 3,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||UIParentResizer": {
+   "ok": 9,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||EternalTrialsMapPreview": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||AdjustSizeAndPositionBasedOnUIScale": {
+   "ok": 3,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||EndOfMatchScoreUIHelper": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||SettingsLanguage": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||AdjustLayoutGroupSpacingBasedOnUIScale": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||BackToTitlescreenUIHelper": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||OverworldPauseFrame": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||BackToLevelSelectHelper": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||SettingsAudioVolume": {
+   "ok": 4,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||LevelUpScreenAnimation": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||SettingsResetVideo": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||EndscreenRetryHelper": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||HighscoreTable": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||SettingsColorBlind": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||ResetAudioSettings": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||SettingsEnableDamageStats": {
+   "ok": 2,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||NightWavePreviewCycleButton": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||TFUITextButton": {
+   "ok": 137,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||TooltipManager": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||ScreenMarkerCanvasHelper": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||InGamePopUpHelper": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||TipManager": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||ETChoicePickScreen": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||WishlistButton": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||SettingsArachnophobiaMode": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||Tooltip": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "UnityEngine.UI.dll|UnityEngine.EventSystems|StandaloneInputModule": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||KeyRebinder": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||EternalTrialsStageCountDisplay": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||ScrollArea": {
+   "ok": 2,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "UnityEngine.UI.dll|UnityEngine.UI|Mask": {
+   "ok": 5,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||SettingsFullscreen": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||SettingsAntiAliasing": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||LevelSelectUIFrameHelper": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||HighscorePreviewUI": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||TreasureChestUIHelper": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||ChoiceUIFrameHelper": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||SettingsDisplayTowerRangesOnInteract": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||GlobalAudioListener": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||SettingsUIHelper": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||EternalTrialsSelectScreen": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||EternalTrialsHighscorePreview": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||MinimapUIHelper": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||SettingsDisableExtraTips": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||SettingsResolution": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||SettingsBrightnessScale": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||ForceLayoutGroupRedraw": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||EternalTrialsVictoryUI": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||SettingsDisableScreenShake": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||SettingsEnableUnitStats": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||SettingsResetGameProgress": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||TFUIScrollBar": {
+   "ok": 2,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||VersionNumberDisplay": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||SettingsRenderScale": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||TFUISliderRelativeDragArea": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||PauseUILoadoutHelper": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||DisableButtonInWaveZero": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||InMatchResignHelper": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||PlayerUnitsInfo": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||SettingsEnableControlGroups": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||SettingsPostProcessing": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||TFUIEnumMouseCatcher": {
+   "ok": 7,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||TFUIAudioHelper": {
+   "ok": 351,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||TFUIImageButton": {
+   "ok": 4,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||CarouselManager": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||TFUIFocusCatcher": {
+   "ok": 4,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||QuestOverallProgressDisplay": {
+   "ok": 2,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "UnityEngine.UI.dll|UnityEngine.UI|AspectRatioFitter": {
+   "ok": 10,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||TFUIUpgradeChoice": {
+   "ok": 5,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||WardrobeNextUnlockUI": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||TFUIEquippable": {
+   "ok": 197,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||HorizontalBounce": {
+   "ok": 4,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||WardrobeOptionsHelper": {
+   "ok": 4,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||EnumSelectorButtonAnimation": {
+   "ok": 7,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||TFUIWardrobeMaterialElement": {
+   "ok": 3,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||PagePlatformFilter": {
+   "ok": 4,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||ControlGroupBinding": {
+   "ok": 3,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||PageMenus": {
+   "ok": 2,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "UnityEngine.UI.dll|UnityEngine.UI|ScrollRect": {
+   "ok": 2,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||DemoQuitSwitch": {
+   "ok": 2,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||ControlGroupPopUp": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||WardrobeHandler": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||ControlGroupUIHelper": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||ControlGroupController": {
+   "ok": 3,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||TitleScreenUIHelper": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||QuestEntry": {
+   "ok": 13,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||WardrobeUIFade": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||PlatformDisabler": {
+   "ok": 3,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||ControlMapButton": {
+   "ok": 7,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||DisableAfterAnimation": {
+   "ok": 3,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||ETMapChoiceDisplay": {
+   "ok": 4,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||TFUIHoldableButton": {
+   "ok": 2,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||TFUISliderDragArea": {
+   "ok": 6,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||DlcGateUIFrameHelper": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||TFUICheckboxMouseCatcher": {
+   "ok": 13,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||WardrobeInfo": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||TFUISlider": {
+   "ok": 6,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||UnitStatsDisplayUI": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||ScoreTag": {
+   "ok": 20,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||Moleman": {
+   "ok": 19,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||UnparentAndDestroyDelayedOnDeath": {
+   "ok": 27,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||PathfindMovementEnemy": {
+   "ok": 699,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||RoyalForgeUpgrade": {
+   "ok": 228,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||AncientShrinePerk": {
+   "ok": 122,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||Shrine": {
+   "ok": 122,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||EternalTrialsOnlyBuilding": {
+   "ok": 45,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||TempleOverload": {
+   "ok": 57,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||TemplePrayers": {
+   "ok": 57,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||TempleWisdom": {
+   "ok": 57,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||SummoningCircle": {
+   "ok": 568,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||TempleIceAndFire": {
+   "ok": 57,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||TempleBlessing": {
+   "ok": 57,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||TempleSacrifice": {
+   "ok": 57,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||EnableObjects": {
+   "ok": 4,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||SimpleRotate": {
+   "ok": 53,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||RotateForwardToRVOVelocityRVO": {
+   "ok": 5,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||MovementFollowPath": {
+   "ok": 5,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||UnitSpawnAppear": {
+   "ok": 687,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||GhostQueenDeath": {
+   "ok": 5,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||LoseHealthOverTime": {
+   "ok": 9,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||Ghostqueen": {
+   "ok": 5,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||PriorityOverride": {
+   "ok": 13,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||LimitedLifetime": {
+   "ok": 20,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||ScalePulse": {
+   "ok": 243,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||IronCastleEnemySpawning": {
+   "ok": 4,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||KillOnTouch": {
+   "ok": 4,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||TentacleAnimationOffset": {
+   "ok": 56,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||CorruptKingGround": {
+   "ok": 5,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||FinalBossDragon": {
+   "ok": 4,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||CorruptKingStage2AnimControl": {
+   "ok": 6,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||UnitDashJumpEnemy": {
+   "ok": 5,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||InstantEnemySpawn": {
+   "ok": 5,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||TriggerOnHealthLoss": {
+   "ok": 5,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||PukeLogic": {
+   "ok": 4,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||CorruptedKingSpawnHelper": {
+   "ok": 5,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||RotateForwardToAttackDirection": {
+   "ok": 4,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||FinalBossSpellThrower": {
+   "ok": 4,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||Invulnerable": {
+   "ok": 7,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||ReverseSiegeManager": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||OnDeathStartNextDay": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||OnDeathKillAllPlayerUnits": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||OnDeathKillAllEnemies": {
+   "ok": 7,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||AutoAttackWithWarning": {
+   "ok": 66,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||TelePlayer": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||DisablePanelWhenUIFrameIsOpen": {
+   "ok": 22,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||MapAchievements": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||LevelInteractor": {
+   "ok": 10,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||TextMirror": {
+   "ok": 9,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||HideMeshRendOnPlay": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||BonusLevelInteractor": {
+   "ok": 9,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||EternalTrialsInteractor": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||WardrobeTentTransition": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||WardrobePreviewCamera": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||DLCLevelInteractor": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||WardrobeInteractor": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||TextBackgroundFitter": {
+   "ok": 33,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||TutorialManager": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||ScreenMarker": {
+   "ok": 3,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||PracticeTargetCoinDrop": {
+   "ok": 5,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||AutoKillAllEnemiesBeforeSunrise": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "KB.FogRTS.Runtime.dll|KB.FogRTS.Runtime|FogResources": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||DlcConfiguration": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||Revision": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||EquippableBuildingUpgrade": {
+   "ok": 16,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||EquippableMutation": {
+   "ok": 19,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||EquippablePerk": {
+   "ok": 55,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||Weapon": {
+   "ok": 103,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||HealthStealWeaponEffect": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||SlowEffect": {
+   "ok": 4,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||BalancingParameters": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Unity.TextMeshPro.dll|TMPro|TMP_FontAsset": {
+   "ok": 39,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Unity.TextMeshPro.dll|TMPro|TMP_SpriteAsset": {
+   "ok": 8,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Unity.TextMeshPro.dll|TMPro|TMP_StyleSheet": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Unity.TextMeshPro.dll|TMPro|TMP_Settings": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll|I2.Loc|LanguageSourceAsset": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "ShapesRuntime.dll|Shapes|ShapesAssets": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "ShapesRuntime.dll|Shapes|ShapesConfig": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||ProjectileSpawnAudio": {
+   "ok": 4,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||DestroyAfter": {
+   "ok": 24,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||ScreenMarkerIconArachnophobia": {
+   "ok": 3,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "MoreMountains.Tools.dll|MoreMountains.Tools|MMAchievementDisplayItem": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "MoreMountains.Tools.dll|MoreMountains.Tools|MMProgressBar": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Unity.RenderPipelines.Core.Runtime.dll|UnityEngine.Rendering.UI|DebugUIHandlerPanel": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Unity.RenderPipelines.Core.Runtime.dll|UnityEngine.Rendering.UI|DebugUIHandlerIndirectFloatField": {
+   "ok": 13,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Unity.RenderPipelines.Core.Runtime.dll|UnityEngine.Rendering.UI|DebugUIHandlerHBox": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Unity.RenderPipelines.Core.Runtime.dll|UnityEngine.Rendering.UI|UIFoldout": {
+   "ok": 7,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "UnityEngine.UI.dll|UnityEngine.UI|Scrollbar": {
+   "ok": 2,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Unity.RenderPipelines.Core.Runtime.dll|UnityEngine.Rendering.UI|DebugUIHandlerContainer": {
+   "ok": 11,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Unity.RenderPipelines.Core.Runtime.dll|UnityEngine.Rendering.UI|DebugUIHandlerToggle": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Unity.RenderPipelines.Core.Runtime.dll|UnityEngine.Rendering.UI|DebugUIHandlerButton": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Unity.RenderPipelines.Core.Runtime.dll|UnityEngine.Rendering.UI|DebugUIHandlerGroup": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "UnityEngine.UI.dll|UnityEngine.UI|Button": {
+   "ok": 23,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Unity.RenderPipelines.Core.Runtime.dll|UnityEngine.Rendering.UI|DebugUIHandlerEnumField": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Unity.RenderPipelines.Core.Runtime.dll|UnityEngine.Rendering.UI|DebugUIHandlerCanvas": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Unity.RenderPipelines.Core.Runtime.dll|UnityEngine.Rendering.UI|DebugUIHandlerPersistentCanvas": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Unity.RenderPipelines.Core.Runtime.dll|UnityEngine.Rendering.UI|DebugUIHandlerFoldout": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Unity.RenderPipelines.Core.Runtime.dll|UnityEngine.Rendering.UI|DebugUIHandlerRow": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Unity.RenderPipelines.Core.Runtime.dll|UnityEngine.Rendering.UI|DebugUIHandlerUIntField": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Unity.RenderPipelines.Core.Runtime.dll|UnityEngine.Rendering.UI|DebugUIHandlerVBox": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Unity.RenderPipelines.Core.Runtime.dll|UnityEngine.Rendering.UI|DebugUIHandlerFloatField": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Unity.RenderPipelines.Core.Runtime.dll|UnityEngine.Rendering.UI|DebugUIHandlerValue": {
+   "ok": 2,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Unity.RenderPipelines.Core.Runtime.dll|UnityEngine.Rendering.UI|DebugUIHandlerColor": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Unity.RenderPipelines.Core.Runtime.dll|UnityEngine.Rendering.UI|DebugUIHandlerVector4": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "UnityEngine.UI.dll|UnityEngine.UI|Toggle": {
+   "ok": 34,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Unity.RenderPipelines.Core.Runtime.dll|UnityEngine.Rendering.UI|DebugUIHandlerVector3": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Unity.RenderPipelines.Core.Runtime.dll|UnityEngine.Rendering.UI|DebugUIHandlerIntField": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Unity.RenderPipelines.Core.Runtime.dll|UnityEngine.Rendering.UI|DebugUIHandlerVector2": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||GiveRandomPhysicsImpulseOnEnable": {
+   "ok": 66,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Unity.RenderPipelines.Core.Runtime.dll|UnityEngine.Rendering.UI|DebugUIHandlerValueTuple": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||DamagePlayerWhenEnteringRange": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||RandomPichShiftOnStart": {
+   "ok": 2,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Unity.RenderPipelines.Core.Runtime.dll|UnityEngine.Rendering.UI|DebugUIHandlerIndirectToggle": {
+   "ok": 32,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||SpawnAttackAfter": {
+   "ok": 3,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||FireArcherBurn": {
+   "ok": 8,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||ArachnophobiaSettings": {
+   "ok": 3,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||ProjectileAudio": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Unity.RenderPipelines.Core.Runtime.dll|UnityEngine.Rendering.UI|DebugUIHandlerObject": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||Coinslot": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Unity.RenderPipelines.Core.Runtime.dll|UnityEngine.Rendering.UI|DebugUIHandlerMessageBox": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Unity.RenderPipelines.Core.Runtime.dll|UnityEngine.Rendering.UI|DebugUIHandlerObjectList": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||SimpleMove": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||RacerRoll": {
+   "ok": 3,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Unity.RenderPipelines.Core.Runtime.dll|UnityEngine.Rendering.UI|DebugUIHandlerObjectPopupField": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||SplashDamageArea": {
+   "ok": 24,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||Coin": {
+   "ok": 3,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Unity.RenderPipelines.Core.Runtime.dll|UnityEngine.Rendering.UI|DebugUIHandlerProgressBar": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||DamageIndicatorUI": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Unity.RenderPipelines.Core.Runtime.dll|UnityEngine.Rendering.UI|DebugUIHandlerToggleHistory": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "UnityEngine.UI.dll|UnityEngine.EventSystems|EventTrigger": {
+   "ok": 2,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||CorruptKingJumpMarker": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||AimbotProjectile": {
+   "ok": 24,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||QuickslingBarrelRotator": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||ScalePulseNonUniform": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||LaunchableProjectile": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||ShapeGroupFader": {
+   "ok": 4,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Unity.RenderPipelines.Core.Runtime.dll|UnityEngine.Rendering.UI|DebugUIHandlerBitField": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||ProjectileImpactParticles": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Unity.RenderPipelines.Core.Runtime.dll|UnityEngine.Rendering.UI|DebugUIHandlerEnumHistory": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||BossProjectileTargetMarker": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||PeriodicallyEnableAndDisableDuringEnemySpawn": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "MoreMountains.Tools.dll|MoreMountains.Tools|MMDebugOnScreenConsole": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||CorruptKingBlastCircle": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||WheelRollAnimator": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "ShapesRuntime.dll|Shapes|ShapeGroup": {
+   "ok": 4,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||SelfDestructWhenInRangeOf": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||SelectUnitUI": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||AudioSet": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||Colorscheme": {
+   "ok": 14,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||EquippableWeapon": {
+   "ok": 9,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||EternalTrialEnemySet": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||EndlessModeWaveGen": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||SeasonTwoWaveGen": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||LevelInfo": {
+   "ok": 37,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Rewired_Core.dll|Rewired.Data|ControllerDataFiles": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Rewired_Core.dll|Rewired.Data.Mapping|HardwareJoystickMap": {
+   "ok": 169,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Rewired_Core.dll|Rewired.Data.Mapping|HardwareJoystickTemplateMap": {
+   "ok": 6,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Rewired_Core.dll|Rewired.Data.Mapping|CustomCalculation_Accelerometer": {
+   "ok": 2,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Rewired_Core.dll|Rewired.Data.Mapping|CustomCalculation_FirstNonZero": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Rewired_Core.dll|Rewired.Data.Mapping|CustomCalculation_LogitechGRacingWheelPedals": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Rewired_Core.dll|Rewired.Data.Mapping|CustomCalculation_CompareElementValues": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||LightningStriker": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||DayCountdownUI": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||NightPreviewElement": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||ResetControlsHelper": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||QuestConditionEquippable": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||TFUIWardrobeItemElement": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||TFUIIncomeDisplay": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||TFUIPlayerUnit": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||TFUIWardrobeElement": {
+   "ok": 2,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||TFUIEnemy": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||WaterSettings": {
+   "ok": 8,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Unity.RenderPipelines.Universal.Runtime.dll|UnityEngine.Rendering.Universal|LensDistortion": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Unity.RenderPipelines.Core.Runtime.dll|UnityEngine.Rendering|VolumeProfile": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||WardrobeItem": {
+   "ok": 24,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||WardrobeMaterial": {
+   "ok": 24,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||PercentageHealthStealWeaponEffect": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||BloodWandActiveAttEffect": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||BloodWandPassiveAttEffect": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||CurseEffect": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||HealOnKillWeaponEffect": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||GodlyCurseEffect": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Unity.RenderPipelines.Universal.Runtime.dll|UnityEngine.Rendering.Universal|Vignette": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Unity.RenderPipelines.Universal.Runtime.dll|UnityEngine.Rendering.Universal|ChromaticAberration": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||CustomPositionConstraint": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||PotionVialCircle": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||EnemyScreenMarkerUIHelper": {
+   "ok": 2,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||PhysicalCoinAnimator": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||PlayerTrapIntensityHelper": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||UnparentOnStart": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||TimedUnparent": {
+   "ok": 4,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||PlayOneShotOnProjectileHit": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||SpawnAttackOnCollision": {
+   "ok": 1,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  },
+  "Assembly-CSharp.dll||AnimateSizeAndDestroy": {
+   "ok": 9,
+   "trailing": 0,
+   "error": 0,
+   "samples": []
+  }
+ },
+ "noLayoutClasses": {
+  "nn.npln.dll|nn.npln.unity.components|UserContextManager": 1,
+  "ShapesEditor.dll|Shapes|ShapesImportState": 1
+ },
+ "unresolved": {},
+ "perFile": {
+  "globalgamemanagers.assets": {
+   "ok": 6
+  },
+  "level0": {
+   "ok": 9
+  },
+  "level1": {
+   "ok": 146,
+   "nolayout": 1
+  },
+  "level10": {
+   "ok": 4545
+  },
+  "level11": {
+   "ok": 19756
+  },
+  "level12": {
+   "ok": 17880
+  },
+  "level13": {
+   "ok": 3851
+  },
+  "level14": {
+   "ok": 18559
+  },
+  "level15": {
+   "ok": 4241
+  },
+  "level16": {
+   "ok": 17510
+  },
+  "level17": {
+   "ok": 681
+  },
+  "level18": {
+   "ok": 17947
+  },
+  "level19": {
+   "ok": 21968
+  },
+  "level2": {
+   "ok": 2755
+  },
+  "level20": {
+   "ok": 7415
+  },
+  "level21": {
+   "ok": 3480
+  },
+  "level22": {
+   "ok": 19130
+  },
+  "level23": {
+   "ok": 4595
+  },
+  "level24": {
+   "ok": 5483
+  },
+  "level25": {
+   "ok": 21492
+  },
+  "level26": {
+   "ok": 24260
+  },
+  "level27": {
+   "ok": 24388
+  },
+  "level28": {
+   "ok": 22125
+  },
+  "level29": {
+   "ok": 48491
+  },
+  "level3": {
+   "ok": 1675
+  },
+  "level30": {
+   "ok": 24388
+  },
+  "level31": {
+   "ok": 11688
+  },
+  "level32": {
+   "ok": 23987
+  },
+  "level33": {
+   "ok": 23851
+  },
+  "level34": {
+   "ok": 24260
+  },
+  "level35": {
+   "ok": 22040
+  },
+  "level36": {
+   "ok": 2671
+  },
+  "level37": {
+   "ok": 22450
+  },
+  "level38": {
+   "ok": 21382
+  },
+  "level39": {
+   "ok": 21290
+  },
+  "level4": {
+   "ok": 8371
+  },
+  "level40": {
+   "ok": 21494
+  },
+  "level5": {
+   "ok": 20468
+  },
+  "level6": {
+   "ok": 19168
+  },
+  "level7": {
+   "ok": 18565
+  },
+  "level8": {
+   "ok": 22373
+  },
+  "level9": {
+   "ok": 22670
+  },
+  "resources.assets": {
+   "ok": 10751,
+   "nolayout": 1
+  },
+  "sharedassets0.assets": {
+   "ok": 4
+  },
+  "sharedassets1.assets": {
+   "ok": 583
+  },
+  "sharedassets10.assets": {},
+  "sharedassets11.assets": {},
+  "sharedassets12.assets": {},
+  "sharedassets13.assets": {},
+  "sharedassets14.assets": {
+   "ok": 4
+  },
+  "sharedassets15.assets": {},
+  "sharedassets16.assets": {},
+  "sharedassets17.assets": {},
+  "sharedassets18.assets": {},
+  "sharedassets19.assets": {},
+  "sharedassets2.assets": {
+   "ok": 134
+  },
+  "sharedassets20.assets": {},
+  "sharedassets21.assets": {},
+  "sharedassets22.assets": {},
+  "sharedassets23.assets": {},
+  "sharedassets24.assets": {},
+  "sharedassets25.assets": {
+   "ok": 1
+  },
+  "sharedassets26.assets": {
+   "ok": 1
+  },
+  "sharedassets27.assets": {
+   "ok": 1
+  },
+  "sharedassets28.assets": {
+   "ok": 1
+  },
+  "sharedassets29.assets": {
+   "ok": 1
+  },
+  "sharedassets3.assets": {
+   "ok": 156
+  },
+  "sharedassets30.assets": {},
+  "sharedassets31.assets": {},
+  "sharedassets32.assets": {},
+  "sharedassets33.assets": {},
+  "sharedassets34.assets": {},
+  "sharedassets35.assets": {},
+  "sharedassets36.assets": {},
+  "sharedassets37.assets": {},
+  "sharedassets38.assets": {},
+  "sharedassets39.assets": {},
+  "sharedassets4.assets": {
+   "ok": 4
+  },
+  "sharedassets40.assets": {},
+  "sharedassets5.assets": {
+   "ok": 1
+  },
+  "sharedassets6.assets": {},
+  "sharedassets7.assets": {
+   "ok": 10
+  },
+  "sharedassets8.assets": {
+   "ok": 1
+  },
+  "sharedassets9.assets": {}
+ },
+ "elapsedSeconds": 64.1
+}

@@ -1,0 +1,907 @@
+term,english
+Building/,
+Building/Archery Range,Archery Range
+Building/Archery Range Choice Crossbowpeople,Crossbowmen
+Building/Archery Range Choice Crossbowpeople Description,Crossbowmen have a low range but high damage output. They are armored against ranged attacks. Bonus damage against ranged units. Less effective against flying units.
+Building/Archery Range Choice Fire Archers,Fire Archers
+Building/Archery Range Choice Fire Archers Description,Fire Archers deal splash damage around their attack target and cause bonus damage against siege engines.
+Building/Archery Range Choice Hunters,Hunters
+Building/Archery Range Choice Hunters Description,Hunters are fast and effective against monsters.They have decent self defense capabilities in melee combat but are vulnerable against ranged units.
+Building/Archery Range Choice Longbow Archers,Longbow Archers
+Building/Archery Range Choice Longbow Archers Description,Longbows have a very large range and deal bonus damage against humanoid enemies. Great pick if you manage to keep them at a safe distance.
+Building/Archery Range Upgrade 0,Choose a ranged unit type.
+Building/Archery Range Upgrade 1,"More units, faster replenishment."
+Building/Archery Range Upgrade 2,"More units, faster replenishment."
+Building/Archery Range Upgrade 3,All units trained here become twice as strong and durable.
+Building/Barracks,Barracks
+Building/Barracks Choice Berserks,Berserks
+Building/Barracks Choice Berserks Description,Berserks jump to enter the battle causing a big burst of initial damage. They deal bonus damage against siege engines and take reduced damage from fire and explosions.
+Building/Barracks Choice Flails,Flails
+Building/Barracks Choice Flails Description,Flails can simultaneously attack all enemies in a circle around them and regenerate a bit of health for every enemy they hit.
+Building/Barracks Choice Knights,Knights
+Building/Barracks Choice Knights Description,Knights are versatile warriors who are well armored against ranged attacks.
+Building/Barracks Choice Speermen,Spearmen
+Building/Barracks Choice Speermen Description,Spearmen are fast and strong units. They do extra damage against fast enemies and slow them down. Not a great pick against ranged units.
+Building/Barracks Upgrade 0,Choose a melee unit type.
+Building/Barracks Upgrade 1,"More units, faster replenishment."
+Building/Barracks Upgrade 2,"More units, faster replenishment."
+Building/Barracks Upgrade 3,All units trained here become twice as strong and durable.
+Building/Barricades,Barricades
+Building/Barricades Upgrade 0,Barricades damage fast enemies and slow them down.
+Building/Blacksmith,Blacksmith
+Building/Blacksmith Choice Melee Armor,Melee Armor
+Building/Blacksmith Choice Melee Armor Description,"{Blacksmith.MeleeResistance.BlacksmithUpgrade.multiplyer} melee resistance for you, your units and your buildings ({Blacksmith.MeleeResistance.BlacksmithUpgrade.researchTime} days to research)"
+Building/Blacksmith Choice Melee Attack,Melee Attack
+Building/Blacksmith Choice Melee Attack Description,"{Blacksmith.MeleeAttack.BlacksmithUpgrade.multiplyer} melee damage for you, your units and your buildings ({Blacksmith.MeleeAttack.BlacksmithUpgrade.researchTime} days to research)"
+Building/Blacksmith Choice Ranged Armor,Ranged Armor
+Building/Blacksmith Choice Ranged Armor Description,"{Blacksmith.RangedResistance.BlacksmithUpgrade.multiplyer} ranged resistance for you, your units and your buildings ({Blacksmith.RangedResistance.BlacksmithUpgrade.researchTime} days to research)"
+Building/Blacksmith Choice Ranged Attack,Ranged Attack
+Building/Blacksmith Choice Ranged Attack Description,"{Blacksmith.RangedAttack.BlacksmithUpgrade.multiplyer} ranged damage for you, your units and your buildings ({Blacksmith.RangedAttack.BlacksmithUpgrade.researchTime} days to research)"
+Building/Blacksmith Upgrade 0,"Researches upgrades. Upgrades apply to you, your units and your buildings."
+Building/Blacksmith Upgrade 1,"Researches upgrades. Upgrades apply to you, your units and your buildings."
+Building/Blacksmith Upgrade 2,"Researches upgrades. Upgrades apply to you, your units and your buildings."
+Building/Bridge,Bridge
+Building/Bridge Upgrade 0,"Building this opens up a new path for you, your allies and your enemies."
+Building/Castle Center,Castle Center
+Building/Castle Center Choice Assassin's Training,Assassin's Training
+Building/Castle Center Choice Assassin's Training Description,"{Castle Center Variant.Assassin's Training.UpgradePlayerDmg.damageMultiplyer} Attack damage output for your character\n+ If you manage to use your active ability just as the cooldown wears off, the next cooldown is cut in half"
+Building/Castle Center Choice Builder's Guild,Builder's Guild
+Building/Castle Center Choice Builder's Guild Description,+ Every evening a level 1 house is automatically upgraded to a level 2 house (if available) and one is immediately upgraded now\n{Castle Center Variant.Builder's Guild.UpgradePlayerHp.healthMultiplyer} Health and self-healing for your character
+Building/Castle Center Choice Castle Up,Castle-Up
+Building/Castle Center Choice Castle Up Description,+ All tower and wall upgrades are permanently discounted by -{Castle Center Variant.Castle Up.UpgradeCastleUp.immediateWallAndTowerDiscount2} for level 1 buildings and by -{Castle Center Variant.Castle Up.UpgradeCastleUp.immediateWallAndTowerDiscount3} for level 2 buildings.\n{Castle Center Variant.Castle Up.UpgradePlayerHp.healthMultiplyer} health and health-regeneration for your character
+Building/Castle Center Choice Commander,Commander
+Building/Castle Center Choice Commander Description,+ Units move {Player Character.CommandUnits.commanderUnitMoveSpeedMulti} faster while you command them.\n+ Units can attack while you command them.\n+ Units are {Player Character.CommandUnits.commanderHoldDamageMulti} stronger and more durable when set to hold position.
+Building/Castle Center Choice Empire Armor,Empire Armor
+Building/Castle Center Choice Empire Armor Description,"+ For every {CastleCenterVariant.EmpireArmor.EmpireUpgrade.goldToDoublePower} gold you have in your bank you, your units and your buildings become +100% stronger and more durable.\n{CastleCenterVariant.EmpireArmor.EmpireUpgrade.universalResistanceMultiplyer} Universal damage resistance for you, your troups and your buildings."
+Building/Castle Center Choice Empire Growth,Empire Growth
+Building/Castle Center Choice Empire Growth Description,"+ For every {CastleCenterVariant.EmpireGrowth.EmpireUpgrade.goldToDoublePower} gold you have in your bank you, your units and your buildings become +100% stronger and more durable.\n+ 20 Gold income every day."
+Building/Castle Center Choice Empire Towers,Empire Towers
+Building/Castle Center Choice Empire Towers Description,"+ For every {CastleCenterVariant.EmpireTowers.EmpireUpgrade.goldToDoublePower} gold you have in your bank you, your units and your buildings become +100% stronger and more durable.\n+ All of your towers deal {CastleCenterVariant.EmpireTowers.EmpireUpgrade.towerDamageMultiplyer} damage."
+Building/Castle Center Choice Empire Troups,Empire Blades
+Building/Castle Center Choice Empire Troups Description,"+ For every {CastleCenterVariant.EmpireTroups.EmpireUpgrade.goldToDoublePower} gold you have in your bank you, your units and your buildings become +100% stronger and more durable.\n{CastleCenterVariant.EmpireTroups.EmpireUpgrade.meleeDamageMultiplyer} Melee damage for you, your troups and your buildings."
+Building/Castle Center Choice Godly Curse,Godly Curse
+Building/Castle Center Choice Godly Curse Description,+ When your character attacks an enemy for the first time it instantly loses {Castle Center Variant.Godly Curse.UpgradeGodlyCurse.damagePercentage} of its health.\n{Castle Center Variant.Godly Curse.UpgradePlayerHp.healthMultiplyer} health and health-regeneration for your character
+Building/Castle Center Choice Magic Armor,Magic Armor
+Building/Castle Center Choice Magic Armor Description,+ Ranged enemies that attack you take {Castle Center Variant.Magic Armor.UpgradeMagicArmor.damageVersusRanged} damage. Melee enemies that attack you take {Castle Center Variant.Magic Armor.UpgradeMagicArmor.damageVersusMelee} damage.\n{Castle Center Variant.Magic Armor.UpgradePlayerHp.healthMultiplyer} Health for your character\n{Castle Center Variant.Magic Armor.UpgradePlayerHp.heatlhRegenMultiplyer} Self-healing for your character
+Building/Castle Center Choice Royal Mastery,Royal Mastery
+Building/Castle Center Choice Royal Mastery Description,{Castle Center Variant.Royal Mastery.UpgradePlayerHp.healthMultiplyer} Health and health-regeneration for your character\n{Castle Center Variant.Royal Mastery.UpgradePlayerDmg.damageMultiplyer} Attack damage for your character
+Building/Castle Center Choice Royal Training,Royal Training
+Building/Castle Center Choice Royal Training Description,{Castle Center Variant.Royal Training.UpgradePlayerHp.healthMultiplyer} Health and self-healing for your character\n{Castle Center Variant.Royal Training.UpgradePlayerDmg.damageMultiplyer} Attack damage output for your character
+Building/Castle Center Upgrade 0,Starts a new Kingdom!
+Building/Castle Center Upgrade 1,Unlocks more build options and your character becomes stronger.
+Building/Castle Center Upgrade 2,Unlocks more build options and your character becomes stronger.
+Building/Castle Center Upgrade 3,Choose a powerful upgrade for your empire.
+Building/Defense Tower,Defense Tower
+Building/Defense Tower Choice Archers Spire,Archer's Spire
+Building/Defense Tower Choice Archers Spire Description,+{Defense Tower Variant.BuildSlot.upgrades[2].upgradeBranches[0].hpChange} Health\n+Shoots an additional arrow at another enemy in range.\n{Defense Tower Variant.Archers Spire.TowerUpgrade.attackCooldownMulti} Attack Cooldown
+Building/Defense Tower Choice Armored Tower,Armored Tower
+Building/Defense Tower Choice Armored Tower Description,+{Defense Tower Variant.BuildSlot.upgrades[1].upgradeBranches[2].hpChange} Health\n+When first damaged this tower activates a shield protecting it for {Defense Tower Variant.Armored Tower.ShieldOnFirstDamaged.shieldDuration} seconds.\nTargets the lowest health unit and flying.
+Building/Defense Tower Choice Ballistic Spire,Ballistic Spire
+Building/Defense Tower Choice Ballistic Spire Description,{Defense Tower Variant.Ballistic Spire.TowerUpgrade.attackCooldownMulti} Attack cooldown\n{Defense Tower Variant.Ballistic Spire.TowerUpgrade.damageMulti} Attack damage\n{Defense Tower Variant.Ballistic Spire.TowerUpgrade.projectileSpeedMulti} projectile speed\n+Slows hit enemies down.
+Building/Defense Tower Choice Bunker Tower,Bunker Tower
+Building/Defense Tower Choice Bunker Tower Description,+{Defense Tower Variant.BuildSlot.upgrades[1].upgradeBranches[3].hpChange} Health\n{Defense Tower Variant.Bunker Tower.TowerUpgrade.rangeMulti} Range\n+Attack cooldown decreases with each consecutive shot during the night.\nTargets random units.
+Building/Defense Tower Choice Castle Tower,Castle Tower
+Building/Defense Tower Choice Castle Tower Description,+{Defense Tower Variant.BuildSlot.upgrades[1].upgradeBranches[0].hpChange} Health\n{Defense Tower Variant.Castle Tower.TowerUpgrade.attackCooldownMulti} Attack Cooldown\n{Defense Tower Variant.Castle Tower.TowerUpgrade.projectileSpeedMulti} Projectile Speed\nTargets the closest unit.
+Building/Defense Tower Choice Fire Spire,Fire Spire
+Building/Defense Tower Choice Fire Spire Description,+{Defense Tower Variant.BuildSlot.upgrades[2].upgradeBranches[2].hpChange} Health\n+Projectiles explode dealing splash damage but their single target damage is reduced by {Defense Tower Variant.Fire Spire.TowerUpgrade.damageMulti}.\n+Tower can pour hot oil on enemies in close proximity.
+Building/Defense Tower Choice Healing Spire,Healing Spire
+Building/Defense Tower Choice Healing Spire Description,+{Defense Tower Variant.BuildSlot.upgrades[2].upgradeBranches[3].hpChange} Health\n{Defense Tower Variant.Healing Spire.TowerUpgrade.attackCooldownMulti} Attack Cooldown\n{Defense Tower Variant.Healing Spire.TowerUpgrade.damageMulti} Attack Damage\n+All of this tower's damage is converted into healing for allies. Only targets your own units from now on.
+Building/Defense Tower Choice Hunting Equipment,Hunting Equipment
+Building/Defense Tower Choice Hunting Equipment Description,+3 Gold Income
+Building/Defense Tower Choice Insane Damage,Insane Damage
+Building/Defense Tower Choice Insane Damage Description,{DefenseTowerVariant.InsaneDamage.TowerUpgrade.damageMulti} Damage\n{DefenseTowerVariant.InsaneDamage.TowerUpgrade.rangeMulti} Range
+Building/Defense Tower Choice Insane Health,Insane Health
+Building/Defense Tower Choice Insane Health Description,+{DefenseTowerVariant.BuildSlot.upgrades[3].upgradeBranches[2].hpChange} Health\n{DefenseTowerVariant.InsaneHealth.TowerUpgrade.damageMulti} Damage
+Building/Defense Tower Choice Insane Range,Insane Range
+Building/Defense Tower Choice Insane Range Description,{DefenseTowerVariant.InsaneRange.TowerUpgrade.rangeMulti} Range and Projectile Speed\n{DefenseTowerVariant.InsaneRange.TowerUpgrade.damageMulti} Damage
+Building/Defense Tower Choice Sniper Tower,Sniper Tower
+Building/Defense Tower Choice Sniper Tower Description,{Defense Tower Variant.Sniper Tower.TowerUpgrade.rangeMulti} Range and projectile speed\n{Defense Tower Variant.Sniper Tower.TowerUpgrade.damageMulti} Attack damage\n{Defense Tower Variant.Sniper Tower.TowerUpgrade.attackCooldownMulti} Attack cooldown\nTargets the highest health unit and siege weapons.
+Building/Defense Tower Upgrade 0,Shoots at enemy units.
+Building/Defense Tower Upgrade 1,Choose an upgrade for this tower.
+Building/Defense Tower Upgrade 2,Choose an upgrade for this tower.
+Building/Defense Tower Upgrade 3,Choose an upgrade for this tower.
+Building/Field,Field
+Building/Field Upgrade 0,Fields generate good income but are very vulnerable to enemy attacks.
+Building/Gold Mine,Gold Mine
+Building/Gold Mine Upgrade 0,Gold mines initially generate a high income that decreases over time (-1 / day). Movement bonus: Teleport to another gold mine.
+Building/Harbour,Harbor
+Building/Harbour Upgrade 0,Builds a fishing boat every morning (max 5 boats). Each boat generates 1 gold per day.
+Building/Harbour Upgrade 1,The income from all boats in this harbor is doubled.
+Building/Hero's Quarter,Hero's Quarter
+Building/Hero's Quarter Choice Firewing,Firewing
+Building/Hero's Quarter Choice Firewing Description,A flying unit that deals splash damage to ground and airborne enemies.
+Building/Hero's Quarter Choice Golem,Golem
+Building/Hero's Quarter Choice Golem Description,Very sturdy unit that deals both splash damage as well as plenty of single target damage. Perfect for your frontline when supported by other units.
+Building/Hero's Quarter Choice Lizzard Rider,Lizard Rider
+Building/Hero's Quarter Choice Lizzard Rider Description,"Fast archer unit that focuses on important targets like low health enemies, flying monsters or enemy support units. Additionally the lizard can perform a melee attack. "
+Building/Hero's Quarter Choice Support Mage,Support Mage
+Building/Hero's Quarter Choice Support Mage Description,Heals you and allied units in range and absorbs magical projectiles in a wide radius.
+Building/Hero's Quarter Upgrade 0,Choose a powerful hero unit to support you in battle.
+Building/Hero's Quarter Upgrade 1,The hero trained here becomes twice as strong and resilient.
+Building/Hero's Quarter Upgrade 2,The hero trained here becomes twice as strong and resilient.
+Building/Hero's Quarter Upgrade 3,The hero trained here becomes twice as strong and resilient.
+Building/House,House
+Building/House Upgrade 0,Generates solid income.
+Building/House Upgrade 1,More income.
+Building/House Upgrade 2,More health and income.
+Building/Mill,Mill
+Building/Mill Choice Explosive Trap,Explosive Traps
+Building/Mill Choice Explosive Trap Description,The mill and all of its fields explode when destroyed. The damage dealt to enemies increase every time you upgrade the mill.
+Building/Mill Choice Improved Plow,Improved Plow
+Building/Mill Choice Improved Plow Description,Every future upgrade of this mill will increase its income even more. (+1 / Upgrade)
+Building/Mill Choice Scarecrows,Scarecrows
+Building/Mill Choice Scarecrows Description,Every field belonging to this mill receives a free scarecrow. Scarecrows have a strong anti-air attack.
+Building/Mill Choice Wind Spirits,Wind Spirits
+Building/Mill Choice Wind Spirits Description,"Wind spirits magically intercept a portion of small enemy projectiles fired from the ground (such as arrows). The higher the level of this mill, the more projectiles are blocked. Additionally this mill gains a ranged attack that slows enemies."
+Building/Mill Upgrade 0,Unlocks the option to build fields to increase income.
+Building/Mill Upgrade 1,Increases income significantly.
+Building/Mill Upgrade 2,Increases income significantly.
+Building/Royal Forge,Royal Forge
+Building/Royal Forge Choice Additional Armor,Additional Armor
+Building/Royal Forge Choice Additional Armor Description,{Royal Forge.Additional Health.RoyalForgeUpgrade.multiplyer} health and health regeneration for your character ({Royal Forge.Additional Health.RoyalForgeUpgrade.researchTime} days to research)
+Building/Royal Forge Choice Blessed Weaponry,Blessed Weaponry
+Building/Royal Forge Choice Blessed Weaponry Description,{Royal Forge.Cooldown Reduction.RoyalForgeUpgrade.multiplyer} ability cooldown for your active ability ({Royal Forge.Cooldown Reduction.RoyalForgeUpgrade.researchTime} days to research)
+Building/Royal Forge Choice Lighter Weaponry,Lighter Weaponry
+Building/Royal Forge Choice Lighter Weaponry Description,{Royal Forge.Auto Attack Speed.RoyalForgeUpgrade.multiplyer} cooldown for the auto-attack of your weapon ({Royal Forge.Auto Attack Speed.RoyalForgeUpgrade.researchTime} days to research)
+Building/Royal Forge Choice Sharper Weaponry,Sharper Weaponry
+Building/Royal Forge Choice Sharper Weaponry Description,"{Royal Forge.Overall Damage.RoyalForgeUpgrade.multiplyer} damage for your weapon, affects both active and passive ability ({Royal Forge.Overall Damage.RoyalForgeUpgrade.researchTime} days to research)"
+Building/Royal Forge Upgrade 0,Researches upgrades specifically for your character.
+Building/Royal Forge Upgrade 1,Researches upgrades specifically for your character.
+Building/Royal Forge Upgrade 2,Researches upgrades specifically for your character.
+Building/Shrine,Shrine
+Building/Shrine Upgrade 0,"Activates once enough enemies in its close proximity have died. Once activated, it gives {Shrine.Building Parent.Shrine.incomeOnceUnlocked} income per night and shoots at enemies, becoming {Shrine.Building Parent.Shrine.strengthBonusOnAdditionalShrine} stronger for every other shrine you activate."
+Building/Summoning Circle,Summoning Circle
+Building/Summoning Circle Choice Enemy 1,Wasp
+Building/Summoning Circle Choice Enemy 1 Description,Spawn {Summoning Circle.Flyer.SummoningCircle.unitCount} Wasps.\nThey drop {Summoning Circle.Flyer.SummoningCircle.goldStat} gold.
+Building/Summoning Circle Choice Enemy 2,Ghost
+Building/Summoning Circle Choice Enemy 2 Description,Spawn {Summoning Circle.Ghosts.SummoningCircle.unitCount} Ghosts.\nThey drop {Summoning Circle.Ghosts.SummoningCircle.goldStat} gold.
+Building/Summoning Circle Choice Enemy 3,Ogre
+Building/Summoning Circle Choice Enemy 3 Description,Spawn {Summoning Circle.Ogres Grang.SummoningCircle.unitCount} Ogres.\nThey drop {Summoning Circle.Ogres Grang.SummoningCircle.goldStat} gold.
+Building/Summoning Circle Choice Enemy 4,Big Spider
+Building/Summoning Circle Choice Enemy 4 Description,Spawn {Summoning Circle.Big Spider.SummoningCircle.unitCount} Big Spider.\nThey drop {Summoning Circle.Big Spider.SummoningCircle.goldStat} gold.
+Building/Summoning Circle Choice Enemy 5,Elite Wasp
+Building/Summoning Circle Choice Enemy 5 Description,Spawn {Summoning Circle.Flyer 2.SummoningCircle.unitCount} Elite Wasps.\nThey drop {Summoning Circle.Flyer 2.SummoningCircle.goldStat} gold.
+Building/Summoning Circle Choice Enemy 6,Elite Ghost
+Building/Summoning Circle Choice Enemy 6 Description,Spawn {Summoning Circle.Ghosts 2.SummoningCircle.unitCount} Elite Ghosts.\nThey drop {Summoning Circle.Ghosts 2.SummoningCircle.goldStat} gold.
+Building/Summoning Circle Choice Enemy 7,Elite Ogre
+Building/Summoning Circle Choice Enemy 7 Description,Spawn {Summoning Circle.Ogres Grang 2.SummoningCircle.unitCount} Elite Ogres.\nThey drop {Summoning Circle.Ogres Grang 2.SummoningCircle.goldStat} gold.
+Building/Summoning Circle Choice Enemy 8,Elite Big Spider
+Building/Summoning Circle Choice Enemy 8 Description,Spawn {Summoning Circle.Big Spider 2.SummoningCircle.unitCount} Elite Big Spider.\nThey drop {Summoning Circle.Big Spider 2.SummoningCircle.goldStat} gold.
+Building/Summoning Circle Upgrade 0,"Pick additional enemies that get summoned next night. Increases the difficulty, but you can collect more gold from defeated foes. "
+Building/Summoning Circle Upgrade 1,"Pick additional enemies that get summoned next night. Increases the difficulty, but you can collect more gold from defeated foes. "
+Building/Temple,Temple
+Building/Temple Choice Blessing 0,Blessing (Lvl 1)
+Building/Temple Choice Blessing 0 Description,"- You move {Temple.Blessing 0.TempleBlessing.speedMulit.NOMIN} slower.\n+ You deal {Temple.Blessing 0.TempleBlessing.damageMulit} more damage, have {Temple.Blessing 0.TempleBlessing.healthMulit} health and {Temple.Blessing 0.TempleBlessing.selfHealMulit} self-healing.\n(Applies to the next night only!)"
+Building/Temple Choice Blessing 1,Blessing (Lvl 2)
+Building/Temple Choice Blessing 1 Description,"- You move {Temple.Blessing 1.TempleBlessing.speedMulit.NOMIN} slower.\n+ You deal {Temple.Blessing 1.TempleBlessing.damageMulit} more damage, have {Temple.Blessing 1.TempleBlessing.healthMulit} health and {Temple.Blessing 1.TempleBlessing.selfHealMulit} self-healing.\n(Applies to the next night only!)"
+Building/Temple Choice Blessing 2,Blessing (Lvl 3)
+Building/Temple Choice Blessing 2 Description,"- You move {Temple.Blessing 2.TempleBlessing.speedMulit.NOMIN} slower.\n+ You deal {Temple.Blessing 2.TempleBlessing.damageMulit} more damage, have {Temple.Blessing 2.TempleBlessing.healthMulit} health and {Temple.Blessing 2.TempleBlessing.selfHealMulit} self-healing.\n(Applies to the next night only!)"
+Building/Temple Choice Ice Rain 0,Ice Rain (Lvl 1)
+Building/Temple Choice Ice Rain 0 Description,"+ An ice bolt rains from the sky every {Temple.Ice Rain 0.TempleIceAndFire.boltCooldown} seconds, targeting your closest enemy, and dealing {Temple.Ice Rain 0.TempleIceAndFire.boltDamage} damage per shot.\n- Ice bolts can damage you and your units as well.\n(Applies to the next night only!)"
+Building/Temple Choice Ice Rain 1,Ice Rain (Lvl 2)
+Building/Temple Choice Ice Rain 1 Description,"+ An ice bolt rains from the sky every {Temple.Ice Rain 1.TempleIceAndFire.boltCooldown} seconds, targeting your closest enemy, and dealing {Temple.Ice Rain 1.TempleIceAndFire.boltDamage} damage per shot.\n- Ice bolts can damage you and your units as well.\n(Applies to the next night only!)"
+Building/Temple Choice Ice Rain 2,Ice Rain (Lvl 3)
+Building/Temple Choice Ice Rain 2 Description,"+ An ice bolt rains from the sky every {Temple.Ice Rain 2.TempleIceAndFire.boltCooldown} seconds, targeting your closest enemy, and dealing {Temple.Ice Rain 2.TempleIceAndFire.boltDamage} damage per shot.\n- Ice bolts can damage you and your units as well.\n(Applies to the next night only!)"
+Building/Temple Choice Overload 0,Overload (Lvl 1)
+Building/Temple Choice Overload 0 Description,- All of your towers lose {Temple.Overload 0.TempleOverload.healthPercentageLossPerSec} of health per second.\n+ Tower projectiles deal {Temple.Overload 0.TempleOverload.towerDamageMulti} more damage.\n(Applies to the next night only!)
+Building/Temple Choice Overload 1,Overload (Lvl 2)
+Building/Temple Choice Overload 1 Description,- All of your towers lose {Temple.Overload 1.TempleOverload.healthPercentageLossPerSec} of health per second.\n+ Tower projectiles deal {Temple.Overload 1.TempleOverload.towerDamageMulti} more damage.\n(Applies to the next night only!)
+Building/Temple Choice Overload 2,Overload (Lvl 3)
+Building/Temple Choice Overload 2 Description,- All of your towers lose {Temple.Overload 2.TempleOverload.healthPercentageLossPerSec} of health per second.\n+ Tower projectiles deal {Temple.Overload 2.TempleOverload.towerDamageMulti} more damage.\n(Applies to the next night only!)
+Building/Temple Choice Prayers 0,Prayers (Lvl 1)
+Building/Temple Choice Prayers 0 Description,- Activated shrines don't grant any gold.\n+ Your shrines have both {Temple.Prayers 0.TemplePrayers.rangeMulti} attack range as well as {Temple.Prayers 0.TemplePrayers.rangeMulti} activation range.\n(Applies to the next night only!)
+Building/Temple Choice Prayers 1,Prayers (Lvl 2)
+Building/Temple Choice Prayers 1 Description,- Activated shrines don't grant any gold.\n+ Your shrines have both {Temple.Prayers 1.TemplePrayers.rangeMulti} attack range as well as {Temple.Prayers 1.TemplePrayers.rangeMulti} activation range.\n(Applies to the next night only!)
+Building/Temple Choice Prayers 2,Prayers (Lvl 3)
+Building/Temple Choice Prayers 2 Description,- Activated shrines don't grant any gold.\n+ Your shrines have both {Temple.Prayers 2.TemplePrayers.rangeMulti} attack range as well as {Temple.Prayers 2.TemplePrayers.rangeMulti} activation range.\n(Applies to the next night only!)
+Building/Temple Choice Sacrifice 0,Sacrifice (Lvl 1)
+Building/Temple Choice Sacrifice 0 Description,- All of your units are sacrificed at the beginning of the night.\n+ Your units respawn {Temple.Sacrifice 0.TempleSacrifice.unitRespawnSpeedMulti} faster.\n(Applies to the next night only!)
+Building/Temple Choice Sacrifice 1,Sacrifice (Lvl 2)
+Building/Temple Choice Sacrifice 1 Description,- All of your units are sacrificed at the beginning of the night.\n+ Your units respawn {Temple.Sacrifice 1.TempleSacrifice.unitRespawnSpeedMulti} faster.\n(Applies to the next night only!)
+Building/Temple Choice Sacrifice 2,Sacrifice (Lvl 3)
+Building/Temple Choice Sacrifice 2 Description,- All of your units are sacrificed at the beginning of the night.\n+ Your units respawn {Temple.Sacrifice 2.TempleSacrifice.unitRespawnSpeedMulti} faster.\n(Applies to the next night only!)
+Building/Temple Choice Wisdom 0,Wisdom (Lvl 1)
+Building/Temple Choice Wisdom 0 Description,- All of your buildings lose {Temple.Wisdom 0.TempleWisdom.healthPercentageLossPerSec} of health per second. (Warning! This effect will destroy your castle center if the night lasts too long!)\n+ All of your buildings immediately drop {Temple.Wisdom 0.TempleWisdom.goldForDestroyedBuilding} gold when destroyed.\n(Applies to the next night only!)
+Building/Temple Choice Wisdom 1,Wisdom (Lvl 2)
+Building/Temple Choice Wisdom 1 Description,- All of your buildings lose {Temple.Wisdom 1.TempleWisdom.healthPercentageLossPerSec} of health per second. (Warning! This effect will destroy your castle center if the night lasts too long!)\n+ All of your buildings immediately drop {Temple.Wisdom 1.TempleWisdom.goldForDestroyedBuilding} gold when destroyed.\n(Applies to the next night only!)
+Building/Temple Choice Wisdom 2,Wisdom (Lvl 3)
+Building/Temple Choice Wisdom 2 Description,- All of your buildings lose {Temple.Wisdom 2.TempleWisdom.healthPercentageLossPerSec} of health per second. (Warning! This effect will destroy your castle center if the night lasts too long!)\n+ All of your buildings immediately drop {Temple.Wisdom 2.TempleWisdom.goldForDestroyedBuilding} gold when destroyed.\n(Applies to the next night only!)
+Building/Temple Upgrade 0,The gods grant you a spell for the next night only. Spells get significantly stronger with each temple upgrade.
+Building/Temple Upgrade 1,The gods grant you a powerful spell for the next night only. Spells get significantly stronger with each temple upgrade.
+Building/Temple Upgrade 2,The gods grant you their most powerful spells for the next night only.
+Building/Wall,Wall
+Building/Wall Upgrade 0,"Stops enemies from entering your castle. (Enemies are unable to pass through your gates, even when they are open.)"
+Building/Wall Upgrade 1,Increases the resistance of the wall.
+Building/Wall Upgrade 2,Gives an insane amount of health to the wall.
+Controls/Call Night,Start Night
+Controls/Cancel,Menu Cancel
+Controls/Change Colorscheme,Switch Colorscheme
+Controls/Change Timescale,Toggle Game Speed
+Controls/Clear All Control Groups,Clear All Control Groups
+Controls/Command Units,Command Units
+Controls/Command Units Toggle,Command Units Toggle
+Controls/Interact,Interact / Weapon Ability
+Controls/Lock Target,Lock Attack Target
+Controls/Menu Apply,Menu Apply
+Controls/Menu Down,Menu Down
+Controls/Menu Left,Menu Left
+Controls/Menu Right,Menu Right
+Controls/Menu Up,Menu Up
+Controls/Move Horizontal Negative,Move Left
+Controls/Move Horizontal Positive,Move Right
+Controls/Move Towards Mouse,Move Towards Mouse
+Controls/Move Vertical Negative,Move Down
+Controls/Move Vertical Positive,Move Up
+Controls/No Controller,No Controller Connected
+Controls/Pause Menu,Open Menu
+Controls/Preview Build Options,Show Build Options
+Controls/Reset Control Prompt,Do you really want to restore the default input configuration?
+Controls/Reset Controls,Restore Default Configuration
+Controls/Select All Army,Select All Army
+Controls/Select All Heroes,Select All Heroes
+Controls/Select All Melee,Select All Melee
+Controls/Select All Ranged,Select All Ranged
+Controls/Select Group 1,Select Group 1
+Controls/Select Group 2,Select Group 2
+Controls/Select Group 3,Select Group 3
+Controls/Selected Controller,Selected Controller
+Controls/Smart Command Units,Command One Unit Type
+Controls/Sprint,Gallop
+Controls/Sprint Toggle,Toggle Gallop
+Controls/Waiting for Input,Waiting for Input
+Controls/Zoom,Zoom
+Enemies/Archer,Archers shoot arrows from afar. Quite strong when left uncontested. Weak against buildings and towers.
+Enemies/Archer Name,Archer
+Enemies/BarrelKnight,An enchanted warrior made of wood. Counts as a siege weapon and is armored against ranged attacks. Quite sturdy and eager to cause trouble.
+Enemies/BarrelKnight Name,Barrel Knight
+Enemies/Big Spider,"Goes right after your economy if it can, but is weak against buildings."
+Enemies/Big Spider Name,Big Spider
+Enemies/Bloodwing,Flying unit that loves the smell of blood. Chases your troops across the entire map.
+Enemies/Bloodwing Name,Bloodwing
+Enemies/Catapult,Catapults are siege units that deal massive damage to your buildings from afar. Your only chance is to get close and destroy them before they demolish your walls.
+Enemies/Catapult Name,Catapult
+Enemies/Corrupt King,"While once the beloved ruler of the realm, he was corrupted by greed and power. You rebuilt the realm from the ruins his rule had left behind. The corrupt king is fuming with hatred and envy."
+Enemies/Corrupt King Name,The Corrupt King
+Enemies/Crossbow,Master Crossbowmen deal massive amounts of damage to you and your units. Best to keep yourself and your troops entirely out of range whenever you can. They are quite weak against buildings though.
+Enemies/Crossbow Name,Master Crossbowmen
+Enemies/Dark Warrior,"Poisoned by greed and magic, these humanoid warriors are a nightmare to fight against."
+Enemies/Dark Warrior Name,Dark Warrior
+Enemies/Eismoloch,Some people saw shadows moving in the water a few days ago. Nobody believed them.
+Enemies/Eismoloch Name,Shadow In The Water
+Enemies/Eldermole,A Mini-Boss that can tunnel directly to its target dealing massive splash damage to its surroundings. Extremely tanky. Takes additional damage from defense towers.
+Enemies/Eldermole Boss,Some speculate they could be part of an ancient defense mechanism? Maybe there is a reason this castle remained abandoned for so long? No... they are just statues...
+Enemies/Eldermole Boss Name,Strange Statue
+Enemies/Eldermole Name,Eldermole
+Enemies/Exploder,Exploders are monsters that roll straight for the closest building and explode when they die. They are slightly armored against attacks from the player character.
+Enemies/Exploder Name,Exploder
+Enemies/Fire Snail,A slow monster bound by dark forces that explodes on death. Takes reduced damage from fire and explosions.
+Enemies/Fire Snail Name,Fire Snail
+Enemies/Flail,Deals splash damage with each attack.
+Enemies/Flail Name,Flail
+Enemies/FloatingWizzard,Shoots magical projectiles that deal splash damage. Prefers attacking your units.
+Enemies/FloatingWizzard Name,Flying Mage
+Enemies/Flogre,"A giant ogre equipped with a flail, dealing splash damage around it."
+Enemies/Flogre Name,Flogre
+Enemies/Flyer,Wasps are flying monsters eager to destroy every single one of your economic buildings.
+Enemies/Flyer Name,Wasp
+Enemies/Fury,A large flying monster that focusses on destroying your defenses. Their projectiles are quite slow and easy to dodge but wreak havoc when they hit.
+Enemies/Fury Name,Fury
+Enemies/Ghost,Can pass through other units and closed gates. Prefers to attack towers and your castle center. Takes increased damage from towers but reduced damage from your character.
+Enemies/Ghost Name,Ghost
+Enemies/Ghostking,Could this really be the grave of the infamous Elara the Vile? You've heard the stories of how she burned down entire cities. The guards claim to have heard a strange laughter from the inside the coffin. Probably best to keep a safe distance tonight.
+Enemies/Ghostking Name,Elara the Vile
+Enemies/Giraffeslime,Has a slimy ranged attack but no brain. Attacks whatever is closest.
+Enemies/Giraffeslime Name,Giraffe Slime
+Enemies/Hunterling,Hunterlings are incredibly fast and dangerous monsters with the sole aim of chasing you down. They can smell your royal blood all across the entire kingdom.
+Enemies/Hunterling Name,Hunterling
+Enemies/Iron Castle,"You can see it approaching on the horizon, an iron castle on wheels. It can only mean one thing. The corrupt king has finally found you."
+Enemies/Iron Castle Name,Iron Castle
+Enemies/Iron Tower,A siege tower on wheels that takes reduced damage from fire and explosions.
+Enemies/Iron Tower Name,Iron Tower
+Enemies/MediumSpider,"Goes right after your economy if it can, but is weak against buildings."
+Enemies/MediumSpider Name,Spider
+Enemies/Melee,"Swordsmen are simple melee warriors, but do not underestimate them when they come in numbers."
+Enemies/Melee Name,Swordsman
+Enemies/Moleman,Can tunnel directly to its target. Takes additional damage from defense towers.
+Enemies/Moleman Archers,A ranged unit that loves playing hard to get. Takes additional damage from defense towers.
+Enemies/Moleman Archers Name,Mole Archer
+Enemies/Moleman Name,Mole Warrior
+Enemies/Monster Rider,Monster riders are fast and durable melee warriors. A man meets monster synergy that should not be underestimated.
+Enemies/Monster Rider Name,Monster Rider
+Enemies/Ogre,"Ogres are huge melee warriors that really pack a punch. Hey! Due to their human heritage, ogres aren't monsters though (everybody knows that, duh)."
+Enemies/Ogre Name,Ogre
+Enemies/Quicksling,"A unique siege weapon that rapidly fires arrows at random enemies in its range. If you don't have any allied buildings or units nearby, it will quickly mow you down."
+Enemies/Quicksling Name,Quicksling
+Enemies/Racer,Racers are fast rolling monsters that are not messing around. They aim right for your castle center and are somewhat armored against attacks from the player character.
+Enemies/Racer Name,Racer
+Enemies/Ram,"Rams are siege units with a ton of health looking to tear down your walls and buildings. Furthermore, they are armored against ranged attacks."
+Enemies/Ram Name,Ram
+Enemies/Slime,Slimes are small melee monsters without much brain so they will just attack whatever is closest to them. They usually appear in groups which makes them vulnerable against splash damage.
+Enemies/Slime Name,Slime
+Enemies/SmallSpider,"Goes right after your economy if it can, but is weak against buildings."
+Enemies/SmallSpider Name,Small Spider
+Enemies/Spear,"Equipped with long spears. Your horse is slowed and you take additional damage when riding into them, even more so when galloping. Better try to stay out of their range."
+Enemies/Spear Name,Pikes
+Enemies/StrongGiraffeslime,Has a slimy ranged attack and a lot of health but no brain. Attacks whatever is closest.
+Enemies/StrongGiraffeslime Name,Spiky Giraffe
+Enemies/StrongSlime,Spiky Slimes are small melee monsters without much brain so they will just attack whatever is closest to them. They usually appear in groups which makes them vulnerable against splash damage. Spiky slimes have more health and attack damage than normal slimes.
+Enemies/StrongSlime Name,Spiky Slime
+Enemies/Thing,A terrifying monster that can attack with its tentacles in all directions at once.
+Enemies/Thing Name,Thing
+Enemies/Weakling,"Peasants equipped with clubs. Not an enemy to worry about, unless they appear in bigger numbers."
+Enemies/Weakling Name,Peasant
+Enemies/Wheel,A fast siege engine that deals some splash damage.
+Enemies/Wheel Name,Wheel
+Enemies/Windboat,A high-health flying siege engine with a medium ranged attack.
+Enemies/Windboat Name,Wind-Boat
+Equippable/Agile Horse,Agile Horse
+Equippable/Agile Horse Description,You no longer need to be on full health to allow sprinting.
+Equippable/Ancient Shrines,Ancient Shrines
+Equippable/Ancient Shrines Description,Shrines do not have to be purchased and shoot {Shrine.PerkDamageAutoAttackModifyer.damageMultiplyer} stronger projectiles but they require {Shrine.AncientShrinePerk.xpRequirementMulti} more energy to be activated.
+Equippable/Anti Air Telescope,Anti-Air Telescope
+Equippable/Anti Air Telescope Description,Flying enemies have {Perk Manager.PerkManager.antiAir_helathMultiplyer} max health and deal {Perk Manager.PerkManager.antiAir_damageMultiplyer} damage.
+Equippable/Arcane Towers,Arcane Towers
+Equippable/Arcane Towers Description,All of your towers have {Defense Tower Variant.Tower Attack.PerkRangeModifyer.rangeMultiplyer} range and their projectiles deal {Defense Tower Variant.Tower Attack.PerkDamageAutoAttackModifyer.damageMultiplyer} more damage to enemies.
+Equippable/Archery Skills,Archery Skills
+Equippable/Archery Skills Description,All your archers have {P Longbows.PerkRangeModifyer.rangeMultiplyer} more range and {Perk Manager.PerkManager.archerySkills_projectileSpeedMulti} projectile speed.
+Equippable/Architect's Council,Architect's Council
+Equippable/Architect's Council Description,The build options from the next castle center upgrade are already unlocked. This means you have more building options to choose from early in the game.
+Equippable/Armor Tower,Armored Tower
+Equippable/Armor Tower Description,You unlocked a new upgrade path for your defense towers. The tower receives lots of health and a temporary shield when it is first attacked.
+Equippable/Assassin's Training,Assassin's Training
+Equippable/Assassin's Training Description,"You permanently unlocked a new upgrade path for your lvl 2 castle center, which massively increases your attack damage but also increases your attack cooldowns."
+Equippable/Battle Axe,Battle Axe
+Equippable/Battle Axe Description,PASSIVE: Deals splash damage in a small radius around you. Has health-steal and deals bonus damage to siege engines.\n\nACTIVE: Gain a temporary shield bubble protecting you from all damage.
+Equippable/Berserks,Berserks
+Equippable/Berserks Description,"You permanently unlocked a new upgrade path for your melee units. Berserks jump into battle, deal bonus damage to siege and take reduced damage from fire and explosions."
+Equippable/Big Harbours,Big Harbors
+Equippable/Big Harbours Description,"Harbors have capacity for 2 additional fishing boats, have {Fishing Harbour.PerkHpModifyer.hpMultiplyer} more health and spawn with one boat on the water. Upgrading them to level 2 costs +{Fishing Harbour.PerkCostModifyer.upgradeCostChange[1]}."
+Equippable/Blood Wand,Blood Wand
+Equippable/Blood Wand Description,PASSIVE: Rapid medium-range attacks. Damage increases by {BloodWandPassiveEffect.dmgIncreasePerSecond} per second while attacking the same target. Faster attack speed and ramp-up when stationary.\n\nACTIVE: Sacrifice your own health to deal damage to an enemy (scales with your health). Slows you for {BloodWandActiveEffect.playerSlow} seconds upon use.
+Equippable/Bunker Tower,Bunker Tower
+Equippable/Bunker Tower Description,"You unlocked a new upgrade path for your defense towers. The range of the tower is reduced, but the tower's fire rate ramps up over time while enemies are in range."
+Equippable/Caslte Fortifications,Castle Fortifications
+Equippable/Caslte Fortifications Description,Your castle center has {Castle Center Variant.PerkHpModifyer.hpMultiplyer} health. The interval between its attacks is reduced by {Castle Center Variant.Auto Attack Level 1.PerkCooldownModifyer.hpCooldownMultiplyer} and its attack range increased by {Castle Center Variant.Auto Attack Level 1.PerkRangeModifyer.rangeMultiplyer}.
+Equippable/Castle Blueprints,Castle Blueprints
+Equippable/Castle Blueprints Description,Walls and towers have {Defense Tower Variant.PerkHpModifyer.hpMultiplyer} more health.
+Equippable/Castle Up,Castle-Up
+Equippable/Castle Up Description,"You unlocked a new upgrade path for your lvl 3 castle center, which reduces the upgrade costs of all towers and walls.."
+Equippable/Challenge the Elite God,Challenge the Elite God
+Equippable/Challenge the Elite God Description,Every fourth enemy spawn will consist of elite enemies with greatly improved health and attack damage but you get {Challenge the Elite God.scoreMultiplyerOnWin} score and Xp if you win.
+Equippable/Challenge the Falcon God,Challenge the Falcon God
+Equippable/Challenge the Falcon God Description,Enemies are {Perk Manager.PerkManager.tauntTheFalcon_speedMultiplyer} faster and chase you {Perk Manager.PerkManager.tauntTheFalcon_chasePlayerTimeMultiplyer.NOMIN} shorter when you attack them but you get {Taunt The Falcon God.scoreMultiplyerOnWin} more points and XP if you win.
+Equippable/Challenge the God of Afterlife,Challenge the God of Afterlife
+Equippable/Challenge the God of Afterlife Description,Humanoid enemies have a chance to respawn as ghosts once killed but you get {ChallengetheGodofAfterlife.scoreMultiplyerOnWin} more score and XP if you win.
+Equippable/Challenge the God of Chaos,Challenge the God of Chaos
+Equippable/Challenge the God of Chaos Description,Enemies are spawned all over the map and a lot closer to your castle center but they can't attack for a few seconds after spawning and you get {Challenge the God of Chaos.scoreMultiplyerOnWin} more score and XP if you win.
+Equippable/Challenge the God of Choice,Challenge the God of Choice
+Equippable/Challenge the God of Choice Description,Half of your building upgrades are unavailable but you get {ChallengetheGodofChoice.scoreMultiplyerOnWin} more score and XP if you win.
+Equippable/Challenge the God of Destruction,Challenge the God of Destruction
+Equippable/Challenge the God of Destruction Description,Buildings only heal {Perk Manager.PerkManager.destructionGodHealthRegen} of their health points every morning. Destroyed buildings take an additional day to get repaired but you get {Taunt God of Destruction.scoreMultiplyerOnWin} more points and XP if you win.
+Equippable/Challenge the Growth God,Challenge the Growth God
+Equippable/Challenge the Growth God Description,"Enemies grow stronger and stronger every night, all the way up to {Perk Manager.PerkManager.growthGodMaxHpMulti} health and {Perk Manager.PerkManager.growthGodMaxDamageMulti} attack damage, but you get {Challenge the Growth God.scoreMultiplyerOnWin} more score and Xp if you win."
+Equippable/Challenge the Phoenix God,Challenge the Phoenix God
+Equippable/Challenge the Phoenix God Description,"Enemy units regenerate {Perk Manager.PerkManager.phoenixGod_HealingPercentagePerSec} of their health (at most {Perk Manager.PerkManager.phoenixGod_MaxHealingPerSec} health) every second, but you get {Taunt the Phoenix God.scoreMultiplyerOnWin} more points and XP if you win."
+Equippable/Challenge the Range God,Challenge the Range God
+Equippable/Challenge the Range God Description,"Ranged enemies on the ground are supercharged and have {Perk Manager.PerkManager.rangeGodRangeMultiplyer} more range, {Perk Manager.PerkManager.rangeGodHealthMultiplyer} health, {Perk Manager.PerkManager.rangeGodDamageMultiplyer} attack damage, {Perk Manager.PerkManager.rangeGodMoveSpeedMultiplyer} move speed and {Perk Manager.PerkManager.rangeGodAttackCooldownMultiplyer} attack cooldown times but you get {Challenge the Range God.scoreMultiplyerOnWin} more score and Xp if you win."
+Equippable/Challenge the Rat God,Challenge the God of Death
+Equippable/Challenge the Rat God Description,"Allied units are no longer revived at night and your own revive time is increased by {Perk Manager.PerkManager.godOfDeath_playerRespawnMultiplyer}, but you get {Taunt The Disease God.scoreMultiplyerOnWin} more score and XP if you win."
+Equippable/Challenge the Snake God,Challenge the Snake God
+Equippable/Challenge the Snake God Description,Enemies drop {Perk Manager.PerkManager.ratGod_GoldModifyer} gold but you get {Taunt The Rat God.scoreMultiplyerOnWin} more points and XP if you win.
+Equippable/Challenge the Tiger God,Challenge the Tiger God
+Equippable/Challenge the Tiger God Description,Enemies deal {Perk Manager.PerkManager.tauntTheTiger_damageMultiplyer} damage but you get {Taunt The Tiger God.scoreMultiplyerOnWin} more points and XP if you win.
+Equippable/Challenge the Turtle God,Challenge the Turtle God
+Equippable/Challenge the Turtle God Description,Enemies have {Perk Manager.PerkManager.tauntTheTurtle_hpMultiplyer} more health but you get {Taunt The Turtle God.scoreMultiplyerOnWin} more points and XP if you win.
+Equippable/Challenge the Wasp God,Challenge the Wasp God
+Equippable/Challenge the Wasp God Description,"In the first {Perk Manager.PerkManager.cheeseGod_affectedNights} nights there will be {Perk Manager.PerkManager.cheeseGod_spawnAmountMulti} more enemies that spawn {Perk Manager.PerkManager.cheeseGod_firstWavesSpawnSpeed} faster, but you get {Taunt The Cheese God.scoreMultiplyerOnWin} more points and XP if you win."
+Equippable/Cobbler,Cobbler
+Equippable/Cobbler Description,All of your melee units move {PMorningstar.PerkSpeedModifyer.speedMultiplyer} faster.
+Equippable/Commander Mode,Commander Mode
+Equippable/Commander Mode Description,All of your units and buildings deal {Perk Manager.PerkManager.commanderModeAllyDmgMulti} more damage to enemies but your own damage is {Perk Manager.PerkManager.commanderModeSelfDmgMulti.NOMIN} less effective.
+Equippable/Cursed Blowpipe,Shadow Codex
+Equippable/Cursed Blowpipe Description,"PASSIVE: Curses an enemy in close proximity and deals damage to every cursed target at once.\n\nACTIVE: Removes the curse from all targets, dealing a big blast of damage to all of them."
+Equippable/Double Healing,Double Healing
+Equippable/Double Healing Description,Healing towers can heal two targets at once.
+Equippable/Elite Towers,Elite Towers
+Equippable/Elite Towers Description,Every tower that was freshly built or upgraded during the last day receives an elite marker for one night making it deal {Perk Manager.PerkManager.eliteTowerDamageMultiplyer} damage.
+Equippable/Elite Warriors,Elite Warriors
+Equippable/Elite Warriors Description,All of your units have {P Speer.PerkHpModifyer.hpMultiplyer} health.
+Equippable/Emergency Repairs,Emergency Repairs
+Equippable/Emergency Repairs Description,"Walls are repaired during battle using materials from other walls, allowing them to share their health."
+Equippable/Experience Gain,Experience Gain
+Equippable/Experience Gain Description,"Whenever any of your units respawns at its training facility, it gets {PerkManager.PerkManager.experienceGainPercentage} attack damage and health for the rest of the night (effect can stack)."
+Equippable/Explosive Revival,Explosive Revival
+Equippable/Explosive Revival Description,Damage enemies around you whenever you are revived.
+Equippable/Explosive Walls,Explosive Walls
+Equippable/Explosive Walls Description,"Walls explode when destroyed, dealing damage to all enemies near them. The explosion damage increases with the level of the wall."
+Equippable/Falchion and Trap,Falchion & Traps
+Equippable/Falchion and Trap Description,"PASSIVE: Three fast, consecutive melee hits that deal bonus damage against monsters. Landing a killing blow grants you some health.\n\nACTIVE: Places a trap that triggers if an enemy enters its center. You can place three traps in a row without cooldowns. Traps need time to charge in order to deal full damage."
+Equippable/Faster Research,Faster Research
+Equippable/Faster Research Description,"All of your research starts with 1 day of progress already complete, so all upgrades finish much faster. All upgrades cost -1 gold."
+Equippable/Fire Archers,Fire Archers
+Equippable/Fire Archers Description,"You unlocked a new upgrade path for your ranged units. Fire archers set the ground around their attack targets on fire, dealing damage over time. Bonus damage against siege engines."
+Equippable/Firewing Hero,Firewing
+Equippable/Firewing Hero Description,You permanently unlocked a new unit type for your hero's quarter: The Firewing is a flying unit that deals splash damage to ground and airborne enemies.
+Equippable/Flails,Flails
+Equippable/Flails Description,You permanently unlocked a new upgrade path for your melee units. Units with flails can attack all enemies close to them in a single powerful blow.
+Equippable/Fortified Houses,Fortified Houses
+Equippable/Fortified Houses Description,Houses have {House Variant.Building Parent.PerkHpModifyer.hpMultiplyer} more health and shoot arrows at enemies dealing {P FortifiedHouse.directDamage[0].damageAdded} damage to enemies nearby every {House Variant.AutoAttackPerk Lvl1.AutoAttack.cooldownDuration} seconds on level 1 and every {House Variant.AutoAttackPerk Lvl2.AutoAttack.cooldownDuration} seconds on level 2.
+Equippable/Gladiator School,Gladiator School
+Equippable/Gladiator School Description,Units are trained {Perk Manager.PerkManager.gladiatorSchool_TrainingSpeedMultiplyer} faster. Training facilities train a reservist that spawns instantly once the first unit dies.
+Equippable/Glass Canon,Glass Cannon
+Equippable/Glass Canon Description,You deal {Perk Manager.PerkManager.glassCanon_dmgMulti} more damage but you have {Player Character.PerkHpModifyer.hpMultiplyer} health.
+Equippable/God of Strength,Pray to the War Gods
+Equippable/God of Strength Description,Enemies have {Perk Manager.PerkManager.prayWarGods_hpMulti} health and deal {Perk Manager.PerkManager.prayWarGods_dmgMulti} damage but you get {Pray to The God of Strength.scoreMultiplyerOnWin.NOMIN} less points and XP if you win. (Warning: Quests with specific loadout requirements can not be completed while this mutator is enabled.)
+Equippable/Godly Curse,Godly Curse
+Equippable/Godly Curse Description,You permanently unlocked a new upgrade path for your lvl 3 castle center. When you attack an enemy for the first time it loses a big chunk of its health.
+Equippable/Gods Lotion,Gods' Lotion
+Equippable/Gods Lotion Description,You regenerate health {Perk Manager.PerkManager.godsLotion_RegenRateMultiplyer} faster and the delay before your health regenerations kicks in is reduced by {Perk Manager.PerkManager.godsLotion_RegenDelayMultiplyer}.
+Equippable/Healing Gold,Healing Gold
+Equippable/Healing Gold Description,Collecting coins during the night heals you.
+Equippable/Healing Spirits,Healing Spirits
+Equippable/Healing Spirits Description,All healing effects on you and your units are {Perk Manager.PerkManager.healingSpirits_healMulti} more effective.
+Equippable/Health Potions,Health Potions
+Equippable/Health Potions Description,All of your units heal themselves by {Perk Manager.PerkManager.healthPotion_HealingPerSec} health per second.
+Equippable/Heavy Armor,Heavy Armor
+Equippable/Heavy Armor Description,You have a massive {Perk Manager.PerkManager.heavyArmor_HpMultiplyer} more health and {Perk Manager.PerkManager.heavyArmor_SelfHealMultiplyer} more self-healing.
+Equippable/Heavy Sword,Heavy Sword
+Equippable/Heavy Sword Description,"PASSIVE: Slow melee attack. Deals splash damage. Strong against groups of enemies. You start the game with {Player Character.Heavy Sword.PerkHpModifyer.hpMultiplyer} health and health-regeneration.\n\nACTIVE: Big strike with a large circular radius, dealing splash damage around you (can hit airborne units)."
+Equippable/Hot Oil,Fire Spire
+Equippable/Hot Oil Description,You unlocked a new upgrade path for your defense towers. Burning oil deals splash damage to enemy units nearby.
+Equippable/Hunters,Hunters
+Equippable/Hunters Description,You unlocked a new upgrade path for your ranged units. Hunters excel against monsters but have decent melee capabilities as well.
+Equippable/Ice Magic,Ice Magic
+Equippable/Ice Magic Description,Every enemy you touch is slowed. All slow effects on enemies last {Perk Manager.PerkManager.iceMagic_SlowDurationMulti} longer and slowed enemies move {Perk Manager.PerkManager.iceMagic_AdditionalsSlowMutli.NOMIN} slower.
+Equippable/Indestructible Mines,Sustainable Mining
+Equippable/Indestructible Mines Description,Your mines produce +1 gold and their income is reset back to {Mine Shaft.MineShaft.resetIncomeSustainableMining} every time they are destroyed.
+Equippable/Interest,Interest
+Equippable/Interest Description,"At the beginning of each night you gain 1 gold for every {LOCAL MANAGERS.Global Bonus Mechanics.InterestPerk.interestForEach} gold you have left in your chest (rounded up), but never more than {LOCAL MANAGERS.Global Bonus Mechanics.InterestPerk.maximumInterest}."
+Equippable/Last Stand,Last Stand
+Equippable/Last Stand Description,"If your castle center falls below {PerkManager.PerkManager.lastStandHealthThreshhold} of its health, all of your towers are revived."
+Equippable/Light Materials,Lighter Materials
+Equippable/Light Materials Description,Your auto-attack cooldown is reduced by {Perk Manager.PerkManager.lightMaterialsCooldownMulti}.
+Equippable/Light Spear,Light Spear
+Equippable/Light Spear Description,PASSIVE: Rapid melee attack. Deals bonus damage against all fast moving enemy types and slows them down for a couple of seconds. Effective against fast enemies.\n\nACTIVE: Heal yourself and significantly increase your attack speed for a brief moment. If you activate the ability while being below 30% of your max health the effect lasts longer.
+Equippable/Lightning Wand,Lightning Staff
+Equippable/Lightning Wand Description,"PASSIVE: Shoots a lightning bolt at all enemies in range. Enemies in close proximity to each other can not all be hit at once. That means the more spread out your enemies are, the more enemies you can hit at once.\n\nACTIVE: A powerful lightning erupts from your current position after a short delay and deals massive splash damage in a small radius."
+Equippable/LizzardRider Hero,Lizzard Rider
+Equippable/LizzardRider Hero Description,"You permanently unlocked a new unit type for your hero's quarter: The Lizzard Rider is a fast archer unit that focusses on important targets like low health enemies, flying monsters or enemy support units. Additionally the lizzard can perform a melee attack. "
+Equippable/Loan,Loan
+Equippable/Loan Description,Start the level with +{Perk Manager.PerkManager.loanBonusMoney} gold but the first {Perk Manager.PerkManager.loanInterestMoney} gold dropped by enemies disappears.
+Equippable/Long Bow,Bow & Dagger
+Equippable/Long Bow Description,"PASSIVE: Fast ranged attack. Strong against most units but not very effective when attacking siege engines. \n\nACTIVE: Stab a nearby enemy with your dagger and deal massive damage. The lower the health of your victim as you attack, the lower the cooldown of the ability will be."
+Equippable/Magic Armor,Magic Armor
+Equippable/Magic Armor Description,You unlocked a new upgrade path for your lvl 2 castle center. Magic armor gives you a massive amount of health points and enemies take damage when attacking you.
+Equippable/Melee Damage,Melee Damage
+Equippable/Melee Damage Description,"You, your units and all of your buildings start the game with {Perk Manager.PerkManager.meleeDamage_multi} melee damage."
+Equippable/Melee Resistence,Melee Resistance
+Equippable/Melee Resistence Description,"You, your units and all of your buildings start the game with {Perk Manager.PerkManager.meleeResistence_AmountMulti} resistance against melee attacks."
+Equippable/No Towers Pact,No Towers Pact
+Equippable/No Towers Pact Description,"Towers are a lot more expensive, but you get {No Towers Pact.scoreMultiplyerOnWin} more points and XP if you win."
+Equippable/No Units Pact,No Units Pact
+Equippable/No Units Pact Description,"Units are a lot more expensive, but you get {No Units Pact.scoreMultiplyerOnWin} more points and XP if you win."
+Equippable/No Walls Pact,No Walls Pact
+Equippable/No Walls Pact Description,"You can't build any walls, but you get {No Walls Pact.scoreMultiplyerOnWin} more points and XP if you win."
+Equippable/Outpost,Outpost
+Equippable/Outpost Description,Start the game with 2 free towers far from your castle center.
+Equippable/Pacifist Pact,Pacifist Pact
+Equippable/Pacifist Pact Description,"Your auto-attack cooldown is increased by {PerkManager.PerkManager.pacifistAutoAttackMulti}, your ability cooldown is {PerkManager.PerkManager.pacifistManualAttackMulti} longer and you have {PerkManager.PerkManager.pacifistHpMulti} health but you get {PacifistPact.scoreMultiplyerOnWin} more score and XP if you win."
+Equippable/Perk Point,Perk Point
+Equippable/Perk Point Description,You can bring +1 perk into each game.
+Equippable/Potion Vials,Potion Vials
+Equippable/Potion Vials Description,PASSIVE: Throw potions that both damage foes and heal allies in range. Targets ground only and prefers healing over attacking.\n\nACTIVE: Slow and damage all enemies in a large radius while healing allies in range as well as yourself.
+Equippable/Power Tower,Power Tower
+Equippable/Power Tower Description,The tower you are closest to gets a significant attack speed boost of +{Perk Manager.PerkManager.powerTower_attackSpeedBonus}.
+Equippable/Pristine Archers,Pristine Archers
+Equippable/Pristine Archers Description,Ranged units are twice as expensive but they deal {PFireArcher.PerkDamageAutoAttackModifyer.damageMultiplyer} more damage and have {PFireArcher.Feedback.PerkHpModifyer.hpMultiplyer} more health.
+Equippable/Pristine Warriors,Pristine Warriors
+Equippable/Pristine Warriors Description,Melee units are twice as expensive but they deal {PMorningstar.PerkDamageAutoAttackModifyer.damageMultiplyer} more damage and have {PMorningstar.Feedback.PerkHpModifyer.hpMultiplyer} more health.
+Equippable/Pumpkin Fields,Pumpkin Fields
+Equippable/Pumpkin Fields Description,Every mill gives +1 income and fields have {Field Variant.PerkHpModifyer.hpMultiplyer} more health.
+Equippable/Ranged Damage,Ranged Damage
+Equippable/Ranged Damage Description,"You, your units and all of your buildings start the game with {Perk Manager.PerkManager.rangedDamage_multi} ranged damage."
+Equippable/Ranged Resistence,Ranged Resistance
+Equippable/Ranged Resistence Description,"You, your units and all of your buildings start the game with {Perk Manager.PerkManager.rangedResistence_AmountMulti} resistance against ranged attacks."
+Equippable/Relentless Research,Relentless Research
+Equippable/Relentless Research Description,Research buildings immediately continue to make research progress when they respawn after being destroyed.
+Equippable/Resilient Residences,Resilient Residences
+Equippable/Resilient Residences Description,Your houses have {House Variant.PerkHpModifyer.hpMultiplyer} more health and are fully repaired before the first daylight to continue paying taxes when destroyed.
+Equippable/Ring of Resurection,Ring of Resurrection
+Equippable/Ring of Resurection Description,"The first time you die each night, you are revived immediately and all of your dead units are revived with you."
+Equippable/Risk Taker,Daredevil
+Equippable/Risk Taker Description,The lower on health you are the more additional damage you deal (up to {Perk Manager.PerkManager.riskTakerMaxBonusDamageMultiplyer})
+Equippable/Royal Mint,Royal Mint
+Equippable/Royal Mint Description,"Your castle center produces 1, 2 or 3 additional gold per day depending on its level."
+Equippable/Royal Protection,Royal Protection
+Equippable/Royal Protection Description,Your units receive {PerkManager.PerkManager.royalProtectionDamageTakenMultiplyer} damage while following you around.
+Equippable/Scarecrows,Scarecrows
+Equippable/Scarecrows Description,You permanently unlocked a new upgrade path for your mills. Scarecrows have a strong anti-air attack.
+Equippable/Spell Scroll,Spell Scroll
+Equippable/Spell Scroll Description,The cooldown of your active ability is reduced by {Perk Manager.PerkManager.spellScrollActiveCooldownMulti}.
+Equippable/Stronger Heros,Stronger Heroes
+Equippable/Stronger Heros Description,Your hero units from the hero's quarter have {Perk Manager.PerkManager.strongerHeros_healthMutli} more health and are {Perk Manager.PerkManager.strongerHeros_damageMulti} stronger.
+Equippable/Support Tower,Healing Spire
+Equippable/Support Tower Description,You unlocked a new upgrade path for your defense towers. Support towers heal allied units in range.
+Equippable/Timber Scaffolding,Timber Scaffolding
+Equippable/Timber Scaffolding Description,Tower upgrades are no longer limited by the castle center level and the build cost of towers is reduced by 1.
+Equippable/Treasure Hunter,Treasure Hunter
+Equippable/Treasure Hunter Description,"You get +{Perk Manager.PerkManager.treasureHunterGoldAmountWave1}, +{Perk Manager.PerkManager.treasureHunterGoldAmountWave2} and +{Perk Manager.PerkManager.treasureHunterGoldAmountWave3} extra gold before the last three waves."
+Equippable/Trophy,Trophy
+Equippable/Trophy Description,"Congratulations, you've reached the next level! There are no more perks to unlock, but take this trophy as reward for your efforts. It's very shiny and you can brag with it in front for your friends."
+Equippable/War Horse,War Horse
+Equippable/War Horse Description,Your horse is {Perk Manager.PerkManager.racingHorse_SpeedMultiplyer} faster and riding over enemies deals {Player Character.RidingDamager.RidingDamager.damage[0].damageAdded} damage to them and {Player Character.RidingDamager.RidingDamager.selfInflictedDamagePerHit} damage to you.
+Equippable/Warrior Mode,Warrior Training
+Equippable/Warrior Mode Description,Your weapon becomes more powerful every night all the way up to {Perk Manager.PerkManager.warriorModeSelfDmgMultiMax} for the final night.
+Equippable/Wind Spirits,Wind Spirits
+Equippable/Wind Spirits Description,You permanently unlocked a new upgrade path for your mills. Windspirits can catch and block small enemy projectiles fired from the ground.
+Map Description/Durststein Gold Puzzle,There are no enemies at all. End the game with as much gold as you possibly can.
+Map Description/Durststein Speedrun,"Exactly like the main level, but you only have a brief amount of time during the day before the night sets in automatically. Use your time wisely."
+Map Description/Durststein Tower Defense,What if Thronefall was a traditional tower defense game? Defend your castle with towers and walls only.
+Map Description/Freifort MM1,"You are the attacker. Destroy economic buildings to gain gold. Destroy the castle center to kill everything at once (very risky, be careful). You don't regenerate any health and when you die the night ends immediately!"
+Map Description/Freifort MM2,You can bring up to 20 perks but the level is much more difficult.
+Map Description/Freifort MM3,Defend all waves with nothing but farms and houses. Body-block opponents and blow them up when you revive!
+Map Description/Frostsee Boss Rush,Defeat a modified version of the boss with a predefined setup of troops and buildings.
+Map Description/Frostsee Bowling Challenge,Oh no! You got stuck in a massive snowball again. Well... Perhaps you can use it to your advantage?
+Map Description/Frostsee The Great Wall,"You start the match with fully upgraded walls and economy, but you are in charge of the defense. Buildings don't fully repair in the morning, so protect the walls with everything you got!"
+Map Description/Moorweg MM1,Summon enemies to gather as much gold as possible. Realm protected and time bonus are disabled.
+Map Description/Moorweg MM2,Prove how well you can support and manage your army with the potion vials. You start with a fully upgraded base.
+Map Description/Moorweg MM3,You face the same wave of enemies every night but their stats increase every time.
+Map Description/Nordfels Bow Micro,Prove your combat skills with bow and dagger against progressively more and more difficult waves of enemies.
+Map Description/Nordfels Commander,You don't wield a weapon and have to rely on your skills as a commander to defend the castle. Build nothing but troops.
+Map Description/Nordfels Siege,"Start with a generous budget and build the perfect defense to hold your castle for just one long night. The less gold you spend, the higher your score."
+Map Description/Sturmklamm Just The Way They Are,You have a sore throat and your units won't listen! Defend your castle with nothing but towers and units that do whatever they want.
+Map Description/Sturmklamm One Man Army,You're on your own! Upgrade your strength to the max and hold out as the only line of defense is yourself.
+Map Description/Sturmklamm Shrine Challenge,"Defend your castle with nothing but shrines. Every time you activate a shrine, all other shrines become more powerful."
+Map Description/Totend MM1,Enemy waves are almost endless and randomized so that they are different every time you play. Adds a fourth level to the castle center and a few other buildings. How long can you survive?
+Map Description/Totend MM2,Challenge your skills with the blood wand.
+Map Description/Totend MM3,The architect was drunk when he designed your castle layout.
+Map Description/Uferwind Defense Puzzle,Face a couple of extremely difficult waves of enemies. You have very little gold to work with. Can you figure out how to survive?
+Map Description/Uferwind Hero Commander,Command an army of heroes. Choose the right heroes to defend the incoming waves and position them wisely.
+Map Description/Uferwind Lightning Staff Challenge,Prove your combat skills with the lightning staff against progressively difficult waves of enemies.
+Map Description/Wildbach MM1,"You have multiple temples and can use every temple spell a total of 3 times, but enemies attack with brutal force."
+Map Description/Wildbach MM2,Prepare for a lot of slimes. Seriously.
+Map Description/Wildbach MM3,"Enemy waves are way too tough, but you only need to survive till the timer runs out."
+Map Name/Durststein,Durststein
+Map Name/Freifort,Freifort
+Map Name/Frostsee,Frostsee
+Map Name/Moorweg,Moorweg
+Map Name/Neuland,Neuland
+Map Name/Nordfels,Nordfels
+Map Name/Sturmklamm,Sturmklamm
+Map Name/Totend,Totend
+Map Name/Uferwind,Uferwind
+Map Name/Wildbach,Wildbach
+Map/Durststein Gold Puzzle,Gold Puzzle
+Map/Durststein Speedrun,Time Flies
+Map/Durststein Tower Defense,Tower Defense
+Map/Freifort MM1,Reversed Siege
+Map/Freifort MM2,Giga Deck
+Map/Freifort MM3,Farmland
+Map/Frostsee Boss Rush,The Lake Monster
+Map/Frostsee Bowling Challenge,Throneball
+Map/Frostsee The Great Wall,The Great Wall
+Map/Moorweg MM1,Summoner Gold
+Map/Moorweg MM2,Support Commander
+Map/Moorweg MM3,Power Creep
+Map/Nordfels Bow Micro,Bow and Arrow
+Map/Nordfels Commander,Empty Handed General
+Map/Nordfels Siege,The Great Siege
+Map/Sturmklamm Just The Way They Are,Just the Way They Are
+Map/Sturmklamm One Man Army,One-Person-Army
+Map/Sturmklamm Shrine Challenge,Godsend
+Map/Totend MM1,Endless
+Map/Totend MM2,Bloody Good
+Map/Totend MM3,Drunk Architect
+Map/Uferwind Defense Puzzle,Defense Puzzle
+Map/Uferwind Hero Commander,Hero Commander
+Map/Uferwind Lightning Staff Challenge,Lightning Storm
+Map/Wildbach MM1,Temple Puzzle
+Map/Wildbach MM2,Horror Slimes
+Map/Wildbach MM3,Buying Time
+Menu/ ET Leave Warning,If you leave an Eternal Trials match at night it is lost.
+Menu/About,About
+Menu/Accessibility,Accessibility
+Menu/AdditionalDamage,Attack Damage
+Menu/AdditionalHealth,Enemy Health
+Menu/Antialiasing,Anti Aliasing
+Menu/ArachnophobiaMode,Arachnophobia Mode
+Menu/AttackCooldown,Attack Cooldown
+Menu/AttackDamage,Attack Damage
+Menu/Audio,Audio
+Menu/Back,Back
+Menu/Back to Map Prompt,Do you really want to return to the map?
+Menu/Back to Menu,Back to Map
+Menu/Base Score,Base Score
+Menu/Beat Map to Unlock Cue,Beat {MAP} to unlock this option.
+Menu/Bonus Modes,Bonus Modes
+Menu/BrightnessScale,Brightness Scale
+Menu/ColorblindMode,Colorblind Mode
+Menu/ColorblindModeOff,Off
+Menu/ColorblindModeOrange,Orange Enemies
+Menu/ColorblindModePurple,Purple Enemies
+Menu/ColorblindModeWhite,White Enemies
+Menu/ColorblindModeYellow,Yellow Enemies
+Menu/ComingSoon,Coming Soon
+Menu/Continue,Continue
+Menu/Continue Saved,Continue
+Menu/ControlGroupsPopUpExplaination,"With units selected, hold {ACTION.Select Group 1}, {ACTION.Select Group 2} or {ACTION.Select Group 3} to create a control group.\n\nPress the corresponding input of the group to select or deposit units.\n\nHold {ACTION.Clear All Control Groups} to clear all active groups."
+Menu/ControlGroupsPopupSubtitle,Create custom control groups of units.
+Menu/ControlGroupsPopupTitle,Control Groups
+Menu/Controls,Controls
+Menu/Created By,Created by
+Menu/Current Loadout,Current Loadout
+Menu/Defeat,Defeat
+Menu/DifficultyBoost,Increased Difficulty
+Menu/Disable Extra Tips,Disable Extra Tips
+Menu/Disable Tooltips,Disable Tooltips
+Menu/DisableScreenShake,Disable Screen Shake
+Menu/DisplayTowerRangesOnInteract,Display All Tower Ranges On Interact
+Menu/DownloadComplete,Download Complete
+Menu/Downloading,Downloading
+Menu/Early Access Popup,"Dear Kings and Queens, \nQuick note from us, the creators of the game: We did our best to make this version of Thronefall as good as possible. However, please keep in mind that Thronefall is still in Early Access — it’s not yet perfect and we’re hard at work to make defending your little kingdom even more fun. Your feedback is an invaluable part of this process, so we'd love to hear your thoughts over at our discord (link is on the steam page). This is also the perfect place for reporting any bugs you might encounter, discussing strategy and talking to fellow players. \n\nOne more thing: Currently Thronefall is a short game — hence the small price. Over the course of Early Access we will add more content that offers a longer playtime and new ways to play. Check in every now and then to see what’s new!\n\nAll the best \nJonas & Paul"
+Menu/Elite Prefix,Elite
+Menu/EnableControlGroups,Enable Control Groups
+Menu/EnableEnemyUnitDamageVisuals,Damage Numbers on Enemy
+Menu/EnablePlayerUnitDamageVisuals,Damage Numbers on Player Units
+Menu/EnableUnitStats,Unit Stat Display
+Menu/EnhanceRangeUpgradeVisuals,Range Upgrade Tint
+Menu/EnterRealm,Enter Realm
+Menu/Environment,Environment
+Menu/Eternal Trials,Eternal Trials
+Menu/Exit Relm,Exit Realm
+Menu/Expected Enemies,Expected Enemies
+Menu/FPSLimit,FPS Limit
+Menu/Fixed Loadout Cue,This level has a fixed loadout.
+Menu/Fresh Start,Fresh Start
+Menu/Friends Rank,Friends Rank
+Menu/Fullscreen,Fullscreen
+Menu/Gameplay,Gameplay
+Menu/Get Full Game,You can play this level in the full version.
+Menu/Gold Bonus,Gold Bonus
+Menu/Gold Income,Gold Income
+Menu/GotoStore,Go to Store
+Menu/Highscore,Highscore
+Menu/Income From Buildings,Buildings
+Menu/Income From Enemies,Enemies
+Menu/Language,Language
+Menu/Leaderboard No Load,Leaderboard for this level could not be loaded.
+Menu/Level,Level
+Menu/Level Interactor Cue,Press {ACTION.Interact} to select level.
+Menu/Loading,Loading...
+Menu/Loadout,Loadout
+Menu/Locked,Locked
+Menu/Locked Choice Description,Keep playing to unlock this option.
+Menu/Locked Choice Mini Mode Description,This Upgrade is not available in this mode.
+Menu/Locked Mutator Description,Keep playing to unlock this mutator.
+Menu/Locked Perk Description,Keep playing to unlock this perk
+Menu/Locked Weapon Description,Keep playing to unlock this weapon.
+Menu/Main Menu,Main Menu
+Menu/Master,Master
+Menu/MaxHP,Max HP
+Menu/Maximum demo level reached.,Maximum demo level reached.
+Menu/Maximum level reached.,Maximum level reached.
+Menu/Minimodes Popup,Mini-Modes
+Menu/Minimodes Popup Explanation,"Mini-modes are very difficult, often almost puzzle-like, bonus challenges with modified rules that heavily mix up the gameplay.\n\n<b>We highly recommended that you complete the main campaign before playing any mini-modes!</b>\n\nEvery mini-mode is different and has unique rules to explore. Completing mini-modes is entirely optional and does not grant achievements."
+Menu/Music,Music
+Menu/Mutator Bonus,Mutator Bonus
+Menu/Mutator Bonus Preview,Bonus Score
+Menu/Mutators,Mutators
+Menu/New Game,New Game
+Menu/New Highscore!,New Record!
+Menu/New Mutator,NEW MUTATOR
+Menu/New Perk,NEW PERK
+Menu/New To Eternal Trials,"Welcome to the endless mode of Thronefall.\n\nGo up against procedurally generated waves of enemies in multiple levels that get progressively more and more difficult.\n\nYou get to keep all of your perks from previous levels, but once you lose, it is over and you have to start from scratch. How far can you go?\n\nWarning! This mode contains spoilers for the main campaign (we recommend you play through that first)."
+Menu/New To Eternal Trials Header,Eternal Trials
+Menu/New Upgrade,NEW UPGRADE
+Menu/New Weapon,NEW WEAPON
+Menu/Night,Night
+Menu/Night Call Cue,Night in
+Menu/Night Survived,Night Survived
+Menu/No,No
+Menu/No Friends,None of your friends have played this level yet.
+Menu/No Retries,No Restarts
+Menu/No Score,You haven't played this level yet.
+Menu/No Steam Connection,No Steam connection.
+Menu/NotInstalled,Not Installed
+Menu/Overall Score,Overall Score
+Menu/OwnedNotInstalled,"You have access to this Realm, but you don't have it installed."
+Menu/Paused,Paused
+Menu/Perks,Perks
+Menu/Play,Play
+Menu/Postprocessing,Post Processing
+Menu/ProjectileSpeed,Projectile Speed
+Menu/Protected,protected
+Menu/Purchase,Purchase
+Menu/PurchaseRealm,You don’t have access to this realm yet.\n\n Purchase the DLC to continue\n your adventure.
+Menu/Quests,Quests
+Menu/Quit,Quit
+Menu/Range,Range
+Menu/Reach Level to Unlock Cue,Reach {LEVEL} to unlock this option.
+Menu/Realm,realm
+Menu/Renderscale,Render Scale
+Menu/Renderscale Tooltip,Greater values equal higher visual quality at the cost of performance. The recommended value is 1.
+Menu/Reset Audio Settings,Reset Audio Settings
+Menu/Reset Language,Reset Language
+Menu/Reset Progress,Reset Game Progress
+Menu/Reset Progress Prompt,Do you really want to reset all game progress?
+Menu/Reset Unit Formation Every Morning,Reset Unit Formation Every Morning
+Menu/Reset Video Settings,Reset Video Settings
+Menu/Resign,Resign
+Menu/Resign Prompt,Do you really want to resign?
+Menu/Resolution,Resolution
+Menu/Restart,Restart
+Menu/Restart Day,Retry Day
+Menu/Returning To Eternal Trials,"Dear Kings and Queens, \n\nYour highscore and your ongoing save file for this mode have been archived!\n\nWhile we won't have recurring ""seasons"" in a traditional sense, we're adopting the model to allow for big balancing patches such as this one.\n\nNew content has been added and the difficulty in early stages has been reduced. For a full list of all changes, please check out the patch notes on Steam.\n\nAll the best \nJonas & Paul"
+Menu/ReturningTo Eternal Trials Header,Season 4
+Menu/Revive in,Revive in
+Menu/Settings,Settings
+Menu/Shadow Resolution,Shadow Quality
+Menu/Show Leaderboard,Show Leaderboard
+Menu/Speed,Speed
+Menu/Stage,Stage
+Menu/Stage Bonus,Stage Bonus
+Menu/Starting Gold,Starting Gold
+Menu/Time Bonus,Time Bonus
+Menu/Translated By,Translated by
+Menu/Try Again,Try Again
+Menu/UI Scale,UI Scale
+Menu/Units,Units
+Menu/Upgrade,Upgrade
+Menu/Use Large UI,Larger In-Game UI
+Menu/VSync,V-Sync
+Menu/Victory,Victory
+Menu/Video,Video
+Menu/Warp Credits,<font=CormorantGaramond-LightItalic SDF><size=40>WARP DIGITAL</size></font>\n<font=CormorantGaramond-Bold SDF><size=36>Engineering</size></font>\nStuart Miller\nFreya Jones\nEllis Spice\n<size=10> </size>\n<font=CormorantGaramond-Bold SDF><size=36>Design</size></font>\nGaz Thomas\n<size=10> </size>\n<font=CormorantGaramond-Bold SDF><size=36>Art</size></font>\nKlaudia Jeziorczak\n<size=10> </size>\n<font=CormorantGaramond-Bold SDF><size=36>Animation</size></font>\nBilly Allen\n<size=10> </size>\n<font=CormorantGaramond-Bold SDF><size=36>SFX</size></font>\nNoodle Noise\n<size=10> </size>\n<font=CormorantGaramond-Bold SDF><size=36>QA</size></font>\nNeo Lomingo\n<size=10> </size>\n<font=CormorantGaramond-Bold SDF><size=36>Production</size></font>\nGeorge Voicke\n<size=10> </size>\n<font=CormorantGaramond-Bold SDF><size=36>Managing Director</size></font>\nRichie Turner\n<size=10> </size>\n<font=CormorantGaramond-Bold SDF><size=36>Technical Director</size></font>\nStuart Miller
+Menu/Weapon,Weapon
+Menu/Winter Mode,Winter-Mode
+Menu/Wishlist,Add Thronefall to your Steam wishlist!
+Menu/Yes,Yes
+NewTutorial/almostLastWave,Tip: There are only two nights to go. This late in the game building more economy buildings is usually no longer worth it. Try to <style=highlighted>focus on your defense</style> from now on.
+NewTutorial/attack,{ACTION.Interact} to melee attack
+NewTutorial/attackCount,Successful Melee Attacks
+NewTutorial/build,Hold {ACTION.Interact} to build.
+NewTutorial/buildBarracks,You need an army to defend your castle. You should consider building your <style=highlighted>barracks</style>!
+NewTutorial/buildDefenses,A big army is approaching. Build some additional defenses.
+NewTutorial/buildHousesA,Spend your gold to build some houses. Houses improve your income.
+NewTutorial/buildHousesB,Houses Built
+NewTutorial/callNight,Hold {ACTION.Call Night} to start the night.
+NewTutorial/castleCenter,This is your castle center. If it's destroyed you lose. <style=highlighted>Protect it at all costs.</style> You can upgrade it later but you don't have enough gold yet.
+NewTutorial/ccUpgrade1,"Splendid! The upgrade you chose makes you a lot stronger in combat. You're out of gold, so time to start the night by holding {ACTION.Call Night}."
+NewTutorial/ccUpgrade2,"Splendid! As long as you have level one houses, one of them will get upgraded for free every morning. This is an economy upgrade, so make sure to build enough other defenses. You're out of gold for now, so time to start the night by holding {ACTION.Call Night}."
+NewTutorial/ccUpgrade3,"Good choice! You're out of gold for now, so time to start the night by holding {ACTION.Call Night}."
+NewTutorial/chooseAnUpgrade,Press {ACTION.Menu Right} / {ACTION.Menu Left} to choose an upgrade and then {ACTION.Menu Apply} to confirm your choice. You can cancel building with {ACTION.Cancel}.
+NewTutorial/dead,"Oops, you died. Don't worry. You'll respawn shortly."
+NewTutorial/defendAlone,Tip: Try if you can defeat the first wave(s) <style=highlighted>without any or with minimal defenses</style> to <style=highlighted>grow your economy</style> more quickly.
+NewTutorial/defensesDone,You are well prepared! Start the night by holding {ACTION.Call Night}.
+NewTutorial/enemiesAttack,At night <style=highlighted>enemies will attack.</style>
+NewTutorial/getEnemyInfo,You can find <style=highlighted>information on what certain enemies do</style> by selecting their icon in the pause menu. Open it with {ACTION.Pause Menu} and scroll down to have a look at the <style=highlighted>enemy descriptions</style>.
+NewTutorial/goldMines,Tip: Gold mines are one of the <style=highlighted>best income sources</style>. It's usually smart to build them as soon as possible.
+NewTutorial/healthRegen,You automatically <style=highlighted>regenerate health</style> when out of combat.
+NewTutorial/holdArchersTip,You can order your archers to <style=highlighted>hold their position</style> during the night by <style=highlighted>holding</style> {ACTION.Command Units}.
+NewTutorial/howToUpgrade,Hold {ACTION.Interact} to upgrade a building.
+NewTutorial/lastDay,The <style=highlighted>final wave</style> of enemies is approaching. Prepare your defenses!
+NewTutorial/lateStartNightTip,Start the night by holding {ACTION.Call Night} once you are ready.
+NewTutorial/letsUpgradeCastleCenter,You have enough gold to <style=highlighted>upgrade your castle center</style>!
+NewTutorial/lockTarget,{ACTION.Lock Target} to lock your attack target
+NewTutorial/mills,Tip: Mills give way more income than houses. Start building <style=highlighted>high value</style> economy buildings <style=highlighted>early on</style> and find a way to <style=highlighted>defend them</style>.
+NewTutorial/move,Use {ACTION.Move Horizontal} / {ACTION.Move Vertical} to move.
+NewTutorial/noGoldToBuild,You don't have enough gold to build this at the moment.
+NewTutorial/noGoldToUpgrade,"This building can be upgraded later, but you don't have enough gold right now."
+NewTutorial/previewBuildOptionsA,Hold {ACTION.Preview Build Options} to preview all build options.
+NewTutorial/previewBuildOptionsB,See everything you can <style=highlighted>build or upgrade</style> at the moment.
+NewTutorial/rememberMeleeAttack,Remember to use your melee attack with {ACTION.Interact}.
+NewTutorial/selectArmyA,Press {ACTION.Select All Army} to select your entire army.
+NewTutorial/selectArmyB,This <style=highlighted>saves time</style> during the day and can be used to <style=highlighted>quickly call all your units</style> during the night.
+NewTutorial/selectHeroes,Press {ACTION.Select All Heroes} to select all heroes.
+NewTutorial/selectMelee,Press {ACTION.Select All Melee} to select all melee units.
+NewTutorial/selectRanged,Press {ACTION.Select All Ranged} to select all archers.
+NewTutorial/smartCommandA,Press {ACTION.Smart Command Units} to place only a <style=highlighted>single unit type</style>
+NewTutorial/smartCommandB,"When no units are selected, you can also hold {ACTION.Smart Command Units} to select individual unit types. This is useful for <style=highlighted>sorting units</style>."
+NewTutorial/sprintA,Press {ACTION.Sprint} to gallop.
+NewTutorial/sprintB,You can only gallop with <style=highlighted>full health!</style>
+NewTutorial/startNightAfterHouses,"Awesome! <style=highlighted>A strong economy is the key to success.</style> Every house that survives the night will give you one gold in the morning. You're all out of gold, so time to start the next night by holding {ACTION.Call Night}."
+NewTutorial/tipLockTargetA,Press {ACTION.Lock Target} to lock your attacks to your current target.
+NewTutorial/tipLockTargetB,This can be useful for <style=highlighted>focussing</style> high health targets.
+NewTutorial/tipZoom,Press {ACTION.Zoom} to zoom in.
+NewTutorial/toggsprintA,{ACTION.Sprint Toggle} to switch between galloping modes.
+NewTutorial/toggsprintB,This allows you to gallop permanently <style=highlighted>without holding</style> the sprint button.
+NewTutorial/towers,Tip: Towers are <style=highlighted>strong</style> but also <style=highlighted>vulnerable</style> when unprotected. <style=highlighted>Units</style> are often <style=highlighted>more cost efficient</style> in the early game.
+NewTutorial/unitCommandA,Hold {ACTION.Command Units} to select units.
+NewTutorial/unitCommandB,<style=highlighted>Move while holding</style> {ACTION.Command Units} to select multiple units at once.
+NewTutorial/unitCommandC,Press {ACTION.Command Units} to place units
+NewTutorial/unitCommandD,You can also command units at night but they <style=highlighted>can't attack</style> while following you.
+NewTutorial/unitCommandE,Hold {ACTION.Command Units} to select units.
+NewTutorial/unitCommandF,Select all of your units <style=highlighted>again!</style> There is one more thing...
+NewTutorial/unitCommandG,Hold {ACTION.Command Units} to order your units to hold their position.
+NewTutorial/unitCommandH,You can order your units to <style=highlighted>hold</style> their position by doing a <style=highlighted>long press of </style> {ACTION.Command Units}. This can be useful if you want them to stay behind your walls.
+NewTutorial/unitCommandI,"That's not it, yet. Try again. Select units with {ACTION.Command Units} and then <style=highlighted>hold</style> {ACTION.Command Units} again when placing the units to make them <style=highlighted>hold their position.</style>"
+NewTutorial/upToYouNow,From now on it's up to you what you want to build. Try to find a good balance between defense and economy.
+NewTutorial/wellDone,Well done! Defeat the remaining enemies.
+PopUps/Update1.1,"Dear Kings and Queens, \nWe just rolled out the first regular Update for Thronefall (Early Access Version 1.1). For a comprehensive list of changes please have a look at the full patch notes in the Steam Forums or our Discord. Here’s a quick summary of what has changed: \n\n• Key Rebinding: It is now possible to set up your own control configurations. By default everything should work like it used to, but due to technical reasons you might have to rebind movement to the W A S D keys if you were used to it. This is because there’s only one slot to bind per action per input device and the default binding for movement is the arrow keys. On the upside a lot more controllers should be supported now. \n\n• Upcoming Night Info: You can now see a summary of the enemies attacking during the next night in the pause menu. There you can also read a quick description of each enemy which should help figuring out what preparations to take against it. \n\n• Balancing Changes: A massive amount of balancing tweaks and changes based on your feedback. Impossible to list everything here, please have a look at the full patch notes for details. \n\nThat’s it for this update – now we’re off to work on new gameplay content. We’re excited to share the next level and maybe even a little surprise with you soon. \n\nAll the best\nJonas & Paul "
+Quests/Achieve Score,Achieve a highscore of
+Quests/Achieve Victory,Achieve a victory
+Quests/Achieve Victory With,Achieve a victory with
+Quests/Achieve Victory Without,Achieve a victory without
+Steam/Short Description,A minimalist game about building and defending your little kingdom.
+Tooltip/Build,Build
+Tooltip/Upgrade Building,Upgrade
+Wardrobe/ArmourTab,Armour
+Wardrobe/CapeTab,Cape
+Wardrobe/CrownTab,Crown
+Wardrobe/Locked Item Description,Earn more Crowns to unlock this item.
+Wardrobe/Locked Item Name,Locked
+Wardrobe/MountTab,Mount
+Wardrobe/NextUnlock,Next Unlock
+Wardrobe/Unlocked,Unlocked
+WardrobeItem/Armour0,Courage
+WardrobeItem/Armour0 Description,"Unburdened by armor, unafraid of danger."
+WardrobeItem/Armour1,Fortitude
+WardrobeItem/Armour1 Description,Built for the trials of war.
+WardrobeItem/Armour2,Regalia
+WardrobeItem/Armour2 Description,"Stylish, sturdy, and ready for battle."
+WardrobeItem/Armour3,Tradition
+WardrobeItem/Armour3 Description,A timeless look that never falls out of favor.
+WardrobeItem/Armour4,Dominion
+WardrobeItem/Armour4 Description,Invite your enemies to reconsider their courage.
+WardrobeItem/Armour5,Imperium
+WardrobeItem/Armour5 Description,The finest craftsmanship an empire can offer.
+WardrobeItem/Cape0,Classic
+WardrobeItem/Cape0 Description,"Simple, practical, timeless."
+WardrobeItem/Cape1,Devotion
+WardrobeItem/Cape1 Description,Worn with pride and conviction.
+WardrobeItem/Cape2,Equilibrium
+WardrobeItem/Cape2 Description,Balance is the mark of a wise ruler.
+WardrobeItem/Cape3,Legion
+WardrobeItem/Cape3 Description,Stand firm as your banners close upon the enemy.
+WardrobeItem/Cape4,Proclamation
+WardrobeItem/Cape4 Description,A declaration impossible to ignore.
+WardrobeItem/Cape5,Brazen
+WardrobeItem/Cape5 Description,Bold heraldry for bolder rulers.
+WardrobeItem/Crown1,Royalty
+WardrobeItem/Crown1 Description,"A familiar crown. Simple, humble, and earned."
+WardrobeItem/Crown2,Majesty
+WardrobeItem/Crown2 Description,Some crowns are worn. This one is witnessed.
+WardrobeItem/Crown3,Grace
+WardrobeItem/Crown3 Description,Elegance worthy of the throne.
+WardrobeItem/Crown4,Splendor
+WardrobeItem/Crown4 Description,"The brilliance of an empire, worn proudly."
+WardrobeItem/Crown5,Diplomacy
+WardrobeItem/Crown5 Description,Charm and eloquence conquer many hearts.
+WardrobeItem/Crown6,Centurion
+WardrobeItem/Crown6 Description,Echoes of forgotten empires march beside you.
+WardrobeItem/Mount0,Swift
+WardrobeItem/Mount0 Description,Speed is its own protection.
+WardrobeItem/Mount1,Vanguard
+WardrobeItem/Mount1 Description,"A bold statement, and a comfort to your steed."
+WardrobeItem/Mount2,Glory
+WardrobeItem/Mount2 Description,Fine cloth worthy of a noble steed.
+WardrobeItem/Mount3,Resolve
+WardrobeItem/Mount3 Description,Practical protection with understated style.
+WardrobeItem/Mount4,Repartee
+WardrobeItem/Mount4 Description,Proof that victory can have a sense of humor.
+WardrobeItem/Mount5,Victory
+WardrobeItem/Mount5 Description,Protection worthy of the kingdom's finest steed.
+WardrobeMaterial/Black,Dragonscale
+WardrobeMaterial/Black Description,Forged from the scales of ancient dragons.
+WardrobeMaterial/Bronze,Bronze
+WardrobeMaterial/Bronze Description,A metal tempered by the ages.
+WardrobeMaterial/CapeCombo1,Red & Yellow
+WardrobeMaterial/CapeCombo1 Description,Bold colors fit for a king.
+WardrobeMaterial/CapeCombo2,Blue
+WardrobeMaterial/CapeCombo2 Description,"Regal and elegant, a deep and vivid shade."
+WardrobeMaterial/CapeCombo3,Green
+WardrobeMaterial/CapeCombo3 Description,As rich as the forests of your realm.
+WardrobeMaterial/CapeCombo4,Purple
+WardrobeMaterial/CapeCombo4 Description,The color of crowns and courts.
+WardrobeMaterial/CapeCombo5,Black & Blood Red
+WardrobeMaterial/CapeCombo5 Description,A deadly warning before the battle begins.
+WardrobeMaterial/CapeCombo6,White & Blue
+WardrobeMaterial/CapeCombo6 Description,Adorn the winter skies.
+WardrobeMaterial/Copper,Rose Gold
+WardrobeMaterial/Copper Description,A radiant blend worthy of royalty.
+WardrobeMaterial/Gold,Gold
+WardrobeMaterial/Gold Description,"A kingdom's wealth, forged into brilliance."
+WardrobeMaterial/Silver,Silver
+WardrobeMaterial/Silver Description,"Bright as moonlight, sharp as steel."
+WardrobeMaterial/White,Celestium
+WardrobeMaterial/White Description,As though the heavens forged it themselves.

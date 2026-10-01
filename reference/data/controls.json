@@ -1,0 +1,3809 @@
+{
+ "actions": [
+  {
+   "id": 0,
+   "name": "Move Vertical",
+   "type": "Axis",
+   "positive": "Move Up ",
+   "negative": "Move Down",
+   "category": "Gameplay Always"
+  },
+  {
+   "id": 1,
+   "name": "Move Horizontal",
+   "type": "Axis",
+   "positive": "Move Right",
+   "negative": "Move Left",
+   "category": "Gameplay Always"
+  },
+  {
+   "id": 8,
+   "name": "Menu Right",
+   "type": "Button",
+   "positive": "",
+   "negative": "",
+   "category": "UI"
+  },
+  {
+   "id": 11,
+   "name": "Menu Up",
+   "type": "Button",
+   "positive": "",
+   "negative": "",
+   "category": "UI"
+  },
+  {
+   "id": 12,
+   "name": "Menu Down",
+   "type": "Button",
+   "positive": "",
+   "negative": "",
+   "category": "UI"
+  },
+  {
+   "id": 9,
+   "name": "Menu Left",
+   "type": "Button",
+   "positive": "",
+   "negative": "",
+   "category": "UI"
+  },
+  {
+   "id": 13,
+   "name": "Menu Apply",
+   "type": "Button",
+   "positive": "",
+   "negative": "",
+   "category": "UI"
+  },
+  {
+   "id": 2,
+   "name": "Interact",
+   "type": "Button",
+   "positive": "",
+   "negative": "",
+   "category": "Gameplay Always"
+  },
+  {
+   "id": 3,
+   "name": "Sprint",
+   "type": "Button",
+   "positive": "",
+   "negative": "",
+   "category": "Gameplay Always"
+  },
+  {
+   "id": 7,
+   "name": "Sprint Toggle",
+   "type": "Button",
+   "positive": "",
+   "negative": "",
+   "category": "Gameplay Always"
+  },
+  {
+   "id": 4,
+   "name": "Lock Target",
+   "type": "Button",
+   "positive": "",
+   "negative": "",
+   "category": "Gameplay Night"
+  },
+  {
+   "id": 5,
+   "name": "Command Units",
+   "type": "Button",
+   "positive": "",
+   "negative": "",
+   "category": "Gameplay Always"
+  },
+  {
+   "id": 24,
+   "name": "Command Units Toggle",
+   "type": "Button",
+   "positive": "",
+   "negative": "",
+   "category": "Gameplay Always"
+  },
+  {
+   "id": 6,
+   "name": "Call Night",
+   "type": "Button",
+   "positive": "",
+   "negative": "",
+   "category": "Gameplay No Conflict"
+  },
+  {
+   "id": 10,
+   "name": "Pause Menu",
+   "type": "Button",
+   "positive": "",
+   "negative": "",
+   "category": "UI"
+  },
+  {
+   "id": 14,
+   "name": "Cancel",
+   "type": "Button",
+   "positive": "",
+   "negative": "",
+   "category": "UI"
+  },
+  {
+   "id": 15,
+   "name": "Preview Build Options",
+   "type": "Button",
+   "positive": "",
+   "negative": "",
+   "category": "Gameplay Day"
+  },
+  {
+   "id": 18,
+   "name": "Select All Army",
+   "type": "Button",
+   "positive": "",
+   "negative": "",
+   "category": "Gameplay Always"
+  },
+  {
+   "id": 19,
+   "name": "Select All Melee",
+   "type": "Button",
+   "positive": "",
+   "negative": "",
+   "category": "Gameplay Always"
+  },
+  {
+   "id": 20,
+   "name": "Select All Ranged",
+   "type": "Button",
+   "positive": "",
+   "negative": "",
+   "category": "Gameplay Always"
+  },
+  {
+   "id": 21,
+   "name": "Select All Heroes",
+   "type": "Button",
+   "positive": "",
+   "negative": "",
+   "category": "Gameplay Always"
+  },
+  {
+   "id": 22,
+   "name": "Smart Command Units",
+   "type": "Button",
+   "positive": "",
+   "negative": "",
+   "category": "Gameplay Always"
+  },
+  {
+   "id": 23,
+   "name": "Move Towards Mouse",
+   "type": "Button",
+   "positive": "",
+   "negative": "",
+   "category": "Gameplay Always"
+  },
+  {
+   "id": 25,
+   "name": "Zoom",
+   "type": "Button",
+   "positive": "",
+   "negative": "",
+   "category": "Gameplay Always"
+  },
+  {
+   "id": 26,
+   "name": "Change Colorscheme",
+   "type": "Button",
+   "positive": "",
+   "negative": "",
+   "category": "Gameplay Always"
+  },
+  {
+   "id": 27,
+   "name": "Change Timescale",
+   "type": "Button",
+   "positive": "",
+   "negative": "",
+   "category": "Gameplay Always"
+  },
+  {
+   "id": 28,
+   "name": "Select Group 1",
+   "type": "Button",
+   "positive": "",
+   "negative": "",
+   "category": "Gameplay Always"
+  },
+  {
+   "id": 30,
+   "name": "Select Group 3",
+   "type": "Button",
+   "positive": "",
+   "negative": "",
+   "category": "Gameplay Always"
+  },
+  {
+   "id": 29,
+   "name": "Select Group 2",
+   "type": "Button",
+   "positive": "",
+   "negative": "",
+   "category": "Gameplay Always"
+  },
+  {
+   "id": 32,
+   "name": "ToggleCheatMenu",
+   "type": "Button",
+   "positive": "",
+   "negative": "",
+   "category": "CheatMenu"
+  },
+  {
+   "id": 34,
+   "name": "PrevCategory",
+   "type": "Button",
+   "positive": "",
+   "negative": "",
+   "category": "CheatMenu"
+  },
+  {
+   "id": 35,
+   "name": "NextCategory",
+   "type": "Button",
+   "positive": "",
+   "negative": "",
+   "category": "CheatMenu"
+  },
+  {
+   "id": 36,
+   "name": "UISubmit",
+   "type": "Button",
+   "positive": "",
+   "negative": "",
+   "category": "CheatMenu"
+  },
+  {
+   "id": 38,
+   "name": "UIUp",
+   "type": "Button",
+   "positive": "",
+   "negative": "",
+   "category": "CheatMenu"
+  },
+  {
+   "id": 39,
+   "name": "UIDown",
+   "type": "Button",
+   "positive": "",
+   "negative": "",
+   "category": "CheatMenu"
+  },
+  {
+   "id": 40,
+   "name": "UILeft",
+   "type": "Button",
+   "positive": "",
+   "negative": "",
+   "category": "CheatMenu"
+  },
+  {
+   "id": 41,
+   "name": "UIRight",
+   "type": "Button",
+   "positive": "",
+   "negative": "",
+   "category": "CheatMenu"
+  },
+  {
+   "id": 42,
+   "name": "Clear All Control Groups",
+   "type": "Button",
+   "positive": "",
+   "negative": "",
+   "category": "Gameplay Always"
+  }
+ ],
+ "keyboard": {
+  "Move Vertical": [
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": -1,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "key": "UpArrow"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": -1,
+    "axisContribution": 1,
+    "axisRange": 0,
+    "invert": false,
+    "key": "DownArrow"
+   },
+   {
+    "map": "Default Doubles No Glyphs",
+    "elementType": 1,
+    "elementId": -1,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "key": "W"
+   },
+   {
+    "map": "Default Doubles No Glyphs",
+    "elementType": 1,
+    "elementId": -1,
+    "axisContribution": 1,
+    "axisRange": 0,
+    "invert": false,
+    "key": "S"
+   }
+  ],
+  "Move Horizontal": [
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": -1,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "key": "RightArrow"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": -1,
+    "axisContribution": 1,
+    "axisRange": 0,
+    "invert": false,
+    "key": "LeftArrow"
+   },
+   {
+    "map": "Default Doubles No Glyphs",
+    "elementType": 1,
+    "elementId": -1,
+    "axisContribution": 1,
+    "axisRange": 0,
+    "invert": false,
+    "key": "A"
+   },
+   {
+    "map": "Default Doubles No Glyphs",
+    "elementType": 1,
+    "elementId": -1,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "key": "D"
+   }
+  ],
+  "Interact": [
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": -1,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "key": "Space"
+   }
+  ],
+  "Sprint": [
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": -1,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "key": "LeftShift"
+   }
+  ],
+  "Lock Target": [
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": -1,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "key": "LeftAlt"
+   }
+  ],
+  "Command Units": [
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": -1,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "key": "R"
+   },
+   {
+    "map": "Default Doubles No Glyphs",
+    "elementType": 1,
+    "elementId": -1,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "key": "LeftControl"
+   }
+  ],
+  "Call Night": [
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": -1,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "key": "Space"
+   }
+  ],
+  "Sprint Toggle": [
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": -1,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "key": "Tab"
+   }
+  ],
+  "Preview Build Options": [
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": -1,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "key": "LeftAlt"
+   }
+  ],
+  "Select All Army": [
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": -1,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "key": "Alpha1"
+   }
+  ],
+  "Select All Melee": [
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": -1,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "key": "Alpha2"
+   }
+  ],
+  "Select All Ranged": [
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": -1,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "key": "Alpha3"
+   }
+  ],
+  "Select All Heroes": [
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": -1,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "key": "Alpha4"
+   }
+  ],
+  "Smart Command Units": [
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": -1,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "key": "F"
+   },
+   {
+    "map": "Default Doubles No Glyphs",
+    "elementType": 1,
+    "elementId": -1,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "key": "Q"
+   }
+  ],
+  "Zoom": [
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": -1,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "key": "Z"
+   }
+  ],
+  "Select Group 1": [
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": -1,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "key": "Alpha5"
+   }
+  ],
+  "Select Group 2": [
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": -1,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "key": "Alpha6"
+   }
+  ],
+  "Select Group 3": [
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": -1,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "key": "Alpha7"
+   }
+  ],
+  "Clear All Control Groups": [
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": -1,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "key": "Alpha8"
+   }
+  ],
+  "Menu Up": [
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": -1,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "key": "UpArrow"
+   }
+  ],
+  "Menu Down": [
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": -1,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "key": "DownArrow"
+   }
+  ],
+  "Menu Left": [
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": -1,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "key": "LeftArrow"
+   }
+  ],
+  "Menu Right": [
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": -1,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "key": "RightArrow"
+   }
+  ],
+  "Menu Apply": [
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": -1,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "key": "Space"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": -1,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "key": "Return"
+   }
+  ],
+  "Pause Menu": [
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": -1,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "key": "Escape"
+   }
+  ],
+  "Cancel": [
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": -1,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "key": "Escape"
+   }
+  ]
+ },
+ "mouse": {
+  "Interact": [
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 3,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false
+   }
+  ],
+  "Call Night": [
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 3,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false
+   }
+  ],
+  "Move Towards Mouse": [
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 4,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false
+   }
+  ],
+  "Command Units": [
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 5,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false
+   }
+  ]
+ },
+ "joystick": {
+  "Move Horizontal": [
+   {
+    "map": "Default",
+    "elementType": 0,
+    "elementId": 0,
+    "axisContribution": 0,
+    "axisRange": 1,
+    "invert": false,
+    "hardware": "83b427e4-086f-47f3-bb06-be266abd1ca5"
+   },
+   {
+    "map": "Default",
+    "elementType": 0,
+    "elementId": 0,
+    "axisContribution": 1,
+    "axisRange": 2,
+    "invert": false,
+    "hardware": "83b427e4-086f-47f3-bb06-be266abd1ca5"
+   },
+   {
+    "map": "Default",
+    "elementType": 0,
+    "elementId": 0,
+    "axisContribution": 0,
+    "axisRange": 1,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Default",
+    "elementType": 0,
+    "elementId": 0,
+    "axisContribution": 1,
+    "axisRange": 2,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Default",
+    "elementType": 0,
+    "elementId": 0,
+    "axisContribution": 0,
+    "axisRange": 1,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Default",
+    "elementType": 0,
+    "elementId": 0,
+    "axisContribution": 1,
+    "axisRange": 2,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Default",
+    "elementType": 0,
+    "elementId": 0,
+    "axisContribution": 0,
+    "axisRange": 1,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "Default",
+    "elementType": 0,
+    "elementId": 0,
+    "axisContribution": 1,
+    "axisRange": 2,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   }
+  ],
+  "Move Vertical": [
+   {
+    "map": "Default",
+    "elementType": 0,
+    "elementId": 1,
+    "axisContribution": 0,
+    "axisRange": 1,
+    "invert": false,
+    "hardware": "83b427e4-086f-47f3-bb06-be266abd1ca5"
+   },
+   {
+    "map": "Default",
+    "elementType": 0,
+    "elementId": 1,
+    "axisContribution": 1,
+    "axisRange": 2,
+    "invert": false,
+    "hardware": "83b427e4-086f-47f3-bb06-be266abd1ca5"
+   },
+   {
+    "map": "Default",
+    "elementType": 0,
+    "elementId": 1,
+    "axisContribution": 0,
+    "axisRange": 1,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Default",
+    "elementType": 0,
+    "elementId": 1,
+    "axisContribution": 1,
+    "axisRange": 2,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Default",
+    "elementType": 0,
+    "elementId": 1,
+    "axisContribution": 0,
+    "axisRange": 1,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Default",
+    "elementType": 0,
+    "elementId": 1,
+    "axisContribution": 1,
+    "axisRange": 2,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Default",
+    "elementType": 0,
+    "elementId": 1,
+    "axisContribution": 0,
+    "axisRange": 1,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "Default",
+    "elementType": 0,
+    "elementId": 1,
+    "axisContribution": 1,
+    "axisRange": 2,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   }
+  ],
+  "Interact": [
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 4,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "83b427e4-086f-47f3-bb06-be266abd1ca5"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 5,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 5,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 5,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   }
+  ],
+  "Sprint": [
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 13,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "83b427e4-086f-47f3-bb06-be266abd1ca5"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 11,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 11,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 11,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   }
+  ],
+  "Sprint Toggle": [
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 12,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "83b427e4-086f-47f3-bb06-be266abd1ca5"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 9,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 9,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 9,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   }
+  ],
+  "Lock Target": [
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 10,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "83b427e4-086f-47f3-bb06-be266abd1ca5"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 8,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 8,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 8,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   }
+  ],
+  "Command Units": [
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 7,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "83b427e4-086f-47f3-bb06-be266abd1ca5"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 7,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 7,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 7,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   }
+  ],
+  "Call Night": [
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 4,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "83b427e4-086f-47f3-bb06-be266abd1ca5"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 5,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 5,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 5,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   }
+  ],
+  "Preview Build Options": [
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 10,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "83b427e4-086f-47f3-bb06-be266abd1ca5"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 8,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 8,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 8,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   }
+  ],
+  "Select All Army": [
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 18,
+    "axisContribution": 0,
+    "axisRange": 1,
+    "invert": false,
+    "hardware": "83b427e4-086f-47f3-bb06-be266abd1ca5"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 17,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 17,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 17,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   }
+  ],
+  "Select All Melee": [
+   {
+    "map": "Default",
+    "elementType": 0,
+    "elementId": 2,
+    "axisContribution": 0,
+    "axisRange": 2,
+    "invert": false,
+    "hardware": "83b427e4-086f-47f3-bb06-be266abd1ca5"
+   },
+   {
+    "map": "Default",
+    "elementType": 0,
+    "elementId": 2,
+    "axisContribution": 0,
+    "axisRange": 2,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Default",
+    "elementType": 0,
+    "elementId": 2,
+    "axisContribution": 0,
+    "axisRange": 2,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Default",
+    "elementType": 0,
+    "elementId": 2,
+    "axisContribution": 0,
+    "axisRange": 2,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   }
+  ],
+  "Select All Ranged": [
+   {
+    "map": "Default",
+    "elementType": 0,
+    "elementId": 2,
+    "axisContribution": 0,
+    "axisRange": 1,
+    "invert": false,
+    "hardware": "83b427e4-086f-47f3-bb06-be266abd1ca5"
+   },
+   {
+    "map": "Default",
+    "elementType": 0,
+    "elementId": 2,
+    "axisContribution": 0,
+    "axisRange": 1,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Default",
+    "elementType": 0,
+    "elementId": 2,
+    "axisContribution": 0,
+    "axisRange": 1,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Default",
+    "elementType": 0,
+    "elementId": 2,
+    "axisContribution": 0,
+    "axisRange": 1,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   }
+  ],
+  "Select All Heroes": [
+   {
+    "map": "Default",
+    "elementType": 0,
+    "elementId": 3,
+    "axisContribution": 0,
+    "axisRange": 1,
+    "invert": false,
+    "hardware": "83b427e4-086f-47f3-bb06-be266abd1ca5"
+   },
+   {
+    "map": "Default",
+    "elementType": 0,
+    "elementId": 3,
+    "axisContribution": 0,
+    "axisRange": 1,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Default",
+    "elementType": 0,
+    "elementId": 3,
+    "axisContribution": 0,
+    "axisRange": 1,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Default",
+    "elementType": 0,
+    "elementId": 3,
+    "axisContribution": 0,
+    "axisRange": 1,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   }
+  ],
+  "Smart Command Units": [
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 5,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "83b427e4-086f-47f3-bb06-be266abd1ca5"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 4,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 4,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 4,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   }
+  ],
+  "Zoom": [
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 17,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "83b427e4-086f-47f3-bb06-be266abd1ca5"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 10,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 10,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 10,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   }
+  ],
+  "Select Group 1": [
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 22,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "83b427e4-086f-47f3-bb06-be266abd1ca5"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 21,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 21,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 21,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   }
+  ],
+  "Select Group 2": [
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 19,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "83b427e4-086f-47f3-bb06-be266abd1ca5"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 18,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 18,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 18,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   }
+  ],
+  "Select Group 3": [
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 20,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "83b427e4-086f-47f3-bb06-be266abd1ca5"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 19,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 19,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 19,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   }
+  ],
+  "Clear All Control Groups": [
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 21,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "83b427e4-086f-47f3-bb06-be266abd1ca5"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 20,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 20,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 20,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   }
+  ],
+  "Menu Right": [
+   {
+    "map": "Protected Menu",
+    "elementType": 0,
+    "elementId": 0,
+    "axisContribution": 0,
+    "axisRange": 1,
+    "invert": false,
+    "hardware": "83b427e4-086f-47f3-bb06-be266abd1ca5"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 0,
+    "elementId": 2,
+    "axisContribution": 0,
+    "axisRange": 1,
+    "invert": false,
+    "hardware": "83b427e4-086f-47f3-bb06-be266abd1ca5"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 20,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "83b427e4-086f-47f3-bb06-be266abd1ca5"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 0,
+    "elementId": 0,
+    "axisContribution": 0,
+    "axisRange": 1,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 0,
+    "elementId": 2,
+    "axisContribution": 0,
+    "axisRange": 1,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 19,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 0,
+    "elementId": 0,
+    "axisContribution": 0,
+    "axisRange": 1,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 0,
+    "elementId": 2,
+    "axisContribution": 0,
+    "axisRange": 1,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 19,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 0,
+    "elementId": 0,
+    "axisContribution": 0,
+    "axisRange": 1,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 0,
+    "elementId": 2,
+    "axisContribution": 0,
+    "axisRange": 1,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 19,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   }
+  ],
+  "Menu Left": [
+   {
+    "map": "Protected Menu",
+    "elementType": 0,
+    "elementId": 0,
+    "axisContribution": 0,
+    "axisRange": 2,
+    "invert": false,
+    "hardware": "83b427e4-086f-47f3-bb06-be266abd1ca5"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 0,
+    "elementId": 2,
+    "axisContribution": 0,
+    "axisRange": 2,
+    "invert": false,
+    "hardware": "83b427e4-086f-47f3-bb06-be266abd1ca5"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 22,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "83b427e4-086f-47f3-bb06-be266abd1ca5"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 0,
+    "elementId": 0,
+    "axisContribution": 0,
+    "axisRange": 2,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 0,
+    "elementId": 2,
+    "axisContribution": 0,
+    "axisRange": 2,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 21,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 0,
+    "elementId": 0,
+    "axisContribution": 0,
+    "axisRange": 2,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 0,
+    "elementId": 2,
+    "axisContribution": 0,
+    "axisRange": 2,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 21,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 0,
+    "elementId": 0,
+    "axisContribution": 0,
+    "axisRange": 2,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 0,
+    "elementId": 2,
+    "axisContribution": 0,
+    "axisRange": 2,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 21,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   }
+  ],
+  "Menu Down": [
+   {
+    "map": "Protected Menu",
+    "elementType": 0,
+    "elementId": 1,
+    "axisContribution": 0,
+    "axisRange": 2,
+    "invert": false,
+    "hardware": "83b427e4-086f-47f3-bb06-be266abd1ca5"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 0,
+    "elementId": 3,
+    "axisContribution": 0,
+    "axisRange": 2,
+    "invert": false,
+    "hardware": "83b427e4-086f-47f3-bb06-be266abd1ca5"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 21,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "83b427e4-086f-47f3-bb06-be266abd1ca5"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 0,
+    "elementId": 1,
+    "axisContribution": 0,
+    "axisRange": 2,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 0,
+    "elementId": 3,
+    "axisContribution": 0,
+    "axisRange": 2,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 20,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 0,
+    "elementId": 1,
+    "axisContribution": 0,
+    "axisRange": 2,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 0,
+    "elementId": 3,
+    "axisContribution": 0,
+    "axisRange": 2,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 20,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 0,
+    "elementId": 1,
+    "axisContribution": 0,
+    "axisRange": 2,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 0,
+    "elementId": 3,
+    "axisContribution": 0,
+    "axisRange": 2,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 20,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   }
+  ],
+  "Menu Up": [
+   {
+    "map": "Protected Menu",
+    "elementType": 0,
+    "elementId": 1,
+    "axisContribution": 0,
+    "axisRange": 1,
+    "invert": false,
+    "hardware": "83b427e4-086f-47f3-bb06-be266abd1ca5"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 0,
+    "elementId": 3,
+    "axisContribution": 0,
+    "axisRange": 1,
+    "invert": false,
+    "hardware": "83b427e4-086f-47f3-bb06-be266abd1ca5"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 19,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "83b427e4-086f-47f3-bb06-be266abd1ca5"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 0,
+    "elementId": 1,
+    "axisContribution": 0,
+    "axisRange": 1,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 0,
+    "elementId": 3,
+    "axisContribution": 0,
+    "axisRange": 1,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 18,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 0,
+    "elementId": 1,
+    "axisContribution": 0,
+    "axisRange": 1,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 0,
+    "elementId": 3,
+    "axisContribution": 0,
+    "axisRange": 1,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 18,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 0,
+    "elementId": 1,
+    "axisContribution": 0,
+    "axisRange": 1,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 0,
+    "elementId": 3,
+    "axisContribution": 0,
+    "axisRange": 1,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 18,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   }
+  ],
+  "Menu Apply": [
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 4,
+    "axisContribution": 0,
+    "axisRange": 1,
+    "invert": false,
+    "hardware": "83b427e4-086f-47f3-bb06-be266abd1ca5"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 7,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "83b427e4-086f-47f3-bb06-be266abd1ca5"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 5,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 7,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 5,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 7,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 5,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 7,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   }
+  ],
+  "Cancel": [
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 5,
+    "axisContribution": 0,
+    "axisRange": 1,
+    "invert": false,
+    "hardware": "83b427e4-086f-47f3-bb06-be266abd1ca5"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 8,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "83b427e4-086f-47f3-bb06-be266abd1ca5"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 4,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 6,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 4,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 6,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 4,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 6,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   }
+  ],
+  "Pause Menu": [
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 14,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "83b427e4-086f-47f3-bb06-be266abd1ca5"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 15,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "83b427e4-086f-47f3-bb06-be266abd1ca5"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 13,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 12,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 13,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 12,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 13,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 12,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   }
+  ],
+  "#-1": [
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 6,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 12,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 13,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 14,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 15,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 0,
+    "elementId": 2,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 0,
+    "elementId": 3,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 6,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 7,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 8,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 9,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 10,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 11,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 12,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 14,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 15,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 16,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 17,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 18,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 19,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 20,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 21,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 0,
+    "elementId": 0,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 0,
+    "elementId": 1,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 4,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 5,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 8,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 9,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 10,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 11,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 13,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 14,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 15,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 16,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 17,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 6,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 12,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 13,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 14,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 15,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 0,
+    "elementId": 2,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 0,
+    "elementId": 3,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 6,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 7,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 8,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 9,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 10,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 11,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 12,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 14,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 15,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 16,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 17,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 18,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 19,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 20,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 21,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 0,
+    "elementId": 0,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 0,
+    "elementId": 1,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 4,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 5,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 8,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 9,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 10,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 11,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 13,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 14,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 15,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 16,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 17,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 6,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 12,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 13,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 14,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 15,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 0,
+    "elementId": 2,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 0,
+    "elementId": 3,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 6,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 7,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 8,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 9,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 10,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 11,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 12,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 14,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 15,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 16,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 17,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 18,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 19,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 20,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "Protected Menu",
+    "elementType": 1,
+    "elementId": 21,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 0,
+    "elementId": 0,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 0,
+    "elementId": 1,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 4,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 5,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 8,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 9,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 10,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 11,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 13,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 14,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 15,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 16,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "Protected Menu No Glyphs",
+    "elementType": 1,
+    "elementId": 17,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 0,
+    "elementId": 0,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 0,
+    "elementId": 1,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 0,
+    "elementId": 2,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 0,
+    "elementId": 3,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 4,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 6,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 7,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 10,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 11,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 12,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 13,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 14,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 15,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 17,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 24,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 25,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 26,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 27,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 0,
+    "elementId": 0,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 0,
+    "elementId": 2,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 0,
+    "elementId": 3,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 4,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 6,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 7,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 10,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 11,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 12,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 13,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 14,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 15,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 17,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 0,
+    "elementId": 0,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 0,
+    "elementId": 1,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 0,
+    "elementId": 2,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 0,
+    "elementId": 3,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 4,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 6,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 7,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 10,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 11,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 12,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 13,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 14,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 15,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 17,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   }
+  ],
+  "ToggleCheatMenu": [
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 16,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 16,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "Default",
+    "elementType": 1,
+    "elementId": 16,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 16,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 16,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 16,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   }
+  ],
+  "UISubmit": [
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 5,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 5,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 5,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   }
+  ],
+  "PrevCategory": [
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 8,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 8,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 8,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   }
+  ],
+  "NextCategory": [
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 9,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 9,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 9,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   }
+  ],
+  "UIUp": [
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 18,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 18,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 18,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   }
+  ],
+  "UIRight": [
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 19,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 19,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 19,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   }
+  ],
+  "UIDown": [
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 20,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 20,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 20,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   }
+  ],
+  "UILeft": [
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 21,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "521b808c-0248-4526-bc10-f1d16ee76bf1"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 21,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   },
+   {
+    "map": "CheatMenu",
+    "elementType": 1,
+    "elementId": 21,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "7bf3154b-9db8-4d52-950f-cd0eed8a5819"
+   }
+  ],
+  "#33": [
+   {
+    "map": "CheatMenu",
+    "elementType": 0,
+    "elementId": 1,
+    "axisContribution": 0,
+    "axisRange": 0,
+    "invert": false,
+    "hardware": "1fbdd13b-0795-4173-8a95-a2a75de9d204"
+   }
+  ]
+ },
+ "players": [
+  {
+   "id": 9999999,
+   "name": "System"
+  },
+  {
+   "id": 1,
+   "name": "Player"
+  }
+ ]
+}

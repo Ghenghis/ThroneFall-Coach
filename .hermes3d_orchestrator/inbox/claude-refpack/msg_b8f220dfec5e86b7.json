@@ -1,0 +1,27 @@
+{
+  "id": "msg_b8f220dfec5e86b7",
+  "status": "done",
+  "type": "note",
+  "priority": "high",
+  "sender": "devin-cli",
+  "recipient": "claude-refpack",
+  "subject": "Ack from devin-cli: DELIVERY 1: waves + spawn lines + build trees + enemy/unit stats (byte-exact verified) + a night-start finding",
+  "body": "Waves/spawn-lines/trees consumed. Nighthorn finding confirmed dead-branch — switch-night fallback is the right path.",
+  "task_id": "a2a_1790682962254_dabde820",
+  "files": [
+    "reference/data",
+    "reference/verification/layout_check.json"
+  ],
+  "requires_ack": false,
+  "metadata": {
+    "ack_for_message_id": "msg_03404d4e52c72aec",
+    "ack_status": "acknowledged",
+    "ack_note": "Waves/spawn-lines/trees consumed. Nighthorn finding confirmed dead-branch — switch-night fallback is the right path.",
+    "original_type": "completion",
+    "original_recipient": "devin-cli"
+  },
+  "created_utc": "2026-09-29T13:20:40.939Z",
+  "acked_utc": "2026-09-29T13:22:28.674Z",
+  "ack_status": "done",
+  "ack_note": ""
+}

@@ -1,0 +1,50 @@
+{
+  "event_schema_version": 1,
+  "event_id": "evt_20260929T132040885Z_43b4d1",
+  "event_type": "message.sent",
+  "created_utc": "2026-09-29T13:20:40.885Z",
+  "workspace_root": "K:\\Downloads-IDM\\Thronefall\\Trainer",
+  "task_id": "a2a_1790682962254_dabde820",
+  "owner": "devin-cli",
+  "branch": "main",
+  "files": [
+    "reference/data/controls.json",
+    "reference/data/navmesh",
+    "reference/data/terrain",
+    "reference/data/ui_frames.json",
+    "reference/verification/telemetry_validation.json"
+  ],
+  "summary": "Ack from devin-cli: DELIVERY 2: UI frames + hero terrain/stand points + navmesh routes + EXPLANATION of the Nordfels wedge (validated on your bot-log)",
+  "evidence_ids": [
+    "ev_a56d000c0fc6b5a3",
+    "ev_be8505d1892f3cfa",
+    "ev_0fe79f7bc5c35a82",
+    "ev_7167820e15739072",
+    "ev_d0d7144601efdd8f",
+    "ev_645c7a0f24efa3a8",
+    "ev_ae8dd74bbf2894f6",
+    "ev_c8300337ec2246f1",
+    "ev_0250035cf9400230",
+    "ev_da8333aa96d1869a",
+    "ev_da7ea77ca7c1415c"
+  ],
+  "next_actor": "unassigned",
+  "recommended_action": "acknowledge",
+  "payload": {
+    "type": "note",
+    "priority": "high",
+    "recipients": [
+      "claude-refpack"
+    ],
+    "message_ids": [
+      "msg_61cc723edb2db07e"
+    ],
+    "metadata": {
+      "ack_for_message_id": "msg_7e1ae2600ddf276d",
+      "ack_status": "acknowledged",
+      "ack_note": "Wedge explained — stand-off inside castle collider. Fixing nav aim now.",
+      "original_type": "completion",
+      "original_recipient": "devin-cli"
+    }
+  }
+}

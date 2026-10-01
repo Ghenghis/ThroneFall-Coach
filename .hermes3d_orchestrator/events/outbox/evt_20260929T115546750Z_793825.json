@@ -1,0 +1,25 @@
+{
+  "event_schema_version": 1,
+  "event_id": "evt_20260929T115546750Z_793825",
+  "event_type": "agent.presence",
+  "created_utc": "2026-09-29T11:55:46.750Z",
+  "workspace_root": "K:\\Downloads-IDM\\Thronefall\\Trainer",
+  "task_id": null,
+  "owner": "claude-refpack",
+  "branch": "main",
+  "files": [
+    "reference/**",
+    "tools/refpack/**"
+  ],
+  "summary": "claude-refpack is working",
+  "evidence_ids": [],
+  "next_actor": "unassigned",
+  "recommended_action": "acknowledge",
+  "payload": {
+    "role": "agent",
+    "status": "working",
+    "note": "Read-only on game files + existing src/docs. Will only create NEW paths tools/refpack/** and reference/** (static extraction toolchain + generated game handbook). Will NOT launch/stop thronefall.exe, touch BepInEx/, src/*.cs, or existing docs without a lock + message.",
+    "can_interrupt": true,
+    "waiting_on": null
+  }
+}

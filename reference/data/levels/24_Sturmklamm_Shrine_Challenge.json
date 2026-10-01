@@ -1,0 +1,5120 @@
+{
+ "scene": "Sturmklamm Shrine Challenge",
+ "buildIndex": 24,
+ "file": "level24",
+ "kind": "minimode",
+ "objects": 26325,
+ "monobehaviourClasses": 185,
+ "spawners": [
+  {
+   "id": 26266,
+   "name": "ES Sturmklamm Shrine Challenge",
+   "mode": "Classic",
+   "modeRaw": 0,
+   "goldBalanceAtStart": 3,
+   "endlessMode": false,
+   "pauseSpawningAtEnemyCount": 275,
+   "reduceSpawnWaitTimes": true,
+   "waveGenerator": "Season2 Wave Gen",
+   "endlessWaveGenerator": null,
+   "waveCount": 13,
+   "waves": [
+    {
+     "index": 0,
+     "night": 1,
+     "warningText": "Spears",
+     "difficultyMulti": 1.0,
+     "spawns": [
+      {
+       "enemy": "resources.assets:6457",
+       "enemyName": "E Melee",
+       "displayName": "Swordsman",
+       "count": 5,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 1.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Bridge 1",
+       "spawnCenter": [
+        -124.415,
+        18.28,
+        -7.575
+       ],
+       "maxHp": 25.0,
+       "spawnSpanSeconds": 4.0
+      },
+      {
+       "enemy": "resources.assets:6457",
+       "enemyName": "E Melee",
+       "displayName": "Swordsman",
+       "count": 5,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 1.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Bridge 2",
+       "spawnCenter": [
+        -87.064,
+        18.28,
+        -59.06
+       ],
+       "maxHp": 25.0,
+       "spawnSpanSeconds": 4.0
+      },
+      {
+       "enemy": "resources.assets:6457",
+       "enemyName": "E Melee",
+       "displayName": "Swordsman",
+       "count": 5,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 1.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Bridge 3",
+       "spawnCenter": [
+        -44.286,
+        18.28,
+        -78.74
+       ],
+       "maxHp": 25.0,
+       "spawnSpanSeconds": 4.0
+      }
+     ],
+     "totals": {
+      "enemies": 15,
+      "baseHp": 375.0,
+      "goldCoins": 0,
+      "eliteEnemies": 0,
+      "flying": 0,
+      "boss": 0,
+      "ranged": 0,
+      "spawnSpanSeconds": 4.0,
+      "byLine": {
+       "Bridge 1": 5,
+       "Bridge 2": 5,
+       "Bridge 3": 5
+      }
+     }
+    },
+    {
+     "index": 1,
+     "night": 2,
+     "warningText": "Molemen",
+     "difficultyMulti": 1.0,
+     "spawns": [
+      {
+       "enemy": "resources.assets:6446",
+       "enemyName": "E Moleman",
+       "displayName": "Mole Warrior",
+       "count": 5,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 1.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Bridge Broken",
+       "spawnCenter": [
+        -139.695,
+        18.61,
+        78.126
+       ],
+       "maxHp": 60.0,
+       "spawnSpanSeconds": 4.0
+      }
+     ],
+     "totals": {
+      "enemies": 5,
+      "baseHp": 300.0,
+      "goldCoins": 0,
+      "eliteEnemies": 0,
+      "flying": 0,
+      "boss": 0,
+      "ranged": 0,
+      "spawnSpanSeconds": 4.0,
+      "byLine": {
+       "Bridge Broken": 5
+      }
+     }
+    },
+    {
+     "index": 2,
+     "night": 3,
+     "warningText": "Flying Wizzards",
+     "difficultyMulti": 1.0,
+     "spawns": [
+      {
+       "enemy": "resources.assets:5069",
+       "enemyName": "E Flyer",
+       "displayName": "Wasp",
+       "count": 4,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 3.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Base Left Air",
+       "spawnCenter": [
+        -9.5,
+        36.2,
+        54.1
+       ],
+       "maxHp": 25.0,
+       "spawnSpanSeconds": 9.0
+      },
+      {
+       "enemy": "resources.assets:5069",
+       "enemyName": "E Flyer",
+       "displayName": "Wasp",
+       "count": 4,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 3.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Base Right Air",
+       "spawnCenter": [
+        17.35,
+        36.2,
+        17.75
+       ],
+       "maxHp": 25.0,
+       "spawnSpanSeconds": 9.0
+      }
+     ],
+     "totals": {
+      "enemies": 8,
+      "baseHp": 200.0,
+      "goldCoins": 0,
+      "eliteEnemies": 0,
+      "flying": 8,
+      "boss": 0,
+      "ranged": 8,
+      "spawnSpanSeconds": 9.0,
+      "byLine": {
+       "Base Left Air": 4,
+       "Base Right Air": 4
+      }
+     }
+    },
+    {
+     "index": 3,
+     "night": 4,
+     "warningText": "Racer",
+     "difficultyMulti": 1.0,
+     "spawns": [
+      {
+       "enemy": "resources.assets:6459",
+       "enemyName": "E Racer",
+       "displayName": "Racer",
+       "count": 13,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 1.1,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Bridge 3",
+       "spawnCenter": [
+        -44.286,
+        18.28,
+        -78.74
+       ],
+       "maxHp": 35.0,
+       "spawnSpanSeconds": 13.2
+      }
+     ],
+     "totals": {
+      "enemies": 13,
+      "baseHp": 455.0,
+      "goldCoins": 0,
+      "eliteEnemies": 0,
+      "flying": 0,
+      "boss": 0,
+      "ranged": 0,
+      "spawnSpanSeconds": 13.2,
+      "byLine": {
+       "Bridge 3": 13
+      }
+     }
+    },
+    {
+     "index": 4,
+     "night": 5,
+     "warningText": "Ogre",
+     "difficultyMulti": 1.0,
+     "spawns": [
+      {
+       "enemy": "resources.assets:6451",
+       "enemyName": "E Ogre",
+       "displayName": "Ogre",
+       "count": 2,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 1.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Bridge 1",
+       "spawnCenter": [
+        -124.415,
+        18.28,
+        -7.575
+       ],
+       "maxHp": 200.0,
+       "spawnSpanSeconds": 1.0
+      },
+      {
+       "enemy": "resources.assets:6451",
+       "enemyName": "E Ogre",
+       "displayName": "Ogre",
+       "count": 2,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 1.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Bridge 2",
+       "spawnCenter": [
+        -87.064,
+        18.28,
+        -59.06
+       ],
+       "maxHp": 200.0,
+       "spawnSpanSeconds": 1.0
+      },
+      {
+       "enemy": "resources.assets:6451",
+       "enemyName": "E Ogre",
+       "displayName": "Ogre",
+       "count": 2,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 1.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Bridge 3",
+       "spawnCenter": [
+        -44.286,
+        18.28,
+        -78.74
+       ],
+       "maxHp": 200.0,
+       "spawnSpanSeconds": 1.0
+      }
+     ],
+     "totals": {
+      "enemies": 6,
+      "baseHp": 1200.0,
+      "goldCoins": 0,
+      "eliteEnemies": 0,
+      "flying": 0,
+      "boss": 0,
+      "ranged": 0,
+      "spawnSpanSeconds": 1.0,
+      "byLine": {
+       "Bridge 1": 2,
+       "Bridge 2": 2,
+       "Bridge 3": 2
+      }
+     }
+    },
+    {
+     "index": 5,
+     "night": 6,
+     "warningText": "Molemen & Archers",
+     "difficultyMulti": 1.0,
+     "spawns": [
+      {
+       "enemy": "resources.assets:6446",
+       "enemyName": "E Moleman",
+       "displayName": "Mole Warrior",
+       "count": 10,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 1.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Bridge Broken",
+       "spawnCenter": [
+        -139.695,
+        18.61,
+        78.126
+       ],
+       "maxHp": 60.0,
+       "spawnSpanSeconds": 9.0
+      },
+      {
+       "enemy": "resources.assets:5074",
+       "enemyName": "E Moleman Archer",
+       "displayName": "Mole Archer",
+       "count": 5,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 2.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Bridge Broken",
+       "spawnCenter": [
+        -139.695,
+        18.61,
+        78.126
+       ],
+       "maxHp": 50.0,
+       "spawnSpanSeconds": 8.0
+      }
+     ],
+     "totals": {
+      "enemies": 15,
+      "baseHp": 850.0,
+      "goldCoins": 0,
+      "eliteEnemies": 0,
+      "flying": 0,
+      "boss": 0,
+      "ranged": 5,
+      "spawnSpanSeconds": 9.0,
+      "byLine": {
+       "Bridge Broken": 15
+      }
+     }
+    },
+    {
+     "index": 6,
+     "night": 7,
+     "warningText": "Big Front Wave",
+     "difficultyMulti": 1.0,
+     "spawns": [
+      {
+       "enemy": "resources.assets:6451",
+       "enemyName": "E Ogre",
+       "displayName": "Ogre",
+       "count": 2,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 2.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Bridge 1",
+       "spawnCenter": [
+        -124.415,
+        18.28,
+        -7.575
+       ],
+       "maxHp": 200.0,
+       "spawnSpanSeconds": 2.0
+      },
+      {
+       "enemy": "resources.assets:6451",
+       "enemyName": "E Ogre",
+       "displayName": "Ogre",
+       "count": 2,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 2.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Bridge 2",
+       "spawnCenter": [
+        -87.064,
+        18.28,
+        -59.06
+       ],
+       "maxHp": 200.0,
+       "spawnSpanSeconds": 2.0
+      },
+      {
+       "enemy": "resources.assets:6451",
+       "enemyName": "E Ogre",
+       "displayName": "Ogre",
+       "count": 2,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 2.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Bridge 3",
+       "spawnCenter": [
+        -44.286,
+        18.28,
+        -78.74
+       ],
+       "maxHp": 200.0,
+       "spawnSpanSeconds": 2.0
+      },
+      {
+       "enemy": "resources.assets:5076",
+       "enemyName": "E Catapult",
+       "displayName": "Catapult",
+       "count": 3,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 3.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Bridge 1",
+       "spawnCenter": [
+        -124.415,
+        18.28,
+        -7.575
+       ],
+       "maxHp": 45.0,
+       "spawnSpanSeconds": 6.0
+      },
+      {
+       "enemy": "resources.assets:5076",
+       "enemyName": "E Catapult",
+       "displayName": "Catapult",
+       "count": 3,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 3.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Bridge 2",
+       "spawnCenter": [
+        -87.064,
+        18.28,
+        -59.06
+       ],
+       "maxHp": 45.0,
+       "spawnSpanSeconds": 6.0
+      },
+      {
+       "enemy": "resources.assets:5076",
+       "enemyName": "E Catapult",
+       "displayName": "Catapult",
+       "count": 3,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 3.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Bridge 3",
+       "spawnCenter": [
+        -44.286,
+        18.28,
+        -78.74
+       ],
+       "maxHp": 45.0,
+       "spawnSpanSeconds": 6.0
+      }
+     ],
+     "totals": {
+      "enemies": 15,
+      "baseHp": 1605.0,
+      "goldCoins": 0,
+      "eliteEnemies": 0,
+      "flying": 0,
+      "boss": 0,
+      "ranged": 9,
+      "spawnSpanSeconds": 6.0,
+      "byLine": {
+       "Bridge 1": 5,
+       "Bridge 2": 5,
+       "Bridge 3": 5
+      }
+     }
+    },
+    {
+     "index": 7,
+     "night": 8,
+     "warningText": "Flyer Wave",
+     "difficultyMulti": 1.0,
+     "spawns": [
+      {
+       "enemy": "resources.assets:5067",
+       "enemyName": "E Flying Wizzard",
+       "displayName": "Flying Mage",
+       "count": 15,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 1.5,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Base Left Air",
+       "spawnCenter": [
+        -9.5,
+        36.2,
+        54.1
+       ],
+       "maxHp": 45.0,
+       "spawnSpanSeconds": 21.0
+      },
+      {
+       "enemy": "resources.assets:5067",
+       "enemyName": "E Flying Wizzard",
+       "displayName": "Flying Mage",
+       "count": 15,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 1.5,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Base Right Air",
+       "spawnCenter": [
+        17.35,
+        36.2,
+        17.75
+       ],
+       "maxHp": 45.0,
+       "spawnSpanSeconds": 21.0
+      }
+     ],
+     "totals": {
+      "enemies": 30,
+      "baseHp": 1350.0,
+      "goldCoins": 0,
+      "eliteEnemies": 0,
+      "flying": 30,
+      "boss": 0,
+      "ranged": 30,
+      "spawnSpanSeconds": 21.0,
+      "byLine": {
+       "Base Left Air": 15,
+       "Base Right Air": 15
+      }
+     }
+    },
+    {
+     "index": 8,
+     "night": 9,
+     "warningText": "Molemen & Archers",
+     "difficultyMulti": 1.0,
+     "spawns": [
+      {
+       "enemy": "resources.assets:6446",
+       "enemyName": "E Moleman",
+       "displayName": "Mole Warrior",
+       "count": 40,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 0.25,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Bridge 1",
+       "spawnCenter": [
+        -124.415,
+        18.28,
+        -7.575
+       ],
+       "maxHp": 60.0,
+       "spawnSpanSeconds": 9.75
+      },
+      {
+       "enemy": "resources.assets:5074",
+       "enemyName": "E Moleman Archer",
+       "displayName": "Mole Archer",
+       "count": 20,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 0.5,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Bridge 1",
+       "spawnCenter": [
+        -124.415,
+        18.28,
+        -7.575
+       ],
+       "maxHp": 50.0,
+       "spawnSpanSeconds": 9.5
+      }
+     ],
+     "totals": {
+      "enemies": 60,
+      "baseHp": 3400.0,
+      "goldCoins": 0,
+      "eliteEnemies": 0,
+      "flying": 0,
+      "boss": 0,
+      "ranged": 20,
+      "spawnSpanSeconds": 9.75,
+      "byLine": {
+       "Bridge 1": 60
+      }
+     }
+    },
+    {
+     "index": 9,
+     "night": 10,
+     "warningText": "Racer & Hunterlings",
+     "difficultyMulti": 1.0,
+     "spawns": [
+      {
+       "enemy": "resources.assets:6459",
+       "enemyName": "E Racer",
+       "displayName": "Racer",
+       "count": 40,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 0.5,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Bridge 3",
+       "spawnCenter": [
+        -44.286,
+        18.28,
+        -78.74
+       ],
+       "maxHp": 35.0,
+       "spawnSpanSeconds": 19.5
+      },
+      {
+       "enemy": "resources.assets:6458",
+       "enemyName": "E Hunterling",
+       "displayName": "Hunterling",
+       "count": 40,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 0.5,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Bridge 1",
+       "spawnCenter": [
+        -124.415,
+        18.28,
+        -7.575
+       ],
+       "maxHp": 30.0,
+       "spawnSpanSeconds": 19.5
+      }
+     ],
+     "totals": {
+      "enemies": 80,
+      "baseHp": 2600.0,
+      "goldCoins": 0,
+      "eliteEnemies": 0,
+      "flying": 0,
+      "boss": 0,
+      "ranged": 0,
+      "spawnSpanSeconds": 19.5,
+      "byLine": {
+       "Bridge 3": 40,
+       "Bridge 1": 40
+      }
+     }
+    },
+    {
+     "index": 10,
+     "night": 11,
+     "warningText": "Fat Front Wave",
+     "difficultyMulti": 1.0,
+     "spawns": [
+      {
+       "enemy": "resources.assets:6451",
+       "enemyName": "E Ogre",
+       "displayName": "Ogre",
+       "count": 10,
+       "elite": true,
+       "delay": 0.0,
+       "interval": 2.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Bridge 1",
+       "spawnCenter": [
+        -124.415,
+        18.28,
+        -7.575
+       ],
+       "maxHp": 200.0,
+       "spawnSpanSeconds": 18.0
+      },
+      {
+       "enemy": "resources.assets:6451",
+       "enemyName": "E Ogre",
+       "displayName": "Ogre",
+       "count": 10,
+       "elite": true,
+       "delay": 0.0,
+       "interval": 2.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Bridge 2",
+       "spawnCenter": [
+        -87.064,
+        18.28,
+        -59.06
+       ],
+       "maxHp": 200.0,
+       "spawnSpanSeconds": 18.0
+      },
+      {
+       "enemy": "resources.assets:6451",
+       "enemyName": "E Ogre",
+       "displayName": "Ogre",
+       "count": 10,
+       "elite": true,
+       "delay": 0.0,
+       "interval": 2.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Bridge 3",
+       "spawnCenter": [
+        -44.286,
+        18.28,
+        -78.74
+       ],
+       "maxHp": 200.0,
+       "spawnSpanSeconds": 18.0
+      },
+      {
+       "enemy": "resources.assets:6457",
+       "enemyName": "E Melee",
+       "displayName": "Swordsman",
+       "count": 40,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 0.5,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Bridge 1",
+       "spawnCenter": [
+        -124.415,
+        18.28,
+        -7.575
+       ],
+       "maxHp": 25.0,
+       "spawnSpanSeconds": 19.5
+      },
+      {
+       "enemy": "resources.assets:6457",
+       "enemyName": "E Melee",
+       "displayName": "Swordsman",
+       "count": 40,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 0.5,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Bridge 2",
+       "spawnCenter": [
+        -87.064,
+        18.28,
+        -59.06
+       ],
+       "maxHp": 25.0,
+       "spawnSpanSeconds": 19.5
+      },
+      {
+       "enemy": "resources.assets:6457",
+       "enemyName": "E Melee",
+       "displayName": "Swordsman",
+       "count": 40,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 0.5,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Bridge 3",
+       "spawnCenter": [
+        -44.286,
+        18.28,
+        -78.74
+       ],
+       "maxHp": 25.0,
+       "spawnSpanSeconds": 19.5
+      },
+      {
+       "enemy": "resources.assets:6446",
+       "enemyName": "E Moleman",
+       "displayName": "Mole Warrior",
+       "count": 20,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 1.5,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Bridge Broken",
+       "spawnCenter": [
+        -139.695,
+        18.61,
+        78.126
+       ],
+       "maxHp": 60.0,
+       "spawnSpanSeconds": 28.5
+      }
+     ],
+     "totals": {
+      "enemies": 170,
+      "baseHp": 10200.0,
+      "goldCoins": 0,
+      "eliteEnemies": 30,
+      "flying": 0,
+      "boss": 0,
+      "ranged": 0,
+      "spawnSpanSeconds": 28.5,
+      "byLine": {
+       "Bridge 1": 50,
+       "Bridge 2": 50,
+       "Bridge 3": 50,
+       "Bridge Broken": 20
+      }
+     }
+    },
+    {
+     "index": 11,
+     "night": 12,
+     "warningText": "Big Moleman Attack",
+     "difficultyMulti": 1.0,
+     "spawns": [
+      {
+       "enemy": "resources.assets:5074",
+       "enemyName": "E Moleman Archer",
+       "displayName": "Mole Archer",
+       "count": 150,
+       "elite": true,
+       "delay": 0.0,
+       "interval": 0.05,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Bridge Broken",
+       "spawnCenter": [
+        -139.695,
+        18.61,
+        78.126
+       ],
+       "maxHp": 50.0,
+       "spawnSpanSeconds": 7.45
+      }
+     ],
+     "totals": {
+      "enemies": 150,
+      "baseHp": 7500.0,
+      "goldCoins": 0,
+      "eliteEnemies": 150,
+      "flying": 0,
+      "boss": 0,
+      "ranged": 150,
+      "spawnSpanSeconds": 7.45,
+      "byLine": {
+       "Bridge Broken": 150
+      }
+     }
+    },
+    {
+     "index": 12,
+     "night": 13,
+     "warningText": "Mole Siege",
+     "difficultyMulti": 1.0,
+     "spawns": [
+      {
+       "enemy": "resources.assets:5072",
+       "enemyName": "E Ram",
+       "displayName": "Ram",
+       "count": 7,
+       "elite": true,
+       "delay": 5.0,
+       "interval": 1.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Bridge 1",
+       "spawnCenter": [
+        -124.415,
+        18.28,
+        -7.575
+       ],
+       "maxHp": 250.0,
+       "spawnSpanSeconds": 11.0
+      },
+      {
+       "enemy": "resources.assets:5072",
+       "enemyName": "E Ram",
+       "displayName": "Ram",
+       "count": 7,
+       "elite": true,
+       "delay": 5.0,
+       "interval": 1.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Bridge 2",
+       "spawnCenter": [
+        -87.064,
+        18.28,
+        -59.06
+       ],
+       "maxHp": 250.0,
+       "spawnSpanSeconds": 11.0
+      },
+      {
+       "enemy": "resources.assets:5072",
+       "enemyName": "E Ram",
+       "displayName": "Ram",
+       "count": 7,
+       "elite": true,
+       "delay": 5.0,
+       "interval": 1.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Bridge 3",
+       "spawnCenter": [
+        -44.286,
+        18.28,
+        -78.74
+       ],
+       "maxHp": 250.0,
+       "spawnSpanSeconds": 11.0
+      },
+      {
+       "enemy": "resources.assets:6451",
+       "enemyName": "E Ogre",
+       "displayName": "Ogre",
+       "count": 15,
+       "elite": true,
+       "delay": 0.0,
+       "interval": 1.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Bridge 1",
+       "spawnCenter": [
+        -124.415,
+        18.28,
+        -7.575
+       ],
+       "maxHp": 200.0,
+       "spawnSpanSeconds": 14.0
+      },
+      {
+       "enemy": "resources.assets:6451",
+       "enemyName": "E Ogre",
+       "displayName": "Ogre",
+       "count": 15,
+       "elite": true,
+       "delay": 0.0,
+       "interval": 1.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Bridge 2",
+       "spawnCenter": [
+        -87.064,
+        18.28,
+        -59.06
+       ],
+       "maxHp": 200.0,
+       "spawnSpanSeconds": 14.0
+      },
+      {
+       "enemy": "resources.assets:6451",
+       "enemyName": "E Ogre",
+       "displayName": "Ogre",
+       "count": 15,
+       "elite": true,
+       "delay": 0.0,
+       "interval": 1.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Bridge 3",
+       "spawnCenter": [
+        -44.286,
+        18.28,
+        -78.74
+       ],
+       "maxHp": 200.0,
+       "spawnSpanSeconds": 14.0
+      },
+      {
+       "enemy": "resources.assets:6459",
+       "enemyName": "E Racer",
+       "displayName": "Racer",
+       "count": 35,
+       "elite": true,
+       "delay": 5.0,
+       "interval": 0.5,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Bridge 1",
+       "spawnCenter": [
+        -124.415,
+        18.28,
+        -7.575
+       ],
+       "maxHp": 35.0,
+       "spawnSpanSeconds": 22.0
+      },
+      {
+       "enemy": "resources.assets:6459",
+       "enemyName": "E Racer",
+       "displayName": "Racer",
+       "count": 35,
+       "elite": true,
+       "delay": 5.0,
+       "interval": 0.5,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Bridge 2",
+       "spawnCenter": [
+        -87.064,
+        18.28,
+        -59.06
+       ],
+       "maxHp": 35.0,
+       "spawnSpanSeconds": 22.0
+      },
+      {
+       "enemy": "resources.assets:6459",
+       "enemyName": "E Racer",
+       "displayName": "Racer",
+       "count": 35,
+       "elite": true,
+       "delay": 5.0,
+       "interval": 0.5,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Bridge 3",
+       "spawnCenter": [
+        -44.286,
+        18.28,
+        -78.74
+       ],
+       "maxHp": 35.0,
+       "spawnSpanSeconds": 22.0
+      },
+      {
+       "enemy": "level24:5182",
+       "enemyName": "E Eldermole",
+       "displayName": "Strange Statue",
+       "count": 1,
+       "elite": false,
+       "delay": 30.0,
+       "interval": 0.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "E Eldermole",
+       "spawnCenter": [
+        -84.278,
+        19.323,
+        -16.047
+       ],
+       "maxHp": 10000.0,
+       "spawnSpanSeconds": 30.0
+      },
+      {
+       "enemy": "level24:4671",
+       "enemyName": "E Eldermole",
+       "displayName": "Strange Statue",
+       "count": 1,
+       "elite": false,
+       "delay": 35.0,
+       "interval": 0.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "E Eldermole",
+       "spawnCenter": [
+        -26.128,
+        18.92,
+        -60.947
+       ],
+       "maxHp": 10000.0,
+       "spawnSpanSeconds": 35.0
+      },
+      {
+       "enemy": "level24:4670",
+       "enemyName": "E Eldermole",
+       "displayName": "Strange Statue",
+       "count": 1,
+       "elite": false,
+       "delay": 40.0,
+       "interval": 0.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "E Eldermole",
+       "spawnCenter": [
+        -113.2,
+        19.323,
+        42.4
+       ],
+       "maxHp": 10000.0,
+       "spawnSpanSeconds": 40.0
+      },
+      {
+       "enemy": "level24:4672",
+       "enemyName": "E Eldermole",
+       "displayName": "Strange Statue",
+       "count": 1,
+       "elite": false,
+       "delay": 45.0,
+       "interval": 0.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "E Eldermole",
+       "spawnCenter": [
+        -91.448,
+        19.323,
+        72.563
+       ],
+       "maxHp": 10000.0,
+       "spawnSpanSeconds": 45.0
+      }
+     ],
+     "totals": {
+      "enemies": 175,
+      "baseHp": 57925.0,
+      "goldCoins": 0,
+      "eliteEnemies": 171,
+      "flying": 0,
+      "boss": 4,
+      "ranged": 0,
+      "spawnSpanSeconds": 45.0,
+      "byLine": {
+       "Bridge 1": 57,
+       "Bridge 2": 57,
+       "Bridge 3": 57,
+       "E Eldermole": 4
+      }
+     }
+    }
+   ]
+  }
+ ],
+ "spawnLines": [
+  {
+   "tf": 7377,
+   "name": "Bridge Broken",
+   "path": "ES Sturmklamm Shrine Challenge/Bridge Broken",
+   "points": [
+    [
+     -139.482,
+     18.61,
+     71.073
+    ],
+    [
+     -139.907,
+     18.61,
+     85.179
+    ]
+   ],
+   "length": 14.112,
+   "center": [
+    -139.695,
+    18.61,
+    78.126
+   ],
+   "difficulty": "Normal",
+   "canSpawnFlying": true,
+   "canSpawnSmallGround": false,
+   "canSpawnBigGround": false,
+   "sharedPaths": [],
+   "separatedPaths": [
+    "Base Left Air",
+    "Base Right Air"
+   ]
+  },
+  {
+   "tf": 10928,
+   "name": "Bridge 3",
+   "path": "ES Sturmklamm Shrine Challenge/Bridge 3",
+   "points": [
+    [
+     -37.43,
+     18.28,
+     -80.41
+    ],
+    [
+     -51.142,
+     18.28,
+     -77.07
+    ]
+   ],
+   "length": 14.113,
+   "center": [
+    -44.286,
+    18.28,
+    -78.74
+   ],
+   "difficulty": "Normal",
+   "canSpawnFlying": true,
+   "canSpawnSmallGround": true,
+   "canSpawnBigGround": true,
+   "sharedPaths": [
+    "Bridge 2"
+   ],
+   "separatedPaths": [
+    "Base Left Air",
+    "Base Right Air"
+   ]
+  },
+  {
+   "tf": 9532,
+   "name": "Base Left Air",
+   "path": "ES Sturmklamm Shrine Challenge/Base Left Air",
+   "points": [
+    [
+     -21.7,
+     36.2,
+     70.5
+    ],
+    [
+     2.7,
+     36.2,
+     37.7
+    ]
+   ],
+   "length": 40.88,
+   "center": [
+    -9.5,
+    36.2,
+    54.1
+   ],
+   "difficulty": "Normal",
+   "canSpawnFlying": true,
+   "canSpawnSmallGround": false,
+   "canSpawnBigGround": false,
+   "sharedPaths": [
+    "Base Right Air"
+   ],
+   "separatedPaths": [
+    "Bridge 1",
+    "Bridge 2",
+    "Bridge 3",
+    "Bridge Broken",
+    "West Air"
+   ]
+  },
+  {
+   "tf": 10951,
+   "name": "Base Right Air",
+   "path": "ES Sturmklamm Shrine Challenge/Base Right Air",
+   "points": [
+    [
+     4.4,
+     36.2,
+     35.3
+    ],
+    [
+     30.3,
+     36.2,
+     0.2
+    ]
+   ],
+   "length": 43.621,
+   "center": [
+    17.35,
+    36.2,
+    17.75
+   ],
+   "difficulty": "Normal",
+   "canSpawnFlying": true,
+   "canSpawnSmallGround": false,
+   "canSpawnBigGround": false,
+   "sharedPaths": [
+    "Base Left Air"
+   ],
+   "separatedPaths": [
+    "Bridge 1",
+    "Bridge 2",
+    "Bridge 3",
+    "Bridge Broken",
+    "West Air"
+   ]
+  },
+  {
+   "tf": 9847,
+   "name": "Bridge 2",
+   "path": "ES Sturmklamm Shrine Challenge/Bridge 2",
+   "points": [
+    [
+     -81.5,
+     18.28,
+     -63.4
+    ],
+    [
+     -92.628,
+     18.28,
+     -54.72
+    ]
+   ],
+   "length": 14.113,
+   "center": [
+    -87.064,
+    18.28,
+    -59.06
+   ],
+   "difficulty": "Normal",
+   "canSpawnFlying": true,
+   "canSpawnSmallGround": true,
+   "canSpawnBigGround": true,
+   "sharedPaths": [
+    "Bridge 3"
+   ],
+   "separatedPaths": [
+    "Base Left Air",
+    "Base Right Air"
+   ]
+  },
+  {
+   "tf": 9391,
+   "name": "Bridge 1",
+   "path": "ES Sturmklamm Shrine Challenge/Bridge 1",
+   "points": [
+    [
+     -121.39,
+     18.28,
+     -13.95
+    ],
+    [
+     -127.44,
+     18.28,
+     -1.2
+    ]
+   ],
+   "length": 14.113,
+   "center": [
+    -124.415,
+    18.28,
+    -7.575
+   ],
+   "difficulty": "Normal",
+   "canSpawnFlying": true,
+   "canSpawnSmallGround": true,
+   "canSpawnBigGround": true,
+   "sharedPaths": [],
+   "separatedPaths": [
+    "Base Left Air",
+    "Base Right Air"
+   ]
+  },
+  {
+   "tf": 10586,
+   "name": "West Air",
+   "path": "ES Sturmklamm Shrine Challenge/West Air",
+   "points": [
+    [
+     -93.436,
+     23.3,
+     112.37
+    ],
+    [
+     -79.901,
+     23.3,
+     116.364
+    ]
+   ],
+   "length": 14.112,
+   "center": [
+    -86.668,
+    23.3,
+    114.367
+   ],
+   "difficulty": "Normal",
+   "canSpawnFlying": true,
+   "canSpawnSmallGround": false,
+   "canSpawnBigGround": false,
+   "sharedPaths": [],
+   "separatedPaths": [
+    "Base Left Air",
+    "Base Right Air"
+   ]
+  },
+  {
+   "tf": 10657,
+   "name": "E Eldermole",
+   "path": "Bosses/Eldermolde Statue/E Eldermole",
+   "points": [
+    [
+     -84.278,
+     23.0,
+     -16.047
+    ],
+    [
+     -84.278,
+     18.4,
+     -16.047
+    ],
+    [
+     -84.278,
+     18.4,
+     -16.047
+    ],
+    [
+     -84.278,
+     18.4,
+     -16.047
+    ],
+    [
+     -84.278,
+     18.4,
+     -16.047
+    ],
+    [
+     -84.278,
+     18.4,
+     -16.047
+    ],
+    [
+     -84.278,
+     20.26,
+     -16.047
+    ]
+   ],
+   "length": 0.0,
+   "center": [
+    -84.278,
+    19.323,
+    -16.047
+   ],
+   "difficulty": "n/a",
+   "implicit": true,
+   "canSpawnFlying": null,
+   "canSpawnSmallGround": null,
+   "canSpawnBigGround": null,
+   "sharedPaths": [],
+   "separatedPaths": []
+  },
+  {
+   "tf": 10260,
+   "name": "E Eldermole",
+   "path": "Bosses/Eldermolde Statue (1)/E Eldermole",
+   "points": [
+    [
+     -26.128,
+     22.597,
+     -60.947
+    ],
+    [
+     -26.128,
+     17.997,
+     -60.947
+    ],
+    [
+     -26.128,
+     17.997,
+     -60.947
+    ],
+    [
+     -26.128,
+     17.997,
+     -60.947
+    ],
+    [
+     -26.128,
+     17.997,
+     -60.947
+    ],
+    [
+     -26.128,
+     17.997,
+     -60.947
+    ],
+    [
+     -26.128,
+     19.857,
+     -60.947
+    ]
+   ],
+   "length": 0.0,
+   "center": [
+    -26.128,
+    18.92,
+    -60.947
+   ],
+   "difficulty": "n/a",
+   "implicit": true,
+   "canSpawnFlying": null,
+   "canSpawnSmallGround": null,
+   "canSpawnBigGround": null,
+   "sharedPaths": [],
+   "separatedPaths": []
+  },
+  {
+   "tf": 10259,
+   "name": "E Eldermole",
+   "path": "Bosses/Eldermolde Statue (2)/E Eldermole",
+   "points": [
+    [
+     -113.2,
+     23.0,
+     42.4
+    ],
+    [
+     -113.2,
+     18.4,
+     42.4
+    ],
+    [
+     -113.2,
+     18.4,
+     42.4
+    ],
+    [
+     -113.2,
+     18.4,
+     42.4
+    ],
+    [
+     -113.2,
+     18.4,
+     42.4
+    ],
+    [
+     -113.2,
+     18.4,
+     42.4
+    ],
+    [
+     -113.2,
+     20.26,
+     42.4
+    ]
+   ],
+   "length": 0.0,
+   "center": [
+    -113.2,
+    19.323,
+    42.4
+   ],
+   "difficulty": "n/a",
+   "implicit": true,
+   "canSpawnFlying": null,
+   "canSpawnSmallGround": null,
+   "canSpawnBigGround": null,
+   "sharedPaths": [],
+   "separatedPaths": []
+  },
+  {
+   "tf": 10261,
+   "name": "E Eldermole",
+   "path": "Bosses/Eldermolde Statue (3)/E Eldermole",
+   "points": [
+    [
+     -91.448,
+     23.0,
+     72.563
+    ],
+    [
+     -91.448,
+     18.4,
+     72.563
+    ],
+    [
+     -91.448,
+     18.4,
+     72.563
+    ],
+    [
+     -91.448,
+     18.4,
+     72.563
+    ],
+    [
+     -91.448,
+     18.4,
+     72.563
+    ],
+    [
+     -91.448,
+     18.4,
+     72.563
+    ],
+    [
+     -91.448,
+     20.26,
+     72.563
+    ]
+   ],
+   "length": 0.0,
+   "center": [
+    -91.448,
+    19.323,
+    72.563
+   ],
+   "difficulty": "n/a",
+   "implicit": true,
+   "canSpawnFlying": null,
+   "canSpawnSmallGround": null,
+   "canSpawnBigGround": null,
+   "sharedPaths": [],
+   "separatedPaths": []
+  }
+ ],
+ "enemies": {
+  "resources.assets:6457": {
+   "name": "E Melee",
+   "displayName": "Swordsman",
+   "description": "Swordsmen are simple melee warriors, but do not underestimate them when they come in numbers.",
+   "maxHp": 25.0,
+   "tags": [
+    "EnemyOwned",
+    "MeeleFighter",
+    "NaturallyVulnerableToSplash",
+    "Humanoid"
+   ],
+   "coinDrop": 0,
+   "speed": 5.0,
+   "attacks": [
+    {
+     "component": "AutoAttack",
+     "range": 3.0,
+     "cooldown": 1.0,
+     "baseDamage": 2.5,
+     "dps": 2.5,
+     "weapon": "E Melee",
+     "manual": false
+    }
+   ],
+   "components": [
+    "Seeker",
+    "RVOController",
+    "TaggedObject",
+    "Hp",
+    "PathfindMovementEnemy",
+    "AutoAttack",
+    "FunnelModifier",
+    "SharpCornerMidigator",
+    "ScreenMarkerIcon"
+   ],
+   "prefab": "resources.assets:6457"
+  },
+  "resources.assets:6446": {
+   "name": "E Moleman",
+   "displayName": "Mole Warrior",
+   "description": "Can tunnel directly to its target. Takes additional damage from defense towers.",
+   "maxHp": 60.0,
+   "tags": [
+    "EnemyOwned",
+    "MeeleFighter",
+    "TakesIncreasedDamageFromTowers",
+    "Humanoid"
+   ],
+   "coinDrop": 0,
+   "speed": 5.0,
+   "attacks": [
+    {
+     "component": "AutoAttack",
+     "range": 3.0,
+     "cooldown": 1.0,
+     "baseDamage": 5.0,
+     "dps": 5.0,
+     "weapon": "E Moleman",
+     "manual": false
+    }
+   ],
+   "components": [
+    "Seeker",
+    "RVOController",
+    "TaggedObject",
+    "Hp",
+    "PathfindMovementEnemy",
+    "AutoAttack",
+    "FunnelModifier",
+    "SharpCornerMidigator",
+    "ScreenMarkerIcon",
+    "Moleman"
+   ],
+   "prefab": "resources.assets:6446"
+  },
+  "resources.assets:5069": {
+   "name": "E Flyer",
+   "displayName": "Wasp",
+   "description": "Wasps are flying monsters eager to destroy every single one of your economic buildings.",
+   "maxHp": 25.0,
+   "tags": [
+    "EnemyOwned",
+    "RangedFighter",
+    "Flying",
+    "Monster"
+   ],
+   "coinDrop": 0,
+   "speed": 8.0,
+   "attacks": [
+    {
+     "component": "AutoAttack",
+     "range": 13.0,
+     "cooldown": 1.0,
+     "baseDamage": 2.5,
+     "dps": 2.5,
+     "weapon": "E Flyer",
+     "manual": false
+    }
+   ],
+   "components": [
+    "Seeker",
+    "RVOController",
+    "TaggedObject",
+    "Hp",
+    "PathfindMovementEnemy",
+    "AutoAttack",
+    "FunnelModifier",
+    "SharpCornerMidigator",
+    "ScreenMarkerIcon"
+   ],
+   "prefab": "resources.assets:5069"
+  },
+  "resources.assets:6459": {
+   "name": "E Racer",
+   "displayName": "Racer",
+   "description": "Racers are fast rolling monsters that are not messing around. They aim right for your castle center and are somewhat armored against attacks from the player character.",
+   "maxHp": 35.0,
+   "tags": [
+    "EnemyOwned",
+    "MeeleFighter",
+    "TakesReducedDamageFromPlayerAttacks",
+    "FastMoving",
+    "Monster"
+   ],
+   "coinDrop": 0,
+   "speed": 10.0,
+   "attacks": [
+    {
+     "component": "AutoAttack",
+     "range": 3.5,
+     "cooldown": 1.0,
+     "baseDamage": 2.5,
+     "dps": 2.5,
+     "weapon": "E Racer",
+     "manual": false
+    }
+   ],
+   "components": [
+    "Seeker",
+    "RVOController",
+    "TaggedObject",
+    "Hp",
+    "PathfindMovementEnemy",
+    "AutoAttack",
+    "FunnelModifier",
+    "SharpCornerMidigator",
+    "ScreenMarkerIcon"
+   ],
+   "prefab": "resources.assets:6459"
+  },
+  "resources.assets:6451": {
+   "name": "E Ogre",
+   "displayName": "Ogre",
+   "description": "Ogres are huge melee warriors that really pack a punch. Hey! Due to their human heritage, ogres aren't monsters though (everybody knows that, duh).",
+   "maxHp": 200.0,
+   "tags": [
+    "EnemyOwned",
+    "MeeleFighter",
+    "NaturallyHighHealthTarget",
+    "Humanoid"
+   ],
+   "coinDrop": 0,
+   "speed": 4.0,
+   "attacks": [
+    {
+     "component": "AutoAttack",
+     "range": 3.0,
+     "cooldown": 1.0,
+     "baseDamage": 20.0,
+     "dps": 20.0,
+     "weapon": "E Ogre",
+     "manual": false
+    }
+   ],
+   "components": [
+    "Seeker",
+    "RVOController",
+    "TaggedObject",
+    "Hp",
+    "PathfindMovementEnemy",
+    "AutoAttack",
+    "FunnelModifier",
+    "SharpCornerMidigator",
+    "ScreenMarkerIcon"
+   ],
+   "prefab": "resources.assets:6451"
+  },
+  "resources.assets:5074": {
+   "name": "E Moleman Archer",
+   "displayName": "Mole Archer",
+   "description": "A ranged unit that loves playing hard to get. Takes additional damage from defense towers.",
+   "maxHp": 50.0,
+   "tags": [
+    "EnemyOwned",
+    "RangedFighter",
+    "TakesIncreasedDamageFromTowers",
+    "Humanoid"
+   ],
+   "coinDrop": 0,
+   "speed": 5.0,
+   "attacks": [
+    {
+     "component": "AutoAttack",
+     "range": 20.0,
+     "cooldown": 2.0,
+     "baseDamage": 3.75,
+     "dps": 1.875,
+     "weapon": "E Moleman Archer",
+     "manual": false
+    }
+   ],
+   "components": [
+    "Seeker",
+    "RVOController",
+    "TaggedObject",
+    "Hp",
+    "PathfindMovementEnemy",
+    "AutoAttack",
+    "FunnelModifier",
+    "SharpCornerMidigator",
+    "ScreenMarkerIcon",
+    "Moleman"
+   ],
+   "prefab": "resources.assets:5074"
+  },
+  "resources.assets:5076": {
+   "name": "E Catapult",
+   "displayName": "Catapult",
+   "description": "Catapults are siege units that deal massive damage to your buildings from afar. Your only chance is to get close and destroy them before they demolish your walls.",
+   "maxHp": 45.0,
+   "tags": [
+    "EnemyOwned",
+    "RangedFighter",
+    "SiegeWeapon"
+   ],
+   "coinDrop": 0,
+   "speed": 2.0,
+   "attacks": [
+    {
+     "component": "AutoAttack",
+     "range": 26.4,
+     "cooldown": 5.0,
+     "baseDamage": 150.0,
+     "dps": 30.0,
+     "weapon": "E Catapult",
+     "manual": false
+    }
+   ],
+   "components": [
+    "Seeker",
+    "RVOController",
+    "TaggedObject",
+    "Hp",
+    "PathfindMovementEnemy",
+    "AutoAttack",
+    "FunnelModifier",
+    "SharpCornerMidigator",
+    "ScreenMarkerIcon"
+   ],
+   "prefab": "resources.assets:5076"
+  },
+  "resources.assets:5067": {
+   "name": "E Flying Wizzard",
+   "displayName": "Flying Mage",
+   "description": "Shoots magical projectiles that deal splash damage. Prefers attacking your units.",
+   "maxHp": 45.0,
+   "tags": [
+    "EnemyOwned",
+    "RangedFighter",
+    "Flying",
+    "Humanoid"
+   ],
+   "coinDrop": 0,
+   "speed": 7.0,
+   "attacks": [
+    {
+     "component": "AutoAttack",
+     "range": 17.0,
+     "cooldown": 2.0,
+     "baseDamage": 2.0,
+     "dps": 1.0,
+     "weapon": "E FlyingWizzard",
+     "manual": false
+    }
+   ],
+   "components": [
+    "Seeker",
+    "RVOController",
+    "TaggedObject",
+    "Hp",
+    "PathfindMovementEnemy",
+    "AutoAttack",
+    "FunnelModifier",
+    "SharpCornerMidigator",
+    "ScreenMarkerIcon"
+   ],
+   "prefab": "resources.assets:5067"
+  },
+  "resources.assets:6458": {
+   "name": "E Hunterling",
+   "displayName": "Hunterling",
+   "description": "Hunterlings are incredibly fast and dangerous monsters with the sole aim of chasing you down. They can smell your royal blood all across the entire kingdom.",
+   "maxHp": 30.0,
+   "tags": [
+    "EnemyOwned",
+    "MeeleFighter",
+    "FastMoving",
+    "Monster",
+    "NaturallyVulnerableToSplash"
+   ],
+   "coinDrop": 0,
+   "speed": 10.0,
+   "attacks": [
+    {
+     "component": "AutoAttack",
+     "range": 3.5,
+     "cooldown": 0.5,
+     "baseDamage": 5.0,
+     "dps": 10.0,
+     "weapon": "E Hunterling",
+     "manual": false
+    }
+   ],
+   "components": [
+    "Seeker",
+    "RVOController",
+    "TaggedObject",
+    "Hp",
+    "PathfindMovementEnemy",
+    "AutoAttack",
+    "FunnelModifier",
+    "SharpCornerMidigator",
+    "ScreenMarkerIcon"
+   ],
+   "prefab": "resources.assets:6458"
+  },
+  "resources.assets:5072": {
+   "name": "E Ram",
+   "displayName": "Ram",
+   "description": "Rams are siege units with a ton of health looking to tear down your walls and buildings. Furthermore, they are armored against ranged attacks.",
+   "maxHp": 250.0,
+   "tags": [
+    "EnemyOwned",
+    "MeeleFighter",
+    "SiegeWeapon",
+    "ArmoredAgainstRanged",
+    "NaturallyHighHealthTarget",
+    "LargeUnit"
+   ],
+   "coinDrop": 0,
+   "speed": 2.25,
+   "attacks": [
+    {
+     "component": "AutoAttack",
+     "range": 3.5,
+     "cooldown": 2.0,
+     "baseDamage": 15.0,
+     "dps": 7.5,
+     "weapon": "E Ram",
+     "manual": false
+    }
+   ],
+   "components": [
+    "Seeker",
+    "RVOController",
+    "TaggedObject",
+    "Hp",
+    "PathfindMovementEnemy",
+    "AutoAttack",
+    "FunnelModifier",
+    "SharpCornerMidigator",
+    "ScreenMarkerIcon"
+   ],
+   "prefab": "resources.assets:5072"
+  },
+  "level24:5182": {
+   "name": "E Eldermole",
+   "displayName": "Strange Statue",
+   "description": "Some speculate they could be part of an ancient defense mechanism? Maybe there is a reason this castle remained abandoned for so long? No... they are just statues...",
+   "maxHp": 10000.0,
+   "tags": [
+    "EnemyOwned",
+    "MeeleFighter",
+    "TakesIncreasedDamageFromTowers",
+    "Boss"
+   ],
+   "coinDrop": 0,
+   "speed": 6.0,
+   "attacks": [
+    {
+     "component": "AutoAttack",
+     "range": 5.5,
+     "cooldown": 0.5,
+     "baseDamage": 22.5,
+     "dps": 45.0,
+     "weapon": "E Eldermole",
+     "manual": false
+    }
+   ],
+   "components": [
+    "Seeker",
+    "RVOController",
+    "TaggedObject",
+    "Hp",
+    "PathfindMovementEnemy",
+    "AutoAttack",
+    "FunnelModifier",
+    "SharpCornerMidigator",
+    "ScreenMarkerIcon",
+    "Moleman",
+    "DestroyOrDisableOnEnable"
+   ],
+   "prefab": "level24:5182"
+  },
+  "level24:4671": {
+   "name": "E Eldermole",
+   "displayName": "Strange Statue",
+   "description": "Some speculate they could be part of an ancient defense mechanism? Maybe there is a reason this castle remained abandoned for so long? No... they are just statues...",
+   "maxHp": 10000.0,
+   "tags": [
+    "EnemyOwned",
+    "MeeleFighter",
+    "TakesIncreasedDamageFromTowers",
+    "Boss"
+   ],
+   "coinDrop": 0,
+   "speed": 6.0,
+   "attacks": [
+    {
+     "component": "AutoAttack",
+     "range": 5.5,
+     "cooldown": 0.5,
+     "baseDamage": 22.5,
+     "dps": 45.0,
+     "weapon": "E Eldermole",
+     "manual": false
+    }
+   ],
+   "components": [
+    "Seeker",
+    "RVOController",
+    "TaggedObject",
+    "Hp",
+    "PathfindMovementEnemy",
+    "AutoAttack",
+    "FunnelModifier",
+    "SharpCornerMidigator",
+    "ScreenMarkerIcon",
+    "Moleman",
+    "DestroyOrDisableOnEnable"
+   ],
+   "prefab": "level24:4671"
+  },
+  "level24:4670": {
+   "name": "E Eldermole",
+   "displayName": "Strange Statue",
+   "description": "Some speculate they could be part of an ancient defense mechanism? Maybe there is a reason this castle remained abandoned for so long? No... they are just statues...",
+   "maxHp": 10000.0,
+   "tags": [
+    "EnemyOwned",
+    "MeeleFighter",
+    "TakesIncreasedDamageFromTowers",
+    "Boss"
+   ],
+   "coinDrop": 0,
+   "speed": 6.0,
+   "attacks": [
+    {
+     "component": "AutoAttack",
+     "range": 5.5,
+     "cooldown": 0.5,
+     "baseDamage": 22.5,
+     "dps": 45.0,
+     "weapon": "E Eldermole",
+     "manual": false
+    }
+   ],
+   "components": [
+    "Seeker",
+    "RVOController",
+    "TaggedObject",
+    "Hp",
+    "PathfindMovementEnemy",
+    "AutoAttack",
+    "FunnelModifier",
+    "SharpCornerMidigator",
+    "ScreenMarkerIcon",
+    "Moleman",
+    "DestroyOrDisableOnEnable"
+   ],
+   "prefab": "level24:4670"
+  },
+  "level24:4672": {
+   "name": "E Eldermole",
+   "displayName": "Strange Statue",
+   "description": "Some speculate they could be part of an ancient defense mechanism? Maybe there is a reason this castle remained abandoned for so long? No... they are just statues...",
+   "maxHp": 10000.0,
+   "tags": [
+    "EnemyOwned",
+    "MeeleFighter",
+    "TakesIncreasedDamageFromTowers",
+    "Boss"
+   ],
+   "coinDrop": 0,
+   "speed": 6.0,
+   "attacks": [
+    {
+     "component": "AutoAttack",
+     "range": 5.5,
+     "cooldown": 0.5,
+     "baseDamage": 22.5,
+     "dps": 45.0,
+     "weapon": "E Eldermole",
+     "manual": false
+    }
+   ],
+   "components": [
+    "Seeker",
+    "RVOController",
+    "TaggedObject",
+    "Hp",
+    "PathfindMovementEnemy",
+    "AutoAttack",
+    "FunnelModifier",
+    "SharpCornerMidigator",
+    "ScreenMarkerIcon",
+    "Moleman",
+    "DestroyOrDisableOnEnable"
+   ],
+   "prefab": "level24:4672"
+  }
+ },
+ "buildSlots": [
+  {
+   "id": 24687,
+   "name": "Gate Variant",
+   "path": "BUILDINGS/Gate Variant",
+   "building": "Wall",
+   "pos": [
+    -81.57,
+    23.6,
+    48.62
+   ],
+   "yawDeg": 4.5,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 1,
+   "activator": {
+    "slot": 25069,
+    "building": "Castle Center",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -81.57,
+    23.6,
+    48.62
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -81.57,
+     23.6,
+     48.62
+    ],
+    "size": [
+     9.0,
+     4.739,
+     1.865
+    ],
+    "center": [
+     0.0,
+     2.369,
+     0.462
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 5,
+     "coreCost": 0,
+     "tooltip": "Stops enemies at the gates.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 10,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Gate Opener Lvl 2",
+         "components": [
+          "GateOpener",
+          "PerkSpawnOnDestroy"
+         ]
+        }
+       ],
+       "disables": [
+        "Gate Opener Lvl 1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 50,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 2500,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 65,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 24689,
+   "name": "Gate Variant",
+   "path": "BUILDINGS/Gate Variant",
+   "building": "Wall",
+   "pos": [
+    -66.35,
+    23.397,
+    -29.86
+   ],
+   "yawDeg": 39.6,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 1,
+   "activator": {
+    "slot": 25069,
+    "building": "Castle Center",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -66.35,
+    23.397,
+    -29.86
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -66.35,
+     23.397,
+     -29.86
+    ],
+    "size": [
+     9.0,
+     4.739,
+     1.865
+    ],
+    "center": [
+     0.0,
+     2.369,
+     0.462
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 5,
+     "coreCost": 0,
+     "tooltip": "Stops enemies at the gates.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 10,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Gate Opener Lvl 2",
+         "components": [
+          "GateOpener",
+          "PerkSpawnOnDestroy"
+         ]
+        }
+       ],
+       "disables": [
+        "Gate Opener Lvl 1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 50,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 2500,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 65,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 25069,
+   "name": "Castle Center Variant",
+   "path": "BUILDINGS/Castle Center Variant",
+   "building": "Castle Center",
+   "pos": [
+    -46.0,
+    30.997,
+    12.4
+   ],
+   "yawDeg": 0.0,
+   "active": true,
+   "startDeactivated": false,
+   "requiredRootLevelDifference": -100,
+   "activator": null,
+   "interactorPos": [
+    -46.0,
+    30.997,
+    12.4
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -46.0,
+     30.997,
+     12.4
+    ],
+    "size": [
+     8.785,
+     9.697,
+     8.905
+    ],
+    "center": [
+     -0.042,
+     4.847,
+     -0.008
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Start a new Kingdom!",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Lvl 1 Perks",
+         "components": [
+          "OutpostPerk",
+          "LastStandPerk"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 7,
+     "coreCost": 0,
+     "tooltip": "Unlock more build options and choose an upgrade. ",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": {
+        "name": "Royal Training",
+        "tooltip": "+ 75% HP for your character\n+ 75% Overall damage output for your character",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 200,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Royal Training",
+         "components": [
+          "UpgradePlayerHp",
+          "UpgradePlayerDmg"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Level 2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 35.0,
+           "cooldown": 2.0,
+           "baseDamage": 4.5,
+           "dps": 2.25,
+           "weapon": "P Castle Center",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkCooldownModifyer",
+          "PerkRangeModifyer"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Royal Training Mesh",
+         "components": []
+        }
+       ],
+       "disables": [
+        "Auto Attack Level 1"
+       ],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Builder's Guild",
+        "tooltip": "+ Every morning a level 1 house is automatically upgraded to a level 2 house (if available)\n+ 50% HP for your character",
+        "disabledInMode": true
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 200,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Builder's Guild",
+         "components": [
+          "UpgradePlayerHp",
+          "UpgradeBuildersGuild"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Level 2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 35.0,
+           "cooldown": 2.0,
+           "baseDamage": 4.5,
+           "dps": 2.25,
+           "weapon": "P Castle Center",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkCooldownModifyer",
+          "PerkRangeModifyer"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Builders Guild Mesh",
+         "components": []
+        }
+       ],
+       "disables": [
+        "Auto Attack Level 1"
+       ],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Magic Armor",
+        "tooltip": "+ Enemies that deal damage to you take a part of that damage themselves\n+ 150% HP for your character",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 200,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Magic Armor",
+         "components": [
+          "UpgradePlayerHp",
+          "UpgradeMagicArmor"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Level 2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 35.0,
+           "cooldown": 2.0,
+           "baseDamage": 4.5,
+           "dps": 2.25,
+           "weapon": "P Castle Center",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkCooldownModifyer",
+          "PerkRangeModifyer"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Magic Armor Mesh",
+         "components": []
+        }
+       ],
+       "disables": [
+        "Auto Attack Level 1"
+       ],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Assassin's Training",
+        "tooltip": "+ If you manage to execute your weapon's special ability precisely when its last cooldown expires, the next cooldown is greatly reduced\n+ 100% Overall damage output for your character",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 200,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Assassin's Training",
+         "components": [
+          "UpgradePlayerDmg",
+          "UpgradeAssassinsTraining"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Level 2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 35.0,
+           "cooldown": 2.0,
+           "baseDamage": 4.5,
+           "dps": 2.25,
+           "weapon": "P Castle Center",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkCooldownModifyer",
+          "PerkRangeModifyer"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Assassins Training Mesh",
+         "components": []
+        }
+       ],
+       "disables": [
+        "Auto Attack Level 1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 20,
+     "coreCost": 0,
+     "tooltip": "Unlock more build options and choose an upgrade. ",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": {
+        "name": "Royal Mastery",
+        "tooltip": "+ 75% HP for your character\n+ 75% Overall damage output for your character",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Auto Attack Level 3",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 35.0,
+           "cooldown": 1.0,
+           "baseDamage": 4.5,
+           "dps": 4.5,
+           "weapon": "P Castle Center",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkCooldownModifyer",
+          "PerkRangeModifyer"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Royal Mastery",
+         "components": [
+          "UpgradePlayerHp",
+          "UpgradePlayerDmg"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Royal Mastery Mesh",
+         "components": []
+        }
+       ],
+       "disables": [
+        "Auto Attack Level 2"
+       ],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Commander",
+        "tooltip": "+ Units move faster while you command them\n+ You have a healing aura that heals allied units nearby\n+ 30% Overall damage output for your character",
+        "disabledInMode": true
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Commander",
+         "components": [
+          "UpgradeCommander"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Level 3",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 35.0,
+           "cooldown": 1.0,
+           "baseDamage": 4.5,
+           "dps": 4.5,
+           "weapon": "P Castle Center",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkCooldownModifyer",
+          "PerkRangeModifyer"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Commander Mesh",
+         "components": []
+        }
+       ],
+       "disables": [
+        "Auto Attack Level 2"
+       ],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Castle Up",
+        "tooltip": "+ The upgrade costs of all walls and towers drop by 1 every night (but never lower than 1, initial build costs are unaffected)",
+        "disabledInMode": true
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Castle Up",
+         "components": [
+          "UpgradeCastleUp",
+          "UpgradePlayerHp"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Level 3",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 35.0,
+           "cooldown": 1.0,
+           "baseDamage": 4.5,
+           "dps": 4.5,
+           "weapon": "P Castle Center",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkCooldownModifyer",
+          "PerkRangeModifyer"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Castle Up Mesh",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer",
+          "BoxCollider"
+         ]
+        }
+       ],
+       "disables": [
+        "Auto Attack Level 2"
+       ],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Godly Curse",
+        "tooltip": "+ If you lock in a target, that target receives 50% more damage from all sources.\n+ 75% HP for your character",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Godly Curse",
+         "components": [
+          "UpgradePlayerHp",
+          "UpgradeGodlyCurse"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Level 3",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 35.0,
+           "cooldown": 1.0,
+           "baseDamage": 4.5,
+           "dps": 4.5,
+           "weapon": "P Castle Center",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkCooldownModifyer",
+          "PerkRangeModifyer"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Godly Curse Mesh",
+         "components": []
+        }
+       ],
+       "disables": [
+        "Auto Attack Level 2"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 4,
+     "cost": 100,
+     "coreCost": 0,
+     "tooltip": "",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": {
+        "name": "Empire Towers",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 1000,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Empire Towers",
+         "components": [
+          "EmpireUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Empire Troups",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 1000,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Empire Troups",
+         "components": [
+          "EmpireUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Empire Armor",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 1000,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Empire Armor",
+         "components": [
+          "EmpireUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Empire Growth",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 20,
+       "coreIncome": 0,
+       "hpChange": 1000,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Empire Growth",
+         "components": [
+          "EmpireUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 130,
+   "totalCoreCost": 0,
+   "maxIncome": 20
+  },
+  {
+   "id": 25623,
+   "name": "Shrine (3)",
+   "path": "BUILDINGS/Shrine (3)",
+   "building": "Shrine",
+   "pos": [
+    -77.76,
+    23.397,
+    34.65
+   ],
+   "yawDeg": 2.3,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 25069,
+    "building": "Castle Center",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -77.76,
+    23.397,
+    34.65
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -77.76,
+     23.397,
+     34.65
+    ],
+    "size": [
+     3.105,
+     6.607,
+     3.105
+    ],
+    "center": [
+     0.0,
+     3.303,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Shoots at enemies.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 3,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 25624,
+   "name": "Shrine (18)",
+   "path": "BUILDINGS/Shrine (18)",
+   "building": "Shrine",
+   "pos": [
+    -51.84,
+    30.997,
+    43.55
+   ],
+   "yawDeg": -24.5,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 25069,
+    "building": "Castle Center",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -51.84,
+    30.997,
+    43.55
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -51.84,
+     30.997,
+     43.55
+    ],
+    "size": [
+     3.105,
+     6.607,
+     3.105
+    ],
+    "center": [
+     0.0,
+     3.303,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Shoots at enemies.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 3,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 25625,
+   "name": "Shrine (17)",
+   "path": "BUILDINGS/Shrine (17)",
+   "building": "Shrine",
+   "pos": [
+    -38.59,
+    30.997,
+    23.56
+   ],
+   "yawDeg": -43.6,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 25069,
+    "building": "Castle Center",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -38.59,
+    30.997,
+    23.56
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -38.59,
+     30.997,
+     23.56
+    ],
+    "size": [
+     3.105,
+     6.607,
+     3.105
+    ],
+    "center": [
+     0.0,
+     3.303,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Shoots at enemies.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 3,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 25627,
+   "name": "Shrine",
+   "path": "BUILDINGS/Shrine",
+   "building": "Shrine",
+   "pos": [
+    -33.99,
+    17.897,
+    -55.16
+   ],
+   "yawDeg": 44.9,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 25069,
+    "building": "Castle Center",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -33.99,
+    17.897,
+    -55.16
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -33.99,
+     17.897,
+     -55.16
+    ],
+    "size": [
+     3.105,
+     6.607,
+     3.105
+    ],
+    "center": [
+     0.0,
+     3.303,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Shoots at enemies.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 3,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 25628,
+   "name": "Shrine (4)",
+   "path": "BUILDINGS/Shrine (4)",
+   "building": "Shrine",
+   "pos": [
+    -110.25,
+    17.897,
+    75.38
+   ],
+   "yawDeg": 7.8,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 25069,
+    "building": "Castle Center",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -110.25,
+    17.897,
+    75.38
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -110.25,
+     17.897,
+     75.38
+    ],
+    "size": [
+     3.105,
+     6.607,
+     3.105
+    ],
+    "center": [
+     0.0,
+     3.303,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Shoots at enemies.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 3,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 25629,
+   "name": "Shrine (19)",
+   "path": "BUILDINGS/Shrine (19)",
+   "building": "Shrine",
+   "pos": [
+    -57.47,
+    30.997,
+    20.29
+   ],
+   "yawDeg": -24.5,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 25069,
+    "building": "Castle Center",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -57.47,
+    30.997,
+    20.29
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -57.47,
+     30.997,
+     20.29
+    ],
+    "size": [
+     3.105,
+     6.607,
+     3.105
+    ],
+    "center": [
+     0.0,
+     3.303,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Shoots at enemies.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 3,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 25631,
+   "name": "Shrine (14)",
+   "path": "BUILDINGS/Shrine (14)",
+   "building": "Shrine",
+   "pos": [
+    -77.7,
+    17.897,
+    82.89
+   ],
+   "yawDeg": 7.8,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 25069,
+    "building": "Castle Center",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -77.7,
+    17.897,
+    82.89
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -77.7,
+     17.897,
+     82.89
+    ],
+    "size": [
+     3.105,
+     6.607,
+     3.105
+    ],
+    "center": [
+     0.0,
+     3.303,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Shoots at enemies.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 3,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 25633,
+   "name": "Shrine (21)",
+   "path": "BUILDINGS/Shrine (21)",
+   "building": "Shrine",
+   "pos": [
+    -12.18,
+    30.997,
+    -6.64
+   ],
+   "yawDeg": -69.8,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 25069,
+    "building": "Castle Center",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -12.18,
+    30.997,
+    -6.64
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -12.18,
+     30.997,
+     -6.64
+    ],
+    "size": [
+     3.105,
+     6.607,
+     3.105
+    ],
+    "center": [
+     0.0,
+     3.303,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Shoots at enemies.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 3,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 25635,
+   "name": "Shrine (2)",
+   "path": "BUILDINGS/Shrine (2)",
+   "building": "Shrine",
+   "pos": [
+    -65.85,
+    23.397,
+    -11.02
+   ],
+   "yawDeg": -43.2,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 25069,
+    "building": "Castle Center",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -65.85,
+    23.397,
+    -11.02
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -65.85,
+     23.397,
+     -11.02
+    ],
+    "size": [
+     3.105,
+     6.607,
+     3.105
+    ],
+    "center": [
+     0.0,
+     3.303,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Shoots at enemies.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 3,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 25637,
+   "name": "Shrine (10)",
+   "path": "BUILDINGS/Shrine (10)",
+   "building": "Shrine",
+   "pos": [
+    -15.7,
+    30.997,
+    -23.1
+   ],
+   "yawDeg": -5.2,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 25069,
+    "building": "Castle Center",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -15.7,
+    30.997,
+    -23.1
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -15.7,
+     30.997,
+     -23.1
+    ],
+    "size": [
+     3.105,
+     6.607,
+     3.105
+    ],
+    "center": [
+     0.0,
+     3.303,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Shoots at enemies.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 3,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 25639,
+   "name": "Shrine (13)",
+   "path": "BUILDINGS/Shrine (13)",
+   "building": "Shrine",
+   "pos": [
+    -84.0,
+    23.397,
+    25.4
+   ],
+   "yawDeg": -7.8,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 25069,
+    "building": "Castle Center",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -84.0,
+    23.397,
+    25.4
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -84.0,
+     23.397,
+     25.4
+    ],
+    "size": [
+     3.105,
+     6.607,
+     3.105
+    ],
+    "center": [
+     0.0,
+     3.303,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Shoots at enemies.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 3,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 25642,
+   "name": "Shrine (16)",
+   "path": "BUILDINGS/Shrine (16)",
+   "building": "Shrine",
+   "pos": [
+    -25.7,
+    30.997,
+    6.89
+   ],
+   "yawDeg": -29.9,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 25069,
+    "building": "Castle Center",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -25.7,
+    30.997,
+    6.89
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -25.7,
+     30.997,
+     6.89
+    ],
+    "size": [
+     3.105,
+     6.607,
+     3.105
+    ],
+    "center": [
+     0.0,
+     3.303,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Shoots at enemies.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 3,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 25643,
+   "name": "Shrine (8)",
+   "path": "BUILDINGS/Shrine (8)",
+   "building": "Shrine",
+   "pos": [
+    -43.5,
+    23.397,
+    -28.3
+   ],
+   "yawDeg": -62.8,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 25069,
+    "building": "Castle Center",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -43.5,
+    23.397,
+    -28.3
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -43.5,
+     23.397,
+     -28.3
+    ],
+    "size": [
+     3.105,
+     6.607,
+     3.105
+    ],
+    "center": [
+     0.0,
+     3.303,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Shoots at enemies.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 3,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 25645,
+   "name": "Shrine (9)",
+   "path": "BUILDINGS/Shrine (9)",
+   "building": "Shrine",
+   "pos": [
+    -60.36,
+    17.897,
+    -44.72
+   ],
+   "yawDeg": 22.8,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 25069,
+    "building": "Castle Center",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -60.36,
+    17.897,
+    -44.72
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -60.36,
+     17.897,
+     -44.72
+    ],
+    "size": [
+     3.105,
+     6.607,
+     3.105
+    ],
+    "center": [
+     0.0,
+     3.303,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Shoots at enemies.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 3,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 25647,
+   "name": "Shrine (1)",
+   "path": "BUILDINGS/Shrine (1)",
+   "building": "Shrine",
+   "pos": [
+    -102.11,
+    17.897,
+    -6.88
+   ],
+   "yawDeg": -22.4,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 25069,
+    "building": "Castle Center",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -102.11,
+    17.897,
+    -6.88
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -102.11,
+     17.897,
+     -6.88
+    ],
+    "size": [
+     3.105,
+     6.607,
+     3.105
+    ],
+    "center": [
+     0.0,
+     3.303,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Shoots at enemies.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 3,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 25648,
+   "name": "Shrine (5)",
+   "path": "BUILDINGS/Shrine (5)",
+   "building": "Shrine",
+   "pos": [
+    -29.99,
+    30.997,
+    -8.88
+   ],
+   "yawDeg": -43.2,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 25069,
+    "building": "Castle Center",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -29.99,
+    30.997,
+    -8.88
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -29.99,
+     30.997,
+     -8.88
+    ],
+    "size": [
+     3.105,
+     6.607,
+     3.105
+    ],
+    "center": [
+     0.0,
+     3.303,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Shoots at enemies.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 3,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 25650,
+   "name": "Shrine (6)",
+   "path": "BUILDINGS/Shrine (6)",
+   "building": "Shrine",
+   "pos": [
+    -79.6,
+    17.897,
+    -26.8
+   ],
+   "yawDeg": 44.9,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 25069,
+    "building": "Castle Center",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -79.6,
+    17.897,
+    -26.8
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -79.6,
+     17.897,
+     -26.8
+    ],
+    "size": [
+     3.105,
+     6.607,
+     3.105
+    ],
+    "center": [
+     0.0,
+     3.303,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Shoots at enemies.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 3,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 25652,
+   "name": "Shrine (7)",
+   "path": "BUILDINGS/Shrine (7)",
+   "building": "Shrine",
+   "pos": [
+    -74.2,
+    23.397,
+    15.2
+   ],
+   "yawDeg": -14.2,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 25069,
+    "building": "Castle Center",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -74.2,
+    23.397,
+    15.2
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -74.2,
+     23.397,
+     15.2
+    ],
+    "size": [
+     3.105,
+     6.607,
+     3.105
+    ],
+    "center": [
+     0.0,
+     3.303,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Shoots at enemies.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 3,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 25654,
+   "name": "Shrine (15)",
+   "path": "BUILDINGS/Shrine (15)",
+   "building": "Shrine",
+   "pos": [
+    -45.84,
+    30.997,
+    -2.79
+   ],
+   "yawDeg": -43.2,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 25069,
+    "building": "Castle Center",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -45.84,
+    30.997,
+    -2.79
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -45.84,
+     30.997,
+     -2.79
+    ],
+    "size": [
+     3.105,
+     6.607,
+     3.105
+    ],
+    "center": [
+     0.0,
+     3.303,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Shoots at enemies.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 3,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 25658,
+   "name": "Shrine (12)",
+   "path": "BUILDINGS/Shrine (12)",
+   "building": "Shrine",
+   "pos": [
+    -77.85,
+    23.397,
+    2.04
+   ],
+   "yawDeg": -18.6,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 25069,
+    "building": "Castle Center",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -77.85,
+    23.397,
+    2.04
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -77.85,
+     23.397,
+     2.04
+    ],
+    "size": [
+     3.105,
+     6.607,
+     3.105
+    ],
+    "center": [
+     0.0,
+     3.303,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Shoots at enemies.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 3,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 25662,
+   "name": "Shrine (11)",
+   "path": "BUILDINGS/Shrine (11)",
+   "building": "Shrine",
+   "pos": [
+    -111.1,
+    17.897,
+    14.76
+   ],
+   "yawDeg": -17.4,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 25069,
+    "building": "Castle Center",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -111.1,
+    17.897,
+    14.76
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -111.1,
+     17.897,
+     14.76
+    ],
+    "size": [
+     3.105,
+     6.607,
+     3.105
+    ],
+    "center": [
+     0.0,
+     3.303,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Shoots at enemies.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 3,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 25922,
+   "name": "Gate Wide Variant",
+   "path": "BUILDINGS/Gate Wide Variant",
+   "building": "Wall",
+   "pos": [
+    -91.65,
+    23.34,
+    39.24
+   ],
+   "yawDeg": 99.1,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 1,
+   "activator": {
+    "slot": 25069,
+    "building": "Castle Center",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -91.65,
+    23.34,
+    39.24
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -91.65,
+     23.34,
+     39.24
+    ],
+    "size": [
+     10.04,
+     4.508,
+     0.537
+    ],
+    "center": [
+     -0.009,
+     2.254,
+     -0.158
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 5,
+     "coreCost": 0,
+     "tooltip": "Stops enemies at the gates.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 10,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Gate Opener Lvl 2",
+         "components": [
+          "GateOpener",
+          "PerkSpawnOnDestroy"
+         ]
+        }
+       ],
+       "disables": [
+        "Gate Opener Lvl 1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 50,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 2500,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 65,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 25923,
+   "name": "Gate Wide Variant (1)",
+   "path": "BUILDINGS/Gate Wide Variant (1)",
+   "building": "Wall",
+   "pos": [
+    -27.988,
+    30.997,
+    -20.005
+   ],
+   "yawDeg": 0.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 1,
+   "activator": {
+    "slot": 25069,
+    "building": "Castle Center",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -27.988,
+    30.997,
+    -20.005
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -27.988,
+     30.997,
+     -20.005
+    ],
+    "size": [
+     10.04,
+     4.508,
+     0.537
+    ],
+    "center": [
+     -0.009,
+     2.254,
+     -0.158
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 5,
+     "coreCost": 0,
+     "tooltip": "Stops enemies at the gates.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 10,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Gate Opener Lvl 2",
+         "components": [
+          "GateOpener",
+          "PerkSpawnOnDestroy"
+         ]
+        }
+       ],
+       "disables": [
+        "Gate Opener Lvl 1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 50,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 2500,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 65,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  }
+ ],
+ "shrines": [
+  {
+   "id": 25142,
+   "name": "Building Parent",
+   "path": "BUILDINGS/Shrine (13)/Building Parent",
+   "active": true,
+   "pos": [
+    -84.0,
+    23.397,
+    25.4
+   ],
+   "maxXp": 350.0,
+   "collectionRange": 20.0,
+   "incomeOnceUnlocked": 2,
+   "strengthBonusOnAdditionalShrine": 1.2000000476837158
+  },
+  {
+   "id": 25143,
+   "name": "Building Parent",
+   "path": "BUILDINGS/Shrine (10)/Building Parent",
+   "active": true,
+   "pos": [
+    -15.7,
+    30.997,
+    -23.1
+   ],
+   "maxXp": 350.0,
+   "collectionRange": 20.0,
+   "incomeOnceUnlocked": 2,
+   "strengthBonusOnAdditionalShrine": 1.2000000476837158
+  },
+  {
+   "id": 25144,
+   "name": "Building Parent",
+   "path": "BUILDINGS/Shrine (16)/Building Parent",
+   "active": true,
+   "pos": [
+    -25.7,
+    30.997,
+    6.89
+   ],
+   "maxXp": 350.0,
+   "collectionRange": 20.0,
+   "incomeOnceUnlocked": 2,
+   "strengthBonusOnAdditionalShrine": 1.2000000476837158
+  },
+  {
+   "id": 25145,
+   "name": "Building Parent",
+   "path": "BUILDINGS/Shrine (21)/Building Parent",
+   "active": true,
+   "pos": [
+    -12.18,
+    30.997,
+    -6.64
+   ],
+   "maxXp": 350.0,
+   "collectionRange": 20.0,
+   "incomeOnceUnlocked": 2,
+   "strengthBonusOnAdditionalShrine": 1.2000000476837158
+  },
+  {
+   "id": 25146,
+   "name": "Building Parent",
+   "path": "BUILDINGS/Shrine (14)/Building Parent",
+   "active": true,
+   "pos": [
+    -77.7,
+    17.897,
+    82.89
+   ],
+   "maxXp": 350.0,
+   "collectionRange": 20.0,
+   "incomeOnceUnlocked": 2,
+   "strengthBonusOnAdditionalShrine": 1.2000000476837158
+  },
+  {
+   "id": 25147,
+   "name": "Building Parent",
+   "path": "BUILDINGS/Shrine (2)/Building Parent",
+   "active": true,
+   "pos": [
+    -65.85,
+    23.397,
+    -11.02
+   ],
+   "maxXp": 350.0,
+   "collectionRange": 20.0,
+   "incomeOnceUnlocked": 2,
+   "strengthBonusOnAdditionalShrine": 1.2000000476837158
+  },
+  {
+   "id": 25148,
+   "name": "Building Parent",
+   "path": "BUILDINGS/Shrine (18)/Building Parent",
+   "active": true,
+   "pos": [
+    -51.84,
+    30.997,
+    43.55
+   ],
+   "maxXp": 350.0,
+   "collectionRange": 20.0,
+   "incomeOnceUnlocked": 2,
+   "strengthBonusOnAdditionalShrine": 1.2000000476837158
+  },
+  {
+   "id": 25149,
+   "name": "Building Parent",
+   "path": "BUILDINGS/Shrine (17)/Building Parent",
+   "active": true,
+   "pos": [
+    -38.59,
+    30.997,
+    23.56
+   ],
+   "maxXp": 350.0,
+   "collectionRange": 20.0,
+   "incomeOnceUnlocked": 2,
+   "strengthBonusOnAdditionalShrine": 1.2000000476837158
+  },
+  {
+   "id": 25150,
+   "name": "Building Parent",
+   "path": "BUILDINGS/Shrine (19)/Building Parent",
+   "active": true,
+   "pos": [
+    -57.47,
+    30.997,
+    20.29
+   ],
+   "maxXp": 350.0,
+   "collectionRange": 20.0,
+   "incomeOnceUnlocked": 2,
+   "strengthBonusOnAdditionalShrine": 1.2000000476837158
+  },
+  {
+   "id": 25151,
+   "name": "Building Parent",
+   "path": "BUILDINGS/Shrine (4)/Building Parent",
+   "active": true,
+   "pos": [
+    -110.25,
+    17.897,
+    75.38
+   ],
+   "maxXp": 350.0,
+   "collectionRange": 20.0,
+   "incomeOnceUnlocked": 2,
+   "strengthBonusOnAdditionalShrine": 1.2000000476837158
+  },
+  {
+   "id": 25152,
+   "name": "Building Parent",
+   "path": "BUILDINGS/Shrine/Building Parent",
+   "active": true,
+   "pos": [
+    -33.99,
+    17.897,
+    -55.16
+   ],
+   "maxXp": 350.0,
+   "collectionRange": 20.0,
+   "incomeOnceUnlocked": 2,
+   "strengthBonusOnAdditionalShrine": 1.2000000476837158
+  },
+  {
+   "id": 25153,
+   "name": "Building Parent",
+   "path": "BUILDINGS/Shrine (3)/Building Parent",
+   "active": true,
+   "pos": [
+    -77.76,
+    23.397,
+    34.65
+   ],
+   "maxXp": 350.0,
+   "collectionRange": 20.0,
+   "incomeOnceUnlocked": 2,
+   "strengthBonusOnAdditionalShrine": 1.2000000476837158
+  },
+  {
+   "id": 25154,
+   "name": "Building Parent",
+   "path": "BUILDINGS/Shrine (11)/Building Parent",
+   "active": true,
+   "pos": [
+    -111.1,
+    17.897,
+    14.76
+   ],
+   "maxXp": 350.0,
+   "collectionRange": 20.0,
+   "incomeOnceUnlocked": 2,
+   "strengthBonusOnAdditionalShrine": 1.2000000476837158
+  },
+  {
+   "id": 25155,
+   "name": "Building Parent",
+   "path": "BUILDINGS/Shrine (12)/Building Parent",
+   "active": true,
+   "pos": [
+    -77.85,
+    23.397,
+    2.04
+   ],
+   "maxXp": 350.0,
+   "collectionRange": 20.0,
+   "incomeOnceUnlocked": 2,
+   "strengthBonusOnAdditionalShrine": 1.2000000476837158
+  },
+  {
+   "id": 25156,
+   "name": "Building Parent",
+   "path": "BUILDINGS/Shrine (7)/Building Parent",
+   "active": true,
+   "pos": [
+    -74.2,
+    23.397,
+    15.2
+   ],
+   "maxXp": 350.0,
+   "collectionRange": 20.0,
+   "incomeOnceUnlocked": 2,
+   "strengthBonusOnAdditionalShrine": 1.2000000476837158
+  },
+  {
+   "id": 25157,
+   "name": "Building Parent",
+   "path": "BUILDINGS/Shrine (6)/Building Parent",
+   "active": true,
+   "pos": [
+    -79.6,
+    17.897,
+    -26.8
+   ],
+   "maxXp": 350.0,
+   "collectionRange": 20.0,
+   "incomeOnceUnlocked": 2,
+   "strengthBonusOnAdditionalShrine": 1.2000000476837158
+  },
+  {
+   "id": 25158,
+   "name": "Building Parent",
+   "path": "BUILDINGS/Shrine (15)/Building Parent",
+   "active": true,
+   "pos": [
+    -45.84,
+    30.997,
+    -2.79
+   ],
+   "maxXp": 350.0,
+   "collectionRange": 20.0,
+   "incomeOnceUnlocked": 2,
+   "strengthBonusOnAdditionalShrine": 1.2000000476837158
+  },
+  {
+   "id": 25159,
+   "name": "Building Parent",
+   "path": "BUILDINGS/Shrine (9)/Building Parent",
+   "active": true,
+   "pos": [
+    -60.36,
+    17.897,
+    -44.72
+   ],
+   "maxXp": 350.0,
+   "collectionRange": 20.0,
+   "incomeOnceUnlocked": 2,
+   "strengthBonusOnAdditionalShrine": 1.2000000476837158
+  },
+  {
+   "id": 25160,
+   "name": "Building Parent",
+   "path": "BUILDINGS/Shrine (8)/Building Parent",
+   "active": true,
+   "pos": [
+    -43.5,
+    23.397,
+    -28.3
+   ],
+   "maxXp": 350.0,
+   "collectionRange": 20.0,
+   "incomeOnceUnlocked": 2,
+   "strengthBonusOnAdditionalShrine": 1.2000000476837158
+  },
+  {
+   "id": 25161,
+   "name": "Building Parent",
+   "path": "BUILDINGS/Shrine (5)/Building Parent",
+   "active": true,
+   "pos": [
+    -29.99,
+    30.997,
+    -8.88
+   ],
+   "maxXp": 350.0,
+   "collectionRange": 20.0,
+   "incomeOnceUnlocked": 2,
+   "strengthBonusOnAdditionalShrine": 1.2000000476837158
+  },
+  {
+   "id": 25162,
+   "name": "Building Parent",
+   "path": "BUILDINGS/Shrine (1)/Building Parent",
+   "active": true,
+   "pos": [
+    -102.11,
+    17.897,
+    -6.88
+   ],
+   "maxXp": 350.0,
+   "collectionRange": 20.0,
+   "incomeOnceUnlocked": 2,
+   "strengthBonusOnAdditionalShrine": 1.2000000476837158
+  }
+ ],
+ "nighthorns": [],
+ "dayNight": [
+  {
+   "id": 26087,
+   "name": "Day Night Cycle",
+   "path": "LOCAL MANAGERS/Day Night Cycle",
+   "active": true,
+   "pos": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "sunriseTime": 3.0
+  }
+ ],
+ "autoDayNight": [],
+ "nightCall": [
+  {
+   "id": 24859,
+   "name": "UI Overlay Canvas",
+   "path": "LOCAL MANAGERS/UI Overlay Canvas",
+   "active": false,
+   "pos": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "nightCallTime": 2.0
+  }
+ ],
+ "castle": [
+  {
+   "id": 20900,
+   "name": "Building Parent",
+   "path": "BUILDINGS/Castle Center Variant/Building Parent",
+   "pos": [
+    -46.0,
+    30.997,
+    12.4
+   ],
+   "maxHp": 100.0,
+   "tags": [
+    "PlayerOwned",
+    "Building",
+    "InfrastructureEconomy",
+    "CastleCenter",
+    "PlayerOwnedPriorityTarget"
+   ]
+  }
+ ],
+ "heroes": [
+  {
+   "name": "Player Character",
+   "pos": [
+    -58.49,
+    30.41,
+    11.54
+   ],
+   "summary": {
+    "name": "Player Character",
+    "maxHp": 50.0,
+    "tags": [
+     "PlayerOwned",
+     "Player"
+    ],
+    "coinDrop": 0,
+    "components": [
+     "CharacterController",
+     "PlayerMovement",
+     "PlayerInteraction",
+     "RVOController",
+     "TaggedObject",
+     "Hp",
+     "PlayerHpRegen",
+     "AutoRevive",
+     "PlayerUpgradeManager",
+     "PlayerAttack",
+     "CommandUnits",
+     "PerkHpModifyer",
+     "PowerTowerPerk",
+     "SaveLoadEntity"
+    ]
+   },
+   "movement": {
+    "speed": 14.0,
+    "speedDuringDay": 18.2,
+    "sprintSpeed": 23.0,
+    "sprintSpeedDuringDay": 29.9,
+    "moveSpeedWhenDead": 6.0,
+    "gravity": -50.0,
+    "maxMeshRotationSpeed": 400.0,
+    "yFallThroughMapDetection": -30.0
+   },
+   "interaction": {
+    "coinMagnetRadius": 7.0,
+    "interactionRadius": 3.0
+   },
+   "command": {
+    "drowWaypointParticleCount": 100,
+    "attractRange": 6.0,
+    "graphNameOfPlayerUnits": "Player Units S",
+    "graphNameOfFlyingUnits": "Enemy Units Air",
+    "unitDistanceFromEachOther": 2.5,
+    "unitDistanceMoveStep": 0.5,
+    "maxPositioningRepeats": 50,
+    "holdToHoldPositionTime": 0.5,
+    "holdToSetUnitGroup": 1.0,
+    "commanderUnitMoveSpeedMulti": 1.6,
+    "commanderHoldHealthMulti": 1.2,
+    "commanderHoldDamageMulti": 1.2,
+    "groupHoldDelay": 0.2,
+    "commanding": false,
+    "canCommandUnitsInThisMode": true
+   }
+  }
+ ],
+ "units": {},
+ "summary": {
+  "nights": 13,
+  "enemiesTotal": 742,
+  "baseHpTotal": 87960.0,
+  "goldCoinsTotal": 0,
+  "flyingEnemies": 38,
+  "bossEnemies": 4,
+  "spawnLines": 11,
+  "buildSlots": 26,
+  "slotsByBuilding": {
+   "Wall": 4,
+   "Castle Center": 1,
+   "Shrine": 21
+  },
+  "hasHorn": false,
+  "shrines": 21,
+  "castleFound": true,
+  "enemyTypes": [
+   "E Catapult",
+   "E Eldermole",
+   "E Flyer",
+   "E Flying Wizzard",
+   "E Hunterling",
+   "E Melee",
+   "E Moleman",
+   "E Moleman Archer",
+   "E Ogre",
+   "E Racer",
+   "E Ram"
+  ]
+ }
+}

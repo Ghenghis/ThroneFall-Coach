@@ -1,0 +1,56 @@
+{
+  "lock_id": "f849fed5f56103f5d2f3da3b",
+  "file": "tools/refpack",
+  "owner": "claude-refpack",
+  "role": "agent",
+  "task_id": null,
+  "reason": "New folders for the static extraction toolchain (tools/refpack) and generated game handbook/mapping files (reference). No existing files touched.",
+  "acquired_utc": "2026-09-29T11:56:02.527Z",
+  "heartbeat_utc": "2026-09-29T13:32:06.920Z",
+  "expires_utc": "2026-09-29T15:02:06.920Z",
+  "history": [
+    {
+      "ts_utc": "2026-09-29T11:56:02.527Z",
+      "type": "acquired",
+      "owner": "claude-refpack",
+      "task_id": null,
+      "reason": "New folders for the static extraction toolchain (tools/refpack) and generated game handbook/mapping files (reference). No existing files touched."
+    },
+    {
+      "ts_utc": "2026-09-29T12:08:08.777Z",
+      "type": "heartbeat",
+      "owner": "claude-refpack",
+      "task_id": null
+    },
+    {
+      "ts_utc": "2026-09-29T12:10:37.962Z",
+      "type": "heartbeat",
+      "owner": "claude-refpack",
+      "task_id": null
+    },
+    {
+      "ts_utc": "2026-09-29T12:34:14.485Z",
+      "type": "heartbeat",
+      "owner": "claude-refpack",
+      "task_id": null
+    },
+    {
+      "ts_utc": "2026-09-29T13:04:48.526Z",
+      "type": "heartbeat",
+      "owner": "claude-refpack",
+      "task_id": null
+    },
+    {
+      "ts_utc": "2026-09-29T13:19:16.300Z",
+      "type": "heartbeat",
+      "owner": "claude-refpack",
+      "task_id": null
+    },
+    {
+      "ts_utc": "2026-09-29T13:32:06.920Z",
+      "type": "heartbeat",
+      "owner": "claude-refpack",
+      "task_id": null
+    }
+  ]
+}

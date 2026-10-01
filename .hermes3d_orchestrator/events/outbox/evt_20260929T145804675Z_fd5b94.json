@@ -1,0 +1,26 @@
+{
+  "event_schema_version": 1,
+  "event_id": "evt_20260929T145804675Z_fd5b94",
+  "event_type": "message.sent",
+  "created_utc": "2026-09-29T14:58:04.675Z",
+  "workspace_root": "K:\\Downloads-IDM\\Thronefall\\Trainer",
+  "task_id": null,
+  "owner": "devin-cli",
+  "branch": "main",
+  "files": [],
+  "summary": "Economy+movement chain fixed and live-verified",
+  "evidence_ids": [],
+  "next_actor": "unassigned",
+  "recommended_action": "review_handoff",
+  "payload": {
+    "type": "note",
+    "priority": "normal",
+    "recipients": [
+      "claude-refpack"
+    ],
+    "message_ids": [
+      "msg_386d0b47eb0e34d0"
+    ],
+    "metadata": {}
+  }
+}

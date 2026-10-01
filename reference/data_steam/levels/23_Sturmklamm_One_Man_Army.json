@@ -1,0 +1,5485 @@
+{
+ "scene": "Sturmklamm One Man Army",
+ "buildIndex": 23,
+ "file": "level23",
+ "kind": "minimode",
+ "objects": 23494,
+ "monobehaviourClasses": 186,
+ "spawners": [
+  {
+   "id": 23477,
+   "name": "ES Sturmklamm One Man Army",
+   "mode": "Classic",
+   "modeRaw": 0,
+   "goldBalanceAtStart": 7,
+   "endlessMode": false,
+   "pauseSpawningAtEnemyCount": 275,
+   "reduceSpawnWaitTimes": true,
+   "waveGenerator": "Season2 Wave Gen",
+   "endlessWaveGenerator": null,
+   "waveCount": 11,
+   "waves": [
+    {
+     "index": 0,
+     "night": 1,
+     "warningText": "Melee",
+     "difficultyMulti": 1.0,
+     "spawns": [
+      {
+       "enemy": "resources.assets:6457",
+       "enemyName": "E Melee",
+       "displayName": "Swordsman",
+       "count": 15,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 0.5,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 11,
+       "spawnLine": "Bridge 1",
+       "spawnCenter": [
+        -124.415,
+        18.28,
+        -7.575
+       ],
+       "maxHp": 25.0,
+       "spawnSpanSeconds": 7.0
+      }
+     ],
+     "totals": {
+      "enemies": 15,
+      "baseHp": 375.0,
+      "goldCoins": 11,
+      "eliteEnemies": 0,
+      "flying": 0,
+      "boss": 0,
+      "ranged": 0,
+      "spawnSpanSeconds": 7.0,
+      "byLine": {
+       "Bridge 1": 15
+      }
+     }
+    },
+    {
+     "index": 1,
+     "night": 2,
+     "warningText": "Barrel Knights",
+     "difficultyMulti": 1.0,
+     "spawns": [
+      {
+       "enemy": "resources.assets:6467",
+       "enemyName": "E BarrelKnight",
+       "displayName": "Barrel Knight",
+       "count": 5,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 1.5,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 12,
+       "spawnLine": "Bridge 2",
+       "spawnCenter": [
+        -87.064,
+        18.28,
+        -59.06
+       ],
+       "maxHp": 100.0,
+       "spawnSpanSeconds": 6.0
+      }
+     ],
+     "totals": {
+      "enemies": 5,
+      "baseHp": 500.0,
+      "goldCoins": 12,
+      "eliteEnemies": 0,
+      "flying": 0,
+      "boss": 0,
+      "ranged": 0,
+      "spawnSpanSeconds": 6.0,
+      "byLine": {
+       "Bridge 2": 5
+      }
+     }
+    },
+    {
+     "index": 2,
+     "night": 3,
+     "warningText": "Ogres",
+     "difficultyMulti": 1.0,
+     "spawns": [
+      {
+       "enemy": "resources.assets:6451",
+       "enemyName": "E Ogre",
+       "displayName": "Ogre",
+       "count": 2,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 1.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 5,
+       "spawnLine": "Bridge 1",
+       "spawnCenter": [
+        -124.415,
+        18.28,
+        -7.575
+       ],
+       "maxHp": 200.0,
+       "spawnSpanSeconds": 1.0
+      },
+      {
+       "enemy": "resources.assets:6451",
+       "enemyName": "E Ogre",
+       "displayName": "Ogre",
+       "count": 2,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 1.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 5,
+       "spawnLine": "Bridge 2",
+       "spawnCenter": [
+        -87.064,
+        18.28,
+        -59.06
+       ],
+       "maxHp": 200.0,
+       "spawnSpanSeconds": 1.0
+      },
+      {
+       "enemy": "resources.assets:6451",
+       "enemyName": "E Ogre",
+       "displayName": "Ogre",
+       "count": 2,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 1.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 5,
+       "spawnLine": "Bridge 3",
+       "spawnCenter": [
+        -44.286,
+        18.28,
+        -78.74
+       ],
+       "maxHp": 200.0,
+       "spawnSpanSeconds": 1.0
+      }
+     ],
+     "totals": {
+      "enemies": 6,
+      "baseHp": 1200.0,
+      "goldCoins": 15,
+      "eliteEnemies": 0,
+      "flying": 0,
+      "boss": 0,
+      "ranged": 0,
+      "spawnSpanSeconds": 1.0,
+      "byLine": {
+       "Bridge 1": 2,
+       "Bridge 2": 2,
+       "Bridge 3": 2
+      }
+     }
+    },
+    {
+     "index": 3,
+     "night": 4,
+     "warningText": "Archer and Racer",
+     "difficultyMulti": 1.0,
+     "spawns": [
+      {
+       "enemy": "resources.assets:5068",
+       "enemyName": "E Archer",
+       "displayName": "Archer",
+       "count": 4,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 1.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 3,
+       "spawnLine": "Bridge 1",
+       "spawnCenter": [
+        -124.415,
+        18.28,
+        -7.575
+       ],
+       "maxHp": 20.0,
+       "spawnSpanSeconds": 3.0
+      },
+      {
+       "enemy": "resources.assets:5068",
+       "enemyName": "E Archer",
+       "displayName": "Archer",
+       "count": 4,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 1.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 3,
+       "spawnLine": "Bridge 2",
+       "spawnCenter": [
+        -87.064,
+        18.28,
+        -59.06
+       ],
+       "maxHp": 20.0,
+       "spawnSpanSeconds": 3.0
+      },
+      {
+       "enemy": "resources.assets:5068",
+       "enemyName": "E Archer",
+       "displayName": "Archer",
+       "count": 4,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 1.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 3,
+       "spawnLine": "Bridge 3",
+       "spawnCenter": [
+        -44.286,
+        18.28,
+        -78.74
+       ],
+       "maxHp": 20.0,
+       "spawnSpanSeconds": 3.0
+      },
+      {
+       "enemy": "resources.assets:6459",
+       "enemyName": "E Racer",
+       "displayName": "Racer",
+       "count": 3,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 5.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 3,
+       "spawnLine": "Bridge 1",
+       "spawnCenter": [
+        -124.415,
+        18.28,
+        -7.575
+       ],
+       "maxHp": 35.0,
+       "spawnSpanSeconds": 10.0
+      },
+      {
+       "enemy": "resources.assets:6459",
+       "enemyName": "E Racer",
+       "displayName": "Racer",
+       "count": 3,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 5.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 3,
+       "spawnLine": "Bridge 2",
+       "spawnCenter": [
+        -87.064,
+        18.28,
+        -59.06
+       ],
+       "maxHp": 35.0,
+       "spawnSpanSeconds": 10.0
+      },
+      {
+       "enemy": "resources.assets:6459",
+       "enemyName": "E Racer",
+       "displayName": "Racer",
+       "count": 3,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 5.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 3,
+       "spawnLine": "Bridge 3",
+       "spawnCenter": [
+        -44.286,
+        18.28,
+        -78.74
+       ],
+       "maxHp": 35.0,
+       "spawnSpanSeconds": 10.0
+      }
+     ],
+     "totals": {
+      "enemies": 21,
+      "baseHp": 555.0,
+      "goldCoins": 18,
+      "eliteEnemies": 0,
+      "flying": 0,
+      "boss": 0,
+      "ranged": 12,
+      "spawnSpanSeconds": 10.0,
+      "byLine": {
+       "Bridge 1": 7,
+       "Bridge 2": 7,
+       "Bridge 3": 7
+      }
+     }
+    },
+    {
+     "index": 4,
+     "night": 5,
+     "warningText": "Molemen and Ogre",
+     "difficultyMulti": 1.0,
+     "spawns": [
+      {
+       "enemy": "resources.assets:6446",
+       "enemyName": "E Moleman",
+       "displayName": "Mole Warrior",
+       "count": 25,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 0.2,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 8,
+       "spawnLine": "Bridge Broken",
+       "spawnCenter": [
+        -139.695,
+        18.61,
+        78.126
+       ],
+       "maxHp": 60.0,
+       "spawnSpanSeconds": 4.8
+      },
+      {
+       "enemy": "resources.assets:6451",
+       "enemyName": "E Ogre",
+       "displayName": "Ogre",
+       "count": 5,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 2.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 7,
+       "spawnLine": "Bridge 1",
+       "spawnCenter": [
+        -124.415,
+        18.28,
+        -7.575
+       ],
+       "maxHp": 200.0,
+       "spawnSpanSeconds": 8.0
+      }
+     ],
+     "totals": {
+      "enemies": 30,
+      "baseHp": 2500.0,
+      "goldCoins": 15,
+      "eliteEnemies": 0,
+      "flying": 0,
+      "boss": 0,
+      "ranged": 0,
+      "spawnSpanSeconds": 8.0,
+      "byLine": {
+       "Bridge Broken": 25,
+       "Bridge 1": 5
+      }
+     }
+    },
+    {
+     "index": 5,
+     "night": 6,
+     "warningText": "Massive Attack",
+     "difficultyMulti": 1.0,
+     "spawns": [
+      {
+       "enemy": "resources.assets:6451",
+       "enemyName": "E Ogre",
+       "displayName": "Ogre",
+       "count": 5,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 1.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 2,
+       "spawnLine": "Bridge 1",
+       "spawnCenter": [
+        -124.415,
+        18.28,
+        -7.575
+       ],
+       "maxHp": 200.0,
+       "spawnSpanSeconds": 4.0
+      },
+      {
+       "enemy": "resources.assets:6451",
+       "enemyName": "E Ogre",
+       "displayName": "Ogre",
+       "count": 5,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 1.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 2,
+       "spawnLine": "Bridge 2",
+       "spawnCenter": [
+        -87.064,
+        18.28,
+        -59.06
+       ],
+       "maxHp": 200.0,
+       "spawnSpanSeconds": 4.0
+      },
+      {
+       "enemy": "resources.assets:6451",
+       "enemyName": "E Ogre",
+       "displayName": "Ogre",
+       "count": 5,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 1.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 2,
+       "spawnLine": "Bridge 3",
+       "spawnCenter": [
+        -44.286,
+        18.28,
+        -78.74
+       ],
+       "maxHp": 200.0,
+       "spawnSpanSeconds": 4.0
+      },
+      {
+       "enemy": "resources.assets:5077",
+       "enemyName": "E Quicksling",
+       "displayName": "Quicksling",
+       "count": 2,
+       "elite": false,
+       "delay": 5.0,
+       "interval": 5.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 2,
+       "spawnLine": "Bridge 1",
+       "spawnCenter": [
+        -124.415,
+        18.28,
+        -7.575
+       ],
+       "maxHp": 55.0,
+       "spawnSpanSeconds": 10.0
+      },
+      {
+       "enemy": "resources.assets:5077",
+       "enemyName": "E Quicksling",
+       "displayName": "Quicksling",
+       "count": 2,
+       "elite": false,
+       "delay": 5.0,
+       "interval": 5.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 2,
+       "spawnLine": "Bridge 2",
+       "spawnCenter": [
+        -87.064,
+        18.28,
+        -59.06
+       ],
+       "maxHp": 55.0,
+       "spawnSpanSeconds": 10.0
+      },
+      {
+       "enemy": "resources.assets:5077",
+       "enemyName": "E Quicksling",
+       "displayName": "Quicksling",
+       "count": 2,
+       "elite": false,
+       "delay": 5.0,
+       "interval": 5.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 2,
+       "spawnLine": "Bridge 3",
+       "spawnCenter": [
+        -44.286,
+        18.28,
+        -78.74
+       ],
+       "maxHp": 55.0,
+       "spawnSpanSeconds": 10.0
+      },
+      {
+       "enemy": "resources.assets:6467",
+       "enemyName": "E BarrelKnight",
+       "displayName": "Barrel Knight",
+       "count": 5,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 0.5,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 2,
+       "spawnLine": "Bridge 1",
+       "spawnCenter": [
+        -124.415,
+        18.28,
+        -7.575
+       ],
+       "maxHp": 100.0,
+       "spawnSpanSeconds": 2.0
+      },
+      {
+       "enemy": "resources.assets:6467",
+       "enemyName": "E BarrelKnight",
+       "displayName": "Barrel Knight",
+       "count": 5,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 0.5,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 2,
+       "spawnLine": "Bridge 2",
+       "spawnCenter": [
+        -87.064,
+        18.28,
+        -59.06
+       ],
+       "maxHp": 100.0,
+       "spawnSpanSeconds": 2.0
+      },
+      {
+       "enemy": "resources.assets:6467",
+       "enemyName": "E BarrelKnight",
+       "displayName": "Barrel Knight",
+       "count": 5,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 0.5,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 2,
+       "spawnLine": "Bridge 3",
+       "spawnCenter": [
+        -44.286,
+        18.28,
+        -78.74
+       ],
+       "maxHp": 100.0,
+       "spawnSpanSeconds": 2.0
+      }
+     ],
+     "totals": {
+      "enemies": 36,
+      "baseHp": 4830.0,
+      "goldCoins": 18,
+      "eliteEnemies": 0,
+      "flying": 0,
+      "boss": 0,
+      "ranged": 6,
+      "spawnSpanSeconds": 10.0,
+      "byLine": {
+       "Bridge 1": 12,
+       "Bridge 2": 12,
+       "Bridge 3": 12
+      }
+     }
+    },
+    {
+     "index": 6,
+     "night": 7,
+     "warningText": "Archer",
+     "difficultyMulti": 1.0,
+     "spawns": [
+      {
+       "enemy": "resources.assets:5068",
+       "enemyName": "E Archer",
+       "displayName": "Archer",
+       "count": 25,
+       "elite": true,
+       "delay": 0.0,
+       "interval": 1.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 6,
+       "spawnLine": "Bridge 1",
+       "spawnCenter": [
+        -124.415,
+        18.28,
+        -7.575
+       ],
+       "maxHp": 20.0,
+       "spawnSpanSeconds": 24.0
+      },
+      {
+       "enemy": "resources.assets:5071",
+       "enemyName": "E Crossbow",
+       "displayName": "Master Crossbowmen",
+       "count": 15,
+       "elite": true,
+       "delay": 0.0,
+       "interval": 1.75,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 6,
+       "spawnLine": "Bridge 2",
+       "spawnCenter": [
+        -87.064,
+        18.28,
+        -59.06
+       ],
+       "maxHp": 40.0,
+       "spawnSpanSeconds": 24.5
+      },
+      {
+       "enemy": "resources.assets:5077",
+       "enemyName": "E Quicksling",
+       "displayName": "Quicksling",
+       "count": 7,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 5.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 6,
+       "spawnLine": "Bridge 3",
+       "spawnCenter": [
+        -44.286,
+        18.28,
+        -78.74
+       ],
+       "maxHp": 55.0,
+       "spawnSpanSeconds": 30.0
+      }
+     ],
+     "totals": {
+      "enemies": 47,
+      "baseHp": 1485.0,
+      "goldCoins": 18,
+      "eliteEnemies": 40,
+      "flying": 0,
+      "boss": 0,
+      "ranged": 47,
+      "spawnSpanSeconds": 30.0,
+      "byLine": {
+       "Bridge 1": 25,
+       "Bridge 2": 15,
+       "Bridge 3": 7
+      }
+     }
+    },
+    {
+     "index": 7,
+     "night": 8,
+     "warningText": "Ogres and Exploders",
+     "difficultyMulti": 1.0,
+     "spawns": [
+      {
+       "enemy": "resources.assets:6451",
+       "enemyName": "E Ogre",
+       "displayName": "Ogre",
+       "count": 25,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 1.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 2,
+       "spawnLine": "Bridge 1",
+       "spawnCenter": [
+        -124.415,
+        18.28,
+        -7.575
+       ],
+       "maxHp": 200.0,
+       "spawnSpanSeconds": 24.0
+      },
+      {
+       "enemy": "resources.assets:6451",
+       "enemyName": "E Ogre",
+       "displayName": "Ogre",
+       "count": 25,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 1.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 2,
+       "spawnLine": "Bridge 2",
+       "spawnCenter": [
+        -87.064,
+        18.28,
+        -59.06
+       ],
+       "maxHp": 200.0,
+       "spawnSpanSeconds": 24.0
+      },
+      {
+       "enemy": "resources.assets:6470",
+       "enemyName": "E Exploder",
+       "displayName": "Exploder",
+       "count": 13,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 2.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 2,
+       "spawnLine": "Bridge 3",
+       "spawnCenter": [
+        -44.286,
+        18.28,
+        -78.74
+       ],
+       "maxHp": 65.0,
+       "spawnSpanSeconds": 24.0
+      }
+     ],
+     "totals": {
+      "enemies": 63,
+      "baseHp": 10845.0,
+      "goldCoins": 6,
+      "eliteEnemies": 0,
+      "flying": 0,
+      "boss": 0,
+      "ranged": 0,
+      "spawnSpanSeconds": 24.0,
+      "byLine": {
+       "Bridge 1": 25,
+       "Bridge 2": 25,
+       "Bridge 3": 13
+      }
+     }
+    },
+    {
+     "index": 8,
+     "night": 9,
+     "warningText": "Eldermole",
+     "difficultyMulti": 1.0,
+     "spawns": [
+      {
+       "enemy": "level23:4134",
+       "enemyName": "E Eldermole",
+       "displayName": "Strange Statue",
+       "count": 1,
+       "elite": false,
+       "delay": 2.0,
+       "interval": 1.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 5,
+       "spawnLine": "E Eldermole",
+       "spawnCenter": [
+        -91.448,
+        19.323,
+        72.563
+       ],
+       "maxHp": 10000.0,
+       "spawnSpanSeconds": 2.0
+      },
+      {
+       "enemy": "resources.assets:5073",
+       "enemyName": "E Fury",
+       "displayName": "Fury",
+       "count": 20,
+       "elite": false,
+       "delay": 2.0,
+       "interval": 1.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 5,
+       "spawnLine": "Bridge 2",
+       "spawnCenter": [
+        -87.064,
+        18.28,
+        -59.06
+       ],
+       "maxHp": 75.0,
+       "spawnSpanSeconds": 21.0
+      }
+     ],
+     "totals": {
+      "enemies": 21,
+      "baseHp": 11500.0,
+      "goldCoins": 10,
+      "eliteEnemies": 0,
+      "flying": 20,
+      "boss": 1,
+      "ranged": 20,
+      "spawnSpanSeconds": 21.0,
+      "byLine": {
+       "E Eldermole": 1,
+       "Bridge 2": 20
+      }
+     }
+    },
+    {
+     "index": 9,
+     "night": 10,
+     "warningText": "Massive Attack",
+     "difficultyMulti": 1.0,
+     "spawns": [
+      {
+       "enemy": "resources.assets:6451",
+       "enemyName": "E Ogre",
+       "displayName": "Ogre",
+       "count": 8,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 1.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 2,
+       "spawnLine": "Bridge 1",
+       "spawnCenter": [
+        -124.415,
+        18.28,
+        -7.575
+       ],
+       "maxHp": 200.0,
+       "spawnSpanSeconds": 7.0
+      },
+      {
+       "enemy": "resources.assets:6451",
+       "enemyName": "E Ogre",
+       "displayName": "Ogre",
+       "count": 8,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 1.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 2,
+       "spawnLine": "Bridge 2",
+       "spawnCenter": [
+        -87.064,
+        18.28,
+        -59.06
+       ],
+       "maxHp": 200.0,
+       "spawnSpanSeconds": 7.0
+      },
+      {
+       "enemy": "resources.assets:6451",
+       "enemyName": "E Ogre",
+       "displayName": "Ogre",
+       "count": 8,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 1.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 2,
+       "spawnLine": "Bridge 3",
+       "spawnCenter": [
+        -44.286,
+        18.28,
+        -78.74
+       ],
+       "maxHp": 200.0,
+       "spawnSpanSeconds": 7.0
+      },
+      {
+       "enemy": "resources.assets:5077",
+       "enemyName": "E Quicksling",
+       "displayName": "Quicksling",
+       "count": 7,
+       "elite": false,
+       "delay": 2.0,
+       "interval": 2.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 2,
+       "spawnLine": "Bridge 1",
+       "spawnCenter": [
+        -124.415,
+        18.28,
+        -7.575
+       ],
+       "maxHp": 55.0,
+       "spawnSpanSeconds": 14.0
+      },
+      {
+       "enemy": "resources.assets:5077",
+       "enemyName": "E Quicksling",
+       "displayName": "Quicksling",
+       "count": 7,
+       "elite": false,
+       "delay": 2.0,
+       "interval": 2.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 2,
+       "spawnLine": "Bridge 2",
+       "spawnCenter": [
+        -87.064,
+        18.28,
+        -59.06
+       ],
+       "maxHp": 55.0,
+       "spawnSpanSeconds": 14.0
+      },
+      {
+       "enemy": "resources.assets:5077",
+       "enemyName": "E Quicksling",
+       "displayName": "Quicksling",
+       "count": 7,
+       "elite": false,
+       "delay": 2.0,
+       "interval": 2.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 2,
+       "spawnLine": "Bridge 3",
+       "spawnCenter": [
+        -44.286,
+        18.28,
+        -78.74
+       ],
+       "maxHp": 55.0,
+       "spawnSpanSeconds": 14.0
+      },
+      {
+       "enemy": "resources.assets:6467",
+       "enemyName": "E BarrelKnight",
+       "displayName": "Barrel Knight",
+       "count": 10,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 0.5,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 2,
+       "spawnLine": "Bridge 1",
+       "spawnCenter": [
+        -124.415,
+        18.28,
+        -7.575
+       ],
+       "maxHp": 100.0,
+       "spawnSpanSeconds": 4.5
+      },
+      {
+       "enemy": "resources.assets:6467",
+       "enemyName": "E BarrelKnight",
+       "displayName": "Barrel Knight",
+       "count": 10,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 0.5,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 2,
+       "spawnLine": "Bridge 2",
+       "spawnCenter": [
+        -87.064,
+        18.28,
+        -59.06
+       ],
+       "maxHp": 100.0,
+       "spawnSpanSeconds": 4.5
+      },
+      {
+       "enemy": "resources.assets:6467",
+       "enemyName": "E BarrelKnight",
+       "displayName": "Barrel Knight",
+       "count": 10,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 0.5,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 2,
+       "spawnLine": "Bridge 3",
+       "spawnCenter": [
+        -44.286,
+        18.28,
+        -78.74
+       ],
+       "maxHp": 100.0,
+       "spawnSpanSeconds": 4.5
+      },
+      {
+       "enemy": "level23:4561",
+       "enemyName": "E Eldermole",
+       "displayName": "Strange Statue",
+       "count": 1,
+       "elite": false,
+       "delay": 40.0,
+       "interval": 0.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 2,
+       "spawnLine": "E Eldermole",
+       "spawnCenter": [
+        -84.278,
+        19.323,
+        -16.047
+       ],
+       "maxHp": 10000.0,
+       "spawnSpanSeconds": 40.0
+      },
+      {
+       "enemy": "level23:4133",
+       "enemyName": "E Eldermole",
+       "displayName": "Strange Statue",
+       "count": 1,
+       "elite": false,
+       "delay": 50.0,
+       "interval": 0.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 2,
+       "spawnLine": "E Eldermole",
+       "spawnCenter": [
+        -26.128,
+        18.92,
+        -60.947
+       ],
+       "maxHp": 10000.0,
+       "spawnSpanSeconds": 50.0
+      },
+      {
+       "enemy": "level23:4132",
+       "enemyName": "E Eldermole",
+       "displayName": "Strange Statue",
+       "count": 1,
+       "elite": false,
+       "delay": 60.0,
+       "interval": 0.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 2,
+       "spawnLine": "E Eldermole",
+       "spawnCenter": [
+        -113.2,
+        19.323,
+        42.4
+       ],
+       "maxHp": 10000.0,
+       "spawnSpanSeconds": 60.0
+      }
+     ],
+     "totals": {
+      "enemies": 78,
+      "baseHp": 38955.0,
+      "goldCoins": 24,
+      "eliteEnemies": 0,
+      "flying": 0,
+      "boss": 3,
+      "ranged": 21,
+      "spawnSpanSeconds": 60.0,
+      "byLine": {
+       "Bridge 1": 25,
+       "Bridge 2": 25,
+       "Bridge 3": 25,
+       "E Eldermole": 3
+      }
+     }
+    },
+    {
+     "index": 10,
+     "night": 11,
+     "warningText": "Boss Wave",
+     "difficultyMulti": 1.0,
+     "spawns": [
+      {
+       "enemy": "resources.assets:6462",
+       "enemyName": "E Eldermole",
+       "displayName": "Eldermole",
+       "count": 5,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 1.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Bridge 2",
+       "spawnCenter": [
+        -87.064,
+        18.28,
+        -59.06
+       ],
+       "maxHp": 10000.0,
+       "spawnSpanSeconds": 4.0
+      },
+      {
+       "enemy": "resources.assets:6462",
+       "enemyName": "E Eldermole",
+       "displayName": "Eldermole",
+       "count": 5,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 1.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Bridge 1",
+       "spawnCenter": [
+        -124.415,
+        18.28,
+        -7.575
+       ],
+       "maxHp": 10000.0,
+       "spawnSpanSeconds": 4.0
+      },
+      {
+       "enemy": "resources.assets:6462",
+       "enemyName": "E Eldermole",
+       "displayName": "Eldermole",
+       "count": 5,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 1.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Bridge 3",
+       "spawnCenter": [
+        -44.286,
+        18.28,
+        -78.74
+       ],
+       "maxHp": 10000.0,
+       "spawnSpanSeconds": 4.0
+      }
+     ],
+     "totals": {
+      "enemies": 15,
+      "baseHp": 150000.0,
+      "goldCoins": 0,
+      "eliteEnemies": 0,
+      "flying": 0,
+      "boss": 15,
+      "ranged": 0,
+      "spawnSpanSeconds": 4.0,
+      "byLine": {
+       "Bridge 2": 5,
+       "Bridge 1": 5,
+       "Bridge 3": 5
+      }
+     }
+    }
+   ]
+  }
+ ],
+ "spawnLines": [
+  {
+   "tf": 6629,
+   "name": "Bridge Broken",
+   "path": "ES Sturmklamm One Man Army/Bridge Broken",
+   "points": [
+    [
+     -139.482,
+     18.61,
+     71.073
+    ],
+    [
+     -139.907,
+     18.61,
+     85.179
+    ]
+   ],
+   "length": 14.112,
+   "center": [
+    -139.695,
+    18.61,
+    78.126
+   ],
+   "difficulty": "Normal",
+   "canSpawnFlying": true,
+   "canSpawnSmallGround": false,
+   "canSpawnBigGround": false,
+   "sharedPaths": [],
+   "separatedPaths": [
+    "Base Left Air",
+    "Base Right Air"
+   ]
+  },
+  {
+   "tf": 9814,
+   "name": "Bridge 3",
+   "path": "ES Sturmklamm One Man Army/Bridge 3",
+   "points": [
+    [
+     -37.43,
+     18.28,
+     -80.41
+    ],
+    [
+     -51.142,
+     18.28,
+     -77.07
+    ]
+   ],
+   "length": 14.113,
+   "center": [
+    -44.286,
+    18.28,
+    -78.74
+   ],
+   "difficulty": "Normal",
+   "canSpawnFlying": true,
+   "canSpawnSmallGround": true,
+   "canSpawnBigGround": true,
+   "sharedPaths": [
+    "Bridge 2"
+   ],
+   "separatedPaths": [
+    "Base Left Air",
+    "Base Right Air"
+   ]
+  },
+  {
+   "tf": 8592,
+   "name": "Base Left Air",
+   "path": "ES Sturmklamm One Man Army/Base Left Air",
+   "points": [
+    [
+     -21.7,
+     36.2,
+     70.5
+    ],
+    [
+     2.7,
+     36.2,
+     37.7
+    ]
+   ],
+   "length": 40.88,
+   "center": [
+    -9.5,
+    36.2,
+    54.1
+   ],
+   "difficulty": "Normal",
+   "canSpawnFlying": true,
+   "canSpawnSmallGround": false,
+   "canSpawnBigGround": false,
+   "sharedPaths": [
+    "Base Right Air"
+   ],
+   "separatedPaths": [
+    "Bridge 1",
+    "Bridge 2",
+    "Bridge 3",
+    "Bridge Broken",
+    "West Air"
+   ]
+  },
+  {
+   "tf": 9842,
+   "name": "Base Right Air",
+   "path": "ES Sturmklamm One Man Army/Base Right Air",
+   "points": [
+    [
+     4.4,
+     36.2,
+     35.3
+    ],
+    [
+     30.3,
+     36.2,
+     0.2
+    ]
+   ],
+   "length": 43.621,
+   "center": [
+    17.35,
+    36.2,
+    17.75
+   ],
+   "difficulty": "Normal",
+   "canSpawnFlying": true,
+   "canSpawnSmallGround": false,
+   "canSpawnBigGround": false,
+   "sharedPaths": [
+    "Base Left Air"
+   ],
+   "separatedPaths": [
+    "Bridge 1",
+    "Bridge 2",
+    "Bridge 3",
+    "Bridge Broken",
+    "West Air"
+   ]
+  },
+  {
+   "tf": 8889,
+   "name": "Bridge 2",
+   "path": "ES Sturmklamm One Man Army/Bridge 2",
+   "points": [
+    [
+     -81.5,
+     18.28,
+     -63.4
+    ],
+    [
+     -92.628,
+     18.28,
+     -54.72
+    ]
+   ],
+   "length": 14.113,
+   "center": [
+    -87.064,
+    18.28,
+    -59.06
+   ],
+   "difficulty": "Normal",
+   "canSpawnFlying": true,
+   "canSpawnSmallGround": true,
+   "canSpawnBigGround": true,
+   "sharedPaths": [
+    "Bridge 3"
+   ],
+   "separatedPaths": [
+    "Base Left Air",
+    "Base Right Air"
+   ]
+  },
+  {
+   "tf": 8481,
+   "name": "Bridge 1",
+   "path": "ES Sturmklamm One Man Army/Bridge 1",
+   "points": [
+    [
+     -121.39,
+     18.28,
+     -13.95
+    ],
+    [
+     -127.44,
+     18.28,
+     -1.2
+    ]
+   ],
+   "length": 14.113,
+   "center": [
+    -124.415,
+    18.28,
+    -7.575
+   ],
+   "difficulty": "Normal",
+   "canSpawnFlying": true,
+   "canSpawnSmallGround": true,
+   "canSpawnBigGround": true,
+   "sharedPaths": [],
+   "separatedPaths": [
+    "Base Left Air",
+    "Base Right Air"
+   ]
+  },
+  {
+   "tf": 9504,
+   "name": "West Air",
+   "path": "ES Sturmklamm One Man Army/West Air",
+   "points": [
+    [
+     -93.436,
+     23.3,
+     112.37
+    ],
+    [
+     -79.901,
+     23.3,
+     116.364
+    ]
+   ],
+   "length": 14.112,
+   "center": [
+    -86.668,
+    23.3,
+    114.367
+   ],
+   "difficulty": "Normal",
+   "canSpawnFlying": true,
+   "canSpawnSmallGround": false,
+   "canSpawnBigGround": false,
+   "sharedPaths": [],
+   "separatedPaths": [
+    "Base Left Air",
+    "Base Right Air"
+   ]
+  },
+  {
+   "tf": 9170,
+   "name": "E Eldermole",
+   "path": "Bosses/Eldermolde Statue (3)/E Eldermole",
+   "points": [
+    [
+     -91.448,
+     23.0,
+     72.563
+    ],
+    [
+     -91.448,
+     18.4,
+     72.563
+    ],
+    [
+     -91.448,
+     18.4,
+     72.563
+    ],
+    [
+     -91.448,
+     18.4,
+     72.563
+    ],
+    [
+     -91.448,
+     18.4,
+     72.563
+    ],
+    [
+     -91.448,
+     18.4,
+     72.563
+    ],
+    [
+     -91.448,
+     20.26,
+     72.563
+    ]
+   ],
+   "length": 0.0,
+   "center": [
+    -91.448,
+    19.323,
+    72.563
+   ],
+   "difficulty": "n/a",
+   "implicit": true,
+   "canSpawnFlying": null,
+   "canSpawnSmallGround": null,
+   "canSpawnBigGround": null,
+   "sharedPaths": [],
+   "separatedPaths": []
+  },
+  {
+   "tf": 9548,
+   "name": "E Eldermole",
+   "path": "Bosses/Eldermolde Statue/E Eldermole",
+   "points": [
+    [
+     -84.278,
+     23.0,
+     -16.047
+    ],
+    [
+     -84.278,
+     18.4,
+     -16.047
+    ],
+    [
+     -84.278,
+     18.4,
+     -16.047
+    ],
+    [
+     -84.278,
+     18.4,
+     -16.047
+    ],
+    [
+     -84.278,
+     18.4,
+     -16.047
+    ],
+    [
+     -84.278,
+     18.4,
+     -16.047
+    ],
+    [
+     -84.278,
+     20.26,
+     -16.047
+    ]
+   ],
+   "length": 0.0,
+   "center": [
+    -84.278,
+    19.323,
+    -16.047
+   ],
+   "difficulty": "n/a",
+   "implicit": true,
+   "canSpawnFlying": null,
+   "canSpawnSmallGround": null,
+   "canSpawnBigGround": null,
+   "sharedPaths": [],
+   "separatedPaths": []
+  },
+  {
+   "tf": 9169,
+   "name": "E Eldermole",
+   "path": "Bosses/Eldermolde Statue (1)/E Eldermole",
+   "points": [
+    [
+     -26.128,
+     22.597,
+     -60.947
+    ],
+    [
+     -26.128,
+     17.997,
+     -60.947
+    ],
+    [
+     -26.128,
+     17.997,
+     -60.947
+    ],
+    [
+     -26.128,
+     17.997,
+     -60.947
+    ],
+    [
+     -26.128,
+     17.997,
+     -60.947
+    ],
+    [
+     -26.128,
+     17.997,
+     -60.947
+    ],
+    [
+     -26.128,
+     19.857,
+     -60.947
+    ]
+   ],
+   "length": 0.0,
+   "center": [
+    -26.128,
+    18.92,
+    -60.947
+   ],
+   "difficulty": "n/a",
+   "implicit": true,
+   "canSpawnFlying": null,
+   "canSpawnSmallGround": null,
+   "canSpawnBigGround": null,
+   "sharedPaths": [],
+   "separatedPaths": []
+  },
+  {
+   "tf": 9168,
+   "name": "E Eldermole",
+   "path": "Bosses/Eldermolde Statue (2)/E Eldermole",
+   "points": [
+    [
+     -113.2,
+     23.0,
+     42.4
+    ],
+    [
+     -113.2,
+     18.4,
+     42.4
+    ],
+    [
+     -113.2,
+     18.4,
+     42.4
+    ],
+    [
+     -113.2,
+     18.4,
+     42.4
+    ],
+    [
+     -113.2,
+     18.4,
+     42.4
+    ],
+    [
+     -113.2,
+     18.4,
+     42.4
+    ],
+    [
+     -113.2,
+     20.26,
+     42.4
+    ]
+   ],
+   "length": 0.0,
+   "center": [
+    -113.2,
+    19.323,
+    42.4
+   ],
+   "difficulty": "n/a",
+   "implicit": true,
+   "canSpawnFlying": null,
+   "canSpawnSmallGround": null,
+   "canSpawnBigGround": null,
+   "sharedPaths": [],
+   "separatedPaths": []
+  }
+ ],
+ "enemies": {
+  "resources.assets:6457": {
+   "name": "E Melee",
+   "displayName": "Swordsman",
+   "description": "Swordsmen are simple melee warriors, but do not underestimate them when they come in numbers.",
+   "maxHp": 25.0,
+   "tags": [
+    "EnemyOwned",
+    "MeeleFighter",
+    "NaturallyVulnerableToSplash",
+    "Humanoid"
+   ],
+   "coinDrop": 0,
+   "speed": 5.0,
+   "attacks": [
+    {
+     "component": "AutoAttack",
+     "range": 3.0,
+     "cooldown": 1.0,
+     "baseDamage": 2.5,
+     "dps": 2.5,
+     "weapon": "E Melee",
+     "manual": false
+    }
+   ],
+   "components": [
+    "Seeker",
+    "RVOController",
+    "TaggedObject",
+    "Hp",
+    "PathfindMovementEnemy",
+    "AutoAttack",
+    "FunnelModifier",
+    "SharpCornerMidigator",
+    "ScreenMarkerIcon"
+   ],
+   "prefab": "resources.assets:6457"
+  },
+  "resources.assets:6467": {
+   "name": "E BarrelKnight",
+   "displayName": "Barrel Knight",
+   "description": "An enchanted warrior made of wood. Counts as a siege weapon and is armored against ranged attacks. Quite sturdy and eager to cause trouble.",
+   "maxHp": 100.0,
+   "tags": [
+    "EnemyOwned",
+    "MeeleFighter",
+    "SiegeWeapon",
+    "NaturallyHighHealthTarget"
+   ],
+   "coinDrop": 0,
+   "speed": 8.0,
+   "attacks": [
+    {
+     "component": "AutoAttack",
+     "range": 3.2,
+     "cooldown": 1.25,
+     "baseDamage": 3.5,
+     "dps": 2.8,
+     "weapon": "E BarrelKinight",
+     "manual": false
+    }
+   ],
+   "components": [
+    "Seeker",
+    "RVOController",
+    "TaggedObject",
+    "Hp",
+    "PathfindMovementEnemy",
+    "AutoAttack",
+    "FunnelModifier",
+    "SharpCornerMidigator",
+    "ScreenMarkerIcon"
+   ],
+   "prefab": "resources.assets:6467"
+  },
+  "resources.assets:6451": {
+   "name": "E Ogre",
+   "displayName": "Ogre",
+   "description": "Ogres are huge melee warriors that really pack a punch. Hey! Due to their human heritage, ogres aren't monsters though (everybody knows that, duh).",
+   "maxHp": 200.0,
+   "tags": [
+    "EnemyOwned",
+    "MeeleFighter",
+    "NaturallyHighHealthTarget",
+    "Humanoid"
+   ],
+   "coinDrop": 0,
+   "speed": 4.0,
+   "attacks": [
+    {
+     "component": "AutoAttack",
+     "range": 3.0,
+     "cooldown": 1.0,
+     "baseDamage": 20.0,
+     "dps": 20.0,
+     "weapon": "E Ogre",
+     "manual": false
+    }
+   ],
+   "components": [
+    "Seeker",
+    "RVOController",
+    "TaggedObject",
+    "Hp",
+    "PathfindMovementEnemy",
+    "AutoAttack",
+    "FunnelModifier",
+    "SharpCornerMidigator",
+    "ScreenMarkerIcon"
+   ],
+   "prefab": "resources.assets:6451"
+  },
+  "resources.assets:5068": {
+   "name": "E Archer",
+   "displayName": "Archer",
+   "description": "Archers shoot arrows from afar. Quite strong when left uncontested. Weak against buildings and towers.",
+   "maxHp": 20.0,
+   "tags": [
+    "EnemyOwned",
+    "RangedFighter",
+    "TakesIncreasedDamageFromTowers",
+    "NaturallyVulnerableToSplash",
+    "Humanoid"
+   ],
+   "coinDrop": 0,
+   "speed": 5.0,
+   "attacks": [
+    {
+     "component": "AutoAttack",
+     "range": 20.0,
+     "cooldown": 2.0,
+     "baseDamage": 2.5,
+     "dps": 1.25,
+     "weapon": "E Archer",
+     "manual": false
+    }
+   ],
+   "components": [
+    "Seeker",
+    "RVOController",
+    "TaggedObject",
+    "Hp",
+    "PathfindMovementEnemy",
+    "AutoAttack",
+    "FunnelModifier",
+    "SharpCornerMidigator",
+    "ScreenMarkerIcon"
+   ],
+   "prefab": "resources.assets:5068"
+  },
+  "resources.assets:6459": {
+   "name": "E Racer",
+   "displayName": "Racer",
+   "description": "Racers are fast rolling monsters that are not messing around. They aim right for your castle center and are somewhat armored against attacks from the player character.",
+   "maxHp": 35.0,
+   "tags": [
+    "EnemyOwned",
+    "MeeleFighter",
+    "TakesReducedDamageFromPlayerAttacks",
+    "FastMoving",
+    "Monster"
+   ],
+   "coinDrop": 0,
+   "speed": 10.0,
+   "attacks": [
+    {
+     "component": "AutoAttack",
+     "range": 3.5,
+     "cooldown": 1.0,
+     "baseDamage": 2.5,
+     "dps": 2.5,
+     "weapon": "E Racer",
+     "manual": false
+    }
+   ],
+   "components": [
+    "Seeker",
+    "RVOController",
+    "TaggedObject",
+    "Hp",
+    "PathfindMovementEnemy",
+    "AutoAttack",
+    "FunnelModifier",
+    "SharpCornerMidigator",
+    "ScreenMarkerIcon"
+   ],
+   "prefab": "resources.assets:6459"
+  },
+  "resources.assets:6446": {
+   "name": "E Moleman",
+   "displayName": "Mole Warrior",
+   "description": "Can tunnel directly to its target. Takes additional damage from defense towers.",
+   "maxHp": 60.0,
+   "tags": [
+    "EnemyOwned",
+    "MeeleFighter",
+    "TakesIncreasedDamageFromTowers",
+    "Humanoid"
+   ],
+   "coinDrop": 0,
+   "speed": 5.0,
+   "attacks": [
+    {
+     "component": "AutoAttack",
+     "range": 3.0,
+     "cooldown": 1.0,
+     "baseDamage": 5.0,
+     "dps": 5.0,
+     "weapon": "E Moleman",
+     "manual": false
+    }
+   ],
+   "components": [
+    "Seeker",
+    "RVOController",
+    "TaggedObject",
+    "Hp",
+    "PathfindMovementEnemy",
+    "AutoAttack",
+    "FunnelModifier",
+    "SharpCornerMidigator",
+    "ScreenMarkerIcon",
+    "Moleman"
+   ],
+   "prefab": "resources.assets:6446"
+  },
+  "resources.assets:5077": {
+   "name": "E Quicksling",
+   "displayName": "Quicksling",
+   "description": "A unique siege weapon that rapidly fires arrows at random enemies in its range. If you don't have any allied buildings or units nearby, it will quickly mow you down.",
+   "maxHp": 55.0,
+   "tags": [
+    "EnemyOwned",
+    "RangedFighter",
+    "SiegeWeapon"
+   ],
+   "coinDrop": 0,
+   "speed": 3.0,
+   "attacks": [
+    {
+     "component": "AutoAttackRandom",
+     "range": 37.5,
+     "cooldown": 0.45,
+     "baseDamage": 9.775,
+     "dps": 21.722,
+     "weapon": "E Quicksling",
+     "manual": false
+    }
+   ],
+   "components": [
+    "Seeker",
+    "RVOController",
+    "TaggedObject",
+    "Hp",
+    "PathfindMovementEnemy",
+    "FunnelModifier",
+    "SharpCornerMidigator",
+    "ScreenMarkerIcon",
+    "AutoAttackRandom",
+    "PeriodicallyEnableAndDisableDuringEnemySpawn"
+   ],
+   "prefab": "resources.assets:5077"
+  },
+  "resources.assets:5071": {
+   "name": "E Crossbow",
+   "displayName": "Master Crossbowmen",
+   "description": "Master Crossbowmen deal massive amounts of damage to you and your units. Best to keep yourself and your troops entirely out of range whenever you can. They are quite weak against buildings though.",
+   "maxHp": 40.0,
+   "tags": [
+    "EnemyOwned",
+    "RangedFighter",
+    "TakesIncreasedDamageFromTowers",
+    "Humanoid"
+   ],
+   "coinDrop": 0,
+   "speed": 4.0,
+   "attacks": [
+    {
+     "component": "AutoAttackWithWarning",
+     "range": 15.0,
+     "cooldown": 1.6,
+     "baseDamage": 15.0,
+     "dps": 9.375,
+     "weapon": "E Crossbow",
+     "manual": false
+    }
+   ],
+   "components": [
+    "Seeker",
+    "RVOController",
+    "TaggedObject",
+    "Hp",
+    "PathfindMovementEnemy",
+    "FunnelModifier",
+    "SharpCornerMidigator",
+    "ScreenMarkerIcon",
+    "AutoAttackWithWarning"
+   ],
+   "prefab": "resources.assets:5071"
+  },
+  "resources.assets:6470": {
+   "name": "E Exploder",
+   "displayName": "Exploder",
+   "description": "Exploders are monsters that roll straight for the closest building and explode when they die. They are slightly armored against attacks from the player character.",
+   "maxHp": 65.0,
+   "tags": [
+    "EnemyOwned",
+    "MeeleFighter",
+    "FastMoving",
+    "TakesReducedDamageFromPlayerAttacks",
+    "Monster",
+    "SiegeWeapon",
+    "Exploding"
+   ],
+   "coinDrop": 0,
+   "speed": 9.0,
+   "attacks": [
+    {
+     "component": "AutoAttack",
+     "range": 4.0,
+     "cooldown": 1.0,
+     "baseDamage": 3.5,
+     "dps": 3.5,
+     "weapon": "E ExploderAuotAtt",
+     "manual": false
+    }
+   ],
+   "components": [
+    "Seeker",
+    "RVOController",
+    "TaggedObject",
+    "Hp",
+    "PathfindMovementEnemy",
+    "AutoAttack",
+    "FunnelModifier",
+    "SharpCornerMidigator",
+    "ScreenMarkerIcon",
+    "SelfDestructWhenInRangeOf"
+   ],
+   "prefab": "resources.assets:6470"
+  },
+  "level23:4134": {
+   "name": "E Eldermole",
+   "displayName": "Strange Statue",
+   "description": "Some speculate they could be part of an ancient defense mechanism? Maybe there is a reason this castle remained abandoned for so long? No... they are just statues...",
+   "maxHp": 10000.0,
+   "tags": [
+    "EnemyOwned",
+    "MeeleFighter",
+    "TakesIncreasedDamageFromTowers",
+    "Boss"
+   ],
+   "coinDrop": 0,
+   "speed": 6.0,
+   "attacks": [
+    {
+     "component": "AutoAttack",
+     "range": 5.5,
+     "cooldown": 0.5,
+     "baseDamage": 22.5,
+     "dps": 45.0,
+     "weapon": "E Eldermole",
+     "manual": false
+    }
+   ],
+   "components": [
+    "Seeker",
+    "RVOController",
+    "TaggedObject",
+    "Hp",
+    "PathfindMovementEnemy",
+    "AutoAttack",
+    "FunnelModifier",
+    "SharpCornerMidigator",
+    "ScreenMarkerIcon",
+    "Moleman",
+    "DestroyOrDisableOnEnable"
+   ],
+   "prefab": "level23:4134"
+  },
+  "resources.assets:5073": {
+   "name": "E Fury",
+   "displayName": "Fury",
+   "description": "A large flying monster that focusses on destroying your defenses. Their projectiles are quite slow and easy to dodge but wreak havoc when they hit.",
+   "maxHp": 75.0,
+   "tags": [
+    "EnemyOwned",
+    "RangedFighter",
+    "Flying",
+    "Monster"
+   ],
+   "coinDrop": 0,
+   "speed": 3.0,
+   "attacks": [
+    {
+     "component": "AutoAttack",
+     "range": 15.0,
+     "cooldown": 4.0,
+     "baseDamage": 30.0,
+     "dps": 7.5,
+     "weapon": "E Fury",
+     "manual": false
+    }
+   ],
+   "components": [
+    "Seeker",
+    "RVOController",
+    "TaggedObject",
+    "Hp",
+    "PathfindMovementEnemy",
+    "AutoAttack",
+    "FunnelModifier",
+    "SharpCornerMidigator",
+    "ScreenMarkerIcon"
+   ],
+   "prefab": "resources.assets:5073"
+  },
+  "level23:4561": {
+   "name": "E Eldermole",
+   "displayName": "Strange Statue",
+   "description": "Some speculate they could be part of an ancient defense mechanism? Maybe there is a reason this castle remained abandoned for so long? No... they are just statues...",
+   "maxHp": 10000.0,
+   "tags": [
+    "EnemyOwned",
+    "MeeleFighter",
+    "TakesIncreasedDamageFromTowers",
+    "Boss"
+   ],
+   "coinDrop": 0,
+   "speed": 6.0,
+   "attacks": [
+    {
+     "component": "AutoAttack",
+     "range": 5.5,
+     "cooldown": 0.5,
+     "baseDamage": 22.5,
+     "dps": 45.0,
+     "weapon": "E Eldermole",
+     "manual": false
+    }
+   ],
+   "components": [
+    "Seeker",
+    "RVOController",
+    "TaggedObject",
+    "Hp",
+    "PathfindMovementEnemy",
+    "AutoAttack",
+    "FunnelModifier",
+    "SharpCornerMidigator",
+    "ScreenMarkerIcon",
+    "Moleman",
+    "DestroyOrDisableOnEnable"
+   ],
+   "prefab": "level23:4561"
+  },
+  "level23:4133": {
+   "name": "E Eldermole",
+   "displayName": "Strange Statue",
+   "description": "Some speculate they could be part of an ancient defense mechanism? Maybe there is a reason this castle remained abandoned for so long? No... they are just statues...",
+   "maxHp": 10000.0,
+   "tags": [
+    "EnemyOwned",
+    "MeeleFighter",
+    "TakesIncreasedDamageFromTowers",
+    "Boss"
+   ],
+   "coinDrop": 0,
+   "speed": 6.0,
+   "attacks": [
+    {
+     "component": "AutoAttack",
+     "range": 5.5,
+     "cooldown": 0.5,
+     "baseDamage": 22.5,
+     "dps": 45.0,
+     "weapon": "E Eldermole",
+     "manual": false
+    }
+   ],
+   "components": [
+    "Seeker",
+    "RVOController",
+    "TaggedObject",
+    "Hp",
+    "PathfindMovementEnemy",
+    "AutoAttack",
+    "FunnelModifier",
+    "SharpCornerMidigator",
+    "ScreenMarkerIcon",
+    "Moleman",
+    "DestroyOrDisableOnEnable"
+   ],
+   "prefab": "level23:4133"
+  },
+  "level23:4132": {
+   "name": "E Eldermole",
+   "displayName": "Strange Statue",
+   "description": "Some speculate they could be part of an ancient defense mechanism? Maybe there is a reason this castle remained abandoned for so long? No... they are just statues...",
+   "maxHp": 10000.0,
+   "tags": [
+    "EnemyOwned",
+    "MeeleFighter",
+    "TakesIncreasedDamageFromTowers",
+    "Boss"
+   ],
+   "coinDrop": 0,
+   "speed": 6.0,
+   "attacks": [
+    {
+     "component": "AutoAttack",
+     "range": 5.5,
+     "cooldown": 0.5,
+     "baseDamage": 22.5,
+     "dps": 45.0,
+     "weapon": "E Eldermole",
+     "manual": false
+    }
+   ],
+   "components": [
+    "Seeker",
+    "RVOController",
+    "TaggedObject",
+    "Hp",
+    "PathfindMovementEnemy",
+    "AutoAttack",
+    "FunnelModifier",
+    "SharpCornerMidigator",
+    "ScreenMarkerIcon",
+    "Moleman",
+    "DestroyOrDisableOnEnable"
+   ],
+   "prefab": "level23:4132"
+  },
+  "resources.assets:6462": {
+   "name": "E Eldermole",
+   "displayName": "Eldermole",
+   "description": "A Mini-Boss that can tunnel directly to its target dealing massive splash damage to its surroundings. Extremely tanky. Takes additional damage from defense towers.",
+   "maxHp": 10000.0,
+   "tags": [
+    "EnemyOwned",
+    "MeeleFighter",
+    "TakesIncreasedDamageFromTowers",
+    "Boss"
+   ],
+   "coinDrop": 0,
+   "speed": 6.0,
+   "attacks": [
+    {
+     "component": "AutoAttack",
+     "range": 5.5,
+     "cooldown": 0.5,
+     "baseDamage": 22.5,
+     "dps": 45.0,
+     "weapon": "E Eldermole",
+     "manual": false
+    }
+   ],
+   "components": [
+    "Seeker",
+    "RVOController",
+    "TaggedObject",
+    "Hp",
+    "PathfindMovementEnemy",
+    "AutoAttack",
+    "FunnelModifier",
+    "SharpCornerMidigator",
+    "ScreenMarkerIcon",
+    "Moleman"
+   ],
+   "prefab": "resources.assets:6462"
+  }
+ },
+ "buildSlots": [
+  {
+   "id": 22583,
+   "name": "Gate Variant",
+   "path": "BUILDINGS/Gate Variant",
+   "building": "Wall",
+   "pos": [
+    -81.57,
+    23.6,
+    48.62
+   ],
+   "yawDeg": 4.5,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 1,
+   "activator": {
+    "slot": 22825,
+    "building": "Castle Center",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -81.57,
+    23.6,
+    48.62
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -81.57,
+     23.6,
+     48.62
+    ],
+    "size": [
+     9.0,
+     4.739,
+     1.865
+    ],
+    "center": [
+     0.0,
+     2.369,
+     0.462
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Stops enemies at the gates.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 6,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Gate Opener Lvl 2",
+         "components": [
+          "GateOpener",
+          "PerkSpawnOnDestroy"
+         ]
+        }
+       ],
+       "disables": [
+        "Gate Opener Lvl 1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 50,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 2500,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 59,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 22585,
+   "name": "Gate Variant",
+   "path": "BUILDINGS/Gate Variant",
+   "building": "Wall",
+   "pos": [
+    -66.35,
+    23.397,
+    -29.86
+   ],
+   "yawDeg": 39.6,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 1,
+   "activator": {
+    "slot": 22825,
+    "building": "Castle Center",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -66.35,
+    23.397,
+    -29.86
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -66.35,
+     23.397,
+     -29.86
+    ],
+    "size": [
+     9.0,
+     4.739,
+     1.865
+    ],
+    "center": [
+     0.0,
+     2.369,
+     0.462
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Stops enemies at the gates.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 6,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Gate Opener Lvl 2",
+         "components": [
+          "GateOpener",
+          "PerkSpawnOnDestroy"
+         ]
+        }
+       ],
+       "disables": [
+        "Gate Opener Lvl 1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 50,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 2500,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 59,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 22825,
+   "name": "Castle Center Variant",
+   "path": "BUILDINGS/Castle Center Variant",
+   "building": "Castle Center",
+   "pos": [
+    -45.9,
+    30.997,
+    15.6
+   ],
+   "yawDeg": 0.0,
+   "active": true,
+   "startDeactivated": false,
+   "requiredRootLevelDifference": -100,
+   "activator": null,
+   "interactorPos": [
+    -45.9,
+    30.997,
+    15.6
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -45.9,
+     30.997,
+     15.6
+    ],
+    "size": [
+     8.785,
+     9.697,
+     8.905
+    ],
+    "center": [
+     -0.042,
+     4.847,
+     -0.008
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Start a new Kingdom!",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Lvl 1 Perks",
+         "components": [
+          "OutpostPerk",
+          "LastStandPerk"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 7,
+     "coreCost": 0,
+     "tooltip": "Unlock more build options and choose an upgrade. ",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": {
+        "name": "Royal Training",
+        "tooltip": "+ 75% HP for your character\n+ 75% Overall damage output for your character",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 200,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Royal Training",
+         "components": [
+          "UpgradePlayerHp",
+          "UpgradePlayerDmg"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Level 2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 35.0,
+           "cooldown": 2.0,
+           "baseDamage": 4.5,
+           "dps": 2.25,
+           "weapon": "P Castle Center",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkCooldownModifyer",
+          "PerkRangeModifyer"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Royal Training Mesh",
+         "components": []
+        }
+       ],
+       "disables": [
+        "Auto Attack Level 1"
+       ],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Builder's Guild",
+        "tooltip": "+ Every morning a level 1 house is automatically upgraded to a level 2 house (if available)\n+ 50% HP for your character",
+        "disabledInMode": true
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 200,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Builder's Guild",
+         "components": [
+          "UpgradePlayerHp",
+          "UpgradeBuildersGuild"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Level 2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 35.0,
+           "cooldown": 2.0,
+           "baseDamage": 4.5,
+           "dps": 2.25,
+           "weapon": "P Castle Center",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkCooldownModifyer",
+          "PerkRangeModifyer"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Builders Guild Mesh",
+         "components": []
+        }
+       ],
+       "disables": [
+        "Auto Attack Level 1"
+       ],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Magic Armor",
+        "tooltip": "+ Enemies that deal damage to you take a part of that damage themselves\n+ 150% HP for your character",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 200,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Magic Armor",
+         "components": [
+          "UpgradePlayerHp",
+          "UpgradeMagicArmor"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Level 2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 35.0,
+           "cooldown": 2.0,
+           "baseDamage": 4.5,
+           "dps": 2.25,
+           "weapon": "P Castle Center",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkCooldownModifyer",
+          "PerkRangeModifyer"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Magic Armor Mesh",
+         "components": []
+        }
+       ],
+       "disables": [
+        "Auto Attack Level 1"
+       ],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Assassin's Training",
+        "tooltip": "+ If you manage to execute your weapon's special ability precisely when its last cooldown expires, the next cooldown is greatly reduced\n+ 100% Overall damage output for your character",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 200,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Assassin's Training",
+         "components": [
+          "UpgradePlayerDmg",
+          "UpgradeAssassinsTraining"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Level 2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 35.0,
+           "cooldown": 2.0,
+           "baseDamage": 4.5,
+           "dps": 2.25,
+           "weapon": "P Castle Center",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkCooldownModifyer",
+          "PerkRangeModifyer"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Assassins Training Mesh",
+         "components": []
+        }
+       ],
+       "disables": [
+        "Auto Attack Level 1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 20,
+     "coreCost": 0,
+     "tooltip": "Unlock more build options and choose an upgrade. ",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": {
+        "name": "Royal Mastery",
+        "tooltip": "+ 75% HP for your character\n+ 75% Overall damage output for your character",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Auto Attack Level 3",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 35.0,
+           "cooldown": 1.0,
+           "baseDamage": 4.5,
+           "dps": 4.5,
+           "weapon": "P Castle Center",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkCooldownModifyer",
+          "PerkRangeModifyer"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Royal Mastery",
+         "components": [
+          "UpgradePlayerHp",
+          "UpgradePlayerDmg"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Royal Mastery Mesh",
+         "components": []
+        }
+       ],
+       "disables": [
+        "Auto Attack Level 2"
+       ],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Commander",
+        "tooltip": "+ Units move faster while you command them\n+ You have a healing aura that heals allied units nearby\n+ 30% Overall damage output for your character",
+        "disabledInMode": true
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Commander",
+         "components": [
+          "UpgradeCommander"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Level 3",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 35.0,
+           "cooldown": 1.0,
+           "baseDamage": 4.5,
+           "dps": 4.5,
+           "weapon": "P Castle Center",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkCooldownModifyer",
+          "PerkRangeModifyer"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Commander Mesh",
+         "components": []
+        }
+       ],
+       "disables": [
+        "Auto Attack Level 2"
+       ],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Castle Up",
+        "tooltip": "+ The upgrade costs of all walls and towers drop by 1 every night (but never lower than 1, initial build costs are unaffected)",
+        "disabledInMode": true
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Castle Up",
+         "components": [
+          "UpgradeCastleUp",
+          "UpgradePlayerHp"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Level 3",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 35.0,
+           "cooldown": 1.0,
+           "baseDamage": 4.5,
+           "dps": 4.5,
+           "weapon": "P Castle Center",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkCooldownModifyer",
+          "PerkRangeModifyer"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Castle Up Mesh",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer",
+          "BoxCollider"
+         ]
+        }
+       ],
+       "disables": [
+        "Auto Attack Level 2"
+       ],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Godly Curse",
+        "tooltip": "+ If you lock in a target, that target receives 50% more damage from all sources.\n+ 75% HP for your character",
+        "disabledInMode": true
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Godly Curse",
+         "components": [
+          "UpgradePlayerHp",
+          "UpgradeGodlyCurse"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Level 3",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 35.0,
+           "cooldown": 1.0,
+           "baseDamage": 4.5,
+           "dps": 4.5,
+           "weapon": "P Castle Center",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkCooldownModifyer",
+          "PerkRangeModifyer"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Godly Curse Mesh",
+         "components": []
+        }
+       ],
+       "disables": [
+        "Auto Attack Level 2"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 4,
+     "cost": 100,
+     "coreCost": 0,
+     "tooltip": "",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": {
+        "name": "Empire Towers",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 1000,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Empire Towers",
+         "components": [
+          "EmpireUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Empire Troups",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 1000,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Empire Troups",
+         "components": [
+          "EmpireUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Empire Armor",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 1000,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Empire Armor",
+         "components": [
+          "EmpireUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Empire Growth",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 20,
+       "coreIncome": 0,
+       "hpChange": 1000,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Empire Growth",
+         "components": [
+          "EmpireUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 130,
+   "totalCoreCost": 0,
+   "maxIncome": 20
+  },
+  {
+   "id": 23136,
+   "name": "Royayl Forge",
+   "path": "BUILDINGS/Royayl Forge",
+   "building": "Royal Forge",
+   "pos": [
+    -49.9,
+    30.997,
+    39.1
+   ],
+   "yawDeg": -175.9,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 22825,
+    "building": "Castle Center",
+    "level": 1,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -49.9,
+    30.997,
+    39.1
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -49.9,
+     30.997,
+     39.1
+    ],
+    "size": [
+     12.089,
+     6.214,
+     5.719
+    ],
+    "center": [
+     0.426,
+     2.953,
+     -0.046
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 4,
+     "coreCost": 0,
+     "tooltip": "Can research upgrades. Upgrades apply to you, your troups and your buildings.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": {
+        "name": "Lighter Weaponry",
+        "tooltip": "-40% auto-attack cooldown for your passive attack (2 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Auto Attack Speed",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Speed 1",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Additional Armor",
+        "tooltip": "+50% health and health regeneration for your character (2 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Additional Health",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Additional Heatlh 1",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Blessed Weaponry",
+        "tooltip": "-40% ability cooldown for your active ability (3 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Cooldown Reduction",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Cooldown Reduction 1",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Sharper Weaponry",
+        "tooltip": "+40% damage for your royal weapon, affects both active and passive ability (3 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Overall Damage",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Overall Damage 1",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 7,
+     "coreCost": 0,
+     "tooltip": "Can research upgrades. Upgrades apply to you, your troups and your buildings.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": {
+        "name": "Lighter Weaponry",
+        "tooltip": "-40% auto-attack cooldown for your passive attack (2 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Auto Attack Speed",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Speed 2",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Additional Armor",
+        "tooltip": "+50% health and health regeneration for your character (2 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Additional Health",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Additional Heatlh 2",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Blessed Weaponry",
+        "tooltip": "-40% ability cooldown for your active ability (3 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Cooldown Reduction",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Cooldown Reduction 2",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Sharper Weaponry",
+        "tooltip": "+40% damage for your royal weapon, affects both active and passive ability (3 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Overall Damage",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Overall Damage 2",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 14,
+     "coreCost": 0,
+     "tooltip": "Can research upgrades. Upgrades apply to you, your troups and your buildings.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": {
+        "name": "Lighter Weaponry",
+        "tooltip": "-40% auto-attack cooldown for your passive attack (2 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Auto Attack Speed",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Speed 3",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Additional Armor",
+        "tooltip": "+50% health and health regeneration for your character (2 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Additional Health",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Additional Heatlh 3",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Blessed Weaponry",
+        "tooltip": "-40% ability cooldown for your active ability (3 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Cooldown Reduction",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Cooldown Reduction 3",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Sharper Weaponry",
+        "tooltip": "+40% damage for your royal weapon, affects both active and passive ability (3 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Overall Damage",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Overall Damage 3",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 25,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 23137,
+   "name": "Royayl Forge (4)",
+   "path": "BUILDINGS/Royayl Forge (4)",
+   "building": "Royal Forge",
+   "pos": [
+    -6.9,
+    30.997,
+    -9.2
+   ],
+   "yawDeg": -100.6,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 22825,
+    "building": "Castle Center",
+    "level": 2,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -6.9,
+    30.997,
+    -9.2
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -6.9,
+     30.997,
+     -9.2
+    ],
+    "size": [
+     12.089,
+     6.214,
+     5.719
+    ],
+    "center": [
+     0.426,
+     2.953,
+     -0.046
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 4,
+     "coreCost": 0,
+     "tooltip": "Can research upgrades. Upgrades apply to you, your troups and your buildings.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": {
+        "name": "Lighter Weaponry",
+        "tooltip": "-40% auto-attack cooldown for your passive attack (2 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Auto Attack Speed",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Speed 1",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Additional Armor",
+        "tooltip": "+50% health and health regeneration for your character (2 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Additional Health",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Additional Heatlh 1",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Blessed Weaponry",
+        "tooltip": "-40% ability cooldown for your active ability (3 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Cooldown Reduction",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Cooldown Reduction 1",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Sharper Weaponry",
+        "tooltip": "+40% damage for your royal weapon, affects both active and passive ability (3 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Overall Damage",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Overall Damage 1",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 7,
+     "coreCost": 0,
+     "tooltip": "Can research upgrades. Upgrades apply to you, your troups and your buildings.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": {
+        "name": "Lighter Weaponry",
+        "tooltip": "-40% auto-attack cooldown for your passive attack (2 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Auto Attack Speed",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Speed 2",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Additional Armor",
+        "tooltip": "+50% health and health regeneration for your character (2 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Additional Health",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Additional Heatlh 2",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Blessed Weaponry",
+        "tooltip": "-40% ability cooldown for your active ability (3 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Cooldown Reduction",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Cooldown Reduction 2",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Sharper Weaponry",
+        "tooltip": "+40% damage for your royal weapon, affects both active and passive ability (3 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Overall Damage",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Overall Damage 2",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 14,
+     "coreCost": 0,
+     "tooltip": "Can research upgrades. Upgrades apply to you, your troups and your buildings.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": {
+        "name": "Lighter Weaponry",
+        "tooltip": "-40% auto-attack cooldown for your passive attack (2 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Auto Attack Speed",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Speed 3",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Additional Armor",
+        "tooltip": "+50% health and health regeneration for your character (2 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Additional Health",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Additional Heatlh 3",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Blessed Weaponry",
+        "tooltip": "-40% ability cooldown for your active ability (3 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Cooldown Reduction",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Cooldown Reduction 3",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Sharper Weaponry",
+        "tooltip": "+40% damage for your royal weapon, affects both active and passive ability (3 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Overall Damage",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Overall Damage 3",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 25,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 23138,
+   "name": "Royayl Forge (2)",
+   "path": "BUILDINGS/Royayl Forge (2)",
+   "building": "Royal Forge",
+   "pos": [
+    -50.47,
+    30.997,
+    53.85
+   ],
+   "yawDeg": -156.3,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 22825,
+    "building": "Castle Center",
+    "level": 2,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -50.47,
+    30.997,
+    53.85
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -50.47,
+     30.997,
+     53.85
+    ],
+    "size": [
+     12.089,
+     6.214,
+     5.719
+    ],
+    "center": [
+     0.426,
+     2.953,
+     -0.046
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 4,
+     "coreCost": 0,
+     "tooltip": "Can research upgrades. Upgrades apply to you, your troups and your buildings.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": {
+        "name": "Lighter Weaponry",
+        "tooltip": "-40% auto-attack cooldown for your passive attack (2 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Auto Attack Speed",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Speed 1",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Additional Armor",
+        "tooltip": "+50% health and health regeneration for your character (2 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Additional Health",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Additional Heatlh 1",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Blessed Weaponry",
+        "tooltip": "-40% ability cooldown for your active ability (3 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Cooldown Reduction",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Cooldown Reduction 1",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Sharper Weaponry",
+        "tooltip": "+40% damage for your royal weapon, affects both active and passive ability (3 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Overall Damage",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Overall Damage 1",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 7,
+     "coreCost": 0,
+     "tooltip": "Can research upgrades. Upgrades apply to you, your troups and your buildings.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": {
+        "name": "Lighter Weaponry",
+        "tooltip": "-40% auto-attack cooldown for your passive attack (2 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Auto Attack Speed",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Speed 2",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Additional Armor",
+        "tooltip": "+50% health and health regeneration for your character (2 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Additional Health",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Additional Heatlh 2",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Blessed Weaponry",
+        "tooltip": "-40% ability cooldown for your active ability (3 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Cooldown Reduction",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Cooldown Reduction 2",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Sharper Weaponry",
+        "tooltip": "+40% damage for your royal weapon, affects both active and passive ability (3 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Overall Damage",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Overall Damage 2",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 14,
+     "coreCost": 0,
+     "tooltip": "Can research upgrades. Upgrades apply to you, your troups and your buildings.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": {
+        "name": "Lighter Weaponry",
+        "tooltip": "-40% auto-attack cooldown for your passive attack (2 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Auto Attack Speed",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Speed 3",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Additional Armor",
+        "tooltip": "+50% health and health regeneration for your character (2 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Additional Health",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Additional Heatlh 3",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Blessed Weaponry",
+        "tooltip": "-40% ability cooldown for your active ability (3 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Cooldown Reduction",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Cooldown Reduction 3",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Sharper Weaponry",
+        "tooltip": "+40% damage for your royal weapon, affects both active and passive ability (3 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Overall Damage",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Overall Damage 3",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 25,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 23141,
+   "name": "Royayl Forge (3)",
+   "path": "BUILDINGS/Royayl Forge (3)",
+   "building": "Royal Forge",
+   "pos": [
+    -24.8,
+    30.997,
+    3.0
+   ],
+   "yawDeg": -83.1,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 22825,
+    "building": "Castle Center",
+    "level": 1,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -24.8,
+    30.997,
+    3.0
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -24.8,
+     30.997,
+     3.0
+    ],
+    "size": [
+     12.089,
+     6.214,
+     5.719
+    ],
+    "center": [
+     0.426,
+     2.953,
+     -0.046
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 4,
+     "coreCost": 0,
+     "tooltip": "Can research upgrades. Upgrades apply to you, your troups and your buildings.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": {
+        "name": "Lighter Weaponry",
+        "tooltip": "-40% auto-attack cooldown for your passive attack (2 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Auto Attack Speed",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Speed 1",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Additional Armor",
+        "tooltip": "+50% health and health regeneration for your character (2 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Additional Health",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Additional Heatlh 1",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Blessed Weaponry",
+        "tooltip": "-40% ability cooldown for your active ability (3 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Cooldown Reduction",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Cooldown Reduction 1",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Sharper Weaponry",
+        "tooltip": "+40% damage for your royal weapon, affects both active and passive ability (3 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Overall Damage",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Overall Damage 1",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 7,
+     "coreCost": 0,
+     "tooltip": "Can research upgrades. Upgrades apply to you, your troups and your buildings.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": {
+        "name": "Lighter Weaponry",
+        "tooltip": "-40% auto-attack cooldown for your passive attack (2 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Auto Attack Speed",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Speed 2",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Additional Armor",
+        "tooltip": "+50% health and health regeneration for your character (2 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Additional Health",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Additional Heatlh 2",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Blessed Weaponry",
+        "tooltip": "-40% ability cooldown for your active ability (3 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Cooldown Reduction",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Cooldown Reduction 2",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Sharper Weaponry",
+        "tooltip": "+40% damage for your royal weapon, affects both active and passive ability (3 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Overall Damage",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Overall Damage 2",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 14,
+     "coreCost": 0,
+     "tooltip": "Can research upgrades. Upgrades apply to you, your troups and your buildings.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": {
+        "name": "Lighter Weaponry",
+        "tooltip": "-40% auto-attack cooldown for your passive attack (2 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Auto Attack Speed",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Speed 3",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Additional Armor",
+        "tooltip": "+50% health and health regeneration for your character (2 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Additional Health",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Additional Heatlh 3",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Blessed Weaponry",
+        "tooltip": "-40% ability cooldown for your active ability (3 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Cooldown Reduction",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Cooldown Reduction 3",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Sharper Weaponry",
+        "tooltip": "+40% damage for your royal weapon, affects both active and passive ability (3 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Overall Damage",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Overall Damage 3",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 25,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 23143,
+   "name": "Royayl Forge (1)",
+   "path": "BUILDINGS/Royayl Forge (1)",
+   "building": "Royal Forge",
+   "pos": [
+    -32.1,
+    30.997,
+    24.8
+   ],
+   "yawDeg": -128.7,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 22825,
+    "building": "Castle Center",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -32.1,
+    30.997,
+    24.8
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -32.1,
+     30.997,
+     24.8
+    ],
+    "size": [
+     12.089,
+     6.214,
+     5.719
+    ],
+    "center": [
+     0.426,
+     2.953,
+     -0.046
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 4,
+     "coreCost": 0,
+     "tooltip": "Can research upgrades. Upgrades apply to you, your troups and your buildings.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": {
+        "name": "Lighter Weaponry",
+        "tooltip": "-40% auto-attack cooldown for your passive attack (2 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Auto Attack Speed",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Speed 1",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Additional Armor",
+        "tooltip": "+50% health and health regeneration for your character (2 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Additional Health",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Additional Heatlh 1",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Blessed Weaponry",
+        "tooltip": "-40% ability cooldown for your active ability (3 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Cooldown Reduction",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Cooldown Reduction 1",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Sharper Weaponry",
+        "tooltip": "+40% damage for your royal weapon, affects both active and passive ability (3 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Overall Damage",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Overall Damage 1",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 7,
+     "coreCost": 0,
+     "tooltip": "Can research upgrades. Upgrades apply to you, your troups and your buildings.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": {
+        "name": "Lighter Weaponry",
+        "tooltip": "-40% auto-attack cooldown for your passive attack (2 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Auto Attack Speed",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Speed 2",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Additional Armor",
+        "tooltip": "+50% health and health regeneration for your character (2 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Additional Health",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Additional Heatlh 2",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Blessed Weaponry",
+        "tooltip": "-40% ability cooldown for your active ability (3 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Cooldown Reduction",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Cooldown Reduction 2",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Sharper Weaponry",
+        "tooltip": "+40% damage for your royal weapon, affects both active and passive ability (3 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Overall Damage",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Overall Damage 2",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 14,
+     "coreCost": 0,
+     "tooltip": "Can research upgrades. Upgrades apply to you, your troups and your buildings.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": {
+        "name": "Lighter Weaponry",
+        "tooltip": "-40% auto-attack cooldown for your passive attack (2 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Auto Attack Speed",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Speed 3",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Additional Armor",
+        "tooltip": "+50% health and health regeneration for your character (2 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Additional Health",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Additional Heatlh 3",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Blessed Weaponry",
+        "tooltip": "-40% ability cooldown for your active ability (3 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Cooldown Reduction",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Cooldown Reduction 3",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Sharper Weaponry",
+        "tooltip": "+40% damage for your royal weapon, affects both active and passive ability (3 days to research)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Overall Damage",
+         "components": [
+          "RoyalForgeUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Overall Damage 3",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 25,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 23258,
+   "name": "Gate Wide Variant",
+   "path": "BUILDINGS/Gate Wide Variant",
+   "building": "Wall",
+   "pos": [
+    -91.65,
+    23.34,
+    39.24
+   ],
+   "yawDeg": 99.1,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 1,
+   "activator": {
+    "slot": 22825,
+    "building": "Castle Center",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -91.65,
+    23.34,
+    39.24
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -91.65,
+     23.34,
+     39.24
+    ],
+    "size": [
+     10.04,
+     4.508,
+     0.537
+    ],
+    "center": [
+     -0.009,
+     2.254,
+     -0.158
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Stops enemies at the gates.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 6,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Gate Opener Lvl 2",
+         "components": [
+          "GateOpener",
+          "PerkSpawnOnDestroy"
+         ]
+        }
+       ],
+       "disables": [
+        "Gate Opener Lvl 1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 50,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 2500,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 59,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 23259,
+   "name": "Gate Wide Variant (1)",
+   "path": "BUILDINGS/Gate Wide Variant (1)",
+   "building": "Wall",
+   "pos": [
+    -27.988,
+    30.997,
+    -20.005
+   ],
+   "yawDeg": 0.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 1,
+   "activator": {
+    "slot": 22825,
+    "building": "Castle Center",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -27.988,
+    30.997,
+    -20.005
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -27.988,
+     30.997,
+     -20.005
+    ],
+    "size": [
+     10.04,
+     4.508,
+     0.537
+    ],
+    "center": [
+     -0.009,
+     2.254,
+     -0.158
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Stops enemies at the gates.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 6,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Gate Opener Lvl 2",
+         "components": [
+          "GateOpener",
+          "PerkSpawnOnDestroy"
+         ]
+        }
+       ],
+       "disables": [
+        "Gate Opener Lvl 1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 50,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 2500,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 59,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  }
+ ],
+ "shrines": [],
+ "nighthorns": [],
+ "dayNight": [
+  {
+   "id": 23389,
+   "name": "Day Night Cycle",
+   "path": "LOCAL MANAGERS/Day Night Cycle",
+   "active": true,
+   "pos": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "sunriseTime": 3.0
+  }
+ ],
+ "autoDayNight": [],
+ "nightCall": [
+  {
+   "id": 22706,
+   "name": "UI Overlay Canvas",
+   "path": "LOCAL MANAGERS/UI Overlay Canvas",
+   "active": false,
+   "pos": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "nightCallTime": 2.0
+  }
+ ],
+ "castle": [
+  {
+   "id": 18940,
+   "name": "Building Parent",
+   "path": "BUILDINGS/Castle Center Variant/Building Parent",
+   "pos": [
+    -45.9,
+    30.997,
+    15.6
+   ],
+   "maxHp": 100.0,
+   "tags": [
+    "PlayerOwned",
+    "Building",
+    "InfrastructureEconomy",
+    "CastleCenter",
+    "PlayerOwnedPriorityTarget"
+   ]
+  }
+ ],
+ "heroes": [
+  {
+   "name": "Player Character",
+   "pos": [
+    -57.29,
+    30.41,
+    14.86
+   ],
+   "summary": {
+    "name": "Player Character",
+    "maxHp": 50.0,
+    "tags": [
+     "PlayerOwned",
+     "Player"
+    ],
+    "coinDrop": 0,
+    "components": [
+     "CharacterController",
+     "PlayerMovement",
+     "PlayerInteraction",
+     "RVOController",
+     "TaggedObject",
+     "Hp",
+     "PlayerHpRegen",
+     "AutoRevive",
+     "PlayerUpgradeManager",
+     "PlayerAttack",
+     "CommandUnits",
+     "PerkHpModifyer",
+     "PowerTowerPerk",
+     "SaveLoadEntity"
+    ]
+   },
+   "movement": {
+    "speed": 14.0,
+    "speedDuringDay": 18.2,
+    "sprintSpeed": 23.0,
+    "sprintSpeedDuringDay": 29.9,
+    "moveSpeedWhenDead": 6.0,
+    "gravity": -50.0,
+    "maxMeshRotationSpeed": 400.0,
+    "yFallThroughMapDetection": -30.0
+   },
+   "interaction": {
+    "coinMagnetRadius": 7.0,
+    "interactionRadius": 3.0
+   },
+   "command": {
+    "drowWaypointParticleCount": 100,
+    "attractRange": 6.0,
+    "graphNameOfPlayerUnits": "Player Units S",
+    "graphNameOfFlyingUnits": "Enemy Units Air",
+    "unitDistanceFromEachOther": 2.5,
+    "unitDistanceMoveStep": 0.5,
+    "maxPositioningRepeats": 50,
+    "holdToHoldPositionTime": 0.5,
+    "holdToSetUnitGroup": 1.0,
+    "commanderUnitMoveSpeedMulti": 1.6,
+    "commanderHoldHealthMulti": 1.2,
+    "commanderHoldDamageMulti": 1.2,
+    "groupHoldDelay": 0.2,
+    "commanding": false,
+    "canCommandUnitsInThisMode": true
+   }
+  }
+ ],
+ "units": {},
+ "summary": {
+  "nights": 11,
+  "enemiesTotal": 337,
+  "baseHpTotal": 222745.0,
+  "goldCoinsTotal": 147,
+  "flyingEnemies": 20,
+  "bossEnemies": 19,
+  "spawnLines": 11,
+  "buildSlots": 10,
+  "slotsByBuilding": {
+   "Wall": 4,
+   "Castle Center": 1,
+   "Royal Forge": 5
+  },
+  "hasHorn": false,
+  "shrines": 0,
+  "castleFound": true,
+  "enemyTypes": [
+   "E Archer",
+   "E BarrelKnight",
+   "E Crossbow",
+   "E Eldermole",
+   "E Exploder",
+   "E Fury",
+   "E Melee",
+   "E Moleman",
+   "E Ogre",
+   "E Quicksling",
+   "E Racer"
+  ]
+ }
+}

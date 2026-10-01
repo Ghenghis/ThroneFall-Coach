@@ -1,0 +1,28 @@
+{
+  "owner": "claude-refpack",
+  "role": "agent",
+  "status": "working",
+  "task_id": "a2a_1790682962254_dabde820",
+  "files": [
+    "reference",
+    "tools/refpack"
+  ],
+  "skills": [
+    "documentation",
+    "il-analysis",
+    "pdf",
+    "reverse-engineering",
+    "unity-asset-extraction"
+  ],
+  "task_types": [
+    "docs",
+    "extraction"
+  ],
+  "note": "Resumed from HANDOFF.md (Sonnet 5.5 session, owner claude-refpack). Writing TfMap Program.cs/IL.cs, then build + run.",
+  "can_interrupt": true,
+  "waiting_on": null,
+  "eta_utc": null,
+  "updated_utc": "2026-09-29T12:14:16.724Z",
+  "expires_utc": "2026-09-29T12:44:16.724Z",
+  "ttl_seconds": 1800
+}

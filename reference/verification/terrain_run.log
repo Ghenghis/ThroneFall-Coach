@@ -1,0 +1,37 @@
+ 4 Neuland(Tutorial)                      surface=    8818 m2 walkable=    7951 m2 reachable=    8689 m2 obstacles=  54 potentialBldg= 20 slots=19 noStand=0  2.2s
+ 5 Nordfels                               surface=    8087 m2 walkable=    6639 m2 reachable=    7822 m2 obstacles= 106 potentialBldg= 32 slots=69 noStand=0  2.4s
+ 6 Durststein                             surface=   15415 m2 walkable=   12892 m2 reachable=   15121 m2 obstacles= 136 potentialBldg= 37 slots=94 noStand=0  3.9s
+ 7 Frostsee                               surface=   14265 m2 walkable=   12412 m2 reachable=   14125 m2 obstacles= 116 potentialBldg= 18 slots=73 noStand=0  2.8s
+ 8 Uferwind                               surface=   16029 m2 walkable=   13532 m2 reachable=   15666 m2 obstacles= 170 potentialBldg= 42 slots=117 noStand=0  3.7s
+ 9 Sturmklamm                             surface=    8448 m2 walkable=    6742 m2 reachable=    7959 m2 obstacles= 119 potentialBldg= 33 slots=80 noStand=0  3.6s
+10 Nordfels Bow Micro                     surface=    8087 m2 walkable=    7433 m2 reachable=    7822 m2 obstacles=  43 potentialBldg= 15 slots=13 noStand=0  1.4s
+11 Nordfels Siege                         surface=    8087 m2 walkable=    6955 m2 reachable=    7822 m2 obstacles=  89 potentialBldg= 30 slots=51 noStand=0  2.3s
+12 Nordfels Commander                     surface=    8087 m2 walkable=    7136 m2 reachable=    7822 m2 obstacles=  62 potentialBldg= 15 slots=23 noStand=0  2.3s
+13 Durststein Gold Puzzle                 surface=   15415 m2 walkable=   13481 m2 reachable=   15121 m2 obstacles=  95 potentialBldg= 35 slots=57 noStand=0  3.0s
+14 Durststein Speedrun                    surface=   15415 m2 walkable=   13199 m2 reachable=   15121 m2 obstacles= 126 potentialBldg= 35 slots=84 noStand=0  3.7s
+15 Durststein Tower Defense               surface=   15415 m2 walkable=   14129 m2 reachable=   15122 m2 obstacles=  88 potentialBldg= 15 slots=42 noStand=0  2.7s
+16 Frostsee Boss Rush                     surface=   14265 m2 walkable=   12709 m2 reachable=   14125 m2 obstacles= 102 potentialBldg= 16 slots=61 noStand=0  2.8s
+17 Frostsee Bowling Challenge             surface=   14265 m2 walkable=   13804 m2 reachable=   14054 m2 obstacles=  32 potentialBldg= 15 slots=1 noStand=0  1.8s
+18 Frostsee The Great Wall                surface=   14265 m2 walkable=   12637 m2 reachable=   14125 m2 obstacles= 105 potentialBldg= 15 slots=62 noStand=0  2.7s
+19 Uferwind Defense Puzzle                surface=   16029 m2 walkable=   13625 m2 reachable=   15664 m2 obstacles= 163 potentialBldg= 40 slots=110 noStand=0  3.6s
+20 Uferwind Hero Commander                surface=   16029 m2 walkable=   14274 m2 reachable=   15664 m2 obstacles= 105 potentialBldg= 15 slots=45 noStand=0  2.9s
+21 Uferwind Lightning Staff Challenge     surface=   16029 m2 walkable=   14718 m2 reachable=   15664 m2 obstacles=  80 potentialBldg= 15 slots=32 noStand=0  2.4s
+22 Sturmklamm Just The Way They Are       surface=    8448 m2 walkable=    7499 m2 reachable=    7959 m2 obstacles=  66 potentialBldg= 15 slots=27 noStand=0  2.6s
+23 Sturmklamm One Man Army                surface=    8448 m2 walkable=    7492 m2 reachable=    7959 m2 obstacles=  46 potentialBldg= 15 slots=10 noStand=0  2.1s
+24 Sturmklamm Shrine Challenge            surface=    8448 m2 walkable=    7510 m2 reachable=    7959 m2 obstacles=  62 potentialBldg= 15 slots=26 noStand=0  2.3s
+25 Wildbach                               surface=    9166 m2 walkable=    7515 m2 reachable=    8025 m2 obstacles= 116 potentialBldg= 32 slots=78 noStand=0  2.9s
+26 Moorweg                                surface=   18903 m2 walkable=   16937 m2 reachable=   18712 m2 obstacles= 136 potentialBldg= 29 slots=82 noStand=0  4.4s
+27 Freifort                               surface=   25820 m2 walkable=   23598 m2 reachable=   25609 m2 obstacles= 170 potentialBldg= 39 slots=113 noStand=0  4.7s
+28 Totend                                 surface=   20296 m2 walkable=   14992 m2 reachable=     695 m2 obstacles= 187 potentialBldg= 33 slots=100 noStand=0  9.3s
+29 Freifort MM1                           surface=   25820 m2 walkable=   24960 m2 reachable=    5190 m2 obstacles=  57 potentialBldg= 15 slots=7 noStand=0  5.2s
+30 Freifort MM2                           surface=   25820 m2 walkable=   23598 m2 reachable=   25609 m2 obstacles= 170 potentialBldg= 39 slots=113 noStand=0  4.8s
+31 Freifort MM3                           surface=   25820 m2 walkable=   23140 m2 reachable=   25609 m2 obstacles= 187 potentialBldg= 80 slots=144 noStand=0  4.1s
+32 Moorweg MM1                            surface=   18903 m2 walkable=   17301 m2 reachable=   18712 m2 obstacles= 132 potentialBldg= 43 slots=78 noStand=0  4.2s
+33 Moorweg MM2                            surface=   18903 m2 walkable=   17193 m2 reachable=   18712 m2 obstacles= 128 potentialBldg= 25 slots=74 noStand=0  4.0s
+34 Moorweg MM3                            surface=   18903 m2 walkable=   16937 m2 reachable=   18712 m2 obstacles= 136 potentialBldg= 29 slots=82 noStand=0  4.3s
+35 Totend MM1                             surface=   20296 m2 walkable=   14950 m2 reachable=     695 m2 obstacles= 186 potentialBldg= 30 slots=99 noStand=0  9.0s
+36 Totend MM2                             surface=   20296 m2 walkable=   16218 m2 reachable=     695 m2 obstacles=  75 potentialBldg= 15 slots=7 noStand=0  7.8s
+37 Totend MM3                             surface=   20296 m2 walkable=   14840 m2 reachable=   10207 m2 obstacles= 181 potentialBldg= 44 slots=118 noStand=7  9.4s
+38 Wildbach MM1                           surface=    9166 m2 walkable=    7337 m2 reachable=    8025 m2 obstacles= 113 potentialBldg= 25 slots=75 noStand=0  3.1s
+39 Wildbach MM2                           surface=    9166 m2 walkable=    7694 m2 reachable=    8025 m2 obstacles= 113 potentialBldg= 32 slots=75 noStand=0  3.3s
+40 Wildbach MM3                           surface=    9166 m2 walkable=    7515 m2 reachable=    8025 m2 obstacles= 116 potentialBldg= 32 slots=78 noStand=0  3.1s

@@ -1,0 +1,219 @@
+// BotPackLoader.cs.txt — reference loader for reference/botpack/*.botpack.json (schemaVersion 1).
+// It is a .txt on purpose: nothing under reference/ is compiled into the plugin. Copy it into src/ when you want to use it.
+// Compile-checked against Thronefall_Data/Managed (UnityEngine.CoreModule + JSONSerializeModule, net472).
+// JsonUtility limits respected: no dictionaries, no arrays of arrays, no nulls (unknown numbers are -1).
+
+using System;
+using System.IO;
+using UnityEngine;
+
+namespace ThronefallRefPack
+{
+    [Serializable] public class BpHero { public float radius, height, step, slope, skin, walkSpeed, dayWalkSpeed, sprintSpeed, daySprintSpeed, interactionRadius, coinMagnetRadius; }
+
+    [Serializable] public class BpRules
+    {
+        public int startGold, pauseSpawningAtEnemyCount, maxPerkCount;
+        public float nightCallSeconds, autoDaySeconds;
+        public bool autoDay;
+        public string requiresBeatenLevel, fixedLoadout;
+    }
+
+    [Serializable] public class BpEnemy
+    {
+        public string prefab, name, displayName, tags;
+        public float hp, speed, range, damage, cooldown, dps;
+        public bool flying, ranged, boss, siege, fast;
+    }
+
+    [Serializable] public class BpNight
+    {
+        public int night, enemies, ranged, flying, boss, elite, goldCoins;
+        public string warning;
+        public float baseHp, spawnSpanSeconds, firstContactSeconds, lastArrivalSeconds, difficultyMulti;   // seconds after dusk; -1 = unknown
+    }
+
+    [Serializable] public class BpSpawnGroup
+    {
+        public int night, count, goldCoins;
+        public string enemy, line;     // enemy = BpEnemy.prefab
+        public bool elite;
+        public float delay, interval, travelSeconds, firstContactSeconds, lastArrivalSeconds;
+    }
+
+    [Serializable] public class BpSpawnLine
+    {
+        public string name;
+        public float cx, cy, cz, length, routeLengthM, chokeX, chokeZ, chokeClearanceM;   // routeLengthM -1 = no ground route
+        public bool canSpawnFlying, canSpawnSmallGround, canSpawnBigGround;
+    }
+
+    [Serializable] public class BpPoint { public string line; public int i; public float x, y, z; }
+
+    [Serializable] public class BpSlot
+    {
+        public int id, activatorId, activatorLevel, levelCount, totalCost, maxIncome, standFirst, standCount;
+        public int rootId, requiredRootLevelDifference;   // upgrade cap: past level 0 only while root.Level > level + requiredRootLevelDifference (BuildSlot.CanBeUpgraded)
+        public int unlockAfterUpgradeNumber, unlockCostGold;   // slot appears after the activator's Nth upgrade; gold of prerequisite upgrades incl. their own unlock costs (-1 unknown)
+        public bool followsActivatorUpgrades;   // wall segments etc.: Level/Upgrades mirror the activator
+        public string name, building, activatorBuilding;
+        public float x, y, z;
+        public bool startDeactivated, connectedToCastle, producesUnits;
+    }
+
+    [Serializable] public class BpStand { public int slotId; public float x, y, z, pathFromCastleM, clearanceM; }
+
+    /// <summary>One vertex of a convex XZ polygon of a slot's interactor collider (poly = polygon index, k = vertex order).</summary>
+    [Serializable] public class BpPolyPoint { public int slotId, poly, k; public float x, z; }
+
+    [Serializable] public class BpBranch
+    {
+        public int slotId, level, branch, cost, goldIncome, hpChange, unitsProduced;
+        public string choice;
+        public float attackDps;
+    }
+
+    [Serializable] public class BpShrine { public float x, y, z, maxXp, range; public int income; }
+    [Serializable] public class BpGate { public float x, y, z, openDistance; public string mode; }
+
+    [Serializable] public class BpObstacle
+    {
+        public string category, layer, name;
+        public int slotId;
+        public bool potential;
+        public float minX, minZ, maxX, maxZ, yMin, yMax;   // axis-aligned box of the collider footprint (the grid is authoritative)
+    }
+
+    [Serializable] public class BpGrid
+    {
+        public float resolution, originX, originZ;
+        public int width, height;
+        public string encoding;
+        public int[] walkableUnbuiltRuns, walkableAllBuiltRuns, surfaceRuns;   // (row, startColumn, length) triples
+    }
+
+    [Serializable] public class BotPack
+    {
+        public int schemaVersion, buildIndex;
+        public string scene, gameVersion, assemblySha256;
+        public float castleX, castleY, castleZ;
+        public BpHero hero;
+        public BpRules rules;
+        public BpEnemy[] enemies;
+        public BpNight[] nights;
+        public BpSpawnGroup[] spawnGroups;
+        public BpSpawnLine[] spawnLines;
+        public BpPoint[] spawnPoints, routePoints;
+        public BpSlot[] slots;
+        public BpStand[] standPoints;
+        public BpPolyPoint[] interactorPoints;
+        public BpBranch[] upgradeBranches;
+        public BpShrine[] shrines;
+        public BpGate[] gates;
+        public BpObstacle[] obstacles;
+        public BpGrid grid;
+    }
+
+    /// <summary>Random-access view of a run-length encoded boolean grid.</summary>
+    public sealed class RunGrid
+    {
+        readonly bool[] cells;
+        readonly int w, h;
+        readonly float res, ox, oz;
+
+        public RunGrid(BpGrid g, int[] runs)
+        {
+            w = g.width; h = g.height; res = g.resolution; ox = g.originX; oz = g.originZ;
+            cells = new bool[w * h];
+            if (runs == null) return;
+            for (int k = 0; k + 2 < runs.Length; k += 3)
+            {
+                int row = runs[k], start = runs[k + 1], len = runs[k + 2];
+                if (row < 0 || row >= h) continue;
+                for (int c = start; c < start + len && c < w; c++) cells[row * w + c] = true;
+            }
+        }
+
+        public bool Contains(float x, float z)
+        {
+            int i = Mathf.FloorToInt((x - ox) / res), j = Mathf.FloorToInt((z - oz) / res);
+            return i >= 0 && i < w && j >= 0 && j < h && cells[j * w + i];
+        }
+
+        /// <summary>Nearest true cell centre within maxRadius metres (ring search); false if none.</summary>
+        public bool Nearest(float x, float z, float maxRadius, out float nx, out float nz)
+        {
+            int ci = Mathf.FloorToInt((x - ox) / res), cj = Mathf.FloorToInt((z - oz) / res);
+            int maxR = Mathf.CeilToInt(maxRadius / res);
+            nx = x; nz = z;
+            for (int r = 0; r <= maxR; r++)
+            {
+                float best = float.MaxValue; bool found = false;
+                for (int dj = -r; dj <= r; dj++)
+                    for (int di = -r; di <= r; di++)
+                    {
+                        if (Mathf.Max(Mathf.Abs(di), Mathf.Abs(dj)) != r) continue;
+                        int i = ci + di, j = cj + dj;
+                        if (i < 0 || i >= w || j < 0 || j >= h || !cells[j * w + i]) continue;
+                        float d = di * di + dj * dj;
+                        if (d < best) { best = d; nx = ox + (i + 0.5f) * res; nz = oz + (j + 0.5f) * res; found = true; }
+                    }
+                if (found) return true;
+            }
+            return false;
+        }
+    }
+
+    public static class BotPackLoader
+    {
+        public static BotPack Load(string path)
+        {
+            var pack = JsonUtility.FromJson<BotPack>(File.ReadAllText(path));
+            if (pack == null || pack.schemaVersion != 1) throw new InvalidDataException("unsupported botpack: " + path);
+            return pack;
+        }
+
+        /// <summary>Stand points of a slot, best first (shortest walk from the castle, then most clearance).</summary>
+        public static BpStand[] StandPoints(BotPack p, BpSlot s)
+        {
+            var r = new BpStand[s.standCount];
+            Array.Copy(p.standPoints, s.standFirst, r, 0, s.standCount);
+            return r;
+        }
+
+        /// <summary>Distance in metres from an XZ position to the slot's interactor collider footprint (0 when inside).
+        /// PlayerInteraction focuses an interactor when the hero is within interactionRadius (3.0 m) of that collider.</summary>
+        public static float DistanceToInteractor(BotPack p, BpSlot s, Vector2 pos)
+        {
+            float best = float.MaxValue;
+            int i = 0, n = p.interactorPoints.Length;
+            while (i < n)
+            {
+                if (p.interactorPoints[i].slotId != s.id) { i++; continue; }
+                int poly = p.interactorPoints[i].poly, j = i;
+                while (j < n && p.interactorPoints[j].slotId == s.id && p.interactorPoints[j].poly == poly) j++;
+                int m = j - i;
+                bool inside = true;
+                for (int a = 0; a < m; a++)
+                {
+                    var A = p.interactorPoints[i + a]; var B = p.interactorPoints[i + (a + 1) % m];
+                    float cross = (B.x - A.x) * (pos.y - A.z) - (B.z - A.z) * (pos.x - A.x);
+                    if (cross < 0) inside = false;
+                    Vector2 ab = new Vector2(B.x - A.x, B.z - A.z), ap = new Vector2(pos.x - A.x, pos.y - A.z);
+                    float t = Mathf.Clamp01(Vector2.Dot(ap, ab) / Mathf.Max(ab.sqrMagnitude, 1e-9f));
+                    best = Mathf.Min(best, (ap - ab * t).magnitude);
+                }
+                if (inside) return 0f;
+                i = j;
+            }
+            return best;
+        }
+
+        /// <summary>True when the hero can interact with the slot from where it stands (default margin keeps 0.4 m below the 3.0 m limit).
+        /// This is the fix for "walking to a point inside the collider": a slot is REACHED as soon as this returns true.</summary>
+        public static bool InInteractionRange(BotPack p, BpSlot s, Vector3 hero, float margin = 0.4f)
+            => DistanceToInteractor(p, s, new Vector2(hero.x, hero.z)) <= p.hero.interactionRadius - margin;
+
+        public static BpNight Night(BotPack p, int night) => Array.Find(p.nights, n => n.night == night);
+    }
+}

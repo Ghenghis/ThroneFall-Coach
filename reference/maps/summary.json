@@ -1,0 +1,38 @@
+{
+  "assemblies": 168,
+  "callees": 4655,
+  "classLayouts": 152,
+  "elapsedSeconds": 3,
+  "enumsAllAssemblies": 3599,
+  "fieldsRead": 5701,
+  "fieldsWritten": 3681,
+  "full": [
+    "Assembly-CSharp",
+    "Assembly-CSharp-firstpass",
+    "KB.FogRTS.Runtime"
+  ],
+  "ilBytes": 365426,
+  "managedDir": "K:\\Downloads-IDM\\Thronefall\\Thronefall_Data\\Managed",
+  "members": [
+    "AstarPathfindingProject"
+  ],
+  "methodBodies": 5297,
+  "methodsWithIds": 5348,
+  "scriptLayouts": 1470,
+  "scriptLayoutsWithManagedRefs": 1,
+  "scriptLayoutsWithNotes": 36,
+  "serializeReferenceTargets": [
+    "MoreMountains.Feedbacks.MMF_Feedback"
+  ],
+  "skipped": [],
+  "types": 4284,
+  "vendorPrefixes": [
+    "Epic.OnlineServices",
+    "I2",
+    "Rewired",
+    "NGS",
+    "FlatKit",
+    "Ara",
+    "MoreMountains"
+  ]
+}

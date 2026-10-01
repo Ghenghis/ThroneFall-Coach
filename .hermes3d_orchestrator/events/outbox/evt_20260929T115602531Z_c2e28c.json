@@ -1,0 +1,27 @@
+{
+  "event_schema_version": 1,
+  "event_id": "evt_20260929T115602531Z_c2e28c",
+  "event_type": "lock.acquired",
+  "created_utc": "2026-09-29T11:56:02.531Z",
+  "workspace_root": "K:\\Downloads-IDM\\Thronefall\\Trainer",
+  "task_id": null,
+  "owner": "claude-refpack",
+  "branch": "main",
+  "files": [
+    "reference",
+    "tools/refpack"
+  ],
+  "summary": "Lock acquired: 2 file(s)",
+  "evidence_ids": [],
+  "next_actor": "unassigned",
+  "recommended_action": "none",
+  "payload": {
+    "owner": "claude-refpack",
+    "task_id": "",
+    "files": [
+      "reference",
+      "tools/refpack"
+    ],
+    "reason": "New folders for the static extraction toolchain (tools/refpack) and generated game handbook/mapping files (reference). No existing files touched."
+  }
+}

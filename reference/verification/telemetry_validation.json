@@ -1,0 +1,849 @@
+{
+ "log": "K:\\Downloads-IDM\\Thronefall\\BepInEx\\plugins\\bot-log.jsonl",
+ "scenes": {
+  "Neuland(Tutorial)": {
+   "ticks": 474,
+   "pctOnNavSurface(\u00b10.6m)": 98.95,
+   "pctInWalkableUnbuilt": 92.41,
+   "pctInWalkableAllBuilt": 73.42,
+   "pctOutsideGrid": 0.0,
+   "stuckEvents": 6,
+   "topStuckClusters": [
+    {
+     "centerXZ": [
+      -99.8,
+      12.2
+     ],
+     "events": 3,
+     "modes": [
+      [
+       "Engage",
+       3
+      ]
+     ],
+     "insideWalkableAllBuilt": false,
+     "insideWalkableUnbuilt": true,
+     "distToNearestHeroFreeCellM": 0.25,
+     "distToNearestBlockedM": 0.0,
+     "nearestSlot": {
+      "name": "House Variant (5)",
+      "building": "House",
+      "pos": [
+       -21.31,
+       6.0,
+       -34.69
+      ],
+      "distM": 91.4,
+      "recommendedStandPoints": [
+       {
+        "x": -16.85,
+        "y": 5.9,
+        "z": -35.97,
+        "pathFromCastleM": 14.6,
+        "clearanceM": 2.02,
+        "distToInteractorM": 2.8
+       },
+       {
+        "x": -17.85,
+        "y": 5.9,
+        "z": -37.97,
+        "pathFromCastleM": 14.8,
+        "clearanceM": 2.02,
+        "distToInteractorM": 2.8
+       }
+      ]
+     }
+    },
+    {
+     "centerXZ": [
+      26.3,
+      -78.1
+     ],
+     "events": 3,
+     "modes": [
+      [
+       "Engage",
+       3
+      ]
+     ],
+     "insideWalkableAllBuilt": false,
+     "insideWalkableUnbuilt": true,
+     "distToNearestHeroFreeCellM": 0.25,
+     "distToNearestBlockedM": 0.0,
+     "nearestSlot": {
+      "name": "Gate Wide Variant",
+      "building": "Wall",
+      "pos": [
+       22.17,
+       3.21,
+       -75.84
+      ],
+      "distM": 4.7,
+      "recommendedStandPoints": [
+       {
+        "x": 18.4,
+        "y": 5.9,
+        "z": -68.72,
+        "pathFromCastleM": 39.0,
+        "clearanceM": 0.25,
+        "distToInteractorM": 2.85
+       },
+       {
+        "x": 20.15,
+        "y": 5.9,
+        "z": -69.72,
+        "pathFromCastleM": 40.7,
+        "clearanceM": 0.25,
+        "distToInteractorM": 2.02
+       }
+      ]
+     }
+    }
+   ]
+  },
+  "Nordfels": {
+   "ticks": 29963,
+   "pctOnNavSurface(\u00b10.6m)": 99.72,
+   "pctInWalkableUnbuilt": 98.92,
+   "pctInWalkableAllBuilt": 14.37,
+   "pctOutsideGrid": 0.0,
+   "stuckEvents": 356,
+   "topStuckClusters": [
+    {
+     "centerXZ": [
+      0.6,
+      2.7
+     ],
+     "events": 316,
+     "modes": [
+      [
+       "SpendGold",
+       316
+      ]
+     ],
+     "insideWalkableAllBuilt": true,
+     "insideWalkableUnbuilt": true,
+     "distToNearestHeroFreeCellM": 0.0,
+     "distToNearestBlockedM": 0.25,
+     "nearestSlot": {
+      "name": "Castle Center Variant",
+      "building": "Castle Center",
+      "pos": [
+       -4.5,
+       0.0,
+       1.1
+      ],
+      "distM": 5.4,
+      "recommendedStandPoints": [
+       {
+        "x": -4.58,
+        "y": 0.0,
+        "z": -4.17,
+        "pathFromCastleM": 5.2,
+        "clearanceM": 0.25,
+        "distToInteractorM": 1.0
+       },
+       {
+        "x": -9.83,
+        "y": 0.0,
+        "z": 1.08,
+        "pathFromCastleM": 5.2,
+        "clearanceM": 0.25,
+        "distToInteractorM": 1.0
+       }
+      ]
+     }
+    },
+    {
+     "centerXZ": [
+      2.4,
+      1.8
+     ],
+     "events": 13,
+     "modes": [
+      [
+       "SpendGold",
+       13
+      ]
+     ],
+     "insideWalkableAllBuilt": true,
+     "insideWalkableUnbuilt": true,
+     "distToNearestHeroFreeCellM": 0.0,
+     "distToNearestBlockedM": 1.06,
+     "nearestSlot": {
+      "name": "Outpost Variant (1)",
+      "building": "Barracks",
+      "pos": [
+       6.44,
+       0.0,
+       -2.0
+      ],
+      "distM": 5.5,
+      "recommendedStandPoints": [
+       {
+        "x": 1.17,
+        "y": 0.0,
+        "z": 1.08,
+        "pathFromCastleM": 5.8,
+        "clearanceM": 0.75,
+        "distToInteractorM": 2.75
+       },
+       {
+        "x": 1.17,
+        "y": 0.0,
+        "z": -0.92,
+        "pathFromCastleM": 6.6,
+        "clearanceM": 0.75,
+        "distToInteractorM": 2.75
+       }
+      ]
+     }
+    },
+    {
+     "centerXZ": [
+      -0.6,
+      -0.8
+     ],
+     "events": 7,
+     "modes": [
+      [
+       "CollectCoin",
+       7
+      ]
+     ],
+     "insideWalkableAllBuilt": false,
+     "insideWalkableUnbuilt": true,
+     "distToNearestHeroFreeCellM": 1.25,
+     "distToNearestBlockedM": 0.0,
+     "nearestSlot": {
+      "name": "Castle Center Variant",
+      "building": "Castle Center",
+      "pos": [
+       -4.5,
+       0.0,
+       1.1
+      ],
+      "distM": 4.3,
+      "recommendedStandPoints": [
+       {
+        "x": -4.58,
+        "y": 0.0,
+        "z": -4.17,
+        "pathFromCastleM": 5.2,
+        "clearanceM": 0.25,
+        "distToInteractorM": 1.0
+       },
+       {
+        "x": -9.83,
+        "y": 0.0,
+        "z": 1.08,
+        "pathFromCastleM": 5.2,
+        "clearanceM": 0.25,
+        "distToInteractorM": 1.0
+       }
+      ]
+     }
+    },
+    {
+     "centerXZ": [
+      9.7,
+      -90.0
+     ],
+     "events": 3,
+     "modes": [
+      [
+       "Engage",
+       3
+      ]
+     ],
+     "insideWalkableAllBuilt": false,
+     "insideWalkableUnbuilt": true,
+     "distToNearestHeroFreeCellM": 0.35,
+     "distToNearestBlockedM": 0.0,
+     "nearestSlot": {
+      "name": "Field Variant (8)",
+      "building": "Field",
+      "pos": [
+       12.52,
+       0.0,
+       -59.84
+      ],
+      "distM": 30.3,
+      "recommendedStandPoints": [
+       {
+        "x": 10.67,
+        "y": 0.0,
+        "z": -55.92,
+        "pathFromCastleM": 63.3,
+        "clearanceM": 4.16,
+        "distToInteractorM": 2.85
+       },
+       {
+        "x": 8.92,
+        "y": 0.0,
+        "z": -57.42,
+        "pathFromCastleM": 64.1,
+        "clearanceM": 5.02,
+        "distToInteractorM": 2.8
+       }
+      ]
+     }
+    },
+    {
+     "centerXZ": [
+      10.0,
+      -90.4
+     ],
+     "events": 3,
+     "modes": [
+      [
+       "Engage",
+       3
+      ]
+     ],
+     "insideWalkableAllBuilt": false,
+     "insideWalkableUnbuilt": true,
+     "distToNearestHeroFreeCellM": 0.25,
+     "distToNearestBlockedM": 0.0,
+     "nearestSlot": {
+      "name": "Field Variant (8)",
+      "building": "Field",
+      "pos": [
+       12.52,
+       0.0,
+       -59.84
+      ],
+      "distM": 30.7,
+      "recommendedStandPoints": [
+       {
+        "x": 10.67,
+        "y": 0.0,
+        "z": -55.92,
+        "pathFromCastleM": 63.3,
+        "clearanceM": 4.16,
+        "distToInteractorM": 2.85
+       },
+       {
+        "x": 8.92,
+        "y": 0.0,
+        "z": -57.42,
+        "pathFromCastleM": 64.1,
+        "clearanceM": 5.02,
+        "distToInteractorM": 2.8
+       }
+      ]
+     }
+    },
+    {
+     "centerXZ": [
+      63.1,
+      -55.6
+     ],
+     "events": 3,
+     "modes": [
+      [
+       "Engage",
+       3
+      ]
+     ],
+     "insideWalkableAllBuilt": false,
+     "insideWalkableUnbuilt": false,
+     "distToNearestHeroFreeCellM": 0.35,
+     "distToNearestBlockedM": 0.0,
+     "nearestSlot": {
+      "name": "Archer Hut (2)",
+      "building": "Archery Range",
+      "pos": [
+       40.2,
+       0.0,
+       -33.5
+      ],
+      "distM": 31.8,
+      "recommendedStandPoints": [
+       {
+        "x": 34.92,
+        "y": 0.0,
+        "z": -29.42,
+        "pathFromCastleM": 52.1,
+        "clearanceM": 2.06,
+        "distToInteractorM": 2.85
+       },
+       {
+        "x": 36.42,
+        "y": 0.0,
+        "z": -27.67,
+        "pathFromCastleM": 52.9,
+        "clearanceM": 2.02,
+        "distToInteractorM": 2.8
+       }
+      ]
+     }
+    },
+    {
+     "centerXZ": [
+      -16.9,
+      -81.5
+     ],
+     "events": 3,
+     "modes": [
+      [
+       "Engage",
+       3
+      ]
+     ],
+     "insideWalkableAllBuilt": false,
+     "insideWalkableUnbuilt": false,
+     "distToNearestHeroFreeCellM": 0.35,
+     "distToNearestBlockedM": 0.0,
+     "nearestSlot": {
+      "name": "Defense Tower Variant (8)",
+      "building": "Defense Tower",
+      "pos": [
+       -22.5,
+       0.0,
+       -55.5
+      ],
+      "distM": 26.6,
+      "recommendedStandPoints": [
+       {
+        "x": -18.33,
+        "y": 0.0,
+        "z": -56.92,
+        "pathFromCastleM": 63.7,
+        "clearanceM": 0.25,
+        "distToInteractorM": 2.75
+       },
+       {
+        "x": -26.58,
+        "y": 0.0,
+        "z": -54.92,
+        "pathFromCastleM": 65.3,
+        "clearanceM": 0.25,
+        "distToInteractorM": 2.75
+       }
+      ]
+     }
+    },
+    {
+     "centerXZ": [
+      -54.8,
+      -14.6
+     ],
+     "events": 3,
+     "modes": [
+      [
+       "Engage",
+       3
+      ]
+     ],
+     "insideWalkableAllBuilt": false,
+     "insideWalkableUnbuilt": false,
+     "distToNearestHeroFreeCellM": 0.25,
+     "distToNearestBlockedM": 0.0,
+     "nearestSlot": {
+      "name": "Defense Tower Variant (7)",
+      "building": "Defense Tower",
+      "pos": [
+       -45.9,
+       0.0,
+       -24.3
+      ],
+      "distM": 13.2,
+      "recommendedStandPoints": [
+       {
+        "x": -41.82,
+        "y": 0.0,
+        "z": -22.17,
+        "pathFromCastleM": 46.9,
+        "clearanceM": 2.06,
+        "distToInteractorM": 2.85
+       },
+       {
+        "x": -41.82,
+        "y": 0.0,
+        "z": -24.17,
+        "pathFromCastleM": 47.7,
+        "clearanceM": 2.0,
+        "distToInteractorM": 2.75
+       }
+      ]
+     }
+    }
+   ]
+  },
+  "Durststein": {
+   "ticks": 30379,
+   "pctOnNavSurface(\u00b10.6m)": 95.71,
+   "pctInWalkableUnbuilt": 81.95,
+   "pctInWalkableAllBuilt": 59.67,
+   "pctOutsideGrid": 0.0,
+   "stuckEvents": 954,
+   "topStuckClusters": [
+    {
+     "centerXZ": [
+      -18.8,
+      -5.5
+     ],
+     "events": 275,
+     "modes": [
+      [
+       "Engage",
+       237
+      ],
+      [
+       "CollectCoin",
+       38
+      ]
+     ],
+     "insideWalkableAllBuilt": false,
+     "insideWalkableUnbuilt": true,
+     "distToNearestHeroFreeCellM": 0.71,
+     "distToNearestBlockedM": 0.0,
+     "nearestSlot": {
+      "name": "Defense Tower Variant (1)",
+      "building": "Defense Tower",
+      "pos": [
+       -16.64,
+       13.49,
+       -5.57
+      ],
+      "distM": 2.2,
+      "recommendedStandPoints": [
+       {
+        "x": -13.47,
+        "y": 13.49,
+        "z": -1.67,
+        "pathFromCastleM": 21.3,
+        "clearanceM": 2.12,
+        "distToInteractorM": 2.85
+       },
+       {
+        "x": -15.47,
+        "y": 13.49,
+        "z": -1.17,
+        "pathFromCastleM": 21.7,
+        "clearanceM": 2.0,
+        "distToInteractorM": 2.76
+       }
+      ]
+     }
+    },
+    {
+     "centerXZ": [
+      -5.0,
+      15.7
+     ],
+     "events": 110,
+     "modes": [
+      [
+       "SpendGold",
+       110
+      ]
+     ],
+     "insideWalkableAllBuilt": true,
+     "insideWalkableUnbuilt": true,
+     "distToNearestHeroFreeCellM": 0.0,
+     "distToNearestBlockedM": 0.25,
+     "nearestSlot": {
+      "name": "Shrine (1)",
+      "building": "Shrine",
+      "pos": [
+       -0.3,
+       13.49,
+       16.8
+      ],
+      "distM": 4.8,
+      "recommendedStandPoints": [
+       {
+        "x": -4.47,
+        "y": 13.49,
+        "z": 18.33,
+        "pathFromCastleM": 5.8,
+        "clearanceM": 0.75,
+        "distToInteractorM": 2.75
+       },
+       {
+        "x": -4.47,
+        "y": 13.49,
+        "z": 16.33,
+        "pathFromCastleM": 6.6,
+        "clearanceM": 0.75,
+        "distToInteractorM": 2.75
+       }
+      ]
+     }
+    },
+    {
+     "centerXZ": [
+      128.0,
+      16.6
+     ],
+     "events": 89,
+     "modes": [
+      [
+       "Engage",
+       89
+      ]
+     ],
+     "insideWalkableAllBuilt": false,
+     "insideWalkableUnbuilt": false,
+     "distToNearestHeroFreeCellM": 1.58,
+     "distToNearestBlockedM": 0.0,
+     "nearestSlot": {
+      "name": "Gate Wide Variant (1)",
+      "building": "Wall",
+      "pos": [
+       128.53,
+       13.28,
+       20.63
+      ],
+      "distM": 4.1,
+      "recommendedStandPoints": [
+       {
+        "x": 125.78,
+        "y": 13.44,
+        "z": 20.33,
+        "pathFromCastleM": 137.7,
+        "clearanceM": 2.76,
+        "distToInteractorM": 2.75
+       },
+       {
+        "x": 125.78,
+        "y": 13.43,
+        "z": 18.33,
+        "pathFromCastleM": 138.5,
+        "clearanceM": 0.79,
+        "distToInteractorM": 2.75
+       }
+      ]
+     }
+    },
+    {
+     "centerXZ": [
+      -17.2,
+      -47.0
+     ],
+     "events": 70,
+     "modes": [
+      [
+       "Engage",
+       70
+      ]
+     ],
+     "insideWalkableAllBuilt": false,
+     "insideWalkableUnbuilt": false,
+     "distToNearestHeroFreeCellM": 0.25,
+     "distToNearestBlockedM": 0.0,
+     "nearestSlot": {
+      "name": "Barricades (3)",
+      "building": "Barricades",
+      "pos": [
+       -39.56,
+       6.92,
+       -18.23
+      ],
+      "distM": 36.4,
+      "recommendedStandPoints": [
+       {
+        "x": -37.22,
+        "y": 7.84,
+        "z": -13.42,
+        "pathFromCastleM": 148.7,
+        "clearanceM": 0.25,
+        "distToInteractorM": 2.76
+       },
+       {
+        "x": -39.22,
+        "y": 7.79,
+        "z": -13.92,
+        "pathFromCastleM": 150.4,
+        "clearanceM": 1.9,
+        "distToInteractorM": 2.8
+       }
+      ]
+     }
+    },
+    {
+     "centerXZ": [
+      -37.1,
+      -1.6
+     ],
+     "events": 57,
+     "modes": [
+      [
+       "Engage",
+       57
+      ]
+     ],
+     "insideWalkableAllBuilt": false,
+     "insideWalkableUnbuilt": false,
+     "distToNearestHeroFreeCellM": 0.35,
+     "distToNearestBlockedM": 0.0,
+     "nearestSlot": {
+      "name": "Defense Tower Variant (4)",
+      "building": "Defense Tower",
+      "pos": [
+       -39.88,
+       13.49,
+       -0.57
+      ],
+      "distM": 3.0,
+      "recommendedStandPoints": [
+       {
+        "x": -35.72,
+        "y": 13.49,
+        "z": 1.58,
+        "pathFromCastleM": 32.4,
+        "clearanceM": 2.06,
+        "distToInteractorM": 2.85
+       },
+       {
+        "x": -37.22,
+        "y": 13.49,
+        "z": 3.33,
+        "pathFromCastleM": 33.2,
+        "clearanceM": 2.02,
+        "distToInteractorM": 2.8
+       }
+      ]
+     }
+    },
+    {
+     "centerXZ": [
+      -37.9,
+      52.2
+     ],
+     "events": 53,
+     "modes": [
+      [
+       "Engage",
+       53
+      ]
+     ],
+     "insideWalkableAllBuilt": false,
+     "insideWalkableUnbuilt": false,
+     "distToNearestHeroFreeCellM": 0.25,
+     "distToNearestBlockedM": 0.0,
+     "nearestSlot": {
+      "name": "Barricades (7)",
+      "building": "Barricades",
+      "pos": [
+       -37.48,
+       29.11,
+       49.32
+      ],
+      "distM": 2.9,
+      "recommendedStandPoints": [
+       {
+        "x": -34.22,
+        "y": 29.22,
+        "z": 47.82,
+        "pathFromCastleM": 106.5,
+        "clearanceM": 1.6,
+        "distToInteractorM": 2.8
+       },
+       {
+        "x": -35.22,
+        "y": 29.22,
+        "z": 46.08,
+        "pathFromCastleM": 106.8,
+        "clearanceM": 0.25,
+        "distToInteractorM": 2.61
+       }
+      ]
+     }
+    },
+    {
+     "centerXZ": [
+      -136.2,
+      23.4
+     ],
+     "events": 42,
+     "modes": [
+      [
+       "Engage",
+       42
+      ]
+     ],
+     "insideWalkableAllBuilt": false,
+     "insideWalkableUnbuilt": false,
+     "distToNearestHeroFreeCellM": 0.25,
+     "distToNearestBlockedM": 0.0,
+     "nearestSlot": {
+      "name": "Barricades (5)",
+      "building": "Barricades",
+      "pos": [
+       -114.17,
+       5.16,
+       0.31
+      ],
+      "distM": 31.9,
+      "recommendedStandPoints": [
+       {
+        "x": -116.98,
+        "y": 5.86,
+        "z": 3.08,
+        "pathFromCastleM": 159.0,
+        "clearanceM": 0.56,
+        "distToInteractorM": 2.85
+       },
+       {
+        "x": -114.98,
+        "y": 5.9,
+        "z": 3.83,
+        "pathFromCastleM": 159.1,
+        "clearanceM": 1.03,
+        "distToInteractorM": 2.85
+       }
+      ]
+     }
+    },
+    {
+     "centerXZ": [
+      -96.0,
+      -10.4
+     ],
+     "events": 41,
+     "modes": [
+      [
+       "Engage",
+       41
+      ]
+     ],
+     "insideWalkableAllBuilt": false,
+     "insideWalkableUnbuilt": false,
+     "distToNearestHeroFreeCellM": 0.35,
+     "distToNearestBlockedM": 0.0,
+     "nearestSlot": {
+      "name": "Barricades (6)",
+      "building": "Barricades",
+      "pos": [
+       -97.26,
+       14.06,
+       -7.95
+      ],
+      "distM": 2.8,
+      "recommendedStandPoints": [
+       {
+        "x": -93.72,
+        "y": 13.95,
+        "z": -4.42,
+        "pathFromCastleM": 92.9,
+        "clearanceM": 2.37,
+        "distToInteractorM": 2.85
+       },
+       {
+        "x": -95.22,
+        "y": 14.12,
+        "z": -2.67,
+        "pathFromCastleM": 93.7,
+        "clearanceM": 0.25,
+        "distToInteractorM": 2.8
+       }
+      ]
+     }
+    }
+   ]
+  }
+ }
+}

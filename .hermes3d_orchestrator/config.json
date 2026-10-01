@@ -1,0 +1,13 @@
+{
+  "name": "MCP Lock Orchestrator",
+  "workspace_root": "K:\\Downloads-IDM\\Thronefall\\Trainer",
+  "state_dir_name": ".hermes3d_orchestrator",
+  "default_ttl_minutes": 90,
+  "policy": {
+    "require_task_claim_before_locks": true,
+    "lock_transaction_order": "sorted normalized paths",
+    "stale_lock_recovery": "manual tool call only",
+    "shell_execution": "gate allowlist only"
+  },
+  "created_utc": "2026-09-29T11:55:01.699Z"
+}

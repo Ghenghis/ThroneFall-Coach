@@ -94,6 +94,14 @@ internal static class Bot
 
 	private static int choiceConfirmStreak;
 
+	private static float nextEffBeat;
+
+	private static float aimBlockedSince;
+
+	private static Vector3 lastAimPos;
+
+	private static float lastAimAt;
+
 	private static float nextCoachBeat;
 
 	private static string lastDiagKey;
@@ -287,7 +295,7 @@ internal static class Bot
 	private static string Digest(in BotPerception.Snapshot s)
 	{
 		int value;
-		return "{\"scene\":\"" + s.SceneName + "\",\"wave\":" + s.Wave + ",\"wave_max\":" + s.WaveTotal + ",\"gold\":" + s.Balance + ",\"cores\":" + s.CoreBalance + ",\"allies\":" + s.AllyCount + ",\"free_units\":" + s.FreeUnits + ",\"doors_covered\":" + s.DoorsCovered + ",\"doors\":" + s.DoorCount + ",\"foes\":" + s.EnemyCount + ",\"red_alert\":" + (s.RedAlert ? "true" : "false") + ",\"buildings\":" + s.BuildCount + ",\"hero_hp_pct\":" + ((int)(s.HeroHpPct * 100f)).ToString(CultureInfo.InvariantCulture) + ",\"defeats\":" + (sessionDefeats.TryGetValue(s.SceneName ?? "", out value) ? value : 0) + ",\"policy\":" + Policy.Stats() + "}";
+		return "{" + Tasks.DigestJson() + ",\"efficiency\":" + Mathf.RoundToInt(Efficiency.Score) + ",\"idle_s_since_progress\":" + Mathf.RoundToInt(Efficiency.SecondsSinceProgress) + ",\"drain\":\"" + Efficiency.DrainWhy.Trim() + "\",\"maxed_pct\":" + (BotPerception.MaxLevelTotal > 0 ? Mathf.RoundToInt(100f * BotPerception.MaxLevelSum / BotPerception.MaxLevelTotal) : 0) + ",\"buildable_slots\":" + s.BuildCount + ",\"scene\":\"" + s.SceneName + "\",\"wave\":" + s.Wave + ",\"wave_max\":" + s.WaveTotal + ",\"gold\":" + s.Balance + ",\"cores\":" + s.CoreBalance + ",\"allies\":" + s.AllyCount + ",\"free_units\":" + s.FreeUnits + ",\"doors_covered\":" + s.DoorsCovered + ",\"doors\":" + s.DoorCount + ",\"foes\":" + s.EnemyCount + ",\"red_alert\":" + (s.RedAlert ? "true" : "false") + ",\"buildings\":" + s.BuildCount + ",\"hero_hp_pct\":" + ((int)(s.HeroHpPct * 100f)).ToString(CultureInfo.InvariantCulture) + ",\"defeats\":" + (sessionDefeats.TryGetValue(s.SceneName ?? "", out value) ? value : 0) + ",\"policy\":" + Policy.Stats() + "}";
 	}
 
 	static Bot()
@@ -380,6 +388,7 @@ internal static class Bot
 			detourCount = 0;
 			weaponRange = 0f;
 			heroAttack = null;
+			ReleaseGate("reset"); Efficiency.Reset(); aimBlockedSince = 0f; lastAimAt = 0f;
 			navPath = null;
 			navIndex = 0;
 			navInFlight = false;
@@ -492,7 +501,11 @@ internal static class Bot
 			if (((uint)num2 & (flag ? 1u : 0u)) != 0 && text != "" && text != holdDoneName)
 			{
 				holdDoneName = text;
-				BotPerception.BuildDone(text, ((Component)heldBuild).transform.position);
+				string bdn0 = text;
+				if (((UnityEngine.Object)(object)heldBuild.targetBuilding != (UnityEngine.Object)null) &&
+				    heldBuild.targetBuilding.name.IndexOf("gate", StringComparison.OrdinalIgnoreCase) >= 0)
+					bdn0 = text + "|gate";
+				BotPerception.BuildDone(bdn0, ((Component)heldBuild).transform.position);
 			}
 		}
 		Coach.PerFrame();
@@ -554,6 +567,7 @@ internal static class Bot
 				navInFlight = false;
 				navRequestId++;
 				heroAttack = null;
+				ReleaseGate("match"); Efficiency.Reset(); Tasks.Reset(); aimBlockedSince = 0f; lastAimAt = 0f; SpatialMemory.Decay(s.SceneName);
 				mem = BotMemory.Fresh();
 				arriveSince = 0f;
 				detourUntil = 0f;
@@ -781,6 +795,33 @@ internal static class Bot
 		{
 			Vector3 val3 = new Vector3(decideResult.AimPos.X, 0f, decideResult.AimPos.Z);
 			val3.y = AimY(in s, val3);
+			// Anti-flap: an aim REVERSAL inside 2.5 s on a non-urgent mode is
+			// the visible back-and-forth loop (modes flap -> aims alternate ->
+			// hero ping-pongs and nothing completes). Engage/death/return/
+			// red-alert override instantly; economy modes commit.
+			bool urgent = decideResult.Mode == BotMode.Engage ||
+			              decideResult.Mode == BotMode.HeroDead ||
+			              decideResult.Mode == BotMode.ReturnHome || s.RedAlert;
+			if (!urgent && Time.unscaledTime - lastAimAt < 2.5f && s.HeroPos.sqrMagnitude > 0.01f)
+			{
+				Vector3 toNew = val3 - s.HeroPos, toOld = lastAimPos - s.HeroPos;
+				toNew.y = 0f; toOld.y = 0f;
+				if (toNew.sqrMagnitude > 0.01f && toOld.sqrMagnitude > 0.01f &&
+				    Vector3.Dot(toNew.normalized, toOld.normalized) < -0.5f &&
+				    (lastAimPos - s.HeroPos).magnitude > 4f)
+				{
+					val3 = lastAimPos;
+					LogLine(in s, "aim-flap-blocked");
+					aimBlockedSince = aimBlockedSince <= 0f ? Time.unscaledTime : aimBlockedSince;
+				}
+				else aimBlockedSince = 0f;
+			}
+			// A reused (blocked) aim must NOT refresh the window, otherwise a
+			// stable opposite target is "a reversal" forever (A12 finding).
+			if (aimBlockedSince <= 0f || Time.unscaledTime - aimBlockedSince > 2.5f)
+			{
+				lastAimPos = val3; lastAimAt = Time.unscaledTime; aimBlockedSince = 0f;
+			}
 			SetTarget(val3, decideResult.Arrive, decideResult.ProjectToNav);
 		}
 		else
@@ -794,6 +835,30 @@ internal static class Bot
 		foreach (Intent intent in decideResult.Intents)
 		{
 			Execute(in s, intent);
+		}
+		{
+			bool gateIntent = false;
+			foreach (Intent gi in decideResult.Intents) if (gi.Kind == IntentKind.GateHold) { gateIntent = true; break; }
+			if (!gateIntent && (UnityEngine.Object)(object)heldGate != (UnityEngine.Object)null) ReleaseGate("not-held");
+		}
+		Efficiency.Update(s.Balance, s.AllyCount, s.DoorsCovered, s.BuildCount, s.IsNight,
+			(UnityEngine.Object)(object)heldBuild != (UnityEngine.Object)null, Mode.ToString(),
+			new Vector2(s.HeroPos.x, s.HeroPos.z), s.GameState == "InMatch", decideResult.Notes);
+		Tasks.Update(in s, Mode.ToString(), decideResult.Notes);
+		{
+			string wt = Tasks.Watch();
+			if (wt != null && s.GameState == "InMatch")
+			{
+				Coach.Advise("task-watch:" + wt, Digest(in s));
+				LogLine(in s, "coach-beat:" + wt);
+			}
+		}
+		// Desperate efficiency: bypass the coach throttle once per 60 s.
+		if (Efficiency.Tier == 2 && Efficiency.SecondsSinceProgress > 20f && Time.unscaledTime >= nextEffBeat && s.GameState == "InMatch")
+		{
+			nextEffBeat = Time.unscaledTime + 60f;
+			Coach.Advise("eff-collapse", Digest(in s));
+			LogLine(in s, "coach-beat:eff");
 		}
 		// Coach heartbeat: an idle bot is a failure mode — probe the advisor
 		// when the hero has sat in Idle during a live day for >60 s, and on
@@ -816,6 +881,15 @@ internal static class Bot
 			nextCoachBeat = Time.unscaledTime + 90f;
 			Coach.Advise("stall-watch", Digest(in s));
 			LogLine(in s, "coach-beat:stall");
+		}
+		// Continuous steering: a live match shouldn't go silent between
+		// day-start and defeat — a 90 s cadence keeps MiniMax advising during
+		// active play too (idle/stall beats still fire on their own timers).
+		if (s.GameState == "InMatch" && Time.unscaledTime >= nextCoachBeat)
+		{
+			nextCoachBeat = Time.unscaledTime + 90f;
+			Coach.Advise("coach-beat:periodic", Digest(in s));
+			LogLine(in s, "coach-beat:tick");
 		}
 		RunWatchdog(in s);
 		Status = FormatStatus(in s);
@@ -1183,7 +1257,7 @@ internal static class Bot
 		}
 		if (((num < 0.35f) & flag2) && !flag)
 		{
-			StuckStrikes++;
+			StuckStrikes++; SpatialMemory.Bump(s.SceneName, s.HeroPos);
 			stuckStrikeTotal++;
 			if (stuckStrikeTotal == 60)
 			{
@@ -1249,6 +1323,12 @@ internal static class Bot
 					{
 						detourPos = AstarPath.active.GetNearest(detourPos, new NNConstraint()).position;
 					}
+					// Spatial learning (A4): remember WHERE we pin, and choose
+					// the detour from 8 headings whose walkable end-point is
+					// outside every learned-hot cell — the old blind guess was
+					// snapped back onto the same chokepoint by GetNearest.
+					SpatialMemory.Bump(s.SceneName, s.HeroPos);
+					detourPos = ChooseDetour(in s, val2, detourPos);
 					detourUntil = Time.unscaledTime + 1.2f + 0.6f * (float)detourCount;
 					ManualLogSource log6 = Plugin.Log;
 					if (log6 != null)
@@ -1630,6 +1710,9 @@ internal static class Bot
 			break;
 		case IntentKind.ParkDoor:
 			BotPerception.ParkDoorIdx(it.Index);
+			break;
+		case IntentKind.GateHold:
+			GateHold(in s);
 			break;
 		case IntentKind.RecallToBreach:
 			RecallToBreach(in s);
@@ -2062,7 +2145,11 @@ internal static class Bot
 			if (!string.IsNullOrEmpty(text) && text != holdDoneName)
 			{
 				holdDoneName = text;
-				BotPerception.BuildDone(text, ((Component)heldBuild).transform.position);
+				string bdn = text;
+				if (((UnityEngine.Object)(object)heldBuild.targetBuilding != (UnityEngine.Object)null) &&
+				    heldBuild.targetBuilding.name.IndexOf("gate", StringComparison.OrdinalIgnoreCase) >= 0)
+					bdn = text + "|gate";
+				BotPerception.BuildDone(bdn, ((Component)heldBuild).transform.position);
 			}
 		}
 		if ((UnityEngine.Object)(object)instance != (UnityEngine.Object)null)
@@ -2095,9 +2182,13 @@ internal static class Bot
 		bool flag = choiceSince > 0f && Time.unscaledTime - choiceSince > 20f;
 		if ((UnityEngine.Object)(object)instance2 != (UnityEngine.Object)null && instance2.ChoiceCoroutineRunning && instance2.ChoiceCoroutineWaiting && !flag)
 		{
+			// Multi-tier slots re-present after EVERY pick — a 1 s throttle
+			// leaves the frame up between picks (the "frozen popup"). Resolve
+			// waits near-instantly; unresolvable lists cancel instead of
+			// forever-assigning a doomed choice.
 			if (Time.unscaledTime >= frameActionAt)
 			{
-				frameActionAt = Time.unscaledTime + 1f;
+				frameActionAt = Time.unscaledTime + 0.2f;
 				Choice val2 = null;
 				Choice val3 = null;
 				foreach (Choice availableChoice in instance2.availableChoices)
@@ -2115,14 +2206,23 @@ internal static class Bot
 						}
 					}
 				}
-				instance2.choiceToReturn = val3 ?? val2;
-				ManualLogSource log = Plugin.Log;
-				if (log != null)
+				if (val2 == null)
 				{
-					log.LogInfo((object)("[bot] choice frame -> '" + ((instance2.choiceToReturn != null) ? instance2.choiceToReturn.name : "none") + "'"));
+					Plugin.Log?.LogWarning("[bot] choice frame: nothing pickable -> CancelChoice()");
+					instance2.CancelChoice();
+					LogLine(in s, "choice-cancel-unpickable");
+					choiceConfirmStreak = 0;
 				}
-				LogLine(in s, "choice-pick");
-				choiceSince = Time.unscaledTime;
+				else
+				{
+					instance2.choiceToReturn = val3 ?? val2;
+					ManualLogSource log = Plugin.Log;
+					if (log != null)
+					{
+						log.LogInfo((object)("[bot] choice frame -> '" + ((instance2.choiceToReturn != null) ? instance2.choiceToReturn.name : "none") + "'"));
+					}
+					LogLine(in s, "choice-pick");
+				}
 			}
 			return true;
 		}
@@ -2264,6 +2364,73 @@ internal static class Bot
 			}
 		}
 		return true;
+	}
+
+	private static CutOpenPathInteractor heldGate;
+	private static float heldGateAt;
+
+	private static Vector3 ChooseDetour(in BotPerception.Snapshot s, Vector3 toAim, Vector3 fallback)
+	{
+		if ((UnityEngine.Object)(object)AstarPath.active == (UnityEngine.Object)null) return fallback;
+		Vector3 best = fallback; float bestScore = float.NegativeInfinity;
+		if (!SpatialMemory.Hot(s.SceneName, fallback)) bestScore = 0f;
+		for (int i = 0; i < 8; i++)
+		{
+			float ang = i * (Mathf.PI / 4f);
+			Vector3 dir = new Vector3(Mathf.Cos(ang), 0f, Mathf.Sin(ang));
+			float rad = 3f + 1.5f * Mathf.Min(detourCount, 4);
+			Vector3 cand = s.HeroPos + dir * rad;
+			Vector3 snapped = AstarPath.active.GetNearest(cand, new NNConstraint()).position;
+			if ((snapped - cand).magnitude > 1.5f) continue;   // not really walkable there
+			if (SpatialMemory.Hot(s.SceneName, snapped)) continue;
+			float forward = toAim.sqrMagnitude > 0.01f ? Vector3.Dot(dir, toAim.normalized) : 0f;
+			float sc = forward * 2f - SpatialMemory.ScoreAt(s.SceneName, snapped);
+			if (sc > bestScore) { bestScore = sc; best = snapped; }
+		}
+		return best;
+	}
+
+	internal static void ReleaseGate(string why)
+	{
+		var pi = PlayerInteraction.instance;
+		if ((UnityEngine.Object)(object)heldGate != (UnityEngine.Object)null && (UnityEngine.Object)(object)pi != (UnityEngine.Object)null)
+		{
+			try { heldGate.InteractionEnd(pi); } catch { }
+			Plugin.Log?.LogInfo("[bot] gate released (" + why + ")");
+		}
+		heldGate = null;
+	}
+	private static readonly System.Reflection.FieldInfo GateOpenedField =
+		typeof(CutOpenPathInteractor).GetField("pathOpened",
+			System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+
+	private static void GateHold(in BotPerception.Snapshot s)
+	{
+		var pad = s.NearestGate;
+		var pi = PlayerInteraction.instance;
+		if ((UnityEngine.Object)(object)pad == (UnityEngine.Object)null ||
+		    (UnityEngine.Object)(object)pi == (UnityEngine.Object)null) return;
+		if ((UnityEngine.Object)(object)heldGate != (UnityEngine.Object)pad)
+		{
+			ReleaseGate("switch");
+			heldGate = pad;
+			heldGateAt = Time.unscaledTime;
+			pad.InteractionBegin(pi);
+			LogLine(in s, "gate-begin");
+		}
+		pad.InteractionHold(pi);
+		// Done when the path opens or the pad stops being interactable.
+		bool open = false;
+		try { if (GateOpenedField != null)
+			open = (bool)GateOpenedField.GetValue(pad); } catch { }
+		if (open || !pad.CanBeInteractedWith || Time.unscaledTime - heldGateAt > 15f)
+		{
+			pad.InteractionEnd(pi);
+			Plugin.Log?.LogInfo("[bot] gate pad " +
+				(open ? "OPENED" : "abandoned") + " '" + ((UnityEngine.Object)pad).name + "'");
+			LogLine(in s, open ? "gate-open" : "gate-abandon");
+			heldGate = null;
+		}
 	}
 
 	private static void DiagLog(string key, string msg, bool warn)

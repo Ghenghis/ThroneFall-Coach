@@ -1,0 +1,3271 @@
+{
+  "assemblies": [
+    {
+      "name": "andywiecko.BurstTriangulator",
+      "file": "andywiecko.BurstTriangulator.dll",
+      "size": 69632,
+      "sha256": "842639539985D27CEFCB07AB90368BD0F8CA18285F800A4AB932FEE06AD3D1FC",
+      "lastWriteUtc": "2026-06-30 12:31:02Z",
+      "version": "0.0.0.0",
+      "mvid": "5a740cef-206c-4f19-bbe1-af5915f12fff",
+      "types": 49,
+      "methods": 402,
+      "fields": 176,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "Unity.Mathematics",
+        "Unity.Collections",
+        "UnityEngine.CoreModule",
+        "Unity.Burst"
+      ]
+    },
+    {
+      "name": "Assembly-CSharp",
+      "file": "Assembly-CSharp.dll",
+      "size": 2587648,
+      "sha256": "F350269E5D14213C7486CE65478A8B91651D01B954BDA3D1C18D18C4E30B6505",
+      "lastWriteUtc": "2026-06-30 12:30:58Z",
+      "version": "0.0.0.0",
+      "mvid": "9b28630d-b231-42a6-b0f9-e83619536632",
+      "types": 3494,
+      "methods": 17402,
+      "fields": 14259,
+      "dump": "full",
+      "references": [
+        "netstandard",
+        "UnityEngine.CoreModule",
+        "Unity.TextMeshPro",
+        "Rewired_Core",
+        "UnityEngine.AudioModule",
+        "UnityEngine.UI",
+        "ShapesRuntime",
+        "UnityEngine.AnimationModule",
+        "UnityEngine.ClothModule",
+        "AstarPathfindingProject",
+        "UnityEngine.ParticleSystemModule",
+        "UnityEngine.PhysicsModule",
+        "MoreMountains.Feedbacks",
+        "UnityEngine.UIModule",
+        "com.rlabrecque.steamworks.net",
+        "Unity.Collections",
+        "KB.FogRTS.Runtime",
+        "MPUIKit",
+        "Unity.RenderPipelines.Core.Runtime",
+        "MoreMountains.Feedbacks.URP",
+        "Unity.RenderPipelines.Universal.Runtime",
+        "UnityEngine.IMGUIModule",
+        "Unity.Mathematics",
+        "Unity.Burst",
+        "UnityEngine.UnityWebRequestModule",
+        "UnityEngine.TextRenderingModule",
+        "UnityEngine.VideoModule",
+        "UnityEngine.InputLegacyModule",
+        "UnityEngine.JSONSerializeModule",
+        "Rewired_Windows"
+      ]
+    },
+    {
+      "name": "Assembly-CSharp-firstpass",
+      "file": "Assembly-CSharp-firstpass.dll",
+      "size": 11776,
+      "sha256": "712E242BB1BB464AAD030CDDF03E25455F27EA2A4277A8B9DF1539C67E8D83C0",
+      "lastWriteUtc": "2026-06-30 12:31:01Z",
+      "version": "0.0.0.0",
+      "mvid": "6fc12d0b-db23-46bf-afe7-f256e7a13997",
+      "types": 14,
+      "methods": 33,
+      "fields": 43,
+      "dump": "full",
+      "references": [
+        "netstandard",
+        "UnityEngine.CoreModule",
+        "UnityEngine.PhysicsModule",
+        "KB.FogRTS.Runtime",
+        "UnityEngine.UI",
+        "UnityEngine.InputLegacyModule"
+      ]
+    },
+    {
+      "name": "AstarPathfindingProject",
+      "file": "AstarPathfindingProject.dll",
+      "size": 986624,
+      "sha256": "A432A30BFB0D2C00EB0B0641F55127942EC5C2E8E32F2EBE6773FA17B83BFD56",
+      "lastWriteUtc": "2026-06-30 12:30:58Z",
+      "version": "0.0.0.0",
+      "mvid": "0514e6bd-1a1d-473f-ab80-213ddbce98e1",
+      "types": 744,
+      "methods": 4542,
+      "fields": 3396,
+      "dump": "members",
+      "references": [
+        "netstandard",
+        "UnityEngine.CoreModule",
+        "PackageTools",
+        "Drawing",
+        "Unity.Collections",
+        "UnityEngine.PhysicsModule",
+        "UnityEngine.Physics2DModule",
+        "Unity.Mathematics",
+        "Unity.Burst",
+        "UnityEngine.AnimationModule",
+        "UnityEngine.TextRenderingModule",
+        "UnityEngine.IMGUIModule",
+        "UnityEngine.GridModule",
+        "UnityEngine.TilemapModule",
+        "UnityEngine.TerrainModule",
+        "Clipper2Lib",
+        "andywiecko.BurstTriangulator",
+        "Pathfinding.Ionic.Zip.Reduced"
+      ]
+    },
+    {
+      "name": "Autodesk.Fbx",
+      "file": "Autodesk.Fbx.dll",
+      "size": 4096,
+      "sha256": "E4FA6160528375D0FB0299691461984100E6EC24D590A69D29AFF78D57D87F5B",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "cca49334-5bfa-480e-8511-2dd7c56e0731",
+      "types": 3,
+      "methods": 2,
+      "fields": 5,
+      "dump": "none",
+      "references": [
+        "netstandard"
+      ]
+    },
+    {
+      "name": "Clipper2Lib",
+      "file": "Clipper2Lib.dll",
+      "size": 87040,
+      "sha256": "4AE4B585AFA04F38BA997C902D47C66182888309F441FB8024805C6E13CBB232",
+      "lastWriteUtc": "2026-06-30 12:31:01Z",
+      "version": "1.0.0.0",
+      "mvid": "50640fdc-f588-43b3-843e-9b6a7cc87bc3",
+      "types": 58,
+      "methods": 487,
+      "fields": 204,
+      "dump": "none",
+      "references": [
+        "System.Runtime",
+        "System.Collections",
+        "System.Runtime.InteropServices",
+        "System.Runtime.Extensions"
+      ]
+    },
+    {
+      "name": "com.nintendo.sdkplugin",
+      "file": "com.nintendo.sdkplugin.dll",
+      "size": 4096,
+      "sha256": "26C9B60D8E76DD7266523ABA550F2E192CAFCC7E5FA97C9B389516B2AE01F5AA",
+      "lastWriteUtc": "2026-06-30 12:31:02Z",
+      "version": "0.0.0.0",
+      "mvid": "2735126e-240b-4b08-96ac-0ab70a24ab0b",
+      "types": 3,
+      "methods": 2,
+      "fields": 5,
+      "dump": "none",
+      "references": [
+        "netstandard"
+      ]
+    },
+    {
+      "name": "com.rlabrecque.steamworks.net",
+      "file": "com.rlabrecque.steamworks.net.dll",
+      "size": 398336,
+      "sha256": "EFB87717E22BFD742CD5CB60E5B769F57294653C18AD2F291B9BBC119549F30F",
+      "lastWriteUtc": "2026-06-30 12:30:58Z",
+      "version": "0.0.0.0",
+      "mvid": "447c8c1f-38d5-4750-8ac6-80ed2c24782d",
+      "types": 497,
+      "methods": 3015,
+      "fields": 2802,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "Drawing",
+      "file": "Drawing.dll",
+      "size": 127488,
+      "sha256": "5E252BFD43BD31F60DD068A2AA8F0982739A7E2DC827E2E27F31F09417DF52E2",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "f132ed11-e1b7-461e-8c2a-894e7032e07c",
+      "types": 100,
+      "methods": 695,
+      "fields": 395,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "Unity.RenderPipelines.Universal.Runtime",
+        "UnityEngine.CoreModule",
+        "Unity.Mathematics",
+        "Unity.Burst",
+        "Unity.Collections",
+        "UnityEngine.PhysicsModule",
+        "UnityEngine.Physics2DModule",
+        "Unity.RenderPipelines.Core.Runtime"
+      ]
+    },
+    {
+      "name": "FbxBuildTestAssets",
+      "file": "FbxBuildTestAssets.dll",
+      "size": 4608,
+      "sha256": "C4D676379AF67ED6B8F2AE6D480EDE18B19D91BB768FD109BB83165CE615F3C4",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "1fefb360-8166-44a5-a1e0-281f73a41a46",
+      "types": 7,
+      "methods": 4,
+      "fields": 7,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "KB.FogRTS.Runtime",
+      "file": "KB.FogRTS.Runtime.dll",
+      "size": 32768,
+      "sha256": "4BD46AF35449A2B529AD738E91B5748CEC489AF50C4F40D6E59FC8FB7E04AE83",
+      "lastWriteUtc": "2026-06-30 12:31:01Z",
+      "version": "0.0.0.0",
+      "mvid": "c4c56b87-afef-472b-ad6b-075d9e377689",
+      "types": 32,
+      "methods": 149,
+      "fields": 160,
+      "dump": "full",
+      "references": [
+        "netstandard",
+        "UnityEngine.CoreModule",
+        "Unity.Mathematics",
+        "Unity.Burst",
+        "Unity.RenderPipelines.Core.Runtime",
+        "Unity.RenderPipelines.Universal.Runtime",
+        "UnityEngine.UI"
+      ]
+    },
+    {
+      "name": "Lofelt.NiceVibrations",
+      "file": "Lofelt.NiceVibrations.dll",
+      "size": 16896,
+      "sha256": "FFE790449DABB1E1CB6EC95143725C7623696E0C0985E50F067455A350960563",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "9881143f-bd2d-4f8b-af32-9d9e1df7d082",
+      "types": 23,
+      "methods": 112,
+      "fields": 89,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "Lofelt.NiceVibrations.Demo",
+      "file": "Lofelt.NiceVibrations.Demo.dll",
+      "size": 54784,
+      "sha256": "16F6D99BE6520C1935EEF5644ADBC0B4C7B8DDEDFDA833680513D97D3DAEA928",
+      "lastWriteUtc": "2026-06-30 12:30:58Z",
+      "version": "0.0.0.0",
+      "mvid": "212c6d67-c6e5-4f35-a126-a22d44a0cefd",
+      "types": 51,
+      "methods": 243,
+      "fields": 377,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.CoreModule",
+        "UnityEngine.ParticleSystemModule",
+        "UnityEngine.AudioModule",
+        "UnityEngine.Physics2DModule",
+        "UnityEngine.AnimationModule",
+        "UnityEngine.UI",
+        "UnityEngine.UIModule",
+        "Lofelt.NiceVibrations"
+      ]
+    },
+    {
+      "name": "Mono.Security",
+      "file": "Mono.Security.dll",
+      "size": 241152,
+      "sha256": "576F911BE2E0DB795EA78F78828F3FAF4B20900BAF1CE8E33CA8FE599370FC1D",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "4.0.0.0",
+      "mvid": "32413ce1-d2e5-4b86-86c5-8fd9e3b3eb10",
+      "types": 180,
+      "methods": 1432,
+      "fields": 1028,
+      "dump": "none",
+      "references": [
+        "mscorlib",
+        "System"
+      ]
+    },
+    {
+      "name": "MoreMountains.Feedbacks",
+      "file": "MoreMountains.Feedbacks.dll",
+      "size": 425984,
+      "sha256": "5935325998F299DF5ED43D157CEAE8D491DB36BDEF525F2B4683D0D34A85E218",
+      "lastWriteUtc": "2026-06-30 12:30:58Z",
+      "version": "0.0.0.0",
+      "mvid": "dee76536-0d98-47cd-9a95-07fcdfde0827",
+      "types": 438,
+      "methods": 2272,
+      "fields": 3032,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.CoreModule",
+        "UnityEngine.UI",
+        "MoreMountains.Tools",
+        "UnityEngine.AnimationModule",
+        "UnityEngine.AudioModule",
+        "UnityEngine.UIModule",
+        "UnityEngine.PhysicsModule",
+        "UnityEngine.Physics2DModule",
+        "UnityEngine.ParticleSystemModule",
+        "UnityEngine.VideoModule",
+        "UnityEngine.InputLegacyModule"
+      ]
+    },
+    {
+      "name": "MoreMountains.Feedbacks.Cinemachine",
+      "file": "MoreMountains.Feedbacks.Cinemachine.dll",
+      "size": 16896,
+      "sha256": "5C0F1D74A841E90DF27A3F20803D39C2F0897F051D48CD7107F24927856D1B11",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "121be67f-0ff5-4fb3-9cd8-0390687e8366",
+      "types": 24,
+      "methods": 44,
+      "fields": 78,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.CoreModule",
+        "MoreMountains.Feedbacks",
+        "MoreMountains.Tools"
+      ]
+    },
+    {
+      "name": "MoreMountains.Feedbacks.HDRP",
+      "file": "MoreMountains.Feedbacks.HDRP.dll",
+      "size": 55296,
+      "sha256": "BB3208D9B396A312A0A5B50A8E7179391ED9F6ECE51B2AE14F4652EB6F3DB66A",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "7b7bb8d8-4fa2-46e0-a01e-5c7bceb0db9c",
+      "types": 62,
+      "methods": 277,
+      "fields": 330,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.CoreModule",
+        "MoreMountains.Feedbacks",
+        "MoreMountains.Tools"
+      ]
+    },
+    {
+      "name": "MoreMountains.Feedbacks.MMTools",
+      "file": "MoreMountains.Feedbacks.MMTools.dll",
+      "size": 114176,
+      "sha256": "2DE6F1DA70CCBE3587126AF19D44CC8689E8920966125786403E1F6C02EEDBE4",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "6795fbca-ec2e-4669-83b6-6f6e0fc16a47",
+      "types": 121,
+      "methods": 423,
+      "fields": 895,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.CoreModule",
+        "MoreMountains.Tools",
+        "MoreMountains.Feedbacks",
+        "UnityEngine.UIModule",
+        "UnityEngine.UI",
+        "UnityEngine.AudioModule",
+        "UnityEngine.InputLegacyModule"
+      ]
+    },
+    {
+      "name": "MoreMountains.Feedbacks.NiceVibrations",
+      "file": "MoreMountains.Feedbacks.NiceVibrations.dll",
+      "size": 26112,
+      "sha256": "740078A51CC784694A263589FDC395A5A7B7DB926C09EC25A3125402CB07C2C4",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "79c2db79-d9f7-4db0-ba0f-73ef54a3a32c",
+      "types": 26,
+      "methods": 62,
+      "fields": 163,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.CoreModule",
+        "MoreMountains.Feedbacks",
+        "Lofelt.NiceVibrations"
+      ]
+    },
+    {
+      "name": "MoreMountains.Feedbacks.PostProcessing",
+      "file": "MoreMountains.Feedbacks.PostProcessing.dll",
+      "size": 40448,
+      "sha256": "EA34F072DD9E0113A0F704805A65149912B4494840734EF70CCE4DF1355C25EF",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "9d78e5be-ef34-4371-ae58-f63f97a410e9",
+      "types": 46,
+      "methods": 165,
+      "fields": 263,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.CoreModule",
+        "MoreMountains.Feedbacks",
+        "MoreMountains.Tools"
+      ]
+    },
+    {
+      "name": "MoreMountains.Feedbacks.TextMeshPro",
+      "file": "MoreMountains.Feedbacks.TextMeshPro.dll",
+      "size": 50176,
+      "sha256": "8F9EF93C9103103E31B9454D1375350F06DA680FE83131B62A4B08E73058AEF7",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "781d4fb6-a8b6-49a7-bf3b-3ab654158dd5",
+      "types": 60,
+      "methods": 247,
+      "fields": 338,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.CoreModule",
+        "MoreMountains.Feedbacks",
+        "Unity.TextMeshPro",
+        "MoreMountains.Tools",
+        "MoreMountains.Feedbacks.MMTools",
+        "UnityEngine.UI"
+      ]
+    },
+    {
+      "name": "MoreMountains.Feedbacks.URP",
+      "file": "MoreMountains.Feedbacks.URP.dll",
+      "size": 77312,
+      "sha256": "A4EAD3931333CE80DF2A7A516EEEB272F83D5015FA4C92F1030C7B9A826023BD",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "af0e9b51-98fc-46fc-9250-2febbadca2b1",
+      "types": 73,
+      "methods": 394,
+      "fields": 538,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.CoreModule",
+        "MoreMountains.Feedbacks",
+        "Unity.RenderPipelines.Core.Runtime",
+        "Unity.RenderPipelines.Universal.Runtime",
+        "MoreMountains.Tools"
+      ]
+    },
+    {
+      "name": "MoreMountains.Tools",
+      "file": "MoreMountains.Tools.dll",
+      "size": 565248,
+      "sha256": "2271F4A19B520259BABE57BF92113C3D010C295D511A2B755BAACC3839B4ECF6",
+      "lastWriteUtc": "2026-06-30 12:30:58Z",
+      "version": "0.0.0.0",
+      "mvid": "49d8b380-3bdf-4750-bb65-6e1845fcf940",
+      "types": 609,
+      "methods": 2700,
+      "fields": 3689,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.CoreModule",
+        "UnityEngine.AudioModule",
+        "UnityEngine.UIModule",
+        "UnityEngine.UI",
+        "UnityEngine.PhysicsModule",
+        "UnityEngine.Physics2DModule",
+        "UnityEngine.AnimationModule",
+        "UnityEngine.InputLegacyModule",
+        "UnityEngine.TextRenderingModule",
+        "UnityEngine.IMGUIModule",
+        "Unity.TextMeshPro",
+        "UnityEngine.TilemapModule",
+        "UnityEngine.GridModule",
+        "UnityEngine.ParticleSystemModule",
+        "UnityEngine.JSONSerializeModule",
+        "UnityEngine.ScreenCaptureModule",
+        "UnityEngine.ImageConversionModule"
+      ]
+    },
+    {
+      "name": "MPUIKit",
+      "file": "MPUIKit.dll",
+      "size": 44032,
+      "sha256": "C8CC24D396765DCE13471FF3DEE8028484A4A406E047CAEC5F62B65D3E767638",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "4b1b9b3f-0fe7-46bf-b5ec-b548899c05e3",
+      "types": 24,
+      "methods": 271,
+      "fields": 167,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.CoreModule",
+        "UnityEngine.UI",
+        "UnityEngine.UIModule",
+        "UnityEngine.TextRenderingModule"
+      ]
+    },
+    {
+      "name": "mscorlib",
+      "file": "mscorlib.dll",
+      "size": 4631552,
+      "sha256": "98C9B62133DB5DD33B22BC6AAB6F28E4F04F5B5BE6559B28BA5C2738241434D0",
+      "lastWriteUtc": "2026-06-30 12:30:58Z",
+      "version": "4.0.0.0",
+      "mvid": "1071a2cb-0cb3-433a-ae80-a793c277a048",
+      "types": 3023,
+      "methods": 27492,
+      "fields": 15986,
+      "dump": "none",
+      "references": []
+    },
+    {
+      "name": "netstandard",
+      "file": "netstandard.dll",
+      "size": 90112,
+      "sha256": "6AE62E082DC494A2433984177F60CA4DB5FAE69B1F360A8B33754172B310B8C5",
+      "lastWriteUtc": "2026-06-01 19:47:04Z",
+      "version": "2.1.0.0",
+      "mvid": "3484a94e-547c-4c6b-a5ba-7f3667acc005",
+      "types": 1,
+      "methods": 0,
+      "fields": 0,
+      "dump": "none",
+      "references": [
+        "mscorlib",
+        "System.Core",
+        "System",
+        "System.Data",
+        "System.Data.DataSetExtensions",
+        "System.Drawing",
+        "System.IO.Compression",
+        "System.IO.Compression.FileSystem",
+        "System.ComponentModel.Composition",
+        "System.Net.Http",
+        "System.Numerics",
+        "System.Runtime.Serialization",
+        "System.Transactions",
+        "System.Xml",
+        "System.Xml.Linq"
+      ]
+    },
+    {
+      "name": "Newtonsoft.Json",
+      "file": "Newtonsoft.Json.dll",
+      "size": 691712,
+      "sha256": "A56146202232958F46BD6A28B5A7DA166AEA123EE0D646735A46E5C341DFBF1F",
+      "lastWriteUtc": "2026-06-30 12:30:58Z",
+      "version": "13.0.0.0",
+      "mvid": "29e3dfd7-379d-434c-a988-1f8263fe42fe",
+      "types": 496,
+      "methods": 4181,
+      "fields": 2195,
+      "dump": "none",
+      "references": [
+        "netstandard"
+      ]
+    },
+    {
+      "name": "PackageTools",
+      "file": "PackageTools.dll",
+      "size": 8704,
+      "sha256": "38B5FE3AAAE675F58917BB4294DF7B3EE2CF9A403908A1329D175270AC3F7190",
+      "lastWriteUtc": "2026-06-30 12:30:58Z",
+      "version": "0.0.0.0",
+      "mvid": "9f395e0c-c02d-41ca-a9c2-b5177d30a588",
+      "types": 12,
+      "methods": 25,
+      "fields": 14,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.CoreModule",
+        "Drawing"
+      ]
+    },
+    {
+      "name": "Pathfinding.ClipperLib",
+      "file": "Pathfinding.ClipperLib.dll",
+      "size": 58880,
+      "sha256": "4651EBA68167202DB81C212F445E23A2742560D70B605C0B367AD26A4D8DC1B3",
+      "lastWriteUtc": "2026-06-01 19:47:07Z",
+      "version": "1.0.0.0",
+      "mvid": "c7917e3f-f7d8-4f00-b6f5-a92ebf0f1d14",
+      "types": 26,
+      "methods": 220,
+      "fields": 134,
+      "dump": "none",
+      "references": [
+        "mscorlib"
+      ]
+    },
+    {
+      "name": "Pathfinding.Ionic.Zip.Reduced",
+      "file": "Pathfinding.Ionic.Zip.Reduced.dll",
+      "size": 240640,
+      "sha256": "481CC0F9A53A9BA94F8EA3FC0FB2A520B41812C2FDC6AB10581751EADA743D34",
+      "lastWriteUtc": "2026-06-01 19:47:06Z",
+      "version": "1.9.1.9000",
+      "mvid": "99f15b47-93f0-442d-a950-84e2e79a92c8",
+      "types": 124,
+      "methods": 1202,
+      "fields": 958,
+      "dump": "none",
+      "references": [
+        "mscorlib",
+        "System"
+      ]
+    },
+    {
+      "name": "Pathfinding.Poly2Tri",
+      "file": "Pathfinding.Poly2Tri.dll",
+      "size": 36352,
+      "sha256": "6D37C20001D050B2BFD5071D64EE19F7FD7415E021E8122F1E9070613E4D570B",
+      "lastWriteUtc": "2026-06-01 19:47:04Z",
+      "version": "1.0.0.0",
+      "mvid": "07aca9e8-4ffe-412b-bfb5-0d0962eb64f2",
+      "types": 33,
+      "methods": 258,
+      "fields": 90,
+      "dump": "none",
+      "references": [
+        "mscorlib"
+      ]
+    },
+    {
+      "name": "Rewired_Core",
+      "file": "Rewired_Core.dll",
+      "size": 2030080,
+      "sha256": "398488D3EA2D03794AB2ECCF4B10DC423E0CBD48E4083A3AE13A4F693001FD3A",
+      "lastWriteUtc": "2026-06-01 19:46:54Z",
+      "version": "1.0.0.0",
+      "mvid": "97b9f607-875c-479d-9d81-42524ecb2e14",
+      "types": 1357,
+      "methods": 14036,
+      "fields": 7346,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine",
+        "mscorlib",
+        "UnityEngine.UI"
+      ]
+    },
+    {
+      "name": "Rewired_Windows",
+      "file": "Rewired_Windows.dll",
+      "size": 1322496,
+      "sha256": "2DEACA6D2C31C70026C92924A2EAC62524E71EB05E6531C5349B6C32A3378A1D",
+      "lastWriteUtc": "2026-06-01 19:46:54Z",
+      "version": "1.0.0.0",
+      "mvid": "c30777be-2365-48f2-8c57-d522a8343e22",
+      "types": 807,
+      "methods": 6017,
+      "fields": 13093,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "Rewired_Core",
+        "UnityEngine",
+        "mscorlib"
+      ]
+    },
+    {
+      "name": "Rewired_Windows_Functions",
+      "file": "Rewired_Windows_Functions.dll",
+      "size": 5120,
+      "sha256": "B6E2D2E35F052A6E8719235E88F6F27D475EB5B02AFBF2A55F203577BC72538B",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "59e68e0d-e708-45ed-b5c8-27dfed9cb016",
+      "types": 7,
+      "methods": 3,
+      "fields": 7,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "ShapesRuntime",
+      "file": "ShapesRuntime.dll",
+      "size": 355328,
+      "sha256": "30CB758EC0F20239D23B180D16ED96FC46E90398F45696C4A12B2F684DACF2ED",
+      "lastWriteUtc": "2026-06-30 12:30:58Z",
+      "version": "0.0.0.0",
+      "mvid": "c36c1b5e-bfaf-455d-833c-1fe72e65d5b7",
+      "types": 161,
+      "methods": 3427,
+      "fields": 974,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.CoreModule",
+        "Unity.RenderPipelines.Universal.Runtime",
+        "Unity.TextMeshPro",
+        "UnityEngine.UI"
+      ]
+    },
+    {
+      "name": "Sirenix.OdinInspector.Attributes",
+      "file": "Sirenix.OdinInspector.Attributes.dll",
+      "size": 88576,
+      "sha256": "C368422CA53624B1C615FB4F991D84E2658494525DDE961CDF729CAA41AA865A",
+      "lastWriteUtc": "2026-06-01 19:47:04Z",
+      "version": "1.0.0.0",
+      "mvid": "46271076-7460-436d-8f14-5f53c8036bd0",
+      "types": 150,
+      "methods": 368,
+      "fields": 1925,
+      "dump": "none",
+      "references": [
+        "mscorlib",
+        "System",
+        "UnityEngine.CoreModule",
+        "UnityEngine.TextRenderingModule",
+        "System.Core"
+      ]
+    },
+    {
+      "name": "System",
+      "file": "System.dll",
+      "size": 2639872,
+      "sha256": "ACE2DD6A7D534B581BF4A9D316E743D64508CA2135DB73DBFF0DDB9365FC454E",
+      "lastWriteUtc": "2026-06-30 12:30:58Z",
+      "version": "4.0.0.0",
+      "mvid": "6db90f42-41f3-4718-aade-286911577a8a",
+      "types": 2173,
+      "methods": 17609,
+      "fields": 10581,
+      "dump": "none",
+      "references": [
+        "mscorlib",
+        "Mono.Security",
+        "System.Configuration",
+        "System.Xml",
+        "System.Numerics",
+        "System.Core"
+      ]
+    },
+    {
+      "name": "System.Collections",
+      "file": "System.Collections.dll",
+      "size": 5120,
+      "sha256": "2C29E42916C7AB1EC30AA529554DD85B3408A70D7DE691152AE3885ED9FD1C11",
+      "lastWriteUtc": "2026-06-30 12:31:01Z",
+      "version": "4.0.10.0",
+      "mvid": "83b186fa-311b-4d2e-a12f-f564ab41753e",
+      "types": 1,
+      "methods": 0,
+      "fields": 0,
+      "dump": "none",
+      "references": [
+        "mscorlib",
+        "System.Core",
+        "System"
+      ]
+    },
+    {
+      "name": "System.ComponentModel.Composition",
+      "file": "System.ComponentModel.Composition.dll",
+      "size": 257024,
+      "sha256": "2535FD6FAC676852936CB435D917B2D69CC6FCDD391F7B3009898153BA04919F",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "4.0.0.0",
+      "mvid": "d246e23b-2218-4067-a9ab-f011b0cc82e3",
+      "types": 265,
+      "methods": 1805,
+      "fields": 789,
+      "dump": "none",
+      "references": [
+        "mscorlib",
+        "System.Core",
+        "System"
+      ]
+    },
+    {
+      "name": "System.Configuration",
+      "file": "System.Configuration.dll",
+      "size": 124928,
+      "sha256": "EC883B49C12AB0E5110337E817A72CF781878D7FAF904AA8ABB1AB1C4B99BD78",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "4.0.0.0",
+      "mvid": "cca17f57-db3a-45e1-b077-459b60118569",
+      "types": 144,
+      "methods": 1176,
+      "fields": 363,
+      "dump": "none",
+      "references": [
+        "mscorlib",
+        "System.Xml",
+        "System",
+        "System.Security"
+      ]
+    },
+    {
+      "name": "System.Core",
+      "file": "System.Core.dll",
+      "size": 1113088,
+      "sha256": "F1B33EB1AE8522EDCF9BA4C2B85F532D4BAB68BFA2A51527264BB61619BED4EA",
+      "lastWriteUtc": "2026-06-30 12:30:58Z",
+      "version": "4.0.0.0",
+      "mvid": "ea489521-390f-4890-8a7c-e45cb17a6848",
+      "types": 953,
+      "methods": 7256,
+      "fields": 3446,
+      "dump": "none",
+      "references": [
+        "mscorlib",
+        "System"
+      ]
+    },
+    {
+      "name": "System.Data",
+      "file": "System.Data.dll",
+      "size": 2125312,
+      "sha256": "534AC87E6A7C1E3CE02FF2D88F4FFA45E7B5FC44E6236922C2F46F8174A29E56",
+      "lastWriteUtc": "2026-06-30 12:30:58Z",
+      "version": "4.0.0.0",
+      "mvid": "f22672cf-c728-4481-8725-9e5316fc9b02",
+      "types": 1015,
+      "methods": 12212,
+      "fields": 7357,
+      "dump": "none",
+      "references": [
+        "mscorlib",
+        "System.Transactions",
+        "System",
+        "System.Xml",
+        "System.Configuration",
+        "System.Numerics",
+        "System.Core",
+        "System.EnterpriseServices",
+        "System.Drawing"
+      ]
+    },
+    {
+      "name": "System.Data.DataSetExtensions",
+      "file": "System.Data.DataSetExtensions.dll",
+      "size": 29696,
+      "sha256": "1C88D17E686CAF77551A18D3672A1589143E6B8AE83BFCF7C306478CDB64AB90",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "4.0.0.0",
+      "mvid": "33b19d9d-aa9d-4984-bf4f-7563a088c080",
+      "types": 19,
+      "methods": 101,
+      "fields": 69,
+      "dump": "none",
+      "references": [
+        "mscorlib",
+        "System.Data",
+        "System",
+        "System.Core"
+      ]
+    },
+    {
+      "name": "System.Drawing",
+      "file": "System.Drawing.dll",
+      "size": 489984,
+      "sha256": "435CC673A1ABA5AF488D8AF379D96F7E351A4B5ED2A1772892287A8268567DEB",
+      "lastWriteUtc": "2026-06-30 12:30:58Z",
+      "version": "4.0.0.0",
+      "mvid": "70a5bca8-4d3b-4560-b1cc-fa5ae763b1c6",
+      "types": 347,
+      "methods": 3882,
+      "fields": 2947,
+      "dump": "none",
+      "references": [
+        "mscorlib",
+        "System"
+      ]
+    },
+    {
+      "name": "System.EnterpriseServices",
+      "file": "System.EnterpriseServices.dll",
+      "size": 44544,
+      "sha256": "03F240D259B9CF27DBC5C9E8F42B8746A50CC5C52395D8E2DE5730321F9DE3B8",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "4.0.0.0",
+      "mvid": "aa0f70be-57fb-4200-bacf-b190a539c1d0",
+      "types": 121,
+      "methods": 471,
+      "fields": 208,
+      "dump": "none",
+      "references": [
+        "mscorlib",
+        "System.Transactions"
+      ]
+    },
+    {
+      "name": "System.IO.Compression",
+      "file": "System.IO.Compression.dll",
+      "size": 114688,
+      "sha256": "15E84F38FB5E6BB926FE92A79374A083B8DFBABFA11F8CD1D409F21B98447CFD",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "4.0.0.0",
+      "mvid": "9f999c87-169c-45b4-892c-93440e000b71",
+      "types": 77,
+      "methods": 486,
+      "fields": 565,
+      "dump": "none",
+      "references": [
+        "mscorlib",
+        "System"
+      ]
+    },
+    {
+      "name": "System.IO.Compression.FileSystem",
+      "file": "System.IO.Compression.FileSystem.dll",
+      "size": 18432,
+      "sha256": "02F749FBE31E54CD8B86A35738E1DDDAE00CCC2E9FDB8990B93F1A494E6E753A",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "4.0.0.0",
+      "mvid": "95ef311e-9119-45ed-923e-09829860c7c9",
+      "types": 6,
+      "methods": 26,
+      "fields": 45,
+      "dump": "none",
+      "references": [
+        "mscorlib",
+        "System.IO.Compression",
+        "System"
+      ]
+    },
+    {
+      "name": "System.IO.Hashing",
+      "file": "System.IO.Hashing.dll",
+      "size": 50488,
+      "sha256": "AC7AC3E83805B0B621C48B90543DC733C9A89106835278618357D6187E3DA74E",
+      "lastWriteUtc": "2026-06-30 12:31:02Z",
+      "version": "9.0.0.0",
+      "mvid": "ca122a6a-7670-402c-9243-b3ad55f53160",
+      "types": 43,
+      "methods": 219,
+      "fields": 126,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "System.Memory",
+        "System.Runtime.CompilerServices.Unsafe"
+      ]
+    },
+    {
+      "name": "System.Memory",
+      "file": "System.Memory.dll",
+      "size": 4608,
+      "sha256": "C4F030A2CBA7DA7CDCF493257C24560E203D355904AEE490D645A935842F834A",
+      "lastWriteUtc": "2026-06-30 12:31:01Z",
+      "version": "4.0.99.0",
+      "mvid": "a844289e-9b0f-420e-bab3-002006756c92",
+      "types": 1,
+      "methods": 0,
+      "fields": 0,
+      "dump": "none",
+      "references": [
+        "mscorlib"
+      ]
+    },
+    {
+      "name": "System.Net.Http",
+      "file": "System.Net.Http.dll",
+      "size": 122880,
+      "sha256": "85F6D618B5DF944D2271E2D028B94A93CD371C6134507997441475B1700623CF",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "4.0.0.0",
+      "mvid": "81a53b27-5575-45fe-94d7-1df32265c99f",
+      "types": 111,
+      "methods": 1016,
+      "fields": 344,
+      "dump": "none",
+      "references": [
+        "mscorlib",
+        "System",
+        "System.Core",
+        "Mono.Security"
+      ]
+    },
+    {
+      "name": "System.Numerics",
+      "file": "System.Numerics.dll",
+      "size": 119296,
+      "sha256": "55EDA0FB467F9356D8F63933FB4B237732F1B215CB8EB0380398F05D3E8A3461",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "4.0.0.0",
+      "mvid": "2d294d66-6705-4851-bfa9-055da53c56de",
+      "types": 29,
+      "methods": 665,
+      "fields": 168,
+      "dump": "none",
+      "references": [
+        "mscorlib"
+      ]
+    },
+    {
+      "name": "System.Runtime",
+      "file": "System.Runtime.dll",
+      "size": 12288,
+      "sha256": "E0A7334B7BA419AAAB6BD3BB6992D693E689341A9178172C9BF99C2AA6A085BD",
+      "lastWriteUtc": "2026-06-01 19:47:04Z",
+      "version": "4.1.0.0",
+      "mvid": "3217a651-a22f-44c9-a144-adc7d95c236a",
+      "types": 1,
+      "methods": 0,
+      "fields": 0,
+      "dump": "none",
+      "references": [
+        "mscorlib",
+        "System.Core",
+        "System",
+        "System.ComponentModel.Composition"
+      ]
+    },
+    {
+      "name": "System.Runtime.CompilerServices.Unsafe",
+      "file": "System.Runtime.CompilerServices.Unsafe.dll",
+      "size": 18024,
+      "sha256": "01748200F2400C742AA689F1F5101BD6298EFDFD92C00C18F4FA473847235BA9",
+      "lastWriteUtc": "2026-06-30 12:31:02Z",
+      "version": "6.0.0.0",
+      "mvid": "a8391708-f361-428d-a4a8-45fb3e6b1001",
+      "types": 6,
+      "methods": 47,
+      "fields": 1,
+      "dump": "none",
+      "references": [
+        "netstandard"
+      ]
+    },
+    {
+      "name": "System.Runtime.Extensions",
+      "file": "System.Runtime.Extensions.dll",
+      "size": 5120,
+      "sha256": "B64655F85720718B65B81A03A5D6CDCBDDF07FD0BD96DAA10E550DB80F461E14",
+      "lastWriteUtc": "2026-06-30 12:31:02Z",
+      "version": "4.1.0.0",
+      "mvid": "12f28b69-7a62-472d-8587-8c7e43e5f074",
+      "types": 1,
+      "methods": 0,
+      "fields": 0,
+      "dump": "none",
+      "references": [
+        "mscorlib",
+        "System"
+      ]
+    },
+    {
+      "name": "System.Runtime.InteropServices",
+      "file": "System.Runtime.InteropServices.dll",
+      "size": 7680,
+      "sha256": "E3671531C2C72FD3C923D4A3614FEB468AF456E51517CB7574B9B91FF724DF8D",
+      "lastWriteUtc": "2026-06-30 12:31:02Z",
+      "version": "4.1.0.0",
+      "mvid": "a17ea8ea-992c-480d-b65b-fa2214864343",
+      "types": 1,
+      "methods": 0,
+      "fields": 0,
+      "dump": "none",
+      "references": [
+        "mscorlib",
+        "System.Core",
+        "System"
+      ]
+    },
+    {
+      "name": "System.Runtime.Serialization",
+      "file": "System.Runtime.Serialization.dll",
+      "size": 934400,
+      "sha256": "C1058A78E3828052B92D535D8FB27F9F3C9EB9CBFCDEE1904898611B44D7CDB7",
+      "lastWriteUtc": "2026-06-30 12:30:58Z",
+      "version": "4.0.0.0",
+      "mvid": "c5f2b818-1576-4258-b1b7-dd2138507c28",
+      "types": 440,
+      "methods": 5490,
+      "fields": 2722,
+      "dump": "none",
+      "references": [
+        "mscorlib",
+        "System.Xml",
+        "System.ServiceModel.Internals",
+        "System",
+        "System.Configuration",
+        "System.Core"
+      ]
+    },
+    {
+      "name": "System.Security",
+      "file": "System.Security.dll",
+      "size": 320000,
+      "sha256": "F7F53EB1401F2BD70EA1DCAB1C6C30AE7A4A142E26781C4A78BB885D2F6816A3",
+      "lastWriteUtc": "2026-06-30 12:30:58Z",
+      "version": "4.0.0.0",
+      "mvid": "9a027934-a6ef-4e12-b1aa-9d6cf7c8f728",
+      "types": 285,
+      "methods": 1846,
+      "fields": 1139,
+      "dump": "none",
+      "references": [
+        "mscorlib",
+        "System",
+        "System.Xml",
+        "System.Numerics",
+        "System.Core"
+      ]
+    },
+    {
+      "name": "System.ServiceModel.Internals",
+      "file": "System.ServiceModel.Internals.dll",
+      "size": 215040,
+      "sha256": "5F926225818163439D823F9EF0F6E798E16604D8B75B66F22A133B40615F1B05",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "1c33f8e5-eec0-45c7-98b3-4fafe0e25c99",
+      "types": 185,
+      "methods": 1208,
+      "fields": 877,
+      "dump": "none",
+      "references": [
+        "mscorlib",
+        "System",
+        "System.Xml"
+      ]
+    },
+    {
+      "name": "System.Transactions",
+      "file": "System.Transactions.dll",
+      "size": 35328,
+      "sha256": "8983073E9627B1086102A9871A23E2BA53A0BB9FCC76826CAB9F5DEC9107E21A",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "4.0.0.0",
+      "mvid": "311f8ca3-0d81-4a83-9a05-506f668cf224",
+      "types": 50,
+      "methods": 242,
+      "fields": 126,
+      "dump": "none",
+      "references": [
+        "mscorlib",
+        "System.Configuration"
+      ]
+    },
+    {
+      "name": "System.Xml",
+      "file": "System.Xml.dll",
+      "size": 3160064,
+      "sha256": "7A3587565CABF8294CFC372991545F3AE5790D54264E40069F5E0E460B66BC55",
+      "lastWriteUtc": "2026-06-30 12:30:58Z",
+      "version": "4.0.0.0",
+      "mvid": "cc680797-8d50-4e8e-a81a-34b1b2ec871c",
+      "types": 1682,
+      "methods": 17197,
+      "fields": 12185,
+      "dump": "none",
+      "references": [
+        "mscorlib",
+        "System.Configuration",
+        "System"
+      ]
+    },
+    {
+      "name": "System.Xml.Linq",
+      "file": "System.Xml.Linq.dll",
+      "size": 136704,
+      "sha256": "48B11F5D3A51034F9B9D330082F9099A0E68956EE2153D151CDF146BF9E76C78",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "4.0.0.0",
+      "mvid": "fccdd16e-3423-4169-a746-cef0f7365848",
+      "types": 106,
+      "methods": 991,
+      "fields": 504,
+      "dump": "none",
+      "references": [
+        "mscorlib",
+        "System.Xml",
+        "System",
+        "System.Core"
+      ]
+    },
+    {
+      "name": "Tayx.Graphy",
+      "file": "Tayx.Graphy.dll",
+      "size": 56320,
+      "sha256": "2AEBE689B8FA99AFD1C53B188B2C39EDABAD2B3DCADE3C6E12D663B231FD50CF",
+      "lastWriteUtc": "2026-06-30 12:31:01Z",
+      "version": "0.0.0.0",
+      "mvid": "6e3aeb7b-3d0d-406e-9cdb-e03fd9d8ba1a",
+      "types": 47,
+      "methods": 298,
+      "fields": 335,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.CoreModule",
+        "UnityEngine.AudioModule",
+        "UnityEngine.UI",
+        "UnityEngine.XRModule",
+        "UnityEngine.ScreenCaptureModule",
+        "UnityEngine.UIModule",
+        "UnityEngine.InputLegacyModule",
+        "UnityEngine.TextRenderingModule",
+        "UnityEngine.VRModule",
+        "UnityEngine.SubsystemsModule"
+      ]
+    },
+    {
+      "name": "Unity.AI.Navigation",
+      "file": "Unity.AI.Navigation.dll",
+      "size": 19968,
+      "sha256": "A917A227E852B7B1064744C5F158598688970CA1DEE7DF087B0AC8ED28CFBC68",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "fa265b48-78a7-492c-a83f-f38f31355c50",
+      "types": 13,
+      "methods": 120,
+      "fields": 67,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.CoreModule",
+        "UnityEngine.AIModule",
+        "UnityEngine.TerrainModule"
+      ]
+    },
+    {
+      "name": "Unity.Burst",
+      "file": "Unity.Burst.dll",
+      "size": 304640,
+      "sha256": "EFF6C289B4C7F2B5E46CD6E9FC19DB12165087451E3B56AF667186078F5C7476",
+      "lastWriteUtc": "2026-06-30 12:30:58Z",
+      "version": "0.0.0.0",
+      "mvid": "6cbb0053-9a27-4535-8929-be01c29cc8d9",
+      "types": 100,
+      "methods": 3676,
+      "fields": 734,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.CoreModule",
+        "Unity.Burst.Unsafe"
+      ]
+    },
+    {
+      "name": "Unity.Burst.Unsafe",
+      "file": "Unity.Burst.Unsafe.dll",
+      "size": 5632,
+      "sha256": "9D9C1FF52411DECBEE5D9F0D1CD61EBEAA222077AA77A52101EA3DEBAFAE98E2",
+      "lastWriteUtc": "2026-06-01 19:47:06Z",
+      "version": "4.0.5.0",
+      "mvid": "9eaa2e25-81d1-45ae-9c55-5d2492ea3922",
+      "types": 4,
+      "methods": 37,
+      "fields": 0,
+      "dump": "none",
+      "references": [
+        "System.Runtime"
+      ]
+    },
+    {
+      "name": "Unity.Collections",
+      "file": "Unity.Collections.dll",
+      "size": 451072,
+      "sha256": "ED2274D9F2FC1F41ABBCA22F3DC09F3C4AE4BEDBBC9D807EB5BA6CF8BD676791",
+      "lastWriteUtc": "2026-06-30 12:30:58Z",
+      "version": "0.0.0.0",
+      "mvid": "4bb06c71-bf71-4e66-acc3-c7eb6b826f18",
+      "types": 342,
+      "methods": 3548,
+      "fields": 1362,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.CoreModule",
+        "Unity.Burst",
+        "UnityEngine.PropertiesModule",
+        "Unity.Mathematics",
+        "Unity.Collections.LowLevel.ILSupport"
+      ]
+    },
+    {
+      "name": "Unity.Collections.LowLevel.ILSupport",
+      "file": "Unity.Collections.LowLevel.ILSupport.dll",
+      "size": 5120,
+      "sha256": "FF50383F807F9692E4913B97E47D86FEFCB8FAA33D6D48CD3E3FD6FC7FFB448D",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "9a61fa17-be5d-4b3e-9a42-684e9de45e94",
+      "types": 7,
+      "methods": 4,
+      "fields": 7,
+      "dump": "none",
+      "references": [
+        "netstandard"
+      ]
+    },
+    {
+      "name": "Unity.Formats.Fbx.Runtime",
+      "file": "Unity.Formats.Fbx.Runtime.dll",
+      "size": 6656,
+      "sha256": "AF65241879F603E95CA604B397CCF3DBA72B626F5DA6DDDD4EECE52C303402BD",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "83f381bc-5e43-4504-83d4-2dd3c86253e2",
+      "types": 9,
+      "methods": 21,
+      "fields": 14,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "Unity.Mathematics",
+      "file": "Unity.Mathematics.dll",
+      "size": 752128,
+      "sha256": "A44F917525E6B752D0B7AC9732EF1908C30B44AFE109EFAABEDB12663D35CAC3",
+      "lastWriteUtc": "2026-06-30 12:30:58Z",
+      "version": "0.0.0.0",
+      "mvid": "fa30d7b2-0632-4300-a4cf-7b008372b0eb",
+      "types": 104,
+      "methods": 9427,
+      "fields": 383,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "Unity.Recorder",
+      "file": "Unity.Recorder.dll",
+      "size": 6656,
+      "sha256": "5E11E2D33A8C7FC976243EDAFA437281C469468C70D21AF78E00BE4FC932A6FB",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "20bbf0b8-24be-41fe-b106-a5e9d3b69620",
+      "types": 9,
+      "methods": 15,
+      "fields": 11,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "Unity.Recorder.Base",
+      "file": "Unity.Recorder.Base.dll",
+      "size": 5632,
+      "sha256": "B17D29097213682D1C86889BCCAD83BF9EA07A3E0DFCB5EDA90E6B4BDAACFA2F",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "40313c7a-bf7f-4c6d-bb68-434859d527b7",
+      "types": 7,
+      "methods": 10,
+      "fields": 9,
+      "dump": "none",
+      "references": [
+        "netstandard"
+      ]
+    },
+    {
+      "name": "Unity.RenderPipeline.Universal.ShaderLibrary",
+      "file": "Unity.RenderPipeline.Universal.ShaderLibrary.dll",
+      "size": 8192,
+      "sha256": "9693BFD017CB9A20C7898F3E57FB814D600F8326DB38A5ABBE54F1199AF883DF",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "426debf7-e637-45d6-b2be-844bee7ae814",
+      "types": 22,
+      "methods": 2,
+      "fields": 97,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "Unity.RenderPipelines.Core.Runtime",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "Unity.RenderPipelines.Core.Runtime",
+      "file": "Unity.RenderPipelines.Core.Runtime.dll",
+      "size": 528896,
+      "sha256": "57A472AC6B3CC233E730220737620408C1809D4A3D2A4835529A0638DBE78A96",
+      "lastWriteUtc": "2026-06-30 12:30:58Z",
+      "version": "0.0.0.0",
+      "mvid": "21dbaf22-defe-4426-99fe-d04c8652b6c3",
+      "types": 511,
+      "methods": 3014,
+      "fields": 2037,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.CoreModule",
+        "UnityEngine.XRModule",
+        "UnityEngine.IMGUIModule",
+        "UnityEngine.InputLegacyModule",
+        "UnityEngine.UI",
+        "UnityEngine.PhysicsModule",
+        "UnityEngine.SubsystemsModule",
+        "UnityEngine.VRModule"
+      ]
+    },
+    {
+      "name": "Unity.RenderPipelines.Core.ShaderLibrary",
+      "file": "Unity.RenderPipelines.Core.ShaderLibrary.dll",
+      "size": 4608,
+      "sha256": "1E7389B62DA58D445ADCF2D623A95A7C0EB9A89E20E6A83495A92DB7EBCCA24C",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "10ddb4f6-4124-4db9-9759-c12a19510844",
+      "types": 7,
+      "methods": 3,
+      "fields": 7,
+      "dump": "none",
+      "references": [
+        "netstandard"
+      ]
+    },
+    {
+      "name": "Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary",
+      "file": "Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.dll",
+      "size": 4608,
+      "sha256": "B2C13987D3104294EEA3E988D9302EC8CA103C5D7938377F4914AA5C28E71BC7",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "1cde4fb2-d64c-4aac-ad78-add370a25a7c",
+      "types": 7,
+      "methods": 3,
+      "fields": 7,
+      "dump": "none",
+      "references": [
+        "netstandard"
+      ]
+    },
+    {
+      "name": "Unity.RenderPipelines.Universal.2D.Internal",
+      "file": "Unity.RenderPipelines.Universal.2D.Internal.dll",
+      "size": 5120,
+      "sha256": "F243F83C0F3D6FD7DBB11A2145224F9D3BFC7D49A4B0C7404D257482B111807F",
+      "lastWriteUtc": "2026-06-30 12:31:02Z",
+      "version": "0.0.0.0",
+      "mvid": "86342990-0d0f-4428-98f4-fb17e8a5a25a",
+      "types": 7,
+      "methods": 4,
+      "fields": 7,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "Unity.RenderPipelines.Universal.Config.Runtime",
+      "file": "Unity.RenderPipelines.Universal.Config.Runtime.dll",
+      "size": 5632,
+      "sha256": "2B53FCF2954F8E153C67FB96B3857F0C0211EA1A59F9E3ECF4F3223511767F57",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "cd5bd725-6ac0-4615-91af-7736696b23fb",
+      "types": 7,
+      "methods": 2,
+      "fields": 10,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "Unity.RenderPipelines.Core.Runtime"
+      ]
+    },
+    {
+      "name": "Unity.RenderPipelines.Universal.Runtime",
+      "file": "Unity.RenderPipelines.Universal.Runtime.dll",
+      "size": 787968,
+      "sha256": "84D220E43285C5A64095C15613B7319720AFE08B7EB76037DEC0EF7C5BEBA2E6",
+      "lastWriteUtc": "2026-06-30 12:30:58Z",
+      "version": "0.0.0.0",
+      "mvid": "e3e58b03-947b-45e2-962c-f026ec0c8460",
+      "types": 567,
+      "methods": 3156,
+      "fields": 3422,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.CoreModule",
+        "Unity.RenderPipelines.Core.Runtime",
+        "UnityEngine.AnimationModule",
+        "Unity.Mathematics",
+        "UnityEngine.Physics2DModule",
+        "Unity.RenderPipeline.Universal.ShaderLibrary",
+        "Unity.Burst",
+        "UnityEngine.VFXModule",
+        "UnityEngine.XRModule",
+        "UnityEngine.SpriteMaskModule"
+      ]
+    },
+    {
+      "name": "Unity.RenderPipelines.Universal.Shaders",
+      "file": "Unity.RenderPipelines.Universal.Shaders.dll",
+      "size": 4608,
+      "sha256": "97F1F1EDA621A54368965B70040A7050BAAECB671F050E7555652EF9DC2B0FDC",
+      "lastWriteUtc": "2026-06-30 12:30:58Z",
+      "version": "0.0.0.0",
+      "mvid": "e8351198-5e91-4f37-b3e0-999ca667e9ca",
+      "types": 7,
+      "methods": 3,
+      "fields": 7,
+      "dump": "none",
+      "references": [
+        "netstandard"
+      ]
+    },
+    {
+      "name": "Unity.Services.CloudDiagnostics",
+      "file": "Unity.Services.CloudDiagnostics.dll",
+      "size": 6656,
+      "sha256": "3FA857EE59CF9B120921BEC6EECD750285AB61DE8706CDDE43826E5E9B8074D8",
+      "lastWriteUtc": "2026-06-30 12:31:01Z",
+      "version": "0.0.0.0",
+      "mvid": "cf0f320d-3a00-4ec8-9ee8-140b8013ce14",
+      "types": 10,
+      "methods": 9,
+      "fields": 8,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "Unity.Services.Core.Internal",
+        "UnityEngine.CoreModule",
+        "UnityEngine.CrashReportingModule"
+      ]
+    },
+    {
+      "name": "Unity.Services.Core",
+      "file": "Unity.Services.Core.dll",
+      "size": 16384,
+      "sha256": "AEE63A0A931CFA206856CF755D880F01E0AEDA98A3762E8806CCA956C5280FE1",
+      "lastWriteUtc": "2026-06-30 12:31:01Z",
+      "version": "0.0.0.0",
+      "mvid": "d2a3b406-cad5-4633-b870-008e2d811bb0",
+      "types": 22,
+      "methods": 74,
+      "fields": 43,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "Unity.Services.Core.Analytics",
+      "file": "Unity.Services.Core.Analytics.dll",
+      "size": 5632,
+      "sha256": "93D7ECDC2C7EAD70201D1BA6FC698179BB3A597646164A7A228B04C2548BEFCA",
+      "lastWriteUtc": "2026-06-30 12:31:01Z",
+      "version": "0.0.0.0",
+      "mvid": "5f16d9e8-22bd-41f7-ae0e-84f2726502c0",
+      "types": 7,
+      "methods": 3,
+      "fields": 8,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "Unity.Services.Core"
+      ]
+    },
+    {
+      "name": "Unity.Services.Core.Components",
+      "file": "Unity.Services.Core.Components.dll",
+      "size": 10752,
+      "sha256": "4AECC592965631E146CCC41DF24054CFD070CBAAC6F986AE7ED50AD00127B700",
+      "lastWriteUtc": "2026-06-30 12:31:01Z",
+      "version": "0.0.0.0",
+      "mvid": "06743a19-ed31-4cc6-869f-1bc0b22cec96",
+      "types": 12,
+      "methods": 29,
+      "fields": 29,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.CoreModule",
+        "Unity.Services.Core",
+        "Unity.Services.Core.Internal",
+        "Unity.Services.Core.Environments"
+      ]
+    },
+    {
+      "name": "Unity.Services.Core.Configuration",
+      "file": "Unity.Services.Core.Configuration.dll",
+      "size": 14336,
+      "sha256": "3D9B46E13DAEA1F184F38890FD6EAFC0D89A8AE34762730DB3C593D8EF303C54",
+      "lastWriteUtc": "2026-06-30 12:31:02Z",
+      "version": "0.0.0.0",
+      "mvid": "c87d0642-9e7b-4db5-b07e-63e43ab492e2",
+      "types": 19,
+      "methods": 45,
+      "fields": 25,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "Unity.Services.Core.Internal",
+        "Unity.Services.Core",
+        "Newtonsoft.Json",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "Unity.Services.Core.Device",
+      "file": "Unity.Services.Core.Device.dll",
+      "size": 6656,
+      "sha256": "9DC65885F86EE26FFE518E2A8B692EF7A280225A0C96E866CDC967D040586CB5",
+      "lastWriteUtc": "2026-06-30 12:31:02Z",
+      "version": "0.0.0.0",
+      "mvid": "9d716e22-ff00-47da-9444-7081d4aaa369",
+      "types": 10,
+      "methods": 16,
+      "fields": 12,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "Unity.Services.Core.Internal",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "Unity.Services.Core.Environments",
+      "file": "Unity.Services.Core.Environments.dll",
+      "size": 5632,
+      "sha256": "B019F0B7F6AEF010694FA03BD812909A3F7B9E9D171D1EF215684D1FC7FC7E49",
+      "lastWriteUtc": "2026-06-30 12:31:01Z",
+      "version": "0.0.0.0",
+      "mvid": "013cadc3-34bc-4102-824d-465e9f44de7d",
+      "types": 7,
+      "methods": 3,
+      "fields": 9,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "Unity.Services.Core"
+      ]
+    },
+    {
+      "name": "Unity.Services.Core.Environments.Internal",
+      "file": "Unity.Services.Core.Environments.Internal.dll",
+      "size": 5120,
+      "sha256": "C9609C0A652E9FB2F22B1860284D1EFBAF9C2AA0835E073CA192A03BDFE52338",
+      "lastWriteUtc": "2026-06-30 12:31:01Z",
+      "version": "0.0.0.0",
+      "mvid": "b2219949-9716-4f37-adc5-b5be379589e2",
+      "types": 7,
+      "methods": 5,
+      "fields": 8,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "Unity.Services.Core.Internal"
+      ]
+    },
+    {
+      "name": "Unity.Services.Core.Internal",
+      "file": "Unity.Services.Core.Internal.dll",
+      "size": 74240,
+      "sha256": "0642AE878FC25B7DD90C5D64F59B0334DAA51B14F4ECB0307B2AB7579A05ABAA",
+      "lastWriteUtc": "2026-06-30 12:31:02Z",
+      "version": "0.0.0.0",
+      "mvid": "e63e1d63-a0a3-4b01-924e-b107b45ffc15",
+      "types": 117,
+      "methods": 466,
+      "fields": 199,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.CoreModule",
+        "Unity.Services.Core",
+        "Newtonsoft.Json",
+        "UnityEngine.UnityWebRequestModule"
+      ]
+    },
+    {
+      "name": "Unity.Services.Core.Networking",
+      "file": "Unity.Services.Core.Networking.dll",
+      "size": 8192,
+      "sha256": "511B80BCBE460692681DAA15992E11514F074EC7DBAEE93156DA60B3EDFDB3E5",
+      "lastWriteUtc": "2026-06-30 12:31:02Z",
+      "version": "0.0.0.0",
+      "mvid": "feba7105-abc7-4a2c-ae3c-69a6e2a69af5",
+      "types": 9,
+      "methods": 13,
+      "fields": 13,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "Unity.Services.Core.Internal",
+        "UnityEngine.UnityWebRequestModule",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "Unity.Services.Core.Registration",
+      "file": "Unity.Services.Core.Registration.dll",
+      "size": 18432,
+      "sha256": "9521CF788F9A4D403CEBA6D54EA2FAAFF3B69CB32D227846C48A45E26C9D5460",
+      "lastWriteUtc": "2026-06-30 12:31:02Z",
+      "version": "0.0.0.0",
+      "mvid": "e09d97ea-e435-4f76-9b72-c99bfc9134e1",
+      "types": 13,
+      "methods": 57,
+      "fields": 46,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "Unity.Services.Core.Internal",
+        "Unity.Services.Core.Scheduler",
+        "Unity.Services.Core.Device",
+        "Unity.Services.Core.Configuration",
+        "Unity.Services.Core.Environments.Internal",
+        "Unity.Services.Core.Threading",
+        "Unity.Services.Core",
+        "UnityEngine.CoreModule",
+        "Newtonsoft.Json",
+        "Unity.Services.Core.Telemetry"
+      ]
+    },
+    {
+      "name": "Unity.Services.Core.Scheduler",
+      "file": "Unity.Services.Core.Scheduler.dll",
+      "size": 12800,
+      "sha256": "D6BBD65EFB25D1076FF3537A6D0574322EA47D6C93ABB42BF1628188FAB655A8",
+      "lastWriteUtc": "2026-06-30 12:31:01Z",
+      "version": "0.0.0.0",
+      "mvid": "bd03f1c8-c414-4970-8e91-a0b76a250577",
+      "types": 14,
+      "methods": 38,
+      "fields": 28,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "Unity.Services.Core.Internal",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "Unity.Services.Core.Telemetry",
+      "file": "Unity.Services.Core.Telemetry.dll",
+      "size": 8704,
+      "sha256": "ABC35E1A44A62C98E8CA1ABE08714D75EDC44EFCA1BA7285556697E09BFD2224",
+      "lastWriteUtc": "2026-06-30 12:31:01Z",
+      "version": "0.0.0.0",
+      "mvid": "c0b04954-85f6-43a6-be9d-0cca3de54a97",
+      "types": 14,
+      "methods": 28,
+      "fields": 13,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "Unity.Services.Core.Internal"
+      ]
+    },
+    {
+      "name": "Unity.Services.Core.Threading",
+      "file": "Unity.Services.Core.Threading.dll",
+      "size": 7168,
+      "sha256": "2868DD8C03E8095A73E22D99A28F6D3A5314BC32795BB62CA51D9A7EB5284A12",
+      "lastWriteUtc": "2026-06-30 12:31:02Z",
+      "version": "0.0.0.0",
+      "mvid": "77281a07-476f-4cd7-bb6c-14576e8bdc39",
+      "types": 7,
+      "methods": 20,
+      "fields": 7,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "Unity.Services.Core.Internal",
+        "Unity.Services.Core"
+      ]
+    },
+    {
+      "name": "Unity.TextMeshPro",
+      "file": "Unity.TextMeshPro.dll",
+      "size": 380416,
+      "sha256": "E0D54DFA22209172122044BDF3B2C00CA641B509204F7844E333E70C27A06677",
+      "lastWriteUtc": "2026-06-30 12:30:58Z",
+      "version": "0.0.0.0",
+      "mvid": "e1c3aa8f-3709-4371-bd22-b0424d69baaf",
+      "types": 177,
+      "methods": 1620,
+      "fields": 1576,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.CoreModule",
+        "UnityEngine.UI",
+        "UnityEngine.TextCoreFontEngineModule",
+        "UnityEngine.UIModule",
+        "UnityEngine.TextRenderingModule",
+        "UnityEngine.IMGUIModule",
+        "UnityEngine.InputLegacyModule"
+      ]
+    },
+    {
+      "name": "Unity.Timeline",
+      "file": "Unity.Timeline.dll",
+      "size": 127488,
+      "sha256": "CACDB1883792032C9BDA86DE47D5662E111857F0BE86CB1196FEDBD0B8E52CA5",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "1.0.0.0",
+      "mvid": "e6b9daaf-9b03-4729-b2d2-0fb652dc8573",
+      "types": 126,
+      "methods": 885,
+      "fields": 391,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.CoreModule",
+        "UnityEngine.DirectorModule",
+        "UnityEngine.AnimationModule",
+        "UnityEngine.AudioModule",
+        "UnityEngine.ParticleSystemModule",
+        "UnityEngine.SharedInternalsModule"
+      ]
+    },
+    {
+      "name": "Unity.VisualScripting.Antlr3.Runtime",
+      "file": "Unity.VisualScripting.Antlr3.Runtime.dll",
+      "size": 86016,
+      "sha256": "ED7CE205F66EAFE39BBB5D084D42E7FE11CB4B386FF208E5D5110891BE0B7B37",
+      "lastWriteUtc": "2026-06-01 19:47:06Z",
+      "version": "3.1.3.22795",
+      "mvid": "58b38253-08ef-4432-906c-14dc69daab25",
+      "types": 90,
+      "methods": 870,
+      "fields": 249,
+      "dump": "none",
+      "references": [
+        "mscorlib",
+        "System"
+      ]
+    },
+    {
+      "name": "Unity.VisualScripting.Core",
+      "file": "Unity.VisualScripting.Core.dll",
+      "size": 625152,
+      "sha256": "3356BF4C0BA8CDFF2EF5D9A9B1360B54C821041B6D0C5C29E41DBB74415ED2B9",
+      "lastWriteUtc": "2026-06-30 12:30:58Z",
+      "version": "0.0.0.0",
+      "mvid": "67a12d04-f223-4b68-a001-5b2a465dfdf2",
+      "types": 557,
+      "methods": 4935,
+      "fields": 2561,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.CoreModule",
+        "UnityEngine.AnimationModule",
+        "UnityEngine.Physics2DModule",
+        "UnityEngine.PhysicsModule",
+        "UnityEngine.UI",
+        "UnityEngine.IMGUIModule",
+        "UnityEngine.TextRenderingModule",
+        "UnityEngine.JSONSerializeModule"
+      ]
+    },
+    {
+      "name": "Unity.VisualScripting.Flow",
+      "file": "Unity.VisualScripting.Flow.dll",
+      "size": 401408,
+      "sha256": "A5B0123E4FCACA6C0D6FD5AF2DAF33CAE41A8BC1743B0843E418C8E0620D29D0",
+      "lastWriteUtc": "2026-06-30 12:30:58Z",
+      "version": "0.0.0.0",
+      "mvid": "c5084413-09de-4685-9706-c7992af16427",
+      "types": 510,
+      "methods": 3263,
+      "fields": 1104,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "Unity.VisualScripting.Core",
+        "UnityEngine.CoreModule",
+        "UnityEngine.AnimationModule",
+        "UnityEngine.UI",
+        "UnityEngine.IMGUIModule",
+        "UnityEngine.AIModule",
+        "UnityEngine.PhysicsModule",
+        "UnityEngine.ParticleSystemModule",
+        "UnityEngine.Physics2DModule",
+        "Unity.VisualScripting.Antlr3.Runtime",
+        "UnityEngine.InputLegacyModule"
+      ]
+    },
+    {
+      "name": "Unity.VisualScripting.State",
+      "file": "Unity.VisualScripting.State.dll",
+      "size": 32256,
+      "sha256": "878B8276C8AEC658EDBEAF8E0DC9D0C38164410E140925BAAF783B2DD28D84EB",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "78a52a4d-320e-4f69-8cd9-e42e0f0ab3b3",
+      "types": 42,
+      "methods": 226,
+      "fields": 61,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "Unity.VisualScripting.Flow",
+        "Unity.VisualScripting.Core",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "UnityEngine",
+      "file": "UnityEngine.dll",
+      "size": 126896,
+      "sha256": "25F9D67576954EE1BAC500C38E3EC07FADCCF7E3E29774D2043D614A8AF953BE",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "daebe1ec-8981-4338-924b-89635d36fa06",
+      "types": 21,
+      "methods": 11,
+      "fields": 7,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.CoreModule",
+        "UnityEngine.DSPGraphModule",
+        "UnityEngine.AudioModule",
+        "UnityEngine.UnityCurlModule",
+        "UnityEngine.ContentLoadModule",
+        "UnityEngine.PropertiesModule",
+        "UnityEngine.TLSModule",
+        "UnityEngine.AndroidJNIModule",
+        "UnityEngine.InputLegacyModule",
+        "UnityEngine.AccessibilityModule",
+        "UnityEngine.UIModule",
+        "UnityEngine.UnityConnectModule",
+        "UnityEngine.AIModule",
+        "UnityEngine.UnityAnalyticsModule",
+        "UnityEngine.UnityAnalyticsCommonModule",
+        "UnityEngine.PerformanceReportingModule",
+        "UnityEngine.Physics2DModule",
+        "UnityEngine.AnimationModule",
+        "UnityEngine.PhysicsModule",
+        "UnityEngine.AssetBundleModule",
+        "UnityEngine.SharedInternalsModule",
+        "UnityEngine.TextRenderingModule",
+        "UnityEngine.ClothModule",
+        "UnityEngine.ClusterInputModule",
+        "UnityEngine.ClusterRendererModule",
+        "UnityEngine.CrashReportingModule",
+        "UnityEngine.TilemapModule",
+        "UnityEngine.TerrainModule",
+        "UnityEngine.IMGUIModule",
+        "UnityEngine.VFXModule",
+        "UnityEngine.VideoModule",
+        "UnityEngine.VRModule",
+        "UnityEngine.GridModule",
+        "UnityEngine.ImageConversionModule",
+        "UnityEngine.SubsystemsModule",
+        "UnityEngine.JSONSerializeModule",
+        "UnityEngine.LocalizationModule",
+        "UnityEngine.UnityWebRequestModule",
+        "UnityEngine.UnityWebRequestAssetBundleModule",
+        "UnityEngine.UnityWebRequestAudioModule",
+        "UnityEngine.UnityWebRequestTextureModule",
+        "UnityEngine.UnityWebRequestWWWModule",
+        "UnityEngine.NVIDIAModule",
+        "UnityEngine.ParticleSystemModule",
+        "UnityEngine.DirectorModule",
+        "UnityEngine.VirtualTexturingModule",
+        "UnityEngine.ScreenCaptureModule",
+        "UnityEngine.GameCenterModule",
+        "UnityEngine.SpriteMaskModule",
+        "UnityEngine.StreamingModule",
+        "UnityEngine.TerrainPhysicsModule",
+        "UnityEngine.TextCoreFontEngineModule",
+        "UnityEngine.TextCoreTextEngineModule",
+        "UnityEngine.SpriteShapeModule",
+        "UnityEngine.UIElementsModule",
+        "UnityEngine.VehiclesModule",
+        "UnityEngine.WindModule",
+        "UnityEngine.XRModule",
+        "UnityEngine.ARModule",
+        "UnityEngine.InputModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.AccessibilityModule",
+      "file": "UnityEngine.AccessibilityModule.dll",
+      "size": 23984,
+      "sha256": "E75A852655782C6D38542CEBC6F0EC75BC92FB829E80362DE390B555A148BD5A",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "ac26e75e-feeb-4900-ba6f-01970c676619",
+      "types": 4,
+      "methods": 12,
+      "fields": 6,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.AIModule",
+      "file": "UnityEngine.AIModule.dll",
+      "size": 58792,
+      "sha256": "111BBF88581785D6D9F03A33CE8D3D41588AE93B2F3A6F96A08A391C69558F9C",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "faa97058-10b0-43f3-9075-cb0d17951192",
+      "types": 33,
+      "methods": 449,
+      "fields": 120,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.AndroidJNIModule",
+      "file": "UnityEngine.AndroidJNIModule.dll",
+      "size": 95144,
+      "sha256": "B6E8994FFC29588A50284DDF6B68C9037AA987AF74A07A7285D0F01AA964D493",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "fac32926-e519-4a98-8638-ecfaaf83fcea",
+      "types": 31,
+      "methods": 608,
+      "fields": 91,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.AnimationModule",
+      "file": "UnityEngine.AnimationModule.dll",
+      "size": 164272,
+      "sha256": "A3A74A5BC04BB9E5038A6FBF5BD09322DF2565059F0AC269CB2BD7155D2F66D2",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "a3bd60e6-61e5-4bfd-bce0-d85f07ec5e03",
+      "types": 108,
+      "methods": 1634,
+      "fields": 388,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.ARModule",
+      "file": "UnityEngine.ARModule.dll",
+      "size": 21424,
+      "sha256": "07B93D19076CA2A084457047743795B82F1E22F1F7B17625C3E29E1D4352FFF6",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "ab620ff2-73dd-4336-9378-8dfb86d09c56",
+      "types": 4,
+      "methods": 4,
+      "fields": 13,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.AssetBundleModule",
+      "file": "UnityEngine.AssetBundleModule.dll",
+      "size": 33200,
+      "sha256": "44A78ECFBBB79EAC4B9220D1F11F831662BD0616317EE997680065F48DD9FFA7",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "60c13874-e0e0-45b5-9e9d-86f24a2d5c95",
+      "types": 10,
+      "methods": 102,
+      "fields": 17,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.AudioModule",
+      "file": "UnityEngine.AudioModule.dll",
+      "size": 71592,
+      "sha256": "BC58F16249320022780EA78E757773B8311AEA4F5B966C6602C8149794026E54",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "deaf4488-108c-4ffb-89b6-cc3614b8a5a5",
+      "types": 54,
+      "methods": 548,
+      "fields": 120,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.ClothModule",
+      "file": "UnityEngine.ClothModule.dll",
+      "size": 26544,
+      "sha256": "49E071661E7576D7DF1A3B45E409C681AA322A4FE23BDD338BE02619AA480EFF",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "736415a7-4b31-41ba-81b5-c388e9ff1622",
+      "types": 4,
+      "methods": 73,
+      "fields": 6,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule",
+        "UnityEngine.PhysicsModule",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.ClusterInputModule",
+      "file": "UnityEngine.ClusterInputModule.dll",
+      "size": 21936,
+      "sha256": "02DF026EBF2D99C513D329386CE76B23342E52C69BCAE7995F94A0280AF06BDA",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "8885cc13-76b0-4257-af3f-eea84f754675",
+      "types": 3,
+      "methods": 16,
+      "fields": 5,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.ClusterRendererModule",
+      "file": "UnityEngine.ClusterRendererModule.dll",
+      "size": 22440,
+      "sha256": "A240395D879E01790242CEF922FDB080CBDD475184E5317F38932200F5AA8B33",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "592d8e5c-9573-4c95-8762-f59a21d3c4e7",
+      "types": 3,
+      "methods": 17,
+      "fields": 0,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.ContentLoadModule",
+      "file": "UnityEngine.ContentLoadModule.dll",
+      "size": 27560,
+      "sha256": "5D683422827299A1A0E2F8565660F81AEB417B4BBEBCF6F392378400811723FF",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "07f73050-23f2-4d43-9f64-ceb2cd301361",
+      "types": 9,
+      "methods": 66,
+      "fields": 19,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.CoreModule",
+      "file": "UnityEngine.CoreModule.dll",
+      "size": 1393584,
+      "sha256": "5AFC743D350E95DC30379A6D2BAFA2293B63259ACF196FE3F7370F03644EF6F4",
+      "lastWriteUtc": "2026-06-30 12:30:58Z",
+      "version": "0.0.0.0",
+      "mvid": "c39a522e-ee05-469b-8171-a6cfeb646c59",
+      "types": 1277,
+      "methods": 11383,
+      "fields": 4410,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.CrashReportingModule",
+      "file": "UnityEngine.CrashReportingModule.dll",
+      "size": 21416,
+      "sha256": "AA55CA012CD005AC9C1FA4216369D76337A4F105D93B97DD56971BC22E13ABF6",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "d7c9360f-0e24-4842-9e77-b817ee7ede91",
+      "types": 2,
+      "methods": 9,
+      "fields": 0,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.DirectorModule",
+      "file": "UnityEngine.DirectorModule.dll",
+      "size": 25000,
+      "sha256": "030B053E3F9DE7D510CB3CFFA6303CA59188227BF5BFE989D42BB9B768FA250D",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "a11ec53e-80ac-4ca7-a214-3b6a66b2313e",
+      "types": 2,
+      "methods": 61,
+      "fields": 3,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.DSPGraphModule",
+      "file": "UnityEngine.DSPGraphModule.dll",
+      "size": 29616,
+      "sha256": "B6A1A828DE23D5CF98ACF5640C26A60149D7B1B34D0BB784171D11AF3F727FE8",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "c929af98-bfb0-4b45-9844-20b8d8842596",
+      "types": 11,
+      "methods": 73,
+      "fields": 14,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule",
+        "UnityEngine.AudioModule",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.GameCenterModule",
+      "file": "UnityEngine.GameCenterModule.dll",
+      "size": 40368,
+      "sha256": "FAB6ABB9E3B15762CB97C75E5E55437DE32DE0CE82D47116C8455CEF540BC8B9",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "25c49e77-0bcd-49cb-a23a-a63b5771dcaa",
+      "types": 23,
+      "methods": 205,
+      "fields": 65,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.GIModule",
+      "file": "UnityEngine.GIModule.dll",
+      "size": 20400,
+      "sha256": "9AA34CC967EB21DD44624EB29245732CAA6E770781527F591E4F5419C1F1B0D1",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "e3f38abd-f386-4b65-aaa5-2e0fb9435fe3",
+      "types": 1,
+      "methods": 0,
+      "fields": 0,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.GridModule",
+      "file": "UnityEngine.GridModule.dll",
+      "size": 25520,
+      "sha256": "89250353446217654B034955F6F8B18F551D524C155035E852A1B0ABCD9C4010",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "0171bd37-f6e4-42c5-a812-78ea55a6d7af",
+      "types": 5,
+      "methods": 50,
+      "fields": 12,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.HotReloadModule",
+      "file": "UnityEngine.HotReloadModule.dll",
+      "size": 20400,
+      "sha256": "C56AFC3E655484F3FFA16E89EC565D8D7E27A2283BB2142F74ECA67DF2178648",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "4d162667-35e4-4588-a07d-da2bb567469d",
+      "types": 1,
+      "methods": 0,
+      "fields": 0,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.ImageConversionModule",
+      "file": "UnityEngine.ImageConversionModule.dll",
+      "size": 24496,
+      "sha256": "E005F25096418BF163880D1B38AA9F50FD270AE285FE39A064DD3DC1797A9418",
+      "lastWriteUtc": "2026-06-30 12:30:58Z",
+      "version": "0.0.0.0",
+      "mvid": "b9277384-f696-49fc-8071-a5147102fb72",
+      "types": 2,
+      "methods": 24,
+      "fields": 0,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.IMGUIModule",
+      "file": "UnityEngine.IMGUIModule.dll",
+      "size": 191400,
+      "sha256": "B9720D33D0709863FCC8B10A4F327E3BBF082486E4B544917393F7AC8A78E460",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "1205f793-36b1-4b33-ae18-e9743199d6bb",
+      "types": 71,
+      "methods": 1308,
+      "fields": 491,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule",
+        "UnityEngine.CoreModule",
+        "UnityEngine.InputLegacyModule",
+        "UnityEngine.TextRenderingModule",
+        "UnityEngine.TextCoreTextEngineModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.InputLegacyModule",
+      "file": "UnityEngine.InputLegacyModule.dll",
+      "size": 39336,
+      "sha256": "BE0FA03C0BD24C778B4CC6E49C26E9302A4AF649E391EE34B379AAAEFD826317",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "5593fb36-1f2e-488c-90ba-25a3f9d1b64d",
+      "types": 22,
+      "methods": 194,
+      "fields": 95,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.InputModule",
+      "file": "UnityEngine.InputModule.dll",
+      "size": 23984,
+      "sha256": "891D95B45C48EF788F7167F903494C546138AE570C246BC7CA35A095BCDAC2D7",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "1fea4b63-f163-4e0c-bf69-f4088715fe98",
+      "types": 7,
+      "methods": 26,
+      "fields": 27,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.JSONSerializeModule",
+      "file": "UnityEngine.JSONSerializeModule.dll",
+      "size": 22440,
+      "sha256": "0418491B85B6498558CC1D42D37A8B5D6CC1A5B4D57F51DBDA2C257F315FD5F8",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "611c7463-0194-4a46-b5f5-8b419b4185a7",
+      "types": 2,
+      "methods": 7,
+      "fields": 0,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.LocalizationModule",
+      "file": "UnityEngine.LocalizationModule.dll",
+      "size": 21416,
+      "sha256": "834697238E4CC147225014A4C2E457525AFD3F58DA96CDD133DFC75087E4E42D",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "51fdfcfc-dde9-4659-a22f-cebf75cc0ca6",
+      "types": 2,
+      "methods": 8,
+      "fields": 0,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.NVIDIAModule",
+      "file": "UnityEngine.NVIDIAModule.dll",
+      "size": 34216,
+      "sha256": "EBB9987992CB8B6A82F4EA7ACCAE9CE843CF7BEE96832CCAE751B3E192E386CA",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "eed0ded2-4b94-46e1-83f1-e70b87ee5627",
+      "types": 20,
+      "methods": 139,
+      "fields": 91,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.ParticleSystemModule",
+      "file": "UnityEngine.ParticleSystemModule.dll",
+      "size": 161704,
+      "sha256": "C4638591082025E644AAECF7347061925FD4323FAB3D6465CC4BCA0D50346900",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "5223bad6-9268-47e8-8915-9d80691ad609",
+      "types": 115,
+      "methods": 1927,
+      "fields": 451,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.PerformanceReportingModule",
+      "file": "UnityEngine.PerformanceReportingModule.dll",
+      "size": 20912,
+      "sha256": "F62D377527F80AE856381820B2B749C9C3F464F70381C19344B1200C998A56CF",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "8db6368d-c67d-44b5-aeba-1b5dd0f51175",
+      "types": 2,
+      "methods": 3,
+      "fields": 0,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.Physics2DModule",
+      "file": "UnityEngine.Physics2DModule.dll",
+      "size": 141744,
+      "sha256": "8AF04F4ACF34735B8682D21B40F549DA67079FC0F794C41E9F2E5CBB5B6304C5",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "043db083-8399-480a-9713-b519b551b2f5",
+      "types": 63,
+      "methods": 1271,
+      "fields": 164,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.PhysicsModule",
+      "file": "UnityEngine.PhysicsModule.dll",
+      "size": 138664,
+      "sha256": "C6B1CA3C3F4352EA6069726EC4B2C54E5AD637CCC891729299B03D2B398312BE",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "ed82807e-85f7-4a89-90e6-d6fd5b50a413",
+      "types": 74,
+      "methods": 1358,
+      "fields": 306,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.ProfilerModule",
+      "file": "UnityEngine.ProfilerModule.dll",
+      "size": 20392,
+      "sha256": "65F21D1E2D107988C551D882B5DF6DB8C982F9B2F57B245B3CE003AFD450ACA7",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "cc490764-5982-4f2b-8bf0-02caeb700b38",
+      "types": 1,
+      "methods": 0,
+      "fields": 0,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.PropertiesModule",
+      "file": "UnityEngine.PropertiesModule.dll",
+      "size": 155560,
+      "sha256": "A50868790BB225C7CEFC2F826172DEB484A2D37A3A29DBA462F246DC8FDA862A",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "87bd3e15-de5d-448c-8661-992cb55a05cb",
+      "types": 209,
+      "methods": 1060,
+      "fields": 421,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule",
+      "file": "UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule.dll",
+      "size": 20392,
+      "sha256": "0871E2647FE396BF47770CE2900C6AAAF6D19E3CACECAD929951CC0F9DDA4F6E",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "7f029373-1fb5-4728-b9fe-5dc9c1e6b8e7",
+      "types": 1,
+      "methods": 0,
+      "fields": 0,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.ScreenCaptureModule",
+      "file": "UnityEngine.ScreenCaptureModule.dll",
+      "size": 21424,
+      "sha256": "D341C378ADC589D1B889F5E16BC4B8A661D94DA11747F8066762776F97EB0123",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "2c882589-8231-4e26-a059-b30c7fe93e9c",
+      "types": 3,
+      "methods": 9,
+      "fields": 4,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.SharedInternalsModule",
+      "file": "UnityEngine.SharedInternalsModule.dll",
+      "size": 33192,
+      "sha256": "AE0DFD2482D85E92ECCC7104F901A8B5A7FDC6F02A52874097223B3EBE739480",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "11b7dc81-162c-4612-99e8-93c64313742d",
+      "types": 46,
+      "methods": 154,
+      "fields": 52,
+      "dump": "none",
+      "references": [
+        "netstandard"
+      ]
+    },
+    {
+      "name": "UnityEngine.SpriteMaskModule",
+      "file": "UnityEngine.SpriteMaskModule.dll",
+      "size": 22440,
+      "sha256": "81347DF64769B9105736586650A8C6E1C2E21EB72F33A1F9E75841FCFC42F09B",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "92c016e7-25eb-4817-91f6-a27acebe5ab1",
+      "types": 3,
+      "methods": 21,
+      "fields": 0,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.SpriteShapeModule",
+      "file": "UnityEngine.SpriteShapeModule.dll",
+      "size": 26536,
+      "sha256": "F4E1B14C31203C2303B672218259AE356B49F2B2BBF9AD85A33898A4C0A7C14F",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "3aadd060-7d6c-4c75-85b0-b154bcf54b01",
+      "types": 9,
+      "methods": 41,
+      "fields": 40,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.StreamingModule",
+      "file": "UnityEngine.StreamingModule.dll",
+      "size": 20912,
+      "sha256": "7A03DF8AC4BE8AB245062011B3FD45BB028567225DBA5F035BBA1B2FC27DE338",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "55ceafaf-6a9b-4eaf-b5fc-e03f4917d3c4",
+      "types": 2,
+      "methods": 6,
+      "fields": 0,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.SubstanceModule",
+      "file": "UnityEngine.SubstanceModule.dll",
+      "size": 25008,
+      "sha256": "02CE7256CAFF2F7CEC5ABAB512FCD2285D0E655E45463FE21F43E085823A2139",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "aaf85690-41d1-4e50-a173-d39236d94cbf",
+      "types": 9,
+      "methods": 52,
+      "fields": 52,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.SubsystemsModule",
+      "file": "UnityEngine.SubsystemsModule.dll",
+      "size": 35240,
+      "sha256": "7C03D33AB477B54C8089CB6FAD136238E88927E9B19E60F4FE34AD691BF362F0",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "27c1e944-d545-48ea-9940-3b692ac76214",
+      "types": 28,
+      "methods": 150,
+      "fields": 25,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.TerrainModule",
+      "file": "UnityEngine.TerrainModule.dll",
+      "size": 101296,
+      "sha256": "57E224CD40AB83E07847E1D4BAF31539643D84B145DD232E3C102CB9553DF76D",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "d8154294-b9fe-49f9-95f7-7a96cf6020a5",
+      "types": 48,
+      "methods": 568,
+      "fields": 208,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.TerrainPhysicsModule",
+      "file": "UnityEngine.TerrainPhysicsModule.dll",
+      "size": 21416,
+      "sha256": "34A8F917094EE0F7D8692ACEE633A695110082AB3C43D0B7147436121DBB4317",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "0799f6a3-3ec0-4fbd-9c13-cc02eae67bca",
+      "types": 2,
+      "methods": 6,
+      "fields": 0,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule",
+        "UnityEngine.PhysicsModule",
+        "UnityEngine.TerrainModule",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.TextCoreFontEngineModule",
+      "file": "UnityEngine.TextCoreFontEngineModule.dll",
+      "size": 72616,
+      "sha256": "711C955B00E60AED9F0198FCE6DB9B07462CE7C7D591B3CD8446A3D3AF87DBA2",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "e07daba1-90e2-4d3c-8803-0a67c641d9b2",
+      "types": 44,
+      "methods": 382,
+      "fields": 224,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule",
+        "UnityEngine.CoreModule",
+        "UnityEngine.TextRenderingModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.TextCoreTextEngineModule",
+      "file": "UnityEngine.TextCoreTextEngineModule.dll",
+      "size": 249256,
+      "sha256": "4361B2CE345BAD5D3AFBCACCED99FB33A015F063621AF684A39D0BF74C9404AC",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "ff4a3f24-5637-4f12-b445-1e2a82f15f77",
+      "types": 81,
+      "methods": 630,
+      "fields": 1046,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule",
+        "UnityEngine.TextCoreFontEngineModule",
+        "UnityEngine.CoreModule",
+        "UnityEngine.TextRenderingModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.TextRenderingModule",
+      "file": "UnityEngine.TextRenderingModule.dll",
+      "size": 39344,
+      "sha256": "A829AAE9DC1953EFB38E2102284A30A9A8C05891AA4DC6AFABBF3A4ABEF6AF1C",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "0adcb78d-2486-44a4-974a-f461a5e4dd76",
+      "types": 17,
+      "methods": 166,
+      "fields": 85,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.TilemapModule",
+      "file": "UnityEngine.TilemapModule.dll",
+      "size": 47024,
+      "sha256": "3A625909F6113E06435D751883EFFA77052B5A945968BF62971989AC8FD08D5A",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "09883b51-dbb8-433d-ab99-926d4d34527d",
+      "types": 25,
+      "methods": 294,
+      "fields": 95,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule",
+        "UnityEngine.CoreModule",
+        "UnityEngine.GridModule",
+        "UnityEngine.Physics2DModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.TLSModule",
+      "file": "UnityEngine.TLSModule.dll",
+      "size": 27056,
+      "sha256": "A1FCAA2D00F226F37CBE625D064392972F73FC6EA5B83FBAF30293AE480053D0",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "0a27e14a-ebf7-4528-a525-6cefb4b08240",
+      "types": 13,
+      "methods": 39,
+      "fields": 103,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.UI",
+      "file": "UnityEngine.UI.dll",
+      "size": 265216,
+      "sha256": "855A3F8EF894A155C4E139DF286C9F4D80472D8E197FDF4B0A6AB69C09D0B8F2",
+      "lastWriteUtc": "2026-06-30 12:30:58Z",
+      "version": "1.0.0.0",
+      "mvid": "da53c93e-46f7-4c62-8524-ffb59f180cf5",
+      "types": 207,
+      "methods": 1901,
+      "fields": 861,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.CoreModule",
+        "UnityEngine.UIModule",
+        "UnityEngine.TextRenderingModule",
+        "UnityEngine.PhysicsModule",
+        "UnityEngine.Physics2DModule",
+        "UnityEngine.IMGUIModule",
+        "UnityEngine.AnimationModule",
+        "UnityEngine.UIElementsModule",
+        "UnityEngine.InputLegacyModule",
+        "UnityEngine.TilemapModule",
+        "UnityEngine.SpriteShapeModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.UIElementsModule",
+      "file": "UnityEngine.UIElementsModule.dll",
+      "size": 1536424,
+      "sha256": "A9EC7082901B7024F3BD67B179A201FD145053FD3171AD2B156823A4F55DAF2E",
+      "lastWriteUtc": "2026-06-30 12:30:58Z",
+      "version": "0.0.0.0",
+      "mvid": "e6e3d0ae-501c-40f7-b9fd-4be402362336",
+      "types": 1240,
+      "methods": 9928,
+      "fields": 4792,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule",
+        "UnityEngine.CoreModule",
+        "UnityEngine.IMGUIModule",
+        "UnityEngine.InputLegacyModule",
+        "UnityEngine.TextRenderingModule",
+        "UnityEngine.TextCoreTextEngineModule",
+        "UnityEngine.TextCoreFontEngineModule",
+        "UnityEngine.JSONSerializeModule",
+        "UnityEngine.UIModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.UIModule",
+      "file": "UnityEngine.UIModule.dll",
+      "size": 36784,
+      "sha256": "CB320E62D957CF297A643CCD917EE78AA8F8C039FBF032805A9878E6D7ACEF61",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "3ff59b0a-29a5-45d4-9be7-c8342c109f54",
+      "types": 12,
+      "methods": 155,
+      "fields": 24,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule",
+        "UnityEngine.CoreModule",
+        "UnityEngine.TextRenderingModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.UmbraModule",
+      "file": "UnityEngine.UmbraModule.dll",
+      "size": 20392,
+      "sha256": "45B0A39BB4AA83D22B37B7D62A8B161CAB54752F14E166B266B06F6A4C030A67",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "fe83d10c-3ce5-4b67-a9d8-9e5c8bb2f983",
+      "types": 1,
+      "methods": 0,
+      "fields": 0,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.UnityAnalyticsCommonModule",
+      "file": "UnityEngine.UnityAnalyticsCommonModule.dll",
+      "size": 21416,
+      "sha256": "BB27338B7F321A44BB0DB13D67C021EA12622CEBA6E0E5FAD54FF503E9E67FE5",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "5d37288a-d485-4a24-9dd6-b3e737fde4ec",
+      "types": 3,
+      "methods": 5,
+      "fields": 0,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.UnityAnalyticsModule",
+      "file": "UnityEngine.UnityAnalyticsModule.dll",
+      "size": 44976,
+      "sha256": "660C74E9F3854CF09AFB26480C05FB9551C4FC71FA094A66C189B8C0C6431A76",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "ea83a032-7fb0-44fc-abf2-6f24bdcd411d",
+      "types": 16,
+      "methods": 216,
+      "fields": 52,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.UnityConnectModule",
+      "file": "UnityEngine.UnityConnectModule.dll",
+      "size": 22448,
+      "sha256": "545CD54102E10881F12881CC160C07775FC97DF4FC17C45B370E99B219674D5B",
+      "lastWriteUtc": "2026-06-30 12:30:58Z",
+      "version": "0.0.0.0",
+      "mvid": "d82ebe73-0c2c-4260-9980-3e5c6b204def",
+      "types": 3,
+      "methods": 23,
+      "fields": 0,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.UnityCurlModule",
+      "file": "UnityEngine.UnityCurlModule.dll",
+      "size": 21936,
+      "sha256": "2C795BE01E9123751FAD27B70B6404C1A4069C5B1DBA2F18FEBC0EFC009CF778",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "6ab283e1-c65a-4b0c-b704-d1055f2dd150",
+      "types": 4,
+      "methods": 17,
+      "fields": 9,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.UnityTestProtocolModule",
+      "file": "UnityEngine.UnityTestProtocolModule.dll",
+      "size": 20392,
+      "sha256": "379CC37F0FEE6FE85A34B3AD25CDAB85CB6B31907C5C3EAE7A0888839FC4B382",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "3c0c2956-1164-447b-be70-ebbf03b05818",
+      "types": 1,
+      "methods": 0,
+      "fields": 0,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.UnityWebRequestAssetBundleModule",
+      "file": "UnityEngine.UnityWebRequestAssetBundleModule.dll",
+      "size": 23472,
+      "sha256": "170877F521F8B1A6A28FC7AA583F3FF52FC7157DAD7D9F4F4AFCDF91B0E0B589",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "da2ced51-87cb-4d83-a3dc-5c8f9aeddfcf",
+      "types": 3,
+      "methods": 27,
+      "fields": 0,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule",
+        "UnityEngine.UnityWebRequestModule",
+        "UnityEngine.CoreModule",
+        "UnityEngine.AssetBundleModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.UnityWebRequestAudioModule",
+      "file": "UnityEngine.UnityWebRequestAudioModule.dll",
+      "size": 22952,
+      "sha256": "26AD6A33D7108B1887F1B4B563F84372D536D9CA63754C5476CD9E3CE1D044E0",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "3561fa4e-c760-4646-9513-9141ed763a4a",
+      "types": 4,
+      "methods": 23,
+      "fields": 1,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule",
+        "UnityEngine.UnityWebRequestModule",
+        "UnityEngine.CoreModule",
+        "UnityEngine.AudioModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.UnityWebRequestModule",
+      "file": "UnityEngine.UnityWebRequestModule.dll",
+      "size": 58792,
+      "sha256": "6602C84B1D2B649847A070333C1169C091BC4D6CD0E2BD23CD3F95DFDAA8971C",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "02ebdcb1-eaaf-44ba-a02f-2b03b42d7124",
+      "types": 20,
+      "methods": 290,
+      "fields": 105,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.UnityWebRequestTextureModule",
+      "file": "UnityEngine.UnityWebRequestTextureModule.dll",
+      "size": 21936,
+      "sha256": "977A7AEDF07E58423B2F485B597436614C73826FB70555989AFE13A597AB860E",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "81c9a96a-a8d6-4dd8-a0d7-5803b4f0760e",
+      "types": 3,
+      "methods": 13,
+      "fields": 2,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule",
+        "UnityEngine.UnityWebRequestModule",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.UnityWebRequestWWWModule",
+      "file": "UnityEngine.UnityWebRequestWWWModule.dll",
+      "size": 31656,
+      "sha256": "D0986B773427BAD97B87DC5D9FE444BB339696F589ED2FF50F7983DFBAE08ECF",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "e6f3fd89-4b40-4603-bc51-73d38dbaddbb",
+      "types": 4,
+      "methods": 56,
+      "fields": 4,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule",
+        "UnityEngine.CoreModule",
+        "UnityEngine.UnityWebRequestModule",
+        "UnityEngine.AssetBundleModule",
+        "UnityEngine.UnityWebRequestAssetBundleModule",
+        "UnityEngine.AudioModule",
+        "UnityEngine.ImageConversionModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.VehiclesModule",
+      "file": "UnityEngine.VehiclesModule.dll",
+      "size": 24496,
+      "sha256": "996444F04FE90F20A2FED90F8FFFFB04ED10865BA8F5DB9CC7099A6B93F0F16F",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "78858534-de0d-4502-aa7f-eccb4af70b98",
+      "types": 3,
+      "methods": 61,
+      "fields": 8,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule",
+        "UnityEngine.CoreModule",
+        "UnityEngine.PhysicsModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.VFXModule",
+      "file": "UnityEngine.VFXModule.dll",
+      "size": 58800,
+      "sha256": "96A9D8A706BFCB3EB7999D9CAFE1BBA1CBB6888D21840AC9CF4B4D9A52DEEADE",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "19c2d383-bb0f-40d9-a711-238a8b539426",
+      "types": 31,
+      "methods": 342,
+      "fields": 299,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.VideoModule",
+      "file": "UnityEngine.VideoModule.dll",
+      "size": 41384,
+      "sha256": "DF8EA5C97000EA356477450754D2BA4500987DF8BE07E81B41DD3C8BF8C2C0D7",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "76b6fa1e-fbfd-497c-832b-bb3213e51ea8",
+      "types": 25,
+      "methods": 232,
+      "fields": 66,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule",
+        "UnityEngine.CoreModule",
+        "UnityEngine.AudioModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.VirtualTexturingModule",
+      "file": "UnityEngine.VirtualTexturingModule.dll",
+      "size": 36264,
+      "sha256": "BE7852A2B755E7D7B67F518D51BCF3B6F1E42AFD42DC431BAC363C97315BA546",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "d8173f92-41ea-4ddb-bbfc-c745b0ad364b",
+      "types": 27,
+      "methods": 109,
+      "fields": 76,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.VRModule",
+      "file": "UnityEngine.VRModule.dll",
+      "size": 27056,
+      "sha256": "7012F5CA67FE463A75C0F0C57FAA3DBC7E1DA7C4806B89B3A28CB07BC94BCBE1",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "8c2ac1c5-0ab2-4a31-af64-3f3bea5992df",
+      "types": 11,
+      "methods": 45,
+      "fields": 22,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.WindModule",
+      "file": "UnityEngine.WindModule.dll",
+      "size": 21416,
+      "sha256": "2AA6FC65EAF443D332AF5187DDA2C9C3018974D21F5B01ABB08FE8A6382F8ADF",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "42d225aa-9be9-4b4b-bb2c-6bb1bf176487",
+      "types": 3,
+      "methods": 13,
+      "fields": 3,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule",
+        "UnityEngine.CoreModule"
+      ]
+    },
+    {
+      "name": "UnityEngine.XRModule",
+      "file": "UnityEngine.XRModule.dll",
+      "size": 71080,
+      "sha256": "AF6F858A8F2304DE4F2B477B8487F3DC90DCB702221E308ABA9D47BCDE9373A3",
+      "lastWriteUtc": "2026-06-30 12:30:59Z",
+      "version": "0.0.0.0",
+      "mvid": "cdad14cf-624a-4835-99a8-4298235338c9",
+      "types": 51,
+      "methods": 384,
+      "fields": 282,
+      "dump": "none",
+      "references": [
+        "netstandard",
+        "UnityEngine.SharedInternalsModule",
+        "UnityEngine.CoreModule",
+        "UnityEngine.SubsystemsModule",
+        "UnityEngine.PhysicsModule"
+      ]
+    }
+  ],
+  "skipped": []
+}

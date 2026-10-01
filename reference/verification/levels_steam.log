@@ -1,0 +1,39 @@
+ready in 0.9s; 906 localization terms
+ 4 Neuland(Tutorial)                          nights= 8 enemies=  132 lines=1 slots=  0 horn=False castle=True err=1  0.4s
+ 5 Nordfels                                   nights=13 enemies=  576 lines=7 slots=  0 horn=False castle=True err=1  0.7s
+ 6 Durststein                                 nights=12 enemies=  826 lines=10 slots=  0 horn=False castle=True err=1  1.0s
+ 7 Frostsee                                   nights=13 enemies=  453 lines=8 slots=  0 horn=False castle=True err=1  0.9s
+ 8 Uferwind                                   nights=12 enemies=  662 lines=13 slots=  0 horn=False castle=True err=1  1.3s
+ 9 Sturmklamm                                 nights=13 enemies=  842 lines=14 slots=  0 horn=False castle=True err=1  1.2s
+10 Nordfels Bow Micro                         nights=10 enemies=  385 lines=5 slots=  0 horn=False castle=True err=1  0.3s
+11 Nordfels Siege                             nights= 1 enemies=  300 lines=5 slots=  0 horn=False castle=True err=1  1.0s
+12 Nordfels Commander                         nights=10 enemies=  973 lines=5 slots=  0 horn=False castle=True err=1  1.0s
+13 Durststein Gold Puzzle                     nights= 9 enemies=    0 lines=8 slots=  0 horn=False castle=True err=1  0.2s
+14 Durststein Speedrun                        nights=12 enemies=  826 lines=8 slots=  0 horn=False castle=True err=1  0.9s
+15 Durststein Tower Defense                   nights=19 enemies= 1125 lines=8 slots=  0 horn=False castle=True err=1  0.3s
+16 Frostsee Boss Rush                         nights= 1 enemies=    1 lines=6 slots=  0 horn=False castle=True err=1  0.8s
+17 Frostsee Bowling Challenge                 nights= 9 enemies=  636 lines=5 slots=  0 horn=False castle=True err=1  0.1s
+18 Frostsee The Great Wall                    nights= 9 enemies=  986 lines=5 slots=  0 horn=False castle=True err=1  0.9s
+19 Uferwind Defense Puzzle                    nights= 4 enemies=  500 lines=11 slots=  0 horn=False castle=True err=1  1.2s
+20 Uferwind Hero Commander                    nights=10 enemies= 1176 lines=11 slots=  0 horn=False castle=True err=1  0.4s
+21 Uferwind Lightning Staff Challenge         nights= 8 enemies=  495 lines=11 slots=  0 horn=False castle=True err=1  0.2s
+22 Sturmklamm Just The Way They Are           nights=14 enemies= 1061 lines=7 slots=  0 horn=False castle=True err=1  0.9s
+23 Sturmklamm One Man Army                    nights=11 enemies=  337 lines=11 slots=  0 horn=False castle=True err=1  0.3s
+24 Sturmklamm Shrine Challenge                nights=13 enemies=  742 lines=11 slots=  0 horn=False castle=True err=1  0.4s
+25 Wildbach                                   nights=13 enemies=  825 lines=7 slots=  0 horn=False castle=True err=1  1.2s
+26 Moorweg                                    nights=12 enemies=  584 lines=13 slots=  0 horn=False castle=True err=1  1.2s
+27 Freifort                                   nights=13 enemies=  654 lines=11 slots=  0 horn=False castle=True err=1  1.4s
+28 Totend                                     nights=15 enemies= 1446 lines=11 slots=  0 horn=False castle=True err=1  1.1s
+29 Freifort MM1                               nights= 6 enemies=    0 lines=12 slots=  0 horn=False castle=True err=1  5.9s
+30 Freifort MM2                               nights=13 enemies=  968 lines=11 slots=  0 horn=False castle=True err=1  1.4s
+31 Freifort MM3                               nights= 9 enemies=  782 lines=7 slots=  0 horn=False castle=True err=1  0.7s
+32 Moorweg MM1                                nights= 9 enemies=    0 lines=33 slots=  0 horn=False castle=True err=1  1.2s
+33 Moorweg MM2                                nights= 3 enemies=  689 lines=5 slots=  0 horn=False castle=True err=1  1.4s
+34 Moorweg MM3                                nights=14 enemies=  294 lines=9 slots=  0 horn=False castle=True err=1  1.2s
+35 Totend MM1                                 nights= 1 enemies=    0 lines=5 slots=  0 horn=False castle=True err=1  1.1s
+36 Totend MM2                                 nights= 9 enemies=  623 lines=7 slots=  0 horn=False castle=True err=1  0.2s
+37 Totend MM3                                 nights=10 enemies= 1473 lines=13 slots=  0 horn=False castle=True err=1  1.3s
+38 Wildbach MM1                               nights= 9 enemies= 1127 lines=5 slots=  0 horn=False castle=True err=1  1.0s
+39 Wildbach MM2                               nights= 9 enemies= 3600 lines=7 slots=  0 horn=False castle=True err=1  1.0s
+40 Wildbach MM3                               nights= 7 enemies= 1092 lines=7 slots=  0 horn=False castle=True err=1  1.2s
+wrote 37 levels, 66 enemy prefabs -> K:\Downloads-IDM\Thronefall\Trainer\reference\data_steam

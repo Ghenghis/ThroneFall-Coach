@@ -1,0 +1,38 @@
+{
+  "lock_id": "94bc2c8c005eed785351c22c",
+  "file": "src/Bot.cs",
+  "owner": "devin-cli",
+  "role": "agent",
+  "task_id": "thronefall-v2-agentic",
+  "reason": "v3 Phase 0-1 implementation: recorder, perception fields, pure-Decide refactor — live code lane",
+  "acquired_utc": "2026-09-29T11:59:25.873Z",
+  "heartbeat_utc": "2026-09-29T13:29:49.525Z",
+  "expires_utc": "2026-09-29T14:59:49.525Z",
+  "history": [
+    {
+      "ts_utc": "2026-09-29T11:59:25.873Z",
+      "type": "acquired",
+      "owner": "devin-cli",
+      "task_id": "thronefall-v2-agentic",
+      "reason": "v3 Phase 0-1 implementation: recorder, perception fields, pure-Decide refactor — live code lane"
+    },
+    {
+      "ts_utc": "2026-09-29T12:38:14.670Z",
+      "type": "heartbeat",
+      "owner": "devin-cli",
+      "task_id": null
+    },
+    {
+      "ts_utc": "2026-09-29T13:01:16.712Z",
+      "type": "heartbeat",
+      "owner": "devin-cli",
+      "task_id": null
+    },
+    {
+      "ts_utc": "2026-09-29T13:29:49.525Z",
+      "type": "heartbeat",
+      "owner": "devin-cli",
+      "task_id": null
+    }
+  ]
+}

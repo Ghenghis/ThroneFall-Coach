@@ -1,0 +1,32 @@
+{
+  "event_schema_version": 1,
+  "event_id": "evt_20260929T120429825Z_16e932",
+  "event_type": "message.sent",
+  "created_utc": "2026-09-29T12:04:29.825Z",
+  "workspace_root": "K:\\Downloads-IDM\\Thronefall\\Trainer",
+  "task_id": null,
+  "owner": "claude-refpack",
+  "branch": "main",
+  "files": [],
+  "summary": "Ack from claude-refpack: Re: scope — devin-cli lanes locked, request priorities",
+  "evidence_ids": [],
+  "next_actor": "unassigned",
+  "recommended_action": "acknowledge",
+  "payload": {
+    "type": "note",
+    "priority": "normal",
+    "recipients": [
+      "devin-cli"
+    ],
+    "message_ids": [
+      "msg_a9b513c2268bf6e4"
+    ],
+    "metadata": {
+      "ack_for_message_id": "msg_f845468fdfa2f62f",
+      "ack_status": "acknowledged",
+      "ack_note": "Priorities accepted in order: (1) waves + spawn-line coords, (2) BuildSlot positions + upgrade trees/costs, (3) UIFrame names, (4) enemy AutoAttack ranges/speed.",
+      "original_type": "note",
+      "original_recipient": "claude-refpack"
+    }
+  }
+}

@@ -1,0 +1,1498 @@
+scene,waveIndex,night,warning,difficultyMulti,enemy,displayName,count,elite,delay,interval,waitBeforeNextSpawn,goldCoins,spawnLine,cx,cy,cz,maxHp
+Neuland(Tutorial),0,1,Weaklings,1.0,E Weakling,Peasant,5,False,0.0,0.75,0.0,6,Forest,48.75,0.0,-94.9,8.7
+Neuland(Tutorial),1,2,Weaklings,1.0,E Weakling,Peasant,6,False,0.0,0.5,0.0,3,Forest,48.75,0.0,-94.9,8.7
+Neuland(Tutorial),2,3,Big Wave of Weaklings,1.0,E Weakling,Peasant,15,False,0.0,0.5,0.0,4,Forest,48.75,0.0,-94.9,8.7
+Neuland(Tutorial),3,4,Big Wave of Weaklings,1.0,E Weakling,Peasant,25,False,0.0,0.5,0.0,6,Forest,48.75,0.0,-94.9,8.7
+Neuland(Tutorial),4,5,It's up to you now.,1.0,E Weakling,Peasant,25,False,0.0,0.2,0.0,6,Forest,48.75,0.0,-94.9,8.7
+Neuland(Tutorial),5,6,Archers & Weaklings,1.0,E Archer,Archer,7,False,0.0,1.0,0.0,4,Forest,48.75,0.0,-94.9,20.0
+Neuland(Tutorial),5,6,Archers & Weaklings,1.0,E Weakling,Peasant,15,False,0.0,1.0,0.0,4,Forest,48.75,0.0,-94.9,8.7
+Neuland(Tutorial),6,7,Archers & Weaklings,1.0,E Archer,Archer,10,False,0.0,1.0,0.0,4,Forest,48.75,0.0,-94.9,20.0
+Neuland(Tutorial),6,7,Archers & Weaklings,1.0,E Weakling,Peasant,20,False,0.0,1.0,0.0,4,Forest,48.75,0.0,-94.9,8.7
+Neuland(Tutorial),7,8,4 Ogres,1.0,E Ogre,Ogre,4,False,0.0,1.0,0.0,0,Forest,48.75,0.0,-94.9,200.0
+Nordfels,0,1,3 Swordsmen approaching from southern bridge,1.0,E Melee,Swordsman,3,False,0.0,3.0,0.0,5,Main Bridge,-6.155,0.0,-88.76,25.0
+Nordfels,1,2,8 Swordsmen approaching from the forest,1.0,E Melee,Swordsman,8,False,0.0,1.0,0.0,5,Forest,71.645,0.0,-0.805,25.0
+Nordfels,2,3,"2 Hunterlings coming from the forest will hunt you, 8 Melee coming from the southern bridge",1.0,E Hunterling,Hunterling,2,False,0.0,7.0,0.0,2,Forest,71.645,0.0,-0.805,30.0
+Nordfels,2,3,"2 Hunterlings coming from the forest will hunt you, 8 Melee coming from the southern bridge",1.0,E Melee,Swordsman,8,False,0.0,0.5,0.0,3,Main Bridge,-6.155,0.0,-88.76,25.0
+Nordfels,3,4,24 Archers from all directions,1.0,E Archer,Archer,8,False,3.0,2.5,0.0,2,Forest,71.645,0.0,-0.805,20.0
+Nordfels,3,4,24 Archers from all directions,1.0,E Archer,Archer,8,False,6.0,2.5,0.0,3,Right Bridge,54.335,0.0,-64.03,20.0
+Nordfels,3,4,24 Archers from all directions,1.0,E Archer,Archer,8,False,0.0,2.5,0.0,3,Main Bridge,-6.155,0.0,-88.76,20.0
+Nordfels,4,5,15 Racers from the southern bridge will try to run straight to your castle center to destroy it,1.0,E Racer,Racer,15,False,0.0,1.0,0.0,2,Main Bridge,-6.155,0.0,-88.76,35.0
+Nordfels,5,6,20 Swordsmen and 20 archers arriving from the southern bridge,1.0,E Melee,Swordsman,20,False,0.0,1.25,0.0,2,Main Bridge,-6.155,0.0,-88.76,25.0
+Nordfels,5,6,20 Swordsmen and 20 archers arriving from the southern bridge,1.0,E Archer,Archer,20,False,5.0,1.25,0.0,3,Main Bridge,-6.155,0.0,-88.76,20.0
+Nordfels,6,7,15 Flyers coming over the pond in the west,1.0,E Flyer,Wasp,15,False,0.0,1.0,0.0,5,Fly - Pond,-65.15,5.4,19.0,25.0
+Nordfels,7,8,"30 Melee from the southern bridge, 10 Hunterlings and 10 Racers coming from the forest",1.0,E Melee,Swordsman,30,False,0.0,1.0,0.0,3,Main Bridge,-6.155,0.0,-88.76,25.0
+Nordfels,7,8,"30 Melee from the southern bridge, 10 Hunterlings and 10 Racers coming from the forest",1.0,E Racer,Racer,10,False,0.0,1.0,0.0,3,Forest,71.645,0.0,-0.805,35.0
+Nordfels,7,8,"30 Melee from the southern bridge, 10 Hunterlings and 10 Racers coming from the forest",1.0,E Hunterling,Hunterling,10,False,7.0,2.0,0.0,3,Forest,71.645,0.0,-0.805,30.0
+Nordfels,8,9,"5 Ogres coming from the southern bridge, 25 Flyers trickling in from all directions",1.0,E Ogre,Ogre,5,False,0.0,6.0,0.0,8,Main Bridge,-6.155,0.0,-88.76,200.0
+Nordfels,8,9,"5 Ogres coming from the southern bridge, 25 Flyers trickling in from all directions",1.0,E Flyer,Wasp,10,False,0.0,3.0,0.0,2,Fly - River,-53.017,5.4,-53.857,25.0
+Nordfels,8,9,"5 Ogres coming from the southern bridge, 25 Flyers trickling in from all directions",1.0,E Flyer,Wasp,5,False,0.0,6.0,0.0,1,Right Bridge,54.335,0.0,-64.03,25.0
+Nordfels,8,9,"5 Ogres coming from the southern bridge, 25 Flyers trickling in from all directions",1.0,E Flyer,Wasp,5,False,0.0,6.0,0.0,1,Forest,71.645,0.0,-0.805,25.0
+Nordfels,8,9,"5 Ogres coming from the southern bridge, 25 Flyers trickling in from all directions",1.0,E Flyer,Wasp,5,False,0.0,6.0,0.0,1,Fly - Pond,-65.15,5.4,19.0,25.0
+Nordfels,9,10,90 Melee Units and 3 Ogers from all directions,1.0,E Melee,Swordsman,30,False,0.0,1.5,0.0,2,Forest,71.645,0.0,-0.805,25.0
+Nordfels,9,10,90 Melee Units and 3 Ogers from all directions,1.0,E Melee,Swordsman,30,False,0.0,1.5,0.0,2,Right Bridge,54.335,0.0,-64.03,25.0
+Nordfels,9,10,90 Melee Units and 3 Ogers from all directions,1.0,E Melee,Swordsman,30,False,0.0,1.5,0.0,2,Main Bridge,-6.155,0.0,-88.76,25.0
+Nordfels,9,10,90 Melee Units and 3 Ogers from all directions,1.0,E Ogre,Ogre,1,False,35.0,45.0,0.0,2,Forest,71.645,0.0,-0.805,200.0
+Nordfels,9,10,90 Melee Units and 3 Ogers from all directions,1.0,E Ogre,Ogre,1,False,35.0,45.0,0.0,2,Right Bridge,54.335,0.0,-64.03,200.0
+Nordfels,9,10,90 Melee Units and 3 Ogers from all directions,1.0,E Ogre,Ogre,1,False,35.0,45.0,0.0,2,Main Bridge,-6.155,0.0,-88.76,200.0
+Nordfels,10,11,30 Racers & 50 Archers from southern bridge,1.0,E Racer,Racer,30,False,0.0,0.5,0.0,7,Main Bridge,-6.155,0.0,-88.76,35.0
+Nordfels,10,11,30 Racers & 50 Archers from southern bridge,1.0,E Archer,Archer,50,False,0.0,0.5,0.0,7,Main Bridge,-6.155,0.0,-88.76,20.0
+Nordfels,11,12,There is no serious attack tonight. Only a few scouts. The enemy is preparing for their final attack. Sleep well.,1.0,E Hunterling,Hunterling,5,False,0.0,1.0,0.0,5,Right Bridge,54.335,0.0,-64.03,30.0
+Nordfels,12,13,"Final attack. Catapults, ogres, archers, flyers. Make Your Last Stand! It's gonna be a long night!",1.0,E Ogre,Ogre,5,False,0.0,1.0,0.0,0,Main Bridge,-6.155,0.0,-88.76,200.0
+Nordfels,12,13,"Final attack. Catapults, ogres, archers, flyers. Make Your Last Stand! It's gonna be a long night!",1.0,E Catapult,Catapult,3,False,0.0,2.0,0.0,0,Main Bridge,-6.155,0.0,-88.76,45.0
+Nordfels,12,13,"Final attack. Catapults, ogres, archers, flyers. Make Your Last Stand! It's gonna be a long night!",1.0,E Racer,Racer,5,False,0.0,0.5,0.0,0,Main Bridge,-6.155,0.0,-88.76,35.0
+Nordfels,12,13,"Final attack. Catapults, ogres, archers, flyers. Make Your Last Stand! It's gonna be a long night!",1.0,E Flyer,Wasp,15,False,25.0,1.0,0.0,0,Fly - River,-53.017,5.4,-53.857,25.0
+Nordfels,12,13,"Final attack. Catapults, ogres, archers, flyers. Make Your Last Stand! It's gonna be a long night!",1.0,E Flyer,Wasp,5,False,25.0,3.0,0.0,0,Fly - Pond,-65.15,5.4,19.0,25.0
+Nordfels,12,13,"Final attack. Catapults, ogres, archers, flyers. Make Your Last Stand! It's gonna be a long night!",1.0,E Melee,Swordsman,10,False,30.0,0.5,0.0,0,Right Bridge,54.335,0.0,-64.03,25.0
+Nordfels,12,13,"Final attack. Catapults, ogres, archers, flyers. Make Your Last Stand! It's gonna be a long night!",1.0,E Archer,Archer,10,False,30.0,0.5,0.0,0,Right Bridge,54.335,0.0,-64.03,20.0
+Nordfels,12,13,"Final attack. Catapults, ogres, archers, flyers. Make Your Last Stand! It's gonna be a long night!",1.0,E Catapult,Catapult,3,False,30.0,1.0,0.0,0,Right Bridge,54.335,0.0,-64.03,45.0
+Nordfels,12,13,"Final attack. Catapults, ogres, archers, flyers. Make Your Last Stand! It's gonna be a long night!",1.0,E Melee,Swordsman,10,False,50.0,1.0,0.0,0,Main Bridge,-6.155,0.0,-88.76,25.0
+Nordfels,12,13,"Final attack. Catapults, ogres, archers, flyers. Make Your Last Stand! It's gonna be a long night!",1.0,E Catapult,Catapult,2,False,50.0,1.0,0.0,0,Main Bridge,-6.155,0.0,-88.76,45.0
+Nordfels,12,13,"Final attack. Catapults, ogres, archers, flyers. Make Your Last Stand! It's gonna be a long night!",1.0,E Hunterling,Hunterling,5,False,45.0,1.0,0.0,0,Main Bridge,-6.155,0.0,-88.76,30.0
+Nordfels,12,13,"Final attack. Catapults, ogres, archers, flyers. Make Your Last Stand! It's gonna be a long night!",1.0,E Melee,Swordsman,20,False,65.0,1.0,0.0,0,Forest,71.645,0.0,-0.805,25.0
+Nordfels,12,13,"Final attack. Catapults, ogres, archers, flyers. Make Your Last Stand! It's gonna be a long night!",1.0,E Melee,Swordsman,20,False,65.0,1.0,0.0,0,Right Bridge,54.335,0.0,-64.03,25.0
+Nordfels,12,13,"Final attack. Catapults, ogres, archers, flyers. Make Your Last Stand! It's gonna be a long night!",1.0,E Flyer,Wasp,10,False,65.0,1.0,0.0,0,Forest,71.645,0.0,-0.805,25.0
+Nordfels,12,13,"Final attack. Catapults, ogres, archers, flyers. Make Your Last Stand! It's gonna be a long night!",1.0,E Racer,Racer,10,False,75.0,1.0,0.0,0,Forest,71.645,0.0,-0.805,35.0
+Nordfels,12,13,"Final attack. Catapults, ogres, archers, flyers. Make Your Last Stand! It's gonna be a long night!",1.0,E Racer,Racer,10,False,75.0,1.0,0.0,0,Right Bridge,54.335,0.0,-64.03,35.0
+Nordfels,12,13,"Final attack. Catapults, ogres, archers, flyers. Make Your Last Stand! It's gonna be a long night!",1.0,E Racer,Racer,10,False,75.0,1.0,0.0,0,Main Bridge,-6.155,0.0,-88.76,35.0
+Nordfels,12,13,"Final attack. Catapults, ogres, archers, flyers. Make Your Last Stand! It's gonna be a long night!",1.0,E Catapult,Catapult,2,False,75.0,1.0,0.0,0,Forest,71.645,0.0,-0.805,45.0
+Nordfels,12,13,"Final attack. Catapults, ogres, archers, flyers. Make Your Last Stand! It's gonna be a long night!",1.0,E Catapult,Catapult,2,False,75.0,1.0,0.0,0,Right Bridge,54.335,0.0,-64.03,45.0
+Nordfels,12,13,"Final attack. Catapults, ogres, archers, flyers. Make Your Last Stand! It's gonna be a long night!",1.0,E Catapult,Catapult,2,False,75.0,1.0,0.0,0,Main Bridge,-6.155,0.0,-88.76,45.0
+Nordfels,12,13,"Final attack. Catapults, ogres, archers, flyers. Make Your Last Stand! It's gonna be a long night!",1.0,E Melee,Swordsman,20,False,120.0,1.0,0.0,0,Main Bridge,-6.155,0.0,-88.76,25.0
+Nordfels,12,13,"Final attack. Catapults, ogres, archers, flyers. Make Your Last Stand! It's gonna be a long night!",1.0,E Archer,Archer,20,False,120.0,1.0,0.0,0,Main Bridge,-6.155,0.0,-88.76,20.0
+Nordfels,12,13,"Final attack. Catapults, ogres, archers, flyers. Make Your Last Stand! It's gonna be a long night!",1.0,E Catapult,Catapult,2,False,120.0,1.0,0.0,0,Main Bridge,-6.155,0.0,-88.76,45.0
+Nordfels,12,13,"Final attack. Catapults, ogres, archers, flyers. Make Your Last Stand! It's gonna be a long night!",1.0,E Ogre,Ogre,2,False,120.0,1.0,0.0,0,Main Bridge,-6.155,0.0,-88.76,200.0
+Durststein,0,1,10 Monster Riders From Front,1.0,E Monster Rider,Monster Rider,8,False,0.0,1.2,0.0,3,Front Road,-36.06,4.37,-43.68,40.0
+Durststein,1,2,Town Center Racers From Left,1.0,E Racer,Racer,8,False,0.0,1.0,0.0,2,Left Front Road,-138.05,1.485,17.75,35.0
+Durststein,1,2,Town Center Racers From Left,1.0,E Weakling,Peasant,18,False,0.0,1.0,0.0,2,Left Back Road,-108.29,23.535,56.38,8.7
+Durststein,2,3,Attack wave from right,1.0,E Archer,Archer,14,False,0.0,0.5,0.0,1,Right Farm Road,147.4,1.085,-12.6,20.0
+Durststein,2,3,Attack wave from right,1.0,E Melee,Swordsman,2,False,0.0,0.5,0.0,0,Right Farm Road,147.4,1.085,-12.6,25.0
+Durststein,2,3,Attack wave from right,1.0,E Monster Rider,Monster Rider,8,False,0.0,1.5,0.0,2,Front Road,-36.06,4.37,-43.68,40.0
+Durststein,3,4,Attack wave from top path,1.0,E Hunterling,Hunterling,7,False,0.0,5.0,0.0,1,High Back Road,-33.15,29.35,135.75,30.0
+Durststein,3,4,Attack wave from top path,1.0,E Melee,Swordsman,25,False,0.0,1.5,0.0,2,High Back Road,-33.15,29.35,135.75,25.0
+Durststein,3,4,Attack wave from top path,1.0,E Archer,Archer,10,False,0.0,1.0,0.0,0,Right Farm Road,147.4,1.085,-12.6,20.0
+Durststein,3,4,Attack wave from top path,1.0,E Melee,Swordsman,5,False,0.0,0.2,0.0,0,Right Farm Road,147.4,1.085,-12.6,25.0
+Durststein,4,5,Round 2 | Exploders from the Front,1.0,E Exploder,Exploder,5,False,0.0,5.0,0.0,2,Front Road,-36.06,4.37,-43.68,65.0
+Durststein,4,5,Round 2 | Exploders from the Front,1.0,E Melee,Swordsman,20,False,0.0,1.0,0.0,2,Front Road,-36.06,4.37,-43.68,25.0
+Durststein,5,6,Raid from top and right,1.0,E Hunterling,Hunterling,12,False,0.0,1.0,0.0,2,High Back Road,-33.15,29.35,135.75,30.0
+Durststein,5,6,Raid from top and right,1.0,E Archer,Archer,30,False,0.0,0.2,0.0,2,Right Farm Road,147.4,1.085,-12.6,20.0
+Durststein,5,6,Raid from top and right,1.0,E Monster Rider,Monster Rider,10,False,0.0,0.2,0.0,0,Right Farm Road,147.4,1.085,-12.6,40.0
+Durststein,6,7,Raid from front and left,1.0,E Ogre,Ogre,3,False,0.0,7.0,0.0,2,Left Back Road,-108.29,23.535,56.38,200.0
+Durststein,6,7,Raid from front and left,1.0,E Archer,Archer,12,False,0.0,1.0,0.0,1,Left Back Road,-108.29,23.535,56.38,20.0
+Durststein,6,7,Raid from front and left,1.0,E Exploder,Exploder,3,False,0.0,5.0,0.0,1,Left Front Road,-138.05,1.485,17.75,65.0
+Durststein,6,7,Raid from front and left,1.0,E Monster Rider,Monster Rider,12,False,0.0,1.0,0.0,0,Front Road,-36.06,4.37,-43.68,40.0
+Durststein,7,8,"Attack from right, high and front",1.0,E Ogre,Ogre,2,False,0.0,10.0,0.0,0,Front Road,-36.06,4.37,-43.68,200.0
+Durststein,7,8,"Attack from right, high and front",1.0,E Ogre,Ogre,3,False,0.0,10.0,0.0,1,Right Farm Road,147.4,1.085,-12.6,200.0
+Durststein,7,8,"Attack from right, high and front",1.0,E Ogre,Ogre,2,False,0.0,10.0,0.0,0,High Back Road,-33.15,29.35,135.75,200.0
+Durststein,7,8,"Attack from right, high and front",1.0,E Melee,Swordsman,12,False,0.0,1.0,0.0,0,Front Road,-36.06,4.37,-43.68,25.0
+Durststein,7,8,"Attack from right, high and front",1.0,E Melee,Swordsman,12,False,0.0,1.0,0.0,0,Right Farm Road,147.4,1.085,-12.6,25.0
+Durststein,7,8,"Attack from right, high and front",1.0,E Melee,Swordsman,12,False,0.0,1.0,0.0,0,High Back Road,-33.15,29.35,135.75,25.0
+Durststein,7,8,"Attack from right, high and front",1.0,E Exploder,Exploder,1,False,15.0,0.0,0.0,1,Front Road,-36.06,4.37,-43.68,65.0
+Durststein,7,8,"Attack from right, high and front",1.0,E Exploder,Exploder,1,False,15.0,0.0,0.0,1,Right Farm Road,147.4,1.085,-12.6,65.0
+Durststein,7,8,"Attack from right, high and front",1.0,E Exploder,Exploder,1,False,15.0,0.0,0.0,1,High Back Road,-33.15,29.35,135.75,65.0
+Durststein,8,9,A billion monster riders from all main directions,1.0,E Monster Rider,Monster Rider,35,False,0.0,1.5,0.0,1,Right Farm Road,147.4,1.085,-12.6,40.0
+Durststein,8,9,A billion monster riders from all main directions,1.0,E Monster Rider,Monster Rider,35,False,0.0,1.5,0.0,2,Front Road,-36.06,4.37,-43.68,40.0
+Durststein,8,9,A billion monster riders from all main directions,1.0,E Monster Rider,Monster Rider,35,False,0.0,1.5,0.0,1,Left Front Road,-138.05,1.485,17.75,40.0
+Durststein,9,10,Giga wave from left. Hunters from top.,1.0,E Hunterling,Hunterling,25,False,5.0,0.5,0.0,1,High Back Road,-33.15,29.35,135.75,30.0
+Durststein,9,10,Giga wave from left. Hunters from top.,1.0,E Ogre,Ogre,2,False,0.0,2.0,0.0,0,Left Back Road,-108.29,23.535,56.38,200.0
+Durststein,9,10,Giga wave from left. Hunters from top.,1.0,E Catapult,Catapult,2,False,0.0,2.0,0.0,0,Left Back Road,-108.29,23.535,56.38,45.0
+Durststein,9,10,Giga wave from left. Hunters from top.,1.0,E Melee,Swordsman,15,False,0.0,0.5,0.0,0,Left Back Road,-108.29,23.535,56.38,25.0
+Durststein,9,10,Giga wave from left. Hunters from top.,1.0,E Archer,Archer,15,False,0.0,0.5,0.0,0,Left Back Road,-108.29,23.535,56.38,20.0
+Durststein,9,10,Giga wave from left. Hunters from top.,1.0,E Racer,Racer,15,False,0.0,2.0,0.0,0,Left Front Road,-138.05,1.485,17.75,35.0
+Durststein,9,10,Giga wave from left. Hunters from top.,1.0,E Exploder,Exploder,2,False,30.0,5.0,0.0,0,Left Front Road,-138.05,1.485,17.75,65.0
+Durststein,10,11,"Ogres from right, Racers from front",1.0,E Ogre,Ogre,14,False,0.0,1.0,0.0,0,Right Farm Road,147.4,1.085,-12.6,200.0
+Durststein,10,11,"Ogres from right, Racers from front",1.0,E Racer,Racer,35,False,0.0,1.0,0.0,1,Front Road,-36.06,4.37,-43.68,35.0
+Durststein,11,12,Final Mega Wave,1.0,E Monster Rider,Monster Rider,25,False,0.0,6.75,0.0,0,Front Road,-36.06,4.37,-43.68,40.0
+Durststein,11,12,Final Mega Wave,1.0,E Monster Rider,Monster Rider,25,False,0.0,6.75,0.0,0,Right Farm Road,147.4,1.085,-12.6,40.0
+Durststein,11,12,Final Mega Wave,1.0,E Monster Rider,Monster Rider,25,False,0.0,4.5,0.0,0,Left Front Road,-138.05,1.485,17.75,40.0
+Durststein,11,12,Final Mega Wave,1.0,E Monster Rider,Monster Rider,25,False,0.0,6.75,0.0,0,Left Back Road,-108.29,23.535,56.38,40.0
+Durststein,11,12,Final Mega Wave,1.0,E Monster Rider,Monster Rider,25,False,0.0,6.75,0.0,0,High Back Road,-33.15,29.35,135.75,40.0
+Durststein,11,12,Final Mega Wave,1.0,E Ogre,Ogre,3,False,0.0,45.0,0.0,0,Front Road,-36.06,4.37,-43.68,200.0
+Durststein,11,12,Final Mega Wave,1.0,E Ogre,Ogre,3,False,0.0,45.0,0.0,0,Right Farm Road,147.4,1.085,-12.6,200.0
+Durststein,11,12,Final Mega Wave,1.0,E Ogre,Ogre,3,False,0.0,45.0,0.0,0,Left Front Road,-138.05,1.485,17.75,200.0
+Durststein,11,12,Final Mega Wave,1.0,E Ogre,Ogre,3,False,0.0,45.0,0.0,0,Left Back Road,-108.29,23.535,56.38,200.0
+Durststein,11,12,Final Mega Wave,1.0,E Ogre,Ogre,3,False,0.0,45.0,0.0,0,High Back Road,-33.15,29.35,135.75,200.0
+Durststein,11,12,Final Mega Wave,1.0,E Archer,Archer,35,False,0.0,2.25,0.0,0,Right Farm Road,147.4,1.085,-12.6,20.0
+Durststein,11,12,Final Mega Wave,1.0,E Racer,Racer,20,False,0.0,9.0,0.0,0,Front Road,-36.06,4.37,-43.68,35.0
+Durststein,11,12,Final Mega Wave,1.0,E Monster Rider,Monster Rider,25,False,45.0,2.25,0.0,0,Front Road,-36.06,4.37,-43.68,40.0
+Durststein,11,12,Final Mega Wave,1.0,E Melee,Swordsman,50,False,0.0,3.375,0.0,0,Left Back Road,-108.29,23.535,56.38,25.0
+Durststein,11,12,Final Mega Wave,1.0,E Hunterling,Hunterling,35,False,0.0,4.5,0.0,0,High Back Road,-33.15,29.35,135.75,30.0
+Durststein,11,12,Final Mega Wave,1.0,E Catapult,Catapult,3,False,22.5,45.0,0.0,0,Left Back Road,-108.29,23.535,56.38,45.0
+Durststein,11,12,Final Mega Wave,1.0,E Exploder,Exploder,10,False,112.5,4.5,0.0,0,Right Farm Road,147.4,1.085,-12.6,65.0
+Durststein,11,12,Final Mega Wave,1.0,E Exploder,Exploder,10,False,112.5,4.5,0.0,0,Front Road,-36.06,4.37,-43.68,65.0
+Durststein,11,12,Final Mega Wave,1.0,E Ogre,Ogre,10,False,112.5,0.5,0.0,0,Front Road,-36.06,4.37,-43.68,200.0
+Frostsee,0,1,Melee Left,1.0,E Melee,Swordsman,7,False,0.0,2.0,0.0,4,Close Left,-38.315,14.1,60.31,25.0
+Frostsee,1,2,SLIMES Introduction,1.0,E Slime,Slime,17,False,0.0,0.1,0.0,4,Close Right,-28.3,14.1,-75.55,12.5
+Frostsee,2,3,CROSSBOW Introduction,1.0,E Crossbow,Master Crossbowmen,4,False,2.0,2.0,0.0,2,Close Left,-38.315,14.1,60.31,40.0
+Frostsee,3,4,Lots of Slimes Right,1.0,E Slime,Slime,15,False,0.0,0.1,0.0,1,Close Right,-28.3,14.1,-75.55,12.5
+Frostsee,3,4,Lots of Slimes Right,1.0,E Slime,Slime,15,False,6.0,0.1,0.0,1,Close Right,-28.3,14.1,-75.55,12.5
+Frostsee,3,4,Lots of Slimes Right,1.0,E Slime,Slime,15,False,12.0,0.1,0.0,1,Close Right,-28.3,14.1,-75.55,12.5
+Frostsee,4,5,RAM Introduction,1.0,E Melee,Swordsman,10,False,0.0,2.0,0.0,3,Close Left,-38.315,14.1,60.31,25.0
+Frostsee,4,5,RAM Introduction,1.0,E Ram,Ram,1,False,0.0,0.0,0.0,3,Close Left,-38.315,14.1,60.31,250.0
+Frostsee,5,6,Flying Units,1.0,E Flyer,Wasp,9,False,0.0,2.0,0.0,6,Right River AIR,40.05,22.5,-77.45,25.0
+Frostsee,6,7,Ram & Crossbow Push,1.0,E Ram,Ram,1,False,0.0,0.0,0.0,2,Far Left,-144.7,14.1,-14.5,250.0
+Frostsee,6,7,Ram & Crossbow Push,1.0,E Crossbow,Master Crossbowmen,7,False,0.0,0.5,0.0,2,Far Left,-144.7,14.1,-14.5,40.0
+Frostsee,6,7,Ram & Crossbow Push,1.0,E Ram,Ram,1,False,0.0,0.0,0.0,2,Close Left,-38.315,14.1,60.31,250.0
+Frostsee,6,7,Ram & Crossbow Push,1.0,E Crossbow,Master Crossbowmen,7,False,0.0,0.5,0.0,2,Close Left,-38.315,14.1,60.31,40.0
+Frostsee,7,8,STRONG SLIME Introduction,1.0,E StrongSlime,Spiky Slime,15,False,0.0,0.1,0.0,1,Close Right,-28.3,14.1,-75.55,50.0
+Frostsee,7,8,STRONG SLIME Introduction,1.0,E StrongSlime,Spiky Slime,15,False,10.0,0.1,0.0,2,Close Right,-28.3,14.1,-75.55,50.0
+Frostsee,7,8,STRONG SLIME Introduction,1.0,E Racer,Racer,8,False,0.0,2.0,0.0,2,Far Right,-76.4,14.1,-112.9,35.0
+Frostsee,8,9,Big Flyer Wave,1.0,E Flyer,Wasp,12,False,0.0,1.5,0.0,2,Right River AIR,40.05,22.5,-77.45,25.0
+Frostsee,8,9,Big Flyer Wave,1.0,E Flyer,Wasp,7,False,0.0,2.0,0.0,2,Close Left,-38.315,14.1,60.31,25.0
+Frostsee,8,9,Big Flyer Wave,1.0,E Flyer,Wasp,7,False,0.0,2.0,0.0,2,Far Left,-144.7,14.1,-14.5,25.0
+Frostsee,8,9,Big Flyer Wave,1.0,E Flyer,Wasp,7,False,0.0,2.0,0.0,2,Far Right,-76.4,14.1,-112.9,25.0
+Frostsee,9,10,Huge human army from far left,1.0,E Ram,Ram,4,False,0.0,10.0,0.0,2,Far Left,-144.7,14.1,-14.5,250.0
+Frostsee,9,10,Huge human army from far left,1.0,E Ogre,Ogre,5,False,0.0,1.0,0.0,2,Far Left,-144.7,14.1,-14.5,200.0
+Frostsee,9,10,Huge human army from far left,1.0,E Crossbow,Master Crossbowmen,10,False,0.0,4.0,0.0,2,Far Left,-144.7,14.1,-14.5,40.0
+Frostsee,9,10,Huge human army from far left,1.0,E Melee,Swordsman,40,False,0.0,1.0,0.0,2,Far Left,-144.7,14.1,-14.5,25.0
+Frostsee,10,11,Huge monster army from far right,1.0,E Racer,Racer,20,False,0.0,1.0,0.0,2,Far Right,-76.4,14.1,-112.9,35.0
+Frostsee,10,11,Huge monster army from far right,1.0,E Racer,Racer,10,False,0.0,2.0,0.0,2,Far Right,-76.4,14.1,-112.9,35.0
+Frostsee,10,11,Huge monster army from far right,1.0,E StrongSlime,Spiky Slime,20,False,0.0,1.0,0.0,2,Far Right,-76.4,14.1,-112.9,50.0
+Frostsee,10,11,Huge monster army from far right,1.0,E Flyer,Wasp,20,False,0.0,1.0,0.0,2,Far Right,-76.4,14.1,-112.9,25.0
+Frostsee,11,12,Big boss like wave with stuff coming from all directions,1.0,E Slime,Slime,17,False,0.0,0.1,0.0,2,Close Right,-28.3,14.1,-75.55,12.5
+Frostsee,11,12,Big boss like wave with stuff coming from all directions,1.0,E StrongSlime,Spiky Slime,17,False,15.0,0.1,0.0,2,Close Right,-28.3,14.1,-75.55,50.0
+Frostsee,11,12,Big boss like wave with stuff coming from all directions,1.0,E Slime,Slime,17,False,30.0,0.1,0.0,2,Close Right,-28.3,14.1,-75.55,12.5
+Frostsee,11,12,Big boss like wave with stuff coming from all directions,1.0,E Racer,Racer,20,False,0.0,2.0,0.0,2,Far Right,-76.4,14.1,-112.9,35.0
+Frostsee,11,12,Big boss like wave with stuff coming from all directions,1.0,E Hunterling,Hunterling,10,False,0.0,4.0,0.0,2,Far Right,-76.4,14.1,-112.9,30.0
+Frostsee,11,12,Big boss like wave with stuff coming from all directions,1.0,E Melee,Swordsman,30,False,0.0,1.5,0.0,2,Close Left,-38.315,14.1,60.31,25.0
+Frostsee,11,12,Big boss like wave with stuff coming from all directions,1.0,E Ram,Ram,1,False,0.0,1.0,0.0,2,Far Left,-144.7,14.1,-14.5,250.0
+Frostsee,11,12,Big boss like wave with stuff coming from all directions,1.0,E Ram,Ram,2,False,0.0,10.0,0.0,2,Far Left,-144.7,14.1,-14.5,250.0
+Frostsee,11,12,Big boss like wave with stuff coming from all directions,1.0,E Crossbow,Master Crossbowmen,8,False,0.0,3.0,0.0,2,Far Left,-144.7,14.1,-14.5,40.0
+Frostsee,11,12,Big boss like wave with stuff coming from all directions,1.0,E Melee,Swordsman,15,False,0.0,2.0,0.0,2,Far Left,-144.7,14.1,-14.5,25.0
+Frostsee,11,12,Big boss like wave with stuff coming from all directions,1.0,E Ogre,Ogre,6,False,0.0,4.0,0.0,2,Far Left,-144.7,14.1,-14.5,200.0
+Frostsee,12,13,BOSS FIGHT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!,1.0,BOSS FIGHT,Shadow In The Water,1,False,0.0,0.0,0.0,0,BOSS FIGHT,-52.777,9.367,-11.417,
+Uferwind,0,1,Weaklings,1.0,E Weakling,Peasant,12,False,0.0,0.1,0.0,3,Spawn 1,-98.705,14.15,-66.412,8.7
+Uferwind,0,1,Weaklings,1.0,E Weakling,Peasant,5,False,0.0,0.1,0.0,2,Spawn 2,-93.83,14.15,0.045,8.7
+Uferwind,0,1,Weaklings,1.0,E Weakling,Peasant,6,False,0.0,0.1,0.0,1,Spawn 3,-65.485,14.15,24.455,8.7
+Uferwind,0,1,Weaklings,1.0,E Weakling,Peasant,6,False,0.0,0.1,0.0,1,Spawn 4,-33.52,14.15,35.705,8.7
+Uferwind,0,1,Weaklings,1.0,E Weakling,Peasant,6,False,0.0,0.1,0.0,1,Spawn 5,19.945,14.15,31.8,8.7
+Uferwind,0,1,Weaklings,1.0,E Weakling,Peasant,6,False,0.0,0.1,0.0,1,Spawn 6,50.95,14.15,8.15,8.7
+Uferwind,0,1,Weaklings,1.0,E Weakling,Peasant,6,False,0.0,0.1,0.0,1,Spawn 7,66.46,14.15,-16.15,8.7
+Uferwind,1,2,Spears & Archers,1.0,E LongSpear,Pikes,8,False,0.0,1.0,0.0,4,Spawn 6,50.95,14.15,8.15,25.0
+Uferwind,1,2,Spears & Archers,1.0,E Archer,Archer,10,False,0.0,1.0,0.0,3,Spawn 7,66.46,14.15,-16.15,20.0
+Uferwind,2,3,Furies,1.0,E Fury,Fury,1,False,0.0,0.0,0.0,1,Spawn 1,-98.705,14.15,-66.412,75.0
+Uferwind,2,3,Furies,1.0,E Fury,Fury,1,False,0.0,0.0,0.0,2,Spawn 2,-93.83,14.15,0.045,75.0
+Uferwind,2,3,Furies,1.0,E Fury,Fury,1,False,0.0,0.0,0.0,2,Spawn 3,-65.485,14.15,24.455,75.0
+Uferwind,2,3,Furies,1.0,E Fury,Fury,1,False,0.0,0.0,0.0,2,Spawn 4,-33.52,14.15,35.705,75.0
+Uferwind,2,3,Furies,1.0,E Fury,Fury,1,False,0.0,0.0,0.0,1,Spawn 5,19.945,14.15,31.8,75.0
+Uferwind,2,3,Furies,1.0,E Fury,Fury,1,False,0.0,0.0,0.0,2,Spawn 6,50.95,14.15,8.15,75.0
+Uferwind,2,3,Furies,1.0,E Fury,Fury,1,False,0.0,0.0,0.0,1,Spawn 7,66.46,14.15,-16.15,75.0
+Uferwind,3,4,Spears & Archers,1.0,E Archer,Archer,25,False,0.0,0.2,0.0,6,Spawn 1,-98.705,14.15,-66.412,20.0
+Uferwind,3,4,Spears & Archers,1.0,E LongSpear,Pikes,16,False,0.0,1.0,0.0,6,Spawn 1,-98.705,14.15,-66.412,25.0
+Uferwind,4,5,"Huge Flyer Wave From the Sea, Riders on Land",1.0,E Fury,Fury,2,False,0.0,0.1,0.0,2,Spawn 1 Air,-49.9,19.6,-182.25,75.0
+Uferwind,4,5,"Huge Flyer Wave From the Sea, Riders on Land",1.0,E Flyer,Wasp,3,False,5.0,0.1,0.0,2,Spawn 1 Air,-49.9,19.6,-182.25,25.0
+Uferwind,4,5,"Huge Flyer Wave From the Sea, Riders on Land",1.0,E Fury,Fury,2,False,0.0,0.1,0.0,2,Spawn 2 Air,28.2,19.6,-206.15,75.0
+Uferwind,4,5,"Huge Flyer Wave From the Sea, Riders on Land",1.0,E Flyer,Wasp,3,False,5.0,0.1,0.0,1,Spawn 2 Air,28.2,19.6,-206.15,25.0
+Uferwind,4,5,"Huge Flyer Wave From the Sea, Riders on Land",1.0,E Fury,Fury,2,False,0.0,0.1,0.0,2,Spawn 3 Air,80.0,19.6,-143.45,75.0
+Uferwind,4,5,"Huge Flyer Wave From the Sea, Riders on Land",1.0,E Flyer,Wasp,3,False,5.0,0.1,0.0,1,Spawn 3 Air,80.0,19.6,-143.45,25.0
+Uferwind,4,5,"Huge Flyer Wave From the Sea, Riders on Land",1.0,E Fury,Fury,2,False,0.0,0.1,0.0,1,Spawn 4 Air,94.1,19.6,-63.95,75.0
+Uferwind,4,5,"Huge Flyer Wave From the Sea, Riders on Land",1.0,E Flyer,Wasp,3,False,5.0,0.1,0.0,1,Spawn 4 Air,94.1,19.6,-63.95,25.0
+Uferwind,4,5,"Huge Flyer Wave From the Sea, Riders on Land",1.0,E Monster Rider,Monster Rider,12,False,0.0,1.0,0.0,2,Spawn 5,19.945,14.15,31.8,40.0
+Uferwind,5,6,Barrel Knights,1.0,E BarrelKnight,Barrel Knight,5,False,0.0,0.5,0.0,2,Spawn 7,66.46,14.15,-16.15,100.0
+Uferwind,5,6,Barrel Knights,1.0,E BarrelKnight,Barrel Knight,5,False,0.0,0.5,0.0,2,Spawn 6,50.95,14.15,8.15,100.0
+Uferwind,5,6,Barrel Knights,1.0,E BarrelKnight,Barrel Knight,6,False,0.0,0.5,0.0,2,Spawn 5,19.945,14.15,31.8,100.0
+Uferwind,5,6,Barrel Knights,1.0,E BarrelKnight,Barrel Knight,5,False,0.0,0.5,0.0,2,Spawn 4,-33.52,14.15,35.705,100.0
+Uferwind,5,6,Barrel Knights,1.0,E BarrelKnight,Barrel Knight,6,False,0.0,0.5,0.0,2,Spawn 3,-65.485,14.15,24.455,100.0
+Uferwind,5,6,Barrel Knights,1.0,E BarrelKnight,Barrel Knight,5,False,0.0,0.5,0.0,2,Spawn 2,-93.83,14.15,0.045,100.0
+Uferwind,5,6,Barrel Knights,1.0,E BarrelKnight,Barrel Knight,6,False,0.0,0.5,0.0,2,Spawn 1,-98.705,14.15,-66.412,100.0
+Uferwind,6,7,Flying Wizzards,1.0,E Flying Wizzard,Flying Mage,25,False,0.0,0.2,0.0,7,Spawn 1,-98.705,14.15,-66.412,45.0
+Uferwind,7,8,"Huge Flyer Wave From the Sea, Archers and Spears on Land",1.0,E Fury,Fury,3,False,0.0,0.1,0.0,2,Spawn 1 Air,-49.9,19.6,-182.25,75.0
+Uferwind,7,8,"Huge Flyer Wave From the Sea, Archers and Spears on Land",1.0,E Flyer,Wasp,4,False,5.0,0.1,0.0,1,Spawn 1 Air,-49.9,19.6,-182.25,25.0
+Uferwind,7,8,"Huge Flyer Wave From the Sea, Archers and Spears on Land",1.0,E Fury,Fury,3,False,0.0,0.1,0.0,2,Spawn 2 Air,28.2,19.6,-206.15,75.0
+Uferwind,7,8,"Huge Flyer Wave From the Sea, Archers and Spears on Land",1.0,E Flyer,Wasp,4,False,5.0,0.1,0.0,1,Spawn 2 Air,28.2,19.6,-206.15,25.0
+Uferwind,7,8,"Huge Flyer Wave From the Sea, Archers and Spears on Land",1.0,E Fury,Fury,3,False,0.0,0.1,0.0,1,Spawn 3 Air,80.0,19.6,-143.45,75.0
+Uferwind,7,8,"Huge Flyer Wave From the Sea, Archers and Spears on Land",1.0,E Flyer,Wasp,4,False,5.0,0.1,0.0,1,Spawn 3 Air,80.0,19.6,-143.45,25.0
+Uferwind,7,8,"Huge Flyer Wave From the Sea, Archers and Spears on Land",1.0,E Fury,Fury,3,False,0.0,0.1,0.0,1,Spawn 4 Air,94.1,19.6,-63.95,75.0
+Uferwind,7,8,"Huge Flyer Wave From the Sea, Archers and Spears on Land",1.0,E Flyer,Wasp,4,False,5.0,0.1,0.0,1,Spawn 4 Air,94.1,19.6,-63.95,25.0
+Uferwind,7,8,"Huge Flyer Wave From the Sea, Archers and Spears on Land",1.0,E LongSpear,Pikes,25,False,0.0,0.2,0.0,1,Spawn 3,-65.485,14.15,24.455,25.0
+Uferwind,7,8,"Huge Flyer Wave From the Sea, Archers and Spears on Land",1.0,E Archer,Archer,25,False,0.0,0.2,0.0,1,Spawn 3,-65.485,14.15,24.455,20.0
+Uferwind,8,9,Barrel Knights and Flying Wizzards,1.0,E BarrelKnight,Barrel Knight,6,False,0.0,0.5,0.0,2,Spawn 7,66.46,14.15,-16.15,100.0
+Uferwind,8,9,Barrel Knights and Flying Wizzards,1.0,E BarrelKnight,Barrel Knight,7,False,0.0,0.5,0.0,2,Spawn 6,50.95,14.15,8.15,100.0
+Uferwind,8,9,Barrel Knights and Flying Wizzards,1.0,E BarrelKnight,Barrel Knight,6,False,0.0,0.5,0.0,2,Spawn 5,19.945,14.15,31.8,100.0
+Uferwind,8,9,Barrel Knights and Flying Wizzards,1.0,E BarrelKnight,Barrel Knight,7,False,0.0,0.5,0.0,2,Spawn 4,-33.52,14.15,35.705,100.0
+Uferwind,8,9,Barrel Knights and Flying Wizzards,1.0,E BarrelKnight,Barrel Knight,6,False,0.0,0.5,0.0,2,Spawn 3,-65.485,14.15,24.455,100.0
+Uferwind,8,9,Barrel Knights and Flying Wizzards,1.0,E BarrelKnight,Barrel Knight,7,False,0.0,0.5,0.0,2,Spawn 2,-93.83,14.15,0.045,100.0
+Uferwind,8,9,Barrel Knights and Flying Wizzards,1.0,E BarrelKnight,Barrel Knight,6,False,0.0,0.5,0.0,2,Spawn 1,-98.705,14.15,-66.412,100.0
+Uferwind,8,9,Barrel Knights and Flying Wizzards,1.0,E Flying Wizzard,Flying Mage,5,False,0.0,2.0,0.0,2,Spawn 1,-98.705,14.15,-66.412,45.0
+Uferwind,8,9,Barrel Knights and Flying Wizzards,1.0,E Flying Wizzard,Flying Mage,5,False,0.0,2.0,0.0,2,Spawn 2,-93.83,14.15,0.045,45.0
+Uferwind,8,9,Barrel Knights and Flying Wizzards,1.0,E Flying Wizzard,Flying Mage,5,False,0.0,2.0,0.0,2,Spawn 3,-65.485,14.15,24.455,45.0
+Uferwind,8,9,Barrel Knights and Flying Wizzards,1.0,E Flying Wizzard,Flying Mage,5,False,0.0,2.0,0.0,2,Spawn 4,-33.52,14.15,35.705,45.0
+Uferwind,8,9,Barrel Knights and Flying Wizzards,1.0,E Flying Wizzard,Flying Mage,5,False,0.0,2.0,0.0,2,Spawn 5,19.945,14.15,31.8,45.0
+Uferwind,8,9,Barrel Knights and Flying Wizzards,1.0,E Flying Wizzard,Flying Mage,5,False,0.0,2.0,0.0,2,Spawn 6,50.95,14.15,8.15,45.0
+Uferwind,8,9,Barrel Knights and Flying Wizzards,1.0,E Flying Wizzard,Flying Mage,5,False,0.0,2.0,0.0,2,Spawn 7,66.46,14.15,-16.15,45.0
+Uferwind,9,10,Racers and furies from the back. Flyers from the sea.,1.0,E Racer,Racer,25,False,0.0,0.2,0.0,5,Spawn 7,66.46,14.15,-16.15,35.0
+Uferwind,9,10,Racers and furies from the back. Flyers from the sea.,1.0,E Fury,Fury,30,False,0.0,0.2,0.0,5,Spawn 6,50.95,14.15,8.15,75.0
+Uferwind,9,10,Racers and furies from the back. Flyers from the sea.,1.0,E Flyer,Wasp,20,False,0.0,0.5,0.0,5,Spawn 4 Air,94.1,19.6,-63.95,25.0
+Uferwind,10,11,Big attack wave from the front,1.0,E Ogre,Ogre,12,False,0.0,0.1,0.0,4,Spawn 1,-98.705,14.15,-66.412,200.0
+Uferwind,10,11,Big attack wave from the front,1.0,E Ram,Ram,4,False,0.0,0.1,0.0,4,Spawn 1,-98.705,14.15,-66.412,250.0
+Uferwind,10,11,Big attack wave from the front,1.0,E Flying Wizzard,Flying Mage,40,False,0.0,1.0,0.0,4,Spawn 1,-98.705,14.15,-66.412,45.0
+Uferwind,10,11,Big attack wave from the front,1.0,E LongSpear,Pikes,40,False,0.0,1.0,0.0,4,Spawn 1,-98.705,14.15,-66.412,25.0
+Uferwind,11,12,Final attack from all sides,1.0,E Ram,Ram,1,False,0.0,0.0,0.0,0,Spawn 1,-98.705,14.15,-66.412,250.0
+Uferwind,11,12,Final attack from all sides,1.0,E Ram,Ram,1,False,0.0,0.0,0.0,0,Spawn 2,-93.83,14.15,0.045,250.0
+Uferwind,11,12,Final attack from all sides,1.0,E Ram,Ram,1,False,0.0,0.0,0.0,0,Spawn 3,-65.485,14.15,24.455,250.0
+Uferwind,11,12,Final attack from all sides,1.0,E Ram,Ram,1,False,0.0,0.0,0.0,0,Spawn 4,-33.52,14.15,35.705,250.0
+Uferwind,11,12,Final attack from all sides,1.0,E Ram,Ram,1,False,0.0,0.0,0.0,0,Spawn 5,19.945,14.15,31.8,250.0
+Uferwind,11,12,Final attack from all sides,1.0,E Ram,Ram,1,False,0.0,0.0,0.0,0,Spawn 6,50.95,14.15,8.15,250.0
+Uferwind,11,12,Final attack from all sides,1.0,E Ram,Ram,1,False,0.0,0.0,0.0,0,Spawn 7,66.46,14.15,-16.15,250.0
+Uferwind,11,12,Final attack from all sides,1.0,E BarrelKnight,Barrel Knight,6,False,0.0,0.1,0.0,0,Spawn 1,-98.705,14.15,-66.412,100.0
+Uferwind,11,12,Final attack from all sides,1.0,E BarrelKnight,Barrel Knight,6,False,0.0,0.1,0.0,0,Spawn 2,-93.83,14.15,0.045,100.0
+Uferwind,11,12,Final attack from all sides,1.0,E BarrelKnight,Barrel Knight,6,False,0.0,0.1,0.0,0,Spawn 3,-65.485,14.15,24.455,100.0
+Uferwind,11,12,Final attack from all sides,1.0,E BarrelKnight,Barrel Knight,6,False,0.0,0.1,0.0,0,Spawn 4,-33.52,14.15,35.705,100.0
+Uferwind,11,12,Final attack from all sides,1.0,E BarrelKnight,Barrel Knight,6,False,0.0,0.1,0.0,0,Spawn 5,19.945,14.15,31.8,100.0
+Uferwind,11,12,Final attack from all sides,1.0,E BarrelKnight,Barrel Knight,6,False,0.0,0.1,0.0,0,Spawn 6,50.95,14.15,8.15,100.0
+Uferwind,11,12,Final attack from all sides,1.0,E BarrelKnight,Barrel Knight,6,False,0.0,0.1,0.0,0,Spawn 7,66.46,14.15,-16.15,100.0
+Uferwind,11,12,Final attack from all sides,1.0,E Flying Wizzard,Flying Mage,10,False,0.0,2.0,0.0,0,Spawn 1,-98.705,14.15,-66.412,45.0
+Uferwind,11,12,Final attack from all sides,1.0,E Fury,Fury,10,False,0.0,2.0,0.0,0,Spawn 2,-93.83,14.15,0.045,75.0
+Uferwind,11,12,Final attack from all sides,1.0,E Flying Wizzard,Flying Mage,12,False,0.0,2.0,0.0,0,Spawn 3,-65.485,14.15,24.455,45.0
+Uferwind,11,12,Final attack from all sides,1.0,E Fury,Fury,10,False,0.0,2.0,0.0,0,Spawn 4,-33.52,14.15,35.705,75.0
+Uferwind,11,12,Final attack from all sides,1.0,E Flying Wizzard,Flying Mage,12,False,0.0,2.0,0.0,0,Spawn 5,19.945,14.15,31.8,45.0
+Uferwind,11,12,Final attack from all sides,1.0,E Fury,Fury,10,False,0.0,2.0,0.0,0,Spawn 6,50.95,14.15,8.15,75.0
+Uferwind,11,12,Final attack from all sides,1.0,E Flying Wizzard,Flying Mage,12,False,0.0,2.0,0.0,0,Spawn 7,66.46,14.15,-16.15,45.0
+Sturmklamm,0,1,Spears and Bow,1.0,E Archer,Archer,1,False,0.0,1.0,0.0,1,Bridge 1,-124.415,18.28,-7.575,20.0
+Sturmklamm,0,1,Spears and Bow,1.0,E LongSpear,Pikes,1,False,0.0,1.0,0.0,1,Bridge 1,-124.415,18.28,-7.575,25.0
+Sturmklamm,0,1,Spears and Bow,1.0,E Archer,Archer,1,False,0.0,1.0,0.0,1,Bridge 2,-87.064,18.28,-59.06,20.0
+Sturmklamm,0,1,Spears and Bow,1.0,E LongSpear,Pikes,1,False,0.0,1.0,0.0,1,Bridge 2,-87.064,18.28,-59.06,25.0
+Sturmklamm,0,1,Spears and Bow,1.0,E Archer,Archer,1,False,0.0,1.0,0.0,1,Bridge 3,-44.286,18.28,-78.74,20.0
+Sturmklamm,0,1,Spears and Bow,1.0,E LongSpear,Pikes,1,False,0.0,1.0,0.0,1,Bridge 3,-44.286,18.28,-78.74,25.0
+Sturmklamm,1,2,Molemen,1.0,E Moleman,Mole Warrior,5,False,0.0,0.5,0.0,6,Bridge Broken,-139.695,18.61,78.126,60.0
+Sturmklamm,2,3,Spears and Bow,1.0,E Archer,Archer,4,False,0.0,1.0,0.0,2,Bridge 1,-124.415,18.28,-7.575,20.0
+Sturmklamm,2,3,Spears and Bow,1.0,E LongSpear,Pikes,3,False,0.0,1.0,0.0,2,Bridge 1,-124.415,18.28,-7.575,25.0
+Sturmklamm,2,3,Spears and Bow,1.0,E Archer,Archer,4,False,0.0,1.0,0.0,2,Bridge 2,-87.064,18.28,-59.06,20.0
+Sturmklamm,2,3,Spears and Bow,1.0,E LongSpear,Pikes,3,False,0.0,1.0,0.0,2,Bridge 2,-87.064,18.28,-59.06,25.0
+Sturmklamm,2,3,Spears and Bow,1.0,E Archer,Archer,4,False,0.0,1.0,0.0,2,Bridge 3,-44.286,18.28,-78.74,20.0
+Sturmklamm,2,3,Spears and Bow,1.0,E LongSpear,Pikes,3,False,0.0,1.0,0.0,2,Bridge 3,-44.286,18.28,-78.74,25.0
+Sturmklamm,3,4,Flyer Wave,1.0,E Flyer,Wasp,8,False,0.0,1.25,0.0,7,West Air,-86.668,23.3,114.367,25.0
+Sturmklamm,3,4,Flyer Wave,1.0,E Fury,Fury,3,False,0.0,3.5,0.0,3,Base Right Air,17.35,36.2,17.75,75.0
+Sturmklamm,3,4,Flyer Wave,1.0,E Fury,Fury,3,False,0.0,3.5,0.0,3,Base Left Air,-9.5,36.2,54.1,75.0
+Sturmklamm,4,5,Molemen and Mole Archers,1.0,E Moleman Archer,Mole Archer,4,False,0.0,1.0,0.0,3,Bridge 1,-124.415,18.28,-7.575,50.0
+Sturmklamm,4,5,Molemen and Mole Archers,1.0,E Moleman,Mole Warrior,4,False,0.0,1.0,0.0,3,Bridge 2,-87.064,18.28,-59.06,60.0
+Sturmklamm,4,5,Molemen and Mole Archers,1.0,E Moleman Archer,Mole Archer,4,False,0.0,1.0,0.0,3,Bridge 3,-44.286,18.28,-78.74,50.0
+Sturmklamm,4,5,Molemen and Mole Archers,1.0,E Moleman,Mole Warrior,4,False,0.0,1.0,0.0,3,Bridge Broken,-139.695,18.61,78.126,60.0
+Sturmklamm,5,6,Fat Frontal Attack,1.0,E Archer,Archer,10,False,0.0,1.0,0.0,1,Bridge 3,-44.286,18.28,-78.74,20.0
+Sturmklamm,5,6,Fat Frontal Attack,1.0,E Archer,Archer,10,False,0.0,1.0,0.0,1,Bridge 2,-87.064,18.28,-59.06,20.0
+Sturmklamm,5,6,Fat Frontal Attack,1.0,E Archer,Archer,10,False,0.0,1.0,0.0,1,Bridge 1,-124.415,18.28,-7.575,20.0
+Sturmklamm,5,6,Fat Frontal Attack,1.0,E Ogre,Ogre,2,False,0.0,10.0,0.0,2,Bridge 1,-124.415,18.28,-7.575,200.0
+Sturmklamm,5,6,Fat Frontal Attack,1.0,E Ogre,Ogre,2,False,0.0,10.0,0.0,2,Bridge 2,-87.064,18.28,-59.06,200.0
+Sturmklamm,5,6,Fat Frontal Attack,1.0,E Ogre,Ogre,2,False,0.0,10.0,0.0,2,Bridge 3,-44.286,18.28,-78.74,200.0
+Sturmklamm,5,6,Fat Frontal Attack,1.0,E Catapult,Catapult,1,False,10.0,10.0,0.0,2,Bridge 3,-44.286,18.28,-78.74,45.0
+Sturmklamm,5,6,Fat Frontal Attack,1.0,E Catapult,Catapult,1,False,10.0,10.0,0.0,2,Bridge 2,-87.064,18.28,-59.06,45.0
+Sturmklamm,5,6,Fat Frontal Attack,1.0,E Catapult,Catapult,1,False,10.0,10.0,0.0,2,Bridge 1,-124.415,18.28,-7.575,45.0
+Sturmklamm,6,7,Long Nicht With Diverse Attacks,1.0,E Moleman,Mole Warrior,20,False,0.0,3.0,0.0,3,Bridge Broken,-139.695,18.61,78.126,60.0
+Sturmklamm,6,7,Long Nicht With Diverse Attacks,1.0,E Racer,Racer,30,False,0.0,2.0,0.0,3,Bridge 2,-87.064,18.28,-59.06,35.0
+Sturmklamm,6,7,Long Nicht With Diverse Attacks,1.0,E Monster Rider,Monster Rider,30,False,0.0,2.0,0.0,3,Bridge 2,-87.064,18.28,-59.06,40.0
+Sturmklamm,6,7,Long Nicht With Diverse Attacks,1.0,E Flying Wizzard,Flying Mage,20,False,0.0,3.0,0.0,3,Base Right Air,17.35,36.2,17.75,45.0
+Sturmklamm,7,8,Quickslings,1.0,E Quicksling,Quicksling,3,False,0.0,1.0,0.0,3,Bridge 1,-124.415,18.28,-7.575,55.0
+Sturmklamm,7,8,Quickslings,1.0,E Quicksling,Quicksling,3,False,0.0,1.0,0.0,3,Bridge 2,-87.064,18.28,-59.06,55.0
+Sturmklamm,7,8,Quickslings,1.0,E Quicksling,Quicksling,3,False,0.0,1.0,0.0,3,Bridge 3,-44.286,18.28,-78.74,55.0
+Sturmklamm,7,8,Quickslings,1.0,E LongSpear,Pikes,12,False,0.0,0.5,0.0,3,Bridge 1,-124.415,18.28,-7.575,25.0
+Sturmklamm,7,8,Quickslings,1.0,E LongSpear,Pikes,12,False,0.0,0.5,0.0,3,Bridge 2,-87.064,18.28,-59.06,25.0
+Sturmklamm,7,8,Quickslings,1.0,E LongSpear,Pikes,12,False,0.0,0.5,0.0,3,Bridge 3,-44.286,18.28,-78.74,25.0
+Sturmklamm,8,9,Massive Mole Massacre,1.0,E Moleman Archer,Mole Archer,20,False,0.0,0.25,0.0,3,Bridge 1,-124.415,18.28,-7.575,50.0
+Sturmklamm,8,9,Massive Mole Massacre,1.0,E Moleman Archer,Mole Archer,20,False,0.0,0.25,0.0,3,Bridge 2,-87.064,18.28,-59.06,50.0
+Sturmklamm,8,9,Massive Mole Massacre,1.0,E Moleman Archer,Mole Archer,20,False,0.0,0.25,0.0,3,Bridge 3,-44.286,18.28,-78.74,50.0
+Sturmklamm,8,9,Massive Mole Massacre,1.0,E Moleman,Mole Warrior,10,False,0.0,1.0,0.0,3,Bridge Broken,-139.695,18.61,78.126,60.0
+Sturmklamm,8,9,Massive Mole Massacre,1.0,E Moleman,Mole Warrior,10,False,20.0,0.25,0.0,3,Bridge 1,-124.415,18.28,-7.575,60.0
+Sturmklamm,8,9,Massive Mole Massacre,1.0,E Moleman,Mole Warrior,10,False,20.0,0.25,0.0,3,Bridge 2,-87.064,18.28,-59.06,60.0
+Sturmklamm,8,9,Massive Mole Massacre,1.0,E Moleman,Mole Warrior,10,False,20.0,0.25,0.0,3,Bridge 3,-44.286,18.28,-78.74,60.0
+Sturmklamm,8,9,Massive Mole Massacre,1.0,E Exploder,Exploder,2,False,0.0,5.0,0.0,3,Bridge 1,-124.415,18.28,-7.575,65.0
+Sturmklamm,8,9,Massive Mole Massacre,1.0,E Exploder,Exploder,2,False,0.0,5.0,0.0,3,Bridge 2,-87.064,18.28,-59.06,65.0
+Sturmklamm,8,9,Massive Mole Massacre,1.0,E Exploder,Exploder,2,False,0.0,5.0,0.0,3,Bridge 3,-44.286,18.28,-78.74,65.0
+Sturmklamm,9,10,Racer Stream,1.0,E Racer,Racer,90,False,0.0,0.1,0.0,6,Bridge 2,-87.064,18.28,-59.06,35.0
+Sturmklamm,9,10,Racer Stream,1.0,E Crossbow,Master Crossbowmen,30,False,0.0,0.2,0.0,6,Bridge 2,-87.064,18.28,-59.06,40.0
+Sturmklamm,9,10,Racer Stream,1.0,E Exploder,Exploder,6,False,1.0,1.0,0.0,6,Bridge 2,-87.064,18.28,-59.06,65.0
+Sturmklamm,10,11,Flyer Nightmares,1.0,E Fury,Fury,7,False,0.0,2.5,0.0,8,Base Left Air,-9.5,36.2,54.1,75.0
+Sturmklamm,10,11,Flyer Nightmares,1.0,E Fury,Fury,7,False,0.0,2.5,0.0,8,Base Right Air,17.35,36.2,17.75,75.0
+Sturmklamm,10,11,Flyer Nightmares,1.0,E Flying Wizzard,Flying Mage,15,False,0.0,1.0,0.0,8,Base Left Air,-9.5,36.2,54.1,45.0
+Sturmklamm,10,11,Flyer Nightmares,1.0,E Flying Wizzard,Flying Mage,15,False,0.0,1.0,0.0,8,Base Right Air,17.35,36.2,17.75,45.0
+Sturmklamm,10,11,Flyer Nightmares,1.0,E Flyer,Wasp,15,False,0.0,1.0,0.0,8,Base Right Air,17.35,36.2,17.75,25.0
+Sturmklamm,10,11,Flyer Nightmares,1.0,E Flyer,Wasp,15,False,0.0,1.0,0.0,8,Base Left Air,-9.5,36.2,54.1,25.0
+Sturmklamm,11,12,Fat Wave From All Sides,1.0,E Exploder,Exploder,2,False,0.0,0.5,0.0,2,Bridge 1,-124.415,18.28,-7.575,65.0
+Sturmklamm,11,12,Fat Wave From All Sides,1.0,E Exploder,Exploder,2,False,0.0,0.5,0.0,2,Bridge 2,-87.064,18.28,-59.06,65.0
+Sturmklamm,11,12,Fat Wave From All Sides,1.0,E Exploder,Exploder,2,False,0.0,0.5,0.0,2,Bridge 3,-44.286,18.28,-78.74,65.0
+Sturmklamm,11,12,Fat Wave From All Sides,1.0,E LongSpear,Pikes,10,False,0.0,0.5,0.0,2,Bridge 1,-124.415,18.28,-7.575,25.0
+Sturmklamm,11,12,Fat Wave From All Sides,1.0,E LongSpear,Pikes,10,False,0.0,0.5,0.0,2,Bridge 2,-87.064,18.28,-59.06,25.0
+Sturmklamm,11,12,Fat Wave From All Sides,1.0,E LongSpear,Pikes,10,False,0.0,0.5,0.0,2,Bridge 3,-44.286,18.28,-78.74,25.0
+Sturmklamm,11,12,Fat Wave From All Sides,1.0,E Quicksling,Quicksling,2,False,5.0,0.5,0.0,2,Bridge 1,-124.415,18.28,-7.575,55.0
+Sturmklamm,11,12,Fat Wave From All Sides,1.0,E Quicksling,Quicksling,2,False,5.0,0.5,0.0,2,Bridge 2,-87.064,18.28,-59.06,55.0
+Sturmklamm,11,12,Fat Wave From All Sides,1.0,E Quicksling,Quicksling,2,False,5.0,0.5,0.0,2,Bridge 3,-44.286,18.28,-78.74,55.0
+Sturmklamm,11,12,Fat Wave From All Sides,1.0,E Moleman,Mole Warrior,20,False,20.0,1.0,0.0,2,Bridge 1,-124.415,18.28,-7.575,60.0
+Sturmklamm,11,12,Fat Wave From All Sides,1.0,E Moleman,Mole Warrior,20,False,20.0,1.0,0.0,2,Bridge 2,-87.064,18.28,-59.06,60.0
+Sturmklamm,11,12,Fat Wave From All Sides,1.0,E Moleman,Mole Warrior,20,False,20.0,1.0,0.0,2,Bridge 3,-44.286,18.28,-78.74,60.0
+Sturmklamm,11,12,Fat Wave From All Sides,1.0,E Moleman Archer,Mole Archer,20,False,20.0,1.0,0.0,2,Bridge 1,-124.415,18.28,-7.575,50.0
+Sturmklamm,11,12,Fat Wave From All Sides,1.0,E Moleman Archer,Mole Archer,20,False,20.0,1.0,0.0,2,Bridge 2,-87.064,18.28,-59.06,50.0
+Sturmklamm,11,12,Fat Wave From All Sides,1.0,E Moleman Archer,Mole Archer,20,False,20.0,1.0,0.0,2,Bridge 3,-44.286,18.28,-78.74,50.0
+Sturmklamm,11,12,Fat Wave From All Sides,1.0,E Quicksling,Quicksling,2,False,40.0,5.0,0.0,2,Bridge 1,-124.415,18.28,-7.575,55.0
+Sturmklamm,11,12,Fat Wave From All Sides,1.0,E Quicksling,Quicksling,2,False,40.0,5.0,0.0,2,Bridge 2,-87.064,18.28,-59.06,55.0
+Sturmklamm,11,12,Fat Wave From All Sides,1.0,E Quicksling,Quicksling,2,False,40.0,5.0,0.0,2,Bridge 3,-44.286,18.28,-78.74,55.0
+Sturmklamm,11,12,Fat Wave From All Sides,1.0,E Melee,Swordsman,15,False,40.0,1.0,0.0,2,Bridge 1,-124.415,18.28,-7.575,25.0
+Sturmklamm,11,12,Fat Wave From All Sides,1.0,E Melee,Swordsman,15,False,40.0,1.0,0.0,2,Bridge 2,-87.064,18.28,-59.06,25.0
+Sturmklamm,11,12,Fat Wave From All Sides,1.0,E Melee,Swordsman,15,False,40.0,1.0,0.0,2,Bridge 3,-44.286,18.28,-78.74,25.0
+Sturmklamm,11,12,Fat Wave From All Sides,1.0,E Moleman Archer,Mole Archer,10,False,10.0,2.0,0.0,2,Bridge Broken,-139.695,18.61,78.126,50.0
+Sturmklamm,11,12,Fat Wave From All Sides,1.0,E Racer,Racer,30,False,70.0,0.25,0.0,2,Bridge 2,-87.064,18.28,-59.06,35.0
+Sturmklamm,11,12,Fat Wave From All Sides,1.0,E Quicksling,Quicksling,4,False,70.0,2.0,0.0,2,Bridge 3,-44.286,18.28,-78.74,55.0
+Sturmklamm,11,12,Fat Wave From All Sides,1.0,E Exploder,Exploder,4,False,71.0,2.0,0.0,2,Bridge 3,-44.286,18.28,-78.74,65.0
+Sturmklamm,11,12,Fat Wave From All Sides,1.0,E Moleman Archer,Mole Archer,15,False,70.0,0.1,0.0,2,Bridge 1,-124.415,18.28,-7.575,50.0
+Sturmklamm,11,12,Fat Wave From All Sides,1.0,E Moleman,Mole Warrior,10,False,70.0,1.0,0.0,2,Bridge Broken,-139.695,18.61,78.126,60.0
+Sturmklamm,12,13,Boss Wave,1.0,E Eldermole,Strange Statue,1,False,2.0,0.0,0.0,0,Marker Pos,-84.278,25.65,-16.047,10000.0
+Sturmklamm,12,13,Boss Wave,1.0,E Eldermole,Strange Statue,1,False,2.2,0.0,0.0,0,Marker Pos,-26.128,25.247,-60.947,10000.0
+Sturmklamm,12,13,Boss Wave,1.0,E Eldermole,Strange Statue,1,False,2.4,0.0,0.0,0,Marker Pos,-113.2,25.65,42.4,10000.0
+Sturmklamm,12,13,Boss Wave,1.0,E Eldermole,Strange Statue,1,False,2.6,0.0,0.0,0,Marker Pos,-91.448,25.65,72.563,10000.0
+Nordfels Bow Micro,0,1,Swordsmen,1.0,E Melee,Swordsman,3,False,0.0,3.0,0.0,1,Main Bridge,-6.155,0.0,-88.76,25.0
+Nordfels Bow Micro,0,1,Swordsmen,1.0,E Melee,Swordsman,3,False,0.0,3.0,0.0,1,Forest,71.645,0.0,-0.805,25.0
+Nordfels Bow Micro,0,1,Swordsmen,1.0,E Melee,Swordsman,3,False,0.0,3.0,0.0,1,Right Bridge,54.335,0.0,-64.03,25.0
+Nordfels Bow Micro,1,2,More Swordsmen,1.0,E Melee,Swordsman,5,False,0.0,3.0,0.0,2,Main Bridge,-6.155,0.0,-88.76,25.0
+Nordfels Bow Micro,1,2,More Swordsmen,1.0,E Melee,Swordsman,4,False,0.0,3.0,0.0,2,Forest,71.645,0.0,-0.805,25.0
+Nordfels Bow Micro,1,2,More Swordsmen,1.0,E Melee,Swordsman,4,False,0.0,3.0,0.0,3,Right Bridge,54.335,0.0,-64.03,25.0
+Nordfels Bow Micro,2,3,Archers,1.0,E Archer,Archer,8,False,0.0,1.0,0.0,1,Main Bridge,-6.155,0.0,-88.76,20.0
+Nordfels Bow Micro,2,3,Archers,1.0,E Archer,Archer,8,False,0.0,1.0,0.0,1,Forest,71.645,0.0,-0.805,20.0
+Nordfels Bow Micro,2,3,Archers,1.0,E Archer,Archer,8,False,0.0,1.0,0.0,1,Right Bridge,54.335,0.0,-64.03,20.0
+Nordfels Bow Micro,3,4,Mixed Wave,1.0,E LongSpear,Pikes,8,False,0.0,2.875,0.0,1,Main Bridge,-6.155,0.0,-88.76,25.0
+Nordfels Bow Micro,3,4,Mixed Wave,1.0,E Monster Rider,Monster Rider,7,False,0.0,2.875,0.0,2,Forest,71.645,0.0,-0.805,40.0
+Nordfels Bow Micro,3,4,Mixed Wave,1.0,E Archer,Archer,8,False,0.0,2.875,0.0,1,Right Bridge,54.335,0.0,-64.03,20.0
+Nordfels Bow Micro,4,5,Rollers,1.0,E Racer,Racer,9,False,0.0,2.5,0.0,3,Main Bridge,-6.155,0.0,-88.76,35.0
+Nordfels Bow Micro,4,5,Rollers,1.0,E Hunterling,Hunterling,9,False,0.0,3.0,0.0,3,Forest,71.645,0.0,-0.805,30.0
+Nordfels Bow Micro,4,5,Rollers,1.0,E Weakling,Peasant,18,False,0.0,1.5,0.0,4,Right Bridge,54.335,0.0,-64.03,8.7
+Nordfels Bow Micro,5,6,Ogres & Archers,1.0,E Ogre,Ogre,1,False,0.0,0.0,0.0,2,Main Bridge,-6.155,0.0,-88.76,200.0
+Nordfels Bow Micro,5,6,Ogres & Archers,1.0,E Ogre,Ogre,1,False,0.0,0.0,0.0,2,Forest,71.645,0.0,-0.805,200.0
+Nordfels Bow Micro,5,6,Ogres & Archers,1.0,E Ogre,Ogre,1,False,0.0,0.0,0.0,2,Right Bridge,54.335,0.0,-64.03,200.0
+Nordfels Bow Micro,5,6,Ogres & Archers,1.0,E Archer,Archer,9,False,5.0,2.0,0.0,2,Main Bridge,-6.155,0.0,-88.76,20.0
+Nordfels Bow Micro,5,6,Ogres & Archers,1.0,E Archer,Archer,9,False,5.0,2.0,0.0,1,Right Bridge,54.335,0.0,-64.03,20.0
+Nordfels Bow Micro,5,6,Ogres & Archers,1.0,E Archer,Archer,9,False,5.0,2.0,0.0,1,Forest,71.645,0.0,-0.805,20.0
+Nordfels Bow Micro,6,7,Ram With Support,1.0,E LongSpear,Pikes,15,False,0.0,2.3,0.0,6,Main Bridge,-6.155,0.0,-88.76,25.0
+Nordfels Bow Micro,6,7,Ram With Support,1.0,E Hunterling,Hunterling,8,False,0.0,2.875,0.0,6,Main Bridge,-6.155,0.0,-88.76,30.0
+Nordfels Bow Micro,6,7,Ram With Support,1.0,E Ram,Ram,1,False,0.0,0.0,0.0,6,Main Bridge,-6.155,0.0,-88.76,250.0
+Nordfels Bow Micro,7,8,Spears and Slimes,1.0,E StrongSlime,Spiky Slime,10,False,0.0,2.5,0.0,6,Main Bridge,-6.155,0.0,-88.76,50.0
+Nordfels Bow Micro,7,8,Spears and Slimes,1.0,E Racer,Racer,15,False,0.0,1.0,0.0,5,Forest,71.645,0.0,-0.805,35.0
+Nordfels Bow Micro,7,8,Spears and Slimes,1.0,E LongSpear,Pikes,20,False,0.0,1.0,0.0,5,Right Bridge,54.335,0.0,-64.03,25.0
+Nordfels Bow Micro,8,9,Hunters and Racers,1.0,E Hunterling,Hunterling,10,False,0.0,2.5,0.0,3,Main Bridge,-6.155,0.0,-88.76,30.0
+Nordfels Bow Micro,8,9,Hunters and Racers,1.0,E Racer,Racer,18,False,0.0,2.0,0.0,4,Main Bridge,-6.155,0.0,-88.76,35.0
+Nordfels Bow Micro,8,9,Hunters and Racers,1.0,E Hunterling,Hunterling,10,False,0.0,2.5,0.0,4,Right Bridge,54.335,0.0,-64.03,30.0
+Nordfels Bow Micro,8,9,Hunters and Racers,1.0,E Racer,Racer,9,False,0.0,3.0,0.0,3,Right Bridge,54.335,0.0,-64.03,35.0
+Nordfels Bow Micro,8,9,Hunters and Racers,1.0,E Hunterling,Hunterling,10,False,0.0,2.5,0.0,3,Forest,71.645,0.0,-0.805,30.0
+Nordfels Bow Micro,8,9,Hunters and Racers,1.0,E Racer,Racer,9,False,0.0,3.0,0.0,3,Forest,71.645,0.0,-0.805,35.0
+Nordfels Bow Micro,9,10,Final Wave,1.0,E Archer,Archer,60,False,0.0,1.0,0.0,0,Main Bridge,-6.155,0.0,-88.76,20.0
+Nordfels Bow Micro,9,10,Final Wave,1.0,E Ogre,Ogre,5,False,0.0,20.0,0.0,0,Right Bridge,54.335,0.0,-64.03,200.0
+Nordfels Bow Micro,9,10,Final Wave,1.0,E Fury,Fury,5,False,0.0,20.0,0.0,0,Fly - River,-53.017,5.4,-53.857,75.0
+Nordfels Bow Micro,9,10,Final Wave,1.0,E Fury,Fury,5,False,0.0,20.0,0.0,0,Fly - River,-53.017,5.4,-53.857,75.0
+Nordfels Bow Micro,9,10,Final Wave,1.0,E Monster Rider,Monster Rider,40,False,0.0,2.0,0.0,0,Forest,71.645,0.0,-0.805,40.0
+Nordfels Siege,0,1,Giga Wave,1.0,E Monster Rider,Monster Rider,30,False,0.0,0.1,0.0,1,Forest,71.645,0.0,-0.805,40.0
+Nordfels Siege,0,1,Giga Wave,1.0,E Crossbow,Master Crossbowmen,30,False,3.0,0.1,0.0,1,Right Bridge,54.335,0.0,-64.03,40.0
+Nordfels Siege,0,1,Giga Wave,1.0,E Ogre,Ogre,10,False,6.0,0.5,0.0,1,Main Bridge,-6.155,0.0,-88.76,200.0
+Nordfels Siege,0,1,Giga Wave,1.0,E Flyer,Wasp,30,False,6.0,0.2,0.0,1,Fly - River,-53.017,5.4,-53.857,25.0
+Nordfels Siege,0,1,Giga Wave,1.0,E Racer,Racer,30,False,30.0,1.0,0.0,0,Forest,71.645,0.0,-0.805,35.0
+Nordfels Siege,0,1,Giga Wave,1.0,E Hunterling,Hunterling,30,False,25.0,1.0,0.0,0,Forest,71.645,0.0,-0.805,30.0
+Nordfels Siege,0,1,Giga Wave,1.0,E Ogre,Ogre,10,False,50.0,0.5,0.0,0,Right Bridge,54.335,0.0,-64.03,200.0
+Nordfels Siege,0,1,Giga Wave,1.0,E Ram,Ram,10,False,50.0,0.5,0.0,0,Right Bridge,54.335,0.0,-64.03,250.0
+Nordfels Siege,0,1,Giga Wave,1.0,E BarrelKnight,Barrel Knight,30,False,100.0,1.0,0.0,0,Main Bridge,-6.155,0.0,-88.76,100.0
+Nordfels Siege,0,1,Giga Wave,1.0,E Flying Wizzard,Flying Mage,30,False,100.0,1.0,0.0,0,Fly - River,-53.017,5.4,-53.857,45.0
+Nordfels Siege,0,1,Giga Wave,1.0,E Crossbow,Master Crossbowmen,30,False,110.0,1.0,0.0,0,Right Bridge,54.335,0.0,-64.03,40.0
+Nordfels Siege,0,1,Giga Wave,1.0,E Monster Rider,Monster Rider,30,False,110.0,1.0,0.0,0,Forest,71.645,0.0,-0.805,40.0
+Nordfels Commander,0,1,Slimes & Ogres,1.0,E Ogre,Ogre,2,False,0.0,3.0,0.0,4,Main Bridge,-6.155,0.0,-88.76,200.0
+Nordfels Commander,0,1,Slimes & Ogres,1.0,E Slime,Slime,40,False,0.0,0.2,0.0,4,Forest,71.645,0.0,-0.805,12.5
+Nordfels Commander,1,2,Flyers & Monster Riders,1.0,E Flyer,Wasp,15,False,0.0,1.0,0.0,5,Fly - River,-53.017,5.4,-53.857,25.0
+Nordfels Commander,1,2,Flyers & Monster Riders,1.0,E Monster Rider,Monster Rider,15,False,0.0,1.0,0.0,5,Main Bridge,-6.155,0.0,-88.76,40.0
+Nordfels Commander,1,2,Flyers & Monster Riders,1.0,E Archer,Archer,15,False,0.0,1.0,0.0,3,Forest,71.645,0.0,-0.805,20.0
+Nordfels Commander,2,3,Archers,1.0,E Archer,Archer,16,False,0.0,1.0,0.0,3,Forest,71.645,0.0,-0.805,20.0
+Nordfels Commander,2,3,Archers,1.0,E Archer,Archer,16,False,0.0,1.0,0.0,4,Right Bridge,54.335,0.0,-64.03,20.0
+Nordfels Commander,2,3,Archers,1.0,E Archer,Archer,16,False,0.0,1.0,0.0,3,Main Bridge,-6.155,0.0,-88.76,20.0
+Nordfels Commander,2,3,Archers,1.0,E Ogre,Ogre,1,False,0.0,1.0,0.0,2,Forest,71.645,0.0,-0.805,200.0
+Nordfels Commander,2,3,Archers,1.0,E Ogre,Ogre,2,False,0.0,1.0,0.0,2,Main Bridge,-6.155,0.0,-88.76,200.0
+Nordfels Commander,2,3,Archers,1.0,E Ogre,Ogre,1,False,0.0,1.0,0.0,2,Right Bridge,54.335,0.0,-64.03,200.0
+Nordfels Commander,3,4,Strong attack from right bridge.,1.0,E Archer,Archer,20,False,0.0,0.1,0.0,3,Forest,71.645,0.0,-0.805,20.0
+Nordfels Commander,3,4,Strong attack from right bridge.,1.0,E Archer,Archer,20,False,0.0,0.1,0.0,3,Main Bridge,-6.155,0.0,-88.76,20.0
+Nordfels Commander,3,4,Strong attack from right bridge.,1.0,E StrongSlime,Spiky Slime,30,False,0.0,1.0,0.0,3,Right Bridge,54.335,0.0,-64.03,50.0
+Nordfels Commander,3,4,Strong attack from right bridge.,1.0,E Fury,Fury,5,False,0.0,6.0,0.0,3,Right Bridge,54.335,0.0,-64.03,75.0
+Nordfels Commander,3,4,Strong attack from right bridge.,1.0,E Ram,Ram,3,False,0.0,1.0,0.0,3,Right Bridge,54.335,0.0,-64.03,250.0
+Nordfels Commander,4,5,Different enemies from all sides.,1.0,E Crossbow,Master Crossbowmen,20,False,0.0,1.0,0.0,4,Forest,71.645,0.0,-0.805,40.0
+Nordfels Commander,4,5,Different enemies from all sides.,1.0,E Racer,Racer,20,False,0.0,1.0,0.0,3,Right Bridge,54.335,0.0,-64.03,35.0
+Nordfels Commander,4,5,Different enemies from all sides.,1.0,E LongSpear,Pikes,20,False,0.0,1.0,0.0,4,Main Bridge,-6.155,0.0,-88.76,25.0
+Nordfels Commander,4,5,Different enemies from all sides.,1.0,E Flyer,Wasp,20,False,0.0,1.0,0.0,3,Fly - River,-53.017,5.4,-53.857,25.0
+Nordfels Commander,4,5,Different enemies from all sides.,1.0,E Fury,Fury,5,False,0.0,4.0,0.0,4,Fly - Pond,-65.15,5.4,19.0,75.0
+Nordfels Commander,5,6,Ogres and Strong Slimes,1.0,E Ogre,Ogre,10,False,20.0,1.0,0.0,4,Right Bridge,54.335,0.0,-64.03,200.0
+Nordfels Commander,5,6,Ogres and Strong Slimes,1.0,E StrongSlime,Spiky Slime,20,False,20.0,0.1,0.0,4,Right Bridge,54.335,0.0,-64.03,50.0
+Nordfels Commander,5,6,Ogres and Strong Slimes,1.0,E Ogre,Ogre,10,False,0.0,1.0,0.0,4,Main Bridge,-6.155,0.0,-88.76,200.0
+Nordfels Commander,5,6,Ogres and Strong Slimes,1.0,E Slime,Slime,20,False,0.0,0.1,0.0,4,Main Bridge,-6.155,0.0,-88.76,12.5
+Nordfels Commander,5,6,Ogres and Strong Slimes,1.0,E Exploder,Exploder,10,False,0.0,3.0,0.0,4,Forest,71.645,0.0,-0.805,65.0
+Nordfels Commander,5,6,Ogres and Strong Slimes,1.0,E Archer,Archer,30,False,0.0,1.0,0.0,4,Forest,71.645,0.0,-0.805,20.0
+Nordfels Commander,6,7,Commander Wave,1.0,E Ogre,Ogre,10,False,0.0,3.0,0.0,4,Main Bridge,-6.155,0.0,-88.76,200.0
+Nordfels Commander,6,7,Commander Wave,1.0,E Exploder,Exploder,10,False,0.0,3.0,0.0,4,Main Bridge,-6.155,0.0,-88.76,65.0
+Nordfels Commander,6,7,Commander Wave,1.0,E Racer,Racer,10,False,0.0,3.0,0.0,4,Main Bridge,-6.155,0.0,-88.76,35.0
+Nordfels Commander,6,7,Commander Wave,1.0,E LongSpear,Pikes,10,False,0.0,3.0,0.0,3,Main Bridge,-6.155,0.0,-88.76,25.0
+Nordfels Commander,6,7,Commander Wave,1.0,E Flyer,Wasp,10,False,0.0,3.0,0.0,3,Main Bridge,-6.155,0.0,-88.76,25.0
+Nordfels Commander,6,7,Commander Wave,1.0,E Monster Rider,Monster Rider,10,False,0.0,3.0,0.0,3,Main Bridge,-6.155,0.0,-88.76,40.0
+Nordfels Commander,6,7,Commander Wave,1.0,E Archer,Archer,10,False,0.0,3.0,0.0,3,Main Bridge,-6.155,0.0,-88.76,20.0
+Nordfels Commander,6,7,Commander Wave,1.0,E Fury,Fury,10,False,0.0,3.0,0.0,3,Main Bridge,-6.155,0.0,-88.76,75.0
+Nordfels Commander,7,8,Mixed Wave,1.0,E Ogre,Ogre,10,False,0.0,0.2,0.0,3,Forest,71.645,0.0,-0.805,200.0
+Nordfels Commander,7,8,Mixed Wave,1.0,E Racer,Racer,10,False,0.0,1.0,0.0,3,Forest,71.645,0.0,-0.805,35.0
+Nordfels Commander,7,8,Mixed Wave,1.0,E Exploder,Exploder,2,False,10.0,1.0,0.0,3,Forest,71.645,0.0,-0.805,65.0
+Nordfels Commander,7,8,Mixed Wave,1.0,E LongSpear,Pikes,50,False,0.0,0.5,0.0,3,Right Bridge,54.335,0.0,-64.03,25.0
+Nordfels Commander,7,8,Mixed Wave,1.0,E Crossbow,Master Crossbowmen,20,False,20.0,0.5,0.0,3,Main Bridge,-6.155,0.0,-88.76,40.0
+Nordfels Commander,7,8,Mixed Wave,1.0,E Monster Rider,Monster Rider,20,False,20.0,1.0,0.0,3,Main Bridge,-6.155,0.0,-88.76,40.0
+Nordfels Commander,7,8,Mixed Wave,1.0,E Flyer,Wasp,20,False,0.0,1.5,0.0,3,Fly - River,-53.017,5.4,-53.857,25.0
+Nordfels Commander,8,9,Exploders From All Sides,1.0,E Exploder,Exploder,10,False,0.0,3.0,0.0,5,Forest,71.645,0.0,-0.805,65.0
+Nordfels Commander,8,9,Exploders From All Sides,1.0,E Exploder,Exploder,10,False,0.0,3.0,0.0,5,Right Bridge,54.335,0.0,-64.03,65.0
+Nordfels Commander,8,9,Exploders From All Sides,1.0,E Exploder,Exploder,10,False,0.0,3.0,0.0,5,Main Bridge,-6.155,0.0,-88.76,65.0
+Nordfels Commander,8,9,Exploders From All Sides,1.0,E Ram,Ram,5,False,0.0,2.0,0.0,5,Main Bridge,-6.155,0.0,-88.76,250.0
+Nordfels Commander,8,9,Exploders From All Sides,1.0,E Racer,Racer,25,False,15.0,0.2,0.0,5,Right Bridge,54.335,0.0,-64.03,35.0
+Nordfels Commander,8,9,Exploders From All Sides,1.0,E Archer,Archer,50,False,15.0,0.5,0.0,5,Forest,71.645,0.0,-0.805,20.0
+Nordfels Commander,8,9,Exploders From All Sides,1.0,E Fury,Fury,10,False,30.0,0.2,0.0,7,Fly - Pond,-65.15,5.4,19.0,75.0
+Nordfels Commander,9,10,Final Wave,1.0,E Ogre,Ogre,12,False,0.0,0.2,0.0,0,Main Bridge,-6.155,0.0,-88.76,200.0
+Nordfels Commander,9,10,Final Wave,1.0,E Exploder,Exploder,2,False,0.0,0.2,0.0,0,Main Bridge,-6.155,0.0,-88.76,65.0
+Nordfels Commander,9,10,Final Wave,1.0,E Ram,Ram,5,False,0.0,0.2,0.0,0,Main Bridge,-6.155,0.0,-88.76,250.0
+Nordfels Commander,9,10,Final Wave,1.0,E Crossbow,Master Crossbowmen,30,False,0.0,1.0,0.0,0,Main Bridge,-6.155,0.0,-88.76,40.0
+Nordfels Commander,9,10,Final Wave,1.0,E Archer,Archer,30,False,0.0,1.0,0.0,0,Main Bridge,-6.155,0.0,-88.76,20.0
+Nordfels Commander,9,10,Final Wave,1.0,E LongSpear,Pikes,30,False,20.0,0.2,0.0,0,Forest,71.645,0.0,-0.805,25.0
+Nordfels Commander,9,10,Final Wave,1.0,E Ogre,Ogre,10,False,30.0,1.0,0.0,0,Right Bridge,54.335,0.0,-64.03,200.0
+Nordfels Commander,9,10,Final Wave,1.0,E StrongSlime,Spiky Slime,30,False,30.0,0.5,0.0,0,Right Bridge,54.335,0.0,-64.03,50.0
+Nordfels Commander,9,10,Final Wave,1.0,E Fury,Fury,20,False,30.0,0.5,0.0,0,Fly - River,-53.017,5.4,-53.857,75.0
+Nordfels Commander,9,10,Final Wave,1.0,E Fury,Fury,10,False,0.0,0.5,0.0,0,Fly - River,-53.017,5.4,-53.857,75.0
+Nordfels Commander,9,10,Final Wave,1.0,E Melee,Swordsman,60,False,30.0,0.5,0.0,0,Forest,71.645,0.0,-0.805,25.0
+Durststein Speedrun,0,1,10 Monster Riders From Front,1.0,E Monster Rider,Monster Rider,8,False,0.0,1.2,0.0,3,Front Road,-36.06,4.37,-43.68,40.0
+Durststein Speedrun,1,2,Town Center Racers From Left,1.0,E Racer,Racer,8,False,0.0,1.0,0.0,2,Left Front Road,-138.05,1.485,17.75,35.0
+Durststein Speedrun,1,2,Town Center Racers From Left,1.0,E Weakling,Peasant,18,False,0.0,1.0,0.0,2,Left Back Road,-108.29,23.535,56.38,8.7
+Durststein Speedrun,2,3,Attack wave from right,1.0,E Archer,Archer,14,False,0.0,0.5,0.0,1,Right Farm Road,147.4,1.085,-12.6,20.0
+Durststein Speedrun,2,3,Attack wave from right,1.0,E Melee,Swordsman,2,False,0.0,0.5,0.0,0,Right Farm Road,147.4,1.085,-12.6,25.0
+Durststein Speedrun,2,3,Attack wave from right,1.0,E Monster Rider,Monster Rider,8,False,0.0,1.5,0.0,2,Front Road,-36.06,4.37,-43.68,40.0
+Durststein Speedrun,3,4,Attack wave from top path,1.0,E Hunterling,Hunterling,7,False,0.0,5.0,0.0,1,High Back Road,-33.15,29.35,135.75,30.0
+Durststein Speedrun,3,4,Attack wave from top path,1.0,E Melee,Swordsman,25,False,0.0,1.5,0.0,2,High Back Road,-33.15,29.35,135.75,25.0
+Durststein Speedrun,3,4,Attack wave from top path,1.0,E Archer,Archer,10,False,0.0,1.0,0.0,0,Right Farm Road,147.4,1.085,-12.6,20.0
+Durststein Speedrun,3,4,Attack wave from top path,1.0,E Melee,Swordsman,5,False,0.0,0.2,0.0,0,Right Farm Road,147.4,1.085,-12.6,25.0
+Durststein Speedrun,4,5,Round 2 | Exploders from the Front,1.0,E Exploder,Exploder,5,False,0.0,5.0,0.0,2,Front Road,-36.06,4.37,-43.68,65.0
+Durststein Speedrun,4,5,Round 2 | Exploders from the Front,1.0,E Melee,Swordsman,20,False,0.0,1.0,0.0,2,Front Road,-36.06,4.37,-43.68,25.0
+Durststein Speedrun,5,6,Raid from top and right,1.0,E Hunterling,Hunterling,12,False,0.0,1.0,0.0,2,High Back Road,-33.15,29.35,135.75,30.0
+Durststein Speedrun,5,6,Raid from top and right,1.0,E Archer,Archer,30,False,0.0,0.2,0.0,2,Right Farm Road,147.4,1.085,-12.6,20.0
+Durststein Speedrun,5,6,Raid from top and right,1.0,E Monster Rider,Monster Rider,10,False,0.0,0.2,0.0,0,Right Farm Road,147.4,1.085,-12.6,40.0
+Durststein Speedrun,6,7,Raid from front and left,1.0,E Ogre,Ogre,3,False,0.0,7.0,0.0,2,Left Back Road,-108.29,23.535,56.38,200.0
+Durststein Speedrun,6,7,Raid from front and left,1.0,E Archer,Archer,12,False,0.0,1.0,0.0,1,Left Back Road,-108.29,23.535,56.38,20.0
+Durststein Speedrun,6,7,Raid from front and left,1.0,E Exploder,Exploder,3,False,0.0,5.0,0.0,1,Left Front Road,-138.05,1.485,17.75,65.0
+Durststein Speedrun,6,7,Raid from front and left,1.0,E Monster Rider,Monster Rider,12,False,0.0,1.0,0.0,0,Front Road,-36.06,4.37,-43.68,40.0
+Durststein Speedrun,7,8,"Attack from right, high and front",1.0,E Ogre,Ogre,2,False,0.0,10.0,0.0,0,Front Road,-36.06,4.37,-43.68,200.0
+Durststein Speedrun,7,8,"Attack from right, high and front",1.0,E Ogre,Ogre,3,False,0.0,10.0,0.0,1,Right Farm Road,147.4,1.085,-12.6,200.0
+Durststein Speedrun,7,8,"Attack from right, high and front",1.0,E Ogre,Ogre,2,False,0.0,10.0,0.0,0,High Back Road,-33.15,29.35,135.75,200.0
+Durststein Speedrun,7,8,"Attack from right, high and front",1.0,E Melee,Swordsman,12,False,0.0,1.0,0.0,0,Front Road,-36.06,4.37,-43.68,25.0
+Durststein Speedrun,7,8,"Attack from right, high and front",1.0,E Melee,Swordsman,12,False,0.0,1.0,0.0,0,Right Farm Road,147.4,1.085,-12.6,25.0
+Durststein Speedrun,7,8,"Attack from right, high and front",1.0,E Melee,Swordsman,12,False,0.0,1.0,0.0,0,High Back Road,-33.15,29.35,135.75,25.0
+Durststein Speedrun,7,8,"Attack from right, high and front",1.0,E Exploder,Exploder,1,False,15.0,0.0,0.0,1,Front Road,-36.06,4.37,-43.68,65.0
+Durststein Speedrun,7,8,"Attack from right, high and front",1.0,E Exploder,Exploder,1,False,15.0,0.0,0.0,1,Right Farm Road,147.4,1.085,-12.6,65.0
+Durststein Speedrun,7,8,"Attack from right, high and front",1.0,E Exploder,Exploder,1,False,15.0,0.0,0.0,1,High Back Road,-33.15,29.35,135.75,65.0
+Durststein Speedrun,8,9,A billion monster riders from all main directions,1.0,E Monster Rider,Monster Rider,35,False,0.0,1.5,0.0,1,Right Farm Road,147.4,1.085,-12.6,40.0
+Durststein Speedrun,8,9,A billion monster riders from all main directions,1.0,E Monster Rider,Monster Rider,35,False,0.0,1.5,0.0,2,Front Road,-36.06,4.37,-43.68,40.0
+Durststein Speedrun,8,9,A billion monster riders from all main directions,1.0,E Monster Rider,Monster Rider,35,False,0.0,1.5,0.0,1,Left Front Road,-138.05,1.485,17.75,40.0
+Durststein Speedrun,9,10,Giga wave from left. Hunters from top.,1.0,E Hunterling,Hunterling,25,False,5.0,0.5,0.0,1,High Back Road,-33.15,29.35,135.75,30.0
+Durststein Speedrun,9,10,Giga wave from left. Hunters from top.,1.0,E Ogre,Ogre,2,False,0.0,2.0,0.0,0,Left Back Road,-108.29,23.535,56.38,200.0
+Durststein Speedrun,9,10,Giga wave from left. Hunters from top.,1.0,E Catapult,Catapult,2,False,0.0,2.0,0.0,0,Left Back Road,-108.29,23.535,56.38,45.0
+Durststein Speedrun,9,10,Giga wave from left. Hunters from top.,1.0,E Melee,Swordsman,15,False,0.0,0.5,0.0,0,Left Back Road,-108.29,23.535,56.38,25.0
+Durststein Speedrun,9,10,Giga wave from left. Hunters from top.,1.0,E Archer,Archer,15,False,0.0,0.5,0.0,0,Left Back Road,-108.29,23.535,56.38,20.0
+Durststein Speedrun,9,10,Giga wave from left. Hunters from top.,1.0,E Racer,Racer,15,False,0.0,2.0,0.0,0,Left Front Road,-138.05,1.485,17.75,35.0
+Durststein Speedrun,9,10,Giga wave from left. Hunters from top.,1.0,E Exploder,Exploder,2,False,30.0,5.0,0.0,0,Left Front Road,-138.05,1.485,17.75,65.0
+Durststein Speedrun,10,11,"Ogres from right, Racers from front",1.0,E Ogre,Ogre,14,False,0.0,1.0,0.0,0,Right Farm Road,147.4,1.085,-12.6,200.0
+Durststein Speedrun,10,11,"Ogres from right, Racers from front",1.0,E Racer,Racer,35,False,0.0,1.0,0.0,1,Front Road,-36.06,4.37,-43.68,35.0
+Durststein Speedrun,11,12,Final Mega Wave,1.0,E Monster Rider,Monster Rider,25,False,0.0,6.75,0.0,0,Front Road,-36.06,4.37,-43.68,40.0
+Durststein Speedrun,11,12,Final Mega Wave,1.0,E Monster Rider,Monster Rider,25,False,0.0,6.75,0.0,0,Right Farm Road,147.4,1.085,-12.6,40.0
+Durststein Speedrun,11,12,Final Mega Wave,1.0,E Monster Rider,Monster Rider,25,False,0.0,4.5,0.0,0,Left Front Road,-138.05,1.485,17.75,40.0
+Durststein Speedrun,11,12,Final Mega Wave,1.0,E Monster Rider,Monster Rider,25,False,0.0,6.75,0.0,0,Left Back Road,-108.29,23.535,56.38,40.0
+Durststein Speedrun,11,12,Final Mega Wave,1.0,E Monster Rider,Monster Rider,25,False,0.0,6.75,0.0,0,High Back Road,-33.15,29.35,135.75,40.0
+Durststein Speedrun,11,12,Final Mega Wave,1.0,E Ogre,Ogre,3,False,0.0,45.0,0.0,0,Front Road,-36.06,4.37,-43.68,200.0
+Durststein Speedrun,11,12,Final Mega Wave,1.0,E Ogre,Ogre,3,False,0.0,45.0,0.0,0,Right Farm Road,147.4,1.085,-12.6,200.0
+Durststein Speedrun,11,12,Final Mega Wave,1.0,E Ogre,Ogre,3,False,0.0,45.0,0.0,0,Left Front Road,-138.05,1.485,17.75,200.0
+Durststein Speedrun,11,12,Final Mega Wave,1.0,E Ogre,Ogre,3,False,0.0,45.0,0.0,0,Left Back Road,-108.29,23.535,56.38,200.0
+Durststein Speedrun,11,12,Final Mega Wave,1.0,E Ogre,Ogre,3,False,0.0,45.0,0.0,0,High Back Road,-33.15,29.35,135.75,200.0
+Durststein Speedrun,11,12,Final Mega Wave,1.0,E Archer,Archer,35,False,0.0,2.25,0.0,0,Right Farm Road,147.4,1.085,-12.6,20.0
+Durststein Speedrun,11,12,Final Mega Wave,1.0,E Racer,Racer,20,False,0.0,9.0,0.0,0,Front Road,-36.06,4.37,-43.68,35.0
+Durststein Speedrun,11,12,Final Mega Wave,1.0,E Monster Rider,Monster Rider,25,False,45.0,2.25,0.0,0,Front Road,-36.06,4.37,-43.68,40.0
+Durststein Speedrun,11,12,Final Mega Wave,1.0,E Melee,Swordsman,50,False,0.0,3.375,0.0,0,Left Back Road,-108.29,23.535,56.38,25.0
+Durststein Speedrun,11,12,Final Mega Wave,1.0,E Hunterling,Hunterling,35,False,0.0,4.5,0.0,0,High Back Road,-33.15,29.35,135.75,30.0
+Durststein Speedrun,11,12,Final Mega Wave,1.0,E Catapult,Catapult,3,False,22.5,45.0,0.0,0,Left Back Road,-108.29,23.535,56.38,45.0
+Durststein Speedrun,11,12,Final Mega Wave,1.0,E Exploder,Exploder,10,False,112.5,4.5,0.0,0,Right Farm Road,147.4,1.085,-12.6,65.0
+Durststein Speedrun,11,12,Final Mega Wave,1.0,E Exploder,Exploder,10,False,112.5,4.5,0.0,0,Front Road,-36.06,4.37,-43.68,65.0
+Durststein Speedrun,11,12,Final Mega Wave,1.0,E Ogre,Ogre,10,False,112.5,0.5,0.0,0,Front Road,-36.06,4.37,-43.68,200.0
+Durststein Tower Defense,0,1,Slimes Front,1.0,E Slime,Slime,10,False,0.0,1.0,0.0,7,Front Road,-36.06,4.37,-43.68,12.5
+Durststein Tower Defense,1,2,Slimes Left,1.0,E Slime,Slime,15,False,0.0,0.5,0.0,9,Left Front Road,-138.05,1.485,17.75,12.5
+Durststein Tower Defense,2,3,Rollers Front,1.0,E Racer,Racer,12,False,0.0,1.0,0.0,11,Front Road,-36.06,4.37,-43.68,35.0
+Durststein Tower Defense,3,4,Slimes Left,1.0,E Slime,Slime,15,False,0.0,1.0,0.0,5,Left Front Road,-138.05,1.485,17.75,12.5
+Durststein Tower Defense,3,4,Slimes Left,1.0,E StrongSlime,Spiky Slime,5,False,0.0,3.0,0.0,5,Left Front Road,-138.05,1.485,17.75,50.0
+Durststein Tower Defense,3,4,Slimes Left,1.0,E Ogre,Ogre,1,False,15.0,0.0,0.0,5,Left Front Road,-138.05,1.485,17.75,200.0
+Durststein Tower Defense,4,5,Monster Riders Right,1.0,E Monster Rider,Monster Rider,20,False,0.0,1.25,0.0,17,Right Farm Road,147.4,1.085,-12.6,40.0
+Durststein Tower Defense,5,6,Flyers Front,1.0,E Flyer,Wasp,25,False,0.0,1.0,0.0,10,FrontFlyersLeft,8.41,12.475,-41.45,25.0
+Durststein Tower Defense,5,6,Flyers Front,1.0,E Flyer,Wasp,25,False,0.0,1.0,0.0,10,FrontFlyersRight,56.6,16.065,-45.115,25.0
+Durststein Tower Defense,6,7,Left and Front,1.0,E Slime,Slime,30,False,0.0,1.0,0.0,7,Left Back Road,-108.29,23.535,56.38,12.5
+Durststein Tower Defense,6,7,Left and Front,1.0,E StrongSlime,Spiky Slime,10,False,0.0,3.0,0.0,7,Left Front Road,-138.05,1.485,17.75,50.0
+Durststein Tower Defense,6,7,Left and Front,1.0,E Monster Rider,Monster Rider,30,False,0.0,0.75,0.0,7,Front Road,-36.06,4.37,-43.68,40.0
+Durststein Tower Defense,7,8,Racers From Top,1.0,E Racer,Racer,30,False,0.0,0.5,0.0,25,High Back Road,-33.15,29.35,135.75,35.0
+Durststein Tower Defense,8,9,Exploders and Archers Right,1.0,E Exploder,Exploder,7,False,0.0,0.1,0.0,15,Right Farm Road,147.4,1.085,-12.6,65.0
+Durststein Tower Defense,8,9,Exploders and Archers Right,1.0,E Slime,Slime,50,False,2.0,0.2,0.0,8,Right Farm Road,147.4,1.085,-12.6,12.5
+Durststein Tower Defense,9,10,Catapults and Slimes,1.0,E Catapult,Catapult,3,False,0.0,3.0,0.0,15,Left Back Road,-108.29,23.535,56.38,45.0
+Durststein Tower Defense,9,10,Catapults and Slimes,1.0,E Slime,Slime,50,False,0.0,0.2,0.0,15,Left Front Road,-138.05,1.485,17.75,12.5
+Durststein Tower Defense,10,11,Exploders and Flyers Right,1.0,E Exploder,Exploder,20,False,0.0,1.0,0.0,15,Right Farm Road,147.4,1.085,-12.6,65.0
+Durststein Tower Defense,10,11,Exploders and Flyers Right,1.0,E Flyer,Wasp,45,False,0.0,0.75,0.0,15,FarmFlyers,142.41,32.39,69.475,25.0
+Durststein Tower Defense,11,12,Slimes Left,1.0,E StrongSlime,Spiky Slime,40,False,0.0,1.0,0.0,17,Left Front Road,-138.05,1.485,17.75,50.0
+Durststein Tower Defense,11,12,Slimes Left,1.0,E StrongSlime,Spiky Slime,40,False,0.0,1.0,0.0,17,Left Back Road,-108.29,23.535,56.38,50.0
+Durststein Tower Defense,12,13,Tripple Strike Right,1.0,E Catapult,Catapult,10,False,0.0,1.0,0.0,12,Right Farm Road,147.4,1.085,-12.6,45.0
+Durststein Tower Defense,12,13,Tripple Strike Right,1.0,E Racer,Racer,25,False,0.0,0.6,0.0,12,Front Road,-36.06,4.37,-43.68,35.0
+Durststein Tower Defense,12,13,Tripple Strike Right,1.0,E Racer,Racer,30,False,0.0,0.5,0.0,12,High Back Road,-33.15,29.35,135.75,35.0
+Durststein Tower Defense,13,14,Fat Attack Left,1.0,E Ram,Ram,15,False,0.0,2.0,0.0,38,Left Back Road,-108.29,23.535,56.38,250.0
+Durststein Tower Defense,14,15,Mass Monster Riders Front,1.0,E Monster Rider,Monster Rider,100,False,0.0,0.5,0.0,42,Front Road,-36.06,4.37,-43.68,40.0
+Durststein Tower Defense,15,16,Siege Flyers Front,1.0,E Fury,Fury,10,False,0.0,0.5,0.0,11,FrontFlyersLeft,8.41,12.475,-41.45,75.0
+Durststein Tower Defense,15,16,Siege Flyers Front,1.0,E Fury,Fury,10,False,0.0,0.5,0.0,11,FrontFlyersRight,56.6,16.065,-45.115,75.0
+Durststein Tower Defense,15,16,Siege Flyers Front,1.0,E Flyer,Wasp,30,False,0.0,1.0,0.0,11,FrontFlyersLeft,8.41,12.475,-41.45,25.0
+Durststein Tower Defense,15,16,Siege Flyers Front,1.0,E Flyer,Wasp,30,False,0.0,1.0,0.0,11,FrontFlyersRight,56.6,16.065,-45.115,25.0
+Durststein Tower Defense,16,17,Siege Attack Right,1.0,E Catapult,Catapult,3,False,3.0,1.0,0.0,11,Right Farm Road,147.4,1.085,-12.6,45.0
+Durststein Tower Defense,16,17,Siege Attack Right,1.0,E Ram,Ram,7,False,0.0,1.0,0.0,11,Right Farm Road,147.4,1.085,-12.6,250.0
+Durststein Tower Defense,16,17,Siege Attack Right,1.0,E Ogre,Ogre,20,False,0.0,1.0,0.0,11,Front Road,-36.06,4.37,-43.68,200.0
+Durststein Tower Defense,16,17,Siege Attack Right,1.0,E StrongSlime,Spiky Slime,45,False,0.0,1.0,0.0,12,High Back Road,-33.15,29.35,135.75,50.0
+Durststein Tower Defense,17,18,Fat Attack Left,1.0,E Ogre,Ogre,5,False,0.0,4.0,0.0,16,Left Front Road,-138.05,1.485,17.75,200.0
+Durststein Tower Defense,17,18,Fat Attack Left,1.0,E StrongSlime,Spiky Slime,20,False,0.0,1.0,0.0,16,Left Front Road,-138.05,1.485,17.75,50.0
+Durststein Tower Defense,17,18,Fat Attack Left,1.0,E Ram,Ram,5,False,0.0,1.0,0.0,16,Left Back Road,-108.29,23.535,56.38,250.0
+Durststein Tower Defense,17,18,Fat Attack Left,1.0,E Ogre,Ogre,4,False,10.0,1.0,0.0,16,Left Back Road,-108.29,23.535,56.38,200.0
+Durststein Tower Defense,17,18,Fat Attack Left,1.0,E StrongSlime,Spiky Slime,40,False,0.0,0.25,0.0,16,Left Back Road,-108.29,23.535,56.38,50.0
+Durststein Tower Defense,18,19,END,1.0,E Racer,Racer,60,False,0.0,0.5,0.0,0,Front Road,-36.06,4.37,-43.68,35.0
+Durststein Tower Defense,18,19,END,1.0,E Ogre,Ogre,6,False,10.0,5.0,0.0,0,Front Road,-36.06,4.37,-43.68,200.0
+Durststein Tower Defense,18,19,END,1.0,E Racer,Racer,50,False,0.0,1.0,0.0,0,High Back Road,-33.15,29.35,135.75,35.0
+Durststein Tower Defense,18,19,END,1.0,E Ogre,Ogre,7,False,10.0,7.0,0.0,0,High Back Road,-33.15,29.35,135.75,200.0
+Durststein Tower Defense,18,19,END,1.0,E Racer,Racer,35,False,0.0,1.0,0.0,0,Left Front Road,-138.05,1.485,17.75,35.0
+Durststein Tower Defense,18,19,END,1.0,E Exploder,Exploder,25,False,0.0,2.0,0.0,0,Right Farm Road,147.4,1.085,-12.6,65.0
+Durststein Tower Defense,18,19,END,1.0,E Ogre,Ogre,5,False,0.0,3.5,0.0,0,Left Back Road,-108.29,23.535,56.38,200.0
+Durststein Tower Defense,18,19,END,1.0,E StrongSlime,Spiky Slime,25,True,0.0,1.5,0.0,0,Left Back Road,-108.29,23.535,56.38,50.0
+Durststein Tower Defense,18,19,END,1.0,E StrongSlime,Spiky Slime,20,True,0.0,2.0,0.0,0,Right Farm Road,147.4,1.085,-12.6,50.0
+Frostsee Boss Rush,0,1,BOSS FIGHT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!,1.0,BOSS FIGHT,Shadow In The Water,1,False,0.0,0.0,0.0,0,BOSS FIGHT,-52.777,9.367,-11.417,
+Frostsee Bowling Challenge,0,1,Small Wave,1.0,E Melee,Swordsman,7,False,0.0,2.0,0.0,0,Close Left,-38.315,14.1,60.31,25.0
+Frostsee Bowling Challenge,1,2,Bigger Wave,1.0,E Melee,Swordsman,9,False,0.0,2.0,0.0,0,Close Left,-38.315,14.1,60.31,25.0
+Frostsee Bowling Challenge,1,2,Bigger Wave,1.0,E Melee,Swordsman,9,False,0.0,2.0,0.0,0,Close Right,-28.3,14.1,-75.55,25.0
+Frostsee Bowling Challenge,2,3,Even Bigger Wave,1.0,E Racer,Racer,7,False,0.0,0.2,0.0,3,Far Left,-144.7,14.1,-14.5,35.0
+Frostsee Bowling Challenge,2,3,Even Bigger Wave,1.0,E Racer,Racer,7,False,0.0,0.2,0.0,4,Far Right,-76.4,14.1,-112.9,35.0
+Frostsee Bowling Challenge,3,4,Rams,1.0,E Melee,Swordsman,25,False,0.0,0.2,0.0,0,Far Right,-76.4,14.1,-112.9,25.0
+Frostsee Bowling Challenge,3,4,Rams,1.0,E Melee,Swordsman,25,False,0.0,0.2,0.0,0,Far Left,-144.7,14.1,-14.5,25.0
+Frostsee Bowling Challenge,3,4,Rams,1.0,E Ram,Ram,1,False,0.0,0.2,0.0,0,Close Right,-28.3,14.1,-75.55,250.0
+Frostsee Bowling Challenge,3,4,Rams,1.0,E Ram,Ram,1,False,0.0,0.2,0.0,0,Close Left,-38.315,14.1,60.31,250.0
+Frostsee Bowling Challenge,4,5,Moleman Archers,1.0,E Moleman Archer,Mole Archer,30,False,0.0,0.5,0.0,0,Far Right,-76.4,14.1,-112.9,50.0
+Frostsee Bowling Challenge,4,5,Moleman Archers,1.0,E Moleman Archer,Mole Archer,30,False,0.0,0.5,0.0,0,Far Left,-144.7,14.1,-14.5,50.0
+Frostsee Bowling Challenge,5,6,Racers,1.0,E Racer,Racer,50,False,0.0,0.25,0.0,10,Far Right,-76.4,14.1,-112.9,35.0
+Frostsee Bowling Challenge,5,6,Racers,1.0,E Racer,Racer,50,False,12.5,0.25,0.0,10,Far Left,-144.7,14.1,-14.5,35.0
+Frostsee Bowling Challenge,6,7,Big Army Left,1.0,E Ram,Ram,5,False,0.0,2.0,0.0,0,Close Left,-38.315,14.1,60.31,250.0
+Frostsee Bowling Challenge,6,7,Big Army Left,1.0,E Catapult,Catapult,5,False,1.0,2.0,0.0,0,Close Left,-38.315,14.1,60.31,45.0
+Frostsee Bowling Challenge,6,7,Big Army Left,1.0,E Ogre,Ogre,5,False,1.0,2.0,0.0,0,Close Left,-38.315,14.1,60.31,200.0
+Frostsee Bowling Challenge,6,7,Big Army Left,1.0,E Melee,Swordsman,100,False,0.0,0.1,0.0,0,Close Left,-38.315,14.1,60.31,25.0
+Frostsee Bowling Challenge,7,8,Moleman Archers,1.0,E Moleman Archer,Mole Archer,35,False,0.0,0.5,0.0,0,Far Right,-76.4,14.1,-112.9,50.0
+Frostsee Bowling Challenge,7,8,Moleman Archers,1.0,E Moleman Archer,Mole Archer,35,False,0.0,0.5,0.0,0,Far Left,-144.7,14.1,-14.5,50.0
+Frostsee Bowling Challenge,7,8,Moleman Archers,1.0,E Ram,Ram,5,False,0.0,2.0,0.0,0,Close Right,-28.3,14.1,-75.55,250.0
+Frostsee Bowling Challenge,7,8,Moleman Archers,1.0,E Catapult,Catapult,15,False,0.0,1.0,0.0,0,Close Left,-38.315,14.1,60.31,45.0
+Frostsee Bowling Challenge,8,9,Final Wave,1.0,E Melee,Swordsman,50,False,0.0,0.1,0.0,4,Close Left,-38.315,14.1,60.31,25.0
+Frostsee Bowling Challenge,8,9,Final Wave,1.0,E Ogre,Ogre,10,False,0.0,0.5,0.0,4,Close Left,-38.315,14.1,60.31,200.0
+Frostsee Bowling Challenge,8,9,Final Wave,1.0,E Ogre,Ogre,10,False,6.0,0.5,0.0,4,Close Right,-28.3,14.1,-75.55,200.0
+Frostsee Bowling Challenge,8,9,Final Wave,1.0,E Ram,Ram,10,False,6.0,0.5,0.0,4,Close Right,-28.3,14.1,-75.55,250.0
+Frostsee Bowling Challenge,8,9,Final Wave,1.0,E Racer,Racer,50,False,19.0,0.2,0.0,4,Far Left,-144.7,14.1,-14.5,35.0
+Frostsee Bowling Challenge,8,9,Final Wave,1.0,E Moleman Archer,Mole Archer,50,False,19.0,0.1,0.0,4,Far Right,-76.4,14.1,-112.9,50.0
+Frostsee The Great Wall,0,1,Melee Left,1.0,E Melee,Swordsman,30,False,0.0,1.0,0.0,0,Close Left,-38.315,14.1,60.31,25.0
+Frostsee The Great Wall,0,1,Melee Left,1.0,E Melee,Swordsman,30,False,0.0,1.0,0.0,0,Close Right,-28.3,14.1,-75.55,25.0
+Frostsee The Great Wall,0,1,Melee Left,1.0,E Ogre,Ogre,1,False,0.0,10.0,0.0,0,Close Left,-38.315,14.1,60.31,200.0
+Frostsee The Great Wall,0,1,Melee Left,1.0,E Ram,Ram,1,False,0.0,10.0,0.0,0,Close Right,-28.3,14.1,-75.55,250.0
+Frostsee The Great Wall,1,2,Exploders Bot Right,1.0,E Exploder,Exploder,10,False,0.0,2.75,0.0,0,Far Right,-76.4,14.1,-112.9,65.0
+Frostsee The Great Wall,1,2,Exploders Bot Right,1.0,E Hunterling,Hunterling,15,False,0.0,0.1,0.0,0,Far Left,-144.7,14.1,-14.5,30.0
+Frostsee The Great Wall,1,2,Exploders Bot Right,1.0,E Monster Rider,Monster Rider,15,False,0.0,1.0,0.0,0,Close Left,-38.315,14.1,60.31,40.0
+Frostsee The Great Wall,1,2,Exploders Bot Right,1.0,E Melee,Swordsman,15,False,0.0,1.0,0.0,0,Close Right,-28.3,14.1,-75.55,25.0
+Frostsee The Great Wall,2,3,Exploders Bot Right,1.0,E Racer,Racer,40,False,0.0,0.5,0.0,0,Far Left,-144.7,14.1,-14.5,35.0
+Frostsee The Great Wall,2,3,Exploders Bot Right,1.0,E Flyer,Wasp,20,False,0.0,0.65,0.0,0,Far Left,-144.7,14.1,-14.5,25.0
+Frostsee The Great Wall,2,3,Exploders Bot Right,1.0,E Flying Wizzard,Flying Mage,20,False,0.0,0.65,0.0,0,Far Left,-144.7,14.1,-14.5,45.0
+Frostsee The Great Wall,3,4,Exploders Bot Right,1.0,E Ram,Ram,7,False,0.0,1.0,0.0,0,Close Left,-38.315,14.1,60.31,250.0
+Frostsee The Great Wall,3,4,Exploders Bot Right,1.0,E StrongSlime,Spiky Slime,45,False,0.0,0.2,0.0,0,Close Left,-38.315,14.1,60.31,50.0
+Frostsee The Great Wall,3,4,Exploders Bot Right,1.0,E Flyer,Wasp,20,False,0.0,0.65,0.0,0,Right River AIR,40.05,22.5,-77.45,25.0
+Frostsee The Great Wall,3,4,Exploders Bot Right,1.0,E Flying Wizzard,Flying Mage,15,False,0.0,0.65,0.0,0,Right River AIR,40.05,22.5,-77.45,45.0
+Frostsee The Great Wall,4,5,Exploders Bot Right,1.0,E Ram,Ram,20,False,0.0,1.0,0.0,0,Far Right,-76.4,14.1,-112.9,250.0
+Frostsee The Great Wall,4,5,Exploders Bot Right,1.0,E Quicksling,Quicksling,10,False,0.0,2.0,0.0,0,Far Right,-76.4,14.1,-112.9,55.0
+Frostsee The Great Wall,4,5,Exploders Bot Right,1.0,E Ogre,Ogre,20,False,0.0,1.0,0.0,0,Far Right,-76.4,14.1,-112.9,200.0
+Frostsee The Great Wall,4,5,Exploders Bot Right,1.0,E Racer,Racer,40,False,0.0,0.5,0.0,0,Far Right,-76.4,14.1,-112.9,35.0
+Frostsee The Great Wall,5,6,Lots of Racers,1.0,E Racer,Racer,50,False,0.0,0.5,0.0,0,Close Left,-38.315,14.1,60.31,35.0
+Frostsee The Great Wall,5,6,Lots of Racers,1.0,E Racer,Racer,50,False,0.0,0.5,0.0,0,Close Right,-28.3,14.1,-75.55,35.0
+Frostsee The Great Wall,5,6,Lots of Racers,1.0,E Racer,Racer,50,False,0.0,0.5,0.0,0,Far Left,-144.7,14.1,-14.5,35.0
+Frostsee The Great Wall,5,6,Lots of Racers,1.0,E Racer,Racer,50,False,0.0,0.5,0.0,0,Far Right,-76.4,14.1,-112.9,35.0
+Frostsee The Great Wall,6,7,Diverse Attacks,1.0,E Ram,Ram,20,False,0.0,0.5,0.0,0,Close Left,-38.315,14.1,60.31,250.0
+Frostsee The Great Wall,6,7,Diverse Attacks,1.0,E Ogre,Ogre,12,False,0.0,0.5,0.0,0,Close Right,-28.3,14.1,-75.55,200.0
+Frostsee The Great Wall,6,7,Diverse Attacks,1.0,E Flyer,Wasp,30,False,0.0,0.3,0.0,0,Far Left,-144.7,14.1,-14.5,25.0
+Frostsee The Great Wall,6,7,Diverse Attacks,1.0,E Flying Wizzard,Flying Mage,20,False,0.0,0.4,0.0,0,Far Right,-76.4,14.1,-112.9,45.0
+Frostsee The Great Wall,7,8,Barrel Knights,1.0,E BarrelKnight,Barrel Knight,20,False,0.0,0.5,0.0,0,Close Left,-38.315,14.1,60.31,100.0
+Frostsee The Great Wall,7,8,Barrel Knights,1.0,E BarrelKnight,Barrel Knight,20,False,0.0,0.5,0.0,0,Close Right,-28.3,14.1,-75.55,100.0
+Frostsee The Great Wall,7,8,Barrel Knights,1.0,E BarrelKnight,Barrel Knight,25,False,0.0,0.5,0.0,0,Far Left,-144.7,14.1,-14.5,100.0
+Frostsee The Great Wall,7,8,Barrel Knights,1.0,E BarrelKnight,Barrel Knight,25,False,0.0,0.5,0.0,0,Far Right,-76.4,14.1,-112.9,100.0
+Frostsee The Great Wall,7,8,Barrel Knights,1.0,E Exploder,Exploder,10,False,0.0,3.0,0.0,0,Far Left,-144.7,14.1,-14.5,65.0
+Frostsee The Great Wall,7,8,Barrel Knights,1.0,E Exploder,Exploder,10,False,0.0,3.0,0.0,0,Far Right,-76.4,14.1,-112.9,65.0
+Frostsee The Great Wall,8,9,Elite Racers,1.0,E Racer,Racer,55,True,0.0,1.0,0.0,0,Close Left,-38.315,14.1,60.31,35.0
+Frostsee The Great Wall,8,9,Elite Racers,1.0,E Racer,Racer,55,True,0.0,1.0,0.0,0,Close Right,-28.3,14.1,-75.55,35.0
+Frostsee The Great Wall,8,9,Elite Racers,1.0,E Racer,Racer,55,True,0.0,1.0,0.0,0,Far Left,-144.7,14.1,-14.5,35.0
+Frostsee The Great Wall,8,9,Elite Racers,1.0,E Racer,Racer,55,True,0.0,1.0,0.0,0,Far Right,-76.4,14.1,-112.9,35.0
+Uferwind Defense Puzzle,0,1,Horde 1,1.0,E BarrelKnight,Barrel Knight,100,False,0.0,0.05,0.0,30,Spawn 1,-98.705,14.15,-66.412,100.0
+Uferwind Defense Puzzle,1,2,Horde 2,1.0,E Ram,Ram,50,False,0.0,0.5,0.0,30,Spawn 5,19.945,14.15,31.8,250.0
+Uferwind Defense Puzzle,1,2,Horde 2,1.0,E Racer,Racer,100,False,0.0,0.5,0.0,30,Spawn 5,19.945,14.15,31.8,35.0
+Uferwind Defense Puzzle,2,3,Horde 3,1.0,E Fury,Fury,50,False,0.0,0.5,0.0,40,Spawn 3,-65.485,14.15,24.455,75.0
+Uferwind Defense Puzzle,2,3,Horde 3,1.0,E Ogre,Ogre,50,False,0.0,0.25,0.0,40,Spawn 7,66.46,14.15,-16.15,200.0
+Uferwind Defense Puzzle,3,4,Horde 4,1.0,E Quicksling,Quicksling,50,False,0.0,0.5,0.0,0,Spawn 1,-98.705,14.15,-66.412,55.0
+Uferwind Defense Puzzle,3,4,Horde 4,1.0,E Exploder,Exploder,50,False,0.0,0.05,0.0,0,Spawn 1,-98.705,14.15,-66.412,65.0
+Uferwind Defense Puzzle,3,4,Horde 4,1.0,E Monster Rider,Monster Rider,50,False,0.0,0.05,0.0,0,Spawn 7,66.46,14.15,-16.15,40.0
+Uferwind Hero Commander,0,1,Slimes and Archers,1.0,E StrongSlime,Spiky Slime,12,False,0.0,0.1,0.0,3,Spawn 1,-98.705,14.15,-66.412,50.0
+Uferwind Hero Commander,0,1,Slimes and Archers,1.0,E Archer,Archer,10,False,0.0,0.1,0.0,3,Spawn 2,-93.83,14.15,0.045,20.0
+Uferwind Hero Commander,0,1,Slimes and Archers,1.0,E StrongSlime,Spiky Slime,6,False,0.0,0.1,0.0,3,Spawn 3,-65.485,14.15,24.455,50.0
+Uferwind Hero Commander,0,1,Slimes and Archers,1.0,E Archer,Archer,10,False,0.0,0.1,0.0,3,Spawn 4,-33.52,14.15,35.705,20.0
+Uferwind Hero Commander,0,1,Slimes and Archers,1.0,E StrongSlime,Spiky Slime,6,False,0.0,0.1,0.0,3,Spawn 5,19.945,14.15,31.8,50.0
+Uferwind Hero Commander,0,1,Slimes and Archers,1.0,E Archer,Archer,8,False,0.0,0.1,0.0,3,Spawn 6,50.95,14.15,8.15,20.0
+Uferwind Hero Commander,0,1,Slimes and Archers,1.0,E StrongSlime,Spiky Slime,6,False,0.0,0.1,0.0,3,Spawn 7,66.46,14.15,-16.15,50.0
+Uferwind Hero Commander,1,2,Mixed,1.0,E StrongSlime,Spiky Slime,40,False,0.0,0.2,0.0,3,Spawn 1,-98.705,14.15,-66.412,50.0
+Uferwind Hero Commander,1,2,Mixed,1.0,E Archer,Archer,20,False,0.0,0.3,0.0,3,Spawn 6,50.95,14.15,8.15,20.0
+Uferwind Hero Commander,1,2,Mixed,1.0,E Archer,Archer,20,False,0.0,0.3,0.0,3,Spawn 7,66.46,14.15,-16.15,20.0
+Uferwind Hero Commander,1,2,Mixed,1.0,E Racer,Racer,20,False,0.0,0.5,0.0,3,Spawn 4,-33.52,14.15,35.705,35.0
+Uferwind Hero Commander,1,2,Mixed,1.0,E Crossbow,Master Crossbowmen,15,False,0.0,1.0,0.0,3,Spawn 3,-65.485,14.15,24.455,40.0
+Uferwind Hero Commander,2,3,Big Wave Bot,1.0,E Ram,Ram,5,False,0.0,1.0,0.0,6,Spawn 1,-98.705,14.15,-66.412,250.0
+Uferwind Hero Commander,2,3,Big Wave Bot,1.0,E Ogre,Ogre,7,False,0.0,1.0,0.0,6,Spawn 1,-98.705,14.15,-66.412,200.0
+Uferwind Hero Commander,2,3,Big Wave Bot,1.0,E Archer,Archer,25,False,0.0,0.2,0.0,6,Spawn 1,-98.705,14.15,-66.412,20.0
+Uferwind Hero Commander,2,3,Big Wave Bot,1.0,E StrongSlime,Spiky Slime,25,False,0.0,0.2,0.0,6,Spawn 1,-98.705,14.15,-66.412,50.0
+Uferwind Hero Commander,3,4,Big Wave Bot,1.0,E Fury,Fury,3,False,0.0,1.0,0.0,4,Spawn 1,-98.705,14.15,-66.412,75.0
+Uferwind Hero Commander,3,4,Big Wave Bot,1.0,E Monster Rider,Monster Rider,25,False,0.0,1.0,0.0,4,Spawn 1,-98.705,14.15,-66.412,40.0
+Uferwind Hero Commander,3,4,Big Wave Bot,1.0,E Fury,Fury,2,False,0.0,1.0,0.0,4,Spawn 2,-93.83,14.15,0.045,75.0
+Uferwind Hero Commander,3,4,Big Wave Bot,1.0,E Fury,Fury,2,False,0.0,1.0,0.0,4,Spawn 3,-65.485,14.15,24.455,75.0
+Uferwind Hero Commander,3,4,Big Wave Bot,1.0,E Fury,Fury,2,False,0.0,1.0,0.0,4,Spawn 4,-33.52,14.15,35.705,75.0
+Uferwind Hero Commander,3,4,Big Wave Bot,1.0,E Fury,Fury,2,False,0.0,1.0,0.0,4,Spawn 5,19.945,14.15,31.8,75.0
+Uferwind Hero Commander,3,4,Big Wave Bot,1.0,E Fury,Fury,2,False,0.0,1.0,0.0,4,Spawn 6,50.95,14.15,8.15,75.0
+Uferwind Hero Commander,3,4,Big Wave Bot,1.0,E Fury,Fury,2,False,0.0,1.0,0.0,4,Spawn 7,66.46,14.15,-16.15,75.0
+Uferwind Hero Commander,4,5,Mixed,1.0,E Ram,Ram,5,False,0.0,2.0,0.0,4,Spawn 1,-98.705,14.15,-66.412,250.0
+Uferwind Hero Commander,4,5,Mixed,1.0,E Ogre,Ogre,7,False,0.0,1.0,0.0,4,Spawn 1,-98.705,14.15,-66.412,200.0
+Uferwind Hero Commander,4,5,Mixed,1.0,E Archer,Archer,40,False,0.0,0.5,0.0,4,Spawn 1,-98.705,14.15,-66.412,20.0
+Uferwind Hero Commander,4,5,Mixed,1.0,E Racer,Racer,40,False,0.0,0.5,0.0,4,Spawn 6,50.95,14.15,8.15,35.0
+Uferwind Hero Commander,4,5,Mixed,1.0,E Ram,Ram,2,False,0.0,0.5,0.0,4,Spawn 7,66.46,14.15,-16.15,250.0
+Uferwind Hero Commander,4,5,Mixed,1.0,E Ogre,Ogre,3,False,0.0,0.5,0.0,4,Spawn 3,-65.485,14.15,24.455,200.0
+Uferwind Hero Commander,4,5,Mixed,1.0,E Racer,Racer,20,False,0.0,0.5,0.0,4,Spawn 3,-65.485,14.15,24.455,35.0
+Uferwind Hero Commander,5,6,Mixed,1.0,E Monster Rider,Monster Rider,75,False,0.0,0.25,0.0,15,Spawn 7,66.46,14.15,-16.15,40.0
+Uferwind Hero Commander,5,6,Mixed,1.0,E Archer,Archer,75,False,0.0,0.25,0.0,15,Spawn 6,50.95,14.15,8.15,20.0
+Uferwind Hero Commander,5,6,Mixed,1.0,E StrongSlime,Spiky Slime,75,False,0.0,0.25,0.0,15,Spawn 5,19.945,14.15,31.8,50.0
+Uferwind Hero Commander,6,7,Ogres and Flyers,1.0,E Ogre,Ogre,35,False,0.0,1.0,0.0,20,Spawn 1,-98.705,14.15,-66.412,200.0
+Uferwind Hero Commander,6,7,Ogres and Flyers,1.0,E Fury,Fury,35,False,0.0,1.0,0.0,20,Spawn 7,66.46,14.15,-16.15,75.0
+Uferwind Hero Commander,6,7,Ogres and Flyers,1.0,E Flyer,Wasp,35,False,0.0,1.0,0.0,20,Spawn 5,19.945,14.15,31.8,25.0
+Uferwind Hero Commander,7,8,Crossbows and Exploders,1.0,E Crossbow,Master Crossbowmen,50,False,0.0,0.5,0.0,25,Spawn 1,-98.705,14.15,-66.412,40.0
+Uferwind Hero Commander,7,8,Crossbows and Exploders,1.0,E Exploder,Exploder,25,False,0.0,1.0,0.0,25,Spawn 1,-98.705,14.15,-66.412,65.0
+Uferwind Hero Commander,7,8,Crossbows and Exploders,1.0,E Monster Rider,Monster Rider,50,False,0.0,0.5,0.0,25,Spawn 1,-98.705,14.15,-66.412,40.0
+Uferwind Hero Commander,8,9,Elite Racer and Flyer,1.0,E Racer,Racer,40,True,0.0,0.5,0.0,25,Spawn 3,-65.485,14.15,24.455,35.0
+Uferwind Hero Commander,8,9,Elite Racer and Flyer,1.0,E Flyer,Wasp,40,False,0.0,0.5,0.0,25,Spawn 3,-65.485,14.15,24.455,25.0
+Uferwind Hero Commander,8,9,Elite Racer and Flyer,1.0,E Racer,Racer,40,True,0.0,0.5,0.0,25,Spawn 7,66.46,14.15,-16.15,35.0
+Uferwind Hero Commander,8,9,Elite Racer and Flyer,1.0,E Flying Wizzard,Flying Mage,40,False,0.0,0.5,0.0,25,Spawn 7,66.46,14.15,-16.15,45.0
+Uferwind Hero Commander,9,10,Final Wave,1.0,E Racer,Racer,18,True,0.0,0.5,0.0,0,Spawn 4,-33.52,14.15,35.705,35.0
+Uferwind Hero Commander,9,10,Final Wave,1.0,E Crossbow,Master Crossbowmen,18,True,0.0,0.5,0.0,0,Spawn 5,19.945,14.15,31.8,40.0
+Uferwind Hero Commander,9,10,Final Wave,1.0,E Ram,Ram,13,True,0.0,0.5,0.0,0,Spawn 1,-98.705,14.15,-66.412,250.0
+Uferwind Hero Commander,9,10,Final Wave,1.0,E StrongSlime,Spiky Slime,30,True,0.0,0.5,0.0,0,Spawn 1,-98.705,14.15,-66.412,50.0
+Uferwind Hero Commander,9,10,Final Wave,1.0,E Catapult,Catapult,15,True,25.0,0.5,0.0,0,Spawn 2,-93.83,14.15,0.045,45.0
+Uferwind Hero Commander,9,10,Final Wave,1.0,E Racer,Racer,15,True,25.0,0.5,0.0,0,Spawn 2,-93.83,14.15,0.045,35.0
+Uferwind Hero Commander,9,10,Final Wave,1.0,E StrongSlime,Spiky Slime,25,True,30.0,0.5,0.0,0,Spawn 7,66.46,14.15,-16.15,50.0
+Uferwind Hero Commander,9,10,Final Wave,1.0,E Exploder,Exploder,15,False,30.0,0.5,0.0,0,Spawn 7,66.46,14.15,-16.15,65.0
+Uferwind Hero Commander,9,10,Final Wave,1.0,E Fury,Fury,20,False,30.0,0.5,0.0,0,Spawn 5,19.945,14.15,31.8,75.0
+Uferwind Lightning Staff Challenge,0,1,Weaklings,1.0,E Weakling,Peasant,10,False,0.0,0.1,0.0,0,Spawn 1,-98.705,14.15,-66.412,8.7
+Uferwind Lightning Staff Challenge,0,1,Weaklings,1.0,E Weakling,Peasant,4,False,0.0,0.1,0.0,0,Spawn 2,-93.83,14.15,0.045,8.7
+Uferwind Lightning Staff Challenge,0,1,Weaklings,1.0,E Weakling,Peasant,5,False,0.0,0.1,0.0,0,Spawn 3,-65.485,14.15,24.455,8.7
+Uferwind Lightning Staff Challenge,0,1,Weaklings,1.0,E Weakling,Peasant,5,False,0.0,0.1,0.0,0,Spawn 4,-33.52,14.15,35.705,8.7
+Uferwind Lightning Staff Challenge,0,1,Weaklings,1.0,E Weakling,Peasant,5,False,0.0,0.1,0.0,0,Spawn 5,19.945,14.15,31.8,8.7
+Uferwind Lightning Staff Challenge,0,1,Weaklings,1.0,E Weakling,Peasant,5,False,0.0,0.1,0.0,0,Spawn 6,50.95,14.15,8.15,8.7
+Uferwind Lightning Staff Challenge,0,1,Weaklings,1.0,E Weakling,Peasant,5,False,0.0,0.1,0.0,0,Spawn 7,66.46,14.15,-16.15,8.7
+Uferwind Lightning Staff Challenge,1,2,Weakling Stream,1.0,E Weakling,Peasant,75,False,0.0,0.55,0.0,3,Spawn 1,-98.705,14.15,-66.412,8.7
+Uferwind Lightning Staff Challenge,2,3,Racer,1.0,E Racer,Racer,11,False,0.0,0.1,0.0,3,Spawn 5,19.945,14.15,31.8,35.0
+Uferwind Lightning Staff Challenge,2,3,Racer,1.0,E Hunterling,Hunterling,8,False,0.0,2.0,0.0,4,Spawn 5,19.945,14.15,31.8,30.0
+Uferwind Lightning Staff Challenge,3,4,Ogres,1.0,E Ogre,Ogre,4,False,0.0,3.0,0.0,0,Spawn 1,-98.705,14.15,-66.412,200.0
+Uferwind Lightning Staff Challenge,3,4,Ogres,1.0,E Weakling,Peasant,30,False,0.0,0.5,0.0,0,Spawn 1,-98.705,14.15,-66.412,8.7
+Uferwind Lightning Staff Challenge,4,5,Furies,1.0,E Fury,Fury,2,False,12.0,0.1,0.0,2,Spawn 1,-98.705,14.15,-66.412,75.0
+Uferwind Lightning Staff Challenge,4,5,Furies,1.0,E Fury,Fury,2,False,10.0,0.1,0.0,4,Spawn 2,-93.83,14.15,0.045,75.0
+Uferwind Lightning Staff Challenge,4,5,Furies,1.0,E Fury,Fury,2,False,8.0,0.1,0.0,4,Spawn 3,-65.485,14.15,24.455,75.0
+Uferwind Lightning Staff Challenge,4,5,Furies,1.0,E Fury,Fury,2,False,6.0,0.1,0.0,2,Spawn 4,-33.52,14.15,35.705,75.0
+Uferwind Lightning Staff Challenge,4,5,Furies,1.0,E Fury,Fury,2,False,4.0,0.1,0.0,4,Spawn 5,19.945,14.15,31.8,75.0
+Uferwind Lightning Staff Challenge,4,5,Furies,1.0,E Fury,Fury,2,False,2.0,0.1,0.0,2,Spawn 6,50.95,14.15,8.15,75.0
+Uferwind Lightning Staff Challenge,4,5,Furies,1.0,E Fury,Fury,2,False,0.0,0.1,0.0,2,Spawn 7,66.46,14.15,-16.15,75.0
+Uferwind Lightning Staff Challenge,5,6,Weakling Catapult,1.0,E Catapult,Catapult,15,False,0.0,1.0,0.0,10,Spawn 1,-98.705,14.15,-66.412,45.0
+Uferwind Lightning Staff Challenge,5,6,Weakling Catapult,1.0,E Weakling,Peasant,150,False,0.0,0.1,0.0,10,Spawn 1,-98.705,14.15,-66.412,8.7
+Uferwind Lightning Staff Challenge,6,7,Diverse Mix,1.0,E Racer,Racer,8,False,0.0,2.0,0.0,5,Spawn 2,-93.83,14.15,0.045,35.0
+Uferwind Lightning Staff Challenge,6,7,Diverse Mix,1.0,E Racer,Racer,8,False,0.0,2.0,0.0,3,Spawn 5,19.945,14.15,31.8,35.0
+Uferwind Lightning Staff Challenge,6,7,Diverse Mix,1.0,E Racer,Racer,8,False,0.0,2.0,0.0,2,Spawn 7,66.46,14.15,-16.15,35.0
+Uferwind Lightning Staff Challenge,6,7,Diverse Mix,1.0,E Hunterling,Hunterling,8,False,0.0,2.0,0.0,3,Spawn 1,-98.705,14.15,-66.412,30.0
+Uferwind Lightning Staff Challenge,6,7,Diverse Mix,1.0,E LongSpear,Pikes,10,False,0.0,1.5,0.0,2,Spawn 4,-33.52,14.15,35.705,25.0
+Uferwind Lightning Staff Challenge,6,7,Diverse Mix,1.0,E LongSpear,Pikes,10,False,0.0,1.5,0.0,5,Spawn 3,-65.485,14.15,24.455,25.0
+Uferwind Lightning Staff Challenge,7,8,END,1.0,E Ram,Ram,1,False,0.0,0.0,0.0,0,Spawn 1,-98.705,14.15,-66.412,250.0
+Uferwind Lightning Staff Challenge,7,8,END,1.0,E Ram,Ram,1,False,0.0,0.0,0.0,0,Spawn 2,-93.83,14.15,0.045,250.0
+Uferwind Lightning Staff Challenge,7,8,END,1.0,E Ram,Ram,1,False,0.0,0.0,0.0,0,Spawn 3,-65.485,14.15,24.455,250.0
+Uferwind Lightning Staff Challenge,7,8,END,1.0,E Ram,Ram,1,False,0.0,0.0,0.0,0,Spawn 4,-33.52,14.15,35.705,250.0
+Uferwind Lightning Staff Challenge,7,8,END,1.0,E Ram,Ram,1,False,0.0,0.0,0.0,0,Spawn 5,19.945,14.15,31.8,250.0
+Uferwind Lightning Staff Challenge,7,8,END,1.0,E Ram,Ram,1,False,0.0,0.0,0.0,0,Spawn 6,50.95,14.15,8.15,250.0
+Uferwind Lightning Staff Challenge,7,8,END,1.0,E Ram,Ram,1,False,0.0,0.0,0.0,0,Spawn 7,66.46,14.15,-16.15,250.0
+Uferwind Lightning Staff Challenge,7,8,END,1.0,E Racer,Racer,5,False,0.0,2.0,0.0,0,Spawn 7,66.46,14.15,-16.15,35.0
+Uferwind Lightning Staff Challenge,7,8,END,1.0,E Racer,Racer,5,False,0.0,2.0,0.0,0,Spawn 6,50.95,14.15,8.15,35.0
+Uferwind Lightning Staff Challenge,7,8,END,1.0,E Racer,Racer,5,False,0.0,2.0,0.0,0,Spawn 5,19.945,14.15,31.8,35.0
+Uferwind Lightning Staff Challenge,7,8,END,1.0,E Racer,Racer,5,False,0.0,2.0,0.0,0,Spawn 4,-33.52,14.15,35.705,35.0
+Uferwind Lightning Staff Challenge,7,8,END,1.0,E Racer,Racer,5,False,0.0,2.0,0.0,0,Spawn 3,-65.485,14.15,24.455,35.0
+Uferwind Lightning Staff Challenge,7,8,END,1.0,E Racer,Racer,5,False,0.0,2.0,0.0,0,Spawn 2,-93.83,14.15,0.045,35.0
+Uferwind Lightning Staff Challenge,7,8,END,1.0,E Racer,Racer,5,False,0.0,2.0,0.0,0,Spawn 1,-98.705,14.15,-66.412,35.0
+Uferwind Lightning Staff Challenge,7,8,END,1.0,E Weakling,Peasant,15,False,0.0,2.0,0.0,0,Spawn 1,-98.705,14.15,-66.412,8.7
+Uferwind Lightning Staff Challenge,7,8,END,1.0,E Fury,Fury,15,False,0.0,2.0,0.0,0,Spawn 3,-65.485,14.15,24.455,75.0
+Uferwind Lightning Staff Challenge,7,8,END,1.0,E Weakling,Peasant,25,False,0.0,2.0,0.0,0,Spawn 6,50.95,14.15,8.15,8.7
+Sturmklamm Just The Way They Are,0,1,Weaklings,1.0,E Weakling,Peasant,40,False,0.0,0.1,0.0,6,Bridge 3,-44.286,18.28,-78.74,8.7
+Sturmklamm Just The Way They Are,1,2,Weaklings and Melee,1.0,E Weakling,Peasant,15,False,0.0,1.0,0.0,2,Bridge 1,-124.415,18.28,-7.575,8.7
+Sturmklamm Just The Way They Are,1,2,Weaklings and Melee,1.0,E Weakling,Peasant,15,False,0.0,1.0,0.0,2,Bridge 2,-87.064,18.28,-59.06,8.7
+Sturmklamm Just The Way They Are,1,2,Weaklings and Melee,1.0,E Weakling,Peasant,15,False,0.0,1.0,0.0,2,Bridge 3,-44.286,18.28,-78.74,8.7
+Sturmklamm Just The Way They Are,1,2,Weaklings and Melee,1.0,E Melee,Swordsman,5,False,0.0,3.0,0.0,3,Bridge 1,-124.415,18.28,-7.575,25.0
+Sturmklamm Just The Way They Are,1,2,Weaklings and Melee,1.0,E Melee,Swordsman,5,False,0.0,3.0,0.0,3,Bridge 2,-87.064,18.28,-59.06,25.0
+Sturmklamm Just The Way They Are,1,2,Weaklings and Melee,1.0,E Melee,Swordsman,5,False,0.0,3.0,0.0,3,Bridge 3,-44.286,18.28,-78.74,25.0
+Sturmklamm Just The Way They Are,2,3,Diverse Attacks,1.0,E Ogre,Ogre,1,False,0.0,1.0,0.0,4,Bridge 1,-124.415,18.28,-7.575,200.0
+Sturmklamm Just The Way They Are,2,3,Diverse Attacks,1.0,E Racer,Racer,17,False,0.0,0.8,0.0,4,Bridge 3,-44.286,18.28,-78.74,35.0
+Sturmklamm Just The Way They Are,2,3,Diverse Attacks,1.0,E Slime,Slime,25,False,0.0,0.5,0.0,4,Bridge 2,-87.064,18.28,-59.06,12.5
+Sturmklamm Just The Way They Are,3,4,Flying Wizzards,1.0,E Flying Wizzard,Flying Mage,9,False,0.0,1.0,0.0,6,Base Left Air,-9.5,36.2,54.1,45.0
+Sturmklamm Just The Way They Are,3,4,Flying Wizzards,1.0,E Flying Wizzard,Flying Mage,9,False,0.0,1.0,0.0,5,Base Right Air,17.35,36.2,17.75,45.0
+Sturmklamm Just The Way They Are,4,5,Mole Archers,1.0,E Moleman Archer,Mole Archer,40,False,0.0,0.75,0.0,15,Bridge Broken,-139.695,18.61,78.126,50.0
+Sturmklamm Just The Way They Are,5,6,Big Attack,1.0,E Catapult,Catapult,1,False,3.0,0.0,0.0,2,Bridge 1,-124.415,18.28,-7.575,45.0
+Sturmklamm Just The Way They Are,5,6,Big Attack,1.0,E Catapult,Catapult,1,False,3.0,0.0,0.0,2,Bridge 2,-87.064,18.28,-59.06,45.0
+Sturmklamm Just The Way They Are,5,6,Big Attack,1.0,E Catapult,Catapult,1,False,3.0,0.0,0.0,2,Bridge 3,-44.286,18.28,-78.74,45.0
+Sturmklamm Just The Way They Are,5,6,Big Attack,1.0,E Melee,Swordsman,20,False,0.0,1.0,0.0,2,Bridge 1,-124.415,18.28,-7.575,25.0
+Sturmklamm Just The Way They Are,5,6,Big Attack,1.0,E Melee,Swordsman,20,False,0.0,1.0,0.0,2,Bridge 2,-87.064,18.28,-59.06,25.0
+Sturmklamm Just The Way They Are,5,6,Big Attack,1.0,E Melee,Swordsman,20,False,0.0,1.0,0.0,2,Bridge 3,-44.286,18.28,-78.74,25.0
+Sturmklamm Just The Way They Are,5,6,Big Attack,1.0,E Ogre,Ogre,2,False,0.0,5.0,0.0,2,Bridge 3,-44.286,18.28,-78.74,200.0
+Sturmklamm Just The Way They Are,5,6,Big Attack,1.0,E Ogre,Ogre,2,False,0.0,5.0,0.0,2,Bridge 2,-87.064,18.28,-59.06,200.0
+Sturmklamm Just The Way They Are,5,6,Big Attack,1.0,E Ogre,Ogre,2,False,0.0,5.0,0.0,2,Bridge 1,-124.415,18.28,-7.575,200.0
+Sturmklamm Just The Way They Are,6,7,Rollers and Archers,1.0,E Racer,Racer,75,False,0.0,0.5,0.0,10,Bridge 3,-44.286,18.28,-78.74,35.0
+Sturmklamm Just The Way They Are,6,7,Rollers and Archers,1.0,E Archer,Archer,75,False,0.0,0.5,0.0,10,Bridge 2,-87.064,18.28,-59.06,20.0
+Sturmklamm Just The Way They Are,7,8,Mole Archers All Sides,1.0,E Moleman Archer,Mole Archer,40,False,0.0,0.75,0.0,7,Bridge Broken,-139.695,18.61,78.126,50.0
+Sturmklamm Just The Way They Are,7,8,Mole Archers All Sides,1.0,E Moleman Archer,Mole Archer,40,False,0.0,0.75,0.0,7,Bridge 1,-124.415,18.28,-7.575,50.0
+Sturmklamm Just The Way They Are,7,8,Mole Archers All Sides,1.0,E Moleman Archer,Mole Archer,40,False,0.0,0.75,0.0,7,Bridge 2,-87.064,18.28,-59.06,50.0
+Sturmklamm Just The Way They Are,7,8,Mole Archers All Sides,1.0,E Moleman Archer,Mole Archer,40,False,0.0,0.75,0.0,7,Bridge 3,-44.286,18.28,-78.74,50.0
+Sturmklamm Just The Way They Are,8,9,Flyers Back,1.0,E Flyer,Wasp,40,False,0.0,0.45,0.0,13,Base Left Air,-9.5,36.2,54.1,25.0
+Sturmklamm Just The Way They Are,8,9,Flyers Back,1.0,E Flyer,Wasp,40,False,0.0,0.45,0.0,13,Base Right Air,17.35,36.2,17.75,25.0
+Sturmklamm Just The Way They Are,9,10,Fat Bridge 1 Attack,1.0,E Ogre,Ogre,15,False,0.0,1.5,0.0,10,Bridge 1,-124.415,18.28,-7.575,200.0
+Sturmklamm Just The Way They Are,9,10,Fat Bridge 1 Attack,1.0,E Quicksling,Quicksling,5,False,0.0,4.5,0.0,10,Bridge 1,-124.415,18.28,-7.575,55.0
+Sturmklamm Just The Way They Are,9,10,Fat Bridge 1 Attack,1.0,E Melee,Swordsman,50,False,0.0,0.5,0.0,10,Bridge 1,-124.415,18.28,-7.575,25.0
+Sturmklamm Just The Way They Are,10,11,Catapults and Rams,1.0,E Ram,Ram,7,False,0.0,1.5,0.0,3,Bridge 1,-124.415,18.28,-7.575,250.0
+Sturmklamm Just The Way They Are,10,11,Catapults and Rams,1.0,E Catapult,Catapult,7,False,2.0,1.5,0.0,3,Bridge 1,-124.415,18.28,-7.575,45.0
+Sturmklamm Just The Way They Are,10,11,Catapults and Rams,1.0,E Ram,Ram,7,False,0.0,1.5,0.0,3,Bridge 2,-87.064,18.28,-59.06,250.0
+Sturmklamm Just The Way They Are,10,11,Catapults and Rams,1.0,E Catapult,Catapult,7,False,2.0,1.5,0.0,3,Bridge 2,-87.064,18.28,-59.06,45.0
+Sturmklamm Just The Way They Are,10,11,Catapults and Rams,1.0,E Ram,Ram,7,False,0.0,1.5,0.0,3,Bridge 3,-44.286,18.28,-78.74,250.0
+Sturmklamm Just The Way They Are,10,11,Catapults and Rams,1.0,E Catapult,Catapult,7,False,2.0,1.5,0.0,3,Bridge 3,-44.286,18.28,-78.74,45.0
+Sturmklamm Just The Way They Are,10,11,Catapults and Rams,1.0,E Fury,Fury,2,False,4.0,1.5,0.0,3,Bridge 1,-124.415,18.28,-7.575,75.0
+Sturmklamm Just The Way They Are,10,11,Catapults and Rams,1.0,E Fury,Fury,2,False,4.0,1.5,0.0,3,Bridge 2,-87.064,18.28,-59.06,75.0
+Sturmklamm Just The Way They Are,10,11,Catapults and Rams,1.0,E Fury,Fury,2,False,4.0,1.5,0.0,3,Bridge 3,-44.286,18.28,-78.74,75.0
+Sturmklamm Just The Way They Are,11,12,Elite Racer,1.0,E Racer,Racer,60,True,0.0,0.4,0.0,35,Bridge 2,-87.064,18.28,-59.06,35.0
+Sturmklamm Just The Way They Are,12,13,Elite Molemen,1.0,E Moleman,Mole Warrior,65,True,0.0,0.4,0.0,35,Bridge Broken,-139.695,18.61,78.126,60.0
+Sturmklamm Just The Way They Are,13,14,Final Wave,1.0,E Ogre,Ogre,3,True,0.0,10.0,0.0,0,Bridge 1,-124.415,18.28,-7.575,200.0
+Sturmklamm Just The Way They Are,13,14,Final Wave,1.0,E Ogre,Ogre,2,True,0.0,10.0,0.0,0,Bridge 2,-87.064,18.28,-59.06,200.0
+Sturmklamm Just The Way They Are,13,14,Final Wave,1.0,E Ogre,Ogre,3,True,0.0,10.0,0.0,0,Bridge 3,-44.286,18.28,-78.74,200.0
+Sturmklamm Just The Way They Are,13,14,Final Wave,1.0,E StrongSlime,Spiky Slime,50,False,0.0,1.0,0.0,0,Bridge 3,-44.286,18.28,-78.74,50.0
+Sturmklamm Just The Way They Are,13,14,Final Wave,1.0,E StrongSlime,Spiky Slime,50,False,0.0,1.0,0.0,0,Bridge 2,-87.064,18.28,-59.06,50.0
+Sturmklamm Just The Way They Are,13,14,Final Wave,1.0,E StrongSlime,Spiky Slime,50,False,0.0,1.0,0.0,0,Bridge 1,-124.415,18.28,-7.575,50.0
+Sturmklamm One Man Army,0,1,Melee,1.0,E Melee,Swordsman,15,False,0.0,0.5,0.0,11,Bridge 1,-124.415,18.28,-7.575,25.0
+Sturmklamm One Man Army,1,2,Barrel Knights,1.0,E BarrelKnight,Barrel Knight,5,False,0.0,1.5,0.0,12,Bridge 2,-87.064,18.28,-59.06,100.0
+Sturmklamm One Man Army,2,3,Ogres,1.0,E Ogre,Ogre,2,False,0.0,1.0,0.0,5,Bridge 1,-124.415,18.28,-7.575,200.0
+Sturmklamm One Man Army,2,3,Ogres,1.0,E Ogre,Ogre,2,False,0.0,1.0,0.0,5,Bridge 2,-87.064,18.28,-59.06,200.0
+Sturmklamm One Man Army,2,3,Ogres,1.0,E Ogre,Ogre,2,False,0.0,1.0,0.0,5,Bridge 3,-44.286,18.28,-78.74,200.0
+Sturmklamm One Man Army,3,4,Archer and Racer,1.0,E Archer,Archer,4,False,0.0,1.0,0.0,3,Bridge 1,-124.415,18.28,-7.575,20.0
+Sturmklamm One Man Army,3,4,Archer and Racer,1.0,E Archer,Archer,4,False,0.0,1.0,0.0,3,Bridge 2,-87.064,18.28,-59.06,20.0
+Sturmklamm One Man Army,3,4,Archer and Racer,1.0,E Archer,Archer,4,False,0.0,1.0,0.0,3,Bridge 3,-44.286,18.28,-78.74,20.0
+Sturmklamm One Man Army,3,4,Archer and Racer,1.0,E Racer,Racer,3,False,0.0,5.0,0.0,3,Bridge 1,-124.415,18.28,-7.575,35.0
+Sturmklamm One Man Army,3,4,Archer and Racer,1.0,E Racer,Racer,3,False,0.0,5.0,0.0,3,Bridge 2,-87.064,18.28,-59.06,35.0
+Sturmklamm One Man Army,3,4,Archer and Racer,1.0,E Racer,Racer,3,False,0.0,5.0,0.0,3,Bridge 3,-44.286,18.28,-78.74,35.0
+Sturmklamm One Man Army,4,5,Molemen and Ogre,1.0,E Moleman,Mole Warrior,25,False,0.0,0.2,0.0,8,Bridge Broken,-139.695,18.61,78.126,60.0
+Sturmklamm One Man Army,4,5,Molemen and Ogre,1.0,E Ogre,Ogre,5,False,0.0,2.0,0.0,7,Bridge 1,-124.415,18.28,-7.575,200.0
+Sturmklamm One Man Army,5,6,Massive Attack,1.0,E Ogre,Ogre,5,False,0.0,1.0,0.0,2,Bridge 1,-124.415,18.28,-7.575,200.0
+Sturmklamm One Man Army,5,6,Massive Attack,1.0,E Ogre,Ogre,5,False,0.0,1.0,0.0,2,Bridge 2,-87.064,18.28,-59.06,200.0
+Sturmklamm One Man Army,5,6,Massive Attack,1.0,E Ogre,Ogre,5,False,0.0,1.0,0.0,2,Bridge 3,-44.286,18.28,-78.74,200.0
+Sturmklamm One Man Army,5,6,Massive Attack,1.0,E Quicksling,Quicksling,2,False,5.0,5.0,0.0,2,Bridge 1,-124.415,18.28,-7.575,55.0
+Sturmklamm One Man Army,5,6,Massive Attack,1.0,E Quicksling,Quicksling,2,False,5.0,5.0,0.0,2,Bridge 2,-87.064,18.28,-59.06,55.0
+Sturmklamm One Man Army,5,6,Massive Attack,1.0,E Quicksling,Quicksling,2,False,5.0,5.0,0.0,2,Bridge 3,-44.286,18.28,-78.74,55.0
+Sturmklamm One Man Army,5,6,Massive Attack,1.0,E BarrelKnight,Barrel Knight,5,False,0.0,0.5,0.0,2,Bridge 1,-124.415,18.28,-7.575,100.0
+Sturmklamm One Man Army,5,6,Massive Attack,1.0,E BarrelKnight,Barrel Knight,5,False,0.0,0.5,0.0,2,Bridge 2,-87.064,18.28,-59.06,100.0
+Sturmklamm One Man Army,5,6,Massive Attack,1.0,E BarrelKnight,Barrel Knight,5,False,0.0,0.5,0.0,2,Bridge 3,-44.286,18.28,-78.74,100.0
+Sturmklamm One Man Army,6,7,Archer,1.0,E Archer,Archer,25,True,0.0,1.0,0.0,6,Bridge 1,-124.415,18.28,-7.575,20.0
+Sturmklamm One Man Army,6,7,Archer,1.0,E Crossbow,Master Crossbowmen,15,True,0.0,1.75,0.0,6,Bridge 2,-87.064,18.28,-59.06,40.0
+Sturmklamm One Man Army,6,7,Archer,1.0,E Quicksling,Quicksling,7,False,0.0,5.0,0.0,6,Bridge 3,-44.286,18.28,-78.74,55.0
+Sturmklamm One Man Army,7,8,Ogres and Exploders,1.0,E Ogre,Ogre,25,False,0.0,1.0,0.0,2,Bridge 1,-124.415,18.28,-7.575,200.0
+Sturmklamm One Man Army,7,8,Ogres and Exploders,1.0,E Ogre,Ogre,25,False,0.0,1.0,0.0,2,Bridge 2,-87.064,18.28,-59.06,200.0
+Sturmklamm One Man Army,7,8,Ogres and Exploders,1.0,E Exploder,Exploder,13,False,0.0,2.0,0.0,2,Bridge 3,-44.286,18.28,-78.74,65.0
+Sturmklamm One Man Army,8,9,Eldermole,1.0,E Eldermole,Strange Statue,1,False,2.0,1.0,0.0,5,E Eldermole,-91.448,19.323,72.563,10000.0
+Sturmklamm One Man Army,8,9,Eldermole,1.0,E Fury,Fury,20,False,2.0,1.0,0.0,5,Bridge 2,-87.064,18.28,-59.06,75.0
+Sturmklamm One Man Army,9,10,Massive Attack,1.0,E Ogre,Ogre,8,False,0.0,1.0,0.0,2,Bridge 1,-124.415,18.28,-7.575,200.0
+Sturmklamm One Man Army,9,10,Massive Attack,1.0,E Ogre,Ogre,8,False,0.0,1.0,0.0,2,Bridge 2,-87.064,18.28,-59.06,200.0
+Sturmklamm One Man Army,9,10,Massive Attack,1.0,E Ogre,Ogre,8,False,0.0,1.0,0.0,2,Bridge 3,-44.286,18.28,-78.74,200.0
+Sturmklamm One Man Army,9,10,Massive Attack,1.0,E Quicksling,Quicksling,7,False,2.0,2.0,0.0,2,Bridge 1,-124.415,18.28,-7.575,55.0
+Sturmklamm One Man Army,9,10,Massive Attack,1.0,E Quicksling,Quicksling,7,False,2.0,2.0,0.0,2,Bridge 2,-87.064,18.28,-59.06,55.0
+Sturmklamm One Man Army,9,10,Massive Attack,1.0,E Quicksling,Quicksling,7,False,2.0,2.0,0.0,2,Bridge 3,-44.286,18.28,-78.74,55.0
+Sturmklamm One Man Army,9,10,Massive Attack,1.0,E BarrelKnight,Barrel Knight,10,False,0.0,0.5,0.0,2,Bridge 1,-124.415,18.28,-7.575,100.0
+Sturmklamm One Man Army,9,10,Massive Attack,1.0,E BarrelKnight,Barrel Knight,10,False,0.0,0.5,0.0,2,Bridge 2,-87.064,18.28,-59.06,100.0
+Sturmklamm One Man Army,9,10,Massive Attack,1.0,E BarrelKnight,Barrel Knight,10,False,0.0,0.5,0.0,2,Bridge 3,-44.286,18.28,-78.74,100.0
+Sturmklamm One Man Army,9,10,Massive Attack,1.0,E Eldermole,Strange Statue,1,False,40.0,0.0,0.0,2,E Eldermole,-84.278,19.323,-16.047,10000.0
+Sturmklamm One Man Army,9,10,Massive Attack,1.0,E Eldermole,Strange Statue,1,False,50.0,0.0,0.0,2,E Eldermole,-26.128,18.92,-60.947,10000.0
+Sturmklamm One Man Army,9,10,Massive Attack,1.0,E Eldermole,Strange Statue,1,False,60.0,0.0,0.0,2,E Eldermole,-113.2,19.323,42.4,10000.0
+Sturmklamm One Man Army,10,11,Boss Wave,1.0,E Eldermole,Eldermole,5,False,0.0,1.0,0.0,0,Bridge 2,-87.064,18.28,-59.06,10000.0
+Sturmklamm One Man Army,10,11,Boss Wave,1.0,E Eldermole,Eldermole,5,False,0.0,1.0,0.0,0,Bridge 1,-124.415,18.28,-7.575,10000.0
+Sturmklamm One Man Army,10,11,Boss Wave,1.0,E Eldermole,Eldermole,5,False,0.0,1.0,0.0,0,Bridge 3,-44.286,18.28,-78.74,10000.0
+Sturmklamm Shrine Challenge,0,1,Spears,1.0,E Melee,Swordsman,5,False,0.0,1.0,0.0,0,Bridge 1,-124.415,18.28,-7.575,25.0
+Sturmklamm Shrine Challenge,0,1,Spears,1.0,E Melee,Swordsman,5,False,0.0,1.0,0.0,0,Bridge 2,-87.064,18.28,-59.06,25.0
+Sturmklamm Shrine Challenge,0,1,Spears,1.0,E Melee,Swordsman,5,False,0.0,1.0,0.0,0,Bridge 3,-44.286,18.28,-78.74,25.0
+Sturmklamm Shrine Challenge,1,2,Molemen,1.0,E Moleman,Mole Warrior,5,False,0.0,1.0,0.0,0,Bridge Broken,-139.695,18.61,78.126,60.0
+Sturmklamm Shrine Challenge,2,3,Flying Wizzards,1.0,E Flyer,Wasp,4,False,0.0,3.0,0.0,0,Base Left Air,-9.5,36.2,54.1,25.0
+Sturmklamm Shrine Challenge,2,3,Flying Wizzards,1.0,E Flyer,Wasp,4,False,0.0,3.0,0.0,0,Base Right Air,17.35,36.2,17.75,25.0
+Sturmklamm Shrine Challenge,3,4,Racer,1.0,E Racer,Racer,13,False,0.0,1.1,0.0,0,Bridge 3,-44.286,18.28,-78.74,35.0
+Sturmklamm Shrine Challenge,4,5,Ogre,1.0,E Ogre,Ogre,2,False,0.0,1.0,0.0,0,Bridge 1,-124.415,18.28,-7.575,200.0
+Sturmklamm Shrine Challenge,4,5,Ogre,1.0,E Ogre,Ogre,2,False,0.0,1.0,0.0,0,Bridge 2,-87.064,18.28,-59.06,200.0
+Sturmklamm Shrine Challenge,4,5,Ogre,1.0,E Ogre,Ogre,2,False,0.0,1.0,0.0,0,Bridge 3,-44.286,18.28,-78.74,200.0
+Sturmklamm Shrine Challenge,5,6,Molemen & Archers,1.0,E Moleman,Mole Warrior,10,False,0.0,1.0,0.0,0,Bridge Broken,-139.695,18.61,78.126,60.0
+Sturmklamm Shrine Challenge,5,6,Molemen & Archers,1.0,E Moleman Archer,Mole Archer,5,False,0.0,2.0,0.0,0,Bridge Broken,-139.695,18.61,78.126,50.0
+Sturmklamm Shrine Challenge,6,7,Big Front Wave,1.0,E Ogre,Ogre,2,False,0.0,2.0,0.0,0,Bridge 1,-124.415,18.28,-7.575,200.0
+Sturmklamm Shrine Challenge,6,7,Big Front Wave,1.0,E Ogre,Ogre,2,False,0.0,2.0,0.0,0,Bridge 2,-87.064,18.28,-59.06,200.0
+Sturmklamm Shrine Challenge,6,7,Big Front Wave,1.0,E Ogre,Ogre,2,False,0.0,2.0,0.0,0,Bridge 3,-44.286,18.28,-78.74,200.0
+Sturmklamm Shrine Challenge,6,7,Big Front Wave,1.0,E Catapult,Catapult,3,False,0.0,3.0,0.0,0,Bridge 1,-124.415,18.28,-7.575,45.0
+Sturmklamm Shrine Challenge,6,7,Big Front Wave,1.0,E Catapult,Catapult,3,False,0.0,3.0,0.0,0,Bridge 2,-87.064,18.28,-59.06,45.0
+Sturmklamm Shrine Challenge,6,7,Big Front Wave,1.0,E Catapult,Catapult,3,False,0.0,3.0,0.0,0,Bridge 3,-44.286,18.28,-78.74,45.0
+Sturmklamm Shrine Challenge,7,8,Flyer Wave,1.0,E Flying Wizzard,Flying Mage,15,False,0.0,1.5,0.0,0,Base Left Air,-9.5,36.2,54.1,45.0
+Sturmklamm Shrine Challenge,7,8,Flyer Wave,1.0,E Flying Wizzard,Flying Mage,15,False,0.0,1.5,0.0,0,Base Right Air,17.35,36.2,17.75,45.0
+Sturmklamm Shrine Challenge,8,9,Molemen & Archers,1.0,E Moleman,Mole Warrior,40,False,0.0,0.25,0.0,0,Bridge 1,-124.415,18.28,-7.575,60.0
+Sturmklamm Shrine Challenge,8,9,Molemen & Archers,1.0,E Moleman Archer,Mole Archer,20,False,0.0,0.5,0.0,0,Bridge 1,-124.415,18.28,-7.575,50.0
+Sturmklamm Shrine Challenge,9,10,Racer & Hunterlings,1.0,E Racer,Racer,40,False,0.0,0.5,0.0,0,Bridge 3,-44.286,18.28,-78.74,35.0
+Sturmklamm Shrine Challenge,9,10,Racer & Hunterlings,1.0,E Hunterling,Hunterling,40,False,0.0,0.5,0.0,0,Bridge 1,-124.415,18.28,-7.575,30.0
+Sturmklamm Shrine Challenge,10,11,Fat Front Wave,1.0,E Ogre,Ogre,10,True,0.0,2.0,0.0,0,Bridge 1,-124.415,18.28,-7.575,200.0
+Sturmklamm Shrine Challenge,10,11,Fat Front Wave,1.0,E Ogre,Ogre,10,True,0.0,2.0,0.0,0,Bridge 2,-87.064,18.28,-59.06,200.0
+Sturmklamm Shrine Challenge,10,11,Fat Front Wave,1.0,E Ogre,Ogre,10,True,0.0,2.0,0.0,0,Bridge 3,-44.286,18.28,-78.74,200.0
+Sturmklamm Shrine Challenge,10,11,Fat Front Wave,1.0,E Melee,Swordsman,40,False,0.0,0.5,0.0,0,Bridge 1,-124.415,18.28,-7.575,25.0
+Sturmklamm Shrine Challenge,10,11,Fat Front Wave,1.0,E Melee,Swordsman,40,False,0.0,0.5,0.0,0,Bridge 2,-87.064,18.28,-59.06,25.0
+Sturmklamm Shrine Challenge,10,11,Fat Front Wave,1.0,E Melee,Swordsman,40,False,0.0,0.5,0.0,0,Bridge 3,-44.286,18.28,-78.74,25.0
+Sturmklamm Shrine Challenge,10,11,Fat Front Wave,1.0,E Moleman,Mole Warrior,20,False,0.0,1.5,0.0,0,Bridge Broken,-139.695,18.61,78.126,60.0
+Sturmklamm Shrine Challenge,11,12,Big Moleman Attack,1.0,E Moleman Archer,Mole Archer,150,True,0.0,0.05,0.0,0,Bridge Broken,-139.695,18.61,78.126,50.0
+Sturmklamm Shrine Challenge,12,13,Mole Siege,1.0,E Ram,Ram,7,True,5.0,1.0,0.0,0,Bridge 1,-124.415,18.28,-7.575,250.0
+Sturmklamm Shrine Challenge,12,13,Mole Siege,1.0,E Ram,Ram,7,True,5.0,1.0,0.0,0,Bridge 2,-87.064,18.28,-59.06,250.0
+Sturmklamm Shrine Challenge,12,13,Mole Siege,1.0,E Ram,Ram,7,True,5.0,1.0,0.0,0,Bridge 3,-44.286,18.28,-78.74,250.0
+Sturmklamm Shrine Challenge,12,13,Mole Siege,1.0,E Ogre,Ogre,15,True,0.0,1.0,0.0,0,Bridge 1,-124.415,18.28,-7.575,200.0
+Sturmklamm Shrine Challenge,12,13,Mole Siege,1.0,E Ogre,Ogre,15,True,0.0,1.0,0.0,0,Bridge 2,-87.064,18.28,-59.06,200.0
+Sturmklamm Shrine Challenge,12,13,Mole Siege,1.0,E Ogre,Ogre,15,True,0.0,1.0,0.0,0,Bridge 3,-44.286,18.28,-78.74,200.0
+Sturmklamm Shrine Challenge,12,13,Mole Siege,1.0,E Racer,Racer,35,True,5.0,0.5,0.0,0,Bridge 1,-124.415,18.28,-7.575,35.0
+Sturmklamm Shrine Challenge,12,13,Mole Siege,1.0,E Racer,Racer,35,True,5.0,0.5,0.0,0,Bridge 2,-87.064,18.28,-59.06,35.0
+Sturmklamm Shrine Challenge,12,13,Mole Siege,1.0,E Racer,Racer,35,True,5.0,0.5,0.0,0,Bridge 3,-44.286,18.28,-78.74,35.0
+Sturmklamm Shrine Challenge,12,13,Mole Siege,1.0,E Eldermole,Strange Statue,1,False,30.0,0.0,0.0,0,E Eldermole,-84.278,19.323,-16.047,10000.0
+Sturmklamm Shrine Challenge,12,13,Mole Siege,1.0,E Eldermole,Strange Statue,1,False,35.0,0.0,0.0,0,E Eldermole,-26.128,18.92,-60.947,10000.0
+Sturmklamm Shrine Challenge,12,13,Mole Siege,1.0,E Eldermole,Strange Statue,1,False,40.0,0.0,0.0,0,E Eldermole,-113.2,19.323,42.4,10000.0
+Sturmklamm Shrine Challenge,12,13,Mole Siege,1.0,E Eldermole,Strange Statue,1,False,45.0,0.0,0.0,0,E Eldermole,-91.448,19.323,72.563,10000.0
+Wildbach,0,1,Flails,1.0,E Flail,Flail,6,False,0.0,1.5,0.0,4,Main Bridge,-27.725,17.55,-188.31,55.0
+Wildbach,1,2,Spiders,1.0,E Small Spider,,6,False,0.0,2.0,0.0,1,Main Bridge,-27.725,17.55,-188.31,12.5
+Wildbach,1,2,Spiders,1.0,E Small Spider,,6,False,0.0,2.0,0.0,1,Expansion Main,32.66,17.27,-201.87,12.5
+Wildbach,1,2,Spiders,1.0,E Small Spider,,6,False,0.0,2.0,0.0,1,Expansion Side,74.905,18.56,-161.7,12.5
+Wildbach,1,2,Spiders,1.0,E Small Spider,,6,False,0.0,2.0,0.0,1,Upper Level Side,75.36,22.14,-80.745,12.5
+Wildbach,2,3,Bloodwings,1.0,E Bloodwing,Bloodwing,5,False,0.0,2.0,0.0,3,Main Bridge,-27.725,17.55,-188.31,50.0
+Wildbach,2,3,Bloodwings,1.0,E Bloodwing,Bloodwing,5,False,10.0,0.25,0.0,3,Main Bridge,-27.725,17.55,-188.31,50.0
+Wildbach,3,4,Giraffe Slimes,1.0,E Slime,Slime,7,False,0.0,0.5,0.0,1,Expansion Main,32.66,17.27,-201.87,12.5
+Wildbach,3,4,Giraffe Slimes,1.0,E Slime,Slime,7,False,0.0,0.5,0.0,1,Expansion Side,74.905,18.56,-161.7,12.5
+Wildbach,3,4,Giraffe Slimes,1.0,E Giraffeslime,Giraffe Slime,7,False,0.0,0.5,0.0,1,Expansion Main,32.66,17.27,-201.87,30.0
+Wildbach,3,4,Giraffe Slimes,1.0,E Giraffeslime,Giraffe Slime,7,False,0.0,0.5,0.0,1,Expansion Side,74.905,18.56,-161.7,30.0
+Wildbach,3,4,Giraffe Slimes,1.0,E Giraffeslime,Giraffe Slime,7,False,0.0,0.5,0.0,1,Upper Level Side,75.36,22.14,-80.745,30.0
+Wildbach,3,4,Giraffe Slimes,1.0,E Slime,Slime,7,False,0.0,0.5,0.0,1,Upper Level Side,75.36,22.14,-80.745,12.5
+Wildbach,4,5,Flails & Flais,1.0,E Flail,Flail,15,False,0.0,1.0,0.0,3,Main Bridge,-27.725,17.55,-188.31,55.0
+Wildbach,4,5,Flails & Flais,1.0,E Flogre,Flogre,3,False,0.0,5.0,0.0,4,Main Bridge,-27.725,17.55,-188.31,275.0
+Wildbach,5,6,Spiders & Spiders,1.0,E Small Spider,,15,False,0.0,1.5,0.0,1,Main Bridge,-27.725,17.55,-188.31,12.5
+Wildbach,5,6,Spiders & Spiders,1.0,E Small Spider,,15,False,0.0,1.5,0.0,1,Expansion Main,32.66,17.27,-201.87,12.5
+Wildbach,5,6,Spiders & Spiders,1.0,E Small Spider,,15,False,0.0,1.5,0.0,1,Expansion Side,74.905,18.56,-161.7,12.5
+Wildbach,5,6,Spiders & Spiders,1.0,E Small Spider,,15,False,0.0,1.5,0.0,1,Upper Level Side,75.36,22.14,-80.745,12.5
+Wildbach,5,6,Spiders & Spiders,1.0,E Medium Spider,,4,False,0.0,3.0,0.0,1,Upper Level Side,75.36,22.14,-80.745,50.0
+Wildbach,5,6,Spiders & Spiders,1.0,E Medium Spider,,4,False,0.0,3.0,0.0,1,Expansion Side,74.905,18.56,-161.7,50.0
+Wildbach,5,6,Spiders & Spiders,1.0,E Medium Spider,,4,False,0.0,3.0,0.0,1,Expansion Main,32.66,17.27,-201.87,50.0
+Wildbach,5,6,Spiders & Spiders,1.0,E Medium Spider,,4,False,0.0,3.0,0.0,1,Main Bridge,-27.725,17.55,-188.31,50.0
+Wildbach,6,7,Bloodwings,1.0,E Bloodwing,Bloodwing,15,False,0.0,1.5,0.0,3,Pond Air,-109.675,14.15,-73.205,50.0
+Wildbach,6,7,Bloodwings,1.0,E Flyer,Wasp,15,False,0.0,1.5,0.0,3,Pond Air,-109.675,14.15,-73.205,25.0
+Wildbach,7,8,Giraffe Slimes and Flogres,1.0,E Giraffeslime,Giraffe Slime,15,False,0.0,0.5,0.0,2,Expansion Main,32.66,17.27,-201.87,30.0
+Wildbach,7,8,Giraffe Slimes and Flogres,1.0,E Giraffeslime,Giraffe Slime,15,False,0.0,0.5,0.0,2,Expansion Side,74.905,18.56,-161.7,30.0
+Wildbach,7,8,Giraffe Slimes and Flogres,1.0,E Giraffeslime,Giraffe Slime,15,False,0.0,0.5,0.0,2,Upper Level Side,75.36,22.14,-80.745,30.0
+Wildbach,7,8,Giraffe Slimes and Flogres,1.0,E Giraffeslime,Giraffe Slime,15,False,0.0,0.5,0.0,2,Main Bridge,-27.725,17.55,-188.31,30.0
+Wildbach,7,8,Giraffe Slimes and Flogres,1.0,E Flogre,Flogre,7,False,0.0,3.0,0.0,2,Main Bridge,-27.725,17.55,-188.31,275.0
+Wildbach,8,9,Big Spiders,1.0,E Big Spider,,1,False,5.0,15.0,0.0,2,Main Bridge,-27.725,17.55,-188.31,800.0
+Wildbach,8,9,Big Spiders,1.0,E Big Spider,,1,False,5.0,15.0,0.0,2,Expansion Main,32.66,17.27,-201.87,800.0
+Wildbach,8,9,Big Spiders,1.0,E Medium Spider,,15,False,0.0,1.0,0.0,2,Expansion Main,32.66,17.27,-201.87,50.0
+Wildbach,8,9,Big Spiders,1.0,E Medium Spider,,15,False,0.0,1.0,0.0,2,Main Bridge,-27.725,17.55,-188.31,50.0
+Wildbach,8,9,Big Spiders,1.0,E Small Spider,,30,False,0.0,0.5,0.0,2,Main Bridge,-27.725,17.55,-188.31,12.5
+Wildbach,8,9,Big Spiders,1.0,E Small Spider,,30,False,0.0,0.5,0.0,2,Expansion Main,32.66,17.27,-201.87,12.5
+Wildbach,9,10,Bloodwing Assault,1.0,E Bloodwing,Bloodwing,14,False,0.0,1.0,0.0,2,Expansion Main,32.66,17.27,-201.87,50.0
+Wildbach,9,10,Bloodwing Assault,1.0,E Bloodwing,Bloodwing,14,False,0.0,1.0,0.0,2,Expansion Side,74.905,18.56,-161.7,50.0
+Wildbach,9,10,Bloodwing Assault,1.0,E Bloodwing,Bloodwing,14,False,0.0,1.0,0.0,2,Upper Level Side,75.36,22.14,-80.745,50.0
+Wildbach,9,10,Bloodwing Assault,1.0,E Bloodwing,Bloodwing,14,False,0.0,1.0,0.0,2,Main Bridge,-27.725,17.55,-188.31,50.0
+Wildbach,9,10,Bloodwing Assault,1.0,E Bloodwing,Bloodwing,14,False,0.0,1.0,0.0,2,Pond Air,-109.675,14.15,-73.205,50.0
+Wildbach,10,11,Flail Assault,1.0,E Flail,Flail,50,False,0.0,1.0,0.0,3,Expansion Main,32.66,17.27,-201.87,55.0
+Wildbach,10,11,Flail Assault,1.0,E Flail,Flail,50,False,0.0,1.0,0.0,3,Main Bridge,-27.725,17.55,-188.31,55.0
+Wildbach,10,11,Flail Assault,1.0,E Flogre,Flogre,10,False,0.0,5.0,0.0,3,Main Bridge,-27.725,17.55,-188.31,275.0
+Wildbach,10,11,Flail Assault,1.0,E Flogre,Flogre,10,False,0.0,5.0,0.0,3,Expansion Main,32.66,17.27,-201.87,275.0
+Wildbach,11,12,Slime Assault,1.0,E Giraffeslime,Giraffe Slime,20,False,0.0,0.25,0.0,3,Expansion Side,74.905,18.56,-161.7,30.0
+Wildbach,11,12,Slime Assault,1.0,E Giraffeslime,Giraffe Slime,20,False,0.0,0.25,0.0,3,Upper Level Side,75.36,22.14,-80.745,30.0
+Wildbach,11,12,Slime Assault,1.0,E StrongGiraffeslime,Spiky Giraffe,20,False,0.0,0.25,0.0,3,Expansion Side,74.905,18.56,-161.7,100.0
+Wildbach,11,12,Slime Assault,1.0,E StrongGiraffeslime,Spiky Giraffe,20,False,0.0,0.25,0.0,3,Upper Level Side,75.36,22.14,-80.745,100.0
+Wildbach,11,12,Slime Assault,1.0,E Racer,Racer,40,False,0.0,0.5,0.0,3,Upper Level Side,75.36,22.14,-80.745,35.0
+Wildbach,11,12,Slime Assault,1.0,E Racer,Racer,40,False,0.0,0.5,0.0,3,Expansion Side,74.905,18.56,-161.7,35.0
+Wildbach,12,13,Sipder Finale,1.0,E Big Spider,,5,False,0.0,7.0,0.0,0,Main Bridge,-27.725,17.55,-188.31,800.0
+Wildbach,12,13,Sipder Finale,1.0,E Big Spider,,5,False,0.0,7.0,0.0,0,Expansion Main,32.66,17.27,-201.87,800.0
+Wildbach,12,13,Sipder Finale,1.0,E Big Spider,,5,False,0.0,7.0,0.0,0,Expansion Side,74.905,18.56,-161.7,800.0
+Wildbach,12,13,Sipder Finale,1.0,E Big Spider,,5,False,0.0,7.0,0.0,0,Upper Level Side,75.36,22.14,-80.745,800.0
+Wildbach,12,13,Sipder Finale,1.0,E Bloodwing,Bloodwing,20,False,20.0,0.8,0.0,0,Pond Air,-109.675,14.15,-73.205,50.0
+Wildbach,12,13,Sipder Finale,1.0,E Medium Spider,,35,False,30.0,0.3,0.0,0,Upper Level Side,75.36,22.14,-80.745,50.0
+Wildbach,12,13,Sipder Finale,1.0,E Small Spider,,35,False,30.0,0.3,0.0,0,Upper Level Side,75.36,22.14,-80.745,12.5
+Moorweg,0,1,Monsters,1.0,E Giraffeslime,Giraffe Slime,8,False,0.0,2.0,0.0,8,Center,8.55,19.32,-0.5,30.0
+Moorweg,1,2,Ghosts,1.0,E Ghost,Ghost,8,False,0.0,1.0,0.0,7,Graveyard,-50.065,19.32,-99.67,100.0
+Moorweg,2,3,Thing,1.0,E Thing,Thing,1,False,0.0,0.0,0.0,10,Mountains,-21.7,19.32,97.0,1100.0
+Moorweg,3,4,Spiders,1.0,E Medium Spider,,18,False,0.0,3.0,0.0,5,Farms,16.4,19.32,-55.7,50.0
+Moorweg,3,4,Spiders,1.0,E Small Spider,,54,False,0.0,1.0,0.0,5,Farms,16.4,19.32,-55.7,12.5
+Moorweg,4,5,Human Invaders,1.0,E Melee,Swordsman,20,False,0.0,1.0,0.0,3,Center,8.55,19.32,-0.5,25.0
+Moorweg,4,5,Human Invaders,1.0,E Ram,Ram,2,False,0.0,10.0,0.0,3,Center,8.55,19.32,-0.5,250.0
+Moorweg,4,5,Human Invaders,1.0,E Crossbow,Master Crossbowmen,4,False,0.0,5.0,0.0,3,Center,8.55,19.32,-0.5,40.0
+Moorweg,4,5,Human Invaders,1.0,E Monster Rider,Monster Rider,10,False,20.0,2.0,0.0,3,Center,8.55,19.32,-0.5,40.0
+Moorweg,5,6,Racer & Barrel Knights,1.0,E Racer,Racer,8,False,0.0,1.0,0.0,1,Graveyard,-50.065,19.32,-99.67,35.0
+Moorweg,5,6,Racer & Barrel Knights,1.0,E Racer,Racer,8,False,0.0,1.0,0.0,1,Center,8.55,19.32,-0.5,35.0
+Moorweg,5,6,Racer & Barrel Knights,1.0,E Racer,Racer,8,False,0.0,1.0,0.0,1,Farms,16.4,19.32,-55.7,35.0
+Moorweg,5,6,Racer & Barrel Knights,1.0,E Racer,Racer,8,False,0.0,1.0,0.0,1,Mountains,-21.7,19.32,97.0,35.0
+Moorweg,5,6,Racer & Barrel Knights,1.0,E BarrelKnight,Barrel Knight,3,False,23.0,1.0,0.0,2,Graveyard,-50.065,19.32,-99.67,100.0
+Moorweg,5,6,Racer & Barrel Knights,1.0,E BarrelKnight,Barrel Knight,3,False,23.0,1.0,0.0,2,Farms,16.4,19.32,-55.7,100.0
+Moorweg,5,6,Racer & Barrel Knights,1.0,E BarrelKnight,Barrel Knight,3,False,23.0,1.0,0.0,2,Center,8.55,19.32,-0.5,100.0
+Moorweg,5,6,Racer & Barrel Knights,1.0,E BarrelKnight,Barrel Knight,3,False,23.0,1.0,0.0,2,Mountains,-21.7,19.32,97.0,100.0
+Moorweg,6,7,Thing Invasion,1.0,E Thing,Thing,3,False,0.0,4.0,0.0,8,Mountains,-21.7,19.32,97.0,1100.0
+Moorweg,6,7,Thing Invasion,1.0,E Thing,Thing,2,False,0.0,4.0,0.0,7,Center,8.55,19.32,-0.5,1100.0
+Moorweg,7,8,Ghosts,1.0,E Ghost,Ghost,100,False,0.0,0.3,0.0,15,Center,8.55,19.32,-0.5,100.0
+Moorweg,8,9,Farm Monster Invasion,1.0,E Big Spider,,2,False,0.0,20.0,0.0,3,Farms,16.4,19.32,-55.7,800.0
+Moorweg,8,9,Farm Monster Invasion,1.0,E Big Spider,,2,False,0.0,20.0,0.0,3,Graveyard,-50.065,19.32,-99.67,800.0
+Moorweg,8,9,Farm Monster Invasion,1.0,E StrongGiraffeslime,Spiky Giraffe,10,False,0.0,2.0,0.0,3,Graveyard,-50.065,19.32,-99.67,100.0
+Moorweg,8,9,Farm Monster Invasion,1.0,E StrongGiraffeslime,Spiky Giraffe,10,False,0.0,2.0,0.0,3,Farms,16.4,19.32,-55.7,100.0
+Moorweg,8,9,Farm Monster Invasion,1.0,E Exploder,Exploder,3,False,2.0,2.0,0.0,3,Farms,16.4,19.32,-55.7,65.0
+Moorweg,8,9,Farm Monster Invasion,1.0,E Exploder,Exploder,3,False,2.0,2.0,0.0,3,Graveyard,-50.065,19.32,-99.67,65.0
+Moorweg,8,9,Farm Monster Invasion,1.0,E Fury,Fury,5,False,30.0,2.0,0.0,3,Graveyard,-50.065,19.32,-99.67,75.0
+Moorweg,8,9,Farm Monster Invasion,1.0,E Fury,Fury,5,False,30.0,2.0,0.0,3,Farms,16.4,19.32,-55.7,75.0
+Moorweg,8,9,Farm Monster Invasion,1.0,E Flyer,Wasp,10,False,30.0,1.0,0.0,3,Farms,16.4,19.32,-55.7,25.0
+Moorweg,8,9,Farm Monster Invasion,1.0,E Flyer,Wasp,10,False,30.0,1.0,0.0,3,Graveyard,-50.065,19.32,-99.67,25.0
+Moorweg,9,10,Humanoid Boss Wave,1.0,E Flogre,Flogre,10,False,0.0,0.5,0.0,7,Mountains,-21.7,19.32,97.0,275.0
+Moorweg,9,10,Humanoid Boss Wave,1.0,E Ram,Ram,10,False,0.0,5.0,0.0,7,Mountains,-21.7,19.32,97.0,250.0
+Moorweg,9,10,Humanoid Boss Wave,1.0,E Crossbow,Master Crossbowmen,20,False,0.0,2.5,0.0,7,Mountains,-21.7,19.32,97.0,40.0
+Moorweg,9,10,Humanoid Boss Wave,1.0,E Flail,Flail,50,False,0.0,0.5,0.0,7,Mountains,-21.7,19.32,97.0,55.0
+Moorweg,9,10,Humanoid Boss Wave,1.0,E Archer,Archer,50,False,25.0,0.5,0.0,7,Mountains,-21.7,19.32,97.0,20.0
+Moorweg,10,11,Things and Ghosts,1.0,E Thing,Thing,7,False,0.0,7.0,0.0,7,Graveyard,-50.065,19.32,-99.67,1100.0
+Moorweg,10,11,Things and Ghosts,1.0,E Thing,Thing,6,False,0.0,7.0,0.0,7,Farms,16.4,19.32,-55.7,1100.0
+Moorweg,10,11,Things and Ghosts,1.0,E Thing,Thing,6,False,0.0,7.0,0.0,7,Center,8.55,19.32,-0.5,1100.0
+Moorweg,10,11,Things and Ghosts,1.0,E Thing,Thing,7,False,0.0,7.0,0.0,7,Mountains,-21.7,19.32,97.0,1100.0
+Moorweg,10,11,Things and Ghosts,1.0,E Ghost,Ghost,20,False,70.0,1.0,0.0,7,Mountains,-21.7,19.32,97.0,100.0
+Moorweg,10,11,Things and Ghosts,1.0,E Ghost,Ghost,20,False,70.0,1.0,0.0,7,Farms,16.4,19.32,-55.7,100.0
+Moorweg,10,11,Things and Ghosts,1.0,E Ghost,Ghost,20,False,70.0,1.0,0.0,7,Center,8.55,19.32,-0.5,100.0
+Moorweg,10,11,Things and Ghosts,1.0,E Ghost,Ghost,20,False,70.0,1.0,0.0,7,Graveyard,-50.065,19.32,-99.67,100.0
+Moorweg,11,12,Boss,1.0,Spawn Animation,,1,False,0.5,1.0,0.0,0,Spawn Animation,-104.277,20.629,-58.277,
+Moorweg,11,12,Boss,1.0,Empty Delay,,1,False,5.0,1.0,0.0,0,Empty Delay,0.0,0.0,0.0,
+Moorweg,11,12,Boss,1.0,Screen Shake,,1,False,3.33,1.0,0.0,0,Screen Shake,0.0,0.0,0.0,
+Moorweg,11,12,Boss,1.0,E Ghostqueen,Elara the Vile,1,False,7.0,1.0,0.0,0,E Ghostqueen,-104.11,21.082,-60.87,15000.0
+Freifort,0,1,Barrel Knight and Archers,1.0,E BarrelKnight,Barrel Knight,2,False,0.0,2.0,0.0,3,Top Left,-167.665,6.82,26.71,100.0
+Freifort,0,1,Barrel Knight and Archers,1.0,E Archer,Archer,6,False,0.0,2.0,0.0,4,Top Left,-167.665,6.82,26.71,20.0
+Freifort,1,2,"Flails, Rams, Crossbows",1.0,E Ram,Ram,1,False,0.0,1.0,0.0,2,Top Right,33.46,-3.7,-36.715,250.0
+Freifort,1,2,"Flails, Rams, Crossbows",1.0,E Flail,Flail,4,False,0.0,2.0,0.0,3,Top Right,33.46,-3.7,-36.715,55.0
+Freifort,1,2,"Flails, Rams, Crossbows",1.0,E Crossbow,Master Crossbowmen,2,False,0.0,2.0,0.0,3,Top Right,33.46,-3.7,-36.715,40.0
+Freifort,2,3,Spiders from Cave,1.0,E Small Spider,,25,False,0.0,0.5,0.0,6,Cave,-160.6,-15.8,-82.7,12.5
+Freifort,2,3,Spiders from Cave,1.0,E Medium Spider,,3,False,12.5,0.5,0.0,2,Cave,-160.6,-15.8,-82.7,50.0
+Freifort,3,4,Wheels,1.0,E Wheel,Wheel,3,False,0.0,2.0,0.0,8,Middle,-39.195,-15.8,-120.05,180.0
+Freifort,4,5,Monster Riders,1.0,E Monster Rider,Monster Rider,15,False,0.0,1.5,0.0,4,Middle,-39.195,-15.8,-120.05,40.0
+Freifort,4,5,Monster Riders,1.0,E Monster Rider,Monster Rider,15,False,0.0,1.5,0.0,4,Bot Right,24.25,-15.8,-104.7,40.0
+Freifort,4,5,Monster Riders,1.0,E Monster Rider,Monster Rider,15,False,0.0,1.5,0.0,4,Bot Left,-110.85,-15.8,-126.35,40.0
+Freifort,5,6,Hunterling & Quicklsing,1.0,E Hunterling,Hunterling,10,False,0.0,1.5,0.0,4,Top Left,-167.665,6.82,26.71,30.0
+Freifort,5,6,Hunterling & Quicklsing,1.0,E Quicksling,Quicksling,4,False,1.0,1.5,0.0,4,Bot Left,-110.85,-15.8,-126.35,55.0
+Freifort,5,6,Hunterling & Quicklsing,1.0,E Melee,Swordsman,20,False,0.0,0.5,0.0,4,Bot Left,-110.85,-15.8,-126.35,25.0
+Freifort,6,7,Big Tower Attack,1.0,E Iron Tower,Iron Tower,5,False,0.0,3.0,0.0,4,Middle,-39.195,-15.8,-120.05,200.0
+Freifort,6,7,Big Tower Attack,1.0,E BarrelKnight,Barrel Knight,15,False,0.0,0.5,0.0,4,Middle,-39.195,-15.8,-120.05,100.0
+Freifort,6,7,Big Tower Attack,1.0,E Archer,Archer,30,False,0.0,0.5,0.0,4,Middle,-39.195,-15.8,-120.05,20.0
+Freifort,7,8,Cave,1.0,E Medium Spider,,15,False,0.0,1.0,0.0,4,Cave,-160.6,-15.8,-82.7,50.0
+Freifort,7,8,Cave,1.0,E Racer,Racer,40,False,0.0,1.0,0.0,4,Bot Right,24.25,-15.8,-104.7,35.0
+Freifort,7,8,Cave,1.0,E Flying Wizzard,Flying Mage,20,False,0.0,2.0,0.0,4,Bot Left,-110.85,-15.8,-126.35,45.0
+Freifort,8,9,Wheels,1.0,E Wheel,Wheel,5,False,0.0,2.0,0.0,3,Middle,-39.195,-15.8,-120.05,180.0
+Freifort,8,9,Wheels,1.0,E Wheel,Wheel,5,False,0.0,2.0,0.0,3,Bot Left,-110.85,-15.8,-126.35,180.0
+Freifort,8,9,Wheels,1.0,E Wheel,Wheel,5,False,0.0,2.0,0.0,3,Bot Right,24.25,-15.8,-104.7,180.0
+Freifort,8,9,Wheels,1.0,E Monster Rider,Monster Rider,15,False,0.0,1.0,0.0,3,Bot Right,24.25,-15.8,-104.7,40.0
+Freifort,8,9,Wheels,1.0,E Crossbow,Master Crossbowmen,15,False,0.0,1.0,0.0,3,Bot Left,-110.85,-15.8,-126.35,40.0
+Freifort,8,9,Wheels,1.0,E LongSpear,Pikes,15,False,0.0,1.0,0.0,3,Middle,-39.195,-15.8,-120.05,25.0
+Freifort,9,10,Windboats,1.0,E Windboat,Wind-Boat,7,False,0.0,6.0,0.0,5,Bot Left,-110.85,-15.8,-126.35,300.0
+Freifort,9,10,Windboats,1.0,E Windboat,Wind-Boat,7,False,0.0,6.0,0.0,5,Middle,-39.195,-15.8,-120.05,300.0
+Freifort,9,10,Windboats,1.0,E Windboat,Wind-Boat,7,False,0.0,6.0,0.0,5,Bot Right,24.25,-15.8,-104.7,300.0
+Freifort,9,10,Windboats,1.0,E BarrelKnight,Barrel Knight,20,False,0.0,1.0,0.0,5,Bot Right,24.25,-15.8,-104.7,100.0
+Freifort,9,10,Windboats,1.0,E Ogre,Ogre,10,False,0.0,3.0,0.0,5,Middle,-39.195,-15.8,-120.05,200.0
+Freifort,9,10,Windboats,1.0,E Wheel,Wheel,2,False,0.0,3.0,0.0,5,Bot Left,-110.85,-15.8,-126.35,180.0
+Freifort,9,10,Windboats,1.0,E Medium Spider,,12,False,0.0,2.0,0.0,5,Cave,-160.6,-15.8,-82.7,50.0
+Freifort,10,11,Runby,1.0,E Wheel,Wheel,8,False,0.0,5.0,0.0,5,Top Right,33.46,-3.7,-36.715,180.0
+Freifort,10,11,Runby,1.0,E Archer,Archer,45,False,0.0,0.5,0.0,5,Top Right,33.46,-3.7,-36.715,20.0
+Freifort,10,11,Runby,1.0,E Racer,Racer,15,False,0.0,2.0,0.0,5,Top Left,-167.665,6.82,26.71,35.0
+Freifort,10,11,Runby,1.0,E Ram,Ram,6,False,0.0,2.5,0.0,3,Top Left,-167.665,6.82,26.71,250.0
+Freifort,10,11,Runby,1.0,E LongSpear,Pikes,30,False,0.0,0.5,0.0,2,Top Left,-167.665,6.82,26.71,25.0
+Freifort,10,11,Runby,1.0,E Big Spider,,1,False,0.0,0.5,0.0,3,Top Right,33.46,-3.7,-36.715,800.0
+Freifort,10,11,Runby,1.0,E Windboat,Wind-Boat,2,False,0.0,0.5,0.0,2,Top Left,-167.665,6.82,26.71,300.0
+Freifort,11,12,Fat Siege Attack,1.0,E Iron Tower,Iron Tower,11,False,0.0,1.5,0.0,5,Middle,-39.195,-15.8,-120.05,200.0
+Freifort,11,12,Fat Siege Attack,1.0,E Wheel,Wheel,11,False,0.0,5.0,0.0,5,Middle,-39.195,-15.8,-120.05,180.0
+Freifort,11,12,Fat Siege Attack,1.0,E Windboat,Wind-Boat,11,False,0.0,5.0,0.0,5,Middle,-39.195,-15.8,-120.05,300.0
+Freifort,11,12,Fat Siege Attack,1.0,E BarrelKnight,Barrel Knight,52,False,0.0,1.0,0.0,5,Middle,-39.195,-15.8,-120.05,100.0
+Freifort,11,12,Fat Siege Attack,1.0,E Crossbow,Master Crossbowmen,32,False,0.0,1.5,0.0,5,Bot Right,24.25,-15.8,-104.7,40.0
+Freifort,11,12,Fat Siege Attack,1.0,E Flail,Flail,32,False,0.0,1.5,0.0,5,Bot Left,-110.85,-15.8,-126.35,55.0
+Freifort,11,12,Fat Siege Attack,1.0,E Catapult,Catapult,11,False,0.0,5.0,0.0,5,Bot Left,-110.85,-15.8,-126.35,45.0
+Freifort,11,12,Fat Siege Attack,1.0,E Ram,Ram,11,False,0.0,5.0,0.0,5,Bot Right,24.25,-15.8,-104.7,250.0
+Freifort,12,13,IRON CASTLE,1.0,E Iron Castle,Iron Castle,1,False,0.0,0.0,0.0,0,SpawnLine,-36.971,-9.82,-145.118,66000.0
+Totend,0,1,Melee and Archer,1.0,E Fire Snail,Fire Snail,20,False,0.0,1.25,0.0,10,Middle Bridge,-168.224,9.3,10.705,45.0
+Totend,1,2,Dark Warriors and Iron Tower,1.0,E Dark Warrior,Dark Warrior,6,False,0.0,2.0,0.0,5,Left Bridge,-42.75,9.55,160.065,135.0
+Totend,1,2,Dark Warriors and Iron Tower,1.0,E Iron Tower,Iron Tower,1,False,0.0,5.0,0.0,5,Left Bridge,-42.75,9.55,160.065,200.0
+Totend,2,3,Flying Wizzards and Monsters,1.0,E Flying Wizzard,Flying Mage,20,False,0.0,5.0,0.0,5,Right Bridge,-41.79,14.54,-134.9,45.0
+Totend,2,3,Flying Wizzards and Monsters,1.0,E Slime,Slime,45,False,0.0,1.111,0.0,2,Right Bridge,-41.79,14.54,-134.9,12.5
+Totend,2,3,Flying Wizzards and Monsters,1.0,E Small Spider,,50,False,50.0,1.0,0.0,3,Right Bridge,-41.79,14.54,-134.9,12.5
+Totend,2,3,Flying Wizzards and Monsters,1.0,E Giraffeslime,Giraffe Slime,25,False,0.0,4.0,0.0,2,Right Bridge,-41.79,14.54,-134.9,30.0
+Totend,2,3,Flying Wizzards and Monsters,1.0,E Racer,Racer,10,False,75.0,2.5,0.0,3,Right Bridge,-41.79,14.54,-134.9,35.0
+Totend,3,4,Frontal Siege,1.0,E Moleman,Mole Warrior,15,False,0.0,1.0,0.0,6,Middle Bridge,-168.224,9.3,10.705,60.0
+Totend,3,4,Frontal Siege,1.0,E Moleman Archer,Mole Archer,15,False,0.0,1.0,0.0,6,Middle Bridge,-168.224,9.3,10.705,50.0
+Totend,3,4,Frontal Siege,1.0,E Medium Spider,,25,False,0.0,1.0,0.0,6,Middle Bridge,-168.224,9.3,10.705,50.0
+Totend,4,5,"Thing, Big Spider, Furies",1.0,E Thing,Thing,1,False,0.0,1.0,0.0,6,Left Bridge,-42.75,9.55,160.065,1100.0
+Totend,4,5,"Thing, Big Spider, Furies",1.0,E Big Spider,,2,False,0.0,15.0,0.0,6,Left Bridge,-42.75,9.55,160.065,800.0
+Totend,4,5,"Thing, Big Spider, Furies",1.0,E Fury,Fury,15,False,0.0,1.5,0.0,6,Left Bridge,-42.75,9.55,160.065,75.0
+Totend,5,6,Fire Snails,1.0,E Fire Snail,Fire Snail,20,False,0.0,1.0,0.0,10,Right Bridge,-41.79,14.54,-134.9,45.0
+Totend,5,6,Fire Snails,1.0,E Fire Snail,Fire Snail,40,False,20.0,0.5,0.0,10,Right Bridge,-41.79,14.54,-134.9,45.0
+Totend,5,6,Fire Snails,1.0,E Fire Snail,Fire Snail,40,False,40.0,0.25,0.0,10,Right Bridge,-41.79,14.54,-134.9,45.0
+Totend,6,7,Siege and Ghosts,1.0,E Ram,Ram,3,False,0.0,5.0,0.0,5,Middle Bridge,-168.224,9.3,10.705,250.0
+Totend,6,7,Siege and Ghosts,1.0,E Quicksling,Quicksling,3,False,1.0,5.0,0.0,5,Middle Bridge,-168.224,9.3,10.705,55.0
+Totend,6,7,Siege and Ghosts,1.0,E Catapult,Catapult,3,False,2.0,5.0,0.0,5,Middle Bridge,-168.224,9.3,10.705,45.0
+Totend,6,7,Siege and Ghosts,1.0,E Iron Tower,Iron Tower,3,False,3.0,5.0,0.0,5,Middle Bridge,-168.224,9.3,10.705,200.0
+Totend,6,7,Siege and Ghosts,1.0,E Wheel,Wheel,6,False,4.0,2.5,0.0,5,Middle Bridge,-168.224,9.3,10.705,180.0
+Totend,6,7,Siege and Ghosts,1.0,E Ghost,Ghost,35,False,0.0,1.0,0.0,5,Middle Bridge,-168.224,9.3,10.705,100.0
+Totend,7,8,Flyers and Racers,1.0,E Flyer,Wasp,10,False,0.0,2.0,0.0,3,Right Air,-115.72,34.12,-72.23,25.0
+Totend,7,8,Flyers and Racers,1.0,E Flyer,Wasp,10,False,0.0,2.0,0.0,3,Left Air,-110.05,34.12,93.1,25.0
+Totend,7,8,Flyers and Racers,1.0,E Fury,Fury,10,False,0.0,2.0,0.0,3,Left Air,-110.05,34.12,93.1,75.0
+Totend,7,8,Flyers and Racers,1.0,E Fury,Fury,10,False,0.0,2.0,0.0,3,Right Air,-115.72,34.12,-72.23,75.0
+Totend,7,8,Flyers and Racers,1.0,E Bloodwing,Bloodwing,10,False,0.0,2.0,0.0,3,Right Air,-115.72,34.12,-72.23,50.0
+Totend,7,8,Flyers and Racers,1.0,E Bloodwing,Bloodwing,10,False,0.0,2.0,0.0,3,Left Air,-110.05,34.12,93.1,50.0
+Totend,7,8,Flyers and Racers,1.0,E Racer,Racer,40,False,0.0,0.4,0.0,3,Middle Bridge,-168.224,9.3,10.705,35.0
+Totend,7,8,Flyers and Racers,1.0,E Racer,Racer,40,False,0.0,0.4,0.0,3,Left Bridge,-42.75,9.55,160.065,35.0
+Totend,7,8,Flyers and Racers,1.0,E Racer,Racer,40,False,0.0,0.4,0.0,3,Right Bridge,-41.79,14.54,-134.9,35.0
+Totend,7,8,Flyers and Racers,1.0,E Exploder,Exploder,3,False,25.0,3.0,0.0,0,Right Bridge,-41.79,14.54,-134.9,65.0
+Totend,7,8,Flyers and Racers,1.0,E Exploder,Exploder,3,False,25.0,3.0,0.0,0,Left Bridge,-42.75,9.55,160.065,65.0
+Totend,7,8,Flyers and Racers,1.0,E Exploder,Exploder,3,False,25.0,3.0,0.0,0,Middle Bridge,-168.224,9.3,10.705,65.0
+Totend,8,9,Big Left Attack,1.0,E Fire Snail,Fire Snail,60,False,0.0,0.5,0.0,5,Left Bridge,-42.75,9.55,160.065,45.0
+Totend,8,9,Big Left Attack,1.0,E Dark Warrior,Dark Warrior,20,False,0.0,1.5,0.0,5,Left Bridge,-42.75,9.55,160.065,135.0
+Totend,8,9,Big Left Attack,1.0,E Catapult,Catapult,10,False,0.0,3.0,0.0,5,Left Bridge,-42.75,9.55,160.065,45.0
+Totend,8,9,Big Left Attack,1.0,E Crossbow,Master Crossbowmen,20,False,0.0,1.5,0.0,5,Left Bridge,-42.75,9.55,160.065,40.0
+Totend,8,9,Big Left Attack,1.0,E Flogre,Flogre,10,False,30.0,2.0,0.0,2,Left Bridge,-42.75,9.55,160.065,275.0
+Totend,8,9,Big Left Attack,1.0,E Flail,Flail,20,False,30.0,1.0,0.0,2,Left Bridge,-42.75,9.55,160.065,55.0
+Totend,8,9,Big Left Attack,1.0,E Thing,Thing,3,False,50.0,5.0,0.0,6,Left Bridge,-42.75,9.55,160.065,1100.0
+Totend,9,10,Archer Wave,1.0,E Exploder,Exploder,8,False,0.0,0.1,0.0,5,Right Bridge,-41.79,14.54,-134.9,65.0
+Totend,9,10,Archer Wave,1.0,E Iron Tower,Iron Tower,15,False,2.0,1.0,0.0,5,Right Bridge,-41.79,14.54,-134.9,200.0
+Totend,9,10,Archer Wave,1.0,E Archer,Archer,80,False,2.0,0.33,0.0,10,Right Bridge,-41.79,14.54,-134.9,20.0
+Totend,9,10,Archer Wave,1.0,E Fire Snail,Fire Snail,25,False,2.0,0.1,0.0,5,Right Bridge,-41.79,14.54,-134.9,45.0
+Totend,9,10,Archer Wave,1.0,E LongSpear,Pikes,15,False,4.0,0.1,0.0,0,Right Bridge,-41.79,14.54,-134.9,25.0
+Totend,9,10,Archer Wave,1.0,E Windboat,Wind-Boat,20,False,17.0,1.0,0.0,10,Right Bridge,-41.79,14.54,-134.9,300.0
+Totend,10,11,Frontal Monster Wave,1.0,E Thing,Thing,7,False,0.0,5.0,0.0,8,Middle Bridge,-168.224,9.3,10.705,1100.0
+Totend,10,11,Frontal Monster Wave,1.0,E Big Spider,,15,False,0.0,2.5,0.0,8,Middle Bridge,-168.224,9.3,10.705,800.0
+Totend,10,11,Frontal Monster Wave,1.0,E Fire Snail,Fire Snail,30,False,0.0,1.25,0.0,8,Middle Bridge,-168.224,9.3,10.705,45.0
+Totend,10,11,Frontal Monster Wave,1.0,E Giraffeslime,Giraffe Slime,30,False,0.0,1.25,0.0,8,Middle Bridge,-168.224,9.3,10.705,30.0
+Totend,11,12,Big Mole Attack Wave From Left,1.0,E Moleman Archer,Mole Archer,75,False,0.0,0.5,0.0,20,Left Bridge,-42.75,9.55,160.065,50.0
+Totend,11,12,Big Mole Attack Wave From Left,1.0,E Moleman,Mole Warrior,75,False,0.0,0.5,0.0,20,Left Bridge,-42.75,9.55,160.065,60.0
+Totend,11,12,Big Mole Attack Wave From Left,1.0,E Wheel,Wheel,25,False,0.0,1.5,0.0,20,Left Bridge,-42.75,9.55,160.065,180.0
+Totend,12,13,Big Fugging Wave From Right,1.0,E Fire Snail,Fire Snail,30,False,0.0,0.1,0.0,0,Right Bridge,-41.79,14.54,-134.9,45.0
+Totend,12,13,Big Fugging Wave From Right,1.0,E Dark Warrior,Dark Warrior,100,False,0.0,0.5,0.0,0,Right Bridge,-41.79,14.54,-134.9,135.0
+Totend,12,13,Big Fugging Wave From Right,1.0,E Quicksling,Quicksling,20,False,5.0,1.0,0.0,25,Right Bridge,-41.79,14.54,-134.9,55.0
+Totend,12,13,Big Fugging Wave From Right,1.0,E Ram,Ram,20,False,5.0,1.0,0.0,25,Right Bridge,-41.79,14.54,-134.9,250.0
+Totend,13,14,Final Siege Before Boss,1.0,E Thing,Thing,9,False,0.0,3.0,0.0,5,Middle Bridge,-168.224,9.3,10.705,1100.0
+Totend,13,14,Final Siege Before Boss,1.0,E Big Spider,,9,False,0.0,2.0,0.0,5,Left Bridge,-42.75,9.55,160.065,800.0
+Totend,13,14,Final Siege Before Boss,1.0,E Big Spider,,9,False,0.0,2.0,0.0,5,Right Bridge,-41.79,14.54,-134.9,800.0
+Totend,13,14,Final Siege Before Boss,1.0,E Iron Tower,Iron Tower,8,False,0.0,2.0,0.0,5,Right Bridge,-41.79,14.54,-134.9,200.0
+Totend,13,14,Final Siege Before Boss,1.0,E Iron Tower,Iron Tower,8,False,0.0,2.0,0.0,5,Left Bridge,-42.75,9.55,160.065,200.0
+Totend,13,14,Final Siege Before Boss,1.0,E Iron Tower,Iron Tower,8,False,0.0,2.0,0.0,5,Middle Bridge,-168.224,9.3,10.705,200.0
+Totend,13,14,Final Siege Before Boss,1.0,E Windboat,Wind-Boat,10,False,15.0,4.0,0.0,5,Right Air,-115.72,34.12,-72.23,300.0
+Totend,13,14,Final Siege Before Boss,1.0,E Windboat,Wind-Boat,10,False,15.0,4.0,0.0,5,Left Air,-110.05,34.12,93.1,300.0
+Totend,13,14,Final Siege Before Boss,1.0,E Catapult,Catapult,3,False,15.0,4.0,0.0,5,Middle Bridge,-168.224,9.3,10.705,45.0
+Totend,13,14,Final Siege Before Boss,1.0,E Catapult,Catapult,3,False,15.0,4.0,0.0,5,Left Bridge,-42.75,9.55,160.065,45.0
+Totend,13,14,Final Siege Before Boss,1.0,E Catapult,Catapult,3,False,15.0,4.0,0.0,5,Right Bridge,-41.79,14.54,-134.9,45.0
+Totend,13,14,Final Siege Before Boss,1.0,E Dark Warrior,Dark Warrior,40,False,5.0,1.8,0.0,5,Middle Bridge,-168.224,9.3,10.705,135.0
+Totend,14,15,FINAL BOSS,1.0,FINAL BOSS FIGHT,The Corrupt King,1,False,0.0,1.25,0.0,5,FINAL BOSS FIGHT,-187.8,20.01,17.53,
+Freifort MM1,0,1,1,1.0,Enemy Base 1,,0,False,0.0,0.0,0.0,0,Enemy Base 1,-72.896,4.831,32.243,
+Freifort MM1,1,2,2,1.0,Enemy Base 2,,0,False,0.0,0.0,0.0,0,Enemy Base 2,-77.491,3.524,23.986,
+Freifort MM1,2,3,3,1.0,Enemy Base 3,,0,False,0.0,0.0,0.0,0,Enemy Base 3,-76.419,2.885,14.716,
+Freifort MM1,3,4,4,1.0,Enemy Base 4,,0,False,0.0,0.0,0.0,0,Enemy Base 4,-77.774,3.365,16.774,
+Freifort MM1,4,5,5,1.0,Enemy Base 5,,0,False,0.0,0.0,0.0,0,Enemy Base 5,-78.568,3.838,20.928,
+Freifort MM1,5,6,6,1.0,Enemy Base 6,,0,False,0.0,0.0,0.0,0,Enemy Base 6,-77.995,3.781,19.668,
+Freifort MM2,0,1,Barrel Knight and Archers,1.0,E BarrelKnight,Barrel Knight,4,False,0.0,1.0,0.0,3,Top Left,-167.665,6.82,26.71,100.0
+Freifort MM2,0,1,Barrel Knight and Archers,1.0,E Archer,Archer,12,False,0.0,1.0,0.0,4,Top Left,-167.665,6.82,26.71,20.0
+Freifort MM2,1,2,"Flails, Rams, Crossbows",1.0,E Ram,Ram,2,False,0.0,1.0,0.0,2,Top Right,33.46,-3.7,-36.715,250.0
+Freifort MM2,1,2,"Flails, Rams, Crossbows",1.0,E Flail,Flail,10,False,0.0,2.0,0.0,3,Top Right,33.46,-3.7,-36.715,55.0
+Freifort MM2,1,2,"Flails, Rams, Crossbows",1.0,E Crossbow,Master Crossbowmen,4,False,0.0,2.0,0.0,3,Top Right,33.46,-3.7,-36.715,40.0
+Freifort MM2,2,3,Spiders from Cave,1.0,E Small Spider,,100,False,0.0,0.25,0.0,6,Cave,-160.6,-15.8,-82.7,12.5
+Freifort MM2,2,3,Spiders from Cave,1.0,E Medium Spider,,25,False,12.5,0.5,0.0,2,Cave,-160.6,-15.8,-82.7,50.0
+Freifort MM2,3,4,Wheels,1.0,E Wheel,Wheel,8,False,0.0,1.0,0.0,8,Middle,-39.195,-15.8,-120.05,180.0
+Freifort MM2,4,5,Monster Riders,1.0,E Monster Rider,Monster Rider,45,False,0.0,0.5,0.0,4,Middle,-39.195,-15.8,-120.05,40.0
+Freifort MM2,4,5,Monster Riders,1.0,E Monster Rider,Monster Rider,45,False,0.0,0.5,0.0,4,Bot Right,24.25,-15.8,-104.7,40.0
+Freifort MM2,4,5,Monster Riders,1.0,E Monster Rider,Monster Rider,45,False,0.0,0.5,0.0,4,Bot Left,-110.85,-15.8,-126.35,40.0
+Freifort MM2,5,6,Hunterling & Quicklsing,1.0,E Hunterling,Hunterling,15,True,0.0,1.5,0.0,4,Top Left,-167.665,6.82,26.71,30.0
+Freifort MM2,5,6,Hunterling & Quicklsing,1.0,E Quicksling,Quicksling,6,True,1.0,1.5,0.0,4,Bot Left,-110.85,-15.8,-126.35,55.0
+Freifort MM2,5,6,Hunterling & Quicklsing,1.0,E Melee,Swordsman,30,True,0.0,0.5,0.0,4,Bot Left,-110.85,-15.8,-126.35,25.0
+Freifort MM2,6,7,Big Tower Attack,1.0,E Iron Tower,Iron Tower,15,False,0.0,1.0,0.0,4,Middle,-39.195,-15.8,-120.05,200.0
+Freifort MM2,6,7,Big Tower Attack,1.0,E BarrelKnight,Barrel Knight,45,False,0.0,0.167,0.0,4,Middle,-39.195,-15.8,-120.05,100.0
+Freifort MM2,6,7,Big Tower Attack,1.0,E Archer,Archer,90,False,0.0,0.167,0.0,4,Middle,-39.195,-15.8,-120.05,20.0
+Freifort MM2,7,8,Cave,1.0,E Big Spider,,15,False,0.0,3.0,0.0,4,Cave,-160.6,-15.8,-82.7,800.0
+Freifort MM2,7,8,Cave,1.0,E Racer,Racer,40,True,0.0,1.0,0.0,4,Bot Right,24.25,-15.8,-104.7,35.0
+Freifort MM2,7,8,Cave,1.0,E Flying Wizzard,Flying Mage,20,True,0.0,2.0,0.0,4,Bot Left,-110.85,-15.8,-126.35,45.0
+Freifort MM2,8,9,Wheels,1.0,E Wheel,Wheel,7,False,0.0,2.0,0.0,3,Middle,-39.195,-15.8,-120.05,180.0
+Freifort MM2,8,9,Wheels,1.0,E Wheel,Wheel,7,False,0.0,2.0,0.0,3,Bot Left,-110.85,-15.8,-126.35,180.0
+Freifort MM2,8,9,Wheels,1.0,E Wheel,Wheel,7,False,0.0,2.0,0.0,3,Bot Right,24.25,-15.8,-104.7,180.0
+Freifort MM2,8,9,Wheels,1.0,E Monster Rider,Monster Rider,15,True,0.0,1.0,0.0,3,Bot Right,24.25,-15.8,-104.7,40.0
+Freifort MM2,8,9,Wheels,1.0,E Crossbow,Master Crossbowmen,15,True,0.0,1.0,0.0,3,Bot Left,-110.85,-15.8,-126.35,40.0
+Freifort MM2,8,9,Wheels,1.0,E LongSpear,Pikes,15,True,0.0,1.0,0.0,3,Middle,-39.195,-15.8,-120.05,25.0
+Freifort MM2,9,10,Windboats,1.0,E Windboat,Wind-Boat,4,True,0.0,6.0,0.0,5,Bot Left,-110.85,-15.8,-126.35,300.0
+Freifort MM2,9,10,Windboats,1.0,E Windboat,Wind-Boat,4,True,0.0,6.0,0.0,5,Middle,-39.195,-15.8,-120.05,300.0
+Freifort MM2,9,10,Windboats,1.0,E Windboat,Wind-Boat,4,True,0.0,6.0,0.0,5,Bot Right,24.25,-15.8,-104.7,300.0
+Freifort MM2,9,10,Windboats,1.0,E BarrelKnight,Barrel Knight,18,True,0.0,1.0,0.0,5,Bot Right,24.25,-15.8,-104.7,100.0
+Freifort MM2,9,10,Windboats,1.0,E Ogre,Ogre,9,True,0.0,3.0,0.0,5,Middle,-39.195,-15.8,-120.05,200.0
+Freifort MM2,9,10,Windboats,1.0,E Wheel,Wheel,2,True,0.0,3.0,0.0,5,Bot Left,-110.85,-15.8,-126.35,180.0
+Freifort MM2,9,10,Windboats,1.0,E Medium Spider,,12,True,0.0,2.0,0.0,5,Cave,-160.6,-15.8,-82.7,50.0
+Freifort MM2,10,11,Runby,1.0,E Wheel,Wheel,8,True,0.0,5.0,0.0,5,Top Right,33.46,-3.7,-36.715,180.0
+Freifort MM2,10,11,Runby,1.0,E Archer,Archer,45,True,0.0,0.5,0.0,5,Top Right,33.46,-3.7,-36.715,20.0
+Freifort MM2,10,11,Runby,1.0,E Racer,Racer,15,True,0.0,2.0,0.0,5,Top Left,-167.665,6.82,26.71,35.0
+Freifort MM2,10,11,Runby,1.0,E Ram,Ram,6,True,0.0,2.5,0.0,3,Top Left,-167.665,6.82,26.71,250.0
+Freifort MM2,10,11,Runby,1.0,E LongSpear,Pikes,30,True,0.0,0.5,0.0,2,Top Left,-167.665,6.82,26.71,25.0
+Freifort MM2,10,11,Runby,1.0,E Big Spider,,1,True,0.0,0.5,0.0,3,Top Right,33.46,-3.7,-36.715,800.0
+Freifort MM2,10,11,Runby,1.0,E Windboat,Wind-Boat,2,True,0.0,0.5,0.0,2,Top Left,-167.665,6.82,26.71,300.0
+Freifort MM2,11,12,Fat Siege Attack,1.0,E Iron Tower,Iron Tower,11,True,0.0,1.5,0.0,5,Middle,-39.195,-15.8,-120.05,200.0
+Freifort MM2,11,12,Fat Siege Attack,1.0,E Wheel,Wheel,11,True,0.0,5.0,0.0,5,Middle,-39.195,-15.8,-120.05,180.0
+Freifort MM2,11,12,Fat Siege Attack,1.0,E Windboat,Wind-Boat,5,True,0.0,10.0,0.0,5,Middle,-39.195,-15.8,-120.05,300.0
+Freifort MM2,11,12,Fat Siege Attack,1.0,E BarrelKnight,Barrel Knight,52,True,0.0,1.0,0.0,5,Middle,-39.195,-15.8,-120.05,100.0
+Freifort MM2,11,12,Fat Siege Attack,1.0,E Crossbow,Master Crossbowmen,32,True,0.0,1.5,0.0,5,Bot Right,24.25,-15.8,-104.7,40.0
+Freifort MM2,11,12,Fat Siege Attack,1.0,E Flail,Flail,32,True,0.0,1.5,0.0,5,Bot Left,-110.85,-15.8,-126.35,55.0
+Freifort MM2,11,12,Fat Siege Attack,1.0,E Catapult,Catapult,11,True,0.0,5.0,0.0,5,Bot Left,-110.85,-15.8,-126.35,45.0
+Freifort MM2,11,12,Fat Siege Attack,1.0,E Ram,Ram,11,True,0.0,5.0,0.0,5,Bot Right,24.25,-15.8,-104.7,250.0
+Freifort MM2,12,13,IRON CASTLE,1.0,E Iron Castle,Iron Castle,1,False,0.0,0.0,0.0,0,SpawnLine,-36.971,-9.82,-145.118,68750.0
+Freifort MM3,0,1,Melee and Archer,1.0,E Melee,Swordsman,5,False,0.0,0.2,0.0,4,Top Left,-167.665,6.82,26.71,25.0
+Freifort MM3,0,1,Melee and Archer,1.0,E Archer,Archer,5,False,0.0,0.2,0.0,4,Top Right,33.46,-3.7,-36.715,20.0
+Freifort MM3,1,2,Melee and Archer Bottom,1.0,E Melee,Swordsman,10,False,0.0,0.1,0.0,5,Middle,-39.195,-15.8,-120.05,25.0
+Freifort MM3,1,2,Melee and Archer Bottom,1.0,E Archer,Archer,10,False,5.0,0.1,0.0,4,Middle,-39.195,-15.8,-120.05,20.0
+Freifort MM3,2,3,Flyers,1.0,E Flyer,Wasp,10,False,0.0,1.0,0.0,3,Middle,-39.195,-15.8,-120.05,25.0
+Freifort MM3,2,3,Flyers,1.0,E Flyer,Wasp,10,False,0.0,1.0,0.0,3,Bot Right,24.25,-15.8,-104.7,25.0
+Freifort MM3,2,3,Flyers,1.0,E Flyer,Wasp,10,False,0.0,1.0,0.0,3,Bot Left,-110.85,-15.8,-126.35,25.0
+Freifort MM3,3,4,Racer,1.0,E Racer,Racer,22,False,0.0,1.5,0.0,7,Cave,-160.6,-15.8,-82.7,35.0
+Freifort MM3,4,5,Mass Archer,1.0,E Archer,Archer,100,False,0.0,0.5,0.0,7,Bot Left,-110.85,-15.8,-126.35,20.0
+Freifort MM3,5,6,Mass Riders,1.0,E Monster Rider,Monster Rider,25,False,0.0,0.2,0.0,2,Bot Left,-110.85,-15.8,-126.35,40.0
+Freifort MM3,5,6,Mass Riders,1.0,E Monster Rider,Monster Rider,25,False,0.0,0.2,0.0,2,Middle,-39.195,-15.8,-120.05,40.0
+Freifort MM3,5,6,Mass Riders,1.0,E Monster Rider,Monster Rider,25,False,0.0,0.2,0.0,2,Bot Right,24.25,-15.8,-104.7,40.0
+Freifort MM3,6,7,Racer and Aircrafts,1.0,E Racer,Racer,50,False,0.0,1.0,0.0,2,Top Right,33.46,-3.7,-36.715,35.0
+Freifort MM3,6,7,Racer and Aircrafts,1.0,E Windboat,Wind-Boat,5,False,0.0,10.0,0.0,2,Top Right,33.46,-3.7,-36.715,300.0
+Freifort MM3,7,8,Racer and Aircrafts,1.0,E Monster Rider,Monster Rider,50,False,0.0,1.0,0.0,2,Middle,-39.195,-15.8,-120.05,40.0
+Freifort MM3,7,8,Racer and Aircrafts,1.0,E Giraffeslime,Giraffe Slime,50,False,0.0,1.0,0.0,2,Middle,-39.195,-15.8,-120.05,30.0
+Freifort MM3,7,8,Racer and Aircrafts,1.0,E Ram,Ram,4,False,0.0,1.0,0.0,2,Middle,-39.195,-15.8,-120.05,250.0
+Freifort MM3,7,8,Racer and Aircrafts,1.0,E Catapult,Catapult,6,False,40.0,1.0,0.0,2,Middle,-39.195,-15.8,-120.05,45.0
+Freifort MM3,8,9,Final Wave,1.0,E Defensive Melee Variant,Swordsman,20,False,0.0,1.0,0.0,0,Middle,-39.195,-15.8,-120.05,25.0
+Freifort MM3,8,9,Final Wave,1.0,E Defensive Melee Variant,Swordsman,20,False,0.0,1.0,0.0,0,Bot Left,-110.85,-15.8,-126.35,25.0
+Freifort MM3,8,9,Final Wave,1.0,E Defensive Melee Variant,Swordsman,20,False,0.0,1.0,0.0,0,Bot Right,24.25,-15.8,-104.7,25.0
+Freifort MM3,8,9,Final Wave,1.0,E Archer,Archer,20,False,0.0,1.0,0.0,0,Bot Right,24.25,-15.8,-104.7,20.0
+Freifort MM3,8,9,Final Wave,1.0,E Archer,Archer,20,False,0.0,1.0,0.0,0,Bot Left,-110.85,-15.8,-126.35,20.0
+Freifort MM3,8,9,Final Wave,1.0,E Archer,Archer,20,False,0.0,1.0,0.0,0,Middle,-39.195,-15.8,-120.05,20.0
+Freifort MM3,8,9,Final Wave,1.0,E Racer,Racer,30,False,20.0,1.5,0.0,0,Middle,-39.195,-15.8,-120.05,35.0
+Freifort MM3,8,9,Final Wave,1.0,E Racer,Racer,30,False,20.0,1.5,0.0,0,Bot Right,24.25,-15.8,-104.7,35.0
+Freifort MM3,8,9,Final Wave,1.0,E Racer,Racer,30,False,20.0,1.5,0.0,0,Bot Left,-110.85,-15.8,-126.35,35.0
+Freifort MM3,8,9,Final Wave,1.0,E Flying Wizzard,Flying Mage,30,False,20.0,1.5,0.0,0,Bot Left,-110.85,-15.8,-126.35,45.0
+Freifort MM3,8,9,Final Wave,1.0,E Flying Wizzard,Flying Mage,30,False,20.0,1.5,0.0,0,Bot Right,24.25,-15.8,-104.7,45.0
+Freifort MM3,8,9,Final Wave,1.0,E Flying Wizzard,Flying Mage,30,False,20.0,1.5,0.0,0,Middle,-39.195,-15.8,-120.05,45.0
+Freifort MM3,8,9,Final Wave,1.0,E Monster Rider,Monster Rider,20,False,50.0,1.0,0.0,0,Middle,-39.195,-15.8,-120.05,40.0
+Freifort MM3,8,9,Final Wave,1.0,E Monster Rider,Monster Rider,20,False,50.0,1.0,0.0,0,Bot Left,-110.85,-15.8,-126.35,40.0
+Freifort MM3,8,9,Final Wave,1.0,E Monster Rider,Monster Rider,20,False,50.0,1.0,0.0,0,Bot Right,24.25,-15.8,-104.7,40.0
+Moorweg MM2,0,1,Humans and Monsters From Middle and Farm,1.0,E Fire Snail,Fire Snail,30,False,0.0,1.0,0.0,0,Farms,16.4,19.32,-55.7,45.0
+Moorweg MM2,0,1,Humans and Monsters From Middle and Farm,1.0,E Flail,Flail,30,False,0.0,1.0,0.0,0,Center,8.55,19.32,-0.5,55.0
+Moorweg MM2,0,1,Humans and Monsters From Middle and Farm,1.0,E Flogre,Flogre,6,False,0.0,5.0,0.0,0,Center,8.55,19.32,-0.5,275.0
+Moorweg MM2,0,1,Humans and Monsters From Middle and Farm,1.0,E Racer,Racer,20,False,0.0,1.5,0.0,0,Farms,16.4,19.32,-55.7,35.0
+Moorweg MM2,0,1,Humans and Monsters From Middle and Farm,1.0,E Ram,Ram,4,False,0.0,1.5,0.0,0,Center,8.55,19.32,-0.5,250.0
+Moorweg MM2,0,1,Humans and Monsters From Middle and Farm,1.0,E Hunterling,Hunterling,7,False,10.0,0.5,0.0,0,Farms,16.4,19.32,-55.7,30.0
+Moorweg MM2,0,1,Humans and Monsters From Middle and Farm,1.0,E Thing,Thing,1,False,30.0,0.5,0.0,0,Farms,16.4,19.32,-55.7,1100.0
+Moorweg MM2,0,1,Humans and Monsters From Middle and Farm,1.0,E Quicksling,Quicksling,4,False,30.0,0.5,0.0,0,Center,8.55,19.32,-0.5,55.0
+Moorweg MM2,1,2,Humans and Monsters From Middle and Farm,1.0,E Exploder,Exploder,15,False,0.0,2.0,0.0,0,Mountains,-21.7,19.32,97.0,65.0
+Moorweg MM2,1,2,Humans and Monsters From Middle and Farm,1.0,E Catapult,Catapult,30,False,1.0,1.0,0.0,0,Mountains,-21.7,19.32,97.0,45.0
+Moorweg MM2,1,2,Humans and Monsters From Middle and Farm,1.0,E Archer,Archer,30,False,0.0,1.0,0.0,0,Mountains,-21.7,19.32,97.0,20.0
+Moorweg MM2,1,2,Humans and Monsters From Middle and Farm,1.0,E BarrelKnight,Barrel Knight,30,False,0.0,1.0,0.0,0,Graveyard,-50.065,19.32,-99.67,100.0
+Moorweg MM2,1,2,Humans and Monsters From Middle and Farm,1.0,E Medium Spider,,30,False,0.5,1.0,0.0,0,Graveyard,-50.065,19.32,-99.67,50.0
+Moorweg MM2,1,2,Humans and Monsters From Middle and Farm,1.0,E Small Spider,,30,False,0.5,1.0,0.0,0,Graveyard,-50.065,19.32,-99.67,12.5
+Moorweg MM2,1,2,Humans and Monsters From Middle and Farm,1.0,E Moleman,Mole Warrior,30,False,30.0,0.1,0.0,0,Mountains,-21.7,19.32,97.0,60.0
+Moorweg MM2,1,2,Humans and Monsters From Middle and Farm,1.0,E Big Spider,,6,False,30.0,3.0,0.0,0,Graveyard,-50.065,19.32,-99.67,800.0
+Moorweg MM2,1,2,Humans and Monsters From Middle and Farm,1.0,E Exploder,Exploder,3,False,10.0,10.0,0.0,0,Graveyard,-50.065,19.32,-99.67,65.0
+Moorweg MM2,1,2,Humans and Monsters From Middle and Farm,1.0,E Exploder,Exploder,3,False,10.5,10.0,0.0,0,Graveyard,-50.065,19.32,-99.67,65.0
+Moorweg MM2,2,3,Thicc Wave,1.0,E Fire Snail,Fire Snail,30,False,0.0,1.0,0.0,0,Mountains,-21.7,19.32,97.0,45.0
+Moorweg MM2,2,3,Thicc Wave,1.0,E Fire Snail,Fire Snail,30,False,0.0,1.0,0.0,0,Farms,16.4,19.32,-55.7,45.0
+Moorweg MM2,2,3,Thicc Wave,1.0,E Flail,Flail,60,False,0.0,1.0,0.0,0,Center,8.55,19.32,-0.5,55.0
+Moorweg MM2,2,3,Thicc Wave,1.0,E Flail,Flail,60,False,0.0,1.0,0.0,0,Graveyard,-50.065,19.32,-99.67,55.0
+Moorweg MM2,2,3,Thicc Wave,1.0,E Flogre,Flogre,3,False,0.5,0.2,0.0,0,Center,8.55,19.32,-0.5,275.0
+Moorweg MM2,2,3,Thicc Wave,1.0,E Ram,Ram,5,False,0.0,0.2,0.0,0,Farms,16.4,19.32,-55.7,250.0
+Moorweg MM2,2,3,Thicc Wave,1.0,E Exploder,Exploder,5,False,0.0,0.2,0.0,0,Mountains,-21.7,19.32,97.0,65.0
+Moorweg MM2,2,3,Thicc Wave,1.0,E Exploder,Exploder,5,False,0.0,0.2,0.0,0,Graveyard,-50.065,19.32,-99.67,65.0
+Moorweg MM2,2,3,Thicc Wave,1.0,E Ghost,Ghost,30,False,30.0,1.0,0.0,0,Graveyard,-50.065,19.32,-99.67,100.0
+Moorweg MM2,2,3,Thicc Wave,1.0,E Flyer,Wasp,30,False,30.0,1.0,0.0,0,Graveyard,-50.065,19.32,-99.67,25.0
+Moorweg MM2,2,3,Thicc Wave,1.0,E Racer,Racer,30,False,30.0,1.0,0.0,0,Farms,16.4,19.32,-55.7,35.0
+Moorweg MM2,2,3,Thicc Wave,1.0,E Racer,Racer,30,False,30.0,1.0,0.0,0,Center,8.55,19.32,-0.5,35.0
+Moorweg MM2,2,3,Thicc Wave,1.0,E Racer,Racer,30,False,30.0,1.0,0.0,0,Mountains,-21.7,19.32,97.0,35.0
+Moorweg MM2,2,3,Thicc Wave,1.0,E Catapult,Catapult,7,False,60.0,0.2,0.0,0,Mountains,-21.7,19.32,97.0,45.0
+Moorweg MM2,2,3,Thicc Wave,1.0,E Catapult,Catapult,7,False,60.0,0.2,0.0,0,Farms,16.4,19.32,-55.7,45.0
+Moorweg MM2,2,3,Thicc Wave,1.0,E Quicksling,Quicksling,7,False,60.0,0.2,0.0,0,Center,8.55,19.32,-0.5,55.0
+Moorweg MM2,2,3,Thicc Wave,1.0,E Quicksling,Quicksling,7,False,60.0,0.2,0.0,0,Graveyard,-50.065,19.32,-99.67,55.0
+Moorweg MM2,2,3,Thicc Wave,1.0,E Big Spider,,1,False,60.0,0.2,0.0,0,Graveyard,-50.065,19.32,-99.67,800.0
+Moorweg MM2,2,3,Thicc Wave,1.0,E Big Spider,,1,False,60.0,0.2,0.0,0,Mountains,-21.7,19.32,97.0,800.0
+Moorweg MM2,2,3,Thicc Wave,1.0,E Thing,Thing,1,False,60.0,0.2,0.0,0,Farms,16.4,19.32,-55.7,1100.0
+Moorweg MM2,2,3,Thicc Wave,1.0,E Thing,Thing,1,False,60.0,0.2,0.0,0,Center,8.55,19.32,-0.5,1100.0
+Moorweg MM3,0,1,Wave,1.0,E Moleman,Mole Warrior,1,False,0.0,2.0,0.0,1,Mountains,-21.7,19.32,97.0,60.0
+Moorweg MM3,0,1,Wave,1.0,E Moleman Archer,Mole Archer,1,False,1.0,2.0,0.0,1,Mountains,-21.7,19.32,97.0,50.0
+Moorweg MM3,0,1,Wave,1.0,E Medium Spider,,1,False,1.0,5.0,0.0,1,Graveyard,-50.065,19.32,-99.67,50.0
+Moorweg MM3,0,1,Wave,1.0,E Small Spider,,5,False,0.0,1.0,0.0,1,Graveyard,-50.065,19.32,-99.67,12.5
+Moorweg MM3,0,1,Wave,1.0,E Weakling,Peasant,5,False,0.0,1.0,0.0,1,Farms,16.4,19.32,-55.7,8.7
+Moorweg MM3,0,1,Wave,1.0,E Archer,Archer,3,False,0.0,2.0,0.0,1,Farms,16.4,19.32,-55.7,20.0
+Moorweg MM3,0,1,Wave,1.0,E Flail,Flail,3,False,0.0,1.5,0.0,1,Center,8.55,19.32,-0.5,55.0
+Moorweg MM3,0,1,Wave,1.0,E Racer,Racer,2,False,7.0,1.5,0.0,1,Center,8.55,19.32,-0.5,35.0
+Moorweg MM3,1,2,Wave,1.25,E Moleman,Mole Warrior,1,False,0.0,2.0,0.0,1,Mountains,-21.7,19.32,97.0,60.0
+Moorweg MM3,1,2,Wave,1.25,E Moleman Archer,Mole Archer,1,False,1.0,2.0,0.0,1,Mountains,-21.7,19.32,97.0,50.0
+Moorweg MM3,1,2,Wave,1.25,E Medium Spider,,1,False,1.0,5.0,0.0,1,Graveyard,-50.065,19.32,-99.67,50.0
+Moorweg MM3,1,2,Wave,1.25,E Small Spider,,5,False,0.0,1.0,0.0,1,Graveyard,-50.065,19.32,-99.67,12.5
+Moorweg MM3,1,2,Wave,1.25,E Weakling,Peasant,5,False,0.0,1.0,0.0,1,Farms,16.4,19.32,-55.7,8.7
+Moorweg MM3,1,2,Wave,1.25,E Archer,Archer,3,False,0.0,2.0,0.0,1,Farms,16.4,19.32,-55.7,20.0
+Moorweg MM3,1,2,Wave,1.25,E Flail,Flail,3,False,0.0,1.5,0.0,1,Center,8.55,19.32,-0.5,55.0
+Moorweg MM3,1,2,Wave,1.25,E Racer,Racer,2,False,7.0,1.5,0.0,1,Center,8.55,19.32,-0.5,35.0
+Moorweg MM3,2,3,Wave,1.75,E Moleman,Mole Warrior,1,False,0.0,2.0,0.0,1,Mountains,-21.7,19.32,97.0,60.0
+Moorweg MM3,2,3,Wave,1.75,E Moleman Archer,Mole Archer,1,False,1.0,2.0,0.0,1,Mountains,-21.7,19.32,97.0,50.0
+Moorweg MM3,2,3,Wave,1.75,E Medium Spider,,1,False,1.0,5.0,0.0,1,Graveyard,-50.065,19.32,-99.67,50.0
+Moorweg MM3,2,3,Wave,1.75,E Small Spider,,5,False,0.0,1.0,0.0,1,Graveyard,-50.065,19.32,-99.67,12.5
+Moorweg MM3,2,3,Wave,1.75,E Weakling,Peasant,5,False,0.0,1.0,0.0,1,Farms,16.4,19.32,-55.7,8.7
+Moorweg MM3,2,3,Wave,1.75,E Archer,Archer,3,False,0.0,2.0,0.0,1,Farms,16.4,19.32,-55.7,20.0
+Moorweg MM3,2,3,Wave,1.75,E Flail,Flail,3,False,0.0,1.5,0.0,1,Center,8.55,19.32,-0.5,55.0
+Moorweg MM3,2,3,Wave,1.75,E Racer,Racer,2,False,7.0,1.5,0.0,1,Center,8.55,19.32,-0.5,35.0
+Moorweg MM3,3,4,Wave,2.5,E Moleman,Mole Warrior,1,False,0.0,2.0,0.0,1,Mountains,-21.7,19.32,97.0,60.0
+Moorweg MM3,3,4,Wave,2.5,E Moleman Archer,Mole Archer,1,False,1.0,2.0,0.0,1,Mountains,-21.7,19.32,97.0,50.0
+Moorweg MM3,3,4,Wave,2.5,E Medium Spider,,1,False,1.0,5.0,0.0,1,Graveyard,-50.065,19.32,-99.67,50.0
+Moorweg MM3,3,4,Wave,2.5,E Small Spider,,5,False,0.0,1.0,0.0,1,Graveyard,-50.065,19.32,-99.67,12.5
+Moorweg MM3,3,4,Wave,2.5,E Weakling,Peasant,5,False,0.0,1.0,0.0,1,Farms,16.4,19.32,-55.7,8.7
+Moorweg MM3,3,4,Wave,2.5,E Archer,Archer,3,False,0.0,2.0,0.0,1,Farms,16.4,19.32,-55.7,20.0
+Moorweg MM3,3,4,Wave,2.5,E Flail,Flail,3,False,0.0,1.5,0.0,1,Center,8.55,19.32,-0.5,55.0
+Moorweg MM3,3,4,Wave,2.5,E Racer,Racer,2,False,7.0,1.5,0.0,1,Center,8.55,19.32,-0.5,35.0
+Moorweg MM3,4,5,Wave,3.5,E Moleman,Mole Warrior,1,False,0.0,2.0,0.0,1,Mountains,-21.7,19.32,97.0,60.0
+Moorweg MM3,4,5,Wave,3.5,E Moleman Archer,Mole Archer,1,False,1.0,2.0,0.0,1,Mountains,-21.7,19.32,97.0,50.0
+Moorweg MM3,4,5,Wave,3.5,E Medium Spider,,1,False,1.0,5.0,0.0,1,Graveyard,-50.065,19.32,-99.67,50.0
+Moorweg MM3,4,5,Wave,3.5,E Small Spider,,5,False,0.0,1.0,0.0,1,Graveyard,-50.065,19.32,-99.67,12.5
+Moorweg MM3,4,5,Wave,3.5,E Weakling,Peasant,5,False,0.0,1.0,0.0,1,Farms,16.4,19.32,-55.7,8.7
+Moorweg MM3,4,5,Wave,3.5,E Archer,Archer,3,False,0.0,2.0,0.0,1,Farms,16.4,19.32,-55.7,20.0
+Moorweg MM3,4,5,Wave,3.5,E Flail,Flail,3,False,0.0,1.5,0.0,1,Center,8.55,19.32,-0.5,55.0
+Moorweg MM3,4,5,Wave,3.5,E Racer,Racer,2,False,7.0,1.5,0.0,1,Center,8.55,19.32,-0.5,35.0
+Moorweg MM3,5,6,Wave,5.0,E Moleman,Mole Warrior,1,False,0.0,2.0,0.0,1,Mountains,-21.7,19.32,97.0,60.0
+Moorweg MM3,5,6,Wave,5.0,E Moleman Archer,Mole Archer,1,False,1.0,2.0,0.0,1,Mountains,-21.7,19.32,97.0,50.0
+Moorweg MM3,5,6,Wave,5.0,E Medium Spider,,1,False,1.0,5.0,0.0,1,Graveyard,-50.065,19.32,-99.67,50.0
+Moorweg MM3,5,6,Wave,5.0,E Small Spider,,5,False,0.0,1.0,0.0,1,Graveyard,-50.065,19.32,-99.67,12.5
+Moorweg MM3,5,6,Wave,5.0,E Weakling,Peasant,5,False,0.0,1.0,0.0,1,Farms,16.4,19.32,-55.7,8.7
+Moorweg MM3,5,6,Wave,5.0,E Archer,Archer,3,False,0.0,2.0,0.0,1,Farms,16.4,19.32,-55.7,20.0
+Moorweg MM3,5,6,Wave,5.0,E Flail,Flail,3,False,0.0,1.5,0.0,1,Center,8.55,19.32,-0.5,55.0
+Moorweg MM3,5,6,Wave,5.0,E Racer,Racer,2,False,7.0,1.5,0.0,1,Center,8.55,19.32,-0.5,35.0
+Moorweg MM3,6,7,Wave,7.0,E Moleman,Mole Warrior,1,False,0.0,2.0,0.0,1,Mountains,-21.7,19.32,97.0,60.0
+Moorweg MM3,6,7,Wave,7.0,E Moleman Archer,Mole Archer,1,False,1.0,2.0,0.0,1,Mountains,-21.7,19.32,97.0,50.0
+Moorweg MM3,6,7,Wave,7.0,E Medium Spider,,1,False,1.0,5.0,0.0,1,Graveyard,-50.065,19.32,-99.67,50.0
+Moorweg MM3,6,7,Wave,7.0,E Small Spider,,5,False,0.0,1.0,0.0,1,Graveyard,-50.065,19.32,-99.67,12.5
+Moorweg MM3,6,7,Wave,7.0,E Weakling,Peasant,5,False,0.0,1.0,0.0,1,Farms,16.4,19.32,-55.7,8.7
+Moorweg MM3,6,7,Wave,7.0,E Archer,Archer,3,False,0.0,2.0,0.0,1,Farms,16.4,19.32,-55.7,20.0
+Moorweg MM3,6,7,Wave,7.0,E Flail,Flail,3,False,0.0,1.5,0.0,1,Center,8.55,19.32,-0.5,55.0
+Moorweg MM3,6,7,Wave,7.0,E Racer,Racer,2,False,7.0,1.5,0.0,1,Center,8.55,19.32,-0.5,35.0
+Moorweg MM3,7,8,Wave,10.0,E Moleman,Mole Warrior,1,False,0.0,2.0,0.0,1,Mountains,-21.7,19.32,97.0,60.0
+Moorweg MM3,7,8,Wave,10.0,E Moleman Archer,Mole Archer,1,False,1.0,2.0,0.0,1,Mountains,-21.7,19.32,97.0,50.0
+Moorweg MM3,7,8,Wave,10.0,E Medium Spider,,1,False,1.0,5.0,0.0,1,Graveyard,-50.065,19.32,-99.67,50.0
+Moorweg MM3,7,8,Wave,10.0,E Small Spider,,5,False,0.0,1.0,0.0,1,Graveyard,-50.065,19.32,-99.67,12.5
+Moorweg MM3,7,8,Wave,10.0,E Weakling,Peasant,5,False,0.0,1.0,0.0,1,Farms,16.4,19.32,-55.7,8.7
+Moorweg MM3,7,8,Wave,10.0,E Archer,Archer,3,False,0.0,2.0,0.0,1,Farms,16.4,19.32,-55.7,20.0
+Moorweg MM3,7,8,Wave,10.0,E Flail,Flail,3,False,0.0,1.5,0.0,1,Center,8.55,19.32,-0.5,55.0
+Moorweg MM3,7,8,Wave,10.0,E Racer,Racer,2,False,7.0,1.5,0.0,1,Center,8.55,19.32,-0.5,35.0
+Moorweg MM3,8,9,Wave,15.0,E Moleman,Mole Warrior,1,False,0.0,2.0,0.0,1,Mountains,-21.7,19.32,97.0,60.0
+Moorweg MM3,8,9,Wave,15.0,E Moleman Archer,Mole Archer,1,False,1.0,2.0,0.0,1,Mountains,-21.7,19.32,97.0,50.0
+Moorweg MM3,8,9,Wave,15.0,E Medium Spider,,1,False,1.0,5.0,0.0,1,Graveyard,-50.065,19.32,-99.67,50.0
+Moorweg MM3,8,9,Wave,15.0,E Small Spider,,5,False,0.0,1.0,0.0,1,Graveyard,-50.065,19.32,-99.67,12.5
+Moorweg MM3,8,9,Wave,15.0,E Weakling,Peasant,5,False,0.0,1.0,0.0,1,Farms,16.4,19.32,-55.7,8.7
+Moorweg MM3,8,9,Wave,15.0,E Archer,Archer,3,False,0.0,2.0,0.0,1,Farms,16.4,19.32,-55.7,20.0
+Moorweg MM3,8,9,Wave,15.0,E Flail,Flail,3,False,0.0,1.5,0.0,1,Center,8.55,19.32,-0.5,55.0
+Moorweg MM3,8,9,Wave,15.0,E Racer,Racer,2,False,7.0,1.5,0.0,1,Center,8.55,19.32,-0.5,35.0
+Moorweg MM3,9,10,Wave,21.0,E Moleman,Mole Warrior,1,False,0.0,2.0,0.0,1,Mountains,-21.7,19.32,97.0,60.0
+Moorweg MM3,9,10,Wave,21.0,E Moleman Archer,Mole Archer,1,False,1.0,2.0,0.0,1,Mountains,-21.7,19.32,97.0,50.0
+Moorweg MM3,9,10,Wave,21.0,E Medium Spider,,1,False,1.0,5.0,0.0,1,Graveyard,-50.065,19.32,-99.67,50.0
+Moorweg MM3,9,10,Wave,21.0,E Small Spider,,5,False,0.0,1.0,0.0,1,Graveyard,-50.065,19.32,-99.67,12.5
+Moorweg MM3,9,10,Wave,21.0,E Weakling,Peasant,5,False,0.0,1.0,0.0,1,Farms,16.4,19.32,-55.7,8.7
+Moorweg MM3,9,10,Wave,21.0,E Archer,Archer,3,False,0.0,2.0,0.0,1,Farms,16.4,19.32,-55.7,20.0
+Moorweg MM3,9,10,Wave,21.0,E Flail,Flail,3,False,0.0,1.5,0.0,1,Center,8.55,19.32,-0.5,55.0
+Moorweg MM3,9,10,Wave,21.0,E Racer,Racer,2,False,7.0,1.5,0.0,1,Center,8.55,19.32,-0.5,35.0
+Moorweg MM3,10,11,Wave,30.0,E Moleman,Mole Warrior,1,False,0.0,2.0,0.0,1,Mountains,-21.7,19.32,97.0,60.0
+Moorweg MM3,10,11,Wave,30.0,E Moleman Archer,Mole Archer,1,False,1.0,2.0,0.0,1,Mountains,-21.7,19.32,97.0,50.0
+Moorweg MM3,10,11,Wave,30.0,E Medium Spider,,1,False,1.0,5.0,0.0,1,Graveyard,-50.065,19.32,-99.67,50.0
+Moorweg MM3,10,11,Wave,30.0,E Small Spider,,5,False,0.0,1.0,0.0,1,Graveyard,-50.065,19.32,-99.67,12.5
+Moorweg MM3,10,11,Wave,30.0,E Weakling,Peasant,5,False,0.0,1.0,0.0,1,Farms,16.4,19.32,-55.7,8.7
+Moorweg MM3,10,11,Wave,30.0,E Archer,Archer,3,False,0.0,2.0,0.0,1,Farms,16.4,19.32,-55.7,20.0
+Moorweg MM3,10,11,Wave,30.0,E Flail,Flail,3,False,0.0,1.5,0.0,1,Center,8.55,19.32,-0.5,55.0
+Moorweg MM3,10,11,Wave,30.0,E Racer,Racer,2,False,7.0,1.5,0.0,1,Center,8.55,19.32,-0.5,35.0
+Moorweg MM3,11,12,Wave,40.0,E Moleman,Mole Warrior,1,False,0.0,2.0,0.0,1,Mountains,-21.7,19.32,97.0,60.0
+Moorweg MM3,11,12,Wave,40.0,E Moleman Archer,Mole Archer,1,False,1.0,2.0,0.0,1,Mountains,-21.7,19.32,97.0,50.0
+Moorweg MM3,11,12,Wave,40.0,E Medium Spider,,1,False,1.0,5.0,0.0,1,Graveyard,-50.065,19.32,-99.67,50.0
+Moorweg MM3,11,12,Wave,40.0,E Small Spider,,5,False,0.0,1.0,0.0,1,Graveyard,-50.065,19.32,-99.67,12.5
+Moorweg MM3,11,12,Wave,40.0,E Weakling,Peasant,5,False,0.0,1.0,0.0,1,Farms,16.4,19.32,-55.7,8.7
+Moorweg MM3,11,12,Wave,40.0,E Archer,Archer,3,False,0.0,2.0,0.0,1,Farms,16.4,19.32,-55.7,20.0
+Moorweg MM3,11,12,Wave,40.0,E Flail,Flail,3,False,0.0,1.5,0.0,1,Center,8.55,19.32,-0.5,55.0
+Moorweg MM3,11,12,Wave,40.0,E Racer,Racer,2,False,7.0,1.5,0.0,1,Center,8.55,19.32,-0.5,35.0
+Moorweg MM3,12,13,Wave,58.0,E Moleman,Mole Warrior,1,False,0.0,2.0,0.0,1,Mountains,-21.7,19.32,97.0,60.0
+Moorweg MM3,12,13,Wave,58.0,E Moleman Archer,Mole Archer,1,False,1.0,2.0,0.0,1,Mountains,-21.7,19.32,97.0,50.0
+Moorweg MM3,12,13,Wave,58.0,E Medium Spider,,1,False,1.0,5.0,0.0,1,Graveyard,-50.065,19.32,-99.67,50.0
+Moorweg MM3,12,13,Wave,58.0,E Small Spider,,5,False,0.0,1.0,0.0,1,Graveyard,-50.065,19.32,-99.67,12.5
+Moorweg MM3,12,13,Wave,58.0,E Weakling,Peasant,5,False,0.0,1.0,0.0,1,Farms,16.4,19.32,-55.7,8.7
+Moorweg MM3,12,13,Wave,58.0,E Archer,Archer,3,False,0.0,2.0,0.0,1,Farms,16.4,19.32,-55.7,20.0
+Moorweg MM3,12,13,Wave,58.0,E Flail,Flail,3,False,0.0,1.5,0.0,1,Center,8.55,19.32,-0.5,55.0
+Moorweg MM3,12,13,Wave,58.0,E Racer,Racer,2,False,7.0,1.5,0.0,1,Center,8.55,19.32,-0.5,35.0
+Moorweg MM3,13,14,Wave,75.0,E Moleman,Mole Warrior,1,False,0.0,2.0,0.0,1,Mountains,-21.7,19.32,97.0,60.0
+Moorweg MM3,13,14,Wave,75.0,E Moleman Archer,Mole Archer,1,False,1.0,2.0,0.0,1,Mountains,-21.7,19.32,97.0,50.0
+Moorweg MM3,13,14,Wave,75.0,E Medium Spider,,1,False,1.0,5.0,0.0,1,Graveyard,-50.065,19.32,-99.67,50.0
+Moorweg MM3,13,14,Wave,75.0,E Small Spider,,5,False,0.0,1.0,0.0,1,Graveyard,-50.065,19.32,-99.67,12.5
+Moorweg MM3,13,14,Wave,75.0,E Weakling,Peasant,5,False,0.0,1.0,0.0,1,Farms,16.4,19.32,-55.7,8.7
+Moorweg MM3,13,14,Wave,75.0,E Archer,Archer,3,False,0.0,2.0,0.0,1,Farms,16.4,19.32,-55.7,20.0
+Moorweg MM3,13,14,Wave,75.0,E Flail,Flail,3,False,0.0,1.5,0.0,1,Center,8.55,19.32,-0.5,55.0
+Moorweg MM3,13,14,Wave,75.0,E Racer,Racer,2,False,7.0,1.5,0.0,1,Center,8.55,19.32,-0.5,35.0
+Totend MM1,0,1,none,1.0,,,0,False,0.0,1.0,0.0,0,Middle Bridge,-168.224,9.3,10.705,
+Totend MM2,0,1,Big Spiders,1.0,E Big Spider,,5,False,0.0,5.0,0.0,0,Middle Bridge,-168.224,9.3,10.705,800.0
+Totend MM2,1,2,Strong Slimes,1.0,E StrongSlime,Spiky Slime,40,False,0.0,0.2,0.0,0,Right Bridge,-41.79,14.54,-134.9,50.0
+Totend MM2,2,3,Big Spiders and Slimes,1.0,E Slime,Slime,60,False,0.0,0.5,0.0,0,Left Bridge,-42.75,9.55,160.065,12.5
+Totend MM2,2,3,Big Spiders and Slimes,1.0,E Big Spider,,5,False,0.0,6.0,0.0,0,Left Bridge,-42.75,9.55,160.065,800.0
+Totend MM2,2,3,Big Spiders and Slimes,1.0,E Slime,Slime,1,True,5.0,6.0,0.0,5,Left Bridge,-42.75,9.55,160.065,12.5
+Totend MM2,2,3,Big Spiders and Slimes,1.0,E Slime,Slime,1,True,15.0,6.0,0.0,5,Left Bridge,-42.75,9.55,160.065,12.5
+Totend MM2,2,3,Big Spiders and Slimes,1.0,E Slime,Slime,1,True,25.0,6.0,0.0,4,Left Bridge,-42.75,9.55,160.065,12.5
+Totend MM2,3,4,Big Spiders and Slimes,1.0,E Racer,Racer,1,True,5.0,6.0,0.0,5,Middle Bridge,-168.224,9.3,10.705,35.0
+Totend MM2,3,4,Big Spiders and Slimes,1.0,E Racer,Racer,1,True,15.0,6.0,0.0,5,Middle Bridge,-168.224,9.3,10.705,35.0
+Totend MM2,3,4,Big Spiders and Slimes,1.0,E Racer,Racer,1,True,25.0,6.0,0.0,5,Middle Bridge,-168.224,9.3,10.705,35.0
+Totend MM2,3,4,Big Spiders and Slimes,1.0,E Thing,Thing,6,False,0.0,4.0,0.0,0,Middle Bridge,-168.224,9.3,10.705,1100.0
+Totend MM2,4,5,Slimes,1.0,E StrongSlime,Spiky Slime,1,True,5.0,6.0,0.0,5,Right Bridge,-41.79,14.54,-134.9,50.0
+Totend MM2,4,5,Slimes,1.0,E StrongSlime,Spiky Slime,1,True,15.0,6.0,0.0,5,Right Bridge,-41.79,14.54,-134.9,50.0
+Totend MM2,4,5,Slimes,1.0,E StrongSlime,Spiky Slime,1,True,25.0,6.0,0.0,5,Right Bridge,-41.79,14.54,-134.9,50.0
+Totend MM2,4,5,Slimes,1.0,E StrongSlime,Spiky Slime,80,False,0.0,0.375,0.0,0,Right Bridge,-41.79,14.54,-134.9,50.0
+Totend MM2,5,6,Elite Big Spiders,1.0,E Thing,Thing,1,True,0.0,0.0,0.0,5,Left Bridge,-42.75,9.55,160.065,1100.0
+Totend MM2,5,6,Elite Big Spiders,1.0,E Thing,Thing,1,True,2.0,0.0,0.0,5,Left Bridge,-42.75,9.55,160.065,1100.0
+Totend MM2,5,6,Elite Big Spiders,1.0,E Thing,Thing,1,True,4.0,0.0,0.0,5,Left Bridge,-42.75,9.55,160.065,1100.0
+Totend MM2,6,7,Flyer & Windboats,1.0,E Flyer,Wasp,65,False,0.0,0.462,0.0,0,Middle Bridge,-168.224,9.3,10.705,25.0
+Totend MM2,6,7,Flyer & Windboats,1.0,E Windboat,Wind-Boat,1,True,0.0,0.0,0.0,5,Middle Bridge,-168.224,9.3,10.705,300.0
+Totend MM2,6,7,Flyer & Windboats,1.0,E Windboat,Wind-Boat,1,True,10.0,0.0,0.0,5,Middle Bridge,-168.224,9.3,10.705,300.0
+Totend MM2,6,7,Flyer & Windboats,1.0,E Windboat,Wind-Boat,1,True,20.0,0.0,0.0,5,Middle Bridge,-168.224,9.3,10.705,300.0
+Totend MM2,7,8,Slimes Maxi,1.0,E Flogre,Flogre,1,True,10.0,6.0,0.0,5,Right Bridge,-41.79,14.54,-134.9,275.0
+Totend MM2,7,8,Slimes Maxi,1.0,E Flogre,Flogre,1,True,30.0,6.0,0.0,5,Right Bridge,-41.79,14.54,-134.9,275.0
+Totend MM2,7,8,Slimes Maxi,1.0,E Flogre,Flogre,1,True,50.0,6.0,0.0,5,Right Bridge,-41.79,14.54,-134.9,275.0
+Totend MM2,7,8,Slimes Maxi,1.0,E Melee,Swordsman,240,False,0.0,0.25,0.0,0,Right Bridge,-41.79,14.54,-134.9,25.0
+Totend MM2,8,9,Things,1.0,E Thing,Thing,8,False,0.0,2.0,0.0,0,Left Bridge,-42.75,9.55,160.065,1100.0
+Totend MM2,8,9,Things,1.0,E StrongSlime,Spiky Slime,90,False,50.0,0.375,0.0,0,Right Bridge,-41.79,14.54,-134.9,50.0
+Totend MM2,8,9,Things,1.0,E Big Spider,,6,False,100.0,3.0,0.0,0,Middle Bridge,-168.224,9.3,10.705,800.0
+Totend MM3,0,1,Different Stuff,1.0,E Melee,Swordsman,20,False,0.0,0.75,0.0,5,Left Bridge,-42.75,9.55,160.065,25.0
+Totend MM3,0,1,Different Stuff,1.0,E Archer,Archer,20,False,20.0,0.75,0.0,5,Left Bridge,-42.75,9.55,160.065,20.0
+Totend MM3,0,1,Different Stuff,1.0,E Racer,Racer,20,False,40.0,0.75,0.0,5,Left Bridge,-42.75,9.55,160.065,35.0
+Totend MM3,1,2,Elite Spiders,1.0,E Small Spider,,20,False,0.0,0.75,0.0,5,Middle Bridge,-168.224,9.3,10.705,12.5
+Totend MM3,1,2,Elite Spiders,1.0,E Medium Spider,,20,False,12.0,0.75,0.0,5,Middle Bridge,-168.224,9.3,10.705,50.0
+Totend MM3,1,2,Elite Spiders,1.0,E Archer,Archer,30,False,24.0,0.25,0.0,5,Middle Bridge,-168.224,9.3,10.705,20.0
+Totend MM3,2,3,Siege,1.0,E Wheel,Wheel,5,False,0.0,4.0,0.0,5,Right Bridge,-41.79,14.54,-134.9,180.0
+Totend MM3,2,3,Siege,1.0,E Weakling,Peasant,20,False,20.0,1.5,0.0,5,Right Bridge,-41.79,14.54,-134.9,8.7
+Totend MM3,2,3,Siege,1.0,E Ram,Ram,3,False,40.0,10.0,0.0,5,Right Bridge,-41.79,14.54,-134.9,250.0
+Totend MM3,3,4,Racers,1.0,E Flyer,Wasp,40,False,0.0,0.4,0.0,5,Left Bridge,-42.75,9.55,160.065,25.0
+Totend MM3,3,4,Racers,1.0,E Crossbow,Master Crossbowmen,20,False,0.0,1.0,0.0,5,Left Bridge,-42.75,9.55,160.065,40.0
+Totend MM3,3,4,Racers,1.0,E Racer,Racer,25,False,20.0,1.0,0.0,5,Left Bridge,-42.75,9.55,160.065,35.0
+Totend MM3,4,5,Monster Riders,1.0,E Monster Rider,Monster Rider,40,False,0.0,0.4,0.0,5,Middle Bridge,-168.224,9.3,10.705,40.0
+Totend MM3,4,5,Monster Riders,1.0,E Crossbow,Master Crossbowmen,20,False,0.0,1.0,0.0,5,Middle Bridge,-168.224,9.3,10.705,40.0
+Totend MM3,4,5,Monster Riders,1.0,E Catapult,Catapult,10,False,0.0,2.0,0.0,5,Middle Bridge,-168.224,9.3,10.705,45.0
+Totend MM3,5,6,ELITE Spiders,1.0,E Small Spider,,160,False,0.0,0.2,0.0,5,Right Bridge,-41.79,14.54,-134.9,12.5
+Totend MM3,5,6,ELITE Spiders,1.0,E Archer,Archer,40,False,20.0,0.4,0.0,5,Right Bridge,-41.79,14.54,-134.9,20.0
+Totend MM3,5,6,ELITE Spiders,1.0,E Windboat,Wind-Boat,5,False,40.0,5.0,0.0,5,Right Bridge,-41.79,14.54,-134.9,300.0
+Totend MM3,6,7,ELITE Racer,1.0,E Moleman Archer,Mole Archer,40,False,0.0,0.4,0.0,5,Left Bridge,-42.75,9.55,160.065,50.0
+Totend MM3,6,7,ELITE Racer,1.0,E Racer,Racer,40,False,20.0,0.4,0.0,5,Left Bridge,-42.75,9.55,160.065,35.0
+Totend MM3,6,7,ELITE Racer,1.0,E Flying Wizzard,Flying Mage,40,False,40.0,0.4,0.0,5,Left Bridge,-42.75,9.55,160.065,45.0
+Totend MM3,7,8,Monster Rider and Wheels,1.0,E Monster Rider,Monster Rider,60,False,0.0,1.0,0.0,5,Middle Bridge,-168.224,9.3,10.705,40.0
+Totend MM3,7,8,Monster Rider and Wheels,1.0,E Catapult,Catapult,6,False,0.0,10.0,0.0,5,Middle Bridge,-168.224,9.3,10.705,45.0
+Totend MM3,7,8,Monster Rider and Wheels,1.0,E Wheel,Wheel,4,False,0.0,0.2,0.0,5,Middle Bridge,-168.224,9.3,10.705,180.0
+Totend MM3,7,8,Monster Rider and Wheels,1.0,E Monster Rider,Monster Rider,60,False,30.25,0.5,0.0,5,Middle Bridge,-168.224,9.3,10.705,40.0
+Totend MM3,8,9,Three Sided Attack,1.0,E Bloodwing,Bloodwing,100,False,0.0,0.4,0.0,5,Left Bridge,-42.75,9.55,160.065,50.0
+Totend MM3,8,9,Three Sided Attack,1.0,E Medium Spider,,100,False,0.0,0.4,0.0,5,Right Bridge,-41.79,14.54,-134.9,50.0
+Totend MM3,8,9,Three Sided Attack,1.0,E Racer,Racer,25,False,0.0,0.4,0.0,5,Middle Bridge,-168.224,9.3,10.705,35.0
+Totend MM3,9,10,-,1.0,E Monster Rider,Monster Rider,80,False,0.0,0.5,0.0,0,Middle Bridge,-168.224,9.3,10.705,40.0
+Totend MM3,9,10,-,1.0,E Racer,Racer,80,False,0.0,0.5,0.0,0,Left Bridge,-42.75,9.55,160.065,35.0
+Totend MM3,9,10,-,1.0,E Flyer,Wasp,80,False,0.0,0.5,0.0,0,Left Bridge,-42.75,9.55,160.065,25.0
+Totend MM3,9,10,-,1.0,E Monster Rider,Monster Rider,80,False,40.0,0.5,0.0,0,Left Bridge,-42.75,9.55,160.065,40.0
+Totend MM3,9,10,-,1.0,E Racer,Racer,80,False,40.0,0.5,0.0,0,Middle Bridge,-168.224,9.3,10.705,35.0
+Totend MM3,9,10,-,1.0,E Moleman Archer,Mole Archer,80,False,40.0,0.5,0.0,0,Middle Bridge,-168.224,9.3,10.705,50.0
+Wildbach MM1,0,1,Speers,1.0,E LongSpear,Pikes,50,False,0.0,0.75,0.0,8,Main Bridge,-27.725,17.55,-188.31,25.0
+Wildbach MM1,1,2,Flails and Spiders,1.0,E Flail,Flail,100,False,0.0,1.0,0.0,8,Main Bridge,-27.725,17.55,-188.31,55.0
+Wildbach MM1,1,2,Flails and Spiders,1.0,E Small Spider,,100,False,0.0,1.0,0.0,8,Main Bridge,-27.725,17.55,-188.31,12.5
+Wildbach MM1,2,3,Exploders and Rams,1.0,E Exploder,Exploder,15,False,0.0,1.0,0.0,8,Main Bridge,-27.725,17.55,-188.31,65.0
+Wildbach MM1,2,3,Exploders and Rams,1.0,E Ram,Ram,15,False,0.0,1.0,0.0,8,Main Bridge,-27.725,17.55,-188.31,250.0
+Wildbach MM1,3,4,Big Spiders,1.0,E Big Spider,,3,False,0.0,1.0,0.0,4,Main Bridge,-27.725,17.55,-188.31,800.0
+Wildbach MM1,3,4,Big Spiders,1.0,E Big Spider,,2,False,0.0,1.0,0.0,4,Expansion Main,32.66,17.27,-201.87,800.0
+Wildbach MM1,3,4,Big Spiders,1.0,E Big Spider,,2,False,0.0,1.0,0.0,4,Upper Level Side,75.36,22.14,-80.745,800.0
+Wildbach MM1,4,5,Hunterlings and Slimes,1.0,E Hunterling,Hunterling,100,False,0.0,0.5,0.0,4,Expansion Side,74.905,18.56,-161.7,30.0
+Wildbach MM1,4,5,Hunterlings and Slimes,1.0,E Slime,Slime,50,False,25.0,0.5,0.0,4,Expansion Side,74.905,18.56,-161.7,12.5
+Wildbach MM1,5,6,Molepeople,1.0,E Moleman,Mole Warrior,30,False,0.0,0.5,0.0,2,Main Bridge,-27.725,17.55,-188.31,60.0
+Wildbach MM1,5,6,Molepeople,1.0,E Moleman,Mole Warrior,30,False,0.0,0.5,0.0,2,Expansion Main,32.66,17.27,-201.87,60.0
+Wildbach MM1,5,6,Molepeople,1.0,E Moleman,Mole Warrior,30,False,0.0,0.5,0.0,2,Expansion Side,74.905,18.56,-161.7,60.0
+Wildbach MM1,5,6,Molepeople,1.0,E Moleman,Mole Warrior,30,False,0.0,0.5,0.0,2,Upper Level Side,75.36,22.14,-80.745,60.0
+Wildbach MM1,5,6,Molepeople,1.0,E Moleman Archer,Mole Archer,30,False,0.0,0.5,0.0,2,Main Bridge,-27.725,17.55,-188.31,50.0
+Wildbach MM1,5,6,Molepeople,1.0,E Moleman Archer,Mole Archer,30,False,0.0,0.5,0.0,2,Upper Level Side,75.36,22.14,-80.745,50.0
+Wildbach MM1,5,6,Molepeople,1.0,E Moleman Archer,Mole Archer,30,False,0.0,0.5,0.0,2,Expansion Side,74.905,18.56,-161.7,50.0
+Wildbach MM1,5,6,Molepeople,1.0,E Moleman Archer,Mole Archer,30,False,0.0,0.5,0.0,2,Expansion Main,32.66,17.27,-201.87,50.0
+Wildbach MM1,6,7,Fat Condensed Ogre Attack,1.0,E Ogre,Ogre,100,False,0.0,0.5,0.0,5,Main Bridge,-27.725,17.55,-188.31,200.0
+Wildbach MM1,6,7,Fat Condensed Ogre Attack,1.0,E Fire Snail,Fire Snail,100,False,0.0,0.5,0.0,5,Main Bridge,-27.725,17.55,-188.31,45.0
+Wildbach MM1,6,7,Fat Condensed Ogre Attack,1.0,E Flying Wizzard,Flying Mage,100,False,0.0,0.5,0.0,5,Main Bridge,-27.725,17.55,-188.31,45.0
+Wildbach MM1,7,8,Air Boats,1.0,E Windboat,Wind-Boat,9,False,0.0,0.5,0.0,12,Main Bridge,-27.725,17.55,-188.31,300.0
+Wildbach MM1,7,8,Air Boats,1.0,E Windboat,Wind-Boat,9,False,0.0,0.5,0.0,12,Expansion Main,32.66,17.27,-201.87,300.0
+Wildbach MM1,7,8,Air Boats,1.0,E Windboat,Wind-Boat,9,False,0.0,0.5,0.0,12,Expansion Side,74.905,18.56,-161.7,300.0
+Wildbach MM1,7,8,Air Boats,1.0,E Windboat,Wind-Boat,9,False,0.0,0.5,0.0,12,Upper Level Side,75.36,22.14,-80.745,300.0
+Wildbach MM1,7,8,Air Boats,1.0,E Windboat,Wind-Boat,9,False,0.0,0.5,0.0,13,Pond Air,-109.675,14.15,-73.205,300.0
+Wildbach MM1,8,9,Elites,1.0,E Ogre,Ogre,10,True,0.0,2.0,0.0,0,Main Bridge,-27.725,17.55,-188.31,200.0
+Wildbach MM1,8,9,Elites,1.0,E Ogre,Ogre,10,True,0.0,2.0,0.0,0,Upper Level Side,75.36,22.14,-80.745,200.0
+Wildbach MM1,8,9,Elites,1.0,E Quicksling,Quicksling,5,True,0.0,2.0,0.0,0,Expansion Main,32.66,17.27,-201.87,55.0
+Wildbach MM1,8,9,Elites,1.0,E Ram,Ram,5,True,0.0,2.0,0.0,0,Expansion Side,74.905,18.56,-161.7,250.0
+Wildbach MM1,8,9,Elites,1.0,E Racer,Racer,25,True,0.0,1.0,0.0,0,Upper Level Side,75.36,22.14,-80.745,35.0
+Wildbach MM1,8,9,Elites,1.0,E Melee,Swordsman,50,True,0.0,1.0,0.0,0,Main Bridge,-27.725,17.55,-188.31,25.0
+Wildbach MM2,0,1,Slimes,1.0,E Slime,Slime,100,False,0.0,0.4,0.0,10,Main Bridge,-27.725,17.55,-188.31,12.5
+Wildbach MM2,1,2,Slimes all Sides,1.0,E Slime,Slime,100,False,0.0,0.4,0.0,5,Main Bridge,-27.725,17.55,-188.31,12.5
+Wildbach MM2,1,2,Slimes all Sides,1.0,E Slime,Slime,100,False,0.0,0.4,0.0,5,Expansion Main,32.66,17.27,-201.87,12.5
+Wildbach MM2,1,2,Slimes all Sides,1.0,E Slime,Slime,100,False,0.0,0.4,0.0,5,Expansion Side,74.905,18.56,-161.7,12.5
+Wildbach MM2,1,2,Slimes all Sides,1.0,E Slime,Slime,100,False,0.0,0.4,0.0,5,Upper Level Side,75.36,22.14,-80.745,12.5
+Wildbach MM2,2,3,Strong Slimes Upper Side,1.0,E StrongSlime,Spiky Slime,100,False,0.0,0.4,0.0,20,Upper Level Side,75.36,22.14,-80.745,50.0
+Wildbach MM2,3,4,Slimes all Sides + String Slimes,1.0,E Slime,Slime,100,False,0.0,0.4,0.0,4,Main Bridge,-27.725,17.55,-188.31,12.5
+Wildbach MM2,3,4,Slimes all Sides + String Slimes,1.0,E Slime,Slime,100,False,0.0,0.4,0.0,4,Expansion Main,32.66,17.27,-201.87,12.5
+Wildbach MM2,3,4,Slimes all Sides + String Slimes,1.0,E Slime,Slime,100,False,0.0,0.4,0.0,4,Expansion Side,74.905,18.56,-161.7,12.5
+Wildbach MM2,3,4,Slimes all Sides + String Slimes,1.0,E Slime,Slime,100,False,0.0,0.4,0.0,4,Upper Level Side,75.36,22.14,-80.745,12.5
+Wildbach MM2,3,4,Slimes all Sides + String Slimes,1.0,E StrongSlime,Spiky Slime,20,False,0.0,2.0,0.0,4,Upper Level Side,75.36,22.14,-80.745,50.0
+Wildbach MM2,3,4,Slimes all Sides + String Slimes,1.0,E StrongSlime,Spiky Slime,20,False,0.0,2.0,0.0,4,Expansion Side,74.905,18.56,-161.7,50.0
+Wildbach MM2,3,4,Slimes all Sides + String Slimes,1.0,E StrongSlime,Spiky Slime,20,False,0.0,2.0,0.0,4,Expansion Main,32.66,17.27,-201.87,50.0
+Wildbach MM2,3,4,Slimes all Sides + String Slimes,1.0,E StrongSlime,Spiky Slime,20,False,0.0,2.0,0.0,4,Main Bridge,-27.725,17.55,-188.31,50.0
+Wildbach MM2,4,5,Strong Slimes all Sides,1.0,E StrongSlime,Spiky Slime,100,False,0.0,0.4,0.0,10,Main Bridge,-27.725,17.55,-188.31,50.0
+Wildbach MM2,4,5,Strong Slimes all Sides,1.0,E StrongSlime,Spiky Slime,100,False,0.0,0.4,0.0,10,Expansion Main,32.66,17.27,-201.87,50.0
+Wildbach MM2,4,5,Strong Slimes all Sides,1.0,E StrongSlime,Spiky Slime,100,False,0.0,0.4,0.0,10,Expansion Side,74.905,18.56,-161.7,50.0
+Wildbach MM2,4,5,Strong Slimes all Sides,1.0,E StrongSlime,Spiky Slime,100,False,0.0,0.4,0.0,10,Upper Level Side,75.36,22.14,-80.745,50.0
+Wildbach MM2,5,6,Strong Slimes all Sides + Giraffe Slimes,1.0,E StrongSlime,Spiky Slime,100,False,0.0,0.4,0.0,7,Main Bridge,-27.725,17.55,-188.31,50.0
+Wildbach MM2,5,6,Strong Slimes all Sides + Giraffe Slimes,1.0,E StrongSlime,Spiky Slime,100,False,0.0,0.4,0.0,7,Expansion Main,32.66,17.27,-201.87,50.0
+Wildbach MM2,5,6,Strong Slimes all Sides + Giraffe Slimes,1.0,E StrongSlime,Spiky Slime,100,False,0.0,0.4,0.0,7,Expansion Side,74.905,18.56,-161.7,50.0
+Wildbach MM2,5,6,Strong Slimes all Sides + Giraffe Slimes,1.0,E StrongSlime,Spiky Slime,100,False,0.0,0.4,0.0,7,Upper Level Side,75.36,22.14,-80.745,50.0
+Wildbach MM2,5,6,Strong Slimes all Sides + Giraffe Slimes,1.0,E Giraffeslime,Giraffe Slime,20,False,0.0,2.0,0.0,7,Upper Level Side,75.36,22.14,-80.745,30.0
+Wildbach MM2,5,6,Strong Slimes all Sides + Giraffe Slimes,1.0,E Giraffeslime,Giraffe Slime,20,False,0.0,2.0,0.0,7,Main Bridge,-27.725,17.55,-188.31,30.0
+Wildbach MM2,5,6,Strong Slimes all Sides + Giraffe Slimes,1.0,E Giraffeslime,Giraffe Slime,20,False,0.0,2.0,0.0,7,Expansion Side,74.905,18.56,-161.7,30.0
+Wildbach MM2,5,6,Strong Slimes all Sides + Giraffe Slimes,1.0,E Giraffeslime,Giraffe Slime,20,False,0.0,2.0,0.0,7,Expansion Main,32.66,17.27,-201.87,30.0
+Wildbach MM2,6,7,Strong Slimes all Sides + Strong Giraffe Slimes,1.0,E StrongSlime,Spiky Slime,100,False,0.0,0.4,0.0,7,Main Bridge,-27.725,17.55,-188.31,50.0
+Wildbach MM2,6,7,Strong Slimes all Sides + Strong Giraffe Slimes,1.0,E StrongSlime,Spiky Slime,100,False,0.0,0.4,0.0,7,Expansion Main,32.66,17.27,-201.87,50.0
+Wildbach MM2,6,7,Strong Slimes all Sides + Strong Giraffe Slimes,1.0,E StrongSlime,Spiky Slime,100,False,0.0,0.4,0.0,7,Expansion Side,74.905,18.56,-161.7,50.0
+Wildbach MM2,6,7,Strong Slimes all Sides + Strong Giraffe Slimes,1.0,E StrongSlime,Spiky Slime,100,False,0.0,0.4,0.0,7,Upper Level Side,75.36,22.14,-80.745,50.0
+Wildbach MM2,6,7,Strong Slimes all Sides + Strong Giraffe Slimes,1.0,E StrongGiraffeslime,Spiky Giraffe,20,False,0.0,2.0,0.0,7,Upper Level Side,75.36,22.14,-80.745,100.0
+Wildbach MM2,6,7,Strong Slimes all Sides + Strong Giraffe Slimes,1.0,E StrongGiraffeslime,Spiky Giraffe,20,False,0.0,2.0,0.0,7,Main Bridge,-27.725,17.55,-188.31,100.0
+Wildbach MM2,6,7,Strong Slimes all Sides + Strong Giraffe Slimes,1.0,E StrongGiraffeslime,Spiky Giraffe,20,False,0.0,2.0,0.0,7,Expansion Side,74.905,18.56,-161.7,100.0
+Wildbach MM2,6,7,Strong Slimes all Sides + Strong Giraffe Slimes,1.0,E StrongGiraffeslime,Spiky Giraffe,20,False,0.0,2.0,0.0,7,Expansion Main,32.66,17.27,-201.87,100.0
+Wildbach MM2,7,8,Elite Slimes Main Bridge,1.0,E StrongSlime,Spiky Slime,200,True,0.0,0.2,0.0,60,Main Bridge,-27.725,17.55,-188.31,50.0
+Wildbach MM2,8,9,Strong Slimes all Sides + Strong Giraffe Slimes,1.0,E StrongSlime,Spiky Slime,200,False,0.0,0.4,0.0,0,Main Bridge,-27.725,17.55,-188.31,50.0
+Wildbach MM2,8,9,Strong Slimes all Sides + Strong Giraffe Slimes,1.0,E StrongSlime,Spiky Slime,200,False,0.0,0.4,0.0,0,Expansion Main,32.66,17.27,-201.87,50.0
+Wildbach MM2,8,9,Strong Slimes all Sides + Strong Giraffe Slimes,1.0,E StrongSlime,Spiky Slime,200,False,0.0,0.4,0.0,0,Expansion Side,74.905,18.56,-161.7,50.0
+Wildbach MM2,8,9,Strong Slimes all Sides + Strong Giraffe Slimes,1.0,E StrongSlime,Spiky Slime,200,False,0.0,0.4,0.0,0,Upper Level Side,75.36,22.14,-80.745,50.0
+Wildbach MM2,8,9,Strong Slimes all Sides + Strong Giraffe Slimes,1.0,E StrongGiraffeslime,Spiky Giraffe,40,False,0.0,2.0,0.0,0,Upper Level Side,75.36,22.14,-80.745,100.0
+Wildbach MM2,8,9,Strong Slimes all Sides + Strong Giraffe Slimes,1.0,E StrongGiraffeslime,Spiky Giraffe,40,False,0.0,2.0,0.0,0,Main Bridge,-27.725,17.55,-188.31,100.0
+Wildbach MM2,8,9,Strong Slimes all Sides + Strong Giraffe Slimes,1.0,E StrongGiraffeslime,Spiky Giraffe,40,False,0.0,2.0,0.0,0,Expansion Side,74.905,18.56,-161.7,100.0
+Wildbach MM2,8,9,Strong Slimes all Sides + Strong Giraffe Slimes,1.0,E StrongGiraffeslime,Spiky Giraffe,40,False,0.0,2.0,0.0,0,Expansion Main,32.66,17.27,-201.87,100.0
+Wildbach MM3,0,1,Ogres,1.0,E Flogre,Flogre,30,False,0.0,4.0,0.0,8,Upper Level Side,75.36,22.14,-80.745,275.0
+Wildbach MM3,1,2,Siders,1.0,E Melee,Swordsman,60,False,0.0,2.0,0.0,4,Expansion Main,32.66,17.27,-201.87,25.0
+Wildbach MM3,1,2,Siders,1.0,E Archer,Archer,30,False,60.0,2.0,0.0,4,Expansion Main,32.66,17.27,-201.87,20.0
+Wildbach MM3,1,2,Siders,1.0,E Medium Spider,,30,False,0.0,4.0,0.0,8,Main Bridge,-27.725,17.55,-188.31,50.0
+Wildbach MM3,2,3,Rollers n Stuff,1.0,E Racer,Racer,30,False,0.0,4.0,0.0,8,Upper Level Side,75.36,22.14,-80.745,35.0
+Wildbach MM3,2,3,Rollers n Stuff,1.0,E Medium Spider,,30,False,0.0,4.0,0.0,8,Main Bridge,-27.725,17.55,-188.31,50.0
+Wildbach MM3,2,3,Rollers n Stuff,1.0,E Catapult,Catapult,4,False,0.0,25.0,0.0,8,Main Bridge,-27.725,17.55,-188.31,45.0
+Wildbach MM3,2,3,Rollers n Stuff,1.0,E Ram,Ram,16,False,0.0,7.5,0.0,8,Expansion Side,74.905,18.56,-161.7,250.0
+Wildbach MM3,3,4,Strong Slimes,1.0,E StrongSlime,Spiky Slime,120,False,0.0,1.0,0.0,10,Expansion Side,74.905,18.56,-161.7,50.0
+Wildbach MM3,3,4,Strong Slimes,1.0,E Wheel,Wheel,20,False,0.0,6.0,0.0,10,Expansion Main,32.66,17.27,-201.87,180.0
+Wildbach MM3,3,4,Strong Slimes,1.0,E Flyer,Wasp,20,False,3.0,6.0,0.0,10,Expansion Main,32.66,17.27,-201.87,25.0
+Wildbach MM3,4,5,Strong Front Attack,1.0,E LongSpear,Pikes,115,False,0.0,1.0,0.0,10,Main Bridge,-27.725,17.55,-188.31,25.0
+Wildbach MM3,4,5,Strong Front Attack,1.0,E Archer,Archer,115,False,0.0,1.0,0.0,10,Main Bridge,-27.725,17.55,-188.31,20.0
+Wildbach MM3,4,5,Strong Front Attack,1.0,E Ram,Ram,12,False,0.0,10.0,0.0,10,Main Bridge,-27.725,17.55,-188.31,250.0
+Wildbach MM3,4,5,Strong Front Attack,1.0,E Catapult,Catapult,12,False,5.0,10.0,0.0,10,Main Bridge,-27.725,17.55,-188.31,45.0
+Wildbach MM3,4,5,Strong Front Attack,1.0,E Medium Spider,,29,False,5.0,4.0,0.0,10,Upper Level Side,75.36,22.14,-80.745,50.0
+Wildbach MM3,5,6,All Sides,1.0,E BarrelKnight,Barrel Knight,70,False,0.0,0.583,0.0,10,Upper Level Side,75.36,22.14,-80.745,100.0
+Wildbach MM3,5,6,All Sides,1.0,E Big Spider,,8,False,0.0,15.0,0.0,10,Expansion Main,32.66,17.27,-201.87,800.0
+Wildbach MM3,5,6,All Sides,1.0,E Racer,Racer,60,False,0.0,2.0,0.0,10,Expansion Side,74.905,18.56,-161.7,35.0
+Wildbach MM3,5,6,All Sides,1.0,E Defensive Ogre Variant,Ogre,30,False,0.0,4.0,0.0,10,Main Bridge,-27.725,17.55,-188.31,200.0
+Wildbach MM3,5,6,All Sides,1.0,E Flying Wizzard,Flying Mage,25,False,0.0,4.8,0.0,10,Pond Air,-109.675,14.15,-73.205,45.0
+Wildbach MM3,6,7,-,1.0,E Ram,Ram,60,False,0.0,2.0,0.0,0,Expansion Side,74.905,18.56,-161.7,250.0
+Wildbach MM3,6,7,-,1.0,E Catapult,Catapult,30,False,0.0,4.0,0.0,0,Expansion Main,32.66,17.27,-201.87,45.0
+Wildbach MM3,6,7,-,1.0,E BarrelKnight,Barrel Knight,60,False,0.0,2.0,0.0,0,Main Bridge,-27.725,17.55,-188.31,100.0
+Wildbach MM3,6,7,-,1.0,E Wheel,Wheel,12,False,0.0,10.0,0.0,0,Upper Level Side,75.36,22.14,-80.745,180.0
+Wildbach MM3,6,7,-,1.0,E Big Spider,,7,False,0.0,17.143,0.0,0,Main Bridge,-27.725,17.55,-188.31,800.0
+Wildbach MM3,6,7,-,1.0,E Big Spider,,7,False,0.0,17.143,0.0,0,Expansion Main,32.66,17.27,-201.87,800.0
+Wildbach MM3,6,7,-,1.0,E Defensive Ogre Variant,Ogre,20,False,0.0,6.0,0.0,0,Main Bridge,-27.725,17.55,-188.31,200.0
+Wildbach MM3,6,7,-,1.0,E Fury,Fury,30,False,0.0,4.0,0.0,0,Pond Air,-109.675,14.15,-73.205,75.0

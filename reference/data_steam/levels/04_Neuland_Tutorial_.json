@@ -1,0 +1,7859 @@
+{
+ "scene": "Neuland(Tutorial)",
+ "buildIndex": 4,
+ "file": "level4",
+ "kind": "campaign",
+ "objects": 33949,
+ "monobehaviourClasses": 211,
+ "spawners": [
+  {
+   "id": 33564,
+   "name": "ES Tutorial",
+   "mode": "Classic",
+   "modeRaw": 0,
+   "goldBalanceAtStart": 0,
+   "endlessMode": false,
+   "pauseSpawningAtEnemyCount": 275,
+   "reduceSpawnWaitTimes": true,
+   "waveGenerator": "Season2 Wave Gen",
+   "endlessWaveGenerator": null,
+   "waveCount": 8,
+   "waves": [
+    {
+     "index": 0,
+     "night": 1,
+     "warningText": "Weaklings",
+     "difficultyMulti": 1.0,
+     "spawns": [
+      {
+       "enemy": "resources.assets:6452",
+       "enemyName": "E Weakling",
+       "displayName": "Peasant",
+       "count": 5,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 0.75,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 6,
+       "spawnLine": "Forest",
+       "spawnCenter": [
+        48.75,
+        0.0,
+        -94.9
+       ],
+       "maxHp": 8.7,
+       "spawnSpanSeconds": 3.0
+      }
+     ],
+     "totals": {
+      "enemies": 5,
+      "baseHp": 43.5,
+      "goldCoins": 6,
+      "eliteEnemies": 0,
+      "flying": 0,
+      "boss": 0,
+      "ranged": 0,
+      "spawnSpanSeconds": 3.0,
+      "byLine": {
+       "Forest": 5
+      }
+     }
+    },
+    {
+     "index": 1,
+     "night": 2,
+     "warningText": "Weaklings",
+     "difficultyMulti": 1.0,
+     "spawns": [
+      {
+       "enemy": "resources.assets:6452",
+       "enemyName": "E Weakling",
+       "displayName": "Peasant",
+       "count": 6,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 0.5,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 3,
+       "spawnLine": "Forest",
+       "spawnCenter": [
+        48.75,
+        0.0,
+        -94.9
+       ],
+       "maxHp": 8.7,
+       "spawnSpanSeconds": 2.5
+      }
+     ],
+     "totals": {
+      "enemies": 6,
+      "baseHp": 52.2,
+      "goldCoins": 3,
+      "eliteEnemies": 0,
+      "flying": 0,
+      "boss": 0,
+      "ranged": 0,
+      "spawnSpanSeconds": 2.5,
+      "byLine": {
+       "Forest": 6
+      }
+     }
+    },
+    {
+     "index": 2,
+     "night": 3,
+     "warningText": "Big Wave of Weaklings",
+     "difficultyMulti": 1.0,
+     "spawns": [
+      {
+       "enemy": "resources.assets:6452",
+       "enemyName": "E Weakling",
+       "displayName": "Peasant",
+       "count": 15,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 0.5,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 4,
+       "spawnLine": "Forest",
+       "spawnCenter": [
+        48.75,
+        0.0,
+        -94.9
+       ],
+       "maxHp": 8.7,
+       "spawnSpanSeconds": 7.0
+      }
+     ],
+     "totals": {
+      "enemies": 15,
+      "baseHp": 130.5,
+      "goldCoins": 4,
+      "eliteEnemies": 0,
+      "flying": 0,
+      "boss": 0,
+      "ranged": 0,
+      "spawnSpanSeconds": 7.0,
+      "byLine": {
+       "Forest": 15
+      }
+     }
+    },
+    {
+     "index": 3,
+     "night": 4,
+     "warningText": "Big Wave of Weaklings",
+     "difficultyMulti": 1.0,
+     "spawns": [
+      {
+       "enemy": "resources.assets:6452",
+       "enemyName": "E Weakling",
+       "displayName": "Peasant",
+       "count": 25,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 0.5,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 6,
+       "spawnLine": "Forest",
+       "spawnCenter": [
+        48.75,
+        0.0,
+        -94.9
+       ],
+       "maxHp": 8.7,
+       "spawnSpanSeconds": 12.0
+      }
+     ],
+     "totals": {
+      "enemies": 25,
+      "baseHp": 217.5,
+      "goldCoins": 6,
+      "eliteEnemies": 0,
+      "flying": 0,
+      "boss": 0,
+      "ranged": 0,
+      "spawnSpanSeconds": 12.0,
+      "byLine": {
+       "Forest": 25
+      }
+     }
+    },
+    {
+     "index": 4,
+     "night": 5,
+     "warningText": "It's up to you now.",
+     "difficultyMulti": 1.0,
+     "spawns": [
+      {
+       "enemy": "resources.assets:6452",
+       "enemyName": "E Weakling",
+       "displayName": "Peasant",
+       "count": 25,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 0.2,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 6,
+       "spawnLine": "Forest",
+       "spawnCenter": [
+        48.75,
+        0.0,
+        -94.9
+       ],
+       "maxHp": 8.7,
+       "spawnSpanSeconds": 4.8
+      }
+     ],
+     "totals": {
+      "enemies": 25,
+      "baseHp": 217.5,
+      "goldCoins": 6,
+      "eliteEnemies": 0,
+      "flying": 0,
+      "boss": 0,
+      "ranged": 0,
+      "spawnSpanSeconds": 4.8,
+      "byLine": {
+       "Forest": 25
+      }
+     }
+    },
+    {
+     "index": 5,
+     "night": 6,
+     "warningText": "Archers & Weaklings",
+     "difficultyMulti": 1.0,
+     "spawns": [
+      {
+       "enemy": "resources.assets:5068",
+       "enemyName": "E Archer",
+       "displayName": "Archer",
+       "count": 7,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 1.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 4,
+       "spawnLine": "Forest",
+       "spawnCenter": [
+        48.75,
+        0.0,
+        -94.9
+       ],
+       "maxHp": 20.0,
+       "spawnSpanSeconds": 6.0
+      },
+      {
+       "enemy": "resources.assets:6452",
+       "enemyName": "E Weakling",
+       "displayName": "Peasant",
+       "count": 15,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 1.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 4,
+       "spawnLine": "Forest",
+       "spawnCenter": [
+        48.75,
+        0.0,
+        -94.9
+       ],
+       "maxHp": 8.7,
+       "spawnSpanSeconds": 14.0
+      }
+     ],
+     "totals": {
+      "enemies": 22,
+      "baseHp": 270.5,
+      "goldCoins": 8,
+      "eliteEnemies": 0,
+      "flying": 0,
+      "boss": 0,
+      "ranged": 7,
+      "spawnSpanSeconds": 14.0,
+      "byLine": {
+       "Forest": 22
+      }
+     }
+    },
+    {
+     "index": 6,
+     "night": 7,
+     "warningText": "Archers & Weaklings",
+     "difficultyMulti": 1.0,
+     "spawns": [
+      {
+       "enemy": "resources.assets:5068",
+       "enemyName": "E Archer",
+       "displayName": "Archer",
+       "count": 10,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 1.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 4,
+       "spawnLine": "Forest",
+       "spawnCenter": [
+        48.75,
+        0.0,
+        -94.9
+       ],
+       "maxHp": 20.0,
+       "spawnSpanSeconds": 9.0
+      },
+      {
+       "enemy": "resources.assets:6452",
+       "enemyName": "E Weakling",
+       "displayName": "Peasant",
+       "count": 20,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 1.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 4,
+       "spawnLine": "Forest",
+       "spawnCenter": [
+        48.75,
+        0.0,
+        -94.9
+       ],
+       "maxHp": 8.7,
+       "spawnSpanSeconds": 19.0
+      }
+     ],
+     "totals": {
+      "enemies": 30,
+      "baseHp": 374.0,
+      "goldCoins": 8,
+      "eliteEnemies": 0,
+      "flying": 0,
+      "boss": 0,
+      "ranged": 10,
+      "spawnSpanSeconds": 19.0,
+      "byLine": {
+       "Forest": 30
+      }
+     }
+    },
+    {
+     "index": 7,
+     "night": 8,
+     "warningText": "4 Ogres",
+     "difficultyMulti": 1.0,
+     "spawns": [
+      {
+       "enemy": "resources.assets:6451",
+       "enemyName": "E Ogre",
+       "displayName": "Ogre",
+       "count": 4,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 1.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Forest",
+       "spawnCenter": [
+        48.75,
+        0.0,
+        -94.9
+       ],
+       "maxHp": 200.0,
+       "spawnSpanSeconds": 3.0
+      }
+     ],
+     "totals": {
+      "enemies": 4,
+      "baseHp": 800.0,
+      "goldCoins": 0,
+      "eliteEnemies": 0,
+      "flying": 0,
+      "boss": 0,
+      "ranged": 0,
+      "spawnSpanSeconds": 3.0,
+      "byLine": {
+       "Forest": 4
+      }
+     }
+    }
+   ]
+  }
+ ],
+ "spawnLines": [
+  {
+   "tf": 10007,
+   "name": "Forest",
+   "path": "ES Tutorial/Forest",
+   "points": [
+    [
+     47.3,
+     0.0,
+     -86.3
+    ],
+    [
+     50.2,
+     0.0,
+     -103.5
+    ]
+   ],
+   "length": 17.443,
+   "center": [
+    48.75,
+    0.0,
+    -94.9
+   ],
+   "difficulty": "n/a",
+   "implicit": true,
+   "canSpawnFlying": null,
+   "canSpawnSmallGround": null,
+   "canSpawnBigGround": null,
+   "sharedPaths": [],
+   "separatedPaths": []
+  }
+ ],
+ "enemies": {
+  "resources.assets:6452": {
+   "name": "E Weakling",
+   "displayName": "Peasant",
+   "description": "Peasants equipped with clubs. Not an enemy to worry about, unless they appear in bigger numbers.",
+   "maxHp": 8.7,
+   "tags": [
+    "EnemyOwned",
+    "MeeleFighter",
+    "NaturallyVulnerableToSplash",
+    "Humanoid"
+   ],
+   "coinDrop": 0,
+   "speed": 4.0,
+   "attacks": [
+    {
+     "component": "AutoAttack",
+     "range": 3.0,
+     "cooldown": 1.0,
+     "baseDamage": 1.0,
+     "dps": 1.0,
+     "weapon": "E Weakling",
+     "manual": false
+    }
+   ],
+   "components": [
+    "Seeker",
+    "RVOController",
+    "TaggedObject",
+    "Hp",
+    "PathfindMovementEnemy",
+    "AutoAttack",
+    "FunnelModifier",
+    "SharpCornerMidigator",
+    "ScreenMarkerIcon"
+   ],
+   "prefab": "resources.assets:6452"
+  },
+  "resources.assets:5068": {
+   "name": "E Archer",
+   "displayName": "Archer",
+   "description": "Archers shoot arrows from afar. Quite strong when left uncontested. Weak against buildings and towers.",
+   "maxHp": 20.0,
+   "tags": [
+    "EnemyOwned",
+    "RangedFighter",
+    "TakesIncreasedDamageFromTowers",
+    "NaturallyVulnerableToSplash",
+    "Humanoid"
+   ],
+   "coinDrop": 0,
+   "speed": 5.0,
+   "attacks": [
+    {
+     "component": "AutoAttack",
+     "range": 20.0,
+     "cooldown": 2.0,
+     "baseDamage": 2.5,
+     "dps": 1.25,
+     "weapon": "E Archer",
+     "manual": false
+    }
+   ],
+   "components": [
+    "Seeker",
+    "RVOController",
+    "TaggedObject",
+    "Hp",
+    "PathfindMovementEnemy",
+    "AutoAttack",
+    "FunnelModifier",
+    "SharpCornerMidigator",
+    "ScreenMarkerIcon"
+   ],
+   "prefab": "resources.assets:5068"
+  },
+  "resources.assets:6451": {
+   "name": "E Ogre",
+   "displayName": "Ogre",
+   "description": "Ogres are huge melee warriors that really pack a punch. Hey! Due to their human heritage, ogres aren't monsters though (everybody knows that, duh).",
+   "maxHp": 200.0,
+   "tags": [
+    "EnemyOwned",
+    "MeeleFighter",
+    "NaturallyHighHealthTarget",
+    "Humanoid"
+   ],
+   "coinDrop": 0,
+   "speed": 4.0,
+   "attacks": [
+    {
+     "component": "AutoAttack",
+     "range": 3.0,
+     "cooldown": 1.0,
+     "baseDamage": 20.0,
+     "dps": 20.0,
+     "weapon": "E Ogre",
+     "manual": false
+    }
+   ],
+   "components": [
+    "Seeker",
+    "RVOController",
+    "TaggedObject",
+    "Hp",
+    "PathfindMovementEnemy",
+    "AutoAttack",
+    "FunnelModifier",
+    "SharpCornerMidigator",
+    "ScreenMarkerIcon"
+   ],
+   "prefab": "resources.assets:6451"
+  }
+ },
+ "buildSlots": [
+  {
+   "id": 29635,
+   "name": "Field Variant",
+   "path": "BUILDINGS/Field Variant",
+   "building": "Field",
+   "pos": [
+    -9.218,
+    6.001,
+    -66.124
+   ],
+   "yawDeg": 0.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": -100,
+   "activator": {
+    "slot": 32478,
+    "building": "Mill",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -9.218,
+    6.001,
+    -66.124
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -9.218,
+     6.001,
+     -66.124
+    ],
+    "size": [
+     2.369,
+     1.0,
+     2.334
+    ],
+    "center": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 1,
+     "coreCost": 0,
+     "tooltip": "Fragile, but generating good income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 1,
+   "totalCoreCost": 0,
+   "maxIncome": 1
+  },
+  {
+   "id": 29637,
+   "name": "Field Variant (3)",
+   "path": "BUILDINGS/Field Variant (3)",
+   "building": "Field",
+   "pos": [
+    -3.778,
+    6.001,
+    -61.134
+   ],
+   "yawDeg": 0.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": -100,
+   "activator": {
+    "slot": 32478,
+    "building": "Mill",
+    "level": 1,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -3.778,
+    6.001,
+    -61.134
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -3.778,
+     6.001,
+     -61.134
+    ],
+    "size": [
+     2.369,
+     1.0,
+     2.334
+    ],
+    "center": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 1,
+     "coreCost": 0,
+     "tooltip": "Fragile, but generating good income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 1,
+   "totalCoreCost": 0,
+   "maxIncome": 1
+  },
+  {
+   "id": 29639,
+   "name": "Field Variant (1)",
+   "path": "BUILDINGS/Field Variant (1)",
+   "building": "Field",
+   "pos": [
+    -14.218,
+    6.001,
+    -60.724
+   ],
+   "yawDeg": 0.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": -100,
+   "activator": {
+    "slot": 32478,
+    "building": "Mill",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -14.218,
+    6.001,
+    -60.724
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -14.218,
+     6.001,
+     -60.724
+    ],
+    "size": [
+     2.369,
+     1.0,
+     2.334
+    ],
+    "center": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 1,
+     "coreCost": 0,
+     "tooltip": "Fragile, but generating good income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 1,
+   "totalCoreCost": 0,
+   "maxIncome": 1
+  },
+  {
+   "id": 29640,
+   "name": "Field Variant (4)",
+   "path": "BUILDINGS/Field Variant (4)",
+   "building": "Field",
+   "pos": [
+    -9.088,
+    6.001,
+    -55.674
+   ],
+   "yawDeg": 0.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": -100,
+   "activator": {
+    "slot": 32478,
+    "building": "Mill",
+    "level": 1,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -9.088,
+    6.001,
+    -55.674
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -9.088,
+     6.001,
+     -55.674
+    ],
+    "size": [
+     2.369,
+     1.0,
+     2.334
+    ],
+    "center": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 1,
+     "coreCost": 0,
+     "tooltip": "Fragile, but generating good income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 1,
+   "totalCoreCost": 0,
+   "maxIncome": 1
+  },
+  {
+   "id": 29642,
+   "name": "Field Variant (2)",
+   "path": "BUILDINGS/Field Variant (2)",
+   "building": "Field",
+   "pos": [
+    -14.338,
+    6.001,
+    -65.934
+   ],
+   "yawDeg": 0.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": -100,
+   "activator": {
+    "slot": 32478,
+    "building": "Mill",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -14.338,
+    6.001,
+    -65.934
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -14.338,
+     6.001,
+     -65.934
+    ],
+    "size": [
+     2.369,
+     1.0,
+     2.334
+    ],
+    "center": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 1,
+     "coreCost": 0,
+     "tooltip": "Fragile, but generating good income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 1,
+   "totalCoreCost": 0,
+   "maxIncome": 1
+  },
+  {
+   "id": 30187,
+   "name": "Swordsmen Hut",
+   "path": "BUILDINGS/Swordsmen Hut",
+   "building": "Barracks",
+   "pos": [
+    15.962,
+    5.95,
+    -38.164
+   ],
+   "yawDeg": 0.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 30757,
+    "building": "Castle Center",
+    "level": 1,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    15.962,
+    5.95,
+    -38.164
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     15.962,
+     5.95,
+     -38.164
+    ],
+    "size": [
+     5.302,
+     2.916,
+     6.189
+    ],
+    "center": [
+     0.0,
+     1.458,
+     0.281
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 4,
+     "coreCost": 0,
+     "tooltip": "Choose a melee unit type.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": {
+        "name": "Knights",
+        "tooltip": "Knights are good alrounders and are armored against ranged attacks.",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Knights",
+         "produces": {
+          "unitCount": 12,
+          "respawnSecondsByLevel": [
+           15.0,
+           10.0,
+           6.0,
+           6.0
+          ],
+          "unitTypes": [
+           {
+            "name": "P Knight",
+            "count": 12,
+            "sample": {
+             "name": "P Knight",
+             "displayName": "Knights",
+             "description": "Knights are versatile warriors who are well armored against ranged attacks.",
+             "maxHp": 105.0,
+             "tags": [
+              "PlayerOwned",
+              "MeeleFighter",
+              "PlayerUnit",
+              "ArmoredAgainstRanged",
+              "PlayerOwnedPriorityTarget"
+             ],
+             "coinDrop": 0,
+             "speed": 4.0,
+             "attacks": [
+              {
+               "component": "AutoAttack",
+               "range": 3.5,
+               "cooldown": 1.0,
+               "baseDamage": 2.5,
+               "dps": 2.5,
+               "weapon": "P Knight",
+               "manual": false
+              }
+             ],
+             "components": [
+              "Seeker",
+              "RVOController",
+              "TaggedObject",
+              "Hp",
+              "AutoAttack",
+              "FunnelModifier",
+              "SharpCornerMidigator",
+              "PathfindMovementPlayerunit",
+              "UnitTypeDisplay",
+              "ScreenMarkerIcon",
+              "PerkHpModifyer",
+              "PerkDamageModifyerPlayerunitAuto",
+              "PerkSpeedModifyer",
+              "PerkDamageAutoAttackModifyer"
+             ]
+            }
+           }
+          ]
+         },
+         "components": [
+          "UnitRespawnerForBuildings",
+          "UnitProductionSelector"
+         ],
+         "children": [
+          {
+           "name": "P Knight",
+           "displayName": "Knights",
+           "description": "Knights are versatile warriors who are well armored against ranged attacks.",
+           "maxHp": 105.0,
+           "tags": [
+            "PlayerOwned",
+            "MeeleFighter",
+            "PlayerUnit",
+            "ArmoredAgainstRanged",
+            "PlayerOwnedPriorityTarget"
+           ],
+           "coinDrop": 0,
+           "speed": 4.0,
+           "attacks": [
+            {
+             "component": "AutoAttack",
+             "range": 3.5,
+             "cooldown": 1.0,
+             "baseDamage": 2.5,
+             "dps": 2.5,
+             "weapon": "P Knight",
+             "manual": false
+            }
+           ],
+           "components": [
+            "Seeker",
+            "RVOController",
+            "TaggedObject",
+            "Hp",
+            "AutoAttack",
+            "FunnelModifier",
+            "SharpCornerMidigator",
+            "PathfindMovementPlayerunit",
+            "UnitTypeDisplay",
+            "ScreenMarkerIcon",
+            "PerkHpModifyer",
+            "PerkDamageModifyerPlayerunitAuto",
+            "PerkSpeedModifyer",
+            "PerkDamageAutoAttackModifyer"
+           ]
+          },
+          {
+           "name": "P Knight",
+           "displayName": "Knights",
+           "description": "Knights are versatile warriors who are well armored against ranged attacks.",
+           "maxHp": 105.0,
+           "tags": [
+            "PlayerOwned",
+            "MeeleFighter",
+            "PlayerUnit",
+            "ArmoredAgainstRanged",
+            "PlayerOwnedPriorityTarget"
+           ],
+           "coinDrop": 0,
+           "speed": 4.0,
+           "attacks": [
+            {
+             "component": "AutoAttack",
+             "range": 3.5,
+             "cooldown": 1.0,
+             "baseDamage": 2.5,
+             "dps": 2.5,
+             "weapon": "P Knight",
+             "manual": false
+            }
+           ],
+           "components": [
+            "Seeker",
+            "RVOController",
+            "TaggedObject",
+            "Hp",
+            "AutoAttack",
+            "FunnelModifier",
+            "SharpCornerMidigator",
+            "PathfindMovementPlayerunit",
+            "UnitTypeDisplay",
+            "ScreenMarkerIcon",
+            "PerkHpModifyer",
+            "PerkDamageModifyerPlayerunitAuto",
+            "PerkSpeedModifyer",
+            "PerkDamageAutoAttackModifyer"
+           ]
+          },
+          {
+           "name": "P Knight",
+           "displayName": "Knights",
+           "description": "Knights are versatile warriors who are well armored against ranged attacks.",
+           "maxHp": 105.0,
+           "tags": [
+            "PlayerOwned",
+            "MeeleFighter",
+            "PlayerUnit",
+            "ArmoredAgainstRanged",
+            "PlayerOwnedPriorityTarget"
+           ],
+           "coinDrop": 0,
+           "speed": 4.0,
+           "attacks": [
+            {
+             "component": "AutoAttack",
+             "range": 3.5,
+             "cooldown": 1.0,
+             "baseDamage": 2.5,
+             "dps": 2.5,
+             "weapon": "P Knight",
+             "manual": false
+            }
+           ],
+           "components": [
+            "Seeker",
+            "RVOController",
+            "TaggedObject",
+            "Hp",
+            "AutoAttack",
+            "FunnelModifier",
+            "SharpCornerMidigator",
+            "PathfindMovementPlayerunit",
+            "UnitTypeDisplay",
+            "ScreenMarkerIcon",
+            "PerkHpModifyer",
+            "PerkDamageModifyerPlayerunitAuto",
+            "PerkSpeedModifyer",
+            "PerkDamageAutoAttackModifyer"
+           ]
+          },
+          {
+           "name": "P Knight",
+           "displayName": "Knights",
+           "description": "Knights are versatile warriors who are well armored against ranged attacks.",
+           "maxHp": 105.0,
+           "tags": [
+            "PlayerOwned",
+            "MeeleFighter",
+            "PlayerUnit",
+            "ArmoredAgainstRanged",
+            "PlayerOwnedPriorityTarget"
+           ],
+           "coinDrop": 0,
+           "speed": 4.0,
+           "attacks": [
+            {
+             "component": "AutoAttack",
+             "range": 3.5,
+             "cooldown": 1.0,
+             "baseDamage": 2.5,
+             "dps": 2.5,
+             "weapon": "P Knight",
+             "manual": false
+            }
+           ],
+           "components": [
+            "Seeker",
+            "RVOController",
+            "TaggedObject",
+            "Hp",
+            "AutoAttack",
+            "FunnelModifier",
+            "SharpCornerMidigator",
+            "PathfindMovementPlayerunit",
+            "UnitTypeDisplay",
+            "ScreenMarkerIcon",
+            "PerkHpModifyer",
+            "PerkDamageModifyerPlayerunitAuto",
+            "PerkSpeedModifyer",
+            "PerkDamageAutoAttackModifyer"
+           ]
+          },
+          {
+           "name": "P Knight",
+           "displayName": "Knights",
+           "description": "Knights are versatile warriors who are well armored against ranged attacks.",
+           "maxHp": 105.0,
+           "tags": [
+            "PlayerOwned",
+            "MeeleFighter",
+            "PlayerUnit",
+            "ArmoredAgainstRanged",
+            "PlayerOwnedPriorityTarget"
+           ],
+           "coinDrop": 0,
+           "speed": 4.0,
+           "attacks": [
+            {
+             "component": "AutoAttack",
+             "range": 3.5,
+             "cooldown": 1.0,
+             "baseDamage": 2.5,
+             "dps": 2.5,
+             "weapon": "P Knight",
+             "manual": false
+            }
+           ],
+           "components": [
+            "Seeker",
+            "RVOController",
+            "TaggedObject",
+            "Hp",
+            "AutoAttack",
+            "FunnelModifier",
+            "SharpCornerMidigator",
+            "PathfindMovementPlayerunit",
+            "UnitTypeDisplay",
+            "ScreenMarkerIcon",
+            "PerkHpModifyer",
+            "PerkDamageModifyerPlayerunitAuto",
+            "PerkSpeedModifyer",
+            "PerkDamageAutoAttackModifyer"
+           ]
+          },
+          {
+           "name": "P Knight",
+           "displayName": "Knights",
+           "description": "Knights are versatile warriors who are well armored against ranged attacks.",
+           "maxHp": 105.0,
+           "tags": [
+            "PlayerOwned",
+            "MeeleFighter",
+            "PlayerUnit",
+            "ArmoredAgainstRanged",
+            "PlayerOwnedPriorityTarget"
+           ],
+           "coinDrop": 0,
+           "speed": 4.0,
+           "attacks": [
+            {
+             "component": "AutoAttack",
+             "range": 3.5,
+             "cooldown": 1.0,
+             "baseDamage": 2.5,
+             "dps": 2.5,
+             "weapon": "P Knight",
+             "manual": false
+            }
+           ],
+           "components": [
+            "Seeker",
+            "RVOController",
+            "TaggedObject",
+            "Hp",
+            "AutoAttack",
+            "FunnelModifier",
+            "SharpCornerMidigator",
+            "PathfindMovementPlayerunit",
+            "UnitTypeDisplay",
+            "ScreenMarkerIcon",
+            "PerkHpModifyer",
+            "PerkDamageModifyerPlayerunitAuto",
+            "PerkSpeedModifyer",
+            "PerkDamageAutoAttackModifyer"
+           ]
+          },
+          {
+           "name": "P Knight",
+           "displayName": "Knights",
+           "description": "Knights are versatile warriors who are well armored against ranged attacks.",
+           "maxHp": 105.0,
+           "tags": [
+            "PlayerOwned",
+            "MeeleFighter",
+            "PlayerUnit",
+            "ArmoredAgainstRanged",
+            "PlayerOwnedPriorityTarget"
+           ],
+           "coinDrop": 0,
+           "speed": 4.0,
+           "attacks": [
+            {
+             "component": "AutoAttack",
+             "range": 3.5,
+             "cooldown": 1.0,
+             "baseDamage": 2.5,
+             "dps": 2.5,
+             "weapon": "P Knight",
+             "manual": false
+            }
+           ],
+           "components": [
+            "Seeker",
+            "RVOController",
+            "TaggedObject",
+            "Hp",
+            "AutoAttack",
+            "FunnelModifier",
+            "SharpCornerMidigator",
+            "PathfindMovementPlayerunit",
+            "UnitTypeDisplay",
+            "ScreenMarkerIcon",
+            "PerkHpModifyer",
+            "PerkDamageModifyerPlayerunitAuto",
+            "PerkSpeedModifyer",
+            "PerkDamageAutoAttackModifyer"
+           ]
+          },
+          {
+           "name": "P Knight",
+           "displayName": "Knights",
+           "description": "Knights are versatile warriors who are well armored against ranged attacks.",
+           "maxHp": 105.0,
+           "tags": [
+            "PlayerOwned",
+            "MeeleFighter",
+            "PlayerUnit",
+            "ArmoredAgainstRanged",
+            "PlayerOwnedPriorityTarget"
+           ],
+           "coinDrop": 0,
+           "speed": 4.0,
+           "attacks": [
+            {
+             "component": "AutoAttack",
+             "range": 3.5,
+             "cooldown": 1.0,
+             "baseDamage": 2.5,
+             "dps": 2.5,
+             "weapon": "P Knight",
+             "manual": false
+            }
+           ],
+           "components": [
+            "Seeker",
+            "RVOController",
+            "TaggedObject",
+            "Hp",
+            "AutoAttack",
+            "FunnelModifier",
+            "SharpCornerMidigator",
+            "PathfindMovementPlayerunit",
+            "UnitTypeDisplay",
+            "ScreenMarkerIcon",
+            "PerkHpModifyer",
+            "PerkDamageModifyerPlayerunitAuto",
+            "PerkSpeedModifyer",
+            "PerkDamageAutoAttackModifyer"
+           ]
+          },
+          {
+           "name": "P Knight",
+           "displayName": "Knights",
+           "description": "Knights are versatile warriors who are well armored against ranged attacks.",
+           "maxHp": 105.0,
+           "tags": [
+            "PlayerOwned",
+            "MeeleFighter",
+            "PlayerUnit",
+            "ArmoredAgainstRanged",
+            "PlayerOwnedPriorityTarget"
+           ],
+           "coinDrop": 0,
+           "speed": 4.0,
+           "attacks": [
+            {
+             "component": "AutoAttack",
+             "range": 3.5,
+             "cooldown": 1.0,
+             "baseDamage": 2.5,
+             "dps": 2.5,
+             "weapon": "P Knight",
+             "manual": false
+            }
+           ],
+           "components": [
+            "Seeker",
+            "RVOController",
+            "TaggedObject",
+            "Hp",
+            "AutoAttack",
+            "FunnelModifier",
+            "SharpCornerMidigator",
+            "PathfindMovementPlayerunit",
+            "UnitTypeDisplay",
+            "ScreenMarkerIcon",
+            "PerkHpModifyer",
+            "PerkDamageModifyerPlayerunitAuto",
+            "PerkSpeedModifyer",
+            "PerkDamageAutoAttackModifyer"
+           ]
+          },
+          {
+           "name": "P Knight",
+           "displayName": "Knights",
+           "description": "Knights are versatile warriors who are well armored against ranged attacks.",
+           "maxHp": 105.0,
+           "tags": [
+            "PlayerOwned",
+            "MeeleFighter",
+            "PlayerUnit",
+            "ArmoredAgainstRanged",
+            "PlayerOwnedPriorityTarget"
+           ],
+           "coinDrop": 0,
+           "speed": 4.0,
+           "attacks": [
+            {
+             "component": "AutoAttack",
+             "range": 3.5,
+             "cooldown": 1.0,
+             "baseDamage": 2.5,
+             "dps": 2.5,
+             "weapon": "P Knight",
+             "manual": false
+            }
+           ],
+           "components": [
+            "Seeker",
+            "RVOController",
+            "TaggedObject",
+            "Hp",
+            "AutoAttack",
+            "FunnelModifier",
+            "SharpCornerMidigator",
+            "PathfindMovementPlayerunit",
+            "UnitTypeDisplay",
+            "ScreenMarkerIcon",
+            "PerkHpModifyer",
+            "PerkDamageModifyerPlayerunitAuto",
+            "PerkSpeedModifyer",
+            "PerkDamageAutoAttackModifyer"
+           ]
+          },
+          {
+           "name": "P Knight",
+           "displayName": "Knights",
+           "description": "Knights are versatile warriors who are well armored against ranged attacks.",
+           "maxHp": 105.0,
+           "tags": [
+            "PlayerOwned",
+            "MeeleFighter",
+            "PlayerUnit",
+            "ArmoredAgainstRanged",
+            "PlayerOwnedPriorityTarget"
+           ],
+           "coinDrop": 0,
+           "speed": 4.0,
+           "attacks": [
+            {
+             "component": "AutoAttack",
+             "range": 3.5,
+             "cooldown": 1.0,
+             "baseDamage": 2.5,
+             "dps": 2.5,
+             "weapon": "P Knight",
+             "manual": false
+            }
+           ],
+           "components": [
+            "Seeker",
+            "RVOController",
+            "TaggedObject",
+            "Hp",
+            "AutoAttack",
+            "FunnelModifier",
+            "SharpCornerMidigator",
+            "PathfindMovementPlayerunit",
+            "UnitTypeDisplay",
+            "ScreenMarkerIcon",
+            "PerkHpModifyer",
+            "PerkDamageModifyerPlayerunitAuto",
+            "PerkSpeedModifyer",
+            "PerkDamageAutoAttackModifyer"
+           ]
+          },
+          {
+           "name": "P Knight",
+           "displayName": "Knights",
+           "description": "Knights are versatile warriors who are well armored against ranged attacks.",
+           "maxHp": 105.0,
+           "tags": [
+            "PlayerOwned",
+            "MeeleFighter",
+            "PlayerUnit",
+            "ArmoredAgainstRanged",
+            "PlayerOwnedPriorityTarget"
+           ],
+           "coinDrop": 0,
+           "speed": 4.0,
+           "attacks": [
+            {
+             "component": "AutoAttack",
+             "range": 3.5,
+             "cooldown": 1.0,
+             "baseDamage": 2.5,
+             "dps": 2.5,
+             "weapon": "P Knight",
+             "manual": false
+            }
+           ],
+           "components": [
+            "Seeker",
+            "RVOController",
+            "TaggedObject",
+            "Hp",
+            "AutoAttack",
+            "FunnelModifier",
+            "SharpCornerMidigator",
+            "PathfindMovementPlayerunit",
+            "UnitTypeDisplay",
+            "ScreenMarkerIcon",
+            "PerkHpModifyer",
+            "PerkDamageModifyerPlayerunitAuto",
+            "PerkSpeedModifyer",
+            "PerkDamageAutoAttackModifyer"
+           ]
+          }
+         ]
+        },
+        {
+         "count": 4,
+         "name": "P Knight",
+         "displayName": "Knights",
+         "description": "Knights are versatile warriors who are well armored against ranged attacks.",
+         "maxHp": 105.0,
+         "tags": [
+          "PlayerOwned",
+          "MeeleFighter",
+          "PlayerUnit",
+          "ArmoredAgainstRanged",
+          "PlayerOwnedPriorityTarget"
+         ],
+         "coinDrop": 0,
+         "speed": 4.0,
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 3.5,
+           "cooldown": 1.0,
+           "baseDamage": 2.5,
+           "dps": 2.5,
+           "weapon": "P Knight",
+           "manual": false
+          }
+         ],
+         "components": [
+          "Seeker",
+          "RVOController",
+          "TaggedObject",
+          "Hp",
+          "AutoAttack",
+          "FunnelModifier",
+          "SharpCornerMidigator",
+          "PathfindMovementPlayerunit",
+          "UnitTypeDisplay",
+          "ScreenMarkerIcon",
+          "PerkHpModifyer",
+          "PerkDamageModifyerPlayerunitAuto",
+          "PerkSpeedModifyer",
+          "PerkDamageAutoAttackModifyer"
+         ]
+        }
+       ],
+       "disables": [
+        "Basic Melee"
+       ],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Speermen",
+        "tooltip": "Speermen are fast and powerful. They deal bonus damage against fast enemies and slow them down. Not a good pick against ranged units like archers",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Speers",
+         "produces": {
+          "unitCount": 12,
+          "respawnSecondsByLevel": [
+           15.0,
+           10.0,
+           6.0,
+           6.0
+          ],
+          "unitTypes": [
+           {
+            "name": "P Speer",
+            "count": 12,
+            "sample": {
+             "name": "P Speer",
+             "displayName": "Spearmen",
+             "description": "Spearmen are fast and strong units. They do extra damage against fast enemies and slow them down. Not a great pick against ranged units.",
+             "maxHp": 66.0,
+             "tags": [
+              "PlayerOwned",
+              "MeeleFighter",
+              "PlayerUnit",
+              "VulnerableVsRanged",
+              "PlayerOwnedPriorityTarget"
+             ],
+             "coinDrop": 0,
+             "speed": 9.5,
+             "attacks": [
+              {
+               "component": "AutoAttack",
+               "range": 5.5,
+               "cooldown": 0.5,
+               "baseDamage": 2.021,
+               "dps": 4.042,
+               "weapon": "P Speer",
+               "manual": false
+              }
+             ],
+             "components": [
+              "Seeker",
+              "RVOController",
+              "TaggedObject",
+              "Hp",
+              "AutoAttack",
+              "FunnelModifier",
+              "SharpCornerMidigator",
+              "PathfindMovementPlayerunit",
+              "UnitTypeDisplay",
+              "ScreenMarkerIcon",
+              "PerkDamageModifyerPlayerunitAuto",
+              "PerkHpModifyer",
+              "PerkSpeedModifyer",
+              "PerkDamageAutoAttackModifyer"
+             ]
+            }
+           }
+          ]
+         },
+         "components": [
+          "UnitRespawnerForBuildings",
+          "UnitProductionSelector"
+         ],
+         "children": [
+          {
+           "name": "P Speer",
+           "displayName": "Spearmen",
+           "description": "Spearmen are fast and strong units. They do extra damage against fast enemies and slow them down. Not a great pick against ranged units.",
+           "maxHp": 66.0,
+           "tags": [
+            "PlayerOwned",
+            "MeeleFighter",
+            "PlayerUnit",
+            "VulnerableVsRanged",
+            "PlayerOwnedPriorityTarget"
+           ],
+           "coinDrop": 0,
+           "speed": 9.5,
+           "attacks": [
+            {
+             "component": "AutoAttack",
+             "range": 5.5,
+             "cooldown": 0.5,
+             "baseDamage": 2.021,
+             "dps": 4.042,
+             "weapon": "P Speer",
+             "manual": false
+            }
+           ],
+           "components": [
+            "Seeker",
+            "RVOController",
+            "TaggedObject",
+            "Hp",
+            "AutoAttack",
+            "FunnelModifier",
+            "SharpCornerMidigator",
+            "PathfindMovementPlayerunit",
+            "UnitTypeDisplay",
+            "ScreenMarkerIcon",
+            "PerkDamageModifyerPlayerunitAuto",
+            "PerkHpModifyer",
+            "PerkSpeedModifyer",
+            "PerkDamageAutoAttackModifyer"
+           ]
+          },
+          {
+           "name": "P Speer",
+           "displayName": "Spearmen",
+           "description": "Spearmen are fast and strong units. They do extra damage against fast enemies and slow them down. Not a great pick against ranged units.",
+           "maxHp": 66.0,
+           "tags": [
+            "PlayerOwned",
+            "MeeleFighter",
+            "PlayerUnit",
+            "VulnerableVsRanged",
+            "PlayerOwnedPriorityTarget"
+           ],
+           "coinDrop": 0,
+           "speed": 9.5,
+           "attacks": [
+            {
+             "component": "AutoAttack",
+             "range": 5.5,
+             "cooldown": 0.5,
+             "baseDamage": 2.021,
+             "dps": 4.042,
+             "weapon": "P Speer",
+             "manual": false
+            }
+           ],
+           "components": [
+            "Seeker",
+            "RVOController",
+            "TaggedObject",
+            "Hp",
+            "AutoAttack",
+            "FunnelModifier",
+            "SharpCornerMidigator",
+            "PathfindMovementPlayerunit",
+            "UnitTypeDisplay",
+            "ScreenMarkerIcon",
+            "PerkDamageModifyerPlayerunitAuto",
+            "PerkHpModifyer",
+            "PerkSpeedModifyer",
+            "PerkDamageAutoAttackModifyer"
+           ]
+          },
+          {
+           "name": "P Speer",
+           "displayName": "Spearmen",
+           "description": "Spearmen are fast and strong units. They do extra damage against fast enemies and slow them down. Not a great pick against ranged units.",
+           "maxHp": 66.0,
+           "tags": [
+            "PlayerOwned",
+            "MeeleFighter",
+            "PlayerUnit",
+            "VulnerableVsRanged",
+            "PlayerOwnedPriorityTarget"
+           ],
+           "coinDrop": 0,
+           "speed": 9.5,
+           "attacks": [
+            {
+             "component": "AutoAttack",
+             "range": 5.5,
+             "cooldown": 0.5,
+             "baseDamage": 2.021,
+             "dps": 4.042,
+             "weapon": "P Speer",
+             "manual": false
+            }
+           ],
+           "components": [
+            "Seeker",
+            "RVOController",
+            "TaggedObject",
+            "Hp",
+            "AutoAttack",
+            "FunnelModifier",
+            "SharpCornerMidigator",
+            "PathfindMovementPlayerunit",
+            "UnitTypeDisplay",
+            "ScreenMarkerIcon",
+            "PerkDamageModifyerPlayerunitAuto",
+            "PerkHpModifyer",
+            "PerkSpeedModifyer",
+            "PerkDamageAutoAttackModifyer"
+           ]
+          },
+          {
+           "name": "P Speer",
+           "displayName": "Spearmen",
+           "description": "Spearmen are fast and strong units. They do extra damage against fast enemies and slow them down. Not a great pick against ranged units.",
+           "maxHp": 66.0,
+           "tags": [
+            "PlayerOwned",
+            "MeeleFighter",
+            "PlayerUnit",
+            "VulnerableVsRanged",
+            "PlayerOwnedPriorityTarget"
+           ],
+           "coinDrop": 0,
+           "speed": 9.5,
+           "attacks": [
+            {
+             "component": "AutoAttack",
+             "range": 5.5,
+             "cooldown": 0.5,
+             "baseDamage": 2.021,
+             "dps": 4.042,
+             "weapon": "P Speer",
+             "manual": false
+            }
+           ],
+           "components": [
+            "Seeker",
+            "RVOController",
+            "TaggedObject",
+            "Hp",
+            "AutoAttack",
+            "FunnelModifier",
+            "SharpCornerMidigator",
+            "PathfindMovementPlayerunit",
+            "UnitTypeDisplay",
+            "ScreenMarkerIcon",
+            "PerkDamageModifyerPlayerunitAuto",
+            "PerkHpModifyer",
+            "PerkSpeedModifyer",
+            "PerkDamageAutoAttackModifyer"
+           ]
+          },
+          {
+           "name": "P Speer",
+           "displayName": "Spearmen",
+           "description": "Spearmen are fast and strong units. They do extra damage against fast enemies and slow them down. Not a great pick against ranged units.",
+           "maxHp": 66.0,
+           "tags": [
+            "PlayerOwned",
+            "MeeleFighter",
+            "PlayerUnit",
+            "VulnerableVsRanged",
+            "PlayerOwnedPriorityTarget"
+           ],
+           "coinDrop": 0,
+           "speed": 9.5,
+           "attacks": [
+            {
+             "component": "AutoAttack",
+             "range": 5.5,
+             "cooldown": 0.5,
+             "baseDamage": 2.021,
+             "dps": 4.042,
+             "weapon": "P Speer",
+             "manual": false
+            }
+           ],
+           "components": [
+            "Seeker",
+            "RVOController",
+            "TaggedObject",
+            "Hp",
+            "AutoAttack",
+            "FunnelModifier",
+            "SharpCornerMidigator",
+            "PathfindMovementPlayerunit",
+            "UnitTypeDisplay",
+            "ScreenMarkerIcon",
+            "PerkDamageModifyerPlayerunitAuto",
+            "PerkHpModifyer",
+            "PerkSpeedModifyer",
+            "PerkDamageAutoAttackModifyer"
+           ]
+          },
+          {
+           "name": "P Speer",
+           "displayName": "Spearmen",
+           "description": "Spearmen are fast and strong units. They do extra damage against fast enemies and slow them down. Not a great pick against ranged units.",
+           "maxHp": 66.0,
+           "tags": [
+            "PlayerOwned",
+            "MeeleFighter",
+            "PlayerUnit",
+            "VulnerableVsRanged",
+            "PlayerOwnedPriorityTarget"
+           ],
+           "coinDrop": 0,
+           "speed": 9.5,
+           "attacks": [
+            {
+             "component": "AutoAttack",
+             "range": 5.5,
+             "cooldown": 0.5,
+             "baseDamage": 2.021,
+             "dps": 4.042,
+             "weapon": "P Speer",
+             "manual": false
+            }
+           ],
+           "components": [
+            "Seeker",
+            "RVOController",
+            "TaggedObject",
+            "Hp",
+            "AutoAttack",
+            "FunnelModifier",
+            "SharpCornerMidigator",
+            "PathfindMovementPlayerunit",
+            "UnitTypeDisplay",
+            "ScreenMarkerIcon",
+            "PerkDamageModifyerPlayerunitAuto",
+            "PerkHpModifyer",
+            "PerkSpeedModifyer",
+            "PerkDamageAutoAttackModifyer"
+           ]
+          },
+          {
+           "name": "P Speer",
+           "displayName": "Spearmen",
+           "description": "Spearmen are fast and strong units. They do extra damage against fast enemies and slow them down. Not a great pick against ranged units.",
+           "maxHp": 66.0,
+           "tags": [
+            "PlayerOwned",
+            "MeeleFighter",
+            "PlayerUnit",
+            "VulnerableVsRanged",
+            "PlayerOwnedPriorityTarget"
+           ],
+           "coinDrop": 0,
+           "speed": 9.5,
+           "attacks": [
+            {
+             "component": "AutoAttack",
+             "range": 5.5,
+             "cooldown": 0.5,
+             "baseDamage": 2.021,
+             "dps": 4.042,
+             "weapon": "P Speer",
+             "manual": false
+            }
+           ],
+           "components": [
+            "Seeker",
+            "RVOController",
+            "TaggedObject",
+            "Hp",
+            "AutoAttack",
+            "FunnelModifier",
+            "SharpCornerMidigator",
+            "PathfindMovementPlayerunit",
+            "UnitTypeDisplay",
+            "ScreenMarkerIcon",
+            "PerkDamageModifyerPlayerunitAuto",
+            "PerkHpModifyer",
+            "PerkSpeedModifyer",
+            "PerkDamageAutoAttackModifyer"
+           ]
+          },
+          {
+           "name": "P Speer",
+           "displayName": "Spearmen",
+           "description": "Spearmen are fast and strong units. They do extra damage against fast enemies and slow them down. Not a great pick against ranged units.",
+           "maxHp": 66.0,
+           "tags": [
+            "PlayerOwned",
+            "MeeleFighter",
+            "PlayerUnit",
+            "VulnerableVsRanged",
+            "PlayerOwnedPriorityTarget"
+           ],
+           "coinDrop": 0,
+           "speed": 9.5,
+           "attacks": [
+            {
+             "component": "AutoAttack",
+             "range": 5.5,
+             "cooldown": 0.5,
+             "baseDamage": 2.021,
+             "dps": 4.042,
+             "weapon": "P Speer",
+             "manual": false
+            }
+           ],
+           "components": [
+            "Seeker",
+            "RVOController",
+            "TaggedObject",
+            "Hp",
+            "AutoAttack",
+            "FunnelModifier",
+            "SharpCornerMidigator",
+            "PathfindMovementPlayerunit",
+            "UnitTypeDisplay",
+            "ScreenMarkerIcon",
+            "PerkDamageModifyerPlayerunitAuto",
+            "PerkHpModifyer",
+            "PerkSpeedModifyer",
+            "PerkDamageAutoAttackModifyer"
+           ]
+          },
+          {
+           "name": "P Speer",
+           "displayName": "Spearmen",
+           "description": "Spearmen are fast and strong units. They do extra damage against fast enemies and slow them down. Not a great pick against ranged units.",
+           "maxHp": 66.0,
+           "tags": [
+            "PlayerOwned",
+            "MeeleFighter",
+            "PlayerUnit",
+            "VulnerableVsRanged",
+            "PlayerOwnedPriorityTarget"
+           ],
+           "coinDrop": 0,
+           "speed": 9.5,
+           "attacks": [
+            {
+             "component": "AutoAttack",
+             "range": 5.5,
+             "cooldown": 0.5,
+             "baseDamage": 2.021,
+             "dps": 4.042,
+             "weapon": "P Speer",
+             "manual": false
+            }
+           ],
+           "components": [
+            "Seeker",
+            "RVOController",
+            "TaggedObject",
+            "Hp",
+            "AutoAttack",
+            "FunnelModifier",
+            "SharpCornerMidigator",
+            "PathfindMovementPlayerunit",
+            "UnitTypeDisplay",
+            "ScreenMarkerIcon",
+            "PerkDamageModifyerPlayerunitAuto",
+            "PerkHpModifyer",
+            "PerkSpeedModifyer",
+            "PerkDamageAutoAttackModifyer"
+           ]
+          },
+          {
+           "name": "P Speer",
+           "displayName": "Spearmen",
+           "description": "Spearmen are fast and strong units. They do extra damage against fast enemies and slow them down. Not a great pick against ranged units.",
+           "maxHp": 66.0,
+           "tags": [
+            "PlayerOwned",
+            "MeeleFighter",
+            "PlayerUnit",
+            "VulnerableVsRanged",
+            "PlayerOwnedPriorityTarget"
+           ],
+           "coinDrop": 0,
+           "speed": 9.5,
+           "attacks": [
+            {
+             "component": "AutoAttack",
+             "range": 5.5,
+             "cooldown": 0.5,
+             "baseDamage": 2.021,
+             "dps": 4.042,
+             "weapon": "P Speer",
+             "manual": false
+            }
+           ],
+           "components": [
+            "Seeker",
+            "RVOController",
+            "TaggedObject",
+            "Hp",
+            "AutoAttack",
+            "FunnelModifier",
+            "SharpCornerMidigator",
+            "PathfindMovementPlayerunit",
+            "UnitTypeDisplay",
+            "ScreenMarkerIcon",
+            "PerkDamageModifyerPlayerunitAuto",
+            "PerkHpModifyer",
+            "PerkSpeedModifyer",
+            "PerkDamageAutoAttackModifyer"
+           ]
+          },
+          {
+           "name": "P Speer",
+           "displayName": "Spearmen",
+           "description": "Spearmen are fast and strong units. They do extra damage against fast enemies and slow them down. Not a great pick against ranged units.",
+           "maxHp": 66.0,
+           "tags": [
+            "PlayerOwned",
+            "MeeleFighter",
+            "PlayerUnit",
+            "VulnerableVsRanged",
+            "PlayerOwnedPriorityTarget"
+           ],
+           "coinDrop": 0,
+           "speed": 9.5,
+           "attacks": [
+            {
+             "component": "AutoAttack",
+             "range": 5.5,
+             "cooldown": 0.5,
+             "baseDamage": 2.021,
+             "dps": 4.042,
+             "weapon": "P Speer",
+             "manual": false
+            }
+           ],
+           "components": [
+            "Seeker",
+            "RVOController",
+            "TaggedObject",
+            "Hp",
+            "AutoAttack",
+            "FunnelModifier",
+            "SharpCornerMidigator",
+            "PathfindMovementPlayerunit",
+            "UnitTypeDisplay",
+            "ScreenMarkerIcon",
+            "PerkDamageModifyerPlayerunitAuto",
+            "PerkHpModifyer",
+            "PerkSpeedModifyer",
+            "PerkDamageAutoAttackModifyer"
+           ]
+          },
+          {
+           "name": "P Speer",
+           "displayName": "Spearmen",
+           "description": "Spearmen are fast and strong units. They do extra damage against fast enemies and slow them down. Not a great pick against ranged units.",
+           "maxHp": 66.0,
+           "tags": [
+            "PlayerOwned",
+            "MeeleFighter",
+            "PlayerUnit",
+            "VulnerableVsRanged",
+            "PlayerOwnedPriorityTarget"
+           ],
+           "coinDrop": 0,
+           "speed": 9.5,
+           "attacks": [
+            {
+             "component": "AutoAttack",
+             "range": 5.5,
+             "cooldown": 0.5,
+             "baseDamage": 2.021,
+             "dps": 4.042,
+             "weapon": "P Speer",
+             "manual": false
+            }
+           ],
+           "components": [
+            "Seeker",
+            "RVOController",
+            "TaggedObject",
+            "Hp",
+            "AutoAttack",
+            "FunnelModifier",
+            "SharpCornerMidigator",
+            "PathfindMovementPlayerunit",
+            "UnitTypeDisplay",
+            "ScreenMarkerIcon",
+            "PerkDamageModifyerPlayerunitAuto",
+            "PerkHpModifyer",
+            "PerkSpeedModifyer",
+            "PerkDamageAutoAttackModifyer"
+           ]
+          }
+         ]
+        },
+        {
+         "count": 4,
+         "name": "P Speer",
+         "displayName": "Spearmen",
+         "description": "Spearmen are fast and strong units. They do extra damage against fast enemies and slow them down. Not a great pick against ranged units.",
+         "maxHp": 66.0,
+         "tags": [
+          "PlayerOwned",
+          "MeeleFighter",
+          "PlayerUnit",
+          "VulnerableVsRanged",
+          "PlayerOwnedPriorityTarget"
+         ],
+         "coinDrop": 0,
+         "speed": 9.5,
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 5.5,
+           "cooldown": 0.5,
+           "baseDamage": 2.021,
+           "dps": 4.042,
+           "weapon": "P Speer",
+           "manual": false
+          }
+         ],
+         "components": [
+          "Seeker",
+          "RVOController",
+          "TaggedObject",
+          "Hp",
+          "AutoAttack",
+          "FunnelModifier",
+          "SharpCornerMidigator",
+          "PathfindMovementPlayerunit",
+          "UnitTypeDisplay",
+          "ScreenMarkerIcon",
+          "PerkDamageModifyerPlayerunitAuto",
+          "PerkHpModifyer",
+          "PerkSpeedModifyer",
+          "PerkDamageAutoAttackModifyer"
+         ]
+        }
+       ],
+       "disables": [
+        "Basic Melee"
+       ],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Flails",
+        "tooltip": "Flails unleash a spin attack, dealing splash damage around themselves.",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Morningstars",
+         "produces": {
+          "unitCount": 12,
+          "respawnSecondsByLevel": [
+           15.0,
+           10.0,
+           6.0,
+           6.0
+          ],
+          "unitTypes": [
+           {
+            "name": "P Morningstar",
+            "count": 12,
+            "sample": {
+             "name": "P Morningstar",
+             "displayName": "Flails",
+             "description": "Flails can simultaneously attack all enemies in a circle around them and regenerate a bit of health for every enemy they hit.",
+             "maxHp": 70.0,
+             "tags": [
+              "PlayerOwned",
+              "MeeleFighter",
+              "PlayerUnit",
+              "PlayerOwnedPriorityTarget"
+             ],
+             "coinDrop": 0,
+             "speed": 5.0,
+             "attacks": [
+              {
+               "component": "AutoAttack",
+               "range": 4.0,
+               "cooldown": 1.0,
+               "baseDamage": 1.65,
+               "dps": 1.65,
+               "weapon": "P Morningstar",
+               "manual": false
+              }
+             ],
+             "components": [
+              "Seeker",
+              "RVOController",
+              "TaggedObject",
+              "Hp",
+              "AutoAttack",
+              "FunnelModifier",
+              "SharpCornerMidigator",
+              "PathfindMovementPlayerunit",
+              "UnitTypeDisplay",
+              "ScreenMarkerIcon",
+              "PerkHpModifyer",
+              "PerkDamageModifyerPlayerunitAuto",
+              "PerkSpeedModifyer",
+              "PerkDamageAutoAttackModifyer"
+             ]
+            }
+           }
+          ]
+         },
+         "components": [
+          "UnitRespawnerForBuildings",
+          "UnitProductionSelector"
+         ],
+         "children": [
+          {
+           "name": "P Morningstar",
+           "displayName": "Flails",
+           "description": "Flails can simultaneously attack all enemies in a circle around them and regenerate a bit of health for every enemy they hit.",
+           "maxHp": 70.0,
+           "tags": [
+            "PlayerOwned",
+            "MeeleFighter",
+            "PlayerUnit",
+            "PlayerOwnedPriorityTarget"
+           ],
+           "coinDrop": 0,
+           "speed": 5.0,
+           "attacks": [
+            {
+             "component": "AutoAttack",
+             "range": 4.0,
+             "cooldown": 1.0,
+             "baseDamage": 1.65,
+             "dps": 1.65,
+             "weapon": "P Morningstar",
+             "manual": false
+            }
+           ],
+           "components": [
+            "Seeker",
+            "RVOController",
+            "TaggedObject",
+            "Hp",
+            "AutoAttack",
+            "FunnelModifier",
+            "SharpCornerMidigator",
+            "PathfindMovementPlayerunit",
+            "UnitTypeDisplay",
+            "ScreenMarkerIcon",
+            "PerkHpModifyer",
+            "PerkDamageModifyerPlayerunitAuto",
+            "PerkSpeedModifyer",
+            "PerkDamageAutoAttackModifyer"
+           ]
+          },
+          {
+           "name": "P Morningstar",
+           "displayName": "Flails",
+           "description": "Flails can simultaneously attack all enemies in a circle around them and regenerate a bit of health for every enemy they hit.",
+           "maxHp": 70.0,
+           "tags": [
+            "PlayerOwned",
+            "MeeleFighter",
+            "PlayerUnit",
+            "PlayerOwnedPriorityTarget"
+           ],
+           "coinDrop": 0,
+           "speed": 5.0,
+           "attacks": [
+            {
+             "component": "AutoAttack",
+             "range": 4.0,
+             "cooldown": 1.0,
+             "baseDamage": 1.65,
+             "dps": 1.65,
+             "weapon": "P Morningstar",
+             "manual": false
+            }
+           ],
+           "components": [
+            "Seeker",
+            "RVOController",
+            "TaggedObject",
+            "Hp",
+            "AutoAttack",
+            "FunnelModifier",
+            "SharpCornerMidigator",
+            "PathfindMovementPlayerunit",
+            "UnitTypeDisplay",
+            "ScreenMarkerIcon",
+            "PerkHpModifyer",
+            "PerkDamageModifyerPlayerunitAuto",
+            "PerkSpeedModifyer",
+            "PerkDamageAutoAttackModifyer"
+           ]
+          },
+          {
+           "name": "P Morningstar",
+           "displayName": "Flails",
+           "description": "Flails can simultaneously attack all enemies in a circle around them and regenerate a bit of health for every enemy they hit.",
+           "maxHp": 70.0,
+           "tags": [
+            "PlayerOwned",
+            "MeeleFighter",
+            "PlayerUnit",
+            "PlayerOwnedPriorityTarget"
+           ],
+           "coinDrop": 0,
+           "speed": 5.0,
+           "attacks": [
+            {
+             "component": "AutoAttack",
+             "range": 4.0,
+             "cooldown": 1.0,
+             "baseDamage": 1.65,
+             "dps": 1.65,
+             "weapon": "P Morningstar",
+             "manual": false
+            }
+           ],
+           "components": [
+            "Seeker",
+            "RVOController",
+            "TaggedObject",
+            "Hp",
+            "AutoAttack",
+            "FunnelModifier",
+            "SharpCornerMidigator",
+            "PathfindMovementPlayerunit",
+            "UnitTypeDisplay",
+            "ScreenMarkerIcon",
+            "PerkHpModifyer",
+            "PerkDamageModifyerPlayerunitAuto",
+            "PerkSpeedModifyer",
+            "PerkDamageAutoAttackModifyer"
+           ]
+          },
+          {
+           "name": "P Morningstar",
+           "displayName": "Flails",
+           "description": "Flails can simultaneously attack all enemies in a circle around them and regenerate a bit of health for every enemy they hit.",
+           "maxHp": 70.0,
+           "tags": [
+            "PlayerOwned",
+            "MeeleFighter",
+            "PlayerUnit",
+            "PlayerOwnedPriorityTarget"
+           ],
+           "coinDrop": 0,
+           "speed": 5.0,
+           "attacks": [
+            {
+             "component": "AutoAttack",
+             "range": 4.0,
+             "cooldown": 1.0,
+             "baseDamage": 1.65,
+             "dps": 1.65,
+             "weapon": "P Morningstar",
+             "manual": false
+            }
+           ],
+           "components": [
+            "Seeker",
+            "RVOController",
+            "TaggedObject",
+            "Hp",
+            "AutoAttack",
+            "FunnelModifier",
+            "SharpCornerMidigator",
+            "PathfindMovementPlayerunit",
+            "UnitTypeDisplay",
+            "ScreenMarkerIcon",
+            "PerkHpModifyer",
+            "PerkDamageModifyerPlayerunitAuto",
+            "PerkSpeedModifyer",
+            "PerkDamageAutoAttackModifyer"
+           ]
+          },
+          {
+           "name": "P Morningstar",
+           "displayName": "Flails",
+           "description": "Flails can simultaneously attack all enemies in a circle around them and regenerate a bit of health for every enemy they hit.",
+           "maxHp": 70.0,
+           "tags": [
+            "PlayerOwned",
+            "MeeleFighter",
+            "PlayerUnit",
+            "PlayerOwnedPriorityTarget"
+           ],
+           "coinDrop": 0,
+           "speed": 5.0,
+           "attacks": [
+            {
+             "component": "AutoAttack",
+             "range": 4.0,
+             "cooldown": 1.0,
+             "baseDamage": 1.65,
+             "dps": 1.65,
+             "weapon": "P Morningstar",
+             "manual": false
+            }
+           ],
+           "components": [
+            "Seeker",
+            "RVOController",
+            "TaggedObject",
+            "Hp",
+            "AutoAttack",
+            "FunnelModifier",
+            "SharpCornerMidigator",
+            "PathfindMovementPlayerunit",
+            "UnitTypeDisplay",
+            "ScreenMarkerIcon",
+            "PerkHpModifyer",
+            "PerkDamageModifyerPlayerunitAuto",
+            "PerkSpeedModifyer",
+            "PerkDamageAutoAttackModifyer"
+           ]
+          },
+          {
+           "name": "P Morningstar",
+           "displayName": "Flails",
+           "description": "Flails can simultaneously attack all enemies in a circle around them and regenerate a bit of health for every enemy they hit.",
+           "maxHp": 70.0,
+           "tags": [
+            "PlayerOwned",
+            "MeeleFighter",
+            "PlayerUnit",
+            "PlayerOwnedPriorityTarget"
+           ],
+           "coinDrop": 0,
+           "speed": 5.0,
+           "attacks": [
+            {
+             "component": "AutoAttack",
+             "range": 4.0,
+             "cooldown": 1.0,
+             "baseDamage": 1.65,
+             "dps": 1.65,
+             "weapon": "P Morningstar",
+             "manual": false
+            }
+           ],
+           "components": [
+            "Seeker",
+            "RVOController",
+            "TaggedObject",
+            "Hp",
+            "AutoAttack",
+            "FunnelModifier",
+            "SharpCornerMidigator",
+            "PathfindMovementPlayerunit",
+            "UnitTypeDisplay",
+            "ScreenMarkerIcon",
+            "PerkHpModifyer",
+            "PerkDamageModifyerPlayerunitAuto",
+            "PerkSpeedModifyer",
+            "PerkDamageAutoAttackModifyer"
+           ]
+          },
+          {
+           "name": "P Morningstar",
+           "displayName": "Flails",
+           "description": "Flails can simultaneously attack all enemies in a circle around them and regenerate a bit of health for every enemy they hit.",
+           "maxHp": 70.0,
+           "tags": [
+            "PlayerOwned",
+            "MeeleFighter",
+            "PlayerUnit",
+            "PlayerOwnedPriorityTarget"
+           ],
+           "coinDrop": 0,
+           "speed": 5.0,
+           "attacks": [
+            {
+             "component": "AutoAttack",
+             "range": 4.0,
+             "cooldown": 1.0,
+             "baseDamage": 1.65,
+             "dps": 1.65,
+             "weapon": "P Morningstar",
+             "manual": false
+            }
+           ],
+           "components": [
+            "Seeker",
+            "RVOController",
+            "TaggedObject",
+            "Hp",
+            "AutoAttack",
+            "FunnelModifier",
+            "SharpCornerMidigator",
+            "PathfindMovementPlayerunit",
+            "UnitTypeDisplay",
+            "ScreenMarkerIcon",
+            "PerkHpModifyer",
+            "PerkDamageModifyerPlayerunitAuto",
+            "PerkSpeedModifyer",
+            "PerkDamageAutoAttackModifyer"
+           ]
+          },
+          {
+           "name": "P Morningstar",
+           "displayName": "Flails",
+           "description": "Flails can simultaneously attack all enemies in a circle around them and regenerate a bit of health for every enemy they hit.",
+           "maxHp": 70.0,
+           "tags": [
+            "PlayerOwned",
+            "MeeleFighter",
+            "PlayerUnit",
+            "PlayerOwnedPriorityTarget"
+           ],
+           "coinDrop": 0,
+           "speed": 5.0,
+           "attacks": [
+            {
+             "component": "AutoAttack",
+             "range": 4.0,
+             "cooldown": 1.0,
+             "baseDamage": 1.65,
+             "dps": 1.65,
+             "weapon": "P Morningstar",
+             "manual": false
+            }
+           ],
+           "components": [
+            "Seeker",
+            "RVOController",
+            "TaggedObject",
+            "Hp",
+            "AutoAttack",
+            "FunnelModifier",
+            "SharpCornerMidigator",
+            "PathfindMovementPlayerunit",
+            "UnitTypeDisplay",
+            "ScreenMarkerIcon",
+            "PerkHpModifyer",
+            "PerkDamageModifyerPlayerunitAuto",
+            "PerkSpeedModifyer",
+            "PerkDamageAutoAttackModifyer"
+           ]
+          },
+          {
+           "name": "P Morningstar",
+           "displayName": "Flails",
+           "description": "Flails can simultaneously attack all enemies in a circle around them and regenerate a bit of health for every enemy they hit.",
+           "maxHp": 70.0,
+           "tags": [
+            "PlayerOwned",
+            "MeeleFighter",
+            "PlayerUnit",
+            "PlayerOwnedPriorityTarget"
+           ],
+           "coinDrop": 0,
+           "speed": 5.0,
+           "attacks": [
+            {
+             "component": "AutoAttack",
+             "range": 4.0,
+             "cooldown": 1.0,
+             "baseDamage": 1.65,
+             "dps": 1.65,
+             "weapon": "P Morningstar",
+             "manual": false
+            }
+           ],
+           "components": [
+            "Seeker",
+            "RVOController",
+            "TaggedObject",
+            "Hp",
+            "AutoAttack",
+            "FunnelModifier",
+            "SharpCornerMidigator",
+            "PathfindMovementPlayerunit",
+            "UnitTypeDisplay",
+            "ScreenMarkerIcon",
+            "PerkHpModifyer",
+            "PerkDamageModifyerPlayerunitAuto",
+            "PerkSpeedModifyer",
+            "PerkDamageAutoAttackModifyer"
+           ]
+          },
+          {
+           "name": "P Morningstar",
+           "displayName": "Flails",
+           "description": "Flails can simultaneously attack all enemies in a circle around them and regenerate a bit of health for every enemy they hit.",
+           "maxHp": 70.0,
+           "tags": [
+            "PlayerOwned",
+            "MeeleFighter",
+            "PlayerUnit",
+            "PlayerOwnedPriorityTarget"
+           ],
+           "coinDrop": 0,
+           "speed": 5.0,
+           "attacks": [
+            {
+             "component": "AutoAttack",
+             "range": 4.0,
+             "cooldown": 1.0,
+             "baseDamage": 1.65,
+             "dps": 1.65,
+             "weapon": "P Morningstar",
+             "manual": false
+            }
+           ],
+           "components": [
+            "Seeker",
+            "RVOController",
+            "TaggedObject",
+            "Hp",
+            "AutoAttack",
+            "FunnelModifier",
+            "SharpCornerMidigator",
+            "PathfindMovementPlayerunit",
+            "UnitTypeDisplay",
+            "ScreenMarkerIcon",
+            "PerkHpModifyer",
+            "PerkDamageModifyerPlayerunitAuto",
+            "PerkSpeedModifyer",
+            "PerkDamageAutoAttackModifyer"
+           ]
+          },
+          {
+           "name": "P Morningstar",
+           "displayName": "Flails",
+           "description": "Flails can simultaneously attack all enemies in a circle around them and regenerate a bit of health for every enemy they hit.",
+           "maxHp": 70.0,
+           "tags": [
+            "PlayerOwned",
+            "MeeleFighter",
+            "PlayerUnit",
+            "PlayerOwnedPriorityTarget"
+           ],
+           "coinDrop": 0,
+           "speed": 5.0,
+           "attacks": [
+            {
+             "component": "AutoAttack",
+             "range": 4.0,
+             "cooldown": 1.0,
+             "baseDamage": 1.65,
+             "dps": 1.65,
+             "weapon": "P Morningstar",
+             "manual": false
+            }
+           ],
+           "components": [
+            "Seeker",
+            "RVOController",
+            "TaggedObject",
+            "Hp",
+            "AutoAttack",
+            "FunnelModifier",
+            "SharpCornerMidigator",
+            "PathfindMovementPlayerunit",
+            "UnitTypeDisplay",
+            "ScreenMarkerIcon",
+            "PerkHpModifyer",
+            "PerkDamageModifyerPlayerunitAuto",
+            "PerkSpeedModifyer",
+            "PerkDamageAutoAttackModifyer"
+           ]
+          },
+          {
+           "name": "P Morningstar",
+           "displayName": "Flails",
+           "description": "Flails can simultaneously attack all enemies in a circle around them and regenerate a bit of health for every enemy they hit.",
+           "maxHp": 70.0,
+           "tags": [
+            "PlayerOwned",
+            "MeeleFighter",
+            "PlayerUnit",
+            "PlayerOwnedPriorityTarget"
+           ],
+           "coinDrop": 0,
+           "speed": 5.0,
+           "attacks": [
+            {
+             "component": "AutoAttack",
+             "range": 4.0,
+             "cooldown": 1.0,
+             "baseDamage": 1.65,
+             "dps": 1.65,
+             "weapon": "P Morningstar",
+             "manual": false
+            }
+           ],
+           "components": [
+            "Seeker",
+            "RVOController",
+            "TaggedObject",
+            "Hp",
+            "AutoAttack",
+            "FunnelModifier",
+            "SharpCornerMidigator",
+            "PathfindMovementPlayerunit",
+            "UnitTypeDisplay",
+            "ScreenMarkerIcon",
+            "PerkHpModifyer",
+            "PerkDamageModifyerPlayerunitAuto",
+            "PerkSpeedModifyer",
+            "PerkDamageAutoAttackModifyer"
+           ]
+          }
+         ]
+        },
+        {
+         "count": 4,
+         "name": "P Morningstar",
+         "displayName": "Flails",
+         "description": "Flails can simultaneously attack all enemies in a circle around them and regenerate a bit of health for every enemy they hit.",
+         "maxHp": 70.0,
+         "tags": [
+          "PlayerOwned",
+          "MeeleFighter",
+          "PlayerUnit",
+          "PlayerOwnedPriorityTarget"
+         ],
+         "coinDrop": 0,
+         "speed": 5.0,
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 4.0,
+           "cooldown": 1.0,
+           "baseDamage": 1.65,
+           "dps": 1.65,
+           "weapon": "P Morningstar",
+           "manual": false
+          }
+         ],
+         "components": [
+          "Seeker",
+          "RVOController",
+          "TaggedObject",
+          "Hp",
+          "AutoAttack",
+          "FunnelModifier",
+          "SharpCornerMidigator",
+          "PathfindMovementPlayerunit",
+          "UnitTypeDisplay",
+          "ScreenMarkerIcon",
+          "PerkHpModifyer",
+          "PerkDamageModifyerPlayerunitAuto",
+          "PerkSpeedModifyer",
+          "PerkDamageAutoAttackModifyer"
+         ]
+        }
+       ],
+       "disables": [
+        "Basic Melee"
+       ],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Berserks",
+        "tooltip": "Berserks are keen to chop up siege units and other high health targets. For better or worse, they won't hesitate to give their lifes for you.",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Berserks",
+         "produces": {
+          "unitCount": 12,
+          "respawnSecondsByLevel": [
+           15.0,
+           10.0,
+           6.0,
+           6.0
+          ],
+          "unitTypes": [
+           {
+            "name": "P Berserk",
+            "count": 12,
+            "sample": {
+             "name": "P Berserk",
+             "displayName": "Berserks",
+             "description": "Berserks jump to enter the battle causing a big burst of initial damage. They deal bonus damage against siege engines and take reduced damage from fire and explosions.",
+             "maxHp": 58.5,
+             "tags": [
+              "PlayerOwned",
+              "MeeleFighter",
+              "PlayerUnit",
+              "PlayerOwnedPriorityTarget",
+              "FireAndExplosionResistant"
+             ],
+             "coinDrop": 0,
+             "speed": 6.5,
+             "attacks": [
+              {
+               "component": "AutoAttack",
+               "range": 3.0,
+               "cooldown": 0.5,
+               "baseDamage": 2.5,
+               "dps": 5.0,
+               "weapon": "P Berserk",
+               "manual": false
+              }
+             ],
+             "components": [
+              "Seeker",
+              "RVOController",
+              "TaggedObject",
+              "Hp",
+              "AutoAttack",
+              "FunnelModifier",
+              "SharpCornerMidigator",
+              "PathfindMovementPlayerunit",
+              "UnitTypeDisplay",
+              "ScreenMarkerIcon",
+              "PerkDamageModifyerPlayerunitAuto",
+              "PerkHpModifyer",
+              "UnitDashJump",
+              "PerkSpeedModifyer",
+              "PerkDamageAutoAttackModifyer"
+             ]
+            }
+           }
+          ]
+         },
+         "components": [
+          "UnitRespawnerForBuildings",
+          "UnitProductionSelector"
+         ],
+         "children": [
+          {
+           "name": "P Berserk",
+           "displayName": "Berserks",
+           "description": "Berserks jump to enter the battle causing a big burst of initial damage. They deal bonus damage against siege engines and take reduced damage from fire and explosions.",
+           "maxHp": 58.5,
+           "tags": [
+            "PlayerOwned",
+            "MeeleFighter",
+            "PlayerUnit",
+            "PlayerOwnedPriorityTarget",
+            "FireAndExplosionResistant"
+           ],
+           "coinDrop": 0,
+           "speed": 6.5,
+           "attacks": [
+            {
+             "component": "AutoAttack",
+             "range": 3.0,
+             "cooldown": 0.5,
+             "baseDamage": 2.5,
+             "dps": 5.0,
+             "weapon": "P Berserk",
+             "manual": false
+            }
+           ],
+           "components": [
+            "Seeker",
+            "RVOController",
+            "TaggedObject",
+            "Hp",
+            "AutoAttack",
+            "FunnelModifier",
+            "SharpCornerMidigator",
+            "PathfindMovementPlayerunit",
+            "UnitTypeDisplay",
+            "ScreenMarkerIcon",
+            "PerkDamageModifyerPlayerunitAuto",
+            "PerkHpModifyer",
+            "UnitDashJump",
+            "PerkSpeedModifyer",
+            "PerkDamageAutoAttackModifyer"
+           ]
+          },
+          {
+           "name": "P Berserk",
+           "displayName": "Berserks",
+           "description": "Berserks jump to enter the battle causing a big burst of initial damage. They deal bonus damage against siege engines and take reduced damage from fire and explosions.",
+           "maxHp": 58.5,
+           "tags": [
+            "PlayerOwned",
+            "MeeleFighter",
+            "PlayerUnit",
+            "PlayerOwnedPriorityTarget",
+            "FireAndExplosionResistant"
+           ],
+           "coinDrop": 0,
+           "speed": 6.5,
+           "attacks": [
+            {
+             "component": "AutoAttack",
+             "range": 3.0,
+             "cooldown": 0.5,
+             "baseDamage": 2.5,
+             "dps": 5.0,
+             "weapon": "P Berserk",
+             "manual": false
+            }
+           ],
+           "components": [
+            "Seeker",
+            "RVOController",
+            "TaggedObject",
+            "Hp",
+            "AutoAttack",
+            "FunnelModifier",
+            "SharpCornerMidigator",
+            "PathfindMovementPlayerunit",
+            "UnitTypeDisplay",
+            "ScreenMarkerIcon",
+            "PerkDamageModifyerPlayerunitAuto",
+            "PerkHpModifyer",
+            "UnitDashJump",
+            "PerkSpeedModifyer",
+            "PerkDamageAutoAttackModifyer"
+           ]
+          },
+          {
+           "name": "P Berserk",
+           "displayName": "Berserks",
+           "description": "Berserks jump to enter the battle causing a big burst of initial damage. They deal bonus damage against siege engines and take reduced damage from fire and explosions.",
+           "maxHp": 58.5,
+           "tags": [
+            "PlayerOwned",
+            "MeeleFighter",
+            "PlayerUnit",
+            "PlayerOwnedPriorityTarget",
+            "FireAndExplosionResistant"
+           ],
+           "coinDrop": 0,
+           "speed": 6.5,
+           "attacks": [
+            {
+             "component": "AutoAttack",
+             "range": 3.0,
+             "cooldown": 0.5,
+             "baseDamage": 2.5,
+             "dps": 5.0,
+             "weapon": "P Berserk",
+             "manual": false
+            }
+           ],
+           "components": [
+            "Seeker",
+            "RVOController",
+            "TaggedObject",
+            "Hp",
+            "AutoAttack",
+            "FunnelModifier",
+            "SharpCornerMidigator",
+            "PathfindMovementPlayerunit",
+            "UnitTypeDisplay",
+            "ScreenMarkerIcon",
+            "PerkDamageModifyerPlayerunitAuto",
+            "PerkHpModifyer",
+            "UnitDashJump",
+            "PerkSpeedModifyer",
+            "PerkDamageAutoAttackModifyer"
+           ]
+          },
+          {
+           "name": "P Berserk",
+           "displayName": "Berserks",
+           "description": "Berserks jump to enter the battle causing a big burst of initial damage. They deal bonus damage against siege engines and take reduced damage from fire and explosions.",
+           "maxHp": 58.5,
+           "tags": [
+            "PlayerOwned",
+            "MeeleFighter",
+            "PlayerUnit",
+            "PlayerOwnedPriorityTarget",
+            "FireAndExplosionResistant"
+           ],
+           "coinDrop": 0,
+           "speed": 6.5,
+           "attacks": [
+            {
+             "component": "AutoAttack",
+             "range": 3.0,
+             "cooldown": 0.5,
+             "baseDamage": 2.5,
+             "dps": 5.0,
+             "weapon": "P Berserk",
+             "manual": false
+            }
+           ],
+           "components": [
+            "Seeker",
+            "RVOController",
+            "TaggedObject",
+            "Hp",
+            "AutoAttack",
+            "FunnelModifier",
+            "SharpCornerMidigator",
+            "PathfindMovementPlayerunit",
+            "UnitTypeDisplay",
+            "ScreenMarkerIcon",
+            "PerkDamageModifyerPlayerunitAuto",
+            "PerkHpModifyer",
+            "UnitDashJump",
+            "PerkSpeedModifyer",
+            "PerkDamageAutoAttackModifyer"
+           ]
+          },
+          {
+           "name": "P Berserk",
+           "displayName": "Berserks",
+           "description": "Berserks jump to enter the battle causing a big burst of initial damage. They deal bonus damage against siege engines and take reduced damage from fire and explosions.",
+           "maxHp": 58.5,
+           "tags": [
+            "PlayerOwned",
+            "MeeleFighter",
+            "PlayerUnit",
+            "PlayerOwnedPriorityTarget",
+            "FireAndExplosionResistant"
+           ],
+           "coinDrop": 0,
+           "speed": 6.5,
+           "attacks": [
+            {
+             "component": "AutoAttack",
+             "range": 3.0,
+             "cooldown": 0.5,
+             "baseDamage": 2.5,
+             "dps": 5.0,
+             "weapon": "P Berserk",
+             "manual": false
+            }
+           ],
+           "components": [
+            "Seeker",
+            "RVOController",
+            "TaggedObject",
+            "Hp",
+            "AutoAttack",
+            "FunnelModifier",
+            "SharpCornerMidigator",
+            "PathfindMovementPlayerunit",
+            "UnitTypeDisplay",
+            "ScreenMarkerIcon",
+            "PerkDamageModifyerPlayerunitAuto",
+            "PerkHpModifyer",
+            "UnitDashJump",
+            "PerkSpeedModifyer",
+            "PerkDamageAutoAttackModifyer"
+           ]
+          },
+          {
+           "name": "P Berserk",
+           "displayName": "Berserks",
+           "description": "Berserks jump to enter the battle causing a big burst of initial damage. They deal bonus damage against siege engines and take reduced damage from fire and explosions.",
+           "maxHp": 58.5,
+           "tags": [
+            "PlayerOwned",
+            "MeeleFighter",
+            "PlayerUnit",
+            "PlayerOwnedPriorityTarget",
+            "FireAndExplosionResistant"
+           ],
+           "coinDrop": 0,
+           "speed": 6.5,
+           "attacks": [
+            {
+             "component": "AutoAttack",
+             "range": 3.0,
+             "cooldown": 0.5,
+             "baseDamage": 2.5,
+             "dps": 5.0,
+             "weapon": "P Berserk",
+             "manual": false
+            }
+           ],
+           "components": [
+            "Seeker",
+            "RVOController",
+            "TaggedObject",
+            "Hp",
+            "AutoAttack",
+            "FunnelModifier",
+            "SharpCornerMidigator",
+            "PathfindMovementPlayerunit",
+            "UnitTypeDisplay",
+            "ScreenMarkerIcon",
+            "PerkDamageModifyerPlayerunitAuto",
+            "PerkHpModifyer",
+            "UnitDashJump",
+            "PerkSpeedModifyer",
+            "PerkDamageAutoAttackModifyer"
+           ]
+          },
+          {
+           "name": "P Berserk",
+           "displayName": "Berserks",
+           "description": "Berserks jump to enter the battle causing a big burst of initial damage. They deal bonus damage against siege engines and take reduced damage from fire and explosions.",
+           "maxHp": 58.5,
+           "tags": [
+            "PlayerOwned",
+            "MeeleFighter",
+            "PlayerUnit",
+            "PlayerOwnedPriorityTarget",
+            "FireAndExplosionResistant"
+           ],
+           "coinDrop": 0,
+           "speed": 6.5,
+           "attacks": [
+            {
+             "component": "AutoAttack",
+             "range": 3.0,
+             "cooldown": 0.5,
+             "baseDamage": 2.5,
+             "dps": 5.0,
+             "weapon": "P Berserk",
+             "manual": false
+            }
+           ],
+           "components": [
+            "Seeker",
+            "RVOController",
+            "TaggedObject",
+            "Hp",
+            "AutoAttack",
+            "FunnelModifier",
+            "SharpCornerMidigator",
+            "PathfindMovementPlayerunit",
+            "UnitTypeDisplay",
+            "ScreenMarkerIcon",
+            "PerkDamageModifyerPlayerunitAuto",
+            "PerkHpModifyer",
+            "UnitDashJump",
+            "PerkSpeedModifyer",
+            "PerkDamageAutoAttackModifyer"
+           ]
+          },
+          {
+           "name": "P Berserk",
+           "displayName": "Berserks",
+           "description": "Berserks jump to enter the battle causing a big burst of initial damage. They deal bonus damage against siege engines and take reduced damage from fire and explosions.",
+           "maxHp": 58.5,
+           "tags": [
+            "PlayerOwned",
+            "MeeleFighter",
+            "PlayerUnit",
+            "PlayerOwnedPriorityTarget",
+            "FireAndExplosionResistant"
+           ],
+           "coinDrop": 0,
+           "speed": 6.5,
+           "attacks": [
+            {
+             "component": "AutoAttack",
+             "range": 3.0,
+             "cooldown": 0.5,
+             "baseDamage": 2.5,
+             "dps": 5.0,
+             "weapon": "P Berserk",
+             "manual": false
+            }
+           ],
+           "components": [
+            "Seeker",
+            "RVOController",
+            "TaggedObject",
+            "Hp",
+            "AutoAttack",
+            "FunnelModifier",
+            "SharpCornerMidigator",
+            "PathfindMovementPlayerunit",
+            "UnitTypeDisplay",
+            "ScreenMarkerIcon",
+            "PerkDamageModifyerPlayerunitAuto",
+            "PerkHpModifyer",
+            "UnitDashJump",
+            "PerkSpeedModifyer",
+            "PerkDamageAutoAttackModifyer"
+           ]
+          },
+          {
+           "name": "P Berserk",
+           "displayName": "Berserks",
+           "description": "Berserks jump to enter the battle causing a big burst of initial damage. They deal bonus damage against siege engines and take reduced damage from fire and explosions.",
+           "maxHp": 58.5,
+           "tags": [
+            "PlayerOwned",
+            "MeeleFighter",
+            "PlayerUnit",
+            "PlayerOwnedPriorityTarget",
+            "FireAndExplosionResistant"
+           ],
+           "coinDrop": 0,
+           "speed": 6.5,
+           "attacks": [
+            {
+             "component": "AutoAttack",
+             "range": 3.0,
+             "cooldown": 0.5,
+             "baseDamage": 2.5,
+             "dps": 5.0,
+             "weapon": "P Berserk",
+             "manual": false
+            }
+           ],
+           "components": [
+            "Seeker",
+            "RVOController",
+            "TaggedObject",
+            "Hp",
+            "AutoAttack",
+            "FunnelModifier",
+            "SharpCornerMidigator",
+            "PathfindMovementPlayerunit",
+            "UnitTypeDisplay",
+            "ScreenMarkerIcon",
+            "PerkDamageModifyerPlayerunitAuto",
+            "PerkHpModifyer",
+            "UnitDashJump",
+            "PerkSpeedModifyer",
+            "PerkDamageAutoAttackModifyer"
+           ]
+          },
+          {
+           "name": "P Berserk",
+           "displayName": "Berserks",
+           "description": "Berserks jump to enter the battle causing a big burst of initial damage. They deal bonus damage against siege engines and take reduced damage from fire and explosions.",
+           "maxHp": 58.5,
+           "tags": [
+            "PlayerOwned",
+            "MeeleFighter",
+            "PlayerUnit",
+            "PlayerOwnedPriorityTarget",
+            "FireAndExplosionResistant"
+           ],
+           "coinDrop": 0,
+           "speed": 6.5,
+           "attacks": [
+            {
+             "component": "AutoAttack",
+             "range": 3.0,
+             "cooldown": 0.5,
+             "baseDamage": 2.5,
+             "dps": 5.0,
+             "weapon": "P Berserk",
+             "manual": false
+            }
+           ],
+           "components": [
+            "Seeker",
+            "RVOController",
+            "TaggedObject",
+            "Hp",
+            "AutoAttack",
+            "FunnelModifier",
+            "SharpCornerMidigator",
+            "PathfindMovementPlayerunit",
+            "UnitTypeDisplay",
+            "ScreenMarkerIcon",
+            "PerkDamageModifyerPlayerunitAuto",
+            "PerkHpModifyer",
+            "UnitDashJump",
+            "PerkSpeedModifyer",
+            "PerkDamageAutoAttackModifyer"
+           ]
+          },
+          {
+           "name": "P Berserk",
+           "displayName": "Berserks",
+           "description": "Berserks jump to enter the battle causing a big burst of initial damage. They deal bonus damage against siege engines and take reduced damage from fire and explosions.",
+           "maxHp": 58.5,
+           "tags": [
+            "PlayerOwned",
+            "MeeleFighter",
+            "PlayerUnit",
+            "PlayerOwnedPriorityTarget",
+            "FireAndExplosionResistant"
+           ],
+           "coinDrop": 0,
+           "speed": 6.5,
+           "attacks": [
+            {
+             "component": "AutoAttack",
+             "range": 3.0,
+             "cooldown": 0.5,
+             "baseDamage": 2.5,
+             "dps": 5.0,
+             "weapon": "P Berserk",
+             "manual": false
+            }
+           ],
+           "components": [
+            "Seeker",
+            "RVOController",
+            "TaggedObject",
+            "Hp",
+            "AutoAttack",
+            "FunnelModifier",
+            "SharpCornerMidigator",
+            "PathfindMovementPlayerunit",
+            "UnitTypeDisplay",
+            "ScreenMarkerIcon",
+            "PerkDamageModifyerPlayerunitAuto",
+            "PerkHpModifyer",
+            "UnitDashJump",
+            "PerkSpeedModifyer",
+            "PerkDamageAutoAttackModifyer"
+           ]
+          },
+          {
+           "name": "P Berserk",
+           "displayName": "Berserks",
+           "description": "Berserks jump to enter the battle causing a big burst of initial damage. They deal bonus damage against siege engines and take reduced damage from fire and explosions.",
+           "maxHp": 58.5,
+           "tags": [
+            "PlayerOwned",
+            "MeeleFighter",
+            "PlayerUnit",
+            "PlayerOwnedPriorityTarget",
+            "FireAndExplosionResistant"
+           ],
+           "coinDrop": 0,
+           "speed": 6.5,
+           "attacks": [
+            {
+             "component": "AutoAttack",
+             "range": 3.0,
+             "cooldown": 0.5,
+             "baseDamage": 2.5,
+             "dps": 5.0,
+             "weapon": "P Berserk",
+             "manual": false
+            }
+           ],
+           "components": [
+            "Seeker",
+            "RVOController",
+            "TaggedObject",
+            "Hp",
+            "AutoAttack",
+            "FunnelModifier",
+            "SharpCornerMidigator",
+            "PathfindMovementPlayerunit",
+            "UnitTypeDisplay",
+            "ScreenMarkerIcon",
+            "PerkDamageModifyerPlayerunitAuto",
+            "PerkHpModifyer",
+            "UnitDashJump",
+            "PerkSpeedModifyer",
+            "PerkDamageAutoAttackModifyer"
+           ]
+          }
+         ]
+        },
+        {
+         "count": 4,
+         "name": "P Berserk",
+         "displayName": "Berserks",
+         "description": "Berserks jump to enter the battle causing a big burst of initial damage. They deal bonus damage against siege engines and take reduced damage from fire and explosions.",
+         "maxHp": 58.5,
+         "tags": [
+          "PlayerOwned",
+          "MeeleFighter",
+          "PlayerUnit",
+          "PlayerOwnedPriorityTarget",
+          "FireAndExplosionResistant"
+         ],
+         "coinDrop": 0,
+         "speed": 6.5,
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 3.0,
+           "cooldown": 0.5,
+           "baseDamage": 2.5,
+           "dps": 5.0,
+           "weapon": "P Berserk",
+           "manual": false
+          }
+         ],
+         "components": [
+          "Seeker",
+          "RVOController",
+          "TaggedObject",
+          "Hp",
+          "AutoAttack",
+          "FunnelModifier",
+          "SharpCornerMidigator",
+          "PathfindMovementPlayerunit",
+          "UnitTypeDisplay",
+          "ScreenMarkerIcon",
+          "PerkDamageModifyerPlayerunitAuto",
+          "PerkHpModifyer",
+          "UnitDashJump",
+          "PerkSpeedModifyer",
+          "PerkDamageAutoAttackModifyer"
+         ]
+        }
+       ],
+       "disables": [
+        "Basic Melee"
+       ],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 8,
+     "coreCost": 0,
+     "tooltip": "More units, faster unit respawn.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 10,
+       "activates": [
+        {
+         "count": 4,
+         "name": "P Knight",
+         "displayName": "Knights",
+         "description": "Knights are versatile warriors who are well armored against ranged attacks.",
+         "maxHp": 105.0,
+         "tags": [
+          "PlayerOwned",
+          "MeeleFighter",
+          "PlayerUnit",
+          "ArmoredAgainstRanged",
+          "PlayerOwnedPriorityTarget"
+         ],
+         "coinDrop": 0,
+         "speed": 4.0,
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 3.5,
+           "cooldown": 1.0,
+           "baseDamage": 2.5,
+           "dps": 2.5,
+           "weapon": "P Knight",
+           "manual": false
+          }
+         ],
+         "components": [
+          "Seeker",
+          "RVOController",
+          "TaggedObject",
+          "Hp",
+          "AutoAttack",
+          "FunnelModifier",
+          "SharpCornerMidigator",
+          "PathfindMovementPlayerunit",
+          "UnitTypeDisplay",
+          "ScreenMarkerIcon",
+          "PerkHpModifyer",
+          "PerkDamageModifyerPlayerunitAuto",
+          "PerkSpeedModifyer",
+          "PerkDamageAutoAttackModifyer"
+         ]
+        },
+        {
+         "count": 4,
+         "name": "P Speer",
+         "displayName": "Spearmen",
+         "description": "Spearmen are fast and strong units. They do extra damage against fast enemies and slow them down. Not a great pick against ranged units.",
+         "maxHp": 66.0,
+         "tags": [
+          "PlayerOwned",
+          "MeeleFighter",
+          "PlayerUnit",
+          "VulnerableVsRanged",
+          "PlayerOwnedPriorityTarget"
+         ],
+         "coinDrop": 0,
+         "speed": 9.5,
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 5.5,
+           "cooldown": 0.5,
+           "baseDamage": 2.021,
+           "dps": 4.042,
+           "weapon": "P Speer",
+           "manual": false
+          }
+         ],
+         "components": [
+          "Seeker",
+          "RVOController",
+          "TaggedObject",
+          "Hp",
+          "AutoAttack",
+          "FunnelModifier",
+          "SharpCornerMidigator",
+          "PathfindMovementPlayerunit",
+          "UnitTypeDisplay",
+          "ScreenMarkerIcon",
+          "PerkDamageModifyerPlayerunitAuto",
+          "PerkHpModifyer",
+          "PerkSpeedModifyer",
+          "PerkDamageAutoAttackModifyer"
+         ]
+        },
+        {
+         "count": 4,
+         "name": "P Morningstar",
+         "displayName": "Flails",
+         "description": "Flails can simultaneously attack all enemies in a circle around them and regenerate a bit of health for every enemy they hit.",
+         "maxHp": 70.0,
+         "tags": [
+          "PlayerOwned",
+          "MeeleFighter",
+          "PlayerUnit",
+          "PlayerOwnedPriorityTarget"
+         ],
+         "coinDrop": 0,
+         "speed": 5.0,
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 4.0,
+           "cooldown": 1.0,
+           "baseDamage": 1.65,
+           "dps": 1.65,
+           "weapon": "P Morningstar",
+           "manual": false
+          }
+         ],
+         "components": [
+          "Seeker",
+          "RVOController",
+          "TaggedObject",
+          "Hp",
+          "AutoAttack",
+          "FunnelModifier",
+          "SharpCornerMidigator",
+          "PathfindMovementPlayerunit",
+          "UnitTypeDisplay",
+          "ScreenMarkerIcon",
+          "PerkHpModifyer",
+          "PerkDamageModifyerPlayerunitAuto",
+          "PerkSpeedModifyer",
+          "PerkDamageAutoAttackModifyer"
+         ]
+        },
+        {
+         "count": 4,
+         "name": "P Berserk",
+         "displayName": "Berserks",
+         "description": "Berserks jump to enter the battle causing a big burst of initial damage. They deal bonus damage against siege engines and take reduced damage from fire and explosions.",
+         "maxHp": 58.5,
+         "tags": [
+          "PlayerOwned",
+          "MeeleFighter",
+          "PlayerUnit",
+          "PlayerOwnedPriorityTarget",
+          "FireAndExplosionResistant"
+         ],
+         "coinDrop": 0,
+         "speed": 6.5,
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 3.0,
+           "cooldown": 0.5,
+           "baseDamage": 2.5,
+           "dps": 5.0,
+           "weapon": "P Berserk",
+           "manual": false
+          }
+         ],
+         "components": [
+          "Seeker",
+          "RVOController",
+          "TaggedObject",
+          "Hp",
+          "AutoAttack",
+          "FunnelModifier",
+          "SharpCornerMidigator",
+          "PathfindMovementPlayerunit",
+          "UnitTypeDisplay",
+          "ScreenMarkerIcon",
+          "PerkDamageModifyerPlayerunitAuto",
+          "PerkHpModifyer",
+          "UnitDashJump",
+          "PerkSpeedModifyer",
+          "PerkDamageAutoAttackModifyer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 16,
+     "coreCost": 0,
+     "tooltip": "More units, faster unit respawn.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 10,
+       "activates": [
+        {
+         "count": 4,
+         "name": "P Knight",
+         "displayName": "Knights",
+         "description": "Knights are versatile warriors who are well armored against ranged attacks.",
+         "maxHp": 105.0,
+         "tags": [
+          "PlayerOwned",
+          "MeeleFighter",
+          "PlayerUnit",
+          "ArmoredAgainstRanged",
+          "PlayerOwnedPriorityTarget"
+         ],
+         "coinDrop": 0,
+         "speed": 4.0,
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 3.5,
+           "cooldown": 1.0,
+           "baseDamage": 2.5,
+           "dps": 2.5,
+           "weapon": "P Knight",
+           "manual": false
+          }
+         ],
+         "components": [
+          "Seeker",
+          "RVOController",
+          "TaggedObject",
+          "Hp",
+          "AutoAttack",
+          "FunnelModifier",
+          "SharpCornerMidigator",
+          "PathfindMovementPlayerunit",
+          "UnitTypeDisplay",
+          "ScreenMarkerIcon",
+          "PerkHpModifyer",
+          "PerkDamageModifyerPlayerunitAuto",
+          "PerkSpeedModifyer",
+          "PerkDamageAutoAttackModifyer"
+         ]
+        },
+        {
+         "count": 4,
+         "name": "P Speer",
+         "displayName": "Spearmen",
+         "description": "Spearmen are fast and strong units. They do extra damage against fast enemies and slow them down. Not a great pick against ranged units.",
+         "maxHp": 66.0,
+         "tags": [
+          "PlayerOwned",
+          "MeeleFighter",
+          "PlayerUnit",
+          "VulnerableVsRanged",
+          "PlayerOwnedPriorityTarget"
+         ],
+         "coinDrop": 0,
+         "speed": 9.5,
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 5.5,
+           "cooldown": 0.5,
+           "baseDamage": 2.021,
+           "dps": 4.042,
+           "weapon": "P Speer",
+           "manual": false
+          }
+         ],
+         "components": [
+          "Seeker",
+          "RVOController",
+          "TaggedObject",
+          "Hp",
+          "AutoAttack",
+          "FunnelModifier",
+          "SharpCornerMidigator",
+          "PathfindMovementPlayerunit",
+          "UnitTypeDisplay",
+          "ScreenMarkerIcon",
+          "PerkDamageModifyerPlayerunitAuto",
+          "PerkHpModifyer",
+          "PerkSpeedModifyer",
+          "PerkDamageAutoAttackModifyer"
+         ]
+        },
+        {
+         "count": 4,
+         "name": "P Morningstar",
+         "displayName": "Flails",
+         "description": "Flails can simultaneously attack all enemies in a circle around them and regenerate a bit of health for every enemy they hit.",
+         "maxHp": 70.0,
+         "tags": [
+          "PlayerOwned",
+          "MeeleFighter",
+          "PlayerUnit",
+          "PlayerOwnedPriorityTarget"
+         ],
+         "coinDrop": 0,
+         "speed": 5.0,
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 4.0,
+           "cooldown": 1.0,
+           "baseDamage": 1.65,
+           "dps": 1.65,
+           "weapon": "P Morningstar",
+           "manual": false
+          }
+         ],
+         "components": [
+          "Seeker",
+          "RVOController",
+          "TaggedObject",
+          "Hp",
+          "AutoAttack",
+          "FunnelModifier",
+          "SharpCornerMidigator",
+          "PathfindMovementPlayerunit",
+          "UnitTypeDisplay",
+          "ScreenMarkerIcon",
+          "PerkHpModifyer",
+          "PerkDamageModifyerPlayerunitAuto",
+          "PerkSpeedModifyer",
+          "PerkDamageAutoAttackModifyer"
+         ]
+        },
+        {
+         "count": 4,
+         "name": "P Berserk",
+         "displayName": "Berserks",
+         "description": "Berserks jump to enter the battle causing a big burst of initial damage. They deal bonus damage against siege engines and take reduced damage from fire and explosions.",
+         "maxHp": 58.5,
+         "tags": [
+          "PlayerOwned",
+          "MeeleFighter",
+          "PlayerUnit",
+          "PlayerOwnedPriorityTarget",
+          "FireAndExplosionResistant"
+         ],
+         "coinDrop": 0,
+         "speed": 6.5,
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 3.0,
+           "cooldown": 0.5,
+           "baseDamage": 2.5,
+           "dps": 5.0,
+           "weapon": "P Berserk",
+           "manual": false
+          }
+         ],
+         "components": [
+          "Seeker",
+          "RVOController",
+          "TaggedObject",
+          "Hp",
+          "AutoAttack",
+          "FunnelModifier",
+          "SharpCornerMidigator",
+          "PathfindMovementPlayerunit",
+          "UnitTypeDisplay",
+          "ScreenMarkerIcon",
+          "PerkDamageModifyerPlayerunitAuto",
+          "PerkHpModifyer",
+          "UnitDashJump",
+          "PerkSpeedModifyer",
+          "PerkDamageAutoAttackModifyer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 4,
+     "cost": 50,
+     "coreCost": 0,
+     "tooltip": "Stronger Units",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 150,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Upgrade To Lvl 4",
+         "components": [
+          "UpgradeUnitsOnEnable"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 78,
+   "totalCoreCost": 0,
+   "maxIncome": 0,
+   "unitProducer": {
+    "unitCount": 12,
+    "respawnSecondsByLevel": [
+     15.0,
+     10.0,
+     6.0,
+     6.0
+    ],
+    "unitTypes": [
+     {
+      "name": "P Morningstar",
+      "count": 12,
+      "sample": {
+       "name": "P Morningstar",
+       "displayName": "Flails",
+       "description": "Flails can simultaneously attack all enemies in a circle around them and regenerate a bit of health for every enemy they hit.",
+       "maxHp": 70.0,
+       "tags": [
+        "PlayerOwned",
+        "MeeleFighter",
+        "PlayerUnit",
+        "PlayerOwnedPriorityTarget"
+       ],
+       "coinDrop": 0,
+       "speed": 5.0,
+       "attacks": [
+        {
+         "component": "AutoAttack",
+         "range": 4.0,
+         "cooldown": 1.0,
+         "baseDamage": 1.65,
+         "dps": 1.65,
+         "weapon": "P Morningstar",
+         "manual": false
+        }
+       ],
+       "components": [
+        "Seeker",
+        "RVOController",
+        "TaggedObject",
+        "Hp",
+        "AutoAttack",
+        "FunnelModifier",
+        "SharpCornerMidigator",
+        "PathfindMovementPlayerunit",
+        "UnitTypeDisplay",
+        "ScreenMarkerIcon",
+        "PerkHpModifyer",
+        "PerkDamageModifyerPlayerunitAuto",
+        "PerkSpeedModifyer",
+        "PerkDamageAutoAttackModifyer"
+       ]
+      }
+     }
+    ]
+   }
+  },
+  {
+   "id": 30757,
+   "name": "Castle Center Variant",
+   "path": "BUILDINGS/Castle Center Variant",
+   "building": "Castle Center",
+   "pos": [
+    -3.458,
+    5.94,
+    -38.744
+   ],
+   "yawDeg": 0.0,
+   "active": true,
+   "startDeactivated": false,
+   "requiredRootLevelDifference": -100,
+   "activator": null,
+   "interactorPos": [
+    -3.458,
+    5.94,
+    -38.744
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -3.458,
+     5.94,
+     -38.744
+    ],
+    "size": [
+     8.785,
+     9.697,
+     8.905
+    ],
+    "center": [
+     -0.042,
+     4.847,
+     -0.008
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Start a new Kingdom!",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Lvl 1 Perks",
+         "components": [
+          "OutpostPerk",
+          "LastStandPerk"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 7,
+     "coreCost": 0,
+     "tooltip": "Unlock more build options and choose an upgrade. ",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": {
+        "name": "Royal Training",
+        "tooltip": "+ 75% HP for your character\n+ 75% Overall damage output for your character",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 200,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Royal Training",
+         "components": [
+          "UpgradePlayerHp",
+          "UpgradePlayerDmg"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Level 2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 35.0,
+           "cooldown": 2.0,
+           "baseDamage": 4.5,
+           "dps": 2.25,
+           "weapon": "P Castle Center",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkCooldownModifyer",
+          "PerkRangeModifyer"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Royal Training Mesh",
+         "components": []
+        }
+       ],
+       "disables": [
+        "Auto Attack Level 1"
+       ],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Builder's Guild",
+        "tooltip": "+ Every morning a level 1 house is automatically upgraded to a level 2 house (if available)\n+ 50% HP for your character",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 200,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Builder's Guild",
+         "components": [
+          "UpgradePlayerHp",
+          "UpgradeBuildersGuild"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Level 2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 35.0,
+           "cooldown": 2.0,
+           "baseDamage": 4.5,
+           "dps": 2.25,
+           "weapon": "P Castle Center",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkCooldownModifyer",
+          "PerkRangeModifyer"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Builders Guild Mesh",
+         "components": []
+        }
+       ],
+       "disables": [
+        "Auto Attack Level 1"
+       ],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Magic Armor",
+        "tooltip": "+ Enemies that deal damage to you take a part of that damage themselves\n+ 150% HP for your character",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 200,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Magic Armor",
+         "components": [
+          "UpgradePlayerHp",
+          "UpgradeMagicArmor"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Level 2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 35.0,
+           "cooldown": 2.0,
+           "baseDamage": 4.5,
+           "dps": 2.25,
+           "weapon": "P Castle Center",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkCooldownModifyer",
+          "PerkRangeModifyer"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Magic Armor Mesh",
+         "components": []
+        }
+       ],
+       "disables": [
+        "Auto Attack Level 1"
+       ],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Assassin's Training",
+        "tooltip": "+ If you manage to execute your weapon's special ability precisely when its last cooldown expires, the next cooldown is greatly reduced\n+ 100% Overall damage output for your character",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 200,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Assassin's Training",
+         "components": [
+          "UpgradePlayerDmg",
+          "UpgradeAssassinsTraining"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Level 2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 35.0,
+           "cooldown": 2.0,
+           "baseDamage": 4.5,
+           "dps": 2.25,
+           "weapon": "P Castle Center",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkCooldownModifyer",
+          "PerkRangeModifyer"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Assassins Training Mesh",
+         "components": []
+        }
+       ],
+       "disables": [
+        "Auto Attack Level 1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 10,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 32221,
+   "name": "Defense Tower Variant",
+   "path": "BUILDINGS/Defense Tower Variant",
+   "building": "Defense Tower",
+   "pos": [
+    20.39,
+    8.5,
+    -51.23
+   ],
+   "yawDeg": 0.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 32227,
+    "building": "House",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    20.39,
+    8.5,
+    -51.23
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     20.39,
+     8.5,
+     -51.23
+    ],
+    "size": [
+     3.105,
+     6.607,
+     3.105
+    ],
+    "center": [
+     0.0,
+     3.303,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Shoots at enemies.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 5,
+     "coreCost": 0,
+     "tooltip": "Improves health and attack damage.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": {
+        "name": "Castle Tower",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 150,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Castle Tower",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Sniper Tower",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Sniper Tower",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Armored Tower",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 350,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Armored Tower",
+         "components": [
+          "TowerUpgrade",
+          "ShieldOnFirstDamaged"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Bunker Tower",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 75,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Bunker Tower",
+         "components": [
+          "TowerUpgrade",
+          "IncreaseAttackSpeedOverTime"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 15,
+     "coreCost": 0,
+     "tooltip": "Choose between several upgrades.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": {
+        "name": "Archers Spire",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 350,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Archers Spire",
+         "components": [
+          "TowerUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Archers Spire Visuals",
+         "components": [
+          "MeshRenderer",
+          "MeshFilter",
+          "StaticMeshFusionSource"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Ballistic Spire",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Ballistic Spire",
+         "components": [
+          "TowerUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Ballistic Spire Visuals",
+         "components": [
+          "MeshRenderer",
+          "MeshFilter",
+          "StaticMeshFusionSource"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Fire Spire",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 250,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "PourHotOil",
+         "components": [
+          "HotOilTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Fire Spire",
+         "components": [
+          "TowerUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Fire Spire Visuals",
+         "components": [
+          "MeshRenderer",
+          "MeshFilter",
+          "StaticMeshFusionSource"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Healing Spire",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 750,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Healing Spire Visuals",
+         "components": [
+          "MeshRenderer",
+          "MeshFilter",
+          "StaticMeshFusionSource"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Healing Spire",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 4,
+     "cost": 40,
+     "coreCost": 0,
+     "tooltip": "Choose between several upgrades.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": {
+        "name": "Insane Damage",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Insane Damage",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Insane Range",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Insane Range",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Insane Health",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 2500,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Insane Health",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Hunting Equipment",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 3,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Hunting Equipment",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 63,
+   "totalCoreCost": 0,
+   "maxIncome": 3
+  },
+  {
+   "id": 32222,
+   "name": "Defense Tower Variant (1)",
+   "path": "BUILDINGS/Defense Tower Variant (1)",
+   "building": "Defense Tower",
+   "pos": [
+    11.042,
+    6.001,
+    -72.334
+   ],
+   "yawDeg": 0.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 32227,
+    "building": "House",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    11.042,
+    6.001,
+    -72.334
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     11.042,
+     6.001,
+     -72.334
+    ],
+    "size": [
+     3.105,
+     6.607,
+     3.105
+    ],
+    "center": [
+     0.0,
+     3.303,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Shoots at enemies.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 5,
+     "coreCost": 0,
+     "tooltip": "Improves health and attack damage.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": {
+        "name": "Castle Tower",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 150,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Castle Tower",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Sniper Tower",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Sniper Tower",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Armored Tower",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 350,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Armored Tower",
+         "components": [
+          "TowerUpgrade",
+          "ShieldOnFirstDamaged"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Bunker Tower",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 75,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Bunker Tower",
+         "components": [
+          "TowerUpgrade",
+          "IncreaseAttackSpeedOverTime"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 15,
+     "coreCost": 0,
+     "tooltip": "Choose between several upgrades.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": {
+        "name": "Archers Spire",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 350,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Archers Spire",
+         "components": [
+          "TowerUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Archers Spire Visuals",
+         "components": [
+          "MeshRenderer",
+          "MeshFilter",
+          "StaticMeshFusionSource"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Ballistic Spire",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Ballistic Spire",
+         "components": [
+          "TowerUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Ballistic Spire Visuals",
+         "components": [
+          "MeshRenderer",
+          "MeshFilter",
+          "StaticMeshFusionSource"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Fire Spire",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 250,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "PourHotOil",
+         "components": [
+          "HotOilTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Fire Spire",
+         "components": [
+          "TowerUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Fire Spire Visuals",
+         "components": [
+          "MeshRenderer",
+          "MeshFilter",
+          "StaticMeshFusionSource"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Healing Spire",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 750,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Healing Spire Visuals",
+         "components": [
+          "MeshRenderer",
+          "MeshFilter",
+          "StaticMeshFusionSource"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Healing Spire",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 4,
+     "cost": 40,
+     "coreCost": 0,
+     "tooltip": "Choose between several upgrades.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": {
+        "name": "Insane Damage",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Insane Damage",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Insane Range",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Insane Range",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Insane Health",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 2500,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Insane Health",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Hunting Equipment",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 3,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Hunting Equipment",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 63,
+   "totalCoreCost": 0,
+   "maxIncome": 3
+  },
+  {
+   "id": 32223,
+   "name": "Defense Tower Variant (2)",
+   "path": "BUILDINGS/Defense Tower Variant (2)",
+   "building": "Defense Tower",
+   "pos": [
+    5.9,
+    6.001,
+    -33.9
+   ],
+   "yawDeg": 0.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 30187,
+    "building": "Barracks",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    5.9,
+    6.001,
+    -33.9
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     5.9,
+     6.001,
+     -33.9
+    ],
+    "size": [
+     3.105,
+     6.607,
+     3.105
+    ],
+    "center": [
+     0.0,
+     3.303,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Shoots at enemies.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 5,
+     "coreCost": 0,
+     "tooltip": "Improves health and attack damage.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": {
+        "name": "Castle Tower",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 150,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Castle Tower",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Sniper Tower",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Sniper Tower",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Armored Tower",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 350,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Armored Tower",
+         "components": [
+          "TowerUpgrade",
+          "ShieldOnFirstDamaged"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Bunker Tower",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 75,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Bunker Tower",
+         "components": [
+          "TowerUpgrade",
+          "IncreaseAttackSpeedOverTime"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 15,
+     "coreCost": 0,
+     "tooltip": "Choose between several upgrades.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": {
+        "name": "Archers Spire",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 350,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Archers Spire",
+         "components": [
+          "TowerUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Archers Spire Visuals",
+         "components": [
+          "MeshRenderer",
+          "MeshFilter",
+          "StaticMeshFusionSource"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Ballistic Spire",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Ballistic Spire",
+         "components": [
+          "TowerUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Ballistic Spire Visuals",
+         "components": [
+          "MeshRenderer",
+          "MeshFilter",
+          "StaticMeshFusionSource"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Fire Spire",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 250,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "PourHotOil",
+         "components": [
+          "HotOilTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Fire Spire",
+         "components": [
+          "TowerUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Fire Spire Visuals",
+         "components": [
+          "MeshRenderer",
+          "MeshFilter",
+          "StaticMeshFusionSource"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Healing Spire",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 750,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Healing Spire Visuals",
+         "components": [
+          "MeshRenderer",
+          "MeshFilter",
+          "StaticMeshFusionSource"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Healing Spire",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 4,
+     "cost": 40,
+     "coreCost": 0,
+     "tooltip": "Choose between several upgrades.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": {
+        "name": "Insane Damage",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Insane Damage",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Insane Range",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Insane Range",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Insane Health",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 2500,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Insane Health",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Hunting Equipment",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 3,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Hunting Equipment",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 63,
+   "totalCoreCost": 0,
+   "maxIncome": 3
+  },
+  {
+   "id": 32227,
+   "name": "House Variant (1)",
+   "path": "BUILDINGS/House Variant (1)",
+   "building": "House",
+   "pos": [
+    -0.109,
+    6.001,
+    -20.549
+   ],
+   "yawDeg": 5.9,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 32231,
+    "building": "House",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -0.109,
+    6.001,
+    -20.549
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -0.109,
+     6.001,
+     -20.549
+    ],
+    "size": [
+     3.192,
+     2.884,
+     3.58
+    ],
+    "center": [
+     0.119,
+     1.439,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "A stable income source.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl1",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 5.0,
+           "baseDamage": 8.0,
+           "dps": 1.6,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 10,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 1.66,
+           "baseDamage": 8.0,
+           "dps": 4.819,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [
+        "AutoAttackPerk Lvl1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 20,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 2,
+       "coreIncome": 0,
+       "hpChange": 70,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 24,
+   "totalCoreCost": 0,
+   "maxIncome": 4
+  },
+  {
+   "id": 32229,
+   "name": "House Variant (3)",
+   "path": "BUILDINGS/House Variant (3)",
+   "building": "House",
+   "pos": [
+    9.932,
+    6.001,
+    -24.434
+   ],
+   "yawDeg": 35.8,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 30187,
+    "building": "Barracks",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    9.932,
+    6.001,
+    -24.434
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     9.932,
+     6.001,
+     -24.434
+    ],
+    "size": [
+     3.192,
+     2.884,
+     3.58
+    ],
+    "center": [
+     0.119,
+     1.439,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "A stable income source.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl1",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 5.0,
+           "baseDamage": 8.0,
+           "dps": 1.6,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 10,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 1.66,
+           "baseDamage": 8.0,
+           "dps": 4.819,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [
+        "AutoAttackPerk Lvl1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 20,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 2,
+       "coreIncome": 0,
+       "hpChange": 70,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 24,
+   "totalCoreCost": 0,
+   "maxIncome": 4
+  },
+  {
+   "id": 32230,
+   "name": "House Variant (4)",
+   "path": "BUILDINGS/House Variant (4)",
+   "building": "House",
+   "pos": [
+    7.692,
+    6.001,
+    -16.794
+   ],
+   "yawDeg": 79.4,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 32229,
+    "building": "House",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    7.692,
+    6.001,
+    -16.794
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     7.692,
+     6.001,
+     -16.794
+    ],
+    "size": [
+     3.192,
+     2.884,
+     3.58
+    ],
+    "center": [
+     0.119,
+     1.439,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "A stable income source.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl1",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 5.0,
+           "baseDamage": 8.0,
+           "dps": 1.6,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 10,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 1.66,
+           "baseDamage": 8.0,
+           "dps": 4.819,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [
+        "AutoAttackPerk Lvl1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 20,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 2,
+       "coreIncome": 0,
+       "hpChange": 70,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 24,
+   "totalCoreCost": 0,
+   "maxIncome": 4
+  },
+  {
+   "id": 32231,
+   "name": "House Variant",
+   "path": "BUILDINGS/House Variant",
+   "building": "House",
+   "pos": [
+    -8.168,
+    6.001,
+    -19.304
+   ],
+   "yawDeg": -12.6,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 32237,
+    "building": "House",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -8.168,
+    6.001,
+    -19.304
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -8.168,
+     6.001,
+     -19.304
+    ],
+    "size": [
+     3.192,
+     2.884,
+     3.58
+    ],
+    "center": [
+     0.119,
+     1.439,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "A stable income source.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl1",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 5.0,
+           "baseDamage": 8.0,
+           "dps": 1.6,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 10,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 1.66,
+           "baseDamage": 8.0,
+           "dps": 4.819,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [
+        "AutoAttackPerk Lvl1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 20,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 2,
+       "coreIncome": 0,
+       "hpChange": 70,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 24,
+   "totalCoreCost": 0,
+   "maxIncome": 4
+  },
+  {
+   "id": 32232,
+   "name": "House Variant (6)",
+   "path": "BUILDINGS/House Variant (6)",
+   "building": "House",
+   "pos": [
+    -21.308,
+    6.001,
+    -44.994
+   ],
+   "yawDeg": 84.4,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 32239,
+    "building": "House",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -21.308,
+    6.001,
+    -44.994
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -21.308,
+     6.001,
+     -44.994
+    ],
+    "size": [
+     3.192,
+     2.884,
+     3.58
+    ],
+    "center": [
+     0.119,
+     1.439,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "A stable income source.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl1",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 5.0,
+           "baseDamage": 8.0,
+           "dps": 1.6,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 10,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 1.66,
+           "baseDamage": 8.0,
+           "dps": 4.819,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [
+        "AutoAttackPerk Lvl1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 20,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 2,
+       "coreIncome": 0,
+       "hpChange": 70,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 24,
+   "totalCoreCost": 0,
+   "maxIncome": 4
+  },
+  {
+   "id": 32237,
+   "name": "House Variant (2)",
+   "path": "BUILDINGS/House Variant (2)",
+   "building": "House",
+   "pos": [
+    -15.293,
+    6.001,
+    -25.961
+   ],
+   "yawDeg": -41.8,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 30757,
+    "building": "Castle Center",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -15.293,
+    6.001,
+    -25.961
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -15.293,
+     6.001,
+     -25.961
+    ],
+    "size": [
+     3.192,
+     2.884,
+     3.58
+    ],
+    "center": [
+     0.119,
+     1.439,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "A stable income source.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl1",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 5.0,
+           "baseDamage": 8.0,
+           "dps": 1.6,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 10,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 1.66,
+           "baseDamage": 8.0,
+           "dps": 4.819,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [
+        "AutoAttackPerk Lvl1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 20,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 2,
+       "coreIncome": 0,
+       "hpChange": 70,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 24,
+   "totalCoreCost": 0,
+   "maxIncome": 4
+  },
+  {
+   "id": 32239,
+   "name": "House Variant (5)",
+   "path": "BUILDINGS/House Variant (5)",
+   "building": "House",
+   "pos": [
+    -21.308,
+    6.001,
+    -34.694
+   ],
+   "yawDeg": -63.4,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 30757,
+    "building": "Castle Center",
+    "level": 1,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -21.308,
+    6.001,
+    -34.694
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -21.308,
+     6.001,
+     -34.694
+    ],
+    "size": [
+     3.192,
+     2.884,
+     3.58
+    ],
+    "center": [
+     0.119,
+     1.439,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "A stable income source.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl1",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 5.0,
+           "baseDamage": 8.0,
+           "dps": 1.6,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 10,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 1.66,
+           "baseDamage": 8.0,
+           "dps": 4.819,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [
+        "AutoAttackPerk Lvl1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 20,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 2,
+       "coreIncome": 0,
+       "hpChange": 70,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 24,
+   "totalCoreCost": 0,
+   "maxIncome": 4
+  },
+  {
+   "id": 32478,
+   "name": "Mill Variant",
+   "path": "BUILDINGS/Mill Variant",
+   "building": "Mill",
+   "pos": [
+    -9.222,
+    6.001,
+    -61.097
+   ],
+   "yawDeg": 0.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 30757,
+    "building": "Castle Center",
+    "level": 1,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -9.222,
+    6.001,
+    -61.097
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -9.222,
+     6.001,
+     -61.097
+    ],
+    "size": [
+     3.336,
+     6.428,
+     3.676
+    ],
+    "center": [
+     0.0,
+     3.214,
+     -0.013
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Unlocks the option to build fields to increase income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": {
+        "name": "Improved Plow",
+        "tooltip": "Every future upgrade of the mill will increase its income even more (+1/Upgrade)",
+        "disabledInMode": false
+       },
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Auto Attack Lvl 1",
+         "attacks": [
+          {
+           "component": "AutoAttackRandom",
+           "range": 38.0,
+           "cooldown": 1.65,
+           "baseDamage": 2.0,
+           "dps": 1.212,
+           "weapon": "P Wind Spirits",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttackRandom"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Lvl 1 Rotor",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer",
+          "MillRotor",
+          "GPUInstanced"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Improved Plow",
+         "components": [
+          "Mill_ImprovedPlow"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Explosive Trap",
+        "tooltip": "The mill explodes when destroyed dealing massive damage around itself. The damage and radius increase every time you upgrade this mill.",
+        "disabledInMode": false
+       },
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Auto Attack Lvl 1",
+         "attacks": [
+          {
+           "component": "AutoAttackRandom",
+           "range": 38.0,
+           "cooldown": 1.65,
+           "baseDamage": 2.0,
+           "dps": 1.212,
+           "weapon": "P Wind Spirits",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttackRandom"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Lvl 1 Rotor",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer",
+          "MillRotor",
+          "GPUInstanced"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Explosive Trap",
+         "components": [
+          "Mill_ImprovementExplosiveTrap"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Scarecrows",
+        "tooltip": "Every field belonging to this mill receives a free scarecrow. Scarecrows have a strong anti-air attack.",
+        "disabledInMode": false
+       },
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Auto Attack Lvl 1",
+         "attacks": [
+          {
+           "component": "AutoAttackRandom",
+           "range": 38.0,
+           "cooldown": 1.65,
+           "baseDamage": 2.0,
+           "dps": 1.212,
+           "weapon": "P Wind Spirits",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttackRandom"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Lvl 1 Rotor",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer",
+          "MillRotor",
+          "GPUInstanced"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Scarecrows",
+         "components": [
+          "Mill_Improvement_Scarecrows"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Wind Spirits",
+        "tooltip": "Wind spirits magically intercept a portion of enemy arrows in the range of the mill. Every future upgrade of the mill improves this effect.",
+        "disabledInMode": false
+       },
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Auto Attack Lvl 1",
+         "attacks": [
+          {
+           "component": "AutoAttackRandom",
+           "range": 38.0,
+           "cooldown": 1.65,
+           "baseDamage": 2.0,
+           "dps": 1.212,
+           "weapon": "P Wind Spirits",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttackRandom"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Lvl 1 Rotor",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer",
+          "MillRotor",
+          "GPUInstanced"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Wind Spirits",
+         "components": [
+          "Mill_ImprovementWindSpirits"
+         ],
+         "children": [
+          {
+           "name": "Auto Attack Lvl 1",
+           "attacks": [
+            {
+             "component": "AutoAttackRandom",
+             "range": 38.0,
+             "cooldown": 1.65,
+             "baseDamage": 2.0,
+             "dps": 1.212,
+             "weapon": "P Wind Spirits",
+             "manual": false
+            }
+           ],
+           "components": [
+            "AutoAttackRandom"
+           ]
+          },
+          {
+           "name": "Auto Attack Lvl 2",
+           "attacks": [
+            {
+             "component": "AutoAttackRandom",
+             "range": 38.0,
+             "cooldown": 1.0,
+             "baseDamage": 2.0,
+             "dps": 2.0,
+             "weapon": "P Wind Spirits",
+             "manual": false
+            }
+           ],
+           "components": [
+            "AutoAttackRandom"
+           ]
+          },
+          {
+           "name": "Auto Attack Lvl 3",
+           "attacks": [
+            {
+             "component": "AutoAttackRandom",
+             "range": 38.0,
+             "cooldown": 0.5,
+             "baseDamage": 2.0,
+             "dps": 4.0,
+             "weapon": "P Wind Spirits",
+             "manual": false
+            }
+           ],
+           "components": [
+            "AutoAttackRandom"
+           ]
+          }
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 4,
+     "coreCost": 0,
+     "tooltip": "Increases income significantly.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 20,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Lvl 2 Rotor",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer",
+          "MillRotor",
+          "GPUInstanced"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Lvl 2",
+         "attacks": [
+          {
+           "component": "AutoAttackRandom",
+           "range": 38.0,
+           "cooldown": 1.0,
+           "baseDamage": 2.0,
+           "dps": 2.0,
+           "weapon": "P Wind Spirits",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttackRandom"
+         ]
+        }
+       ],
+       "disables": [
+        "Lvl 1 Rotor",
+        "Auto Attack Lvl 1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 6,
+     "coreCost": 0,
+     "tooltip": "Increases income significantly.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 4,
+       "coreIncome": 0,
+       "hpChange": 30,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Lvl 3 Rotor",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer",
+          "MillRotor",
+          "GPUInstanced"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Lvl 3",
+         "attacks": [
+          {
+           "component": "AutoAttackRandom",
+           "range": 38.0,
+           "cooldown": 0.5,
+           "baseDamage": 2.0,
+           "dps": 4.0,
+           "weapon": "P Wind Spirits",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttackRandom"
+         ]
+        }
+       ],
+       "disables": [
+        "Lvl 2 Rotor",
+        "Auto Attack Lvl 2"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 13,
+   "totalCoreCost": 0,
+   "maxIncome": 6
+  },
+  {
+   "id": 32719,
+   "name": "Gate Wide Variant",
+   "path": "BUILDINGS/Gate Wide Variant",
+   "building": "Wall",
+   "pos": [
+    22.17,
+    3.21,
+    -75.84
+   ],
+   "yawDeg": 55.4,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 1,
+   "activator": {
+    "slot": 30757,
+    "building": "Castle Center",
+    "level": 1,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    22.17,
+    3.21,
+    -75.84
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     22.17,
+     3.21,
+     -75.84
+    ],
+    "size": [
+     10.04,
+     4.508,
+     0.537
+    ],
+    "center": [
+     -0.009,
+     2.254,
+     -0.158
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Stops enemies at the gates.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Gate Opener Lvl 2",
+         "components": [
+          "GateOpener",
+          "PerkSpawnOnDestroy"
+         ]
+        }
+       ],
+       "disables": [
+        "Gate Opener Lvl 1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 50,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 2500,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 56,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  }
+ ],
+ "shrines": [],
+ "nighthorns": [],
+ "dayNight": [
+  {
+   "id": 33119,
+   "name": "Day Night Cycle",
+   "path": "LOCAL MANAGERS/Day Night Cycle",
+   "active": true,
+   "pos": [
+    61.9,
+    0.0,
+    -31.6
+   ],
+   "sunriseTime": 3.0
+  }
+ ],
+ "autoDayNight": [],
+ "nightCall": [
+  {
+   "id": 30331,
+   "name": "UI Overlay Canvas",
+   "path": "LOCAL MANAGERS/UI Overlay Canvas",
+   "active": true,
+   "pos": [
+    61.9,
+    0.0,
+    -31.6
+   ],
+   "nightCallTime": 2.0
+  }
+ ],
+ "castle": [
+  {
+   "id": 25716,
+   "name": "Building Parent",
+   "path": "BUILDINGS/Castle Center Variant/Building Parent",
+   "pos": [
+    -3.458,
+    5.94,
+    -38.744
+   ],
+   "maxHp": 100.0,
+   "tags": [
+    "PlayerOwned",
+    "Building",
+    "InfrastructureEconomy",
+    "CastleCenter",
+    "PlayerOwnedPriorityTarget"
+   ]
+  }
+ ],
+ "heroes": [
+  {
+   "name": "Player Character",
+   "pos": [
+    -144.6,
+    0.4,
+    39.0
+   ],
+   "summary": {
+    "name": "Player Character",
+    "maxHp": 50.0,
+    "tags": [
+     "PlayerOwned",
+     "Player"
+    ],
+    "coinDrop": 0,
+    "components": [
+     "CharacterController",
+     "PlayerMovement",
+     "PlayerInteraction",
+     "RVOController",
+     "TaggedObject",
+     "Hp",
+     "PlayerHpRegen",
+     "AutoRevive",
+     "PlayerUpgradeManager",
+     "PlayerAttack",
+     "CommandUnits",
+     "PerkHpModifyer",
+     "PowerTowerPerk",
+     "SaveLoadEntity"
+    ]
+   },
+   "movement": {
+    "speed": 14.0,
+    "speedDuringDay": 18.2,
+    "sprintSpeed": 23.0,
+    "sprintSpeedDuringDay": 29.9,
+    "moveSpeedWhenDead": 6.0,
+    "gravity": -50.0,
+    "maxMeshRotationSpeed": 400.0,
+    "yFallThroughMapDetection": -30.0
+   },
+   "interaction": {
+    "coinMagnetRadius": 7.0,
+    "interactionRadius": 3.0
+   },
+   "command": {
+    "drowWaypointParticleCount": 100,
+    "attractRange": 6.0,
+    "graphNameOfPlayerUnits": "Player Units S",
+    "graphNameOfFlyingUnits": "Enemy Units Air",
+    "unitDistanceFromEachOther": 2.5,
+    "unitDistanceMoveStep": 0.5,
+    "maxPositioningRepeats": 50,
+    "holdToHoldPositionTime": 0.5,
+    "holdToSetUnitGroup": 1.0,
+    "commanderUnitMoveSpeedMulti": 1.6,
+    "commanderHoldHealthMulti": 1.2,
+    "commanderHoldDamageMulti": 1.2,
+    "groupHoldDelay": 0.2,
+    "commanding": false,
+    "canCommandUnitsInThisMode": true
+   }
+  }
+ ],
+ "units": {},
+ "summary": {
+  "nights": 8,
+  "enemiesTotal": 132,
+  "baseHpTotal": 2105.7,
+  "goldCoinsTotal": 41,
+  "flyingEnemies": 0,
+  "bossEnemies": 0,
+  "spawnLines": 1,
+  "buildSlots": 19,
+  "slotsByBuilding": {
+   "Field": 5,
+   "Barracks": 1,
+   "Castle Center": 1,
+   "Defense Tower": 3,
+   "House": 7,
+   "Mill": 1,
+   "Wall": 1
+  },
+  "hasHorn": false,
+  "shrines": 0,
+  "castleFound": true,
+  "enemyTypes": [
+   "E Archer",
+   "E Ogre",
+   "E Weakling"
+  ]
+ }
+}

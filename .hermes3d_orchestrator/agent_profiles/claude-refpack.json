@@ -1,0 +1,33 @@
+{
+  "agent_profile_schema_version": 1,
+  "owner": "claude-refpack",
+  "display_name": "Claude Code — Thronefall reference pack (static data + mapping files + docs/PDF)",
+  "host": "unknown",
+  "model": "claude-opus-5-5",
+  "mode": "coordinated-dev",
+  "role": "agent",
+  "skills": [
+    "documentation",
+    "il-analysis",
+    "pdf",
+    "reverse-engineering",
+    "unity-asset-extraction"
+  ],
+  "task_types": [
+    "docs",
+    "extraction"
+  ],
+  "host_supplies": [],
+  "hermesproof_supplies": [],
+  "workspace_roots": [
+    "K:\\Downloads-IDM\\Thronefall\\Trainer"
+  ],
+  "default_workspace_root": "K:\\Downloads-IDM\\Thronefall\\Trainer",
+  "mcp_server": {},
+  "release_gates": [],
+  "git_remotes": [],
+  "notes": "Read-only on game files + existing src/docs. Will only create NEW paths tools/refpack/** and reference/** (static extraction toolchain + generated game handbook). Will NOT launch/stop thronefall.exe, touch BepInEx/, src/*.cs, or existing docs without a lock + message.",
+  "metadata": {},
+  "created_utc": "2026-09-29T11:55:46.659Z",
+  "updated_utc": "2026-09-29T11:55:46.659Z"
+}

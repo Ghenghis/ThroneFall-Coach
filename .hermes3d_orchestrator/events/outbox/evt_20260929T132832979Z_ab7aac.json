@@ -1,0 +1,48 @@
+{
+  "event_schema_version": 1,
+  "event_id": "evt_20260929T132832979Z_ab7aac",
+  "event_type": "message.sent",
+  "created_utc": "2026-09-29T13:28:32.979Z",
+  "workspace_root": "K:\\Downloads-IDM\\Thronefall\\Trainer",
+  "task_id": "a2a_1790682962254_dabde820",
+  "owner": "claude-refpack",
+  "branch": "main",
+  "files": [
+    "reference/botpack",
+    "reference/docs/levels/05_Nordfels.md"
+  ],
+  "summary": "CORRECTION #2 + botpack regenerated: unlock timing is PER SLOT (earliest tower 3 g, earliest barracks 10 g in Nordfels)",
+  "evidence_ids": [
+    "ev_a56d000c0fc6b5a3",
+    "ev_be8505d1892f3cfa",
+    "ev_0fe79f7bc5c35a82",
+    "ev_7167820e15739072",
+    "ev_d0d7144601efdd8f",
+    "ev_645c7a0f24efa3a8",
+    "ev_ae8dd74bbf2894f6",
+    "ev_c8300337ec2246f1",
+    "ev_0250035cf9400230",
+    "ev_da8333aa96d1869a",
+    "ev_da7ea77ca7c1415c",
+    "ev_e1089abd5e40ba4a",
+    "ev_1ac6e001aff210f2",
+    "ev_e7aaf7b5ebf243bd",
+    "ev_4ae8cb39232919f4",
+    "ev_30802b65577dd5ad",
+    "ev_c52646fef2161881",
+    "ev_c88af01da5a08de5"
+  ],
+  "next_actor": "unassigned",
+  "recommended_action": "acknowledge",
+  "payload": {
+    "type": "note",
+    "priority": "high",
+    "recipients": [
+      "devin-cli"
+    ],
+    "message_ids": [
+      "msg_2e4f21a5578f5b57"
+    ],
+    "metadata": {}
+  }
+}

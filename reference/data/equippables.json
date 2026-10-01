@@ -1,0 +1,1690 @@
+[
+ {
+  "class": "EquippablePerk",
+  "file": "sharedassets1.assets",
+  "id": 2243,
+  "assetName": "Anti Air Telescope",
+  "displayName": "Anti Air Telescope",
+  "description": "Flying enemies spawn with 25% less health and deal 25% less damage.",
+  "unlockRequirement": "MetaLevel",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor",
+   "DLC_Craaghelm"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippablePerk",
+  "file": "sharedassets1.assets",
+  "id": 2244,
+  "assetName": "Commander Mode",
+  "displayName": "Commander Mode",
+  "description": "All of your units and buildings deal a lot more damage to enemies but your own attacks are much less effective.",
+  "unlockRequirement": "MetaLevel",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor",
+   "DLC_Craaghelm"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippablePerk",
+  "file": "sharedassets1.assets",
+  "id": 2245,
+  "assetName": "Emergency Repairs",
+  "displayName": "Emergency Repairs",
+  "description": "Walls are repaired during battle using materials from other walls, allowing a way to slowly share health between them.",
+  "unlockRequirement": "MetaLevel",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippablePerk",
+  "file": "sharedassets1.assets",
+  "id": 2246,
+  "assetName": "Glass Canon",
+  "displayName": "Glass Canon",
+  "description": "You deal significanlty more damage but you have much less health. ",
+  "unlockRequirement": "MetaLevel",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor",
+   "DLC_Craaghelm"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippablePerk",
+  "file": "sharedassets1.assets",
+  "id": 2247,
+  "assetName": "Gods Lotion",
+  "displayName": "Gods Lotion",
+  "description": "Your regenerate health much faster and the delay before health regenerations starts is reduced.",
+  "unlockRequirement": "MetaLevel",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor",
+   "DLC_Craaghelm"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippablePerk",
+  "file": "sharedassets1.assets",
+  "id": 2248,
+  "assetName": "Healing Spirits",
+  "displayName": "Healing Spirits",
+  "description": "All healing effects on you and your units are a lot more effective.",
+  "unlockRequirement": "MetaLevel",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor",
+   "DLC_Craaghelm"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippablePerk",
+  "file": "sharedassets1.assets",
+  "id": 2249,
+  "assetName": "Health Potions",
+  "displayName": "Health Potions",
+  "description": "All of your units recover 2% of their health every second.",
+  "unlockRequirement": "MetaLevel",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippablePerk",
+  "file": "sharedassets1.assets",
+  "id": 2250,
+  "assetName": "Heavy Armor",
+  "displayName": "Heavy Armor",
+  "description": "You have a very large amount of health but your horse is slightly slower at night.",
+  "unlockRequirement": "MetaLevel",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor",
+   "DLC_Craaghelm"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippablePerk",
+  "file": "sharedassets1.assets",
+  "id": 2251,
+  "assetName": "Ice Magic",
+  "displayName": "Ice Magic",
+  "description": "Effects that slow down enemies are a lot more effective and affect enemies longer. ",
+  "unlockRequirement": "MetaLevel",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor",
+   "DLC_Craaghelm"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippablePerk",
+  "file": "sharedassets1.assets",
+  "id": 2252,
+  "assetName": "Interest",
+  "displayName": "Interest",
+  "description": "At the beginning of each night you gain 1 gold for every 3 gold you have left in your chest.",
+  "unlockRequirement": "MetaLevel",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippablePerk",
+  "file": "sharedassets1.assets",
+  "id": 2253,
+  "assetName": "Light Materials",
+  "displayName": "Light Materials",
+  "description": "Your auto-attack cooldown is reduced by -25%.",
+  "unlockRequirement": "MetaLevel",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippablePerk",
+  "file": "sharedassets1.assets",
+  "id": 2254,
+  "assetName": "Loan",
+  "displayName": "Loan",
+  "description": "Start the level with +5 gold but the first 5 gold dropped by enemies disappears.",
+  "unlockRequirement": "MetaLevel",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippablePerk",
+  "file": "sharedassets1.assets",
+  "id": 2255,
+  "assetName": "Melee Damage",
+  "displayName": "Melee Damage",
+  "description": "",
+  "unlockRequirement": "MetaLevel",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor",
+   "DLC_Craaghelm"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippablePerk",
+  "file": "sharedassets1.assets",
+  "id": 2256,
+  "assetName": "Melee Resistence",
+  "displayName": "Melee Resistence",
+  "description": "You, your units and all of your buildings take significantly less damage from melee attacks.",
+  "unlockRequirement": "MetaLevel",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor",
+   "DLC_Craaghelm"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippablePerk",
+  "file": "sharedassets1.assets",
+  "id": 2257,
+  "assetName": "Power Tower",
+  "displayName": "Power Tower",
+  "description": "The tower you are closest to gets a significant boost in attack speed.",
+  "unlockRequirement": "MetaLevel",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor",
+   "DLC_Craaghelm"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippablePerk",
+  "file": "sharedassets1.assets",
+  "id": 2258,
+  "assetName": "Ranged Damage",
+  "displayName": "Ranged Damage",
+  "description": "",
+  "unlockRequirement": "MetaLevel",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor",
+   "DLC_Craaghelm"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippablePerk",
+  "file": "sharedassets1.assets",
+  "id": 2259,
+  "assetName": "Ranged Resistence",
+  "displayName": "Ranged Resistence",
+  "description": "You, your units and all of your buildings take significantly less damage from ranged attacks.",
+  "unlockRequirement": "MetaLevel",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor",
+   "DLC_Craaghelm"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippablePerk",
+  "file": "sharedassets1.assets",
+  "id": 2260,
+  "assetName": "Ring of Resurection",
+  "displayName": "Ring of Resurection",
+  "description": "You are granted one very quick revive every night.",
+  "unlockRequirement": "MetaLevel",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor",
+   "DLC_Craaghelm"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippablePerk",
+  "file": "sharedassets1.assets",
+  "id": 2261,
+  "assetName": "Risk Taker",
+  "displayName": "Risk Taker",
+  "description": " The lower on health you are the more additional attack damage your have.",
+  "unlockRequirement": "MetaLevel",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippablePerk",
+  "file": "sharedassets1.assets",
+  "id": 2262,
+  "assetName": "Spell Scroll",
+  "displayName": "Spell Scroll",
+  "description": "The cooldown of your active ability is reduced by -35%.",
+  "unlockRequirement": "MetaLevel",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippablePerk",
+  "file": "sharedassets1.assets",
+  "id": 2263,
+  "assetName": "Stronger Heros",
+  "displayName": "Stronger Heros",
+  "description": "Your hero units form the hero's quarter have 50% more health and are 50% stronger.",
+  "unlockRequirement": "MetaLevel",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor",
+   "DLC_Craaghelm"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippablePerk",
+  "file": "sharedassets1.assets",
+  "id": 2264,
+  "assetName": "Treasure Hunter",
+  "displayName": "Treasure Hunter",
+  "description": "You get 40 gold on the day before the final night.",
+  "unlockRequirement": "MetaLevel",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor",
+   "DLC_Craaghelm"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippablePerk",
+  "file": "sharedassets1.assets",
+  "id": 2265,
+  "assetName": "War Horse",
+  "displayName": "War Horse",
+  "description": "Your horse is faster and riding over enemies deals damage to them.",
+  "unlockRequirement": "MetaLevel",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippablePerk",
+  "file": "sharedassets1.assets",
+  "id": 2266,
+  "assetName": "Warrior Mode",
+  "displayName": "Warrior Mode",
+  "description": "Your weapon becomes more powerful every night but all of your units and buildings deal less damage to enemies.",
+  "unlockRequirement": "MetaLevel",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor",
+   "DLC_Craaghelm"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippablePerk",
+  "file": "sharedassets1.assets",
+  "id": 2273,
+  "assetName": "Agile Horse",
+  "displayName": "Agile Horse",
+  "description": "",
+  "unlockRequirement": "MetaLevel",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Craaghelm",
+   "DLC_Fangmoor"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippablePerk",
+  "file": "sharedassets1.assets",
+  "id": 2278,
+  "assetName": "Experience Gain",
+  "displayName": "Experience Gain",
+  "description": "",
+  "unlockRequirement": "MetaLevel",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Craaghelm",
+   "DLC_Fangmoor"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippablePerk",
+  "file": "sharedassets1.assets",
+  "id": 2279,
+  "assetName": "Explosive Revival",
+  "displayName": "Explosive Revival",
+  "description": "",
+  "unlockRequirement": "MetaLevel",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Craaghelm",
+   "DLC_Fangmoor"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippablePerk",
+  "file": "sharedassets1.assets",
+  "id": 2280,
+  "assetName": "Healing Gold",
+  "displayName": "Healing Gold",
+  "description": "",
+  "unlockRequirement": "MetaLevel",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Craaghelm",
+   "DLC_Fangmoor"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippablePerk",
+  "file": "sharedassets1.assets",
+  "id": 2281,
+  "assetName": "Last Stand",
+  "displayName": "Last Stand",
+  "description": "",
+  "unlockRequirement": "MetaLevel",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Craaghelm",
+   "DLC_Fangmoor"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippablePerk",
+  "file": "sharedassets1.assets",
+  "id": 2282,
+  "assetName": "Outpost",
+  "displayName": "Outpost",
+  "description": "",
+  "unlockRequirement": "MetaLevel",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Craaghelm",
+   "DLC_Fangmoor"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippablePerk",
+  "file": "sharedassets1.assets",
+  "id": 2285,
+  "assetName": "Royal Protection",
+  "displayName": "Royal Protection",
+  "description": "",
+  "unlockRequirement": "MetaLevel",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Craaghelm",
+   "DLC_Fangmoor"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippablePerk",
+  "file": "sharedassets1.assets",
+  "id": 2286,
+  "assetName": "Trophy",
+  "displayName": "Trophy",
+  "description": "Congratulations to reaching a new level! There are no more perks to unlock — you collected them all. ",
+  "unlockRequirement": "MetaLevel",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Craaghelm",
+   "DLC_Fangmoor"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippableWeapon",
+  "file": "sharedassets1.assets",
+  "id": 2223,
+  "assetName": "Battle Axe",
+  "displayName": "Battle Axe",
+  "description": "Battle Axe Description",
+  "unlockRequirement": "CampaignProgress",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "DLC_Craaghelm"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippableWeapon",
+  "file": "sharedassets1.assets",
+  "id": 2224,
+  "assetName": "Core Thumper",
+  "displayName": "Core Thumper",
+  "description": "Core Thumper Description",
+  "unlockRequirement": "CampaignProgress",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "DLC_Craaghelm"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippableWeapon",
+  "file": "sharedassets1.assets",
+  "id": 2225,
+  "assetName": "Dragons Breath",
+  "displayName": "Dragons Breath",
+  "description": "Dragons Breath Description",
+  "unlockRequirement": "CampaignProgress",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "DLC_Craaghelm"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippableWeapon",
+  "file": "sharedassets1.assets",
+  "id": 2226,
+  "assetName": "Hammer & Sickle",
+  "displayName": "Hammer & Sickle",
+  "description": "Hammer & Sickle Description",
+  "unlockRequirement": "CampaignProgress",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "DLC_Craaghelm"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippableWeapon",
+  "file": "sharedassets1.assets",
+  "id": 2227,
+  "assetName": "Pickaxe",
+  "displayName": "Pickaxe",
+  "description": "Pickaxe Description",
+  "unlockRequirement": "CampaignProgress",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "DLC_Craaghelm"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippableWeapon",
+  "file": "sharedassets1.assets",
+  "id": 2228,
+  "assetName": "Royal Spanner",
+  "displayName": "Royal Spanner",
+  "description": "Royal Spanner Description",
+  "unlockRequirement": "CampaignProgress",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "DLC_Craaghelm"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippableWeapon",
+  "file": "sharedassets1.assets",
+  "id": 2229,
+  "assetName": "Twin Bastions",
+  "displayName": "Twin Bastions",
+  "description": "Twin Bastions Description",
+  "unlockRequirement": "CampaignProgress",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "DLC_Craaghelm"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippableWeapon",
+  "file": "sharedassets1.assets",
+  "id": 2267,
+  "assetName": "Cursed Blowpipe",
+  "displayName": "Cursed Blowpipe",
+  "description": "",
+  "unlockRequirement": "CampaignProgress",
+  "requiredBeatenLevelIndex": 4,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippableWeapon",
+  "file": "sharedassets1.assets",
+  "id": 2268,
+  "assetName": "Falchion and Trap",
+  "displayName": "Falchion and Trap",
+  "description": "Burst Attack + Health auf Killing blows\nPlaces Traps",
+  "unlockRequirement": "CampaignProgress",
+  "requiredBeatenLevelIndex": 5,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippableWeapon",
+  "file": "sharedassets1.assets",
+  "id": 2269,
+  "assetName": "Heavy Sword",
+  "displayName": "Heavy Sword",
+  "description": "PASSIVE: Slow melee attack. Deals splash damage. Strong against groups of enemies.\n\nACTIVE: Big strike with a larger radius and higher damage",
+  "unlockRequirement": "CampaignProgress",
+  "requiredBeatenLevelIndex": 2,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippableWeapon",
+  "file": "sharedassets1.assets",
+  "id": 2270,
+  "assetName": "Light Spear",
+  "displayName": "Light Spear",
+  "description": "PASSIVE: Rapid melee attack. Deals bonus damage against all fast moving enemies and slows them down for a couple of seconds. Effective against fast enemies.\n\nACTIVE: Heals yourself and greatly increases your attack speed for a short time. If you activate this at less than 30% of your maximum health the effect duration is increased.",
+  "unlockRequirement": "CampaignProgress",
+  "requiredBeatenLevelIndex": 1,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippableWeapon",
+  "file": "sharedassets1.assets",
+  "id": 2271,
+  "assetName": "Lightning Wand",
+  "displayName": "Lightning Wand",
+  "description": "PASSIVE: Can attack in all directions at once. Deals bonus damage to flying units.",
+  "unlockRequirement": "CampaignProgress",
+  "requiredBeatenLevelIndex": 3,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippableWeapon",
+  "file": "sharedassets1.assets",
+  "id": 2272,
+  "assetName": "Long Bow",
+  "displayName": "Long Bow",
+  "description": "PASSIVE: Fast ranged attack. Very reliable and consistent damage output but deals reduced damage against siege engines.\n\nACTIVE: Stab a nearby enemy and deal massive damage. The lower the health of your victim as you attack, the lower the cooldown will be.",
+  "unlockRequirement": "CampaignProgress",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippableWeapon",
+  "file": "sharedassets1.assets",
+  "id": 2274,
+  "assetName": "Battle Axe",
+  "displayName": "Battle Axe",
+  "description": "",
+  "unlockRequirement": "CampaignProgress",
+  "requiredBeatenLevelIndex": 7,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippableWeapon",
+  "file": "sharedassets1.assets",
+  "id": 2275,
+  "assetName": "Blood Wand",
+  "displayName": "Blood Wand",
+  "description": "",
+  "unlockRequirement": "CampaignProgress",
+  "requiredBeatenLevelIndex": 8,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippableWeapon",
+  "file": "sharedassets1.assets",
+  "id": 2284,
+  "assetName": "Potion Vials",
+  "displayName": "Potion Vials",
+  "description": "",
+  "unlockRequirement": "CampaignProgress",
+  "requiredBeatenLevelIndex": 6,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippableMutation",
+  "file": "sharedassets1.assets",
+  "id": 2230,
+  "assetName": "Challenge the Elite God",
+  "displayName": "Challenge the Elite God",
+  "description": "Every third enemy spawn will consist of elite enemies with greatly improved health and attack damage.",
+  "unlockRequirement": "CampaignProgress",
+  "requiredBeatenLevelIndex": 4,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor"
+  ],
+  "extra": {
+   "scoreMultiplyerOnWin": 1.75
+  }
+ },
+ {
+  "class": "EquippableMutation",
+  "file": "sharedassets1.assets",
+  "id": 2231,
+  "assetName": "Challenge the God of Chaos",
+  "displayName": "Challenge the God of Chaos",
+  "description": "Enemies spawn in completely random positions on the map.",
+  "unlockRequirement": "CampaignProgress",
+  "requiredBeatenLevelIndex": 5,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor"
+  ],
+  "extra": {
+   "scoreMultiplyerOnWin": 1.45
+  }
+ },
+ {
+  "class": "EquippableMutation",
+  "file": "sharedassets1.assets",
+  "id": 2232,
+  "assetName": "Challenge the Growth God",
+  "displayName": "Challenge the Growth God",
+  "description": "Enemies grow stronger and stronger every night.",
+  "unlockRequirement": "CampaignProgress",
+  "requiredBeatenLevelIndex": 4,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor"
+  ],
+  "extra": {
+   "scoreMultiplyerOnWin": 1.5
+  }
+ },
+ {
+  "class": "EquippableMutation",
+  "file": "sharedassets1.assets",
+  "id": 2233,
+  "assetName": "Challenge the Range God",
+  "displayName": "Challenge the Range God",
+  "description": "Ranged enemies on the ground have more health, range, damage and move speed.",
+  "unlockRequirement": "CampaignProgress",
+  "requiredBeatenLevelIndex": 4,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor"
+  ],
+  "extra": {
+   "scoreMultiplyerOnWin": 1.2
+  }
+ },
+ {
+  "class": "EquippableMutation",
+  "file": "sharedassets1.assets",
+  "id": 2234,
+  "assetName": "Pray to The God of Strength",
+  "displayName": "God of Strength",
+  "description": "Enemies have less health and they are weaker, but you also get less score and XP if you win.",
+  "unlockRequirement": "CampaignProgress",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor",
+   "DLC_Craaghelm"
+  ],
+  "extra": {
+   "scoreMultiplyerOnWin": 0.6
+  }
+ },
+ {
+  "class": "EquippableMutation",
+  "file": "sharedassets1.assets",
+  "id": 2235,
+  "assetName": "Taunt God of Destruction",
+  "displayName": "Challenge the God of Destruction",
+  "description": "Buildings only heal 33% of their health every morning. Destroyed buildings take an additional day to respawn. If you win you get 20% more points and XP.",
+  "unlockRequirement": "CampaignProgress",
+  "requiredBeatenLevelIndex": 2,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor",
+   "DLC_Craaghelm"
+  ],
+  "extra": {
+   "scoreMultiplyerOnWin": 1.2
+  }
+ },
+ {
+  "class": "EquippableMutation",
+  "file": "sharedassets1.assets",
+  "id": 2236,
+  "assetName": "Taunt The Cheese God",
+  "displayName": "Challenge the Wasp God",
+  "description": "Doubles the amount of enemies in the first three waves. If you win you get 20% more points and XP.",
+  "unlockRequirement": "CampaignProgress",
+  "requiredBeatenLevelIndex": 2,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor",
+   "DLC_Craaghelm"
+  ],
+  "extra": {
+   "scoreMultiplyerOnWin": 1.2
+  }
+ },
+ {
+  "class": "EquippableMutation",
+  "file": "sharedassets1.assets",
+  "id": 2237,
+  "assetName": "Taunt The Disease God",
+  "displayName": "Challenge the Rat God",
+  "description": "All of your units slowly lose health at night (all the way down to 10%). Your own self-heal is reduced. If you win you get 20% more points and XP.",
+  "unlockRequirement": "CampaignProgress",
+  "requiredBeatenLevelIndex": 2,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor",
+   "DLC_Craaghelm"
+  ],
+  "extra": {
+   "scoreMultiplyerOnWin": 1.2
+  }
+ },
+ {
+  "class": "EquippableMutation",
+  "file": "sharedassets1.assets",
+  "id": 2238,
+  "assetName": "Taunt The Falcon God",
+  "displayName": "Challenge the Falcon God",
+  "description": "Enemies move much faster. If you win you get 20% more points and XP.",
+  "unlockRequirement": "CampaignProgress",
+  "requiredBeatenLevelIndex": 1,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor",
+   "DLC_Craaghelm"
+  ],
+  "extra": {
+   "scoreMultiplyerOnWin": 1.2
+  }
+ },
+ {
+  "class": "EquippableMutation",
+  "file": "sharedassets1.assets",
+  "id": 2239,
+  "assetName": "Taunt The Rat God",
+  "displayName": "Challenge the Snake God",
+  "description": "Enemies drop less gold when they die. If you win you get 20% more points and XP.",
+  "unlockRequirement": "CampaignProgress",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor",
+   "DLC_Craaghelm"
+  ],
+  "extra": {
+   "scoreMultiplyerOnWin": 1.3
+  }
+ },
+ {
+  "class": "EquippableMutation",
+  "file": "sharedassets1.assets",
+  "id": 2240,
+  "assetName": "Taunt The Tiger God",
+  "displayName": "Challenge the Tiger God",
+  "description": "Enemies deal a lot more damage. If you win you get 20% more points and XP.",
+  "unlockRequirement": "CampaignProgress",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor",
+   "DLC_Craaghelm"
+  ],
+  "extra": {
+   "scoreMultiplyerOnWin": 1.2
+  }
+ },
+ {
+  "class": "EquippableMutation",
+  "file": "sharedassets1.assets",
+  "id": 2241,
+  "assetName": "Taunt The Turtle God",
+  "displayName": "Challenge the Turtle God",
+  "description": "Enemies have a lot more health. If you win you get 20% more points and XP.",
+  "unlockRequirement": "CampaignProgress",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor",
+   "DLC_Craaghelm"
+  ],
+  "extra": {
+   "scoreMultiplyerOnWin": 1.4
+  }
+ },
+ {
+  "class": "EquippableMutation",
+  "file": "sharedassets1.assets",
+  "id": 2242,
+  "assetName": "Taunt the Phoenix God",
+  "displayName": "Challenge the Phoenix God",
+  "description": "All of your enemies recover 4% of their health every second, but you get 20% more score and XP if you win. (Does not apply to boss fights.)",
+  "unlockRequirement": "CampaignProgress",
+  "requiredBeatenLevelIndex": 3,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor",
+   "DLC_Craaghelm"
+  ],
+  "extra": {
+   "scoreMultiplyerOnWin": 1.3
+  }
+ },
+ {
+  "class": "EquippableMutation",
+  "file": "sharedassets1.assets",
+  "id": 2276,
+  "assetName": "Challenge the God of Afterlife",
+  "displayName": "Challenge the God of Afterlife",
+  "description": "",
+  "unlockRequirement": "CampaignProgress",
+  "requiredBeatenLevelIndex": 6,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor"
+  ],
+  "extra": {
+   "scoreMultiplyerOnWin": 1.5
+  }
+ },
+ {
+  "class": "EquippableMutation",
+  "file": "sharedassets1.assets",
+  "id": 2277,
+  "assetName": "Challenge the God of Choice",
+  "displayName": "Challenge the God of Choice",
+  "description": "",
+  "unlockRequirement": "CampaignProgress",
+  "requiredBeatenLevelIndex": 7,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor"
+  ],
+  "extra": {
+   "scoreMultiplyerOnWin": 1.1
+  }
+ },
+ {
+  "class": "EquippableMutation",
+  "file": "sharedassets1.assets",
+  "id": 2283,
+  "assetName": "Pacifist Pact",
+  "displayName": "Pacifist Pact",
+  "description": "",
+  "unlockRequirement": "CampaignProgress",
+  "requiredBeatenLevelIndex": 8,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor"
+  ],
+  "extra": {
+   "scoreMultiplyerOnWin": 1.4
+  }
+ },
+ {
+  "class": "EquippablePerk",
+  "file": "resources.assets",
+  "id": 21785,
+  "assetName": "Ancient Shrines",
+  "displayName": "Ancient Shrines",
+  "description": "Shrines do not have to be purchased and shoot +100% stronger projectiles but they require +100% more energy to be activated.",
+  "unlockRequirement": "MetaLevel",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor",
+   "DLC_Craaghelm"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippablePerk",
+  "file": "resources.assets",
+  "id": 21786,
+  "assetName": "Arcane Towers",
+  "displayName": "Arcane Towers",
+  "description": "Your towers have a much higher range and their projectiles deal significantly more damage to enemies.",
+  "unlockRequirement": "MetaLevel",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor",
+   "DLC_Craaghelm"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippablePerk",
+  "file": "resources.assets",
+  "id": 21787,
+  "assetName": "Archery Skills",
+  "displayName": "Archery Skills",
+  "description": "All your ranged units can attack over longer distances.",
+  "unlockRequirement": "MetaLevel",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor",
+   "DLC_Craaghelm"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippablePerk",
+  "file": "resources.assets",
+  "id": 21788,
+  "assetName": "Architect's Council",
+  "displayName": "Architect's Council",
+  "description": "Castle Center upgrades are unlocked one level in advance.",
+  "unlockRequirement": "MetaLevel",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor",
+   "DLC_Craaghelm"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippablePerk",
+  "file": "resources.assets",
+  "id": 21789,
+  "assetName": "Big Harbours",
+  "displayName": "Big Harbours",
+  "description": "Fishing Harbours have capacity for 2 additional fishing boats and are more resistant against enemy attacks.",
+  "unlockRequirement": "MetaLevel",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippablePerk",
+  "file": "resources.assets",
+  "id": 21790,
+  "assetName": "Castle Blueprints",
+  "displayName": "Castle Blueprints",
+  "description": "Walls and towers have a lot mehr health.",
+  "unlockRequirement": "MetaLevel",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor",
+   "DLC_Craaghelm"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippablePerk",
+  "file": "resources.assets",
+  "id": 21791,
+  "assetName": "Castle Fortifications",
+  "displayName": "Caslte Fortifications",
+  "description": "Your castle center has a more health, a larger attack range and fires arrows faster.",
+  "unlockRequirement": "MetaLevel",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor",
+   "DLC_Craaghelm"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippablePerk",
+  "file": "resources.assets",
+  "id": 21792,
+  "assetName": "Elite Towers",
+  "displayName": "Elite Towers",
+  "description": "Every tower that was freshly built or upgraded during the last day receives an elite star for the night making it deal 50% more damage.",
+  "unlockRequirement": "MetaLevel",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippablePerk",
+  "file": "resources.assets",
+  "id": 21793,
+  "assetName": "Ellite Warriors",
+  "displayName": "Elite Warriors",
+  "description": "All of your units have double the health but take more time to respawn.",
+  "unlockRequirement": "MetaLevel",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor",
+   "DLC_Craaghelm"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippablePerk",
+  "file": "resources.assets",
+  "id": 21794,
+  "assetName": "Explosive Walls",
+  "displayName": "Explosive Walls",
+  "description": "Walls explode when destroyed, dealing damage to all enemies near them. The explosion damage increases with the level of the wall.",
+  "unlockRequirement": "MetaLevel",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippablePerk",
+  "file": "resources.assets",
+  "id": 21795,
+  "assetName": "Faster Research",
+  "displayName": "Faster Research",
+  "description": "Blacksmith upgrades need one day of research less.",
+  "unlockRequirement": "MetaLevel",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor",
+   "DLC_Craaghelm"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippablePerk",
+  "file": "resources.assets",
+  "id": 21796,
+  "assetName": "Fortified Houses",
+  "displayName": "Fortified Houses",
+  "description": "Level 2 houses have a lot more health and shoot arrows.",
+  "unlockRequirement": "MetaLevel",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor",
+   "DLC_Craaghelm"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippablePerk",
+  "file": "resources.assets",
+  "id": 21797,
+  "assetName": "Gladiator School",
+  "displayName": "Gladiator School",
+  "description": "Units train much faster but all brarracks are slightly more expensive.",
+  "unlockRequirement": "MetaLevel",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor",
+   "DLC_Craaghelm"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippablePerk",
+  "file": "resources.assets",
+  "id": 21798,
+  "assetName": "Indestructible Mines",
+  "displayName": "Indestructible Mines",
+  "description": "Your gold mines are indestructible.",
+  "unlockRequirement": "MetaLevel",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippablePerk",
+  "file": "resources.assets",
+  "id": 21799,
+  "assetName": "Pumpkin Fields",
+  "displayName": "Pumpkin Fields",
+  "description": "Fields generate more income and have more health but also cost more gold to build.",
+  "unlockRequirement": "MetaLevel",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippablePerk",
+  "file": "resources.assets",
+  "id": 21800,
+  "assetName": "Relentless Research",
+  "displayName": "Relentless Research",
+  "description": "Research buildings immediately continue to make research progress when they respawn after being destroyed.",
+  "unlockRequirement": "MetaLevel",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippablePerk",
+  "file": "resources.assets",
+  "id": 21801,
+  "assetName": "Resilient Residences",
+  "displayName": "Resilient Residences",
+  "description": "Your houses have more health and they immediately continue to pay taxes when they respawn after being destroyed.",
+  "unlockRequirement": "MetaLevel",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippablePerk",
+  "file": "resources.assets",
+  "id": 21802,
+  "assetName": "Timber Scaffolding",
+  "displayName": "Timber Scaffolding",
+  "description": "Tower upgrades are no longer limited by the castle center level.",
+  "unlockRequirement": "MetaLevel",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippablePerk",
+  "file": "resources.assets",
+  "id": 21803,
+  "assetName": "Universal Income",
+  "displayName": "Royal Mint",
+  "description": "Your castle center produces gold and that income increases every time you upgrade it.",
+  "unlockRequirement": "MetaLevel",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor",
+   "DLC_Craaghelm"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippablePerk",
+  "file": "resources.assets",
+  "id": 21804,
+  "assetName": "Cobbler",
+  "displayName": "Cobbler",
+  "description": "",
+  "unlockRequirement": "MetaLevel",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Craaghelm",
+   "DLC_Fangmoor"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippablePerk",
+  "file": "resources.assets",
+  "id": 21805,
+  "assetName": "Double Healing",
+  "displayName": "Double Healing",
+  "description": "",
+  "unlockRequirement": "MetaLevel",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Craaghelm",
+   "DLC_Fangmoor"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippablePerk",
+  "file": "resources.assets",
+  "id": 21806,
+  "assetName": "Pristine Archers",
+  "displayName": "Pristine Archers",
+  "description": "",
+  "unlockRequirement": "MetaLevel",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Craaghelm",
+   "DLC_Fangmoor"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippablePerk",
+  "file": "resources.assets",
+  "id": 21807,
+  "assetName": "Pristine Warriors",
+  "displayName": "Pristine Warriors",
+  "description": "",
+  "unlockRequirement": "MetaLevel",
+  "requiredBeatenLevelIndex": 0,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Craaghelm",
+   "DLC_Fangmoor"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippableMutation",
+  "file": "resources.assets",
+  "id": 21782,
+  "assetName": "No Towers Pact",
+  "displayName": "No Towers Pact",
+  "description": "",
+  "unlockRequirement": "CampaignProgress",
+  "requiredBeatenLevelIndex": 3,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor",
+   "DLC_Craaghelm"
+  ],
+  "extra": {
+   "scoreMultiplyerOnWin": 1.2
+  }
+ },
+ {
+  "class": "EquippableMutation",
+  "file": "resources.assets",
+  "id": 21783,
+  "assetName": "No Units Pact",
+  "displayName": "No Units Pact",
+  "description": "",
+  "unlockRequirement": "CampaignProgress",
+  "requiredBeatenLevelIndex": 3,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor",
+   "DLC_Craaghelm"
+  ],
+  "extra": {
+   "scoreMultiplyerOnWin": 1.4
+  }
+ },
+ {
+  "class": "EquippableMutation",
+  "file": "resources.assets",
+  "id": 21784,
+  "assetName": "No Walls Pact",
+  "displayName": "No Walls Pact",
+  "description": "",
+  "unlockRequirement": "CampaignProgress",
+  "requiredBeatenLevelIndex": 3,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Fangmoor",
+   "DLC_Craaghelm"
+  ],
+  "extra": {
+   "scoreMultiplyerOnWin": 1.1
+  }
+ },
+ {
+  "class": "EquippableBuildingUpgrade",
+  "file": "resources.assets",
+  "id": 21766,
+  "assetName": "CCAssassinsTraining",
+  "displayName": "Assassin's Training",
+  "description": "You permanently unlocked a new upgrade path for your level 2 castle center. Assasin's training drastically increases your damage output and reduces your special attack cooldown.",
+  "unlockRequirement": "CampaignProgress",
+  "requiredBeatenLevelIndex": 2,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Craaghelm",
+   "DLC_Fangmoor"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippableBuildingUpgrade",
+  "file": "resources.assets",
+  "id": 21767,
+  "assetName": "CCCastleUp",
+  "displayName": "Castle Up",
+  "description": "You permanently unlocked a new upgrade path for your level 3 castle center. Castle Up reduces the upgrade costs of towers and walls every night.",
+  "unlockRequirement": "CampaignProgress",
+  "requiredBeatenLevelIndex": 1,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Craaghelm",
+   "DLC_Fangmoor"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippableBuildingUpgrade",
+  "file": "resources.assets",
+  "id": 21768,
+  "assetName": "CCGodlyCurse",
+  "displayName": "Godly Curse",
+  "description": "You permanently unlocked a new upgrade path for your level 2 castle center. With Godly Curse locked in targets recieve significantly more damage from all sources.",
+  "unlockRequirement": "CampaignProgress",
+  "requiredBeatenLevelIndex": 2,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Craaghelm",
+   "DLC_Fangmoor"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippableBuildingUpgrade",
+  "file": "resources.assets",
+  "id": 21769,
+  "assetName": "CCMagicArmor",
+  "displayName": "Magic Armor",
+  "description": "You permanently unlocked a new upgrade path for your level 3 castle center. Magic armor provides you with a large amount of health and enemies take damage when attacking you.",
+  "unlockRequirement": "CampaignProgress",
+  "requiredBeatenLevelIndex": 1,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Craaghelm",
+   "DLC_Fangmoor"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippableBuildingUpgrade",
+  "file": "resources.assets",
+  "id": 21770,
+  "assetName": "Firewing Hero",
+  "displayName": "Firewing Hero",
+  "description": "",
+  "unlockRequirement": "CampaignProgress",
+  "requiredBeatenLevelIndex": 4,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Craaghelm",
+   "DLC_Fangmoor"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippableBuildingUpgrade",
+  "file": "resources.assets",
+  "id": 21771,
+  "assetName": "LizzardRider Hero",
+  "displayName": "LizzardRider Hero",
+  "description": "",
+  "unlockRequirement": "CampaignProgress",
+  "requiredBeatenLevelIndex": 4,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Craaghelm",
+   "DLC_Fangmoor"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippableBuildingUpgrade",
+  "file": "resources.assets",
+  "id": 21772,
+  "assetName": "MeleeBerserks",
+  "displayName": "Berserks",
+  "description": "You permanently unlocked a new upgrade path for your melee units. Berserks have a high damage output and a taste for chopping up siege engines.",
+  "unlockRequirement": "CampaignProgress",
+  "requiredBeatenLevelIndex": 2,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Craaghelm",
+   "DLC_Fangmoor"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippableBuildingUpgrade",
+  "file": "resources.assets",
+  "id": 21773,
+  "assetName": "MeleeFlails",
+  "displayName": "Flails",
+  "description": "You permanently unlocked a new upgrade path for your melee units. Flails deal splash damage in a small area around themselves when attacking.",
+  "unlockRequirement": "CampaignProgress",
+  "requiredBeatenLevelIndex": 1,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Craaghelm",
+   "DLC_Fangmoor"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippableBuildingUpgrade",
+  "file": "resources.assets",
+  "id": 21774,
+  "assetName": "MillScarecrow",
+  "displayName": "Scarecrows",
+  "description": "You permanently unlocked a new upgrade path for your mills. Scarecrows have a strong anti-air attack.",
+  "unlockRequirement": "CampaignProgress",
+  "requiredBeatenLevelIndex": 1,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Craaghelm",
+   "DLC_Fangmoor"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippableBuildingUpgrade",
+  "file": "resources.assets",
+  "id": 21775,
+  "assetName": "MillWindSpirits",
+  "displayName": "Wind Spirits",
+  "description": "You permanently unlocked a new upgrade path for your mills. Windspirits can catch and block enemy arrows in the range of the mill.",
+  "unlockRequirement": "CampaignProgress",
+  "requiredBeatenLevelIndex": 2,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Craaghelm",
+   "DLC_Fangmoor"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippableBuildingUpgrade",
+  "file": "resources.assets",
+  "id": 21776,
+  "assetName": "RangedFireArchers",
+  "displayName": "Fire Archers",
+  "description": "You permanently unlocked a new upgrade path for your ranged units. Fire archers deal splash damage around their attack target. Bonus damage against siege engines.",
+  "unlockRequirement": "CampaignProgress",
+  "requiredBeatenLevelIndex": 2,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Craaghelm",
+   "DLC_Fangmoor"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippableBuildingUpgrade",
+  "file": "resources.assets",
+  "id": 21777,
+  "assetName": "RangedHunters",
+  "displayName": "Hunters",
+  "description": "You permanently unlocked a new upgrade path for your ranged units. Hunters excel against monsters and are the only ranged unit with decent melee capabilities.",
+  "unlockRequirement": "CampaignProgress",
+  "requiredBeatenLevelIndex": 1,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Craaghelm",
+   "DLC_Fangmoor"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippableBuildingUpgrade",
+  "file": "resources.assets",
+  "id": 21778,
+  "assetName": "TowerArmor",
+  "displayName": "Armor Tower",
+  "description": "You permanently unlocked a new upgrade path for your defense towers. Support towers heal you and your allied units in range.",
+  "unlockRequirement": "CampaignProgress",
+  "requiredBeatenLevelIndex": 1,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Craaghelm",
+   "DLC_Fangmoor"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippableBuildingUpgrade",
+  "file": "resources.assets",
+  "id": 21779,
+  "assetName": "TowerBunker",
+  "displayName": "Bunker Tower",
+  "description": "You permanently unlocked a new upgrade path for your defense towers. Support towers heal you and your allied units in range.",
+  "unlockRequirement": "CampaignProgress",
+  "requiredBeatenLevelIndex": 2,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Craaghelm",
+   "DLC_Fangmoor"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippableBuildingUpgrade",
+  "file": "resources.assets",
+  "id": 21780,
+  "assetName": "TowerHotOil",
+  "displayName": "Hot Oil",
+  "description": "You permanently unlocked a new upgrade path for your defense towers. Hot oil towers pour boiling oil onto all enemy units in close proximity of the tower, causing massive splash damage.",
+  "unlockRequirement": "CampaignProgress",
+  "requiredBeatenLevelIndex": 1,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Craaghelm",
+   "DLC_Fangmoor"
+  ],
+  "extra": {}
+ },
+ {
+  "class": "EquippableBuildingUpgrade",
+  "file": "resources.assets",
+  "id": 21781,
+  "assetName": "TowerSupport",
+  "displayName": "Support Tower",
+  "description": "You permanently unlocked a new upgrade path for your defense towers. Support towers heal you and your allied units in range.",
+  "unlockRequirement": "CampaignProgress",
+  "requiredBeatenLevelIndex": 2,
+  "contentPacks": [
+   "BaseGame",
+   "DLC_Craaghelm",
+   "DLC_Fangmoor"
+  ],
+  "extra": {}
+ }
+]

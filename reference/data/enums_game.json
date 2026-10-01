@@ -1,0 +1,586 @@
+{
+ "ControlGroupBinding/AxisMode": {
+  "0": "Button",
+  "1": "Positive",
+  "2": "Negative"
+ },
+ "PlayerWeaponAudio/WeaponType": {
+  "0": "Sword",
+  "1": "Spear",
+  "2": "Bow",
+  "3": "LightningWand",
+  "4": "ShadowCodex",
+  "5": "Falchion",
+  "6": "PotionVials",
+  "7": "Axe",
+  "8": "Bloodwand"
+ },
+ "ProjectileAudio/ProjectileType": {
+  "0": "Catapult"
+ },
+ "ThronefallAudioManager/AudioOneShot": {
+  "0": "BuildingBuild",
+  "1": "BuildingUpgrade",
+  "2": "CoinslotFill",
+  "3": "CoinslotInteractionStart",
+  "4": "LastCoinslotFill",
+  "5": "CoinFillCancel",
+  "6": "NightSurvived",
+  "7": "BuildingRepair",
+  "8": "EismolochAppear",
+  "9": "EismolochSpawn",
+  "10": "ButtonSelect",
+  "11": "ButtonApply",
+  "12": "ButtonApplyHero",
+  "13": "CoinCollect",
+  "14": "BuildingStandardProjectile",
+  "15": "BallistaProjectile",
+  "16": "PlayerSwordBigHit",
+  "17": "EnemySpawn",
+  "18": "ShowWaveCount",
+  "19": "CloseWaveCount",
+  "20": "ShowTooltip",
+  "21": "None",
+  "22": "PlayerLightningWandActive",
+  "23": "PlayerTrapPlace",
+  "24": "PlayerTrapHit",
+  "25": "PlayerPotionHit",
+  "26": "PlayerPotionActive",
+  "27": "PlayerAxeActive",
+  "28": "BloodwandActive"
+ },
+ "UnitAudio/LocomotionMode": {
+  "0": "Bounce",
+  "1": "Rolling",
+  "2": "Perpetual",
+  "3": "None"
+ },
+ "UnitAudio/OneshotType": {
+  "0": "TakeDamage",
+  "1": "Attack",
+  "2": "Die"
+ },
+ "UnitAudio/StepType": {
+  "0": "DefaultOnFoot",
+  "1": "Giant",
+  "2": "Fly",
+  "3": "SiegeRoll",
+  "4": "RacerRoll",
+  "5": "SquishyBounce",
+  "6": "ExploderRoll",
+  "7": "MonsterRider",
+  "8": "Slime",
+  "9": "FlyBig",
+  "10": "FlyWizzard",
+  "11": "Windboat",
+  "12": "Steamcastle",
+  "13": "Firestorm"
+ },
+ "UnitAudio/DmgType": {
+  "0": "DefaultHumanoidOnFoot",
+  "1": "BigOrganic",
+  "2": "SmallOrganic",
+  "3": "Siege"
+ },
+ "UnitAudio/DeathType": {
+  "0": "DefaultHumanoidOnFoot",
+  "1": "BigOrganic",
+  "2": "Siege",
+  "3": "Exploder",
+  "4": "Building"
+ },
+ "UnitAudio/AttackType": {
+  "0": "DefaultSword",
+  "1": "MassiveBlunt",
+  "2": "FlyerSpit",
+  "3": "Flatbow",
+  "4": "Crossbow",
+  "5": "Catapult",
+  "6": "RacerBite",
+  "7": "HunterlingBite",
+  "8": "Ram",
+  "9": "Slime",
+  "10": "Healing",
+  "11": "Firespit",
+  "12": "Spear",
+  "13": "Wizard",
+  "14": "Spider",
+  "15": "Flail",
+  "16": "Windboat",
+  "17": "HeavyMechanical"
+ },
+ "AutoAttackTower/ETargetingMode": {
+  "0": "TargetClosest",
+  "1": "TargetRandom",
+  "2": "TargetHighestHealth",
+  "3": "TargetLowestHealthDamaging",
+  "4": "TargetLowestHealthHealing"
+ },
+ "BalancingParameter/EType": {
+  "0": "Default",
+  "1": "PercentageModifyer",
+  "2": "Percentage"
+ },
+ "BuildSlot/BuildingState": {
+  "0": "Blueprint",
+  "1": "Built"
+ },
+ "DayNightCycle/Timestate": {
+  "0": "Day",
+  "1": "Night"
+ },
+ "DebugController/SaveLoadMode": {
+  "0": "Normal",
+  "1": "LoadEmptySaveFileOnStartup",
+  "2": "LoadMaxedOutSaveFileOnStartup"
+ },
+ "AutoAttackFlamethrower/EState": {
+  "0": "Inactive",
+  "1": "Active"
+ },
+ "BoomerangProjectile/Phase": {
+  "0": "Idle",
+  "1": "FlyOut",
+  "2": "Linger",
+  "3": "FlyBack",
+  "4": "Done"
+ },
+ "CrystalDragonPhasing/CrystalDragonPhase": {
+  "0": "NONE",
+  "1": "JUMP",
+  "2": "CRYSTAL1",
+  "3": "CRYSTAL2",
+  "4": "ANGER",
+  "5": "REGEN"
+ },
+ "LavaGolemPhasing/LavaGolemPhase": {
+  "0": "NONE",
+  "1": "JUMP",
+  "2": "PHASE1",
+  "3": "PHASE2",
+  "4": "PHASE3",
+  "5": "REGEN"
+ },
+ "TheScrapperAttackOrigin/AttackSource": {
+  "0": "None",
+  "1": "LeftHand",
+  "2": "RightHand"
+ },
+ "MapJumpEntries/NextPointSelectionType": {
+  "0": "Cycle",
+  "1": "Random",
+  "2": "Farthest"
+ },
+ "ProjectileBlock/ProjectileTag": {
+  "0": "Blockable",
+  "1": "Unstoppable"
+ },
+ "RailgunBeam/BeamState": {
+  "0": "Fine",
+  "1": "Blocked",
+  "2": "NoHits"
+ },
+ "AutoAttackTrap/EState": {
+  "0": "Disabled",
+  "1": "Idle",
+  "2": "Active",
+  "3": "Cooldown"
+ },
+ "EnemySpawnLine/ESpawnDifficulty": {
+  "0": "Normal",
+  "1": "EasierForPlayerToDealWith",
+  "2": "HarderForPlayerToDealWith"
+ },
+ "EternalTrialEnemy/EGroup": {
+  "0": "BreadAndButter",
+  "1": "Flavour",
+  "2": "Flying"
+ },
+ "SuperWaveGen/EStartingGold": {
+  "0": "LowEcoStart",
+  "1": "MediumEcoStart",
+  "2": "HighEcoStart",
+  "3": "SuperHighEcoStart",
+  "4": "GigaHighEcoStart"
+ },
+ "SuperWaveGen/EEnemyGoldDropRate": {
+  "0": "NoDropsExeptMinimum",
+  "1": "LowDroprate",
+  "2": "MediumDroprate",
+  "3": "HighDroprate"
+ },
+ "SuperWaveGen/EMinimumGoldGainPerNight": {
+  "0": "MinGoldSmall",
+  "1": "MinGoldNormal",
+  "2": "MinGoldBigger",
+  "3": "MinGoldBiggest",
+  "4": "MinGoldMassive"
+ },
+ "SuperWaveGen/EMaximumGoldGainPerNight": {
+  "0": "MaxGoldIsMinGold",
+  "1": "MaxGoldIsMinGoldx2",
+  "2": "MaxGoldIsMinGoldx3",
+  "3": "MaxGoldIsMinGoldx4",
+  "4": "MaxGoldUnlimited"
+ },
+ "SuperWaveGen/EEnemyPreselection": {
+  "0": "All_10",
+  "1": "RemoveRandoms_10",
+  "2": "NoFlying",
+  "3": "FlyingOnly",
+  "4": "MonstersOnly",
+  "5": "NoMonsters",
+  "6": "MeleeOnly",
+  "7": "RangedOnly",
+  "8": "NoSiege",
+  "9": "FastOnly",
+  "10": "NoFast",
+  "11": "VulnerableToSplashOnly",
+  "12": "NoVulnerableToSplash"
+ },
+ "SuperWaveGen/EEnemyTypesMode": {
+  "0": "FixedMonobattle_1",
+  "1": "VarietyMonobattle_4",
+  "2": "FixedDuobattle_8",
+  "3": "FixedTriobattle_10",
+  "4": "VarietyDuobattle_12",
+  "5": "VarietyTriobattle_10",
+  "6": "VarietyGrowbattle_16",
+  "7": "FixedGrowbattle_16"
+ },
+ "SuperWaveGen/ESpawnSelectMode": {
+  "0": "OneFixedRandom_1",
+  "1": "TwoFixedRandom_2",
+  "2": "ThreeFixedRandom_2",
+  "3": "OneVarietyRandom_2",
+  "4": "TwoVarietyRandom_3",
+  "5": "ThreeVarietyRandom_3",
+  "6": "OmegaRandomPerEnemy_3",
+  "7": "FixedGrowspawns_2",
+  "8": "VarietyGrowspawns_3",
+  "9": "AllSpawns_1"
+ },
+ "SuperWaveGen/ESpawnInDuration": {
+  "0": "Immediate",
+  "1": "ShortFlow",
+  "2": "MediumFlow",
+  "3": "LongFlow",
+  "4": "RandomFlow",
+  "5": "GrowingFlow"
+ },
+ "SuperWaveGen/EElitMode": {
+  "0": "OnlyToPreventOverpopulation_7",
+  "1": "OneRandomEliteSpawn",
+  "2": "PartialConversionSmall",
+  "3": "PartialConversionMedium",
+  "4": "PartialConversionBig",
+  "5": "PartialConversionRandom"
+ },
+ "SuperWaveGen/ESpawnInType": {
+  "0": "Normal",
+  "1": "TwoWaves",
+  "2": "ThreeWaves",
+  "3": "DynamicSmallGroups",
+  "4": "DynamicBigGroups",
+  "5": "RandomGroupsAndStreams",
+  "6": "OneSpawnAtATime",
+  "7": "OneSpawnAtATimeInWaves"
+ },
+ "SuperWaveGen/EDistributeDifficulty": {
+  "0": "EvenDifficulty_3",
+  "1": "EvenUnitCount",
+  "2": "EvenDifficultyAndUnitCountMixture_2",
+  "3": "SlightlyRandom",
+  "4": "VeryRandom"
+ },
+ "SuperWaveGen/EFinalWaveBonus": {
+  "0": "None",
+  "1": "AllSpawnsActive",
+  "2": "VeryLongWave",
+  "3": "VeryLongWaveWithAllSpawns",
+  "4": "AllSpawnsActivePlusNewEnemyType",
+  "5": "VeryLongWavePlusNewEnemyType",
+  "6": "VeryLongWaveWithAllSpawnsPlusNewEnemyType"
+ },
+ "GateOpener/Mode": {
+  "0": "Door",
+  "1": "Bars"
+ },
+ "IDlcProvider/DlcId": {
+  "0": "CRAAGHELM",
+  "1": "FANGMOOR"
+ },
+ "KnockbackBehavior/KnockbackPhase": {
+  "0": "None",
+  "1": "Arc",
+  "2": "Drop",
+  "3": "Stagger",
+  "4": "Correction"
+ },
+ "PerkSelectionGroup/Type": {
+  "0": "Weapons",
+  "1": "Perks",
+  "2": "Mutations",
+  "3": "FixedLoadout"
+ },
+ "LevelInfo/ProgressionContribution": {
+  "0": "Crowns",
+  "1": "Stars"
+ },
+ "LocalGamestate/GameMode": {
+  "0": "Classic",
+  "1": "EternalTrial"
+ },
+ "LocalGamestate/State": {
+  "0": "PreMatch",
+  "1": "InMatch",
+  "2": "AfterMatchVictory",
+  "3": "AfterMatchDefeat"
+ },
+ "AchievementManager/Achievements": {
+  "11": "ET_STAGE_1",
+  "12": "ET_STAGE_2",
+  "13": "ET_STAGE_3",
+  "14": "ET_STAGE_4",
+  "15": "ET_STAGE_5",
+  "16": "ET_STAGE_6",
+  "17": "ET_STAGE_7",
+  "0": "START_TUTORIAL",
+  "1": "COMPLETE_TUTORIAL",
+  "2": "NORDFELS_BEATEN",
+  "3": "NORDFELS_QUESTSCOMPLETE",
+  "4": "DURSTSTEIN_BEATEN",
+  "5": "DURSTSTEIN_QUESTSCOMPLETE",
+  "6": "FROSTSEE_BEATEN",
+  "7": "FROSTSEE_QUESTSCOMPLETE",
+  "8": "MAXLEVEL_REACHED",
+  "9": "UFERWIND_BEATEN",
+  "10": "UFERWIND_QUESTSCOMPLETE",
+  "18": "STURMKLAMM_BEATEN",
+  "19": "STURMKLAMM_QUESTSCOMPLETE",
+  "20": "CROWNS_5",
+  "21": "CROWNS_10",
+  "22": "CROWNS_20",
+  "23": "CROWNS_30",
+  "24": "WILDBACH_BEATEN",
+  "25": "WILDBACH_QUESTSCOMPLETE",
+  "26": "MOORWEG_BEATEN",
+  "27": "MOORWEG_QUESTSCOMPLETE",
+  "28": "FREIFORT_BEATEN",
+  "29": "FREIFORT_QUESTSCOMPLETE",
+  "30": "TOTEND_BEATEN",
+  "31": "TOTEND_QUESTSCOMPLETE",
+  "32": "CROWNS_40",
+  "33": "CROWNS_50"
+ },
+ "SceneTransitionManager/SceneState": {
+  "0": "MainMenu",
+  "1": "LevelSelect",
+  "2": "InGame"
+ },
+ "Equippable/UnlockRequirement": {
+  "0": "MetaLevel",
+  "1": "CampaignProgress"
+ },
+ "Equippable/LevelName": {
+  "0": "DefaultUnlocked",
+  "1": "Nordfels",
+  "2": "Durststein",
+  "3": "Frostsee",
+  "4": "Uferwind",
+  "5": "Sturmklamm",
+  "6": "Wildbach",
+  "7": "Moorweg",
+  "8": "Freifort",
+  "9": "Totend"
+ },
+ "Equippable/ContentPack": {
+  "0": "BaseGame",
+  "1": "DLC_Craaghelm",
+  "2": "DLC_Fangmoor"
+ },
+ "BuildingInteractor/InteractionState": {
+  "0": "None",
+  "1": "Harvest",
+  "2": "Upgrade"
+ },
+ "Quest/EType": {
+  "0": "BeatTheLevel",
+  "2": "AchieveScoreOf",
+  "1": "BeatTheLevelWith",
+  "3": "BeatTheLevelWithout"
+ },
+ "RoyalForgeUpgrade/ERoyalForgeUpgrades": {
+  "0": "AutoAttackSpeed",
+  "1": "AdditionalHealth",
+  "2": "CooldownReduction",
+  "3": "OverallDamage"
+ },
+ "ScreenMarkerManager/MarkerMode": {
+  "0": "Direction",
+  "1": "ClampedPos"
+ },
+ "SettingsManager/MixerChannel": {
+  "0": "Master",
+  "1": "Music",
+  "2": "SFX",
+  "3": "Environment"
+ },
+ "SettingsManager/ColorBlindMode": {
+  "0": "Off",
+  "1": "YellowEnemies",
+  "2": "OrangeEnemies",
+  "3": "PurpleEnemies",
+  "4": "WhiteEnemies"
+ },
+ "SplashDamageArea/EShape": {
+  "0": "Sphere",
+  "1": "Box"
+ },
+ "TagManager/ETag": {
+  "39": "NONE",
+  "0": "PlayerOwned",
+  "1": "EnemyOwned",
+  "2": "Player",
+  "3": "CastleCenter",
+  "4": "MeeleFighter",
+  "5": "RangedFighter",
+  "6": "Flying",
+  "7": "PlayerUnit",
+  "8": "Building",
+  "9": "SiegeWeapon",
+  "10": "AUTO_Alive",
+  "11": "AUTO_KnockedOutAndHealOnDawn",
+  "12": "Wall",
+  "13": "InfrastructureEconomy",
+  "14": "TakesReducedDamageFromPlayerAttacks",
+  "15": "PracticeTargets",
+  "16": "FastMoving",
+  "17": "ArmoredAgainstRanged",
+  "18": "VulnerableVsRanged",
+  "19": "Monster",
+  "20": "House",
+  "21": "WallOrTower",
+  "22": "AUTO_Commanded",
+  "23": "TakesIncreasedDamageFromTowers",
+  "24": "Tower",
+  "25": "AUTO_NoReviveNextMorning",
+  "26": "PlayerOwnedPriorityTarget",
+  "27": "BlockableEnemyProjectile",
+  "28": "Boss",
+  "29": "UselessWallThatDoesNotBlockPath",
+  "30": "Healer",
+  "31": "MagicProjectile",
+  "32": "NaturallyVulnerableToSplash",
+  "33": "NaturallyHighHealthTarget",
+  "34": "UnreachableForBigEnemiesDueToLevelDesign",
+  "35": "PlayerShrine",
+  "36": "VodooCursed",
+  "37": "PlayerHeroUnit",
+  "38": "FireAndExplosionResistant",
+  "40": "Humanoid",
+  "41": "LargeUnit",
+  "42": "Exploding",
+  "43": "TrainingFacility",
+  "44": "Bridge",
+  "45": "Group1",
+  "46": "Group2",
+  "47": "Group3",
+  "48": "OnDeathEnemySpawner",
+  "49": "Undead",
+  "50": "Vampire"
+ },
+ "PathMesher/UnwrapMode": {
+  "0": "XZWorldSpace",
+  "1": "River"
+ },
+ "TempleUpgrade/State": {
+  "0": "NotEnabledYet",
+  "1": "EnabledTonight",
+  "2": "NotEnabledAnymore"
+ },
+ "CheatType": {
+  "0": "Action",
+  "1": "Toggle",
+  "2": "Slider"
+ },
+ "ControlMapButton/AxisMode": {
+  "0": "Button",
+  "1": "Positive",
+  "2": "Negative"
+ },
+ "GraphDrawer/Type": {
+  "0": "Networth",
+  "1": "Score"
+ },
+ "InputActionGlyph/InputPriority": {
+  "0": "PrioritizeController",
+  "1": "PrioritizeKeyboardAndMouse"
+ },
+ "RangeIndicatorHandler/IndicatorType": {
+  "0": "Built",
+  "1": "Preview",
+  "2": "Special",
+  "3": "BuiltAll",
+  "4": "PreviewAll"
+ },
+ "ThronefallUIElement/NavigationDirection": {
+  "0": "Right",
+  "1": "Left",
+  "2": "Up",
+  "3": "Down"
+ },
+ "ThronefallUIElement/SelectionState": {
+  "0": "Default",
+  "1": "Focussed",
+  "2": "Selected",
+  "3": "FocussedAndSelected"
+ },
+ "TreasuryUI/AnimationState": {
+  "0": "Off",
+  "1": "ScaleIn",
+  "2": "On",
+  "3": "ScaleOut",
+  "4": "WaitToScaleOut"
+ },
+ "UIParentResizer/Mode": {
+  "0": "Vertical"
+ },
+ "WardrobeItem/Mesh": {
+  "0": "Crown_1",
+  "1": "Crown_2",
+  "2": "Crown_3",
+  "3": "Crown_4",
+  "4": "Crown_5",
+  "5": "Crown_6",
+  "6": "Armour_0",
+  "7": "Armour_1",
+  "8": "Armour_2",
+  "9": "Armour_3",
+  "10": "Armour_4",
+  "11": "Armour_5",
+  "12": "Mount_0",
+  "13": "Mount_1",
+  "14": "Mount_2",
+  "15": "Mount_3",
+  "16": "Mount_4",
+  "17": "Mount_5"
+ },
+ "KnockbackUtils/KnockbackShapeType": {
+  "0": "Radial",
+  "1": "Linear"
+ },
+ "Weapon/EFacingDirection": {
+  "0": "Uniform",
+  "1": "FaceVictim",
+  "2": "FaceAttacker",
+  "3": "Random"
+ },
+ "Weapon/EDamageAffectedByBlacksmithUpgrade": {
+  "0": "Null",
+  "1": "MultiplyBy_MeleeDamage",
+  "2": "MultiplyBy_RangedDamage",
+  "3": "DivideBy_MeleeResistance",
+  "4": "DivideBy_RangedResistance"
+ }
+}

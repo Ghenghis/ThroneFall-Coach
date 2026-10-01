@@ -1,0 +1,335 @@
+[
+ {
+  "file": "04_Neuland_Tutorial_.botpack.json",
+  "scene": "Neuland(Tutorial)",
+  "bytes": 102491,
+  "nights": 8,
+  "slots": 19,
+  "standPoints": 76,
+  "sha256": "26cd86bd9065ca79"
+ },
+ {
+  "file": "05_Nordfels.botpack.json",
+  "scene": "Nordfels",
+  "bytes": 186931,
+  "nights": 13,
+  "slots": 69,
+  "standPoints": 276,
+  "sha256": "8420282b73b66b9f"
+ },
+ {
+  "file": "06_Durststein.botpack.json",
+  "scene": "Durststein",
+  "bytes": 306468,
+  "nights": 12,
+  "slots": 94,
+  "standPoints": 376,
+  "sha256": "721de4acaf6f8b34"
+ },
+ {
+  "file": "07_Frostsee.botpack.json",
+  "scene": "Frostsee",
+  "bytes": 239945,
+  "nights": 13,
+  "slots": 73,
+  "standPoints": 292,
+  "sha256": "d63a175ead85ce9f"
+ },
+ {
+  "file": "08_Uferwind.botpack.json",
+  "scene": "Uferwind",
+  "bytes": 343853,
+  "nights": 12,
+  "slots": 117,
+  "standPoints": 468,
+  "sha256": "1f2b48b9476ff3bb"
+ },
+ {
+  "file": "09_Sturmklamm.botpack.json",
+  "scene": "Sturmklamm",
+  "bytes": 288074,
+  "nights": 13,
+  "slots": 80,
+  "standPoints": 320,
+  "sha256": "dfb608ef1aa2af6a"
+ },
+ {
+  "file": "10_Nordfels_Bow_Micro.botpack.json",
+  "scene": "Nordfels Bow Micro",
+  "bytes": 75763,
+  "nights": 10,
+  "slots": 13,
+  "standPoints": 52,
+  "sha256": "77699d6f16ac61b4"
+ },
+ {
+  "file": "11_Nordfels_Siege.botpack.json",
+  "scene": "Nordfels Siege",
+  "bytes": 146489,
+  "nights": 1,
+  "slots": 51,
+  "standPoints": 204,
+  "sha256": "d77192ea2bea758d"
+ },
+ {
+  "file": "12_Nordfels_Commander.botpack.json",
+  "scene": "Nordfels Commander",
+  "bytes": 103364,
+  "nights": 10,
+  "slots": 23,
+  "standPoints": 92,
+  "sha256": "80a957aab460a232"
+ },
+ {
+  "file": "13_Durststein_Gold_Puzzle.botpack.json",
+  "scene": "Durststein Gold Puzzle",
+  "bytes": 196075,
+  "nights": 9,
+  "slots": 57,
+  "standPoints": 228,
+  "sha256": "9c1b03698035c562"
+ },
+ {
+  "file": "14_Durststein_Speedrun.botpack.json",
+  "scene": "Durststein Speedrun",
+  "bytes": 283266,
+  "nights": 12,
+  "slots": 84,
+  "standPoints": 336,
+  "sha256": "5242946d8b305a71"
+ },
+ {
+  "file": "15_Durststein_Tower_Defense.botpack.json",
+  "scene": "Durststein Tower Defense",
+  "bytes": 229863,
+  "nights": 19,
+  "slots": 42,
+  "standPoints": 168,
+  "sha256": "d74fceca087f18a4"
+ },
+ {
+  "file": "16_Frostsee_Boss_Rush.botpack.json",
+  "scene": "Frostsee Boss Rush",
+  "bytes": 204702,
+  "nights": 1,
+  "slots": 61,
+  "standPoints": 244,
+  "sha256": "40cb51bb7effafd7"
+ },
+ {
+  "file": "17_Frostsee_Bowling_Challenge.botpack.json",
+  "scene": "Frostsee Bowling Challenge",
+  "bytes": 76831,
+  "nights": 9,
+  "slots": 1,
+  "standPoints": 4,
+  "sha256": "d1b0a531d6627149"
+ },
+ {
+  "file": "18_Frostsee_The_Great_Wall.botpack.json",
+  "scene": "Frostsee The Great Wall",
+  "bytes": 216340,
+  "nights": 9,
+  "slots": 62,
+  "standPoints": 248,
+  "sha256": "9e073a6f3d31959e"
+ },
+ {
+  "file": "19_Uferwind_Defense_Puzzle.botpack.json",
+  "scene": "Uferwind Defense Puzzle",
+  "bytes": 311499,
+  "nights": 4,
+  "slots": 110,
+  "standPoints": 440,
+  "sha256": "13e9c519ddadba16"
+ },
+ {
+  "file": "20_Uferwind_Hero_Commander.botpack.json",
+  "scene": "Uferwind Hero Commander",
+  "bytes": 192348,
+  "nights": 10,
+  "slots": 45,
+  "standPoints": 180,
+  "sha256": "79d7350c267362f4"
+ },
+ {
+  "file": "21_Uferwind_Lightning_Staff_Challenge.botpack.json",
+  "scene": "Uferwind Lightning Staff Challenge",
+  "bytes": 155364,
+  "nights": 8,
+  "slots": 32,
+  "standPoints": 128,
+  "sha256": "6ae0f64b1c20259c"
+ },
+ {
+  "file": "22_Sturmklamm_Just_The_Way_They_Are.botpack.json",
+  "scene": "Sturmklamm Just The Way They Are",
+  "bytes": 172368,
+  "nights": 14,
+  "slots": 27,
+  "standPoints": 108,
+  "sha256": "0f8586604e3dcbe9"
+ },
+ {
+  "file": "23_Sturmklamm_One_Man_Army.botpack.json",
+  "scene": "Sturmklamm One Man Army",
+  "bytes": 131182,
+  "nights": 11,
+  "slots": 10,
+  "standPoints": 40,
+  "sha256": "bfcbe5786e5c005c"
+ },
+ {
+  "file": "24_Sturmklamm_Shrine_Challenge.botpack.json",
+  "scene": "Sturmklamm Shrine Challenge",
+  "bytes": 148229,
+  "nights": 13,
+  "slots": 26,
+  "standPoints": 104,
+  "sha256": "b37c23139dcc1e03"
+ },
+ {
+  "file": "25_Wildbach.botpack.json",
+  "scene": "Wildbach",
+  "bytes": 245950,
+  "nights": 13,
+  "slots": 78,
+  "standPoints": 309,
+  "sha256": "2a4610039368cd98"
+ },
+ {
+  "file": "26_Moorweg.botpack.json",
+  "scene": "Moorweg",
+  "bytes": 333096,
+  "nights": 12,
+  "slots": 82,
+  "standPoints": 328,
+  "sha256": "9530472bf6ac90a8"
+ },
+ {
+  "file": "27_Freifort.botpack.json",
+  "scene": "Freifort",
+  "bytes": 408963,
+  "nights": 13,
+  "slots": 113,
+  "standPoints": 451,
+  "sha256": "4a9d6bfee02f6bc3"
+ },
+ {
+  "file": "28_Totend.botpack.json",
+  "scene": "Totend",
+  "bytes": 368293,
+  "nights": 15,
+  "slots": 100,
+  "standPoints": 400,
+  "sha256": "2d1b7fcbc57919d5"
+ },
+ {
+  "file": "29_Freifort_MM1.botpack.json",
+  "scene": "Freifort MM1",
+  "bytes": 224904,
+  "nights": 6,
+  "slots": 7,
+  "standPoints": 28,
+  "sha256": "7cb32986c377b7a9"
+ },
+ {
+  "file": "30_Freifort_MM2.botpack.json",
+  "scene": "Freifort MM2",
+  "bytes": 408967,
+  "nights": 13,
+  "slots": 113,
+  "standPoints": 451,
+  "sha256": "059723c9bb3678de"
+ },
+ {
+  "file": "31_Freifort_MM3.botpack.json",
+  "scene": "Freifort MM3",
+  "bytes": 388124,
+  "nights": 9,
+  "slots": 144,
+  "standPoints": 575,
+  "sha256": "bf90b868d3b2b74b"
+ },
+ {
+  "file": "32_Moorweg_MM1.botpack.json",
+  "scene": "Moorweg MM1",
+  "bytes": 342256,
+  "nights": 9,
+  "slots": 78,
+  "standPoints": 312,
+  "sha256": "64722f6079be6e02"
+ },
+ {
+  "file": "33_Moorweg_MM2.botpack.json",
+  "scene": "Moorweg MM2",
+  "bytes": 303377,
+  "nights": 3,
+  "slots": 74,
+  "standPoints": 296,
+  "sha256": "43abd628a3eeb77b"
+ },
+ {
+  "file": "34_Moorweg_MM3.botpack.json",
+  "scene": "Moorweg MM3",
+  "bytes": 340490,
+  "nights": 14,
+  "slots": 82,
+  "standPoints": 328,
+  "sha256": "b5868c560a21e6ec"
+ },
+ {
+  "file": "35_Totend_MM1.botpack.json",
+  "scene": "Totend MM1",
+  "bytes": 336738,
+  "nights": 1,
+  "slots": 99,
+  "standPoints": 396,
+  "sha256": "222b08a419910620"
+ },
+ {
+  "file": "36_Totend_MM2.botpack.json",
+  "scene": "Totend MM2",
+  "bytes": 160134,
+  "nights": 9,
+  "slots": 7,
+  "standPoints": 28,
+  "sha256": "a497baa2b8302f07"
+ },
+ {
+  "file": "37_Totend_MM3.botpack.json",
+  "scene": "Totend MM3",
+  "bytes": 367047,
+  "nights": 10,
+  "slots": 118,
+  "standPoints": 442,
+  "sha256": "ff28cea39c9756d9"
+ },
+ {
+  "file": "38_Wildbach_MM1.botpack.json",
+  "scene": "Wildbach MM1",
+  "bytes": 244689,
+  "nights": 9,
+  "slots": 75,
+  "standPoints": 297,
+  "sha256": "1f9f36898f37c2bd"
+ },
+ {
+  "file": "39_Wildbach_MM2.botpack.json",
+  "scene": "Wildbach MM2",
+  "bytes": 230722,
+  "nights": 9,
+  "slots": 75,
+  "standPoints": 297,
+  "sha256": "a48a44f3d18d5982"
+ },
+ {
+  "file": "40_Wildbach_MM3.botpack.json",
+  "scene": "Wildbach MM3",
+  "bytes": 240106,
+  "nights": 7,
+  "slots": 78,
+  "standPoints": 309,
+  "sha256": "637e33cfdd766fdd"
+ }
+]

@@ -1,0 +1,26 @@
+{
+  "event_schema_version": 1,
+  "event_id": "evt_20260929T115508561Z_34cb64",
+  "event_type": "agent.presence",
+  "created_utc": "2026-09-29T11:55:08.561Z",
+  "workspace_root": "K:\\Downloads-IDM\\Thronefall\\Trainer",
+  "task_id": "thronefall-v2-agentic",
+  "owner": "devin-cli",
+  "branch": "main",
+  "files": [
+    "src/Bot.cs",
+    "src/BotPerception.cs",
+    "src/Plugin.cs"
+  ],
+  "summary": "devin-cli is working",
+  "evidence_ids": [],
+  "next_actor": "unassigned",
+  "recommended_action": "acknowledge",
+  "payload": {
+    "role": "builder",
+    "status": "working",
+    "note": "Implementing v2 agentic autopilot per docs/AGENTIC-DESIGN.md — awareness, navigation, combat",
+    "can_interrupt": true,
+    "waiting_on": null
+  }
+}

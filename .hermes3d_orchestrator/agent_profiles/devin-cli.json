@@ -1,0 +1,37 @@
+{
+  "agent_profile_schema_version": 1,
+  "owner": "devin-cli",
+  "display_name": "Devin CLI (Cognition SWE-2)",
+  "host": "windows-local",
+  "model": "swe-2-max",
+  "mode": "coordinated-dev",
+  "role": "builder",
+  "skills": [
+    "bepinex",
+    "csharp",
+    "github-releases",
+    "harmony",
+    "pathfinding",
+    "powershell",
+    "unity"
+  ],
+  "task_types": [
+    "debugging",
+    "implementation",
+    "releases",
+    "verification"
+  ],
+  "host_supplies": [],
+  "hermesproof_supplies": [],
+  "workspace_roots": [
+    "K:\\Downloads-IDM\\Thronefall\\Trainer"
+  ],
+  "default_workspace_root": "K:\\Downloads-IDM\\Thronefall\\Trainer",
+  "mcp_server": {},
+  "release_gates": [],
+  "git_remotes": [],
+  "notes": "Implementing v2 agentic autopilot per docs/AGENTIC-DESIGN.md — awareness, navigation, combat",
+  "metadata": {},
+  "created_utc": "2026-09-29T11:55:08.512Z",
+  "updated_utc": "2026-09-29T11:55:08.512Z"
+}

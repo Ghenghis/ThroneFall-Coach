@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "tasks": {
+    "a2a_1790682962254_dabde820": {
+      "id": "a2a_1790682962254_dabde820",
+      "agent_id": "claude-refpack",
+      "task_type": "build",
+      "status": "submitted",
+      "created_ts": 1790682962254,
+      "updated_ts": 1790682962254,
+      "input": {
+        "title": "THRONEFALL-REFPACK: static ground-truth extraction + game handbook",
+        "scope": [
+          "tools/refpack/** (new): TfMap C# metadata/IL/serialization mapper + Python UnityPy extractor + doc/PDF builder",
+          "reference/** (new): mapping files (code map, call graph, field xrefs, serialization layouts, asset index), game data (levels, waves, enemies, units, buildings/upgrade trees, map coordinates), handbook docs + PDFs"
+        ],
+        "read_only_inputs": [
+          "../Thronefall_Data/** (build 2026-06-30, Assembly-CSharp SHA256 F350269E…)",
+          "decompiled/**",
+          "docs/*.md",
+          "src/*.cs"
+        ],
+        "not_touching": [
+          "src/**",
+          "docs/** (existing)",
+          "BepInEx/**",
+          "thronefall.exe process"
+        ],
+        "consumers": [
+          "devin-cli (P1/A2 wave intel, nav anchors, frames.json seed)",
+          "tf-agent brain (handbook in context)"
+        ]
+      },
+      "output": null,
+      "error": null
+    }
+  }
+}

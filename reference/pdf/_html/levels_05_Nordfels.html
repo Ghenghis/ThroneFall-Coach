@@ -1,0 +1,1509 @@
+<!doctype html><html><head><meta charset='utf-8'><title>Level · Nordfels</title><style>
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { font-family: 'Segoe UI', Calibri, Arial, sans-serif; font-size: 10.2px; line-height: 1.42; color: #1b1f24; margin: 0; }
+h1 { font-size: 22px; margin: 0 0 8px; padding-bottom: 5px; border-bottom: 2px solid #b8860b; color: #3a2a06; }
+h2 { font-size: 15.5px; margin: 16px 0 6px; padding-bottom: 2px; border-bottom: 1px solid #d6cdb6; color: #3a2a06; page-break-after: avoid; }
+h3 { font-size: 12.5px; margin: 12px 0 4px; color: #4a3a12; page-break-after: avoid; }
+h4 { font-size: 11px; margin: 8px 0 3px; page-break-after: avoid; }
+p, li { max-width: 100%; orphans: 3; widows: 3; }
+a { color: #14527a; text-decoration: none; }
+code { font-family: Consolas, 'Cascadia Mono', monospace; font-size: 9px; background: #f2efe6; padding: 0 2px; border-radius: 2px; word-break: break-word; }
+pre { background: #f6f4ee; border: 1px solid #ddd6c2; border-radius: 3px; padding: 6px 8px; white-space: pre-wrap; word-break: break-word; page-break-inside: avoid; }
+pre code { background: none; padding: 0; font-size: 8.6px; }
+table { border-collapse: collapse; width: 100%; margin: 6px 0 10px; font-size: 8.6px; page-break-inside: auto; }
+thead { display: table-header-group; }
+tr { page-break-inside: avoid; }
+th { background: #e9e2cc; text-align: left; padding: 3px 5px; border: 1px solid #cfc6ab; }
+td { padding: 2px 5px; border: 1px solid #ddd6c2; vertical-align: top; word-break: break-word; }
+tbody tr:nth-child(even) td { background: #faf8f2; }
+img { max-width: 100%; height: auto; width: auto; display: block; margin: 6px auto; page-break-inside: avoid; break-inside: avoid; }
+body.land img { max-height: 158mm; }
+body.port img { max-height: 232mm; }
+blockquote { margin: 6px 0; padding: 4px 10px; border-left: 3px solid #b8860b; background: #faf6e6; color: #3a3320; }
+em { color: #3f3f3f; }
+hr { border: 0; border-top: 1px solid #d6cdb6; margin: 12px 0; }
+.cover { text-align: center; margin-top: 90px; }
+.cover h1 { border: 0; font-size: 34px; }
+.toc td { font-size: 11px; padding: 3px 8px; }
+pre { line-height: 125%; }
+td.linenos .normal { color: #666666; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: #666666; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #ffffcc }
+.codehilite { background: #f0f0f0; }
+.codehilite .c { color: #60A0B0; font-style: italic } /* Comment */
+.codehilite .err { border: 1px solid #F00 } /* Error */
+.codehilite .k { color: #007020; font-weight: bold } /* Keyword */
+.codehilite .o { color: #666 } /* Operator */
+.codehilite .ch { color: #60A0B0; font-style: italic } /* Comment.Hashbang */
+.codehilite .cm { color: #60A0B0; font-style: italic } /* Comment.Multiline */
+.codehilite .cp { color: #007020 } /* Comment.Preproc */
+.codehilite .cpf { color: #60A0B0; font-style: italic } /* Comment.PreprocFile */
+.codehilite .c1 { color: #60A0B0; font-style: italic } /* Comment.Single */
+.codehilite .cs { color: #60A0B0; background-color: #FFF0F0 } /* Comment.Special */
+.codehilite .gd { color: #A00000 } /* Generic.Deleted */
+.codehilite .ge { font-style: italic } /* Generic.Emph */
+.codehilite .ges { font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #F00 } /* Generic.Error */
+.codehilite .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.codehilite .gi { color: #00A000 } /* Generic.Inserted */
+.codehilite .go { color: #888 } /* Generic.Output */
+.codehilite .gp { color: #C65D09; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.codehilite .gt { color: #04D } /* Generic.Traceback */
+.codehilite .kc { color: #007020; font-weight: bold } /* Keyword.Constant */
+.codehilite .kd { color: #007020; font-weight: bold } /* Keyword.Declaration */
+.codehilite .kn { color: #007020; font-weight: bold } /* Keyword.Namespace */
+.codehilite .kp { color: #007020 } /* Keyword.Pseudo */
+.codehilite .kr { color: #007020; font-weight: bold } /* Keyword.Reserved */
+.codehilite .kt { color: #902000 } /* Keyword.Type */
+.codehilite .m { color: #40A070 } /* Literal.Number */
+.codehilite .s { color: #4070A0 } /* Literal.String */
+.codehilite .na { color: #4070A0 } /* Name.Attribute */
+.codehilite .nb { color: #007020 } /* Name.Builtin */
+.codehilite .nc { color: #0E84B5; font-weight: bold } /* Name.Class */
+.codehilite .no { color: #60ADD5 } /* Name.Constant */
+.codehilite .nd { color: #555; font-weight: bold } /* Name.Decorator */
+.codehilite .ni { color: #D55537; font-weight: bold } /* Name.Entity */
+.codehilite .ne { color: #007020 } /* Name.Exception */
+.codehilite .nf { color: #06287E } /* Name.Function */
+.codehilite .nl { color: #002070; font-weight: bold } /* Name.Label */
+.codehilite .nn { color: #0E84B5; font-weight: bold } /* Name.Namespace */
+.codehilite .nt { color: #062873; font-weight: bold } /* Name.Tag */
+.codehilite .nv { color: #BB60D5 } /* Name.Variable */
+.codehilite .ow { color: #007020; font-weight: bold } /* Operator.Word */
+.codehilite .w { color: #BBB } /* Text.Whitespace */
+.codehilite .mb { color: #40A070 } /* Literal.Number.Bin */
+.codehilite .mf { color: #40A070 } /* Literal.Number.Float */
+.codehilite .mh { color: #40A070 } /* Literal.Number.Hex */
+.codehilite .mi { color: #40A070 } /* Literal.Number.Integer */
+.codehilite .mo { color: #40A070 } /* Literal.Number.Oct */
+.codehilite .sa { color: #4070A0 } /* Literal.String.Affix */
+.codehilite .sb { color: #4070A0 } /* Literal.String.Backtick */
+.codehilite .sc { color: #4070A0 } /* Literal.String.Char */
+.codehilite .dl { color: #4070A0 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #4070A0; font-style: italic } /* Literal.String.Doc */
+.codehilite .s2 { color: #4070A0 } /* Literal.String.Double */
+.codehilite .se { color: #4070A0; font-weight: bold } /* Literal.String.Escape */
+.codehilite .sh { color: #4070A0 } /* Literal.String.Heredoc */
+.codehilite .si { color: #70A0D0; font-style: italic } /* Literal.String.Interpol */
+.codehilite .sx { color: #C65D09 } /* Literal.String.Other */
+.codehilite .sr { color: #235388 } /* Literal.String.Regex */
+.codehilite .s1 { color: #4070A0 } /* Literal.String.Single */
+.codehilite .ss { color: #517918 } /* Literal.String.Symbol */
+.codehilite .bp { color: #007020 } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #06287E } /* Name.Function.Magic */
+.codehilite .vc { color: #BB60D5 } /* Name.Variable.Class */
+.codehilite .vg { color: #BB60D5 } /* Name.Variable.Global */
+.codehilite .vi { color: #BB60D5 } /* Name.Variable.Instance */
+.codehilite .vm { color: #BB60D5 } /* Name.Variable.Magic */
+.codehilite .il { color: #40A070 } /* Literal.Number.Integer.Long */</style></head><body class='land'><h1>Nordfels — level handbook</h1>
+<p><em>Generated from the shipped asset files (build index 5, scene file <code>level5</code>). Every number is decoded or computed from them; formulas are stated where used. Provenance and checks: verification.</em></p>
+<h2>1. At a glance</h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Unlock requirement</td>
+<td>beat <strong>Neuland(Tutorial)</strong></td>
+</tr>
+<tr>
+<td>Nights (waves)</td>
+<td>13</td>
+</tr>
+<tr>
+<td>Enemies in total</td>
+<td>576</td>
+</tr>
+<tr>
+<td>Total enemy base HP</td>
+<td>17735</td>
+</tr>
+<tr>
+<td>Gold coins dropped by waves (sum of <code>goldCoins</code>)</td>
+<td>88</td>
+</tr>
+<tr>
+<td>Flying enemies / bosses</td>
+<td>70 / 0</td>
+</tr>
+<tr>
+<td>Enemy spawn lines</td>
+<td>7</td>
+</tr>
+<tr>
+<td>Build slots</td>
+<td>69</td>
+</tr>
+<tr>
+<td>Shrines</td>
+<td>6</td>
+</tr>
+<tr>
+<td>Starting gold (<code>goldBalanceAtStart</code>)</td>
+<td>8</td>
+</tr>
+<tr>
+<td>Wave generator asset</td>
+<td>Season2 Wave Gen</td>
+</tr>
+<tr>
+<td>Perk slots (<code>maxPerkCount</code>)</td>
+<td>5</td>
+</tr>
+<tr>
+<td>Fixed loadout</td>
+<td>none</td>
+</tr>
+<tr>
+<td>Castle position (x, y, z)</td>
+<td>-4.5, 0, 1.1</td>
+</tr>
+<tr>
+<td>Hold-to-call-night time (<code>nightCallTime</code>)</td>
+<td>2.0 s (key: Space)</td>
+</tr>
+<tr>
+<td>Hero speed (walk / day-walk / sprint / day-sprint)</td>
+<td>14.0 / 18.2 / 23.0 / 29.9 m/s</td>
+</tr>
+<tr>
+<td>Interaction / coin-magnet radius</td>
+<td>3.0 m / 7.0 m</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="overview map" src="file:///K:/Downloads-IDM/Thronefall/Trainer/reference/img/levels/05_Nordfels_overview.png" /></p>
+<p><em>Figure 1. Hero-walkable area (green), blockers, build slots by type, enemy spawn lines (red), least-cost ground routes to the castle and their narrowest points. Built from colliders + the baked A</em> navmesh; see §7.*</p>
+<h2>2. Where enemies come from</h2>
+<p>Enemies spawn at random points along a <strong>spawn line</strong> (a polyline of child transforms, <code>Spawn.cs:274-297</code>). The route is the least-cost path on the baked 'Enemy Units S' navmesh from the line's centre to the castle; travel time = route length ÷ enemy speed.</p>
+<table>
+<thead>
+<tr>
+<th>Spawn line</th>
+<th>Centre (x, z)</th>
+<th style="text-align: right;">Line length m</th>
+<th>Can spawn</th>
+<th>Difficulty</th>
+<th style="text-align: right;">Route to castle m</th>
+<th style="text-align: right;">Narrowest clearance m</th>
+<th>Choke (x, z)</th>
+<th>Shares path with</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Right Bridge</td>
+<td>(54, -64)</td>
+<td style="text-align: right;">16.4</td>
+<td>air/small/big</td>
+<td>Normal</td>
+<td style="text-align: right;">89</td>
+<td style="text-align: right;">5.2</td>
+<td>(49, -57)</td>
+<td>Forest</td>
+</tr>
+<tr>
+<td>Main Bridge</td>
+<td>(-6, -89)</td>
+<td style="text-align: right;">20.3</td>
+<td>air/small/big</td>
+<td>Normal</td>
+<td style="text-align: right;">91</td>
+<td style="text-align: right;">5</td>
+<td>(-6, -72)</td>
+<td>–</td>
+</tr>
+<tr>
+<td>Fly - River</td>
+<td>(-53, -54)</td>
+<td style="text-align: right;">89.2</td>
+<td>air</td>
+<td>Normal</td>
+<td style="text-align: right;">72</td>
+<td style="text-align: right;">2.5</td>
+<td>(-45, -46)</td>
+<td>Fly - River</td>
+</tr>
+<tr>
+<td>Spawn</td>
+<td>(56, -12)</td>
+<td style="text-align: right;">1.6</td>
+<td>air/small/big</td>
+<td>Normal</td>
+<td style="text-align: right;">67</td>
+<td style="text-align: right;">0.5</td>
+<td>(34, -12)</td>
+<td>–</td>
+</tr>
+<tr>
+<td>Spawn</td>
+<td>(-45, -35)</td>
+<td style="text-align: right;">1.6</td>
+<td>air/small/big</td>
+<td>Normal</td>
+<td style="text-align: right;">56</td>
+<td style="text-align: right;">14.3</td>
+<td>(-38, -32)</td>
+<td>–</td>
+</tr>
+<tr>
+<td>Forest</td>
+<td>(72, -1)</td>
+<td style="text-align: right;">11.8</td>
+<td>air/small/big</td>
+<td>Normal</td>
+<td style="text-align: right;">87</td>
+<td style="text-align: right;">0.5</td>
+<td>(57, -2)</td>
+<td>Right Bridge</td>
+</tr>
+<tr>
+<td>Fly - Pond</td>
+<td>(-65, 19)</td>
+<td style="text-align: right;">22.8</td>
+<td>air</td>
+<td>Normal</td>
+<td style="text-align: right;">44</td>
+<td style="text-align: right;">0.5</td>
+<td>(-38, 4)</td>
+<td>Fly - Pond</td>
+</tr>
+</tbody>
+</table>
+<h2>3. Night by night</h2>
+<p><code>EnemySpawner</code> mode: <strong>Classic</strong>; wave generator asset: <code>Season2 Wave Gen</code>; <code>pauseSpawningAtEnemyCount</code> = 275 (spawning pauses while that many enemies are alive; see waves doc). Times are seconds after dusk.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Night</th>
+<th>In-game warning</th>
+<th style="text-align: right;">Enemies</th>
+<th style="text-align: right;">Base HP</th>
+<th style="text-align: right;">Ranged</th>
+<th style="text-align: right;">Flying</th>
+<th style="text-align: right;">Boss</th>
+<th style="text-align: right;">Coins</th>
+<th>Composition</th>
+<th>By spawn line</th>
+<th style="text-align: right;">First contact s</th>
+<th style="text-align: right;">Last arrival s</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">1</td>
+<td>3 Swordsmen approaching from southern bridge</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">75</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">5</td>
+<td>3× Swordsman</td>
+<td>Main Bridge:3</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">24</td>
+</tr>
+<tr>
+<td style="text-align: center;">2</td>
+<td>8 Swordsmen approaching from the forest</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">200</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">5</td>
+<td>8× Swordsman</td>
+<td>Forest:8</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">24</td>
+</tr>
+<tr>
+<td style="text-align: center;">3</td>
+<td>2 Hunterlings coming from the forest will hunt you, 8 Melee coming from the southern bridg</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">260</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">5</td>
+<td>8× Swordsman, 2× Hunterling</td>
+<td>Forest:2, Main Bridge:8</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">22</td>
+</tr>
+<tr>
+<td style="text-align: center;">4</td>
+<td>24 Archers from all directions</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">480</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">8</td>
+<td>24× Archer</td>
+<td>Forest:8, Right Bridge:8, Main Bridge:8</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">41</td>
+</tr>
+<tr>
+<td style="text-align: center;">5</td>
+<td>15 Racers from the southern bridge will try to run straight to your castle center to destr</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">525</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">2</td>
+<td>15× Racer</td>
+<td>Main Bridge:15</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">23</td>
+</tr>
+<tr>
+<td style="text-align: center;">6</td>
+<td>20 Swordsmen and 20 archers arriving from the southern bridge</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">900</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">5</td>
+<td>20× Swordsman, 20× Archer</td>
+<td>Main Bridge:40</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">47</td>
+</tr>
+<tr>
+<td style="text-align: center;">7</td>
+<td>15 Flyers coming over the pond in the west</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">375</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">5</td>
+<td>15× Wasp</td>
+<td>Fly - Pond:15</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">22</td>
+</tr>
+<tr>
+<td style="text-align: center;">8</td>
+<td>30 Melee from the southern bridge, 10 Hunterlings and 10 Racers coming from the forest</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">1400</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">9</td>
+<td>30× Swordsman, 10× Racer, 10× Hunterling</td>
+<td>Main Bridge:30, Forest:20</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">47</td>
+</tr>
+<tr>
+<td style="text-align: center;">9</td>
+<td>5 Ogres coming from the southern bridge, 25 Flyers trickling in from all directions</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">1625</td>
+<td style="text-align: right;">25</td>
+<td style="text-align: right;">25</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">13</td>
+<td>25× Wasp, 5× Ogre</td>
+<td>Main Bridge:5, Fly - River:10, Right Bridge:5, Forest:5, Fly - Pond:5</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">47</td>
+</tr>
+<tr>
+<td style="text-align: center;">10</td>
+<td>90 Melee Units and 3 Ogers from all directions</td>
+<td style="text-align: right;">93</td>
+<td style="text-align: right;">2850</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">12</td>
+<td>90× Swordsman, 3× Ogre</td>
+<td>Forest:31, Right Bridge:31, Main Bridge:31</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">62</td>
+</tr>
+<tr>
+<td style="text-align: center;">11</td>
+<td>30 Racers &amp; 50 Archers from southern bridge</td>
+<td style="text-align: right;">80</td>
+<td style="text-align: right;">2050</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">14</td>
+<td>50× Archer, 30× Racer</td>
+<td>Main Bridge:80</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">43</td>
+</tr>
+<tr>
+<td style="text-align: center;">12</td>
+<td>There is no serious attack tonight. Only a few scouts. The enemy is preparing for their fi</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">150</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">5</td>
+<td>5× Hunterling</td>
+<td>Right Bridge:5</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">13</td>
+</tr>
+<tr>
+<td style="text-align: center;">13</td>
+<td>Final attack. Catapults, ogres, archers, flyers. Make Your Last Stand! It's gonna be a lon</td>
+<td style="text-align: right;">203</td>
+<td style="text-align: right;">6845</td>
+<td style="text-align: right;">76</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td>80× Swordsman, 35× Racer, 30× Wasp, 30× Archer, 16× Catapult, 7× Ogre, 5× Hunterling</td>
+<td>Main Bridge:86, Fly - River:15, Fly - Pond:5, Right Bridge:55, Forest:42</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">166</td>
+</tr>
+</tbody>
+</table>
+<p><em>First contact = min over spawn groups of (<code>delay</code> + route ÷ speed); last arrival = max of (<code>delay</code> + (count−1)·<code>interval</code> + route ÷ speed). Flyers use the straight-line distance to the castle. These are lower bounds: enemies stop to fight units/buildings that they target on the way (see combat doc).</em></p>
+<p><strong>Derived:</strong> the heaviest night by total base HP is night 13 (6845 HP, 203 enemies); night-to-night HP ratio (last/first) = 91.3×. Ranged enemies appear on nights 4, 6, 7, 9, 11, 13; flyers on nights 7, 9, 13.</p>
+<h2>4. Enemy roster</h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Prefab</th>
+<th style="text-align: right;">HP</th>
+<th style="text-align: right;">Speed</th>
+<th style="text-align: right;">Range</th>
+<th style="text-align: right;">Damage</th>
+<th style="text-align: right;">Cooldown</th>
+<th style="text-align: right;">DPS</th>
+<th>Tags</th>
+<th>In-game description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Archer</td>
+<td>E Archer</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">2.5</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1.25</td>
+<td>RangedFighter, TakesIncreasedDamageFromTowers, NaturallyVulnerableToSplash, Humanoid</td>
+<td>Archers shoot arrows from afar. Quite strong when left uncontested. Weak against buildings and towers.</td>
+</tr>
+<tr>
+<td>Swordsman</td>
+<td>E Melee</td>
+<td style="text-align: right;">25</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">2.5</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2.5</td>
+<td>MeeleFighter, NaturallyVulnerableToSplash, Humanoid</td>
+<td>Swordsmen are simple melee warriors, but do not underestimate them when they come in numbers.</td>
+</tr>
+<tr>
+<td>Wasp</td>
+<td>E Flyer</td>
+<td style="text-align: right;">25</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">2.5</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2.5</td>
+<td>RangedFighter, Flying, Monster</td>
+<td>Wasps are flying monsters eager to destroy every single one of your economic buildings.</td>
+</tr>
+<tr>
+<td>Hunterling</td>
+<td>E Hunterling</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">3.5</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0.5</td>
+<td style="text-align: right;">10</td>
+<td>MeeleFighter, FastMoving, Monster, NaturallyVulnerableToSplash</td>
+<td>Hunterlings are incredibly fast and dangerous monsters with the sole aim of chasing you down. They can smell y</td>
+</tr>
+<tr>
+<td>Racer</td>
+<td>E Racer</td>
+<td style="text-align: right;">35</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">3.5</td>
+<td style="text-align: right;">2.5</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2.5</td>
+<td>MeeleFighter, TakesReducedDamageFromPlayerAttacks, FastMoving, Monster</td>
+<td>Racers are fast rolling monsters that are not messing around. They aim right for your castle center and are so</td>
+</tr>
+<tr>
+<td>Catapult</td>
+<td>E Catapult</td>
+<td style="text-align: right;">45</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">26.4</td>
+<td style="text-align: right;">150</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">30</td>
+<td>RangedFighter, SiegeWeapon</td>
+<td>Catapults are siege units that deal massive damage to your buildings from afar. Your only chance is to get clo</td>
+</tr>
+<tr>
+<td>Ogre</td>
+<td>E Ogre</td>
+<td style="text-align: right;">200</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">20</td>
+<td>MeeleFighter, NaturallyHighHealthTarget, Humanoid</td>
+<td>Ogres are huge melee warriors that really pack a punch. Hey! Due to their human heritage, ogres aren't monster</td>
+</tr>
+</tbody>
+</table>
+<p><em>Damage is the first row of the weapon's damage table (per-victim-tag multipliers apply in <code>Hp.TakeDamage</code>; see the combat doc).</em></p>
+<h2>5. Buildings, costs and unlocks</h2>
+<table>
+<thead>
+<tr>
+<th>Building</th>
+<th style="text-align: right;">Slots</th>
+<th>Role</th>
+<th>Slot appears when (activator upgrade #, count)</th>
+<th>Prerequisite gold spent first (count)</th>
+<th style="text-align: right;">Levels</th>
+<th>Gold cost per level</th>
+<th style="text-align: right;">Max income/day</th>
+<th style="text-align: right;">Level-cap diff</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Castle Center</td>
+<td style="text-align: right;">1</td>
+<td>castle</td>
+<td>from the start ×1</td>
+<td>0 g ×1</td>
+<td style="text-align: right;">4</td>
+<td>3 → 7 → 20 → 100</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">–</td>
+</tr>
+<tr>
+<td>Field</td>
+<td style="text-align: right;">15</td>
+<td>economy</td>
+<td>Mill upgrade #1 ×6, Mill upgrade #2 ×9</td>
+<td>6 g ×6, 10 g ×9</td>
+<td style="text-align: right;">1</td>
+<td>1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">–</td>
+</tr>
+<tr>
+<td>House</td>
+<td style="text-align: right;">11</td>
+<td>economy</td>
+<td>Castle Center upgrade #1 ×1, House upgrade #1 ×6, Wall upgrade #1 ×1, Castle Center upgrade #2 ×2, Castle Center upgrade #3 ×1</td>
+<td>3 g ×1, 5 g ×1, 7 g ×1, 9 g ×1, 10 g ×2, 11 g ×1, 12 g ×1, 14 g ×1, 16 g ×1, 30 g ×1</td>
+<td style="text-align: right;">3</td>
+<td>2 → 2 → 20</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td>Mill</td>
+<td style="text-align: right;">3</td>
+<td>economy</td>
+<td>Castle Center upgrade #1 ×3</td>
+<td>3 g ×3</td>
+<td style="text-align: right;">3</td>
+<td>3 → 4 → 6</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td>Archery Range</td>
+<td style="text-align: right;">2</td>
+<td>military</td>
+<td>Castle Center upgrade #2 ×1, Castle Center upgrade #3 ×1</td>
+<td>10 g ×1, 30 g ×1</td>
+<td style="text-align: right;">4</td>
+<td>4 → 8 → 16 → 50</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td>Barracks</td>
+<td style="text-align: right;">2</td>
+<td>military</td>
+<td>Castle Center upgrade #2 ×1, Castle Center upgrade #3 ×1</td>
+<td>10 g ×1, 30 g ×1</td>
+<td style="text-align: right;">4</td>
+<td>4 → 8 → 16 → 50</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td>Summoning Circle</td>
+<td style="text-align: right;">2</td>
+<td>other</td>
+<td>Castle Center upgrade #1 ×2</td>
+<td>3 g ×2</td>
+<td style="text-align: right;">2</td>
+<td>1 → 2</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td>Shrine</td>
+<td style="text-align: right;">6</td>
+<td>shrine</td>
+<td>Castle Center upgrade #1 ×6</td>
+<td>3 g ×6</td>
+<td style="text-align: right;">1</td>
+<td>3</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td>Blacksmith</td>
+<td style="text-align: right;">1</td>
+<td>support</td>
+<td>Castle Center upgrade #1 ×1</td>
+<td>3 g ×1</td>
+<td style="text-align: right;">3</td>
+<td>4 → 9 → 16</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td>Defense Tower</td>
+<td style="text-align: right;">10</td>
+<td>tower</td>
+<td>Castle Center upgrade #1 ×2, Castle Center upgrade #2 ×4, Castle Center upgrade #3 ×4</td>
+<td>3 g ×2, 10 g ×4, 30 g ×4</td>
+<td style="text-align: right;">4</td>
+<td>3 → 5 → 15 → 40</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td>Wall</td>
+<td style="text-align: right;">16</td>
+<td>wall</td>
+<td>Wall upgrade #1 ×12, Castle Center upgrade #2 ×1, Castle Center upgrade #3 ×3 (shares its activator's upgrades)</td>
+<td>10 g ×1, 14 g ×6, 30 g ×3, 33 g ×6</td>
+<td style="text-align: right;">3</td>
+<td>3 → 2 → 50</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+</tr>
+</tbody>
+</table>
+<p><em>'upgrade #N' means the slot appears when its activator is bought for the N-th time (activator level N−1 → N; <code>BuildSlot.Activate</code>: <code>activatorBuilding.Level &gt; activatorLevel</code>). 'Prerequisite gold' sums those activator upgrades plus, recursively, what the activator itself needed. </em><em>Level cap:</em><em> past level 0 a building can only be upgraded while its root building's level is greater than its own level + the diff (<code>BuildSlot.CanBeUpgraded</code>); with diff 0 a Barracks can never exceed the castle's level.</em></p>
+<p><strong>Unlock timeline (derived):</strong> <strong>0 g</strong> → 1× Castle Center; <strong>3 g</strong> → 1× Blacksmith, 2× Defense Tower, 1× House, 3× Mill, 6× Shrine, 2× Summoning Circle; <strong>5 g</strong> → 1× House; <strong>6 g</strong> → 6× Field; <strong>7 g</strong> → 1× House; <strong>9 g</strong> → 1× House; <strong>10 g</strong> → 1× Archery Range, 1× Barracks, 4× Defense Tower, 9× Field, 2× House, 1× Wall; <strong>11 g</strong> → 1× House; <strong>12 g</strong> → 1× House; <strong>14 g</strong> → 1× House, 6× Wall; <strong>16 g</strong> → 1× House; <strong>30 g</strong> → 1× Archery Range, 1× Barracks, 4× Defense Tower, 1× House, 3× Wall; <strong>33 g</strong> → 6× Wall.</p>
+<p><strong>Totals:</strong> building every slot to its final level costs <strong>2348 gold</strong>; if everything is at maximum level the buildings pay <strong>127 gold per dawn</strong> (<code>goldIncomeChange</code>, paid at dawn only — see the economy doc).</p>
+<h3>Castle Center</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Lvl</th>
+<th style="text-align: right;">Gold</th>
+<th style="text-align: right;">Cores</th>
+<th>Choice</th>
+<th style="text-align: right;">Income</th>
+<th style="text-align: right;">HP +</th>
+<th>Tooltip</th>
+<th>Activates</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">1</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td>Start a new Kingdom!</td>
+<td>Lvl 1 Perks</td>
+</tr>
+<tr>
+<td style="text-align: center;">2</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;"></td>
+<td>Royal Training</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">200</td>
+<td>Unlock more build options and choose an upgrade.</td>
+<td>Royal Training; Auto Attack Level 2 [range 35, dps 2.25]; Royal Training Mesh</td>
+</tr>
+<tr>
+<td style="text-align: center;">2</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;"></td>
+<td>Builder's Guild</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">200</td>
+<td>Unlock more build options and choose an upgrade.</td>
+<td>Builder's Guild; Auto Attack Level 2 [range 35, dps 2.25]; Builders Guild Mesh</td>
+</tr>
+<tr>
+<td style="text-align: center;">2</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;"></td>
+<td>Magic Armor</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">200</td>
+<td>Unlock more build options and choose an upgrade.</td>
+<td>Magic Armor; Auto Attack Level 2 [range 35, dps 2.25]; Magic Armor Mesh</td>
+</tr>
+<tr>
+<td style="text-align: center;">2</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;"></td>
+<td>Assassin's Training</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">200</td>
+<td>Unlock more build options and choose an upgrade.</td>
+<td>Assassin's Training; Auto Attack Level 2 [range 35, dps 2.25]; Assassins Training Mesh</td>
+</tr>
+<tr>
+<td style="text-align: center;">3</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;"></td>
+<td>Royal Mastery</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">400</td>
+<td>Unlock more build options and choose an upgrade.</td>
+<td>Auto Attack Level 3 [range 35, dps 4.5]; Royal Mastery; Royal Mastery Mesh</td>
+</tr>
+<tr>
+<td style="text-align: center;">3</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;"></td>
+<td>Commander</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">400</td>
+<td>Unlock more build options and choose an upgrade.</td>
+<td>Commander; Auto Attack Level 3 [range 35, dps 4.5]; Commander Mesh</td>
+</tr>
+<tr>
+<td style="text-align: center;">3</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;"></td>
+<td>Castle Up</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">400</td>
+<td>Unlock more build options and choose an upgrade.</td>
+<td>Castle Up; Auto Attack Level 3 [range 35, dps 4.5]; Castle Up Mesh</td>
+</tr>
+<tr>
+<td style="text-align: center;">3</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;"></td>
+<td>Godly Curse</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">400</td>
+<td>Unlock more build options and choose an upgrade.</td>
+<td>Godly Curse; Auto Attack Level 3 [range 35, dps 4.5]; Godly Curse Mesh</td>
+</tr>
+<tr>
+<td style="text-align: center;">4</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;"></td>
+<td>Empire Towers</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">1000</td>
+<td></td>
+<td>Empire Towers</td>
+</tr>
+<tr>
+<td style="text-align: center;">4</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;"></td>
+<td>Empire Troups</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">1000</td>
+<td></td>
+<td>Empire Troups</td>
+</tr>
+<tr>
+<td style="text-align: center;">4</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;"></td>
+<td>Empire Armor</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">1000</td>
+<td></td>
+<td>Empire Armor</td>
+</tr>
+<tr>
+<td style="text-align: center;">4</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;"></td>
+<td>Empire Growth</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">1000</td>
+<td></td>
+<td>Empire Growth</td>
+</tr>
+</tbody>
+</table>
+<h3>Defense Tower</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Lvl</th>
+<th style="text-align: right;">Gold</th>
+<th style="text-align: right;">Cores</th>
+<th>Choice</th>
+<th style="text-align: right;">Income</th>
+<th style="text-align: right;">HP +</th>
+<th>Tooltip</th>
+<th>Activates</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">1</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td>Shoots at enemies.</td>
+<td>Tower Attack [range 36, dps 4]</td>
+</tr>
+<tr>
+<td style="text-align: center;">2</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;"></td>
+<td>Castle Tower</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">150</td>
+<td>Improves health and attack damage.</td>
+<td>Tower Attack [range 36, dps 4]; Castle Tower</td>
+</tr>
+<tr>
+<td style="text-align: center;">2</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;"></td>
+<td>Sniper Tower</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td>Improves health and attack damage.</td>
+<td>Tower Attack [range 36, dps 4]; Sniper Tower</td>
+</tr>
+<tr>
+<td style="text-align: center;">2</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;"></td>
+<td>Armored Tower</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">350</td>
+<td>Improves health and attack damage.</td>
+<td>Tower Attack [range 36, dps 4]; Armored Tower</td>
+</tr>
+<tr>
+<td style="text-align: center;">2</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;"></td>
+<td>Bunker Tower</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">75</td>
+<td>Improves health and attack damage.</td>
+<td>Tower Attack [range 36, dps 4]; Bunker Tower</td>
+</tr>
+<tr>
+<td style="text-align: center;">3</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;"></td>
+<td>Archers Spire</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">350</td>
+<td>Choose between several upgrades.</td>
+<td>Tower Attack [range 36, dps 4]; Archers Spire; Archers Spire Visuals</td>
+</tr>
+<tr>
+<td style="text-align: center;">3</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;"></td>
+<td>Ballistic Spire</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td>Choose between several upgrades.</td>
+<td>Tower Attack [range 36, dps 4]; Ballistic Spire; Ballistic Spire Visuals</td>
+</tr>
+<tr>
+<td style="text-align: center;">3</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;"></td>
+<td>Fire Spire</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">250</td>
+<td>Choose between several upgrades.</td>
+<td>Tower Attack [range 36, dps 4]; PourHotOil; Fire Spire; Fire Spire Visuals</td>
+</tr>
+<tr>
+<td style="text-align: center;">3</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;"></td>
+<td>Healing Spire</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">750</td>
+<td>Choose between several upgrades.</td>
+<td>Tower Attack [range 36, dps 4]; Healing Spire Visuals; Healing Spire</td>
+</tr>
+<tr>
+<td style="text-align: center;">4</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;"></td>
+<td>Insane Damage</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td>Choose between several upgrades.</td>
+<td>Tower Attack [range 36, dps 4]; Insane Damage</td>
+</tr>
+<tr>
+<td style="text-align: center;">4</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;"></td>
+<td>Insane Range</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td>Choose between several upgrades.</td>
+<td>Tower Attack [range 36, dps 4]; Insane Range</td>
+</tr>
+<tr>
+<td style="text-align: center;">4</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;"></td>
+<td>Insane Health</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">2500</td>
+<td>Choose between several upgrades.</td>
+<td>Tower Attack [range 36, dps 4]; Insane Health</td>
+</tr>
+<tr>
+<td style="text-align: center;">4</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;"></td>
+<td>Hunting Equipment</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;"></td>
+<td>Choose between several upgrades.</td>
+<td>Tower Attack [range 36, dps 4]; Hunting Equipment</td>
+</tr>
+</tbody>
+</table>
+<h3>Barracks</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Lvl</th>
+<th style="text-align: right;">Gold</th>
+<th style="text-align: right;">Cores</th>
+<th>Choice</th>
+<th style="text-align: right;">Income</th>
+<th style="text-align: right;">HP +</th>
+<th>Tooltip</th>
+<th>Activates</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;"></td>
+<td>Knights</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td>Choose a melee unit type.</td>
+<td>Knights [12× Knights (HP 105, speed 4, range 3.5, dps 2.5); respawn s by level [15.0, 10.0, 6.0, 6.0]]; 4× Knights [HP 105; range 3.5, dps 2.5]</td>
+</tr>
+<tr>
+<td style="text-align: center;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;"></td>
+<td>Speermen</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td>Choose a melee unit type.</td>
+<td>Speers [12× Spearmen (HP 66, speed 9.5, range 5.5, dps 4.04); respawn s by level [15.0, 10.0, 6.0, 6.0]]; 4× Spearmen [HP 66; range 5.5, dps 4.04]</td>
+</tr>
+<tr>
+<td style="text-align: center;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;"></td>
+<td>Flails</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td>Choose a melee unit type.</td>
+<td>Morningstars [12× Flails (HP 70, speed 5, range 4, dps 1.65); respawn s by level [15.0, 10.0, 6.0, 6.0]]; 4× Flails [HP 70; range 4, dps 1.65]</td>
+</tr>
+<tr>
+<td style="text-align: center;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;"></td>
+<td>Berserks</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td>Choose a melee unit type.</td>
+<td>Berserks [12× Berserks (HP 58, speed 6.5, range 3, dps 5); respawn s by level [15.0, 10.0, 6.0, 6.0]]; 4× Berserks [HP 58; range 3, dps 5]</td>
+</tr>
+<tr>
+<td style="text-align: center;">2</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">10</td>
+<td>More units, faster unit respawn.</td>
+<td>4× Knights [HP 105; range 3.5, dps 2.5]; 4× Spearmen [HP 66; range 5.5, dps 4.04]; 4× Flails [HP 70; range 4, dps 1.65]; 4× Berserks [HP 58; range 3, dps 5]</td>
+</tr>
+<tr>
+<td style="text-align: center;">3</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">10</td>
+<td>More units, faster unit respawn.</td>
+<td>4× Knights [HP 105; range 3.5, dps 2.5]; 4× Spearmen [HP 66; range 5.5, dps 4.04]; 4× Flails [HP 70; range 4, dps 1.65]; 4× Berserks [HP 58; range 3, dps 5]</td>
+</tr>
+<tr>
+<td style="text-align: center;">4</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">150</td>
+<td>Stronger Units</td>
+<td>Upgrade To Lvl 4</td>
+</tr>
+</tbody>
+</table>
+<h3>Archery Range</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Lvl</th>
+<th style="text-align: right;">Gold</th>
+<th style="text-align: right;">Cores</th>
+<th>Choice</th>
+<th style="text-align: right;">Income</th>
+<th style="text-align: right;">HP +</th>
+<th>Tooltip</th>
+<th>Activates</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;"></td>
+<td>Longbow Archers</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td>Choose a ranged unit type.</td>
+<td>Longbows [12× Longbow Archers (HP 25, speed 9, range 50, dps 2); respawn s by level [15.0, 10.0, 6.0, 6.0]]</td>
+</tr>
+<tr>
+<td style="text-align: center;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;"></td>
+<td>Crossbowpeople</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td>Choose a ranged unit type.</td>
+<td>Crossbows [12× Crossbowmen (HP 45, speed 4, range 21, dps 3.5); respawn s by level [15.0, 10.0, 6.0, 6.0]]</td>
+</tr>
+<tr>
+<td style="text-align: center;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;"></td>
+<td>Hunters</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td>Choose a ranged unit type.</td>
+<td>Hunters [12× Hunters (HP 45, speed 6, range 35, dps 1.96); respawn s by level [15.0, 10.0, 6.0, 6.0]]</td>
+</tr>
+<tr>
+<td style="text-align: center;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;"></td>
+<td>Fire Archers</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td>Choose a ranged unit type.</td>
+<td>Fire Archers [12× Fire Archers (HP 20, speed 3.5, range 25, dps 1.5); respawn s by level [15.0, 10.0, 6.0, 6.0]]</td>
+</tr>
+<tr>
+<td style="text-align: center;">2</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">10</td>
+<td>More units, faster respawn.</td>
+<td>4× Longbow Archers [HP 25; range 50, dps 2]; 4× Crossbowmen [HP 45; range 21, dps 3.5]; 4× Hunters [HP 45; range 35, dps 1.96; range 3.5, dps 5.48]; 4× Fire Archers [HP 20; range 25, dps 1.5]</td>
+</tr>
+<tr>
+<td style="text-align: center;">3</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">10</td>
+<td>More units, faster respawn.</td>
+<td>4× Longbow Archers [HP 25; range 50, dps 2]; 4× Crossbowmen [HP 45; range 21, dps 3.5]; 4× Hunters [HP 45; range 35, dps 1.96; range 3.5, dps 5.48]; 4× Fire Archers [HP 20; range 25, dps 1.5]</td>
+</tr>
+<tr>
+<td style="text-align: center;">4</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">150</td>
+<td>More units, faster respawn.</td>
+<td>Upgrade To Lvl 4</td>
+</tr>
+</tbody>
+</table>
+<h3>Blacksmith</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Lvl</th>
+<th style="text-align: right;">Gold</th>
+<th style="text-align: right;">Cores</th>
+<th>Choice</th>
+<th style="text-align: right;">Income</th>
+<th style="text-align: right;">HP +</th>
+<th>Tooltip</th>
+<th>Activates</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;"></td>
+<td>Melee Attack</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td>Can research upgrades. Upgrades apply to you, your troups an</td>
+<td>MeleeAttack; MA1</td>
+</tr>
+<tr>
+<td style="text-align: center;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;"></td>
+<td>Ranged Attack</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td>Can research upgrades. Upgrades apply to you, your troups an</td>
+<td>RangedAttack; RA1</td>
+</tr>
+<tr>
+<td style="text-align: center;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;"></td>
+<td>Melee Armor</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td>Can research upgrades. Upgrades apply to you, your troups an</td>
+<td>MeleeResistance; 2× MR1</td>
+</tr>
+<tr>
+<td style="text-align: center;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;"></td>
+<td>Ranged Armor</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td>Can research upgrades. Upgrades apply to you, your troups an</td>
+<td>RangedResistance; 2× RR1</td>
+</tr>
+<tr>
+<td style="text-align: center;">2</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;"></td>
+<td>Melee Attack</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td>Researches upgrades. Upgrades apply to you, your troups and</td>
+<td>MeleeAttack; MA2</td>
+</tr>
+<tr>
+<td style="text-align: center;">2</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;"></td>
+<td>Ranged Attack</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td>Researches upgrades. Upgrades apply to you, your troups and</td>
+<td>RangedAttack; RA2</td>
+</tr>
+<tr>
+<td style="text-align: center;">2</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;"></td>
+<td>Melee Armor</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td>Researches upgrades. Upgrades apply to you, your troups and</td>
+<td>MeleeResistance; 2× MR2</td>
+</tr>
+<tr>
+<td style="text-align: center;">2</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;"></td>
+<td>Ranged Armor</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td>Researches upgrades. Upgrades apply to you, your troups and</td>
+<td>RangedResistance; 2× RR2</td>
+</tr>
+<tr>
+<td style="text-align: center;">3</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;"></td>
+<td>Melee Attack</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td>Researches upgrades. Upgrades apply to you, your troups and</td>
+<td>MeleeAttack; MA3</td>
+</tr>
+<tr>
+<td style="text-align: center;">3</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;"></td>
+<td>Ranged Attack</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td>Researches upgrades. Upgrades apply to you, your troups and</td>
+<td>RangedAttack; RA3</td>
+</tr>
+<tr>
+<td style="text-align: center;">3</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;"></td>
+<td>Melee Armor</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td>Researches upgrades. Upgrades apply to you, your troups and</td>
+<td>MeleeResistance; 2× MR3</td>
+</tr>
+<tr>
+<td style="text-align: center;">3</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;"></td>
+<td>Ranged Armor</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td>Researches upgrades. Upgrades apply to you, your troups and</td>
+<td>RangedResistance; 2× RR3</td>
+</tr>
+</tbody>
+</table>
+<h3>Mill</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Lvl</th>
+<th style="text-align: right;">Gold</th>
+<th style="text-align: right;">Cores</th>
+<th>Choice</th>
+<th style="text-align: right;">Income</th>
+<th style="text-align: right;">HP +</th>
+<th>Tooltip</th>
+<th>Activates</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">1</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;"></td>
+<td>Improved Plow</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;"></td>
+<td>Unlocks the option to build fields to increase income.</td>
+<td>Auto Attack Lvl 1 [range 38, dps 1.21]; Lvl 1 Rotor; Improved Plow</td>
+</tr>
+<tr>
+<td style="text-align: center;">1</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;"></td>
+<td>Explosive Trap</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;"></td>
+<td>Unlocks the option to build fields to increase income.</td>
+<td>Auto Attack Lvl 1 [range 38, dps 1.21]; Lvl 1 Rotor; Explosive Trap</td>
+</tr>
+<tr>
+<td style="text-align: center;">1</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;"></td>
+<td>Scarecrows</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;"></td>
+<td>Unlocks the option to build fields to increase income.</td>
+<td>Auto Attack Lvl 1 [range 38, dps 1.21]; Lvl 1 Rotor; Scarecrows</td>
+</tr>
+<tr>
+<td style="text-align: center;">1</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;"></td>
+<td>Wind Spirits</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;"></td>
+<td>Unlocks the option to build fields to increase income.</td>
+<td>Auto Attack Lvl 1 [range 38, dps 1.21]; Lvl 1 Rotor; Wind Spirits [Auto Attack Lvl 1: range 38, dps 1.21; Auto Attack Lvl 2: range 38, dps 2; Auto Attack Lvl 3: range 38, dps 4]</td>
+</tr>
+<tr>
+<td style="text-align: center;">2</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">20</td>
+<td>Increases income significantly.</td>
+<td>Lvl 2 Rotor; Auto Attack Lvl 2 [range 38, dps 2]</td>
+</tr>
+<tr>
+<td style="text-align: center;">3</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">30</td>
+<td>Increases income significantly.</td>
+<td>Lvl 3 Rotor; Auto Attack Lvl 3 [range 38, dps 4]</td>
+</tr>
+</tbody>
+</table>
+<h3>House</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Lvl</th>
+<th style="text-align: right;">Gold</th>
+<th style="text-align: right;">Cores</th>
+<th>Choice</th>
+<th style="text-align: right;">Income</th>
+<th style="text-align: right;">HP +</th>
+<th>Tooltip</th>
+<th>Activates</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;"></td>
+<td>A stable income source.</td>
+<td>AutoAttackPerk Lvl1 [range 34, dps 1.6]</td>
+</tr>
+<tr>
+<td style="text-align: center;">2</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">10</td>
+<td>Icreases daily income.</td>
+<td>AutoAttackPerk Lvl2 [range 34, dps 4.82]</td>
+</tr>
+<tr>
+<td style="text-align: center;">3</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">70</td>
+<td>Icreases daily income.</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3>Shrine</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Lvl</th>
+<th style="text-align: right;">Gold</th>
+<th style="text-align: right;">Cores</th>
+<th>Choice</th>
+<th style="text-align: right;">Income</th>
+<th style="text-align: right;">HP +</th>
+<th>Tooltip</th>
+<th>Activates</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">1</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td>Shoots at enemies.</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2>6. Practical numbers for planning</h2>
+<ul>
+<li>
+<p>Hero-reachable ground: <strong>7822 m²</strong> (unbuilt world) of 8087 m² navmesh; 106 blocking colliders ({'static': 11, 'building': 95}), 12 auto-opening gates.</p>
+</li>
+<li>
+<p>The hero can walk from the castle to the nearest spawn-line vertex in 47–86 m (2.6 s at day speed).</p>
+</li>
+<li>
+<p>69/69 build slots have at least one collision-free stand point within interaction range (<code>terrain/05_Nordfels.json → slots[].standPoints</code>); median walking distance castle→stand point 30 m.</p>
+</li>
+<li>
+<p>6 shrines, each needs <strong>350 XP</strong>, collection range 20 m, pays 2 gold/dawn once unlocked (XP comes from unit deaths inside the range).</p>
+</li>
+</ul>
+<h2>7. Method notes and limits</h2>
+<ul>
+<li><strong>Sources:</strong> waves, spawn lines, slots, unit and enemy stats are <code>MonoBehaviour</code> payloads decoded with layouts generated from the game DLLs (byte-exact on 655,330/655,330 objects); navmesh from the baked A* cache; colliders from the scene's physics objects. See <code>tools/refpack/</code>.</li>
+<li><strong>Hero-walkable model:</strong> navmesh surface connected to the castle, minus colliders (blockers evaluated at the local surface height, walkable ramps excluded by triangle normal, gates ignored). It contains the hero in 99.7 % of logged Nordfels ticks (telemetry validation).</li>
+<li><strong>Estimates:</strong> arrival times ignore fighting and avoidance; income is an upper bound; unit dps ignores per-victim multipliers and upgrades from perks/blacksmith.</li>
+</ul></body></html>

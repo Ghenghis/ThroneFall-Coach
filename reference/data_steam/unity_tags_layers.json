@@ -1,0 +1,103 @@
+{
+ "tags": [
+  "DLC"
+ ],
+ "layers": [
+  {
+   "index": 0,
+   "name": "Default"
+  },
+  {
+   "index": 1,
+   "name": "TransparentFX"
+  },
+  {
+   "index": 2,
+   "name": "Ignore Raycast"
+  },
+  {
+   "index": 4,
+   "name": "Water"
+  },
+  {
+   "index": 5,
+   "name": "UI"
+  },
+  {
+   "index": 6,
+   "name": "Ground"
+  },
+  {
+   "index": 7,
+   "name": "Obstacle"
+  },
+  {
+   "index": 8,
+   "name": "Recieve Damage"
+  },
+  {
+   "index": 9,
+   "name": "Flyer Surface"
+  },
+  {
+   "index": 10,
+   "name": "HPBarsAndUICam"
+  },
+  {
+   "index": 11,
+   "name": "Player"
+  },
+  {
+   "index": 12,
+   "name": "Player Interactor"
+  },
+  {
+   "index": 13,
+   "name": "Coin"
+  },
+  {
+   "index": 14,
+   "name": "Interact With Nothing"
+  },
+  {
+   "index": 16,
+   "name": "Cloth"
+  },
+  {
+   "index": 18,
+   "name": "Treasury Cam"
+  },
+  {
+   "index": 21,
+   "name": "Water"
+  },
+  {
+   "index": 22,
+   "name": "IgnoreSelf"
+  },
+  {
+   "index": 24,
+   "name": "Coin UI"
+  },
+  {
+   "index": 25,
+   "name": "PlayerOnlyObstacle"
+  },
+  {
+   "index": 26,
+   "name": "ProjectileWall"
+  },
+  {
+   "index": 29,
+   "name": "WardrobePreview"
+  },
+  {
+   "index": 30,
+   "name": "Hazard Area"
+  },
+  {
+   "index": 31,
+   "name": "DEV_Ref"
+  }
+ ]
+}

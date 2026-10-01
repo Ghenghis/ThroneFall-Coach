@@ -1,0 +1,33 @@
+{
+  "owner": "devin-cli",
+  "role": "builder",
+  "status": "working",
+  "task_id": "thronefall-v2-agentic",
+  "files": [
+    "src/Bot.cs",
+    "src/BotPerception.cs",
+    "src/Plugin.cs"
+  ],
+  "skills": [
+    "bepinex",
+    "csharp",
+    "github-releases",
+    "harmony",
+    "pathfinding",
+    "powershell",
+    "unity"
+  ],
+  "task_types": [
+    "debugging",
+    "implementation",
+    "releases",
+    "verification"
+  ],
+  "note": "Implementing v2 agentic autopilot per docs/AGENTIC-DESIGN.md — awareness, navigation, combat",
+  "can_interrupt": true,
+  "waiting_on": null,
+  "eta_utc": null,
+  "updated_utc": "2026-09-29T11:55:08.558Z",
+  "expires_utc": "2026-09-29T12:10:08.558Z",
+  "ttl_seconds": 900
+}

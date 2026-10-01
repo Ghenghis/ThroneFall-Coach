@@ -1,0 +1,33 @@
+{
+  "event_schema_version": 1,
+  "event_id": "evt_20260929T121416729Z_915820",
+  "event_type": "agent.presence",
+  "created_utc": "2026-09-29T12:14:16.729Z",
+  "workspace_root": "K:\\Downloads-IDM\\Thronefall\\Trainer",
+  "task_id": "a2a_1790682962254_dabde820",
+  "owner": "claude-refpack",
+  "branch": "main",
+  "files": [
+    "reference",
+    "tools/refpack"
+  ],
+  "summary": "claude-refpack is working",
+  "evidence_ids": [
+    "ev_a56d000c0fc6b5a3",
+    "ev_be8505d1892f3cfa",
+    "ev_0fe79f7bc5c35a82",
+    "ev_7167820e15739072",
+    "ev_d0d7144601efdd8f",
+    "ev_645c7a0f24efa3a8",
+    "ev_ae8dd74bbf2894f6"
+  ],
+  "next_actor": "unassigned",
+  "recommended_action": "acknowledge",
+  "payload": {
+    "role": "agent",
+    "status": "working",
+    "note": "Resumed from HANDOFF.md (Sonnet 5.5 session, owner claude-refpack). Writing TfMap Program.cs/IL.cs, then build + run.",
+    "can_interrupt": true,
+    "waiting_on": null
+  }
+}

@@ -1,0 +1,5965 @@
+{
+ "scene": "Totend MM2",
+ "buildIndex": 36,
+ "file": "level36",
+ "kind": "minimode-new",
+ "objects": 13492,
+ "monobehaviourClasses": 208,
+ "spawners": [
+  {
+   "id": 13401,
+   "name": "ES Totend MM2",
+   "mode": "Classic",
+   "modeRaw": 0,
+   "goldBalanceAtStart": 1,
+   "endlessMode": false,
+   "pauseSpawningAtEnemyCount": 275,
+   "reduceSpawnWaitTimes": true,
+   "waveGenerator": "Season2 Wave Gen",
+   "endlessWaveGenerator": null,
+   "waveCount": 9,
+   "waves": [
+    {
+     "index": 0,
+     "night": 1,
+     "warningText": "Big Spiders",
+     "difficultyMulti": 1.0,
+     "spawns": [
+      {
+       "enemy": "resources.assets:6469",
+       "enemyName": "E Big Spider",
+       "displayName": null,
+       "count": 5,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 5.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Middle Bridge",
+       "spawnCenter": [
+        -168.224,
+        9.3,
+        10.705
+       ],
+       "maxHp": 800.0,
+       "spawnSpanSeconds": 20.0
+      }
+     ],
+     "totals": {
+      "enemies": 5,
+      "baseHp": 4000.0,
+      "goldCoins": 0,
+      "eliteEnemies": 0,
+      "flying": 0,
+      "boss": 0,
+      "ranged": 0,
+      "spawnSpanSeconds": 20.0,
+      "byLine": {
+       "Middle Bridge": 5
+      }
+     }
+    },
+    {
+     "index": 1,
+     "night": 2,
+     "warningText": "Strong Slimes",
+     "difficultyMulti": 1.0,
+     "spawns": [
+      {
+       "enemy": "resources.assets:6448",
+       "enemyName": "E StrongSlime",
+       "displayName": "Spiky Slime",
+       "count": 40,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 0.2,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Right Bridge",
+       "spawnCenter": [
+        -41.79,
+        14.54,
+        -134.9
+       ],
+       "maxHp": 50.0,
+       "spawnSpanSeconds": 7.8
+      }
+     ],
+     "totals": {
+      "enemies": 40,
+      "baseHp": 2000.0,
+      "goldCoins": 0,
+      "eliteEnemies": 0,
+      "flying": 0,
+      "boss": 0,
+      "ranged": 0,
+      "spawnSpanSeconds": 7.8,
+      "byLine": {
+       "Right Bridge": 40
+      }
+     }
+    },
+    {
+     "index": 2,
+     "night": 3,
+     "warningText": "Big Spiders and Slimes",
+     "difficultyMulti": 1.0,
+     "spawns": [
+      {
+       "enemy": "resources.assets:6449",
+       "enemyName": "E Slime",
+       "displayName": "Slime",
+       "count": 60,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 0.5,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Left Bridge",
+       "spawnCenter": [
+        -42.75,
+        9.55,
+        160.065
+       ],
+       "maxHp": 12.5,
+       "spawnSpanSeconds": 29.5
+      },
+      {
+       "enemy": "resources.assets:6469",
+       "enemyName": "E Big Spider",
+       "displayName": null,
+       "count": 5,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 6.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Left Bridge",
+       "spawnCenter": [
+        -42.75,
+        9.55,
+        160.065
+       ],
+       "maxHp": 800.0,
+       "spawnSpanSeconds": 24.0
+      },
+      {
+       "enemy": "resources.assets:6449",
+       "enemyName": "E Slime",
+       "displayName": "Slime",
+       "count": 1,
+       "elite": true,
+       "delay": 5.0,
+       "interval": 6.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 5,
+       "spawnLine": "Left Bridge",
+       "spawnCenter": [
+        -42.75,
+        9.55,
+        160.065
+       ],
+       "maxHp": 12.5,
+       "spawnSpanSeconds": 5.0
+      },
+      {
+       "enemy": "resources.assets:6449",
+       "enemyName": "E Slime",
+       "displayName": "Slime",
+       "count": 1,
+       "elite": true,
+       "delay": 15.0,
+       "interval": 6.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 5,
+       "spawnLine": "Left Bridge",
+       "spawnCenter": [
+        -42.75,
+        9.55,
+        160.065
+       ],
+       "maxHp": 12.5,
+       "spawnSpanSeconds": 15.0
+      },
+      {
+       "enemy": "resources.assets:6449",
+       "enemyName": "E Slime",
+       "displayName": "Slime",
+       "count": 1,
+       "elite": true,
+       "delay": 25.0,
+       "interval": 6.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 4,
+       "spawnLine": "Left Bridge",
+       "spawnCenter": [
+        -42.75,
+        9.55,
+        160.065
+       ],
+       "maxHp": 12.5,
+       "spawnSpanSeconds": 25.0
+      }
+     ],
+     "totals": {
+      "enemies": 68,
+      "baseHp": 4787.5,
+      "goldCoins": 14,
+      "eliteEnemies": 3,
+      "flying": 0,
+      "boss": 0,
+      "ranged": 0,
+      "spawnSpanSeconds": 29.5,
+      "byLine": {
+       "Left Bridge": 68
+      }
+     }
+    },
+    {
+     "index": 3,
+     "night": 4,
+     "warningText": "Big Spiders and Slimes",
+     "difficultyMulti": 1.0,
+     "spawns": [
+      {
+       "enemy": "resources.assets:6459",
+       "enemyName": "E Racer",
+       "displayName": "Racer",
+       "count": 1,
+       "elite": true,
+       "delay": 5.0,
+       "interval": 6.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 5,
+       "spawnLine": "Middle Bridge",
+       "spawnCenter": [
+        -168.224,
+        9.3,
+        10.705
+       ],
+       "maxHp": 35.0,
+       "spawnSpanSeconds": 5.0
+      },
+      {
+       "enemy": "resources.assets:6459",
+       "enemyName": "E Racer",
+       "displayName": "Racer",
+       "count": 1,
+       "elite": true,
+       "delay": 15.0,
+       "interval": 6.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 5,
+       "spawnLine": "Middle Bridge",
+       "spawnCenter": [
+        -168.224,
+        9.3,
+        10.705
+       ],
+       "maxHp": 35.0,
+       "spawnSpanSeconds": 15.0
+      },
+      {
+       "enemy": "resources.assets:6459",
+       "enemyName": "E Racer",
+       "displayName": "Racer",
+       "count": 1,
+       "elite": true,
+       "delay": 25.0,
+       "interval": 6.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 5,
+       "spawnLine": "Middle Bridge",
+       "spawnCenter": [
+        -168.224,
+        9.3,
+        10.705
+       ],
+       "maxHp": 35.0,
+       "spawnSpanSeconds": 25.0
+      },
+      {
+       "enemy": "resources.assets:6472",
+       "enemyName": "E Thing",
+       "displayName": "Thing",
+       "count": 6,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 4.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Middle Bridge",
+       "spawnCenter": [
+        -168.224,
+        9.3,
+        10.705
+       ],
+       "maxHp": 1100.0,
+       "spawnSpanSeconds": 20.0
+      }
+     ],
+     "totals": {
+      "enemies": 9,
+      "baseHp": 6705.0,
+      "goldCoins": 15,
+      "eliteEnemies": 3,
+      "flying": 0,
+      "boss": 0,
+      "ranged": 0,
+      "spawnSpanSeconds": 25.0,
+      "byLine": {
+       "Middle Bridge": 9
+      }
+     }
+    },
+    {
+     "index": 4,
+     "night": 5,
+     "warningText": "Slimes",
+     "difficultyMulti": 1.0,
+     "spawns": [
+      {
+       "enemy": "resources.assets:6448",
+       "enemyName": "E StrongSlime",
+       "displayName": "Spiky Slime",
+       "count": 1,
+       "elite": true,
+       "delay": 5.0,
+       "interval": 6.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 5,
+       "spawnLine": "Right Bridge",
+       "spawnCenter": [
+        -41.79,
+        14.54,
+        -134.9
+       ],
+       "maxHp": 50.0,
+       "spawnSpanSeconds": 5.0
+      },
+      {
+       "enemy": "resources.assets:6448",
+       "enemyName": "E StrongSlime",
+       "displayName": "Spiky Slime",
+       "count": 1,
+       "elite": true,
+       "delay": 15.0,
+       "interval": 6.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 5,
+       "spawnLine": "Right Bridge",
+       "spawnCenter": [
+        -41.79,
+        14.54,
+        -134.9
+       ],
+       "maxHp": 50.0,
+       "spawnSpanSeconds": 15.0
+      },
+      {
+       "enemy": "resources.assets:6448",
+       "enemyName": "E StrongSlime",
+       "displayName": "Spiky Slime",
+       "count": 1,
+       "elite": true,
+       "delay": 25.0,
+       "interval": 6.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 5,
+       "spawnLine": "Right Bridge",
+       "spawnCenter": [
+        -41.79,
+        14.54,
+        -134.9
+       ],
+       "maxHp": 50.0,
+       "spawnSpanSeconds": 25.0
+      },
+      {
+       "enemy": "resources.assets:6448",
+       "enemyName": "E StrongSlime",
+       "displayName": "Spiky Slime",
+       "count": 80,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 0.375,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Right Bridge",
+       "spawnCenter": [
+        -41.79,
+        14.54,
+        -134.9
+       ],
+       "maxHp": 50.0,
+       "spawnSpanSeconds": 29.625
+      }
+     ],
+     "totals": {
+      "enemies": 83,
+      "baseHp": 4150.0,
+      "goldCoins": 15,
+      "eliteEnemies": 3,
+      "flying": 0,
+      "boss": 0,
+      "ranged": 0,
+      "spawnSpanSeconds": 29.625,
+      "byLine": {
+       "Right Bridge": 83
+      }
+     }
+    },
+    {
+     "index": 5,
+     "night": 6,
+     "warningText": "Elite Big Spiders",
+     "difficultyMulti": 1.0,
+     "spawns": [
+      {
+       "enemy": "resources.assets:6472",
+       "enemyName": "E Thing",
+       "displayName": "Thing",
+       "count": 1,
+       "elite": true,
+       "delay": 0.0,
+       "interval": 0.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 5,
+       "spawnLine": "Left Bridge",
+       "spawnCenter": [
+        -42.75,
+        9.55,
+        160.065
+       ],
+       "maxHp": 1100.0,
+       "spawnSpanSeconds": 0.0
+      },
+      {
+       "enemy": "resources.assets:6472",
+       "enemyName": "E Thing",
+       "displayName": "Thing",
+       "count": 1,
+       "elite": true,
+       "delay": 2.0,
+       "interval": 0.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 5,
+       "spawnLine": "Left Bridge",
+       "spawnCenter": [
+        -42.75,
+        9.55,
+        160.065
+       ],
+       "maxHp": 1100.0,
+       "spawnSpanSeconds": 2.0
+      },
+      {
+       "enemy": "resources.assets:6472",
+       "enemyName": "E Thing",
+       "displayName": "Thing",
+       "count": 1,
+       "elite": true,
+       "delay": 4.0,
+       "interval": 0.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 5,
+       "spawnLine": "Left Bridge",
+       "spawnCenter": [
+        -42.75,
+        9.55,
+        160.065
+       ],
+       "maxHp": 1100.0,
+       "spawnSpanSeconds": 4.0
+      }
+     ],
+     "totals": {
+      "enemies": 3,
+      "baseHp": 3300.0,
+      "goldCoins": 15,
+      "eliteEnemies": 3,
+      "flying": 0,
+      "boss": 0,
+      "ranged": 0,
+      "spawnSpanSeconds": 4.0,
+      "byLine": {
+       "Left Bridge": 3
+      }
+     }
+    },
+    {
+     "index": 6,
+     "night": 7,
+     "warningText": "Flyer & Windboats",
+     "difficultyMulti": 1.0,
+     "spawns": [
+      {
+       "enemy": "resources.assets:5069",
+       "enemyName": "E Flyer",
+       "displayName": "Wasp",
+       "count": 65,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 0.462,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Middle Bridge",
+       "spawnCenter": [
+        -168.224,
+        9.3,
+        10.705
+       ],
+       "maxHp": 25.0,
+       "spawnSpanSeconds": 29.538
+      },
+      {
+       "enemy": "resources.assets:5075",
+       "enemyName": "E Windboat",
+       "displayName": "Wind-Boat",
+       "count": 1,
+       "elite": true,
+       "delay": 0.0,
+       "interval": 0.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 5,
+       "spawnLine": "Middle Bridge",
+       "spawnCenter": [
+        -168.224,
+        9.3,
+        10.705
+       ],
+       "maxHp": 300.0,
+       "spawnSpanSeconds": 0.0
+      },
+      {
+       "enemy": "resources.assets:5075",
+       "enemyName": "E Windboat",
+       "displayName": "Wind-Boat",
+       "count": 1,
+       "elite": true,
+       "delay": 10.0,
+       "interval": 0.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 5,
+       "spawnLine": "Middle Bridge",
+       "spawnCenter": [
+        -168.224,
+        9.3,
+        10.705
+       ],
+       "maxHp": 300.0,
+       "spawnSpanSeconds": 10.0
+      },
+      {
+       "enemy": "resources.assets:5075",
+       "enemyName": "E Windboat",
+       "displayName": "Wind-Boat",
+       "count": 1,
+       "elite": true,
+       "delay": 20.0,
+       "interval": 0.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 5,
+       "spawnLine": "Middle Bridge",
+       "spawnCenter": [
+        -168.224,
+        9.3,
+        10.705
+       ],
+       "maxHp": 300.0,
+       "spawnSpanSeconds": 20.0
+      }
+     ],
+     "totals": {
+      "enemies": 68,
+      "baseHp": 2525.0,
+      "goldCoins": 15,
+      "eliteEnemies": 3,
+      "flying": 68,
+      "boss": 0,
+      "ranged": 68,
+      "spawnSpanSeconds": 29.538,
+      "byLine": {
+       "Middle Bridge": 68
+      }
+     }
+    },
+    {
+     "index": 7,
+     "night": 8,
+     "warningText": "Slimes Maxi",
+     "difficultyMulti": 1.0,
+     "spawns": [
+      {
+       "enemy": "resources.assets:6468",
+       "enemyName": "E Flogre",
+       "displayName": "Flogre",
+       "count": 1,
+       "elite": true,
+       "delay": 10.0,
+       "interval": 6.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 5,
+       "spawnLine": "Right Bridge",
+       "spawnCenter": [
+        -41.79,
+        14.54,
+        -134.9
+       ],
+       "maxHp": 275.0,
+       "spawnSpanSeconds": 10.0
+      },
+      {
+       "enemy": "resources.assets:6468",
+       "enemyName": "E Flogre",
+       "displayName": "Flogre",
+       "count": 1,
+       "elite": true,
+       "delay": 30.0,
+       "interval": 6.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 5,
+       "spawnLine": "Right Bridge",
+       "spawnCenter": [
+        -41.79,
+        14.54,
+        -134.9
+       ],
+       "maxHp": 275.0,
+       "spawnSpanSeconds": 30.0
+      },
+      {
+       "enemy": "resources.assets:6468",
+       "enemyName": "E Flogre",
+       "displayName": "Flogre",
+       "count": 1,
+       "elite": true,
+       "delay": 50.0,
+       "interval": 6.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 5,
+       "spawnLine": "Right Bridge",
+       "spawnCenter": [
+        -41.79,
+        14.54,
+        -134.9
+       ],
+       "maxHp": 275.0,
+       "spawnSpanSeconds": 50.0
+      },
+      {
+       "enemy": "resources.assets:6457",
+       "enemyName": "E Melee",
+       "displayName": "Swordsman",
+       "count": 240,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 0.25,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Right Bridge",
+       "spawnCenter": [
+        -41.79,
+        14.54,
+        -134.9
+       ],
+       "maxHp": 25.0,
+       "spawnSpanSeconds": 59.75
+      }
+     ],
+     "totals": {
+      "enemies": 243,
+      "baseHp": 6825.0,
+      "goldCoins": 15,
+      "eliteEnemies": 3,
+      "flying": 0,
+      "boss": 0,
+      "ranged": 0,
+      "spawnSpanSeconds": 59.75,
+      "byLine": {
+       "Right Bridge": 243
+      }
+     }
+    },
+    {
+     "index": 8,
+     "night": 9,
+     "warningText": "Things",
+     "difficultyMulti": 1.0,
+     "spawns": [
+      {
+       "enemy": "resources.assets:6472",
+       "enemyName": "E Thing",
+       "displayName": "Thing",
+       "count": 8,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 2.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Left Bridge",
+       "spawnCenter": [
+        -42.75,
+        9.55,
+        160.065
+       ],
+       "maxHp": 1100.0,
+       "spawnSpanSeconds": 14.0
+      },
+      {
+       "enemy": "resources.assets:6448",
+       "enemyName": "E StrongSlime",
+       "displayName": "Spiky Slime",
+       "count": 90,
+       "elite": false,
+       "delay": 50.0,
+       "interval": 0.375,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Right Bridge",
+       "spawnCenter": [
+        -41.79,
+        14.54,
+        -134.9
+       ],
+       "maxHp": 50.0,
+       "spawnSpanSeconds": 83.375
+      },
+      {
+       "enemy": "resources.assets:6469",
+       "enemyName": "E Big Spider",
+       "displayName": null,
+       "count": 6,
+       "elite": false,
+       "delay": 100.0,
+       "interval": 3.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Middle Bridge",
+       "spawnCenter": [
+        -168.224,
+        9.3,
+        10.705
+       ],
+       "maxHp": 800.0,
+       "spawnSpanSeconds": 115.0
+      }
+     ],
+     "totals": {
+      "enemies": 104,
+      "baseHp": 18100.0,
+      "goldCoins": 0,
+      "eliteEnemies": 0,
+      "flying": 0,
+      "boss": 0,
+      "ranged": 0,
+      "spawnSpanSeconds": 115.0,
+      "byLine": {
+       "Left Bridge": 8,
+       "Right Bridge": 90,
+       "Middle Bridge": 6
+      }
+     }
+    }
+   ]
+  }
+ ],
+ "spawnLines": [
+  {
+   "tf": 4666,
+   "name": "Enemy Spawner",
+   "path": "FINAL BOSS FIGHT/STAGE 2 SPAWNER (disable)/Stage 2 Spawn Line/E Corrupt King/Enemy Spawner",
+   "points": [
+    [
+     -174.9,
+     18.91,
+     14.68
+    ],
+    [
+     -174.9,
+     18.91,
+     14.68
+    ]
+   ],
+   "length": 0.0,
+   "center": [
+    -174.9,
+    18.91,
+    14.68
+   ],
+   "difficulty": "Normal",
+   "canSpawnFlying": true,
+   "canSpawnSmallGround": true,
+   "canSpawnBigGround": true,
+   "sharedPaths": [],
+   "separatedPaths": []
+  },
+  {
+   "tf": 6065,
+   "name": "Middle Bridge",
+   "path": "ES Totend MM2/Middle Bridge",
+   "points": [
+    [
+     -167.75,
+     9.3,
+     26.67
+    ],
+    [
+     -168.697,
+     9.3,
+     -5.261
+    ]
+   ],
+   "length": 31.945,
+   "center": [
+    -168.224,
+    9.3,
+    10.705
+   ],
+   "difficulty": "Normal",
+   "canSpawnFlying": true,
+   "canSpawnSmallGround": true,
+   "canSpawnBigGround": true,
+   "sharedPaths": [],
+   "separatedPaths": []
+  },
+  {
+   "tf": 5830,
+   "name": "Right Air",
+   "path": "ES Totend MM2/Right Air",
+   "points": [
+    [
+     -129.92,
+     34.12,
+     -60.43
+    ],
+    [
+     -101.52,
+     34.12,
+     -84.03
+    ]
+   ],
+   "length": 36.926,
+   "center": [
+    -115.72,
+    34.12,
+    -72.23
+   ],
+   "difficulty": "Normal",
+   "canSpawnFlying": true,
+   "canSpawnSmallGround": false,
+   "canSpawnBigGround": false,
+   "sharedPaths": [],
+   "separatedPaths": []
+  },
+  {
+   "tf": 4683,
+   "name": "Stage 2 Spawn Line",
+   "path": "FINAL BOSS FIGHT/STAGE 2 SPAWNER (disable)/Stage 2 Spawn Line",
+   "points": [
+    [
+     -174.9,
+     18.91,
+     14.68
+    ],
+    [
+     -174.9,
+     18.91,
+     14.68
+    ],
+    [
+     -174.9,
+     18.91,
+     14.68
+    ]
+   ],
+   "length": 0.0,
+   "center": [
+    -174.9,
+    18.91,
+    14.68
+   ],
+   "difficulty": "Normal",
+   "canSpawnFlying": true,
+   "canSpawnSmallGround": true,
+   "canSpawnBigGround": true,
+   "sharedPaths": [],
+   "separatedPaths": []
+  },
+  {
+   "tf": 5993,
+   "name": "Left Air",
+   "path": "ES Totend MM2/Left Air",
+   "points": [
+    [
+     -95.1,
+     34.12,
+     103.6
+    ],
+    [
+     -125.0,
+     34.12,
+     82.6
+    ]
+   ],
+   "length": 36.538,
+   "center": [
+    -110.05,
+    34.12,
+    93.1
+   ],
+   "difficulty": "Normal",
+   "canSpawnFlying": true,
+   "canSpawnSmallGround": false,
+   "canSpawnBigGround": false,
+   "sharedPaths": [],
+   "separatedPaths": []
+  },
+  {
+   "tf": 4669,
+   "name": "Right Bridge",
+   "path": "ES Totend MM2/Right Bridge",
+   "points": [
+    [
+     -25.8,
+     14.54,
+     -134.8
+    ],
+    [
+     -57.78,
+     14.54,
+     -135.0
+    ]
+   ],
+   "length": 31.981,
+   "center": [
+    -41.79,
+    14.54,
+    -134.9
+   ],
+   "difficulty": "Normal",
+   "canSpawnFlying": true,
+   "canSpawnSmallGround": true,
+   "canSpawnBigGround": true,
+   "sharedPaths": [],
+   "separatedPaths": []
+  },
+  {
+   "tf": 4956,
+   "name": "Left Bridge",
+   "path": "ES Totend MM2/Left Bridge",
+   "points": [
+    [
+     -27.8,
+     9.55,
+     160.1
+    ],
+    [
+     -57.7,
+     9.55,
+     160.03
+    ]
+   ],
+   "length": 29.9,
+   "center": [
+    -42.75,
+    9.55,
+    160.065
+   ],
+   "difficulty": "Normal",
+   "canSpawnFlying": true,
+   "canSpawnSmallGround": true,
+   "canSpawnBigGround": true,
+   "sharedPaths": [],
+   "separatedPaths": []
+  }
+ ],
+ "enemies": {
+  "resources.assets:6469": {
+   "name": "E Big Spider",
+   "maxHp": 800.0,
+   "tags": [
+    "EnemyOwned",
+    "MeeleFighter",
+    "Monster",
+    "NaturallyVulnerableToSplash",
+    "FastMoving",
+    "LargeUnit"
+   ],
+   "coinDrop": 0,
+   "speed": 10.0,
+   "attacks": [
+    {
+     "component": "AutoAttack",
+     "range": 4.2,
+     "cooldown": 0.3,
+     "baseDamage": 12.0,
+     "dps": 40.0,
+     "weapon": "E Big Spider",
+     "manual": false
+    }
+   ],
+   "components": [
+    "Seeker",
+    "RVOController",
+    "TaggedObject",
+    "Hp",
+    "PathfindMovementEnemy",
+    "AutoAttack",
+    "FunnelModifier",
+    "SharpCornerMidigator",
+    "ArachnophobiaSettings",
+    "ScreenMarkerIconArachnophobia"
+   ],
+   "prefab": "resources.assets:6469"
+  },
+  "resources.assets:6448": {
+   "name": "E StrongSlime",
+   "displayName": "Spiky Slime",
+   "description": "Spiky Slimes are small melee monsters without much brain so they will just attack whatever is closest to them. They usually appear in groups which makes them vulnerable against splash damage. Spiky slimes have more health and attack damage than normal slimes.",
+   "maxHp": 50.0,
+   "tags": [
+    "EnemyOwned",
+    "MeeleFighter",
+    "Monster",
+    "NaturallyVulnerableToSplash"
+   ],
+   "coinDrop": 0,
+   "speed": 5.0,
+   "attacks": [
+    {
+     "component": "AutoAttack",
+     "range": 2.5,
+     "cooldown": 0.4,
+     "baseDamage": 3.6,
+     "dps": 9.0,
+     "weapon": "E StrongSlime",
+     "manual": false
+    }
+   ],
+   "components": [
+    "Seeker",
+    "RVOController",
+    "TaggedObject",
+    "Hp",
+    "PathfindMovementEnemy",
+    "AutoAttack",
+    "FunnelModifier",
+    "SharpCornerMidigator",
+    "ScreenMarkerIcon"
+   ],
+   "prefab": "resources.assets:6448"
+  },
+  "resources.assets:6449": {
+   "name": "E Slime",
+   "displayName": "Slime",
+   "description": "Slimes are small melee monsters without much brain so they will just attack whatever is closest to them. They usually appear in groups which makes them vulnerable against splash damage.",
+   "maxHp": 12.5,
+   "tags": [
+    "EnemyOwned",
+    "MeeleFighter",
+    "Monster",
+    "NaturallyVulnerableToSplash"
+   ],
+   "coinDrop": 0,
+   "speed": 5.0,
+   "attacks": [
+    {
+     "component": "AutoAttack",
+     "range": 2.5,
+     "cooldown": 0.4,
+     "baseDamage": 1.2,
+     "dps": 3.0,
+     "weapon": "E Slime",
+     "manual": false
+    }
+   ],
+   "components": [
+    "Seeker",
+    "RVOController",
+    "TaggedObject",
+    "Hp",
+    "PathfindMovementEnemy",
+    "AutoAttack",
+    "FunnelModifier",
+    "SharpCornerMidigator",
+    "ScreenMarkerIcon"
+   ],
+   "prefab": "resources.assets:6449"
+  },
+  "resources.assets:6459": {
+   "name": "E Racer",
+   "displayName": "Racer",
+   "description": "Racers are fast rolling monsters that are not messing around. They aim right for your castle center and are somewhat armored against attacks from the player character.",
+   "maxHp": 35.0,
+   "tags": [
+    "EnemyOwned",
+    "MeeleFighter",
+    "TakesReducedDamageFromPlayerAttacks",
+    "FastMoving",
+    "Monster"
+   ],
+   "coinDrop": 0,
+   "speed": 10.0,
+   "attacks": [
+    {
+     "component": "AutoAttack",
+     "range": 3.5,
+     "cooldown": 1.0,
+     "baseDamage": 2.5,
+     "dps": 2.5,
+     "weapon": "E Racer",
+     "manual": false
+    }
+   ],
+   "components": [
+    "Seeker",
+    "RVOController",
+    "TaggedObject",
+    "Hp",
+    "PathfindMovementEnemy",
+    "AutoAttack",
+    "FunnelModifier",
+    "SharpCornerMidigator",
+    "ScreenMarkerIcon"
+   ],
+   "prefab": "resources.assets:6459"
+  },
+  "resources.assets:6472": {
+   "name": "E Thing",
+   "displayName": "Thing",
+   "description": "A terrifying monster that can attack with its tentacles in all directions at once.",
+   "maxHp": 1100.0,
+   "tags": [
+    "EnemyOwned",
+    "MeeleFighter",
+    "Monster",
+    "LargeUnit"
+   ],
+   "coinDrop": 0,
+   "speed": 4.0,
+   "attacks": [
+    {
+     "component": "AutoAttack",
+     "range": 6.25,
+     "cooldown": 0.3,
+     "baseDamage": 2.2,
+     "dps": 7.333,
+     "weapon": "E Thing",
+     "manual": false
+    }
+   ],
+   "components": [
+    "Seeker",
+    "RVOController",
+    "TaggedObject",
+    "Hp",
+    "PathfindMovementEnemy",
+    "AutoAttack",
+    "FunnelModifier",
+    "SharpCornerMidigator",
+    "ScreenMarkerIcon"
+   ],
+   "prefab": "resources.assets:6472"
+  },
+  "resources.assets:5069": {
+   "name": "E Flyer",
+   "displayName": "Wasp",
+   "description": "Wasps are flying monsters eager to destroy every single one of your economic buildings.",
+   "maxHp": 25.0,
+   "tags": [
+    "EnemyOwned",
+    "RangedFighter",
+    "Flying",
+    "Monster"
+   ],
+   "coinDrop": 0,
+   "speed": 8.0,
+   "attacks": [
+    {
+     "component": "AutoAttack",
+     "range": 13.0,
+     "cooldown": 1.0,
+     "baseDamage": 2.5,
+     "dps": 2.5,
+     "weapon": "E Flyer",
+     "manual": false
+    }
+   ],
+   "components": [
+    "Seeker",
+    "RVOController",
+    "TaggedObject",
+    "Hp",
+    "PathfindMovementEnemy",
+    "AutoAttack",
+    "FunnelModifier",
+    "SharpCornerMidigator",
+    "ScreenMarkerIcon"
+   ],
+   "prefab": "resources.assets:5069"
+  },
+  "resources.assets:5075": {
+   "name": "E Windboat",
+   "displayName": "Wind-Boat",
+   "description": "A high-health flying siege engine with a medium ranged attack.",
+   "maxHp": 300.0,
+   "tags": [
+    "EnemyOwned",
+    "RangedFighter",
+    "Flying",
+    "SiegeWeapon"
+   ],
+   "coinDrop": 0,
+   "speed": 3.0,
+   "attacks": [
+    {
+     "component": "AutoAttack",
+     "range": 17.0,
+     "cooldown": 1.0,
+     "baseDamage": 15.0,
+     "dps": 15.0,
+     "weapon": "E Windboat Crossbow",
+     "manual": false
+    }
+   ],
+   "components": [
+    "Seeker",
+    "RVOController",
+    "TaggedObject",
+    "Hp",
+    "PathfindMovementEnemy",
+    "AutoAttack",
+    "FunnelModifier",
+    "SharpCornerMidigator",
+    "ScreenMarkerIcon"
+   ],
+   "prefab": "resources.assets:5075"
+  },
+  "resources.assets:6468": {
+   "name": "E Flogre",
+   "displayName": "Flogre",
+   "description": "A giant ogre equipped with a flail, dealing splash damage around it.",
+   "maxHp": 275.0,
+   "tags": [
+    "EnemyOwned",
+    "MeeleFighter",
+    "NaturallyVulnerableToSplash",
+    "Humanoid"
+   ],
+   "coinDrop": 0,
+   "speed": 4.0,
+   "attacks": [
+    {
+     "component": "AutoAttack",
+     "range": 3.0,
+     "cooldown": 1.0,
+     "baseDamage": 9.0,
+     "dps": 9.0,
+     "weapon": "E Flogre",
+     "manual": false
+    }
+   ],
+   "components": [
+    "Seeker",
+    "RVOController",
+    "TaggedObject",
+    "Hp",
+    "PathfindMovementEnemy",
+    "AutoAttack",
+    "FunnelModifier",
+    "SharpCornerMidigator",
+    "ScreenMarkerIcon"
+   ],
+   "prefab": "resources.assets:6468"
+  },
+  "resources.assets:6457": {
+   "name": "E Melee",
+   "displayName": "Swordsman",
+   "description": "Swordsmen are simple melee warriors, but do not underestimate them when they come in numbers.",
+   "maxHp": 25.0,
+   "tags": [
+    "EnemyOwned",
+    "MeeleFighter",
+    "NaturallyVulnerableToSplash",
+    "Humanoid"
+   ],
+   "coinDrop": 0,
+   "speed": 5.0,
+   "attacks": [
+    {
+     "component": "AutoAttack",
+     "range": 3.0,
+     "cooldown": 1.0,
+     "baseDamage": 2.5,
+     "dps": 2.5,
+     "weapon": "E Melee",
+     "manual": false
+    }
+   ],
+   "components": [
+    "Seeker",
+    "RVOController",
+    "TaggedObject",
+    "Hp",
+    "PathfindMovementEnemy",
+    "AutoAttack",
+    "FunnelModifier",
+    "SharpCornerMidigator",
+    "ScreenMarkerIcon"
+   ],
+   "prefab": "resources.assets:6457"
+  }
+ },
+ "buildSlots": [
+  {
+   "id": 12792,
+   "name": "Castle Center Variant",
+   "path": "BUILDINGS/Castle Center Variant",
+   "building": "Castle Center",
+   "pos": [
+    -48.91,
+    27.85,
+    10.8
+   ],
+   "yawDeg": 0.0,
+   "active": true,
+   "startDeactivated": false,
+   "requiredRootLevelDifference": -100,
+   "activator": null,
+   "interactorPos": [
+    -48.91,
+    27.85,
+    10.8
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -48.91,
+     27.85,
+     10.8
+    ],
+    "size": [
+     8.785,
+     9.697,
+     8.905
+    ],
+    "center": [
+     -0.042,
+     4.847,
+     -0.008
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Start a new Kingdom!",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Lvl 1 Perks",
+         "components": [
+          "OutpostPerk",
+          "LastStandPerk"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 7,
+     "coreCost": 0,
+     "tooltip": "Unlock more build options and choose an upgrade. ",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": {
+        "name": "Royal Training",
+        "tooltip": "+ 75% HP for your character\n+ 75% Overall damage output for your character",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 200,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Royal Training",
+         "components": [
+          "UpgradePlayerHp",
+          "UpgradePlayerDmg"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Level 2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 35.0,
+           "cooldown": 2.0,
+           "baseDamage": 4.5,
+           "dps": 2.25,
+           "weapon": "P Castle Center",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkCooldownModifyer",
+          "PerkRangeModifyer"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Royal Training Mesh",
+         "components": []
+        }
+       ],
+       "disables": [
+        "Auto Attack Level 1"
+       ],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Builder's Guild",
+        "tooltip": "+ Every morning a level 1 house is automatically upgraded to a level 2 house (if available)\n+ 50% HP for your character",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 200,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Builder's Guild",
+         "components": [
+          "UpgradePlayerHp",
+          "UpgradeBuildersGuild"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Level 2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 35.0,
+           "cooldown": 2.0,
+           "baseDamage": 4.5,
+           "dps": 2.25,
+           "weapon": "P Castle Center",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkCooldownModifyer",
+          "PerkRangeModifyer"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Builders Guild Mesh",
+         "components": []
+        }
+       ],
+       "disables": [
+        "Auto Attack Level 1"
+       ],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Magic Armor",
+        "tooltip": "+ Enemies that deal damage to you take a part of that damage themselves\n+ 150% HP for your character",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 200,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Magic Armor",
+         "components": [
+          "UpgradePlayerHp",
+          "UpgradeMagicArmor"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Level 2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 35.0,
+           "cooldown": 2.0,
+           "baseDamage": 4.5,
+           "dps": 2.25,
+           "weapon": "P Castle Center",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkCooldownModifyer",
+          "PerkRangeModifyer"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Magic Armor Mesh",
+         "components": []
+        }
+       ],
+       "disables": [
+        "Auto Attack Level 1"
+       ],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Assassin's Training",
+        "tooltip": "+ If you manage to execute your weapon's special ability precisely when its last cooldown expires, the next cooldown is greatly reduced\n+ 100% Overall damage output for your character",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 200,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Assassin's Training",
+         "components": [
+          "UpgradePlayerDmg",
+          "UpgradeAssassinsTraining"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Level 2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 35.0,
+           "cooldown": 2.0,
+           "baseDamage": 4.5,
+           "dps": 2.25,
+           "weapon": "P Castle Center",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkCooldownModifyer",
+          "PerkRangeModifyer"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Assassins Training Mesh",
+         "components": []
+        }
+       ],
+       "disables": [
+        "Auto Attack Level 1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 20,
+     "coreCost": 0,
+     "tooltip": "Unlock more build options and choose an upgrade. ",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": {
+        "name": "Royal Mastery",
+        "tooltip": "+ 75% HP for your character\n+ 75% Overall damage output for your character",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Auto Attack Level 3",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 35.0,
+           "cooldown": 1.0,
+           "baseDamage": 4.5,
+           "dps": 4.5,
+           "weapon": "P Castle Center",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkCooldownModifyer",
+          "PerkRangeModifyer"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Royal Mastery",
+         "components": [
+          "UpgradePlayerHp",
+          "UpgradePlayerDmg"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Royal Mastery Mesh",
+         "components": []
+        }
+       ],
+       "disables": [
+        "Auto Attack Level 2"
+       ],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Commander",
+        "tooltip": "+ Units move faster while you command them\n+ You have a healing aura that heals allied units nearby\n+ 30% Overall damage output for your character",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Commander",
+         "components": [
+          "UpgradeCommander"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Level 3",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 35.0,
+           "cooldown": 1.0,
+           "baseDamage": 4.5,
+           "dps": 4.5,
+           "weapon": "P Castle Center",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkCooldownModifyer",
+          "PerkRangeModifyer"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Commander Mesh",
+         "components": []
+        }
+       ],
+       "disables": [
+        "Auto Attack Level 2"
+       ],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Castle Up",
+        "tooltip": "+ The upgrade costs of all walls and towers drop by 1 every night (but never lower than 1, initial build costs are unaffected)",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Castle Up",
+         "components": [
+          "UpgradeCastleUp",
+          "UpgradePlayerHp"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Level 3",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 35.0,
+           "cooldown": 1.0,
+           "baseDamage": 4.5,
+           "dps": 4.5,
+           "weapon": "P Castle Center",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkCooldownModifyer",
+          "PerkRangeModifyer"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Castle Up Mesh",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer",
+          "BoxCollider"
+         ]
+        }
+       ],
+       "disables": [
+        "Auto Attack Level 2"
+       ],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Godly Curse",
+        "tooltip": "+ If you lock in a target, that target receives 50% more damage from all sources.\n+ 75% HP for your character",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Godly Curse",
+         "components": [
+          "UpgradePlayerHp",
+          "UpgradeGodlyCurse"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Level 3",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 35.0,
+           "cooldown": 1.0,
+           "baseDamage": 4.5,
+           "dps": 4.5,
+           "weapon": "P Castle Center",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkCooldownModifyer",
+          "PerkRangeModifyer"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Godly Curse Mesh",
+         "components": []
+        }
+       ],
+       "disables": [
+        "Auto Attack Level 2"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 4,
+     "cost": 100,
+     "coreCost": 0,
+     "tooltip": "",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": {
+        "name": "Empire Towers",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 1000,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Empire Towers",
+         "components": [
+          "EmpireUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Empire Troups",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 1000,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Empire Troups",
+         "components": [
+          "EmpireUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Empire Armor",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 1000,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Empire Armor",
+         "components": [
+          "EmpireUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Empire Growth",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 20,
+       "coreIncome": 0,
+       "hpChange": 1000,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Empire Growth",
+         "components": [
+          "EmpireUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 130,
+   "totalCoreCost": 0,
+   "maxIncome": 20
+  },
+  {
+   "id": 13108,
+   "name": "Defense Tower Variant (4)",
+   "path": "BUILDINGS/Defense Tower Variant (4)",
+   "building": "Defense Tower",
+   "pos": [
+    -83.95,
+    18.85,
+    -0.56
+   ],
+   "yawDeg": 0.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 12792,
+    "building": "Castle Center",
+    "level": 1,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -83.95,
+    18.85,
+    -0.56
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -83.95,
+     18.85,
+     -0.56
+    ],
+    "size": [
+     3.105,
+     6.607,
+     3.105
+    ],
+    "center": [
+     0.0,
+     3.303,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Shoots at enemies.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 5,
+     "coreCost": 0,
+     "tooltip": "Improves health and attack damage.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": {
+        "name": "Castle Tower",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 150,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Castle Tower",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Sniper Tower",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Sniper Tower",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Armored Tower",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 350,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Armored Tower",
+         "components": [
+          "TowerUpgrade",
+          "ShieldOnFirstDamaged"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Bunker Tower",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 75,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Bunker Tower",
+         "components": [
+          "TowerUpgrade",
+          "IncreaseAttackSpeedOverTime"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 15,
+     "coreCost": 0,
+     "tooltip": "Choose between several upgrades.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": {
+        "name": "Archers Spire",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 350,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Archers Spire",
+         "components": [
+          "TowerUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Archers Spire Visuals",
+         "components": [
+          "MeshRenderer",
+          "MeshFilter",
+          "StaticMeshFusionSource"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Ballistic Spire",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Ballistic Spire",
+         "components": [
+          "TowerUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Ballistic Spire Visuals",
+         "components": [
+          "MeshRenderer",
+          "MeshFilter",
+          "StaticMeshFusionSource"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Fire Spire",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 250,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "PourHotOil",
+         "components": [
+          "HotOilTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Fire Spire",
+         "components": [
+          "TowerUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Fire Spire Visuals",
+         "components": [
+          "MeshRenderer",
+          "MeshFilter",
+          "StaticMeshFusionSource"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Healing Spire",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 750,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Healing Spire Visuals",
+         "components": [
+          "MeshRenderer",
+          "MeshFilter",
+          "StaticMeshFusionSource"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Healing Spire",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 4,
+     "cost": 40,
+     "coreCost": 0,
+     "tooltip": "Choose between several upgrades.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": {
+        "name": "Insane Damage",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Insane Damage",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Insane Range",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Insane Range",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Insane Health",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 2500,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Insane Health",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Hunting Equipment",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 3,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Hunting Equipment",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 63,
+   "totalCoreCost": 0,
+   "maxIncome": 3
+  },
+  {
+   "id": 13110,
+   "name": "Defense Tower Variant (13)",
+   "path": "BUILDINGS/Defense Tower Variant (13)",
+   "building": "Defense Tower",
+   "pos": [
+    -53.81,
+    18.85,
+    -25.64
+   ],
+   "yawDeg": 90.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 12792,
+    "building": "Castle Center",
+    "level": 2,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -53.81,
+    18.85,
+    -25.64
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -53.81,
+     18.85,
+     -25.64
+    ],
+    "size": [
+     3.105,
+     6.607,
+     3.105
+    ],
+    "center": [
+     0.0,
+     3.303,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Shoots at enemies.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 5,
+     "coreCost": 0,
+     "tooltip": "Improves health and attack damage.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": {
+        "name": "Castle Tower",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 150,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Castle Tower",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Sniper Tower",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Sniper Tower",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Armored Tower",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 350,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Armored Tower",
+         "components": [
+          "TowerUpgrade",
+          "ShieldOnFirstDamaged"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Bunker Tower",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 75,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Bunker Tower",
+         "components": [
+          "TowerUpgrade",
+          "IncreaseAttackSpeedOverTime"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 15,
+     "coreCost": 0,
+     "tooltip": "Choose between several upgrades.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": {
+        "name": "Archers Spire",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 350,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Archers Spire",
+         "components": [
+          "TowerUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Archers Spire Visuals",
+         "components": [
+          "MeshRenderer",
+          "MeshFilter",
+          "StaticMeshFusionSource"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Ballistic Spire",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Ballistic Spire",
+         "components": [
+          "TowerUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Ballistic Spire Visuals",
+         "components": [
+          "MeshRenderer",
+          "MeshFilter",
+          "StaticMeshFusionSource"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Fire Spire",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 250,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "PourHotOil",
+         "components": [
+          "HotOilTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Fire Spire",
+         "components": [
+          "TowerUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Fire Spire Visuals",
+         "components": [
+          "MeshRenderer",
+          "MeshFilter",
+          "StaticMeshFusionSource"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Healing Spire",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 750,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Healing Spire Visuals",
+         "components": [
+          "MeshRenderer",
+          "MeshFilter",
+          "StaticMeshFusionSource"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Healing Spire",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 4,
+     "cost": 40,
+     "coreCost": 0,
+     "tooltip": "Choose between several upgrades.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": {
+        "name": "Insane Damage",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Insane Damage",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Insane Range",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Insane Range",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Insane Health",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 2500,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Insane Health",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Hunting Equipment",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 3,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Hunting Equipment",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 63,
+   "totalCoreCost": 0,
+   "maxIncome": 3
+  },
+  {
+   "id": 13111,
+   "name": "Defense Tower Variant (3)",
+   "path": "BUILDINGS/Defense Tower Variant (3)",
+   "building": "Defense Tower",
+   "pos": [
+    -83.9,
+    18.85,
+    22.6
+   ],
+   "yawDeg": 0.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 12792,
+    "building": "Castle Center",
+    "level": 1,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -83.9,
+    18.85,
+    22.6
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -83.9,
+     18.85,
+     22.6
+    ],
+    "size": [
+     3.105,
+     6.607,
+     3.105
+    ],
+    "center": [
+     0.0,
+     3.303,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Shoots at enemies.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 5,
+     "coreCost": 0,
+     "tooltip": "Improves health and attack damage.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": {
+        "name": "Castle Tower",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 150,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Castle Tower",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Sniper Tower",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Sniper Tower",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Armored Tower",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 350,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Armored Tower",
+         "components": [
+          "TowerUpgrade",
+          "ShieldOnFirstDamaged"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Bunker Tower",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 75,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Bunker Tower",
+         "components": [
+          "TowerUpgrade",
+          "IncreaseAttackSpeedOverTime"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 15,
+     "coreCost": 0,
+     "tooltip": "Choose between several upgrades.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": {
+        "name": "Archers Spire",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 350,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Archers Spire",
+         "components": [
+          "TowerUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Archers Spire Visuals",
+         "components": [
+          "MeshRenderer",
+          "MeshFilter",
+          "StaticMeshFusionSource"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Ballistic Spire",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Ballistic Spire",
+         "components": [
+          "TowerUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Ballistic Spire Visuals",
+         "components": [
+          "MeshRenderer",
+          "MeshFilter",
+          "StaticMeshFusionSource"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Fire Spire",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 250,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "PourHotOil",
+         "components": [
+          "HotOilTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Fire Spire",
+         "components": [
+          "TowerUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Fire Spire Visuals",
+         "components": [
+          "MeshRenderer",
+          "MeshFilter",
+          "StaticMeshFusionSource"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Healing Spire",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 750,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Healing Spire Visuals",
+         "components": [
+          "MeshRenderer",
+          "MeshFilter",
+          "StaticMeshFusionSource"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Healing Spire",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 4,
+     "cost": 40,
+     "coreCost": 0,
+     "tooltip": "Choose between several upgrades.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": {
+        "name": "Insane Damage",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Insane Damage",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Insane Range",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Insane Range",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Insane Health",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 2500,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Insane Health",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Hunting Equipment",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 3,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Hunting Equipment",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 63,
+   "totalCoreCost": 0,
+   "maxIncome": 3
+  },
+  {
+   "id": 13112,
+   "name": "Defense Tower Variant (14)",
+   "path": "BUILDINGS/Defense Tower Variant (14)",
+   "building": "Defense Tower",
+   "pos": [
+    -26.15,
+    18.85,
+    -26.89
+   ],
+   "yawDeg": 90.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 12792,
+    "building": "Castle Center",
+    "level": 1,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -26.15,
+    18.85,
+    -26.89
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -26.15,
+     18.85,
+     -26.89
+    ],
+    "size": [
+     3.105,
+     6.607,
+     3.105
+    ],
+    "center": [
+     0.0,
+     3.303,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Shoots at enemies.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 5,
+     "coreCost": 0,
+     "tooltip": "Improves health and attack damage.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": {
+        "name": "Castle Tower",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 150,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Castle Tower",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Sniper Tower",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Sniper Tower",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Armored Tower",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 350,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Armored Tower",
+         "components": [
+          "TowerUpgrade",
+          "ShieldOnFirstDamaged"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Bunker Tower",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 75,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Bunker Tower",
+         "components": [
+          "TowerUpgrade",
+          "IncreaseAttackSpeedOverTime"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 15,
+     "coreCost": 0,
+     "tooltip": "Choose between several upgrades.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": {
+        "name": "Archers Spire",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 350,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Archers Spire",
+         "components": [
+          "TowerUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Archers Spire Visuals",
+         "components": [
+          "MeshRenderer",
+          "MeshFilter",
+          "StaticMeshFusionSource"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Ballistic Spire",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Ballistic Spire",
+         "components": [
+          "TowerUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Ballistic Spire Visuals",
+         "components": [
+          "MeshRenderer",
+          "MeshFilter",
+          "StaticMeshFusionSource"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Fire Spire",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 250,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "PourHotOil",
+         "components": [
+          "HotOilTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Fire Spire",
+         "components": [
+          "TowerUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Fire Spire Visuals",
+         "components": [
+          "MeshRenderer",
+          "MeshFilter",
+          "StaticMeshFusionSource"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Healing Spire",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 750,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Healing Spire Visuals",
+         "components": [
+          "MeshRenderer",
+          "MeshFilter",
+          "StaticMeshFusionSource"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Healing Spire",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 4,
+     "cost": 40,
+     "coreCost": 0,
+     "tooltip": "Choose between several upgrades.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": {
+        "name": "Insane Damage",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Insane Damage",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Insane Range",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Insane Range",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Insane Health",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 2500,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Insane Health",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Hunting Equipment",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 3,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Hunting Equipment",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 63,
+   "totalCoreCost": 0,
+   "maxIncome": 3
+  },
+  {
+   "id": 13114,
+   "name": "Defense Tower Variant (17)",
+   "path": "BUILDINGS/Defense Tower Variant (17)",
+   "building": "Defense Tower",
+   "pos": [
+    -55.77,
+    18.85,
+    48.83
+   ],
+   "yawDeg": -90.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 12792,
+    "building": "Castle Center",
+    "level": 2,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -55.77,
+    18.85,
+    48.83
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -55.77,
+     18.85,
+     48.83
+    ],
+    "size": [
+     3.105,
+     6.607,
+     3.105
+    ],
+    "center": [
+     0.0,
+     3.303,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Shoots at enemies.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 5,
+     "coreCost": 0,
+     "tooltip": "Improves health and attack damage.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": {
+        "name": "Castle Tower",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 150,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Castle Tower",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Sniper Tower",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Sniper Tower",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Armored Tower",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 350,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Armored Tower",
+         "components": [
+          "TowerUpgrade",
+          "ShieldOnFirstDamaged"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Bunker Tower",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 75,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Bunker Tower",
+         "components": [
+          "TowerUpgrade",
+          "IncreaseAttackSpeedOverTime"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 15,
+     "coreCost": 0,
+     "tooltip": "Choose between several upgrades.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": {
+        "name": "Archers Spire",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 350,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Archers Spire",
+         "components": [
+          "TowerUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Archers Spire Visuals",
+         "components": [
+          "MeshRenderer",
+          "MeshFilter",
+          "StaticMeshFusionSource"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Ballistic Spire",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Ballistic Spire",
+         "components": [
+          "TowerUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Ballistic Spire Visuals",
+         "components": [
+          "MeshRenderer",
+          "MeshFilter",
+          "StaticMeshFusionSource"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Fire Spire",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 250,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "PourHotOil",
+         "components": [
+          "HotOilTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Fire Spire",
+         "components": [
+          "TowerUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Fire Spire Visuals",
+         "components": [
+          "MeshRenderer",
+          "MeshFilter",
+          "StaticMeshFusionSource"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Healing Spire",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 750,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Healing Spire Visuals",
+         "components": [
+          "MeshRenderer",
+          "MeshFilter",
+          "StaticMeshFusionSource"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Healing Spire",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 4,
+     "cost": 40,
+     "coreCost": 0,
+     "tooltip": "Choose between several upgrades.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": {
+        "name": "Insane Damage",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Insane Damage",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Insane Range",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Insane Range",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Insane Health",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 2500,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Insane Health",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Hunting Equipment",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 3,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Hunting Equipment",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 63,
+   "totalCoreCost": 0,
+   "maxIncome": 3
+  },
+  {
+   "id": 13119,
+   "name": "Defense Tower Variant (19)",
+   "path": "BUILDINGS/Defense Tower Variant (19)",
+   "building": "Defense Tower",
+   "pos": [
+    -26.33,
+    18.85,
+    48.55
+   ],
+   "yawDeg": -90.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 12792,
+    "building": "Castle Center",
+    "level": 1,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -26.33,
+    18.85,
+    48.55
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -26.33,
+     18.85,
+     48.55
+    ],
+    "size": [
+     3.105,
+     6.607,
+     3.105
+    ],
+    "center": [
+     0.0,
+     3.303,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Shoots at enemies.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 5,
+     "coreCost": 0,
+     "tooltip": "Improves health and attack damage.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": {
+        "name": "Castle Tower",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 150,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Castle Tower",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Sniper Tower",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Sniper Tower",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Armored Tower",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 350,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Armored Tower",
+         "components": [
+          "TowerUpgrade",
+          "ShieldOnFirstDamaged"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Bunker Tower",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 75,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Bunker Tower",
+         "components": [
+          "TowerUpgrade",
+          "IncreaseAttackSpeedOverTime"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 15,
+     "coreCost": 0,
+     "tooltip": "Choose between several upgrades.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": {
+        "name": "Archers Spire",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 350,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Archers Spire",
+         "components": [
+          "TowerUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Archers Spire Visuals",
+         "components": [
+          "MeshRenderer",
+          "MeshFilter",
+          "StaticMeshFusionSource"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Ballistic Spire",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Ballistic Spire",
+         "components": [
+          "TowerUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Ballistic Spire Visuals",
+         "components": [
+          "MeshRenderer",
+          "MeshFilter",
+          "StaticMeshFusionSource"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Fire Spire",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 250,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "PourHotOil",
+         "components": [
+          "HotOilTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Fire Spire",
+         "components": [
+          "TowerUpgrade"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Fire Spire Visuals",
+         "components": [
+          "MeshRenderer",
+          "MeshFilter",
+          "StaticMeshFusionSource"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Healing Spire",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 750,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Healing Spire Visuals",
+         "components": [
+          "MeshRenderer",
+          "MeshFilter",
+          "StaticMeshFusionSource"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Healing Spire",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 4,
+     "cost": 40,
+     "coreCost": 0,
+     "tooltip": "Choose between several upgrades.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": {
+        "name": "Insane Damage",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Insane Damage",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Insane Range",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Insane Range",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Insane Health",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 2500,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Insane Health",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      },
+      {
+       "choice": {
+        "name": "Hunting Equipment",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 3,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Tower Attack",
+         "attacks": [
+          {
+           "component": "AutoAttackTower",
+           "range": 36.0,
+           "cooldown": 2.0,
+           "baseDamage": 8.0,
+           "dps": 4.0,
+           "weapon": "P Tower",
+           "manual": false
+          }
+         ],
+         "components": [
+          "PerkRangeModifyer",
+          "PerkDamageAutoAttackModifyer",
+          "AutoAttackTower"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Hunting Equipment",
+         "components": [
+          "TowerUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 63,
+   "totalCoreCost": 0,
+   "maxIncome": 3
+  }
+ ],
+ "shrines": [],
+ "nighthorns": [],
+ "dayNight": [
+  {
+   "id": 13303,
+   "name": "Day Night Cycle",
+   "path": "LOCAL MANAGERS/Day Night Cycle",
+   "active": true,
+   "pos": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "sunriseTime": 3.0
+  }
+ ],
+ "autoDayNight": [],
+ "nightCall": [
+  {
+   "id": 12679,
+   "name": "UI Overlay Canvas",
+   "path": "LOCAL MANAGERS/UI Overlay Canvas",
+   "active": false,
+   "pos": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "nightCallTime": 2.0
+  }
+ ],
+ "castle": [
+  {
+   "id": 10863,
+   "name": "Building Parent",
+   "path": "BUILDINGS/Castle Center Variant/Building Parent",
+   "pos": [
+    -48.91,
+    27.85,
+    10.8
+   ],
+   "maxHp": 100.0,
+   "tags": [
+    "PlayerOwned",
+    "Building",
+    "InfrastructureEconomy",
+    "CastleCenter",
+    "PlayerOwnedPriorityTarget"
+   ]
+  }
+ ],
+ "heroes": [
+  {
+   "name": "Player Character",
+   "pos": [
+    -77.34,
+    18.4,
+    13.37
+   ],
+   "summary": {
+    "name": "Player Character",
+    "maxHp": 50.0,
+    "tags": [
+     "PlayerOwned",
+     "Player"
+    ],
+    "coinDrop": 0,
+    "components": [
+     "CharacterController",
+     "PlayerMovement",
+     "PlayerInteraction",
+     "RVOController",
+     "TaggedObject",
+     "Hp",
+     "PlayerHpRegen",
+     "AutoRevive",
+     "PlayerUpgradeManager",
+     "PlayerAttack",
+     "CommandUnits",
+     "PerkHpModifyer",
+     "PowerTowerPerk",
+     "SaveLoadEntity"
+    ]
+   },
+   "movement": {
+    "speed": 14.0,
+    "speedDuringDay": 18.2,
+    "sprintSpeed": 23.0,
+    "sprintSpeedDuringDay": 29.9,
+    "moveSpeedWhenDead": 6.0,
+    "gravity": -50.0,
+    "maxMeshRotationSpeed": 400.0,
+    "yFallThroughMapDetection": -30.0
+   },
+   "interaction": {
+    "coinMagnetRadius": 7.0,
+    "interactionRadius": 3.0
+   },
+   "command": {
+    "drowWaypointParticleCount": 100,
+    "attractRange": 6.0,
+    "graphNameOfPlayerUnits": "Player Units S",
+    "graphNameOfFlyingUnits": "Enemy Units Air",
+    "unitDistanceFromEachOther": 2.5,
+    "unitDistanceMoveStep": 0.5,
+    "maxPositioningRepeats": 50,
+    "holdToHoldPositionTime": 0.5,
+    "holdToSetUnitGroup": 1.0,
+    "commanderUnitMoveSpeedMulti": 1.6,
+    "commanderHoldHealthMulti": 1.2,
+    "commanderHoldDamageMulti": 1.2,
+    "groupHoldDelay": 0.2,
+    "commanding": false,
+    "canCommandUnitsInThisMode": true
+   }
+  }
+ ],
+ "units": {},
+ "summary": {
+  "nights": 9,
+  "enemiesTotal": 623,
+  "baseHpTotal": 52392.5,
+  "goldCoinsTotal": 89,
+  "flyingEnemies": 68,
+  "bossEnemies": 0,
+  "spawnLines": 7,
+  "buildSlots": 7,
+  "slotsByBuilding": {
+   "Castle Center": 1,
+   "Defense Tower": 6
+  },
+  "hasHorn": false,
+  "shrines": 0,
+  "castleFound": true,
+  "enemyTypes": [
+   "E Big Spider",
+   "E Flogre",
+   "E Flyer",
+   "E Melee",
+   "E Racer",
+   "E Slime",
+   "E StrongSlime",
+   "E Thing",
+   "E Windboat"
+  ]
+ }
+}

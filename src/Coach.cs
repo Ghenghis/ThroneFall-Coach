@@ -37,7 +37,8 @@ namespace ThronefallTrainer
         public static string HeroPosture = "";  // builder|fighter
         public static string LastAdvice = "";
         public static float LastAdviceAt;
-        public static int CallsMade, TokensUsed;
+        public static int CallsMade, TokensUsed, Failures, LastLatencyMs;
+        public static string LastTrigger = "";
         public static volatile bool Busy;   // written by the worker thread
         public static bool LiveShot;             // dump agent/live.png for the chat UI
         public static float LiveShotEvery = 2f;
@@ -56,6 +57,10 @@ namespace ThronefallTrainer
             "enemy corridors outside the walls, keeps a castle reserve, and the " +
             "hero builds/farms and only fights as last resort. No cheats. " +
             "Given the telemetry digest, return ONLY a JSON object: " +
+            "The digest carries efficiency (0-100, target 80+), useful_pct (target 85), " +
+            "idle_s_since_progress, drain reasons, weak_tasks (lowest-efficiency task kinds) " +
+            "and task_misses: if efficiency is low, steer build_focus/army_target to fix the " +
+            "worst task, and set night_call true when the day has nothing left to spend on. " +
             "{\"squad_size\":int,\"reserve_size\":int,\"escort_size\":int," +
             "\"army_target\":int,\"build_focus\":\"military|income|defense|balanced\"," +
             "\"hero_posture\":\"builder|fighter\",\"note\":\"<one sentence>\"}.";
@@ -138,6 +143,7 @@ namespace ThronefallTrainer
 
         private static void Call(string trigger, string digest, float callNow, int gen)
         {
+            var sw = System.Diagnostics.Stopwatch.StartNew();
             try
             {
                 string body =
@@ -161,6 +167,8 @@ namespace ThronefallTrainer
                 using (var rd = new StreamReader(r.GetResponseStream()))
                     resp = rd.ReadToEnd();
                 CallsMade++;
+                LastLatencyMs = (int)sw.ElapsedMilliseconds;
+                LastTrigger = trigger;
                 var um = System.Text.RegularExpressions.Regex.Match(
                     resp, "\"total_tokens\"\\s*:\\s*(\\d+)");
                 if (um.Success) TokensUsed += int.Parse(um.Groups[1].Value);
@@ -176,6 +184,7 @@ namespace ThronefallTrainer
             }
             catch (Exception ex)
             {
+                Failures++;
                 Plugin.Log?.LogWarning($"[coach] {trigger} call failed: {ex.Message}");
             }
             Busy = false;

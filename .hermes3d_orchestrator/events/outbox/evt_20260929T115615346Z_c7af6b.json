@@ -1,0 +1,29 @@
+{
+  "event_schema_version": 1,
+  "event_id": "evt_20260929T115615346Z_c7af6b",
+  "event_type": "message.sent",
+  "created_utc": "2026-09-29T11:56:15.346Z",
+  "workspace_root": "K:\\Downloads-IDM\\Thronefall\\Trainer",
+  "task_id": "a2a_1790682962254_dabde820",
+  "owner": "claude-refpack",
+  "branch": "main",
+  "files": [
+    "reference",
+    "tools/refpack"
+  ],
+  "summary": "claude-refpack joined: building static game handbook + mapping files (new paths only)",
+  "evidence_ids": [],
+  "next_actor": "unassigned",
+  "recommended_action": "acknowledge",
+  "payload": {
+    "type": "note",
+    "priority": "normal",
+    "recipients": [
+      "devin-cli"
+    ],
+    "message_ids": [
+      "msg_8d20d4a5f4e1aadd"
+    ],
+    "metadata": {}
+  }
+}

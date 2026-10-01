@@ -1,0 +1,5907 @@
+{
+ "scene": "Uferwind Lightning Staff Challenge",
+ "buildIndex": 21,
+ "file": "level21",
+ "kind": "minimode",
+ "objects": 16098,
+ "monobehaviourClasses": 171,
+ "spawners": [
+  {
+   "id": 16057,
+   "name": "ES Uferwind Lightning Staff",
+   "mode": "Classic",
+   "modeRaw": 0,
+   "goldBalanceAtStart": 3,
+   "endlessMode": false,
+   "pauseSpawningAtEnemyCount": 275,
+   "reduceSpawnWaitTimes": true,
+   "waveGenerator": "Season2 Wave Gen",
+   "endlessWaveGenerator": null,
+   "waveCount": 8,
+   "waves": [
+    {
+     "index": 0,
+     "night": 1,
+     "warningText": "Weaklings",
+     "difficultyMulti": 1.0,
+     "spawns": [
+      {
+       "enemy": "resources.assets:6452",
+       "enemyName": "E Weakling",
+       "displayName": "Peasant",
+       "count": 10,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 0.1,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Spawn 1",
+       "spawnCenter": [
+        -98.705,
+        14.15,
+        -66.412
+       ],
+       "maxHp": 8.7,
+       "spawnSpanSeconds": 0.9
+      },
+      {
+       "enemy": "resources.assets:6452",
+       "enemyName": "E Weakling",
+       "displayName": "Peasant",
+       "count": 4,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 0.1,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Spawn 2",
+       "spawnCenter": [
+        -93.83,
+        14.15,
+        0.045
+       ],
+       "maxHp": 8.7,
+       "spawnSpanSeconds": 0.3
+      },
+      {
+       "enemy": "resources.assets:6452",
+       "enemyName": "E Weakling",
+       "displayName": "Peasant",
+       "count": 5,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 0.1,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Spawn 3",
+       "spawnCenter": [
+        -65.485,
+        14.15,
+        24.455
+       ],
+       "maxHp": 8.7,
+       "spawnSpanSeconds": 0.4
+      },
+      {
+       "enemy": "resources.assets:6452",
+       "enemyName": "E Weakling",
+       "displayName": "Peasant",
+       "count": 5,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 0.1,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Spawn 4",
+       "spawnCenter": [
+        -33.52,
+        14.15,
+        35.705
+       ],
+       "maxHp": 8.7,
+       "spawnSpanSeconds": 0.4
+      },
+      {
+       "enemy": "resources.assets:6452",
+       "enemyName": "E Weakling",
+       "displayName": "Peasant",
+       "count": 5,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 0.1,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Spawn 5",
+       "spawnCenter": [
+        19.945,
+        14.15,
+        31.8
+       ],
+       "maxHp": 8.7,
+       "spawnSpanSeconds": 0.4
+      },
+      {
+       "enemy": "resources.assets:6452",
+       "enemyName": "E Weakling",
+       "displayName": "Peasant",
+       "count": 5,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 0.1,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Spawn 6",
+       "spawnCenter": [
+        50.95,
+        14.15,
+        8.15
+       ],
+       "maxHp": 8.7,
+       "spawnSpanSeconds": 0.4
+      },
+      {
+       "enemy": "resources.assets:6452",
+       "enemyName": "E Weakling",
+       "displayName": "Peasant",
+       "count": 5,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 0.1,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Spawn 7",
+       "spawnCenter": [
+        66.46,
+        14.15,
+        -16.15
+       ],
+       "maxHp": 8.7,
+       "spawnSpanSeconds": 0.4
+      }
+     ],
+     "totals": {
+      "enemies": 39,
+      "baseHp": 339.3,
+      "goldCoins": 0,
+      "eliteEnemies": 0,
+      "flying": 0,
+      "boss": 0,
+      "ranged": 0,
+      "spawnSpanSeconds": 0.9,
+      "byLine": {
+       "Spawn 1": 10,
+       "Spawn 2": 4,
+       "Spawn 3": 5,
+       "Spawn 4": 5,
+       "Spawn 5": 5,
+       "Spawn 6": 5,
+       "Spawn 7": 5
+      }
+     }
+    },
+    {
+     "index": 1,
+     "night": 2,
+     "warningText": "Weakling Stream",
+     "difficultyMulti": 1.0,
+     "spawns": [
+      {
+       "enemy": "resources.assets:6452",
+       "enemyName": "E Weakling",
+       "displayName": "Peasant",
+       "count": 75,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 0.55,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 3,
+       "spawnLine": "Spawn 1",
+       "spawnCenter": [
+        -98.705,
+        14.15,
+        -66.412
+       ],
+       "maxHp": 8.7,
+       "spawnSpanSeconds": 40.7
+      }
+     ],
+     "totals": {
+      "enemies": 75,
+      "baseHp": 652.5,
+      "goldCoins": 3,
+      "eliteEnemies": 0,
+      "flying": 0,
+      "boss": 0,
+      "ranged": 0,
+      "spawnSpanSeconds": 40.7,
+      "byLine": {
+       "Spawn 1": 75
+      }
+     }
+    },
+    {
+     "index": 2,
+     "night": 3,
+     "warningText": "Racer",
+     "difficultyMulti": 1.0,
+     "spawns": [
+      {
+       "enemy": "resources.assets:6459",
+       "enemyName": "E Racer",
+       "displayName": "Racer",
+       "count": 11,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 0.1,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 3,
+       "spawnLine": "Spawn 5",
+       "spawnCenter": [
+        19.945,
+        14.15,
+        31.8
+       ],
+       "maxHp": 35.0,
+       "spawnSpanSeconds": 1.0
+      },
+      {
+       "enemy": "resources.assets:6458",
+       "enemyName": "E Hunterling",
+       "displayName": "Hunterling",
+       "count": 8,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 2.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 4,
+       "spawnLine": "Spawn 5",
+       "spawnCenter": [
+        19.945,
+        14.15,
+        31.8
+       ],
+       "maxHp": 30.0,
+       "spawnSpanSeconds": 14.0
+      }
+     ],
+     "totals": {
+      "enemies": 19,
+      "baseHp": 625.0,
+      "goldCoins": 7,
+      "eliteEnemies": 0,
+      "flying": 0,
+      "boss": 0,
+      "ranged": 0,
+      "spawnSpanSeconds": 14.0,
+      "byLine": {
+       "Spawn 5": 19
+      }
+     }
+    },
+    {
+     "index": 3,
+     "night": 4,
+     "warningText": "Ogres",
+     "difficultyMulti": 1.0,
+     "spawns": [
+      {
+       "enemy": "resources.assets:6451",
+       "enemyName": "E Ogre",
+       "displayName": "Ogre",
+       "count": 4,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 3.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Spawn 1",
+       "spawnCenter": [
+        -98.705,
+        14.15,
+        -66.412
+       ],
+       "maxHp": 200.0,
+       "spawnSpanSeconds": 9.0
+      },
+      {
+       "enemy": "resources.assets:6452",
+       "enemyName": "E Weakling",
+       "displayName": "Peasant",
+       "count": 30,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 0.5,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Spawn 1",
+       "spawnCenter": [
+        -98.705,
+        14.15,
+        -66.412
+       ],
+       "maxHp": 8.7,
+       "spawnSpanSeconds": 14.5
+      }
+     ],
+     "totals": {
+      "enemies": 34,
+      "baseHp": 1061.0,
+      "goldCoins": 0,
+      "eliteEnemies": 0,
+      "flying": 0,
+      "boss": 0,
+      "ranged": 0,
+      "spawnSpanSeconds": 14.5,
+      "byLine": {
+       "Spawn 1": 34
+      }
+     }
+    },
+    {
+     "index": 4,
+     "night": 5,
+     "warningText": "Furies",
+     "difficultyMulti": 1.0,
+     "spawns": [
+      {
+       "enemy": "resources.assets:5073",
+       "enemyName": "E Fury",
+       "displayName": "Fury",
+       "count": 2,
+       "elite": false,
+       "delay": 12.0,
+       "interval": 0.1,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 2,
+       "spawnLine": "Spawn 1",
+       "spawnCenter": [
+        -98.705,
+        14.15,
+        -66.412
+       ],
+       "maxHp": 75.0,
+       "spawnSpanSeconds": 12.1
+      },
+      {
+       "enemy": "resources.assets:5073",
+       "enemyName": "E Fury",
+       "displayName": "Fury",
+       "count": 2,
+       "elite": false,
+       "delay": 10.0,
+       "interval": 0.1,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 4,
+       "spawnLine": "Spawn 2",
+       "spawnCenter": [
+        -93.83,
+        14.15,
+        0.045
+       ],
+       "maxHp": 75.0,
+       "spawnSpanSeconds": 10.1
+      },
+      {
+       "enemy": "resources.assets:5073",
+       "enemyName": "E Fury",
+       "displayName": "Fury",
+       "count": 2,
+       "elite": false,
+       "delay": 8.0,
+       "interval": 0.1,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 4,
+       "spawnLine": "Spawn 3",
+       "spawnCenter": [
+        -65.485,
+        14.15,
+        24.455
+       ],
+       "maxHp": 75.0,
+       "spawnSpanSeconds": 8.1
+      },
+      {
+       "enemy": "resources.assets:5073",
+       "enemyName": "E Fury",
+       "displayName": "Fury",
+       "count": 2,
+       "elite": false,
+       "delay": 6.0,
+       "interval": 0.1,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 2,
+       "spawnLine": "Spawn 4",
+       "spawnCenter": [
+        -33.52,
+        14.15,
+        35.705
+       ],
+       "maxHp": 75.0,
+       "spawnSpanSeconds": 6.1
+      },
+      {
+       "enemy": "resources.assets:5073",
+       "enemyName": "E Fury",
+       "displayName": "Fury",
+       "count": 2,
+       "elite": false,
+       "delay": 4.0,
+       "interval": 0.1,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 4,
+       "spawnLine": "Spawn 5",
+       "spawnCenter": [
+        19.945,
+        14.15,
+        31.8
+       ],
+       "maxHp": 75.0,
+       "spawnSpanSeconds": 4.1
+      },
+      {
+       "enemy": "resources.assets:5073",
+       "enemyName": "E Fury",
+       "displayName": "Fury",
+       "count": 2,
+       "elite": false,
+       "delay": 2.0,
+       "interval": 0.1,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 2,
+       "spawnLine": "Spawn 6",
+       "spawnCenter": [
+        50.95,
+        14.15,
+        8.15
+       ],
+       "maxHp": 75.0,
+       "spawnSpanSeconds": 2.1
+      },
+      {
+       "enemy": "resources.assets:5073",
+       "enemyName": "E Fury",
+       "displayName": "Fury",
+       "count": 2,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 0.1,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 2,
+       "spawnLine": "Spawn 7",
+       "spawnCenter": [
+        66.46,
+        14.15,
+        -16.15
+       ],
+       "maxHp": 75.0,
+       "spawnSpanSeconds": 0.1
+      }
+     ],
+     "totals": {
+      "enemies": 14,
+      "baseHp": 1050.0,
+      "goldCoins": 20,
+      "eliteEnemies": 0,
+      "flying": 14,
+      "boss": 0,
+      "ranged": 14,
+      "spawnSpanSeconds": 12.1,
+      "byLine": {
+       "Spawn 1": 2,
+       "Spawn 2": 2,
+       "Spawn 3": 2,
+       "Spawn 4": 2,
+       "Spawn 5": 2,
+       "Spawn 6": 2,
+       "Spawn 7": 2
+      }
+     }
+    },
+    {
+     "index": 5,
+     "night": 6,
+     "warningText": "Weakling Catapult",
+     "difficultyMulti": 1.0,
+     "spawns": [
+      {
+       "enemy": "resources.assets:5076",
+       "enemyName": "E Catapult",
+       "displayName": "Catapult",
+       "count": 15,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 1.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 10,
+       "spawnLine": "Spawn 1",
+       "spawnCenter": [
+        -98.705,
+        14.15,
+        -66.412
+       ],
+       "maxHp": 45.0,
+       "spawnSpanSeconds": 14.0
+      },
+      {
+       "enemy": "resources.assets:6452",
+       "enemyName": "E Weakling",
+       "displayName": "Peasant",
+       "count": 150,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 0.1,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 10,
+       "spawnLine": "Spawn 1",
+       "spawnCenter": [
+        -98.705,
+        14.15,
+        -66.412
+       ],
+       "maxHp": 8.7,
+       "spawnSpanSeconds": 14.9
+      }
+     ],
+     "totals": {
+      "enemies": 165,
+      "baseHp": 1980.0,
+      "goldCoins": 20,
+      "eliteEnemies": 0,
+      "flying": 0,
+      "boss": 0,
+      "ranged": 15,
+      "spawnSpanSeconds": 14.9,
+      "byLine": {
+       "Spawn 1": 165
+      }
+     }
+    },
+    {
+     "index": 6,
+     "night": 7,
+     "warningText": "Diverse Mix",
+     "difficultyMulti": 1.0,
+     "spawns": [
+      {
+       "enemy": "resources.assets:6459",
+       "enemyName": "E Racer",
+       "displayName": "Racer",
+       "count": 8,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 2.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 5,
+       "spawnLine": "Spawn 2",
+       "spawnCenter": [
+        -93.83,
+        14.15,
+        0.045
+       ],
+       "maxHp": 35.0,
+       "spawnSpanSeconds": 14.0
+      },
+      {
+       "enemy": "resources.assets:6459",
+       "enemyName": "E Racer",
+       "displayName": "Racer",
+       "count": 8,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 2.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 3,
+       "spawnLine": "Spawn 5",
+       "spawnCenter": [
+        19.945,
+        14.15,
+        31.8
+       ],
+       "maxHp": 35.0,
+       "spawnSpanSeconds": 14.0
+      },
+      {
+       "enemy": "resources.assets:6459",
+       "enemyName": "E Racer",
+       "displayName": "Racer",
+       "count": 8,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 2.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 2,
+       "spawnLine": "Spawn 7",
+       "spawnCenter": [
+        66.46,
+        14.15,
+        -16.15
+       ],
+       "maxHp": 35.0,
+       "spawnSpanSeconds": 14.0
+      },
+      {
+       "enemy": "resources.assets:6458",
+       "enemyName": "E Hunterling",
+       "displayName": "Hunterling",
+       "count": 8,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 2.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 3,
+       "spawnLine": "Spawn 1",
+       "spawnCenter": [
+        -98.705,
+        14.15,
+        -66.412
+       ],
+       "maxHp": 30.0,
+       "spawnSpanSeconds": 14.0
+      },
+      {
+       "enemy": "resources.assets:6473",
+       "enemyName": "E LongSpear",
+       "displayName": "Pikes",
+       "count": 10,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 1.5,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 2,
+       "spawnLine": "Spawn 4",
+       "spawnCenter": [
+        -33.52,
+        14.15,
+        35.705
+       ],
+       "maxHp": 25.0,
+       "spawnSpanSeconds": 13.5
+      },
+      {
+       "enemy": "resources.assets:6473",
+       "enemyName": "E LongSpear",
+       "displayName": "Pikes",
+       "count": 10,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 1.5,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 5,
+       "spawnLine": "Spawn 3",
+       "spawnCenter": [
+        -65.485,
+        14.15,
+        24.455
+       ],
+       "maxHp": 25.0,
+       "spawnSpanSeconds": 13.5
+      }
+     ],
+     "totals": {
+      "enemies": 52,
+      "baseHp": 1580.0,
+      "goldCoins": 20,
+      "eliteEnemies": 0,
+      "flying": 0,
+      "boss": 0,
+      "ranged": 0,
+      "spawnSpanSeconds": 14.0,
+      "byLine": {
+       "Spawn 2": 8,
+       "Spawn 5": 8,
+       "Spawn 7": 8,
+       "Spawn 1": 8,
+       "Spawn 4": 10,
+       "Spawn 3": 10
+      }
+     }
+    },
+    {
+     "index": 7,
+     "night": 8,
+     "warningText": "END",
+     "difficultyMulti": 1.0,
+     "spawns": [
+      {
+       "enemy": "resources.assets:5072",
+       "enemyName": "E Ram",
+       "displayName": "Ram",
+       "count": 1,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 0.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Spawn 1",
+       "spawnCenter": [
+        -98.705,
+        14.15,
+        -66.412
+       ],
+       "maxHp": 250.0,
+       "spawnSpanSeconds": 0.0
+      },
+      {
+       "enemy": "resources.assets:5072",
+       "enemyName": "E Ram",
+       "displayName": "Ram",
+       "count": 1,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 0.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Spawn 2",
+       "spawnCenter": [
+        -93.83,
+        14.15,
+        0.045
+       ],
+       "maxHp": 250.0,
+       "spawnSpanSeconds": 0.0
+      },
+      {
+       "enemy": "resources.assets:5072",
+       "enemyName": "E Ram",
+       "displayName": "Ram",
+       "count": 1,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 0.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Spawn 3",
+       "spawnCenter": [
+        -65.485,
+        14.15,
+        24.455
+       ],
+       "maxHp": 250.0,
+       "spawnSpanSeconds": 0.0
+      },
+      {
+       "enemy": "resources.assets:5072",
+       "enemyName": "E Ram",
+       "displayName": "Ram",
+       "count": 1,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 0.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Spawn 4",
+       "spawnCenter": [
+        -33.52,
+        14.15,
+        35.705
+       ],
+       "maxHp": 250.0,
+       "spawnSpanSeconds": 0.0
+      },
+      {
+       "enemy": "resources.assets:5072",
+       "enemyName": "E Ram",
+       "displayName": "Ram",
+       "count": 1,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 0.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Spawn 5",
+       "spawnCenter": [
+        19.945,
+        14.15,
+        31.8
+       ],
+       "maxHp": 250.0,
+       "spawnSpanSeconds": 0.0
+      },
+      {
+       "enemy": "resources.assets:5072",
+       "enemyName": "E Ram",
+       "displayName": "Ram",
+       "count": 1,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 0.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Spawn 6",
+       "spawnCenter": [
+        50.95,
+        14.15,
+        8.15
+       ],
+       "maxHp": 250.0,
+       "spawnSpanSeconds": 0.0
+      },
+      {
+       "enemy": "resources.assets:5072",
+       "enemyName": "E Ram",
+       "displayName": "Ram",
+       "count": 1,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 0.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Spawn 7",
+       "spawnCenter": [
+        66.46,
+        14.15,
+        -16.15
+       ],
+       "maxHp": 250.0,
+       "spawnSpanSeconds": 0.0
+      },
+      {
+       "enemy": "resources.assets:6459",
+       "enemyName": "E Racer",
+       "displayName": "Racer",
+       "count": 5,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 2.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Spawn 7",
+       "spawnCenter": [
+        66.46,
+        14.15,
+        -16.15
+       ],
+       "maxHp": 35.0,
+       "spawnSpanSeconds": 8.0
+      },
+      {
+       "enemy": "resources.assets:6459",
+       "enemyName": "E Racer",
+       "displayName": "Racer",
+       "count": 5,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 2.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Spawn 6",
+       "spawnCenter": [
+        50.95,
+        14.15,
+        8.15
+       ],
+       "maxHp": 35.0,
+       "spawnSpanSeconds": 8.0
+      },
+      {
+       "enemy": "resources.assets:6459",
+       "enemyName": "E Racer",
+       "displayName": "Racer",
+       "count": 5,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 2.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Spawn 5",
+       "spawnCenter": [
+        19.945,
+        14.15,
+        31.8
+       ],
+       "maxHp": 35.0,
+       "spawnSpanSeconds": 8.0
+      },
+      {
+       "enemy": "resources.assets:6459",
+       "enemyName": "E Racer",
+       "displayName": "Racer",
+       "count": 5,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 2.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Spawn 4",
+       "spawnCenter": [
+        -33.52,
+        14.15,
+        35.705
+       ],
+       "maxHp": 35.0,
+       "spawnSpanSeconds": 8.0
+      },
+      {
+       "enemy": "resources.assets:6459",
+       "enemyName": "E Racer",
+       "displayName": "Racer",
+       "count": 5,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 2.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Spawn 3",
+       "spawnCenter": [
+        -65.485,
+        14.15,
+        24.455
+       ],
+       "maxHp": 35.0,
+       "spawnSpanSeconds": 8.0
+      },
+      {
+       "enemy": "resources.assets:6459",
+       "enemyName": "E Racer",
+       "displayName": "Racer",
+       "count": 5,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 2.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Spawn 2",
+       "spawnCenter": [
+        -93.83,
+        14.15,
+        0.045
+       ],
+       "maxHp": 35.0,
+       "spawnSpanSeconds": 8.0
+      },
+      {
+       "enemy": "resources.assets:6459",
+       "enemyName": "E Racer",
+       "displayName": "Racer",
+       "count": 5,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 2.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Spawn 1",
+       "spawnCenter": [
+        -98.705,
+        14.15,
+        -66.412
+       ],
+       "maxHp": 35.0,
+       "spawnSpanSeconds": 8.0
+      },
+      {
+       "enemy": "resources.assets:6452",
+       "enemyName": "E Weakling",
+       "displayName": "Peasant",
+       "count": 15,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 2.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Spawn 1",
+       "spawnCenter": [
+        -98.705,
+        14.15,
+        -66.412
+       ],
+       "maxHp": 8.7,
+       "spawnSpanSeconds": 28.0
+      },
+      {
+       "enemy": "resources.assets:5073",
+       "enemyName": "E Fury",
+       "displayName": "Fury",
+       "count": 15,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 2.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Spawn 3",
+       "spawnCenter": [
+        -65.485,
+        14.15,
+        24.455
+       ],
+       "maxHp": 75.0,
+       "spawnSpanSeconds": 28.0
+      },
+      {
+       "enemy": "resources.assets:6452",
+       "enemyName": "E Weakling",
+       "displayName": "Peasant",
+       "count": 25,
+       "elite": false,
+       "delay": 0.0,
+       "interval": 2.0,
+       "waitBeforeNextSpawn": 0.0,
+       "goldCoins": 0,
+       "spawnLine": "Spawn 6",
+       "spawnCenter": [
+        50.95,
+        14.15,
+        8.15
+       ],
+       "maxHp": 8.7,
+       "spawnSpanSeconds": 48.0
+      }
+     ],
+     "totals": {
+      "enemies": 97,
+      "baseHp": 4448.0,
+      "goldCoins": 0,
+      "eliteEnemies": 0,
+      "flying": 15,
+      "boss": 0,
+      "ranged": 15,
+      "spawnSpanSeconds": 48.0,
+      "byLine": {
+       "Spawn 1": 21,
+       "Spawn 2": 6,
+       "Spawn 3": 21,
+       "Spawn 4": 6,
+       "Spawn 5": 6,
+       "Spawn 6": 31,
+       "Spawn 7": 6
+      }
+     }
+    }
+   ]
+  }
+ ],
+ "spawnLines": [
+  {
+   "tf": 7558,
+   "name": "Spawn 3",
+   "path": "ES Uferwind Lightning Staff/Spawn 3",
+   "points": [
+    [
+     -79.02,
+     14.15,
+     18.6
+    ],
+    [
+     -51.95,
+     14.15,
+     30.31
+    ]
+   ],
+   "length": 29.494,
+   "center": [
+    -65.485,
+    14.15,
+    24.455
+   ],
+   "difficulty": "Normal",
+   "canSpawnFlying": true,
+   "canSpawnSmallGround": true,
+   "canSpawnBigGround": true,
+   "sharedPaths": [
+    "Spawn 2",
+    "Spawn 4"
+   ],
+   "separatedPaths": [
+    "Spawn 2 Air",
+    "Spawn 3 Air",
+    "Spawn 4 Air"
+   ]
+  },
+  {
+   "tf": 5025,
+   "name": "Spawn 6",
+   "path": "ES Uferwind Lightning Staff/Spawn 6",
+   "points": [
+    [
+     46.48,
+     14.15,
+     15.96
+    ],
+    [
+     55.42,
+     14.15,
+     0.34
+    ]
+   ],
+   "length": 17.997,
+   "center": [
+    50.95,
+    14.15,
+    8.15
+   ],
+   "difficulty": "Normal",
+   "canSpawnFlying": true,
+   "canSpawnSmallGround": true,
+   "canSpawnBigGround": true,
+   "sharedPaths": [
+    "Spawn 5",
+    "Spawn 7"
+   ],
+   "separatedPaths": [
+    "Spawn 2 Air",
+    "Spawn 1 Air",
+    "Spawn 1",
+    "Spawn 2"
+   ]
+  },
+  {
+   "tf": 6032,
+   "name": "Spawn 1 Air",
+   "path": "ES Uferwind Lightning Staff/Spawn 1 Air",
+   "points": [
+    [
+     -33.1,
+     19.6,
+     -199.2
+    ],
+    [
+     -66.7,
+     19.6,
+     -165.3
+    ]
+   ],
+   "length": 47.73,
+   "center": [
+    -49.9,
+    19.6,
+    -182.25
+   ],
+   "difficulty": "Normal",
+   "canSpawnFlying": true,
+   "canSpawnSmallGround": false,
+   "canSpawnBigGround": false,
+   "sharedPaths": [
+    "Spawn 2 Air"
+   ],
+   "separatedPaths": [
+    "Spawn 4",
+    "Spawn 5",
+    "Spawn 6",
+    "Spawn 7"
+   ]
+  },
+  {
+   "tf": 5106,
+   "name": "Spawn 4 Air",
+   "path": "ES Uferwind Lightning Staff/Spawn 4 Air",
+   "points": [
+    [
+     90.5,
+     19.6,
+     -42.9
+    ],
+    [
+     97.7,
+     19.6,
+     -85.0
+    ]
+   ],
+   "length": 42.711,
+   "center": [
+    94.1,
+    19.6,
+    -63.95
+   ],
+   "difficulty": "Normal",
+   "canSpawnFlying": true,
+   "canSpawnSmallGround": false,
+   "canSpawnBigGround": false,
+   "sharedPaths": [
+    "Spawn 3 Air"
+   ],
+   "separatedPaths": [
+    "Spawn 1",
+    "Spawn 2",
+    "Spawn 3"
+   ]
+  },
+  {
+   "tf": 7206,
+   "name": "Spawn 2 Air",
+   "path": "ES Uferwind Lightning Staff/Spawn 2 Air",
+   "points": [
+    [
+     47.0,
+     19.6,
+     -197.2
+    ],
+    [
+     9.4,
+     19.6,
+     -215.1
+    ]
+   ],
+   "length": 41.643,
+   "center": [
+    28.2,
+    19.6,
+    -206.15
+   ],
+   "difficulty": "Normal",
+   "canSpawnFlying": true,
+   "canSpawnSmallGround": false,
+   "canSpawnBigGround": false,
+   "sharedPaths": [
+    "Spawn 1 Air",
+    "Spawn 3 Air"
+   ],
+   "separatedPaths": [
+    "Spawn 2",
+    "Spawn 3",
+    "Spawn 4",
+    "Spawn 5",
+    "Spawn 6",
+    "Spawn 7"
+   ]
+  },
+  {
+   "tf": 5109,
+   "name": "Spawn 3 Air",
+   "path": "ES Uferwind Lightning Staff/Spawn 3 Air",
+   "points": [
+    [
+     93.7,
+     19.6,
+     -121.4
+    ],
+    [
+     66.3,
+     19.6,
+     -165.5
+    ]
+   ],
+   "length": 51.919,
+   "center": [
+    80.0,
+    19.6,
+    -143.45
+   ],
+   "difficulty": "Normal",
+   "canSpawnFlying": true,
+   "canSpawnSmallGround": false,
+   "canSpawnBigGround": false,
+   "sharedPaths": [
+    "Spawn 2 Air",
+    "Spawn 4 Air"
+   ],
+   "separatedPaths": [
+    "Spawn 1",
+    "Spawn 2",
+    "Spawn 3",
+    "Spawn 4",
+    "Spawn 5"
+   ]
+  },
+  {
+   "tf": 6591,
+   "name": "Spawn 7",
+   "path": "ES Uferwind Lightning Staff/Spawn 7",
+   "points": [
+    [
+     62.66,
+     14.15,
+     -10.4
+    ],
+    [
+     70.26,
+     14.15,
+     -21.9
+    ]
+   ],
+   "length": 13.784,
+   "center": [
+    66.46,
+    14.15,
+    -16.15
+   ],
+   "difficulty": "Normal",
+   "canSpawnFlying": true,
+   "canSpawnSmallGround": true,
+   "canSpawnBigGround": true,
+   "sharedPaths": [
+    "Spawn 6",
+    "Spawn 4 Air",
+    "Spawn 5"
+   ],
+   "separatedPaths": [
+    "Spawn 2 Air",
+    "Spawn 1 Air",
+    "Spawn 1",
+    "Spawn 2"
+   ]
+  },
+  {
+   "tf": 6158,
+   "name": "Spawn 2",
+   "path": "ES Uferwind Lightning Staff/Spawn 2",
+   "points": [
+    [
+     -96.26,
+     14.15,
+     -5.84
+    ],
+    [
+     -91.4,
+     14.15,
+     5.93
+    ]
+   ],
+   "length": 12.734,
+   "center": [
+    -93.83,
+    14.15,
+    0.045
+   ],
+   "difficulty": "Normal",
+   "canSpawnFlying": true,
+   "canSpawnSmallGround": true,
+   "canSpawnBigGround": true,
+   "sharedPaths": [
+    "Spawn 1",
+    "Spawn 3"
+   ],
+   "separatedPaths": [
+    "Spawn 2 Air",
+    "Spawn 3 Air",
+    "Spawn 4 Air",
+    "Spawn 6",
+    "Spawn 7"
+   ]
+  },
+  {
+   "tf": 6128,
+   "name": "Spawn 1",
+   "path": "ES Uferwind Lightning Staff/Spawn 1",
+   "points": [
+    [
+     -82.97,
+     14.15,
+     -92.87
+    ],
+    [
+     -97.42,
+     14.15,
+     -80.51
+    ],
+    [
+     -109.2,
+     14.15,
+     -56.87
+    ],
+    [
+     -105.23,
+     14.15,
+     -35.4
+    ]
+   ],
+   "length": 67.261,
+   "center": [
+    -98.705,
+    14.15,
+    -66.412
+   ],
+   "difficulty": "Normal",
+   "canSpawnFlying": true,
+   "canSpawnSmallGround": true,
+   "canSpawnBigGround": true,
+   "sharedPaths": [
+    "Spawn 2"
+   ],
+   "separatedPaths": [
+    "Spawn 7",
+    "Spawn 3 Air",
+    "Spawn 4 Air",
+    "Spawn 6"
+   ]
+  },
+  {
+   "tf": 6318,
+   "name": "Spawn 4",
+   "path": "ES Uferwind Lightning Staff/Spawn 4",
+   "points": [
+    [
+     -41.09,
+     14.15,
+     34.3
+    ],
+    [
+     -25.95,
+     14.15,
+     37.11
+    ]
+   ],
+   "length": 15.399,
+   "center": [
+    -33.52,
+    14.15,
+    35.705
+   ],
+   "difficulty": "Normal",
+   "canSpawnFlying": true,
+   "canSpawnSmallGround": true,
+   "canSpawnBigGround": true,
+   "sharedPaths": [
+    "Spawn 3",
+    "Spawn 5"
+   ],
+   "separatedPaths": [
+    "Spawn 2 Air",
+    "Spawn 3 Air",
+    "Spawn 1 Air"
+   ]
+  },
+  {
+   "tf": 7181,
+   "name": "Spawn 5",
+   "path": "ES Uferwind Lightning Staff/Spawn 5",
+   "points": [
+    [
+     13.76,
+     14.15,
+     34.83
+    ],
+    [
+     26.13,
+     14.15,
+     28.77
+    ]
+   ],
+   "length": 13.775,
+   "center": [
+    19.945,
+    14.15,
+    31.8
+   ],
+   "difficulty": "Normal",
+   "canSpawnFlying": true,
+   "canSpawnSmallGround": true,
+   "canSpawnBigGround": true,
+   "sharedPaths": [
+    "Spawn 4",
+    "Spawn 6",
+    "Spawn 7"
+   ],
+   "separatedPaths": [
+    "Spawn 2 Air",
+    "Spawn 3 Air",
+    "Spawn 1 Air"
+   ]
+  }
+ ],
+ "enemies": {
+  "resources.assets:6452": {
+   "name": "E Weakling",
+   "displayName": "Peasant",
+   "description": "Peasants equipped with clubs. Not an enemy to worry about, unless they appear in bigger numbers.",
+   "maxHp": 8.7,
+   "tags": [
+    "EnemyOwned",
+    "MeeleFighter",
+    "NaturallyVulnerableToSplash",
+    "Humanoid"
+   ],
+   "coinDrop": 0,
+   "speed": 4.0,
+   "attacks": [
+    {
+     "component": "AutoAttack",
+     "range": 3.0,
+     "cooldown": 1.0,
+     "baseDamage": 1.0,
+     "dps": 1.0,
+     "weapon": "E Weakling",
+     "manual": false
+    }
+   ],
+   "components": [
+    "Seeker",
+    "RVOController",
+    "TaggedObject",
+    "Hp",
+    "PathfindMovementEnemy",
+    "AutoAttack",
+    "FunnelModifier",
+    "SharpCornerMidigator",
+    "ScreenMarkerIcon"
+   ],
+   "prefab": "resources.assets:6452"
+  },
+  "resources.assets:6459": {
+   "name": "E Racer",
+   "displayName": "Racer",
+   "description": "Racers are fast rolling monsters that are not messing around. They aim right for your castle center and are somewhat armored against attacks from the player character.",
+   "maxHp": 35.0,
+   "tags": [
+    "EnemyOwned",
+    "MeeleFighter",
+    "TakesReducedDamageFromPlayerAttacks",
+    "FastMoving",
+    "Monster"
+   ],
+   "coinDrop": 0,
+   "speed": 10.0,
+   "attacks": [
+    {
+     "component": "AutoAttack",
+     "range": 3.5,
+     "cooldown": 1.0,
+     "baseDamage": 2.5,
+     "dps": 2.5,
+     "weapon": "E Racer",
+     "manual": false
+    }
+   ],
+   "components": [
+    "Seeker",
+    "RVOController",
+    "TaggedObject",
+    "Hp",
+    "PathfindMovementEnemy",
+    "AutoAttack",
+    "FunnelModifier",
+    "SharpCornerMidigator",
+    "ScreenMarkerIcon"
+   ],
+   "prefab": "resources.assets:6459"
+  },
+  "resources.assets:6458": {
+   "name": "E Hunterling",
+   "displayName": "Hunterling",
+   "description": "Hunterlings are incredibly fast and dangerous monsters with the sole aim of chasing you down. They can smell your royal blood all across the entire kingdom.",
+   "maxHp": 30.0,
+   "tags": [
+    "EnemyOwned",
+    "MeeleFighter",
+    "FastMoving",
+    "Monster",
+    "NaturallyVulnerableToSplash"
+   ],
+   "coinDrop": 0,
+   "speed": 10.0,
+   "attacks": [
+    {
+     "component": "AutoAttack",
+     "range": 3.5,
+     "cooldown": 0.5,
+     "baseDamage": 5.0,
+     "dps": 10.0,
+     "weapon": "E Hunterling",
+     "manual": false
+    }
+   ],
+   "components": [
+    "Seeker",
+    "RVOController",
+    "TaggedObject",
+    "Hp",
+    "PathfindMovementEnemy",
+    "AutoAttack",
+    "FunnelModifier",
+    "SharpCornerMidigator",
+    "ScreenMarkerIcon"
+   ],
+   "prefab": "resources.assets:6458"
+  },
+  "resources.assets:6451": {
+   "name": "E Ogre",
+   "displayName": "Ogre",
+   "description": "Ogres are huge melee warriors that really pack a punch. Hey! Due to their human heritage, ogres aren't monsters though (everybody knows that, duh).",
+   "maxHp": 200.0,
+   "tags": [
+    "EnemyOwned",
+    "MeeleFighter",
+    "NaturallyHighHealthTarget",
+    "Humanoid"
+   ],
+   "coinDrop": 0,
+   "speed": 4.0,
+   "attacks": [
+    {
+     "component": "AutoAttack",
+     "range": 3.0,
+     "cooldown": 1.0,
+     "baseDamage": 20.0,
+     "dps": 20.0,
+     "weapon": "E Ogre",
+     "manual": false
+    }
+   ],
+   "components": [
+    "Seeker",
+    "RVOController",
+    "TaggedObject",
+    "Hp",
+    "PathfindMovementEnemy",
+    "AutoAttack",
+    "FunnelModifier",
+    "SharpCornerMidigator",
+    "ScreenMarkerIcon"
+   ],
+   "prefab": "resources.assets:6451"
+  },
+  "resources.assets:5073": {
+   "name": "E Fury",
+   "displayName": "Fury",
+   "description": "A large flying monster that focusses on destroying your defenses. Their projectiles are quite slow and easy to dodge but wreak havoc when they hit.",
+   "maxHp": 75.0,
+   "tags": [
+    "EnemyOwned",
+    "RangedFighter",
+    "Flying",
+    "Monster"
+   ],
+   "coinDrop": 0,
+   "speed": 3.0,
+   "attacks": [
+    {
+     "component": "AutoAttack",
+     "range": 15.0,
+     "cooldown": 4.0,
+     "baseDamage": 30.0,
+     "dps": 7.5,
+     "weapon": "E Fury",
+     "manual": false
+    }
+   ],
+   "components": [
+    "Seeker",
+    "RVOController",
+    "TaggedObject",
+    "Hp",
+    "PathfindMovementEnemy",
+    "AutoAttack",
+    "FunnelModifier",
+    "SharpCornerMidigator",
+    "ScreenMarkerIcon"
+   ],
+   "prefab": "resources.assets:5073"
+  },
+  "resources.assets:5076": {
+   "name": "E Catapult",
+   "displayName": "Catapult",
+   "description": "Catapults are siege units that deal massive damage to your buildings from afar. Your only chance is to get close and destroy them before they demolish your walls.",
+   "maxHp": 45.0,
+   "tags": [
+    "EnemyOwned",
+    "RangedFighter",
+    "SiegeWeapon"
+   ],
+   "coinDrop": 0,
+   "speed": 2.0,
+   "attacks": [
+    {
+     "component": "AutoAttack",
+     "range": 26.4,
+     "cooldown": 5.0,
+     "baseDamage": 150.0,
+     "dps": 30.0,
+     "weapon": "E Catapult",
+     "manual": false
+    }
+   ],
+   "components": [
+    "Seeker",
+    "RVOController",
+    "TaggedObject",
+    "Hp",
+    "PathfindMovementEnemy",
+    "AutoAttack",
+    "FunnelModifier",
+    "SharpCornerMidigator",
+    "ScreenMarkerIcon"
+   ],
+   "prefab": "resources.assets:5076"
+  },
+  "resources.assets:6473": {
+   "name": "E LongSpear",
+   "displayName": "Pikes",
+   "description": "Equipped with long spears. Your horse is slowed and you take additional damage when riding into them, even more so when galloping. Better try to stay out of their range.",
+   "maxHp": 25.0,
+   "tags": [
+    "EnemyOwned",
+    "MeeleFighter",
+    "VulnerableVsRanged",
+    "NaturallyVulnerableToSplash",
+    "Humanoid"
+   ],
+   "coinDrop": 0,
+   "speed": 5.0,
+   "attacks": [
+    {
+     "component": "AutoAttack",
+     "range": 6.0,
+     "cooldown": 1.0,
+     "baseDamage": 3.5,
+     "dps": 3.5,
+     "weapon": "E LongSpear",
+     "manual": false
+    }
+   ],
+   "components": [
+    "Seeker",
+    "RVOController",
+    "TaggedObject",
+    "Hp",
+    "PathfindMovementEnemy",
+    "AutoAttack",
+    "FunnelModifier",
+    "SharpCornerMidigator",
+    "ScreenMarkerIcon",
+    "DamagePlayerWhenEnteringRange"
+   ],
+   "prefab": "resources.assets:6473"
+  },
+  "resources.assets:5072": {
+   "name": "E Ram",
+   "displayName": "Ram",
+   "description": "Rams are siege units with a ton of health looking to tear down your walls and buildings. Furthermore, they are armored against ranged attacks.",
+   "maxHp": 250.0,
+   "tags": [
+    "EnemyOwned",
+    "MeeleFighter",
+    "SiegeWeapon",
+    "ArmoredAgainstRanged",
+    "NaturallyHighHealthTarget",
+    "LargeUnit"
+   ],
+   "coinDrop": 0,
+   "speed": 2.25,
+   "attacks": [
+    {
+     "component": "AutoAttack",
+     "range": 3.5,
+     "cooldown": 2.0,
+     "baseDamage": 15.0,
+     "dps": 7.5,
+     "weapon": "E Ram",
+     "manual": false
+    }
+   ],
+   "components": [
+    "Seeker",
+    "RVOController",
+    "TaggedObject",
+    "Hp",
+    "PathfindMovementEnemy",
+    "AutoAttack",
+    "FunnelModifier",
+    "SharpCornerMidigator",
+    "ScreenMarkerIcon"
+   ],
+   "prefab": "resources.assets:5072"
+  }
+ },
+ "buildSlots": [
+  {
+   "id": 14202,
+   "name": "Wall Segment Variant (1)",
+   "path": "BUILDINGS/Wall Segment Variant (1)",
+   "building": "Wall",
+   "pos": [
+    -12.35,
+    17.15,
+    -46.95
+   ],
+   "yawDeg": 84.4,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 1,
+   "activator": {
+    "slot": 15711,
+    "building": "Wall",
+    "level": 0,
+    "upgradesThis": true
+   },
+   "interactorPos": [
+    -12.35,
+    17.15,
+    -46.95
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -12.35,
+     17.15,
+     -46.95
+    ],
+    "size": [
+     8.991,
+     3.781,
+     0.537
+    ],
+    "center": [
+     0.004,
+     1.89,
+     -0.158
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Stops enemies at the gates.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Level 2 Bonuses",
+         "components": [
+          "PerkSpawnOnDestroy"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 50,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 2500,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 55,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 14203,
+   "name": "Wall Segment Variant",
+   "path": "BUILDINGS/Wall Segment Variant",
+   "building": "Wall",
+   "pos": [
+    -5.65,
+    17.15,
+    -63.66
+   ],
+   "yawDeg": 52.1,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 1,
+   "activator": {
+    "slot": 15711,
+    "building": "Wall",
+    "level": 0,
+    "upgradesThis": true
+   },
+   "interactorPos": [
+    -5.65,
+    17.15,
+    -63.66
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -5.65,
+     17.15,
+     -63.66
+    ],
+    "size": [
+     8.991,
+     3.781,
+     0.537
+    ],
+    "center": [
+     0.004,
+     1.89,
+     -0.158
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Stops enemies at the gates.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Level 2 Bonuses",
+         "components": [
+          "PerkSpawnOnDestroy"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 50,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 2500,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 55,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 14813,
+   "name": "Castle Center Variant",
+   "path": "BUILDINGS/Castle Center Variant",
+   "building": "Castle Center",
+   "pos": [
+    10.2,
+    17.6,
+    -51.73
+   ],
+   "yawDeg": -18.6,
+   "active": true,
+   "startDeactivated": false,
+   "requiredRootLevelDifference": -100,
+   "activator": null,
+   "interactorPos": [
+    10.2,
+    17.6,
+    -51.73
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     10.2,
+     17.6,
+     -51.73
+    ],
+    "size": [
+     8.785,
+     9.697,
+     8.905
+    ],
+    "center": [
+     -0.042,
+     4.847,
+     -0.008
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Start a new Kingdom!",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Lvl 1 Perks",
+         "components": [
+          "OutpostPerk",
+          "LastStandPerk"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 7,
+     "coreCost": 0,
+     "tooltip": "Unlock more build options and choose an upgrade. ",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": {
+        "name": "Royal Training",
+        "tooltip": "+ 75% HP for your character\n+ 75% Overall damage output for your character",
+        "disabledInMode": true
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 200,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Royal Training",
+         "components": [
+          "UpgradePlayerHp",
+          "UpgradePlayerDmg"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Level 2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 35.0,
+           "cooldown": 2.0,
+           "baseDamage": 4.5,
+           "dps": 2.25,
+           "weapon": "P Castle Center",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkCooldownModifyer",
+          "PerkRangeModifyer"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Royal Training Mesh",
+         "components": []
+        }
+       ],
+       "disables": [
+        "Auto Attack Level 1"
+       ],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Builder's Guild",
+        "tooltip": "+ Every morning a level 1 house is automatically upgraded to a level 2 house (if available)\n+ 50% HP for your character",
+        "disabledInMode": true
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 200,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Builder's Guild",
+         "components": [
+          "UpgradePlayerHp",
+          "UpgradeBuildersGuild"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Level 2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 35.0,
+           "cooldown": 2.0,
+           "baseDamage": 4.5,
+           "dps": 2.25,
+           "weapon": "P Castle Center",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkCooldownModifyer",
+          "PerkRangeModifyer"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Builders Guild Mesh",
+         "components": []
+        }
+       ],
+       "disables": [
+        "Auto Attack Level 1"
+       ],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Magic Armor",
+        "tooltip": "+ Enemies that deal damage to you take a part of that damage themselves\n+ 150% HP for your character",
+        "disabledInMode": true
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 200,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Magic Armor",
+         "components": [
+          "UpgradePlayerHp",
+          "UpgradeMagicArmor"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Level 2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 35.0,
+           "cooldown": 2.0,
+           "baseDamage": 4.5,
+           "dps": 2.25,
+           "weapon": "P Castle Center",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkCooldownModifyer",
+          "PerkRangeModifyer"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Magic Armor Mesh",
+         "components": []
+        }
+       ],
+       "disables": [
+        "Auto Attack Level 1"
+       ],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Assassin's Training",
+        "tooltip": "+ If you manage to execute your weapon's special ability precisely when its last cooldown expires, the next cooldown is greatly reduced\n+ 100% Overall damage output for your character",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 200,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Assassin's Training",
+         "components": [
+          "UpgradePlayerDmg",
+          "UpgradeAssassinsTraining"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Level 2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 35.0,
+           "cooldown": 2.0,
+           "baseDamage": 4.5,
+           "dps": 2.25,
+           "weapon": "P Castle Center",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkCooldownModifyer",
+          "PerkRangeModifyer"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Assassins Training Mesh",
+         "components": []
+        }
+       ],
+       "disables": [
+        "Auto Attack Level 1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 20,
+     "coreCost": 0,
+     "tooltip": "Unlock more build options and choose an upgrade. ",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": {
+        "name": "Royal Mastery",
+        "tooltip": "+ 75% HP for your character\n+ 75% Overall damage output for your character",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Auto Attack Level 3",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 35.0,
+           "cooldown": 1.0,
+           "baseDamage": 4.5,
+           "dps": 4.5,
+           "weapon": "P Castle Center",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkCooldownModifyer",
+          "PerkRangeModifyer"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Royal Mastery",
+         "components": [
+          "UpgradePlayerHp",
+          "UpgradePlayerDmg"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Royal Mastery Mesh",
+         "components": []
+        }
+       ],
+       "disables": [
+        "Auto Attack Level 2"
+       ],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Commander",
+        "tooltip": "+ Units move faster while you command them\n+ You have a healing aura that heals allied units nearby\n+ 30% Overall damage output for your character",
+        "disabledInMode": true
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Commander",
+         "components": [
+          "UpgradeCommander"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Level 3",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 35.0,
+           "cooldown": 1.0,
+           "baseDamage": 4.5,
+           "dps": 4.5,
+           "weapon": "P Castle Center",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkCooldownModifyer",
+          "PerkRangeModifyer"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Commander Mesh",
+         "components": []
+        }
+       ],
+       "disables": [
+        "Auto Attack Level 2"
+       ],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Castle Up",
+        "tooltip": "+ The upgrade costs of all walls and towers drop by 1 every night (but never lower than 1, initial build costs are unaffected)",
+        "disabledInMode": true
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Castle Up",
+         "components": [
+          "UpgradeCastleUp",
+          "UpgradePlayerHp"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Level 3",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 35.0,
+           "cooldown": 1.0,
+           "baseDamage": 4.5,
+           "dps": 4.5,
+           "weapon": "P Castle Center",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkCooldownModifyer",
+          "PerkRangeModifyer"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Castle Up Mesh",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer",
+          "BoxCollider"
+         ]
+        }
+       ],
+       "disables": [
+        "Auto Attack Level 2"
+       ],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Godly Curse",
+        "tooltip": "+ If you lock in a target, that target receives 50% more damage from all sources.\n+ 75% HP for your character",
+        "disabledInMode": true
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Godly Curse",
+         "components": [
+          "UpgradePlayerHp",
+          "UpgradeGodlyCurse"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Level 3",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 35.0,
+           "cooldown": 1.0,
+           "baseDamage": 4.5,
+           "dps": 4.5,
+           "weapon": "P Castle Center",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkCooldownModifyer",
+          "PerkRangeModifyer"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Godly Curse Mesh",
+         "components": []
+        }
+       ],
+       "disables": [
+        "Auto Attack Level 2"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 4,
+     "cost": 100,
+     "coreCost": 0,
+     "tooltip": "",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": {
+        "name": "Empire Towers",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 1000,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Empire Towers",
+         "components": [
+          "EmpireUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Empire Troups",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 1000,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Empire Troups",
+         "components": [
+          "EmpireUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Empire Armor",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 1000,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Empire Armor",
+         "components": [
+          "EmpireUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Empire Growth",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 20,
+       "coreIncome": 0,
+       "hpChange": 1000,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Empire Growth",
+         "components": [
+          "EmpireUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 130,
+   "totalCoreCost": 0,
+   "maxIncome": 20
+  },
+  {
+   "id": 15179,
+   "name": "Wall Wide Variant (6)",
+   "path": "BUILDINGS/Wall Wide Variant (6)",
+   "building": "Wall",
+   "pos": [
+    43.5,
+    13.49,
+    -8.3
+   ],
+   "yawDeg": -130.9,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 1,
+   "activator": {
+    "slot": 15717,
+    "building": "Wall",
+    "level": 0,
+    "upgradesThis": true
+   },
+   "interactorPos": [
+    43.5,
+    13.49,
+    -8.3
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     43.5,
+     13.49,
+     -8.3
+    ],
+    "size": [
+     10.786,
+     3.781,
+     0.537
+    ],
+    "center": [
+     0.035,
+     1.89,
+     -0.158
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Stops enemies at the gates.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Level 2 Bonuses",
+         "components": [
+          "PerkSpawnOnDestroy"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 50,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 2500,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 55,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 15183,
+   "name": "Wall Wide Variant (14)",
+   "path": "BUILDINGS/Wall Wide Variant (14)",
+   "building": "Wall",
+   "pos": [
+    -71.4,
+    13.49,
+    -66.4
+   ],
+   "yawDeg": 53.9,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 1,
+   "activator": {
+    "slot": 15717,
+    "building": "Wall",
+    "level": 0,
+    "upgradesThis": true
+   },
+   "interactorPos": [
+    -71.4,
+    13.49,
+    -66.4
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -71.4,
+     13.49,
+     -66.4
+    ],
+    "size": [
+     10.786,
+     3.781,
+     0.537
+    ],
+    "center": [
+     0.035,
+     1.89,
+     -0.158
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Stops enemies at the gates.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Level 2 Bonuses",
+         "components": [
+          "PerkSpawnOnDestroy"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 50,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 2500,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 55,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 15186,
+   "name": "Wall Wide Variant (11)",
+   "path": "BUILDINGS/Wall Wide Variant (11)",
+   "building": "Wall",
+   "pos": [
+    -86.53,
+    13.49,
+    -20.47
+   ],
+   "yawDeg": 112.2,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 1,
+   "activator": {
+    "slot": 15717,
+    "building": "Wall",
+    "level": 0,
+    "upgradesThis": true
+   },
+   "interactorPos": [
+    -86.53,
+    13.49,
+    -20.47
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -86.53,
+     13.49,
+     -20.47
+    ],
+    "size": [
+     10.786,
+     3.781,
+     0.537
+    ],
+    "center": [
+     0.035,
+     1.89,
+     -0.158
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Stops enemies at the gates.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Level 2 Bonuses",
+         "components": [
+          "PerkSpawnOnDestroy"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 50,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 2500,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 55,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 15187,
+   "name": "Wall Wide Variant (5)",
+   "path": "BUILDINGS/Wall Wide Variant (5)",
+   "building": "Wall",
+   "pos": [
+    28.5,
+    13.49,
+    5.9
+   ],
+   "yawDeg": -150.8,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 1,
+   "activator": {
+    "slot": 15717,
+    "building": "Wall",
+    "level": 0,
+    "upgradesThis": true
+   },
+   "interactorPos": [
+    28.5,
+    13.49,
+    5.9
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     28.5,
+     13.49,
+     5.9
+    ],
+    "size": [
+     10.786,
+     3.781,
+     0.537
+    ],
+    "center": [
+     0.035,
+     1.89,
+     -0.158
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Stops enemies at the gates.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Level 2 Bonuses",
+         "components": [
+          "PerkSpawnOnDestroy"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 50,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 2500,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 55,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 15192,
+   "name": "Wall Wide Variant (13)",
+   "path": "BUILDINGS/Wall Wide Variant (13)",
+   "building": "Wall",
+   "pos": [
+    -85.1,
+    13.49,
+    -50.7
+   ],
+   "yawDeg": 53.9,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 1,
+   "activator": {
+    "slot": 15717,
+    "building": "Wall",
+    "level": 0,
+    "upgradesThis": true
+   },
+   "interactorPos": [
+    -85.1,
+    13.49,
+    -50.7
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -85.1,
+     13.49,
+     -50.7
+    ],
+    "size": [
+     10.786,
+     3.781,
+     0.537
+    ],
+    "center": [
+     0.035,
+     1.89,
+     -0.158
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Stops enemies at the gates.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Level 2 Bonuses",
+         "components": [
+          "PerkSpawnOnDestroy"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 50,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 2500,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 55,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 15194,
+   "name": "Wall Wide Variant (7)",
+   "path": "BUILDINGS/Wall Wide Variant (7)",
+   "building": "Wall",
+   "pos": [
+    49.1,
+    13.49,
+    -17.4
+   ],
+   "yawDeg": -112.1,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 1,
+   "activator": {
+    "slot": 15717,
+    "building": "Wall",
+    "level": 0,
+    "upgradesThis": true
+   },
+   "interactorPos": [
+    49.1,
+    13.49,
+    -17.4
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     49.1,
+     13.49,
+     -17.4
+    ],
+    "size": [
+     10.786,
+     3.781,
+     0.537
+    ],
+    "center": [
+     0.035,
+     1.89,
+     -0.158
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Stops enemies at the gates.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Level 2 Bonuses",
+         "components": [
+          "PerkSpawnOnDestroy"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 50,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 2500,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 55,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 15195,
+   "name": "Wall Wide Variant (1)",
+   "path": "BUILDINGS/Wall Wide Variant (1)",
+   "building": "Wall",
+   "pos": [
+    -30.79,
+    13.49,
+    15.28
+   ],
+   "yawDeg": 150.5,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 1,
+   "activator": {
+    "slot": 15717,
+    "building": "Wall",
+    "level": 0,
+    "upgradesThis": true
+   },
+   "interactorPos": [
+    -30.79,
+    13.49,
+    15.28
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -30.79,
+     13.49,
+     15.28
+    ],
+    "size": [
+     10.786,
+     3.781,
+     0.537
+    ],
+    "center": [
+     0.035,
+     1.89,
+     -0.158
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Stops enemies at the gates.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Level 2 Bonuses",
+         "components": [
+          "PerkSpawnOnDestroy"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 50,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 2500,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 55,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 15196,
+   "name": "Wall Wide Variant (4)",
+   "path": "BUILDINGS/Wall Wide Variant (4)",
+   "building": "Wall",
+   "pos": [
+    18.6,
+    13.49,
+    9.8
+   ],
+   "yawDeg": -168.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 1,
+   "activator": {
+    "slot": 15717,
+    "building": "Wall",
+    "level": 0,
+    "upgradesThis": true
+   },
+   "interactorPos": [
+    18.6,
+    13.49,
+    9.8
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     18.6,
+     13.49,
+     9.8
+    ],
+    "size": [
+     10.786,
+     3.781,
+     0.537
+    ],
+    "center": [
+     0.035,
+     1.89,
+     -0.158
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Stops enemies at the gates.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Level 2 Bonuses",
+         "components": [
+          "PerkSpawnOnDestroy"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 50,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 2500,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 55,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 15197,
+   "name": "Wall Wide Variant (15)",
+   "path": "BUILDINGS/Wall Wide Variant (15)",
+   "building": "Wall",
+   "pos": [
+    -63.8,
+    13.49,
+    -73.6
+   ],
+   "yawDeg": 32.4,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 1,
+   "activator": {
+    "slot": 15717,
+    "building": "Wall",
+    "level": 0,
+    "upgradesThis": true
+   },
+   "interactorPos": [
+    -63.8,
+    13.49,
+    -73.6
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -63.8,
+     13.49,
+     -73.6
+    ],
+    "size": [
+     10.786,
+     3.781,
+     0.537
+    ],
+    "center": [
+     0.035,
+     1.89,
+     -0.158
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Stops enemies at the gates.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Level 2 Bonuses",
+         "components": [
+          "PerkSpawnOnDestroy"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 50,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 2500,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 55,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 15198,
+   "name": "Wall Wide Variant (2)",
+   "path": "BUILDINGS/Wall Wide Variant (2)",
+   "building": "Wall",
+   "pos": [
+    -10.86,
+    13.49,
+    19.31
+   ],
+   "yawDeg": -174.9,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 1,
+   "activator": {
+    "slot": 15717,
+    "building": "Wall",
+    "level": 0,
+    "upgradesThis": true
+   },
+   "interactorPos": [
+    -10.86,
+    13.49,
+    19.31
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -10.86,
+     13.49,
+     19.31
+    ],
+    "size": [
+     10.786,
+     3.781,
+     0.537
+    ],
+    "center": [
+     0.035,
+     1.89,
+     -0.158
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Stops enemies at the gates.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Level 2 Bonuses",
+         "components": [
+          "PerkSpawnOnDestroy"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 50,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 2500,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 55,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 15200,
+   "name": "Wall Wide Variant (3)",
+   "path": "BUILDINGS/Wall Wide Variant (3)",
+   "building": "Wall",
+   "pos": [
+    -0.63,
+    13.49,
+    16.93
+   ],
+   "yawDeg": -158.6,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 1,
+   "activator": {
+    "slot": 15717,
+    "building": "Wall",
+    "level": 0,
+    "upgradesThis": true
+   },
+   "interactorPos": [
+    -0.63,
+    13.49,
+    16.93
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -0.63,
+     13.49,
+     16.93
+    ],
+    "size": [
+     10.786,
+     3.781,
+     0.537
+    ],
+    "center": [
+     0.035,
+     1.89,
+     -0.158
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Stops enemies at the gates.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Level 2 Bonuses",
+         "components": [
+          "PerkSpawnOnDestroy"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 50,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 2500,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 55,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 15202,
+   "name": "Wall Wide Variant (10)",
+   "path": "BUILDINGS/Wall Wide Variant (10)",
+   "building": "Wall",
+   "pos": [
+    -80.2,
+    13.49,
+    -12.9
+   ],
+   "yawDeg": 150.5,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 1,
+   "activator": {
+    "slot": 15717,
+    "building": "Wall",
+    "level": 0,
+    "upgradesThis": true
+   },
+   "interactorPos": [
+    -80.2,
+    13.49,
+    -12.9
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -80.2,
+     13.49,
+     -12.9
+    ],
+    "size": [
+     10.786,
+     3.781,
+     0.537
+    ],
+    "center": [
+     0.035,
+     1.89,
+     -0.158
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Stops enemies at the gates.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Level 2 Bonuses",
+         "components": [
+          "PerkSpawnOnDestroy"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 50,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 2500,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 55,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 15205,
+   "name": "Wall Wide Variant (9)",
+   "path": "BUILDINGS/Wall Wide Variant (9)",
+   "building": "Wall",
+   "pos": [
+    -68.8,
+    13.49,
+    1.5
+   ],
+   "yawDeg": 148.3,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 1,
+   "activator": {
+    "slot": 15717,
+    "building": "Wall",
+    "level": 0,
+    "upgradesThis": true
+   },
+   "interactorPos": [
+    -68.8,
+    13.49,
+    1.5
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -68.8,
+     13.49,
+     1.5
+    ],
+    "size": [
+     10.786,
+     3.781,
+     0.537
+    ],
+    "center": [
+     0.035,
+     1.89,
+     -0.158
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Stops enemies at the gates.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Level 2 Bonuses",
+         "components": [
+          "PerkSpawnOnDestroy"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 50,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 2500,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 55,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 15206,
+   "name": "Wall Wide Variant (8)",
+   "path": "BUILDINGS/Wall Wide Variant (8)",
+   "building": "Wall",
+   "pos": [
+    -60.2,
+    13.49,
+    7.8
+   ],
+   "yawDeg": 140.2,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 1,
+   "activator": {
+    "slot": 15717,
+    "building": "Wall",
+    "level": 0,
+    "upgradesThis": true
+   },
+   "interactorPos": [
+    -60.2,
+    13.49,
+    7.8
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -60.2,
+     13.49,
+     7.8
+    ],
+    "size": [
+     10.786,
+     3.781,
+     0.537
+    ],
+    "center": [
+     0.035,
+     1.89,
+     -0.158
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Stops enemies at the gates.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Level 2 Bonuses",
+         "components": [
+          "PerkSpawnOnDestroy"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 50,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 2500,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 55,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 15208,
+   "name": "Wall Wide Variant",
+   "path": "BUILDINGS/Wall Wide Variant",
+   "building": "Wall",
+   "pos": [
+    -41.108,
+    13.49,
+    12.92
+   ],
+   "yawDeg": 180.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 1,
+   "activator": {
+    "slot": 15717,
+    "building": "Wall",
+    "level": 0,
+    "upgradesThis": true
+   },
+   "interactorPos": [
+    -41.108,
+    13.49,
+    12.92
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -41.108,
+     13.49,
+     12.92
+    ],
+    "size": [
+     10.786,
+     3.781,
+     0.537
+    ],
+    "center": [
+     0.035,
+     1.89,
+     -0.158
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Stops enemies at the gates.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Level 2 Bonuses",
+         "components": [
+          "PerkSpawnOnDestroy"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 50,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 2500,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 55,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 15210,
+   "name": "Wall Wide Variant (12)",
+   "path": "BUILDINGS/Wall Wide Variant (12)",
+   "building": "Wall",
+   "pos": [
+    -88.5,
+    13.49,
+    -41.0
+   ],
+   "yawDeg": 87.6,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 1,
+   "activator": {
+    "slot": 15717,
+    "building": "Wall",
+    "level": 0,
+    "upgradesThis": true
+   },
+   "interactorPos": [
+    -88.5,
+    13.49,
+    -41.0
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -88.5,
+     13.49,
+     -41.0
+    ],
+    "size": [
+     10.786,
+     3.781,
+     0.537
+    ],
+    "center": [
+     0.035,
+     1.89,
+     -0.158
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Stops enemies at the gates.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Level 2 Bonuses",
+         "components": [
+          "PerkSpawnOnDestroy"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 50,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 2500,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 55,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 15486,
+   "name": "Bridge Variant",
+   "path": "BUILDINGS/Bridge Variant",
+   "building": "Bridge",
+   "pos": [
+    21.2,
+    17.05,
+    -72.46
+   ],
+   "yawDeg": -40.5,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 14813,
+    "building": "Castle Center",
+    "level": 5,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    21.2,
+    17.05,
+    -72.46
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     21.2,
+     17.05,
+     -72.46
+    ],
+    "size": [
+     3.192,
+     2.884,
+     20.64
+    ],
+    "center": [
+     0.119,
+     1.439,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "Gives access to a new area",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [
+        "Block While Unbuilt"
+       ],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 2,
+   "totalCoreCost": 0,
+   "maxIncome": 1
+  },
+  {
+   "id": 15487,
+   "name": "Bridge Variant (1)",
+   "path": "BUILDINGS/Bridge Variant (1)",
+   "building": "Bridge",
+   "pos": [
+    -9.2,
+    13.8,
+    -114.4
+   ],
+   "yawDeg": -93.4,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 14813,
+    "building": "Castle Center",
+    "level": 5,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -9.2,
+    13.8,
+    -114.4
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -9.2,
+     13.8,
+     -114.4
+    ],
+    "size": [
+     3.192,
+     2.884,
+     20.64
+    ],
+    "center": [
+     0.119,
+     1.439,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "Gives access to a new area",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [
+        "Block While Unbuilt"
+       ],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 2,
+   "totalCoreCost": 0,
+   "maxIncome": 1
+  },
+  {
+   "id": 15488,
+   "name": "Bridge Variant (2)",
+   "path": "BUILDINGS/Bridge Variant (2)",
+   "building": "Bridge",
+   "pos": [
+    9.69,
+    13.9,
+    -102.58
+   ],
+   "yawDeg": -151.7,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 14813,
+    "building": "Castle Center",
+    "level": 5,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    9.69,
+    13.9,
+    -102.58
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     9.69,
+     13.9,
+     -102.58
+    ],
+    "size": [
+     3.192,
+     2.884,
+     20.64
+    ],
+    "center": [
+     0.119,
+     1.439,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "Gives access to a new area",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [
+        "Block While Unbuilt"
+       ],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 2,
+   "totalCoreCost": 0,
+   "maxIncome": 1
+  },
+  {
+   "id": 15701,
+   "name": "Gate Wide Variant (5)",
+   "path": "BUILDINGS/Gate Wide Variant (5)",
+   "building": "Wall",
+   "pos": [
+    -74.49,
+    13.49,
+    -5.64
+   ],
+   "yawDeg": 106.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 1,
+   "activator": {
+    "slot": 15717,
+    "building": "Wall",
+    "level": 0,
+    "upgradesThis": true
+   },
+   "interactorPos": [
+    -74.49,
+    13.49,
+    -5.64
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -74.49,
+     13.49,
+     -5.64
+    ],
+    "size": [
+     10.04,
+     4.508,
+     0.537
+    ],
+    "center": [
+     -0.009,
+     2.254,
+     -0.158
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Stops enemies at the gates.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Gate Opener Lvl 2",
+         "components": [
+          "GateOpener",
+          "PerkSpawnOnDestroy"
+         ]
+        }
+       ],
+       "disables": [
+        "Gate Opener Lvl 1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 50,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 2500,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 56,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 15703,
+   "name": "Gate Wide Variant (8)",
+   "path": "BUILDINGS/Gate Wide Variant (8)",
+   "building": "Wall",
+   "pos": [
+    -56.03,
+    13.49,
+    -80.11
+   ],
+   "yawDeg": 48.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 1,
+   "activator": {
+    "slot": 15717,
+    "building": "Wall",
+    "level": 0,
+    "upgradesThis": true
+   },
+   "interactorPos": [
+    -56.03,
+    13.49,
+    -80.11
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -56.03,
+     13.49,
+     -80.11
+    ],
+    "size": [
+     10.04,
+     4.508,
+     0.537
+    ],
+    "center": [
+     -0.009,
+     2.254,
+     -0.158
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Stops enemies at the gates.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Gate Opener Lvl 2",
+         "components": [
+          "GateOpener",
+          "PerkSpawnOnDestroy"
+         ]
+        }
+       ],
+       "disables": [
+        "Gate Opener Lvl 1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 50,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 2500,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 56,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 15707,
+   "name": "Gate Wide Variant (6)",
+   "path": "BUILDINGS/Gate Wide Variant (6)",
+   "building": "Wall",
+   "pos": [
+    -88.7,
+    13.49,
+    -30.51
+   ],
+   "yawDeg": 90.1,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 1,
+   "activator": {
+    "slot": 15717,
+    "building": "Wall",
+    "level": 0,
+    "upgradesThis": true
+   },
+   "interactorPos": [
+    -88.7,
+    13.49,
+    -30.51
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -88.7,
+     13.49,
+     -30.51
+    ],
+    "size": [
+     10.04,
+     4.508,
+     0.537
+    ],
+    "center": [
+     -0.009,
+     2.254,
+     -0.158
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Stops enemies at the gates.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Gate Opener Lvl 2",
+         "components": [
+          "GateOpener",
+          "PerkSpawnOnDestroy"
+         ]
+        }
+       ],
+       "disables": [
+        "Gate Opener Lvl 1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 50,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 2500,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 56,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 15708,
+   "name": "Gate Wide Variant",
+   "path": "BUILDINGS/Gate Wide Variant",
+   "building": "Wall",
+   "pos": [
+    -51.5,
+    13.49,
+    12.0
+   ],
+   "yawDeg": 169.3,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 1,
+   "activator": {
+    "slot": 15717,
+    "building": "Wall",
+    "level": 0,
+    "upgradesThis": true
+   },
+   "interactorPos": [
+    -51.5,
+    13.49,
+    12.0
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -51.5,
+     13.49,
+     12.0
+    ],
+    "size": [
+     10.04,
+     4.508,
+     0.537
+    ],
+    "center": [
+     -0.009,
+     2.254,
+     -0.158
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Stops enemies at the gates.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Gate Opener Lvl 2",
+         "components": [
+          "GateOpener",
+          "PerkSpawnOnDestroy"
+         ]
+        }
+       ],
+       "disables": [
+        "Gate Opener Lvl 1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 50,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 2500,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 56,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 15709,
+   "name": "Gate Wide Variant (2)",
+   "path": "BUILDINGS/Gate Wide Variant (2)",
+   "building": "Wall",
+   "pos": [
+    8.85,
+    13.49,
+    12.79
+   ],
+   "yawDeg": -154.7,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 1,
+   "activator": {
+    "slot": 15717,
+    "building": "Wall",
+    "level": 0,
+    "upgradesThis": true
+   },
+   "interactorPos": [
+    8.85,
+    13.49,
+    12.79
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     8.85,
+     13.49,
+     12.79
+    ],
+    "size": [
+     10.04,
+     4.508,
+     0.537
+    ],
+    "center": [
+     -0.009,
+     2.254,
+     -0.158
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Stops enemies at the gates.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Gate Opener Lvl 2",
+         "components": [
+          "GateOpener",
+          "PerkSpawnOnDestroy"
+         ]
+        }
+       ],
+       "disables": [
+        "Gate Opener Lvl 1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 50,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 2500,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 56,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 15711,
+   "name": "Gate Wide Variant (9)",
+   "path": "BUILDINGS/Gate Wide Variant (9)",
+   "building": "Wall",
+   "pos": [
+    -10.32,
+    17.15,
+    -55.6
+   ],
+   "yawDeg": -112.7,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 1,
+   "activator": {
+    "slot": 14813,
+    "building": "Castle Center",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -10.32,
+    17.15,
+    -55.6
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -10.32,
+     17.15,
+     -55.6
+    ],
+    "size": [
+     10.04,
+     4.508,
+     0.537
+    ],
+    "center": [
+     -0.009,
+     2.254,
+     -0.158
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Stops enemies at the gates.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 5,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Gate Opener Lvl 2",
+         "components": [
+          "GateOpener",
+          "PerkSpawnOnDestroy"
+         ]
+        }
+       ],
+       "disables": [
+        "Gate Opener Lvl 1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 50,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 2500,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 58,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 15715,
+   "name": "Gate Wide Variant (4)",
+   "path": "BUILDINGS/Gate Wide Variant (4)",
+   "building": "Wall",
+   "pos": [
+    54.5,
+    13.49,
+    -26.1
+   ],
+   "yawDeg": -133.1,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 1,
+   "activator": {
+    "slot": 15717,
+    "building": "Wall",
+    "level": 0,
+    "upgradesThis": true
+   },
+   "interactorPos": [
+    54.5,
+    13.49,
+    -26.1
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     54.5,
+     13.49,
+     -26.1
+    ],
+    "size": [
+     10.04,
+     4.508,
+     0.537
+    ],
+    "center": [
+     -0.009,
+     2.254,
+     -0.158
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Stops enemies at the gates.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Gate Opener Lvl 2",
+         "components": [
+          "GateOpener",
+          "PerkSpawnOnDestroy"
+         ]
+        }
+       ],
+       "disables": [
+        "Gate Opener Lvl 1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 50,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 2500,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 56,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 15716,
+   "name": "Gate Wide Variant (3)",
+   "path": "BUILDINGS/Gate Wide Variant (3)",
+   "building": "Wall",
+   "pos": [
+    36.6,
+    13.49,
+    -0.5
+   ],
+   "yawDeg": -133.1,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 1,
+   "activator": {
+    "slot": 15717,
+    "building": "Wall",
+    "level": 0,
+    "upgradesThis": true
+   },
+   "interactorPos": [
+    36.6,
+    13.49,
+    -0.5
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     36.6,
+     13.49,
+     -0.5
+    ],
+    "size": [
+     10.04,
+     4.508,
+     0.537
+    ],
+    "center": [
+     -0.009,
+     2.254,
+     -0.158
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Stops enemies at the gates.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Gate Opener Lvl 2",
+         "components": [
+          "GateOpener",
+          "PerkSpawnOnDestroy"
+         ]
+        }
+       ],
+       "disables": [
+        "Gate Opener Lvl 1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 50,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 2500,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 56,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 15717,
+   "name": "Gate Wide Variant (1)",
+   "path": "BUILDINGS/Gate Wide Variant (1)",
+   "building": "Wall",
+   "pos": [
+    -21.18,
+    13.49,
+    18.87
+   ],
+   "yawDeg": 169.3,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 1,
+   "activator": {
+    "slot": 14813,
+    "building": "Castle Center",
+    "level": 2,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -21.18,
+    13.49,
+    18.87
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -21.18,
+     13.49,
+     18.87
+    ],
+    "size": [
+     10.04,
+     4.508,
+     0.537
+    ],
+    "center": [
+     -0.009,
+     2.254,
+     -0.158
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 15,
+     "coreCost": 0,
+     "tooltip": "Stops enemies at the gates.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 20,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Gate Opener Lvl 2",
+         "components": [
+          "GateOpener",
+          "PerkSpawnOnDestroy"
+         ]
+        }
+       ],
+       "disables": [
+        "Gate Opener Lvl 1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 50,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 2500,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 85,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  },
+  {
+   "id": 15719,
+   "name": "Gate Wide Variant (7)",
+   "path": "BUILDINGS/Gate Wide Variant (7)",
+   "building": "Wall",
+   "pos": [
+    -78.2,
+    13.49,
+    -58.5
+   ],
+   "yawDeg": 44.3,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 1,
+   "activator": {
+    "slot": 15717,
+    "building": "Wall",
+    "level": 0,
+    "upgradesThis": true
+   },
+   "interactorPos": [
+    -78.2,
+    13.49,
+    -58.5
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -78.2,
+     13.49,
+     -58.5
+    ],
+    "size": [
+     10.04,
+     4.508,
+     0.537
+    ],
+    "center": [
+     -0.009,
+     2.254,
+     -0.158
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Stops enemies at the gates.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Gate Opener Lvl 2",
+         "components": [
+          "GateOpener",
+          "PerkSpawnOnDestroy"
+         ]
+        }
+       ],
+       "disables": [
+        "Gate Opener Lvl 1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 50,
+     "coreCost": 0,
+     "tooltip": "More resistance against enemy attacks.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 2500,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 56,
+   "totalCoreCost": 0,
+   "maxIncome": 0
+  }
+ ],
+ "shrines": [],
+ "nighthorns": [],
+ "dayNight": [
+  {
+   "id": 15885,
+   "name": "Day Night Cycle",
+   "path": "LOCAL MANAGERS/Day Night Cycle",
+   "active": true,
+   "pos": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "sunriseTime": 3.0
+  }
+ ],
+ "autoDayNight": [],
+ "nightCall": [
+  {
+   "id": 14651,
+   "name": "UI Overlay Canvas",
+   "path": "LOCAL MANAGERS/UI Overlay Canvas",
+   "active": false,
+   "pos": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "nightCallTime": 2.0
+  }
+ ],
+ "castle": [
+  {
+   "id": 12678,
+   "name": "Building Parent",
+   "path": "BUILDINGS/Castle Center Variant/Building Parent",
+   "pos": [
+    10.2,
+    17.6,
+    -51.73
+   ],
+   "maxHp": 100.0,
+   "tags": [
+    "PlayerOwned",
+    "Building",
+    "InfrastructureEconomy",
+    "CastleCenter",
+    "PlayerOwnedPriorityTarget"
+   ]
+  }
+ ],
+ "heroes": [
+  {
+   "name": "Player Character",
+   "pos": [
+    0.7,
+    17.5,
+    -62.5
+   ],
+   "summary": {
+    "name": "Player Character",
+    "maxHp": 50.0,
+    "tags": [
+     "PlayerOwned",
+     "Player"
+    ],
+    "coinDrop": 0,
+    "components": [
+     "CharacterController",
+     "PlayerMovement",
+     "PlayerInteraction",
+     "RVOController",
+     "TaggedObject",
+     "Hp",
+     "PlayerHpRegen",
+     "AutoRevive",
+     "PlayerUpgradeManager",
+     "PlayerAttack",
+     "CommandUnits",
+     "PerkHpModifyer",
+     "PowerTowerPerk",
+     "SaveLoadEntity"
+    ]
+   },
+   "movement": {
+    "speed": 14.0,
+    "speedDuringDay": 18.2,
+    "sprintSpeed": 23.0,
+    "sprintSpeedDuringDay": 29.9,
+    "moveSpeedWhenDead": 6.0,
+    "gravity": -50.0,
+    "maxMeshRotationSpeed": 400.0,
+    "yFallThroughMapDetection": -30.0
+   },
+   "interaction": {
+    "coinMagnetRadius": 7.0,
+    "interactionRadius": 3.0
+   },
+   "command": {
+    "drowWaypointParticleCount": 100,
+    "attractRange": 6.0,
+    "graphNameOfPlayerUnits": "Player Units S",
+    "graphNameOfFlyingUnits": "Enemy Units Air",
+    "unitDistanceFromEachOther": 2.5,
+    "unitDistanceMoveStep": 0.5,
+    "maxPositioningRepeats": 50,
+    "holdToHoldPositionTime": 0.5,
+    "holdToSetUnitGroup": 1.0,
+    "commanderUnitMoveSpeedMulti": 1.6,
+    "commanderHoldHealthMulti": 1.2,
+    "commanderHoldDamageMulti": 1.2,
+    "groupHoldDelay": 0.2,
+    "commanding": false,
+    "canCommandUnitsInThisMode": true
+   }
+  }
+ ],
+ "units": {},
+ "summary": {
+  "nights": 8,
+  "enemiesTotal": 495,
+  "baseHpTotal": 11735.8,
+  "goldCoinsTotal": 70,
+  "flyingEnemies": 29,
+  "bossEnemies": 0,
+  "spawnLines": 11,
+  "buildSlots": 32,
+  "slotsByBuilding": {
+   "Wall": 28,
+   "Castle Center": 1,
+   "Bridge": 3
+  },
+  "hasHorn": false,
+  "shrines": 0,
+  "castleFound": true,
+  "enemyTypes": [
+   "E Catapult",
+   "E Fury",
+   "E Hunterling",
+   "E LongSpear",
+   "E Ogre",
+   "E Racer",
+   "E Ram",
+   "E Weakling"
+  ]
+ }
+}

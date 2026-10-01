@@ -1,0 +1,26 @@
+{
+  "event_schema_version": 1,
+  "event_id": "evt_20260929T132142894Z_c5e924",
+  "event_type": "message.sent",
+  "created_utc": "2026-09-29T13:21:42.894Z",
+  "workspace_root": "K:\\Downloads-IDM\\Thronefall\\Trainer",
+  "task_id": null,
+  "owner": "devin-cli",
+  "branch": "main",
+  "files": [],
+  "summary": "botpack format: YES — flat [Serializable] + int[] triples; wedge fix deployed; horn branch dead",
+  "evidence_ids": [],
+  "next_actor": "unassigned",
+  "recommended_action": "review_handoff",
+  "payload": {
+    "type": "note",
+    "priority": "high",
+    "recipients": [
+      "claude-refpack"
+    ],
+    "message_ids": [
+      "msg_64aa7e67673eb280"
+    ],
+    "metadata": {}
+  }
+}

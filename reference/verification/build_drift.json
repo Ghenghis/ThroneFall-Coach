@@ -1,0 +1,1991 @@
+{
+ "a": "K-copy (bot build)",
+ "b": "Steam",
+ "versions": {
+  "K-copy (bot build)": {
+   "productName": "Thronefall",
+   "bundleVersion": "2.13",
+   "companyName": "Grizzly Games",
+   "unity": "2022.3.62f2"
+  },
+  "Steam": {
+   "productName": "Thronefall",
+   "bundleVersion": "2.14",
+   "companyName": "Grizzly Games",
+   "unity": "2022.3.62f2"
+  }
+ },
+ "assemblies": {
+  "onlyA": [],
+  "onlyB": [],
+  "changed": [
+   {
+    "name": "Assembly-CSharp",
+    "sizeA": 2587648,
+    "sizeB": 2531840,
+    "types": [
+     3494,
+     3417
+    ],
+    "methods": [
+     17402,
+     17085
+    ],
+    "writeA": "2026-06-30 12:30:58Z",
+    "writeB": "2026-09-25 10:39:14Z"
+   },
+   {
+    "name": "Assembly-CSharp-firstpass",
+    "sizeA": 11776,
+    "sizeB": 11776,
+    "types": [
+     14,
+     14
+    ],
+    "methods": [
+     33,
+     33
+    ],
+    "writeA": "2026-06-30 12:31:01Z",
+    "writeB": "2026-09-25 10:39:14Z"
+   },
+   {
+    "name": "KB.FogRTS.Runtime",
+    "sizeA": 32768,
+    "sizeB": 32768,
+    "types": [
+     32,
+     32
+    ],
+    "methods": [
+     149,
+     149
+    ],
+    "writeA": "2026-06-30 12:31:01Z",
+    "writeB": "2026-09-25 10:39:25Z"
+   },
+   {
+    "name": "Lofelt.NiceVibrations",
+    "sizeA": 16896,
+    "sizeB": 16896,
+    "types": [
+     23,
+     23
+    ],
+    "methods": [
+     112,
+     112
+    ],
+    "writeA": "2026-06-30 12:30:59Z",
+    "writeB": "2026-09-25 10:39:17Z"
+   },
+   {
+    "name": "Lofelt.NiceVibrations.Demo",
+    "sizeA": 54784,
+    "sizeB": 54784,
+    "types": [
+     51,
+     51
+    ],
+    "methods": [
+     243,
+     243
+    ],
+    "writeA": "2026-06-30 12:30:58Z",
+    "writeB": "2026-09-25 10:39:25Z"
+   },
+   {
+    "name": "MPUIKit",
+    "sizeA": 44032,
+    "sizeB": 44032,
+    "types": [
+     24,
+     24
+    ],
+    "methods": [
+     271,
+     271
+    ],
+    "writeA": "2026-06-30 12:30:59Z",
+    "writeB": "2026-09-25 10:39:25Z"
+   },
+   {
+    "name": "MoreMountains.Feedbacks",
+    "sizeA": 425984,
+    "sizeB": 425984,
+    "types": [
+     438,
+     438
+    ],
+    "methods": [
+     2272,
+     2272
+    ],
+    "writeA": "2026-06-30 12:30:58Z",
+    "writeB": "2026-09-25 10:39:14Z"
+   },
+   {
+    "name": "MoreMountains.Feedbacks.Cinemachine",
+    "sizeA": 16896,
+    "sizeB": 16896,
+    "types": [
+     24,
+     24
+    ],
+    "methods": [
+     44,
+     44
+    ],
+    "writeA": "2026-06-30 12:30:59Z",
+    "writeB": "2026-09-25 10:39:25Z"
+   },
+   {
+    "name": "MoreMountains.Feedbacks.HDRP",
+    "sizeA": 55296,
+    "sizeB": 55296,
+    "types": [
+     62,
+     62
+    ],
+    "methods": [
+     277,
+     277
+    ],
+    "writeA": "2026-06-30 12:30:59Z",
+    "writeB": "2026-09-25 10:39:25Z"
+   },
+   {
+    "name": "MoreMountains.Feedbacks.MMTools",
+    "sizeA": 114176,
+    "sizeB": 114176,
+    "types": [
+     121,
+     121
+    ],
+    "methods": [
+     423,
+     423
+    ],
+    "writeA": "2026-06-30 12:30:59Z",
+    "writeB": "2026-09-25 10:39:25Z"
+   },
+   {
+    "name": "MoreMountains.Feedbacks.NiceVibrations",
+    "sizeA": 26112,
+    "sizeB": 26112,
+    "types": [
+     26,
+     26
+    ],
+    "methods": [
+     62,
+     62
+    ],
+    "writeA": "2026-06-30 12:30:59Z",
+    "writeB": "2026-09-25 10:39:25Z"
+   },
+   {
+    "name": "MoreMountains.Feedbacks.PostProcessing",
+    "sizeA": 40448,
+    "sizeB": 40448,
+    "types": [
+     46,
+     46
+    ],
+    "methods": [
+     165,
+     165
+    ],
+    "writeA": "2026-06-30 12:30:59Z",
+    "writeB": "2026-09-25 10:39:25Z"
+   },
+   {
+    "name": "MoreMountains.Feedbacks.TextMeshPro",
+    "sizeA": 50176,
+    "sizeB": 50176,
+    "types": [
+     60,
+     60
+    ],
+    "methods": [
+     247,
+     247
+    ],
+    "writeA": "2026-06-30 12:30:59Z",
+    "writeB": "2026-09-25 10:39:17Z"
+   },
+   {
+    "name": "MoreMountains.Feedbacks.URP",
+    "sizeA": 77312,
+    "sizeB": 77312,
+    "types": [
+     73,
+     73
+    ],
+    "methods": [
+     394,
+     394
+    ],
+    "writeA": "2026-06-30 12:30:59Z",
+    "writeB": "2026-09-25 10:39:25Z"
+   },
+   {
+    "name": "MoreMountains.Tools",
+    "sizeA": 565248,
+    "sizeB": 565248,
+    "types": [
+     609,
+     609
+    ],
+    "methods": [
+     2700,
+     2700
+    ],
+    "writeA": "2026-06-30 12:30:58Z",
+    "writeB": "2026-09-25 10:39:14Z"
+   },
+   {
+    "name": "Rewired_Windows_Functions",
+    "sizeA": 5120,
+    "sizeB": 5120,
+    "types": [
+     7,
+     7
+    ],
+    "methods": [
+     3,
+     3
+    ],
+    "writeA": "2026-06-30 12:30:59Z",
+    "writeB": "2026-09-25 10:39:25Z"
+   },
+   {
+    "name": "ShapesRuntime",
+    "sizeA": 355328,
+    "sizeB": 355328,
+    "types": [
+     161,
+     161
+    ],
+    "methods": [
+     3427,
+     3427
+    ],
+    "writeA": "2026-06-30 12:30:58Z",
+    "writeB": "2026-09-25 10:39:14Z"
+   },
+   {
+    "name": "Tayx.Graphy",
+    "sizeA": 56320,
+    "sizeB": 56320,
+    "types": [
+     47,
+     47
+    ],
+    "methods": [
+     298,
+     298
+    ],
+    "writeA": "2026-06-30 12:31:01Z",
+    "writeB": "2026-09-25 10:39:25Z"
+   },
+   {
+    "name": "com.nintendo.sdkplugin",
+    "sizeA": 4096,
+    "sizeB": 4096,
+    "types": [
+     3,
+     3
+    ],
+    "methods": [
+     2,
+     2
+    ],
+    "writeA": "2026-06-30 12:31:02Z",
+    "writeB": "2026-09-25 10:39:15Z"
+   },
+   {
+    "name": "com.rlabrecque.steamworks.net",
+    "sizeA": 398336,
+    "sizeB": 398336,
+    "types": [
+     497,
+     497
+    ],
+    "methods": [
+     3015,
+     3015
+    ],
+    "writeA": "2026-06-30 12:30:58Z",
+    "writeB": "2026-09-25 10:39:14Z"
+   }
+  ],
+  "identical": 148
+ },
+ "types": {
+  "countA": 950,
+  "countB": 873,
+  "added": [
+   "BounceClock",
+   "CarouselManager",
+   "CarouselManager/FirstSelectedPerState",
+   "DLCPathResolver",
+   "DLCState",
+   "DlcGateUIFrameHelper",
+   "DlcGateUIFrameHelper/DlcUiState",
+   "ForceLayoutGroupRedraw",
+   "GameServicesExtensions",
+   "HorizontalBounce",
+   "PageMenus",
+   "PagePlatformFilter",
+   "PlatformDisabler",
+   "PlayStationManager",
+   "Revision",
+   "TFUIHoldableButton",
+   "TFUIHoldableButton/Animation",
+   "TFUIHoldableButton/Style",
+   "TFUIImageButton",
+   "TFUIImageButton/Animation",
+   "TFUIImageButton/Style",
+   "TFUIWardrobeMaterialElement",
+   "Thronefall.DLCServices.DLCSceneLoader",
+   "Thronefall.DLCServices.DLCServicesLocator",
+   "Thronefall.DLCServices.IDLCServices",
+   "Thronefall.DLCServices.IDLCServices/DlcId",
+   "Thronefall.DLCServices.SentinelDLCServices",
+   "Thronefall.DLCServices.SteamDLCServices",
+   "Thronefall.DLCServices.SteamDLCServices/SteamDlcIds",
+   "TimedUnparent",
+   "WardrobeMaterial",
+   "WardrobeMaterial/CapeColorCombo",
+   "WardrobeNextUnlockUI",
+   "WardrobeOptionsHelper/OptionsTabType",
+   "WardrobePlayer",
+   "WardrobePreviewCamera",
+   "WardrobeScriptableObject",
+   "WardrobeScriptableObject/ItemType",
+   "WardrobeTentTransition",
+   "WardrobeTentTransition/RotationData",
+   "WardrobeUIFade",
+   "XboxManager"
+  ],
+  "removed": [
+   "AegisSentinelAnimator",
+   "AegisSentinelController",
+   "AimbotProjectileExt",
+   "AllowUpgrade",
+   "AssignVisibleAreaToPlayer",
+   "AttachVisionSourceToAllBuildParents",
+   "AutoAttackAncientCannon",
+   "AutoAttackDrone",
+   "AutoAttackFlamethrower",
+   "AutoAttackFlamethrower/EState",
+   "AutoAttackFlamethrower/ItemTimer",
+   "AutoAttackHealer",
+   "AutoAttackLavaGolemPuddle",
+   "AutoAttackLavaRiver",
+   "AutoAttackPlayerUnitAdaptiveWeapons",
+   "AutoAttackRailgun",
+   "AutoAttackTarTrap",
+   "AutoAttackTrap",
+   "AutoAttackTrap/EState",
+   "AutoAttackTrap/TargetEntry",
+   "AutoAttackTrapTower",
+   "AutoAttackTrapTriggerWithDelay",
+   "AutoAttackWithDelay",
+   "AutoAttackWithMinRange",
+   "BoomerangProjectile",
+   "BoomerangProjectile/Phase",
+   "BossVisualCutsceneHelper",
+   "BridgePathCutter",
+   "BuildSlotExt",
+   "ClockworkDragoonController",
+   "ConstructColossusAnimator",
+   "ConstructColossusController",
+   "ConstructColossusController/TargetItem",
+   "ConstructColossusPickUpHandler",
+   "CrystalDragonAnimationController",
+   "CrystalDragonPhasing",
+   "CrystalDragonPhasing/CrystalDragonPhase",
+   "CutOpenPathInteractor",
+   "Docker",
+   "EnergyCore",
+   "EnergyCoreSpawner",
+   "Equippable/ContentPack",
+   "ExecutionWeaponEffect",
+   "ExplosionDamageDealer",
+   "ExplosionWeapon",
+   "FlameTowerSmokeFX",
+   "FlamethrowerFlameController",
+   "FlyBehaviour",
+   "HpCrystalDragon",
+   "HpThief",
+   "HpWithDamageReduction",
+   "JumpBehaviour",
+   "KnockbackMA",
+   "LaserBeam",
+   "LavaGolemAnimationController",
+   "LavaGolemPhasing",
+   "LavaGolemPhasing/LavaGolemPhase",
+   "LavaGolemPuddle",
+   "LavaRiverController",
+   "LavaScrollFX",
+   "LocalBoatAnimation",
+   "MapJumpEntries",
+   "MapJumpEntries/NextPointSelectionType",
+   "MapPointCrystalDragon",
+   "MapPointsCacher",
+   "MovementChecker",
+   "NonUniformScaleAnimation",
+   "ObstacleWithBridge",
+   "PathCutterBase",
+   "PathfindMovementBoss",
+   "PathfindMovementPlayerunitHealer",
+   "PathfindMovementPlayerunitShieldBearer",
+   "PathfindMovementThief",
+   "PerkKnockbackOnDestroy",
+   "PlatformFollower",
+   "PlatformManager",
+   "PlatformMover",
+   "PoweredAttackController",
+   "ProjectileBlock",
+   "ProjectileBlock/ProjectileTag",
+   "ProjectileSphereArea",
+   "RailgunBeam",
+   "RailgunBeam/BeamState",
+   "RailgunBeam/Config",
+   "RailgunBeam/RaycastHitComparer",
+   "RandomiseUnitMesh",
+   "RotateToAttackTarget",
+   "RotationPulseAnimation",
+   "RouteClip",
+   "RubblesInteractionHelper",
+   "ScheduleEntry",
+   "ScheduledActivationInteractor",
+   "SentinelDlcProvider",
+   "SlowDownSideEffect",
+   "SpinCurveAnimation",
+   "SteamDlcProvider",
+   "TarTowerPourFX",
+   "TargetPriorityExt",
+   "TheScrapperAnimatorHandler",
+   "TheScrapperAnimatorHandler/AttackVFX",
+   "TheScrapperAttackOrigin",
+   "TheScrapperAttackOrigin/AttackSource",
+   "TheScrapperAutoAttack",
+   "TheScrapperController",
+   "TheScrapperPhase",
+   "TheScrapperPhaseData",
+   "ThiefAnimator",
+   "ThiefController",
+   "ThiefFX",
+   "TrapController",
+   "Tunnel",
+   "WardrobeItem/Mesh",
+   "WeaponUsageFX"
+  ],
+  "changedCount": 73,
+  "changed": [
+   {
+    "type": "AimbotProjectile",
+    "fieldsAdded": [],
+    "fieldsRemoved": [],
+    "fieldsRetyped": [],
+    "methodsAdded": [],
+    "methodsRemoved": [],
+    "methodsBodyChanged": [
+     "AimbotProjectile::Fire(Weapon,Hp,float,UnityEngine.Vector3,TaggedObject,float,float)"
+    ]
+   },
+   {
+    "type": "AudioSet",
+    "fieldsAdded": [
+     "wardrobeClose",
+     "wardrobeCog",
+     "wardrobeEquipArmour",
+     "wardrobeEquipCape",
+     "wardrobeEquipCrown",
+     "wardrobeEquipLocked",
+     "wardrobeHover",
+     "wardrobeOpen"
+    ],
+    "fieldsRemoved": [],
+    "fieldsRetyped": [],
+    "methodsAdded": [
+     "AudioSet::get_WardrobeClose()",
+     "AudioSet::get_WardrobeCog()",
+     "AudioSet::get_WardrobeEquipArmour()",
+     "AudioSet::get_WardrobeEquipCape()",
+     "AudioSet::get_WardrobeEquipCrown()",
+     "AudioSet::get_WardrobeEquipLocked()",
+     "AudioSet::get_WardrobeHover()",
+     "AudioSet::get_WardrobeOpen()"
+    ],
+    "methodsRemoved": [],
+    "methodsBodyChanged": []
+   },
+   {
+    "type": "AutoAttackWithKnockback",
+    "fieldsAdded": [],
+    "fieldsRemoved": [],
+    "fieldsRetyped": [],
+    "methodsAdded": [],
+    "methodsRemoved": [],
+    "methodsBodyChanged": [
+     "AutoAttackWithKnockback::get_KnockbackData()"
+    ]
+   },
+   {
+    "type": "BuildSlot",
+    "fieldsAdded": [],
+    "fieldsRemoved": [
+     "energyCoreIncome"
+    ],
+    "fieldsRetyped": [],
+    "methodsAdded": [],
+    "methodsRemoved": [
+     "BuildSlot::get_EnergyCoreIncome()",
+     "BuildSlot::get_NextUpgradeOrBuildEnergyCoreCost()",
+     "BuildSlot::set_EnergyCoreIncome(int)",
+     "BuildSlot::set_NextUpgradeOrBuildEnergyCoreCost(int)"
+    ],
+    "methodsBodyChanged": [
+     "BuildSlot::ApplyLocalUpgradeChanges(BuildSlot.UpgradeBranch,bool)",
+     "BuildSlot::OnLoad(string)",
+     "BuildSlot::OnSave(string)"
+    ]
+   },
+   {
+    "type": "BuildSlot/Upgrade",
+    "fieldsAdded": [],
+    "fieldsRemoved": [
+     "energyCoreCost"
+    ],
+    "fieldsRetyped": [],
+    "methodsAdded": [],
+    "methodsRemoved": [],
+    "methodsBodyChanged": []
+   },
+   {
+    "type": "BuildSlot/UpgradeBranch",
+    "fieldsAdded": [],
+    "fieldsRemoved": [
+     "energyCoreIncomeChange"
+    ],
+    "fieldsRetyped": [],
+    "methodsAdded": [],
+    "methodsRemoved": [],
+    "methodsBodyChanged": []
+   },
+   {
+    "type": "BuildingInteractor",
+    "fieldsAdded": [],
+    "fieldsRemoved": [
+     "energyCoreSpawner"
+    ],
+    "fieldsRetyped": [],
+    "methodsAdded": [],
+    "methodsRemoved": [],
+    "methodsBodyChanged": [
+     "BuildingInteractor::ActivateCostDisplay()",
+     "BuildingInteractor::Harvest(PlayerInteraction)",
+     "BuildingInteractor::InteractionHold(PlayerInteraction)",
+     "BuildingInteractor::get_canBeHarvested()",
+     "BuildingInteractor::get_harvestIsDenied()"
+    ]
+   },
+   {
+    "type": "CameraRig",
+    "fieldsAdded": [
+     "MinShadowDistance",
+     "defaultShadowDist",
+     "mainCamLocalPos",
+     "urpSettings"
+    ],
+    "fieldsRemoved": [],
+    "fieldsRetyped": [],
+    "methodsAdded": [
+     "CameraRig::OnDestroy()",
+     "CameraRig::SetCameraShadows()",
+     "CameraRig::get_TransitionSpeed()",
+     "CameraRig::set_TransitionSpeed(float)"
+    ],
+    "methodsRemoved": [],
+    "methodsBodyChanged": [
+     "CameraRig::.ctor()",
+     "CameraRig::Start()",
+     "CameraRig::UpdateZoom()"
+    ]
+   },
+   {
+    "type": "CommandUnits",
+    "fieldsAdded": [
+     "sceneTransitionManager"
+    ],
+    "fieldsRemoved": [],
+    "fieldsRetyped": [],
+    "methodsAdded": [],
+    "methodsRemoved": [],
+    "methodsBodyChanged": [
+     "CommandUnits::Start()",
+     "CommandUnits::Update()"
+    ]
+   },
+   {
+    "type": "ControlGroupPopUp",
+    "fieldsAdded": [
+     "controlGroupOne",
+     "controlGroupThree",
+     "controlGroupTwo"
+    ],
+    "fieldsRemoved": [
+     "ControllerExampleImg",
+     "KeyboardExampleImg"
+    ],
+    "fieldsRetyped": [],
+    "methodsAdded": [
+     "ControlGroupPopUp::Init()",
+     "ControlGroupPopUp::OnEnable()"
+    ],
+    "methodsRemoved": [],
+    "methodsBodyChanged": [
+     "ControlGroupPopUp::Refresh(Rewired.ControllerType)",
+     "ControlGroupPopUp::Start()"
+    ]
+   },
+   {
+    "type": "DLCLevelInteractor",
+    "fieldsAdded": [
+     "dlcId"
+    ],
+    "fieldsRemoved": [],
+    "fieldsRetyped": [],
+    "methodsAdded": [],
+    "methodsRemoved": [],
+    "methodsBodyChanged": [
+     "DLCLevelInteractor::InteractionBegin(PlayerInteraction)"
+    ]
+   },
+   {
+    "type": "DayNightCycle",
+    "fieldsAdded": [],
+    "fieldsRemoved": [],
+    "fieldsRetyped": [],
+    "methodsAdded": [],
+    "methodsRemoved": [],
+    "methodsBodyChanged": [
+     "DayNightCycle::DawnCallAfterSunrise()"
+    ]
+   },
+   {
+    "type": "DebugController",
+    "fieldsAdded": [
+     "unlockAllWardrobe"
+    ],
+    "fieldsRemoved": [],
+    "fieldsRetyped": [],
+    "methodsAdded": [],
+    "methodsRemoved": [],
+    "methodsBodyChanged": [
+     "DebugController::.ctor()"
+    ]
+   },
+   {
+    "type": "DlcConfiguration",
+    "fieldsAdded": [
+     "comingSoonCraaghelm"
+    ],
+    "fieldsRemoved": [
+     "CraaghelmMarkerPath",
+     "_fangmoorMapnames",
+     "dlcProvider",
+     "fangmoorMaps",
+     "forceFangmoor"
+    ],
+    "fieldsRetyped": [],
+    "methodsAdded": [
+     "DlcConfiguration::GetDlcIDFromMapName(string)",
+     "DlcConfiguration::GetPIDFromSID(Thronefall.DLCServices.IDLCServices.DlcId)",
+     "DlcConfiguration::GetSIDFromPID(IDlcProvider.DlcId)",
+     "DlcConfiguration::IsDlcComingSoon(IDlcProvider.DlcId)",
+     "DlcConfiguration::IsDlcMap(string)",
+     "DlcConfiguration::IsScenePartOfDlc(IDlcProvider.DlcId)"
+    ],
+    "methodsRemoved": [
+     "DlcConfiguration::.cctor()",
+     "DlcConfiguration::InitializeDlcProvider()"
+    ],
+    "methodsBodyChanged": [
+     "DlcConfiguration::IsDlcAvailable(IDlcProvider.DlcId)",
+     "DlcConfiguration::IsDlcMap(IDlcProvider.DlcId,string)",
+     "DlcConfiguration::OnValidate()",
+     "DlcConfiguration::get_Instance()"
+    ]
+   },
+   {
+    "type": "EndOfMatchScoreUIHelper",
+    "fieldsAdded": [],
+    "fieldsRemoved": [],
+    "fieldsRetyped": [],
+    "methodsAdded": [],
+    "methodsRemoved": [],
+    "methodsBodyChanged": [
+     "EndOfMatchScoreUIHelper::EnableRewardDisplayUI(Equippable)"
+    ]
+   },
+   {
+    "type": "Equippable",
+    "fieldsAdded": [],
+    "fieldsRemoved": [
+     "availableToContentPack"
+    ],
+    "fieldsRetyped": [],
+    "methodsAdded": [],
+    "methodsRemoved": [
+     "Equippable::GetCurrentContentPackFromLoadoutScene()",
+     "Equippable::IsAvailableInContentPack(Equippable.ContentPack)"
+    ],
+    "methodsBodyChanged": [
+     "Equippable::.ctor()"
+    ]
+   },
+   {
+    "type": "EternalTrialsDefeatUI",
+    "fieldsAdded": [],
+    "fieldsRemoved": [],
+    "fieldsRetyped": [],
+    "methodsAdded": [],
+    "methodsRemoved": [],
+    "methodsBodyChanged": [
+     "EternalTrialsDefeatUI::EnableRewardDisplayUI(Equippable)"
+    ]
+   },
+   {
+    "type": "EternalTrialsHighscorePreview",
+    "fieldsAdded": [],
+    "fieldsRemoved": [],
+    "fieldsRetyped": [],
+    "methodsAdded": [],
+    "methodsRemoved": [],
+    "methodsBodyChanged": [
+     "EternalTrialsHighscorePreview::RefreshUI()"
+    ]
+   },
+   {
+    "type": "EternalTrialsRunManager",
+    "fieldsAdded": [],
+    "fieldsRemoved": [],
+    "fieldsRetyped": [],
+    "methodsAdded": [],
+    "methodsRemoved": [],
+    "methodsBodyChanged": [
+     "EternalTrialsRunManager::GenerateNewFreshRunSeed()"
+    ]
+   },
+   {
+    "type": "GameProgressResetter",
+    "fieldsAdded": [],
+    "fieldsRemoved": [],
+    "fieldsRetyped": [],
+    "methodsAdded": [],
+    "methodsRemoved": [],
+    "methodsBodyChanged": [
+     "GameProgressResetter::ResetAndBackupAllGameProgress()"
+    ]
+   },
+   {
+    "type": "HighscorePreviewUI",
+    "fieldsAdded": [],
+    "fieldsRemoved": [],
+    "fieldsRetyped": [],
+    "methodsAdded": [],
+    "methodsRemoved": [],
+    "methodsBodyChanged": [
+     "HighscorePreviewUI::RefreshUI()"
+    ]
+   },
+   {
+    "type": "HighscoreTable",
+    "fieldsAdded": [],
+    "fieldsRemoved": [],
+    "fieldsRetyped": [],
+    "methodsAdded": [],
+    "methodsRemoved": [],
+    "methodsBodyChanged": [
+     "HighscoreTable::RefreshUI()"
+    ]
+   },
+   {
+    "type": "Hp",
+    "fieldsAdded": [
+     "OnReceiveDamageDetailed",
+     "boxCollider"
+    ],
+    "fieldsRemoved": [],
+    "fieldsRetyped": [
+     "OnKillOrKnockoutDetailed: UnityEngine.Events.UnityEvent<TaggedObject> -> UnityEngine.Events.UnityEvent<TaggedObject, TaggedObject>"
+    ],
+    "methodsAdded": [
+     "Hp::AssignVeteranTitle()",
+     "Hp::UnassignVeteranTitle()"
+    ],
+    "methodsRemoved": [],
+    "methodsBodyChanged": [
+     "Hp::.ctor()",
+     "Hp::ActivateAndDeactivateChildrenAndCompements(bool)",
+     "Hp::Initialize()",
+     "Hp::MarkDestroyedBuildingsAsDontRevive(System.Collections.Generic.List<TagManager.ETag>,System.Collections.Generic.List<TagManager.ETag>,float)",
+     "Hp::TakeDamage(float,TaggedObject,bool,bool)"
+    ]
+   },
+   {
+    "type": "IDlcProvider",
+    "fieldsAdded": [
+     "DlcIdStringNames"
+    ],
+    "fieldsRemoved": [],
+    "fieldsRetyped": [],
+    "methodsAdded": [
+     "IDlcProvider::.cctor()"
+    ],
+    "methodsRemoved": [],
+    "methodsBodyChanged": []
+   },
+   {
+    "type": "IDlcProvider/DlcId",
+    "fieldsAdded": [],
+    "fieldsRemoved": [],
+    "fieldsRetyped": [],
+    "methodsAdded": [],
+    "methodsRemoved": [],
+    "methodsBodyChanged": [],
+    "enumChanges": [
+     "+UNKNOWN=1",
+     "-FANGMOOR"
+    ]
+   },
+   {
+    "type": "IncreaseAttackSpeedOverTime",
+    "fieldsAdded": [],
+    "fieldsRemoved": [],
+    "fieldsRetyped": [],
+    "methodsAdded": [],
+    "methodsRemoved": [],
+    "methodsBodyChanged": [
+     "IncreaseAttackSpeedOverTime::Update()"
+    ]
+   },
+   {
+    "type": "KnockbackBehavior",
+    "fieldsAdded": [
+     "behHp",
+     "forceByDistance",
+     "staggerVFX"
+    ],
+    "fieldsRemoved": [
+     "knockbackForce"
+    ],
+    "fieldsRetyped": [],
+    "methodsAdded": [
+     "KnockbackBehavior::ApplyKnockback(UnityEngine.Vector3,float,float,float,Hp,PathfindMovement,Pathfinding.RVO.RVOController,AutoAttack[],UnityEngine.AnimationCurve,float,UnityEngine.AnimationCurve)",
+     "KnockbackBehavior::GetForce(float,float,float,UnityEngine.AnimationCurve)",
+     "KnockbackBehavior::SetStaggerVFX(bool)",
+     "KnockbackBehavior::StartStagger()",
+     "KnockbackBehavior::StopStagger()"
+    ],
+    "methodsRemoved": [
+     "KnockbackBehavior::ApplyKnockback(UnityEngine.Vector3,float,float,float,PathfindMovement,Pathfinding.RVO.RVOController,AutoAttack[])"
+    ],
+    "methodsBodyChanged": [
+     "KnockbackBehavior::.ctor()",
+     "KnockbackBehavior::RecoverOnPath(PathfindMovement,Pathfinding.RVO.RVOController,UnityEngine.Vector3)",
+     "KnockbackBehavior::UpdateArc()",
+     "KnockbackBehavior::UpdateDrop()",
+     "KnockbackBehavior::UpdateStagger()"
+    ]
+   },
+   {
+    "type": "KnockbackEffect",
+    "fieldsAdded": [],
+    "fieldsRemoved": [],
+    "fieldsRetyped": [],
+    "methodsAdded": [],
+    "methodsRemoved": [],
+    "methodsBodyChanged": [
+     "KnockbackEffect::ApplyDamage(UnityEngine.GameObject)"
+    ]
+   },
+   {
+    "type": "KnockbackTriggeredAuto",
+    "fieldsAdded": [],
+    "fieldsRemoved": [],
+    "fieldsRetyped": [],
+    "methodsAdded": [],
+    "methodsRemoved": [],
+    "methodsBodyChanged": [
+     "KnockbackTriggeredAuto::get_KnockbackData()"
+    ]
+   },
+   {
+    "type": "KnockbackUtils",
+    "fieldsAdded": [],
+    "fieldsRemoved": [],
+    "fieldsRetyped": [],
+    "methodsAdded": [
+     "KnockbackUtils::ApplyKnockbackOneTarget(KnockbackUtils.KnockbackData,TaggedObject,System.Action,System.Action,float,UnityEngine.AnimationCurve)",
+     "KnockbackUtils::ApplyRadialKnockback(KnockbackUtils.KnockbackData,System.Collections.Generic.List<TaggedObject>,System.Action,System.Action,float,UnityEngine.AnimationCurve)",
+     "KnockbackUtils::GetLinearDirection(UnityEngine.Transform,KnockbackUtils.KnockbackData)",
+     "KnockbackUtils::GetRadialDirection(UnityEngine.Transform,KnockbackUtils.KnockbackData)"
+    ],
+    "methodsRemoved": [
+     "KnockbackUtils::ApplyRadialKnockback(KnockbackUtils.KnockbackData,System.Collections.Generic.List<TaggedObject>,System.Action,System.Action)",
+     "KnockbackUtils::GetLinearDirectionAndForce(UnityEngine.Transform,KnockbackUtils.KnockbackData)",
+     "KnockbackUtils::GetRadialDirectionAndForce(UnityEngine.Transform,KnockbackUtils.KnockbackData)"
+    ],
+    "methodsBodyChanged": [
+     "KnockbackUtils::ApplyKnockback(KnockbackUtils.KnockbackData,System.Action,System.Action)"
+    ]
+   },
+   {
+    "type": "KnockbackUtils/KnockbackData",
+    "fieldsAdded": [
+     "forceByDistanceFromSource",
+     "maxStunDuration",
+     "stunDurationByDistance"
+    ],
+    "fieldsRemoved": [],
+    "fieldsRetyped": [],
+    "methodsAdded": [
+     "KnockbackUtils.KnockbackData::FullCircle(UnityEngine.Transform,float,float,UnityEngine.AnimationCurve,float,UnityEngine.AnimationCurve)",
+     "KnockbackUtils.KnockbackData::Linear(TagManager,System.Collections.Generic.List<TagManager.ETag>,System.Collections.Generic.List<TagManager.ETag>,UnityEngine.Transform,float,float,float,float,float,float,float,bool,UnityEngine.AnimationCurve,float,UnityEngine.AnimationCurve)",
+     "KnockbackUtils.KnockbackData::Radial(TagManager,System.Collections.Generic.List<TagManager.ETag>,System.Collections.Generic.List<TagManager.ETag>,UnityEngine.Transform,float,float,float,int,UnityEngine.AnimationCurve,float,UnityEngine.AnimationCurve)"
+    ],
+    "methodsRemoved": [
+     "KnockbackUtils.KnockbackData::FullCircle(UnityEngine.Transform,float,float)",
+     "KnockbackUtils.KnockbackData::Linear(TagManager,System.Collections.Generic.List<TagManager.ETag>,System.Collections.Generic.List<TagManager.ETag>,UnityEngine.Transform,float,float,float,float,float,float,float,bool)",
+     "KnockbackUtils.KnockbackData::Radial(TagManager,System.Collections.Generic.List<TagManager.ETag>,System.Collections.Generic.List<TagManager.ETag>,UnityEngine.Transform,float,float,float,int)"
+    ],
+    "methodsBodyChanged": []
+   },
+   {
+    "type": "LoadoutUIHelper",
+    "fieldsAdded": [],
+    "fieldsRemoved": [],
+    "fieldsRetyped": [],
+    "methodsAdded": [
+     "LoadoutUIHelper::BufferCurrentLoadout()"
+    ],
+    "methodsRemoved": [],
+    "methodsBodyChanged": [
+     "LoadoutUIHelper::OnShow()"
+    ]
+   },
+   {
+    "type": "MatchSaveLoadHandler",
+    "fieldsAdded": [],
+    "fieldsRemoved": [],
+    "fieldsRetyped": [],
+    "methodsAdded": [
+     "MatchSaveLoadHandler::SetToTutorialMap()"
+    ],
+    "methodsRemoved": [],
+    "methodsBodyChanged": []
+   },
+   {
+    "type": "MusicManager",
+    "fieldsAdded": [
+     "fadeControllerCoroutine",
+     "logicalVolume",
+     "requestedFadeDuration",
+     "requestedMusic"
+    ],
+    "fieldsRemoved": [
+     "currentVolume",
+     "fadeCoroutine"
+    ],
+    "fieldsRetyped": [],
+    "methodsAdded": [
+     "MusicManager::<set_CurrentVolume>b__13_0(MusicManager.OverrideVolume)",
+     "MusicManager::FadeController()",
+     "MusicManager::FadeTo(float,float)"
+    ],
+    "methodsRemoved": [
+     "MusicManager::<set_CurrentVolume>b__11_0(MusicManager.OverrideVolume)",
+     "MusicManager::FadeIn(float)",
+     "MusicManager::FadeOut(float)",
+     "MusicManager::FadeOutAndStop(float)",
+     "MusicManager::FadeOutChangeMusicFadeIn(UnityEngine.AudioClip,float)"
+    ],
+    "methodsBodyChanged": [
+     "MusicManager::Awake()",
+     "MusicManager::PlayMusic(UnityEngine.AudioClip,float)",
+     "MusicManager::set_CurrentVolume(float)"
+    ]
+   },
+   {
+    "type": "MusicManager/OverrideVolume",
+    "fieldsAdded": [],
+    "fieldsRemoved": [],
+    "fieldsRetyped": [],
+    "methodsAdded": [
+     "MusicManager.OverrideVolume::.ctor()"
+    ],
+    "methodsRemoved": [],
+    "methodsBodyChanged": [
+     "MusicManager.OverrideVolume::.ctor(UnityEngine.AudioClip,float)"
+    ]
+   },
+   {
+    "type": "OverworldPauseFrame",
+    "fieldsAdded": [],
+    "fieldsRemoved": [
+     "isInDLCLevelSelect"
+    ],
+    "fieldsRetyped": [],
+    "methodsAdded": [],
+    "methodsRemoved": [
+     "OverworldPauseFrame::SetIsInDLCLevelSelect(bool)",
+     "OverworldPauseFrame::get_IsInDLCLevelSelect()"
+    ],
+    "methodsBodyChanged": []
+   },
+   {
+    "type": "PlayerCharacterAudio",
+    "fieldsAdded": [],
+    "fieldsRemoved": [],
+    "fieldsRetyped": [],
+    "methodsAdded": [],
+    "methodsRemoved": [],
+    "methodsBodyChanged": [
+     "PlayerCharacterAudio::Start()"
+    ]
+   },
+   {
+    "type": "PlayerInteraction",
+    "fieldsAdded": [],
+    "fieldsRemoved": [
+     "energyCoreBalance",
+     "onEnergyCoreBalanceGain",
+     "onEnergyCoreBalanceSpend"
+    ],
+    "fieldsRetyped": [],
+    "methodsAdded": [],
+    "methodsRemoved": [
+     "PlayerInteraction::AddEnergyCores(int)",
+     "PlayerInteraction::SpendEnergyCores(int)",
+     "PlayerInteraction::get_EnergyCoreBalance()",
+     "PlayerInteraction::get_TrueEnergyCoreBalance()"
+    ],
+    "methodsBodyChanged": [
+     "PlayerInteraction::.ctor()",
+     "PlayerInteraction::OnLoad(string)",
+     "PlayerInteraction::OnSave(string)"
+    ]
+   },
+   {
+    "type": "PlayerMovement",
+    "fieldsAdded": [],
+    "fieldsRemoved": [],
+    "fieldsRetyped": [],
+    "methodsAdded": [
+     "PlayerMovement::SetRotationTo(float)",
+     "PlayerMovement::SetTransformTo(UnityEngine.Transform)"
+    ],
+    "methodsRemoved": [],
+    "methodsBodyChanged": []
+   },
+   {
+    "type": "PlayerUnitsInfo",
+    "fieldsAdded": [],
+    "fieldsRemoved": [],
+    "fieldsRetyped": [],
+    "methodsAdded": [],
+    "methodsRemoved": [],
+    "methodsBodyChanged": [
+     "PlayerUnitsInfo::GetUnitsInfo()"
+    ]
+   },
+   {
+    "type": "PotionVialCircle",
+    "fieldsAdded": [],
+    "fieldsRemoved": [],
+    "fieldsRetyped": [],
+    "methodsAdded": [
+     "PotionVialCircle::OnEnable()"
+    ],
+    "methodsRemoved": [],
+    "methodsBodyChanged": [
+     "PotionVialCircle::Start()"
+    ]
+   },
+   {
+    "type": "PowerTowerPerk",
+    "fieldsAdded": [],
+    "fieldsRemoved": [],
+    "fieldsRetyped": [],
+    "methodsAdded": [],
+    "methodsRemoved": [],
+    "methodsBodyChanged": [
+     "PowerTowerPerk::Update()"
+    ]
+   },
+   {
+    "type": "ProtectionDomeVisualControl",
+    "fieldsAdded": [
+     "domeDisc",
+     "fadeCurve",
+     "fadeTime",
+     "fadetimer",
+     "isDomeActivated"
+    ],
+    "fieldsRemoved": [
+     "destroyDome",
+     "domeDeactivateVFX",
+     "isDomeShowing",
+     "mainDomeVFX"
+    ],
+    "fieldsRetyped": [],
+    "methodsAdded": [
+     "ProtectionDomeVisualControl::ActivateDomeVFX()",
+     "ProtectionDomeVisualControl::DeactivateDomeVFX()",
+     "ProtectionDomeVisualControl::SetDomeDiscAlpha(float)"
+    ],
+    "methodsRemoved": [
+     "ProtectionDomeVisualControl::DestroyDomeVFX()"
+    ],
+    "methodsBodyChanged": [
+     "ProtectionDomeVisualControl::.ctor()",
+     "ProtectionDomeVisualControl::Update()"
+    ]
+   },
+   {
+    "type": "SaveLoadManager",
+    "fieldsAdded": [],
+    "fieldsRemoved": [],
+    "fieldsRetyped": [],
+    "methodsAdded": [
+     "SaveLoadManager::OnValidate()"
+    ],
+    "methodsRemoved": [],
+    "methodsBodyChanged": []
+   },
+   {
+    "type": "SceneTransitionManager",
+    "fieldsAdded": [
+     "onSceneChangeMid",
+     "onSceneChangeStart"
+    ],
+    "fieldsRemoved": [
+     "levelSelectSceneCraaghelm",
+     "levelSelectSceneFangmore",
+     "onSceneChange"
+    ],
+    "fieldsRetyped": [],
+    "methodsAdded": [],
+    "methodsRemoved": [
+     "SceneTransitionManager::IsDLCLevelSelect()"
+    ],
+    "methodsBodyChanged": [
+     "SceneTransitionManager::.ctor()",
+     "SceneTransitionManager::IsInLevelSelect()",
+     "SceneTransitionManager::TransitionToScene(string)"
+    ]
+   },
+   {
+    "type": "SettingsColorBlind",
+    "fieldsAdded": [
+     "languageSelector"
+    ],
+    "fieldsRemoved": [],
+    "fieldsRetyped": [],
+    "methodsAdded": [
+     "SettingsColorBlind::UpdateOptions()",
+     "SettingsColorBlind::UpdateOptionsDelayed()"
+    ],
+    "methodsRemoved": [],
+    "methodsBodyChanged": [
+     "SettingsColorBlind::OnEnable()",
+     "SettingsColorBlind::Start()"
+    ]
+   },
+   {
+    "type": "SettingsUIHelper",
+    "fieldsAdded": [
+     "input",
+     "tabs"
+    ],
+    "fieldsRemoved": [],
+    "fieldsRetyped": [],
+    "methodsAdded": [
+     "SettingsUIHelper::GoToNextTab()",
+     "SettingsUIHelper::GoToPrevTab()",
+     "SettingsUIHelper::Start()",
+     "SettingsUIHelper::Update()"
+    ],
+    "methodsRemoved": [],
+    "methodsBodyChanged": [
+     "SettingsUIHelper::.ctor()",
+     "SettingsUIHelper::Awake()"
+    ]
+   },
+   {
+    "type": "Spawn",
+    "fieldsAdded": [],
+    "fieldsRemoved": [],
+    "fieldsRetyped": [],
+    "methodsAdded": [],
+    "methodsRemoved": [],
+    "methodsBodyChanged": [
+     "Spawn::Update(float)"
+    ]
+   },
+   {
+    "type": "SplashDamageArea",
+    "fieldsAdded": [],
+    "fieldsRemoved": [],
+    "fieldsRetyped": [],
+    "methodsAdded": [],
+    "methodsRemoved": [],
+    "methodsBodyChanged": [
+     "SplashDamageArea::OnDrawGizmosSelected()"
+    ]
+   },
+   {
+    "type": "SteamManager",
+    "fieldsAdded": [
+     "m_GameOverlayActivated",
+     "m_activeJoysticks",
+     "m_keyboardWasEnabled",
+     "m_mouseWasEnabled"
+    ],
+    "fieldsRemoved": [],
+    "fieldsRetyped": [],
+    "methodsAdded": [
+     "SteamManager::OnGameOverlayActivated(Steamworks.GameOverlayActivated_t)"
+    ],
+    "methodsRemoved": [],
+    "methodsBodyChanged": [
+     "SteamManager::.ctor()",
+     "SteamManager::Awake()"
+    ]
+   },
+   {
+    "type": "TFUITextButton",
+    "fieldsAdded": [],
+    "fieldsRemoved": [],
+    "fieldsRetyped": [],
+    "methodsAdded": [
+     "TFUITextButton::ForceClear()",
+     "TFUITextButton::ForceSelect()"
+    ],
+    "methodsRemoved": [],
+    "methodsBodyChanged": []
+   },
+   {
+    "type": "TFUIWardrobeElement",
+    "fieldsAdded": [
+     "PipNew",
+     "hasBeenSelected",
+     "lockBG"
+    ],
+    "fieldsRemoved": [
+     "material",
+     "selected"
+    ],
+    "fieldsRetyped": [],
+    "methodsAdded": [
+     "TFUIWardrobeElement::HidePipNew()",
+     "TFUIWardrobeElement::SetLocked()"
+    ],
+    "methodsRemoved": [
+     "TFUIWardrobeElement::SetupButton(UnityEngine.Material,WardrobeHandler)"
+    ],
+    "methodsBodyChanged": [
+     "TFUIWardrobeElement::OnApply()",
+     "TFUIWardrobeElement::Pick()",
+     "TFUIWardrobeElement::UnPick()"
+    ]
+   },
+   {
+    "type": "TFUIWardrobeItemElement",
+    "fieldsAdded": [
+     "audioHelper"
+    ],
+    "fieldsRemoved": [],
+    "fieldsRetyped": [],
+    "methodsAdded": [
+     "TFUIWardrobeItemElement::GetSelectedKey()",
+     "TFUIWardrobeItemElement::InitialiseFromPlayerPrefs()",
+     "TFUIWardrobeItemElement::Pick()",
+     "TFUIWardrobeItemElement::SetUpAudio()",
+     "TFUIWardrobeItemElement::SetupButton(WardrobeItem,WardrobeHandler)",
+     "TFUIWardrobeItemElement::Start()",
+     "TFUIWardrobeItemElement::UnPick()"
+    ],
+    "methodsRemoved": [
+     "TFUIWardrobeItemElement::SetupButton(WardrobeHandler,WardrobeItem)"
+    ],
+    "methodsBodyChanged": []
+   },
+   {
+    "type": "TagManager",
+    "fieldsAdded": [],
+    "fieldsRemoved": [
+     "energyCores",
+     "freeEnergyCores"
+    ],
+    "fieldsRetyped": [],
+    "methodsAdded": [],
+    "methodsRemoved": [],
+    "methodsBodyChanged": [
+     "TagManager::.ctor()"
+    ]
+   },
+   {
+    "type": "TaggedObject",
+    "fieldsAdded": [],
+    "fieldsRemoved": [],
+    "fieldsRetyped": [],
+    "methodsAdded": [
+     "TaggedObject::CreateBitfieldFromTags(System.Collections.Generic.List<TagManager.ETag>)",
+     "TaggedObject::GetOffsetFromOrigin(UnityEngine.Vector3)",
+     "TaggedObject::Match(long,long)",
+     "TaggedObject::Update()"
+    ],
+    "methodsRemoved": [],
+    "methodsBodyChanged": [
+     "TaggedObject::GetSqrDistance(UnityEngine.Vector3)"
+    ]
+   },
+   {
+    "type": "TargetPriority",
+    "fieldsAdded": [],
+    "fieldsRemoved": [],
+    "fieldsRetyped": [],
+    "methodsAdded": [
+     "TargetPriority::FindUnsortedTaggedObjectsInRange(UnityEngine.Vector3,float)"
+    ],
+    "methodsRemoved": [],
+    "methodsBodyChanged": []
+   },
+   {
+    "type": "TempleBlessing",
+    "fieldsAdded": [],
+    "fieldsRemoved": [],
+    "fieldsRetyped": [],
+    "methodsAdded": [],
+    "methodsRemoved": [],
+    "methodsBodyChanged": [
+     "TempleBlessing::DisableEffectAtDawn()"
+    ]
+   },
+   {
+    "type": "ThronefallAudioManager",
+    "fieldsAdded": [],
+    "fieldsRemoved": [],
+    "fieldsRetyped": [],
+    "methodsAdded": [],
+    "methodsRemoved": [],
+    "methodsBodyChanged": [
+     "ThronefallAudioManager::ProcessOneShotEvent(ThronefallAudioManager.AudioOneShot,bool,UnityEngine.Vector3)"
+    ]
+   },
+   {
+    "type": "ThronefallAudioManager/AudioOneShot",
+    "fieldsAdded": [],
+    "fieldsRemoved": [],
+    "fieldsRetyped": [],
+    "methodsAdded": [],
+    "methodsRemoved": [],
+    "methodsBodyChanged": [],
+    "enumChanges": [
+     "+WardrobeApplyArmour=32",
+     "+WardrobeApplyCape=33",
+     "+WardrobeApplyCrown=31",
+     "+WardrobeApplyLocked=34",
+     "+WardrobeClose=30",
+     "+WardrobeHover=35",
+     "+WardrobeOpen=29"
+    ]
+   },
+   {
+    "type": "ThronefallUIElement",
+    "fieldsAdded": [],
+    "fieldsRemoved": [],
+    "fieldsRetyped": [],
+    "methodsAdded": [
+     "ThronefallUIElement::OnHold()",
+     "ThronefallUIElement::get_holdable()"
+    ],
+    "methodsRemoved": [],
+    "methodsBodyChanged": []
+   },
+   {
+    "type": "TitleScreenUIHelper",
+    "fieldsAdded": [
+     "loadoutUI"
+    ],
+    "fieldsRemoved": [],
+    "fieldsRetyped": [],
+    "methodsAdded": [],
+    "methodsRemoved": [],
+    "methodsBodyChanged": [
+     "TitleScreenUIHelper::ClickPlay()"
+    ]
+   },
+   {
+    "type": "TreasureChestUIHelper",
+    "fieldsAdded": [],
+    "fieldsRemoved": [
+     "energyCoreBalanceNumber",
+     "energyCoreCounter"
+    ],
+    "fieldsRetyped": [],
+    "methodsAdded": [],
+    "methodsRemoved": [
+     "TreasureChestUIHelper::get_EnergyCoreBalanceNumber()"
+    ],
+    "methodsBodyChanged": []
+   },
+   {
+    "type": "TreasuryUI",
+    "fieldsAdded": [],
+    "fieldsRemoved": [
+     "energyCoreDisplayText",
+     "isCraaghelmDlcAvailable"
+    ],
+    "fieldsRetyped": [],
+    "methodsAdded": [],
+    "methodsRemoved": [],
+    "methodsBodyChanged": [
+     "TreasuryUI::Start()",
+     "TreasuryUI::Update()"
+    ]
+   },
+   {
+    "type": "UIFrame",
+    "fieldsAdded": [
+     "currentHoldTarget"
+    ],
+    "fieldsRemoved": [],
+    "fieldsRetyped": [],
+    "methodsAdded": [],
+    "methodsRemoved": [],
+    "methodsBodyChanged": [
+     "UIFrame::Apply()",
+     "UIFrame::HandleButtonNavigation()"
+    ]
+   },
+   {
+    "type": "UIFrameManager",
+    "fieldsAdded": [
+     "dlcGateFrame"
+    ],
+    "fieldsRemoved": [],
+    "fieldsRetyped": [],
+    "methodsAdded": [
+     "UIFrameManager::InMatchPause()",
+     "UIFrameManager::OpenPlatformStoreUI()",
+     "UIFrameManager::TryOpenDLCGate(string,IDlcProvider.DlcId)"
+    ],
+    "methodsRemoved": [],
+    "methodsBodyChanged": [
+     "UIFrameManager::OpenMenu()"
+    ]
+   },
+   {
+    "type": "UnitRespawnerForBuildings",
+    "fieldsAdded": [],
+    "fieldsRemoved": [],
+    "fieldsRetyped": [],
+    "methodsAdded": [
+     "UnitRespawnerForBuildings::get_RespawnSpeedMult()"
+    ],
+    "methodsRemoved": [],
+    "methodsBodyChanged": [
+     "UnitRespawnerForBuildings::RespawnAKnockedOutUnit()",
+     "UnitRespawnerForBuildings::Update()"
+    ]
+   },
+   {
+    "type": "VersionNumberDisplay",
+    "fieldsAdded": [
+     "_revision"
+    ],
+    "fieldsRemoved": [],
+    "fieldsRetyped": [],
+    "methodsAdded": [
+     "VersionNumberDisplay::Awake()"
+    ],
+    "methodsRemoved": [
+     "VersionNumberDisplay::OnEnable()"
+    ],
+    "methodsBodyChanged": []
+   },
+   {
+    "type": "WardrobeHandler",
+    "fieldsAdded": [
+     "LockedWardrobeElements",
+     "RightRotButton",
+     "cancelButton",
+     "hasHovered",
+     "input",
+     "leftRotButton",
+     "nextUnlock",
+     "nextUnlockButton",
+     "nextUnlockElement",
+     "tabs"
+    ],
+    "fieldsRemoved": [],
+    "fieldsRetyped": [],
+    "methodsAdded": [
+     "WardrobeHandler::ApplyMat()",
+     "WardrobeHandler::ApplyMesh()",
+     "WardrobeHandler::ForceTabChange(WardrobeHandler.WardrobeTab,TFUIWardrobeElement)",
+     "WardrobeHandler::GoToNextTab()",
+     "WardrobeHandler::GoToPrevTab()",
+     "WardrobeHandler::GotToNextUnlock()",
+     "WardrobeHandler::OnClose()",
+     "WardrobeHandler::OnDisable()",
+     "WardrobeHandler::OnHover()",
+     "WardrobeHandler::RefreshNextUnlockPanel()",
+     "WardrobeHandler::RotatePlayer(int)",
+     "WardrobeHandler::SelectTab(WardrobeHandler.WardrobeTab)",
+     "WardrobeHandler::SetArmourMat(WardrobeMaterial)",
+     "WardrobeHandler::SetArmourMesh(WardrobeItem)",
+     "WardrobeHandler::SetCapeColors(WardrobeMaterial)",
+     "WardrobeHandler::SetCapeTexture(WardrobeItem)",
+     "WardrobeHandler::SetCrownMat(WardrobeMaterial)",
+     "WardrobeHandler::SetCrownMesh(WardrobeItem)",
+     "WardrobeHandler::SetMountMat(WardrobeMaterial)",
+     "WardrobeHandler::SetMountMesh(WardrobeItem)",
+     "WardrobeHandler::SetupWardrobeInfo(bool)",
+     "WardrobeHandler::Start()",
+     "WardrobeHandler::Update()"
+    ],
+    "methodsRemoved": [
+     "WardrobeHandler::ApplyMat(UnityEngine.Material,TFUIWardrobeElement)",
+     "WardrobeHandler::SetBodyArmourMat(UnityEngine.Material)",
+     "WardrobeHandler::SetBodyVersion(int)",
+     "WardrobeHandler::SetCapeMat(UnityEngine.Material)",
+     "WardrobeHandler::SetCapeVersion(int)",
+     "WardrobeHandler::SetCrownMat(UnityEngine.Material)",
+     "WardrobeHandler::SetCrownVersion(int)",
+     "WardrobeHandler::SetHorseArmourMat(UnityEngine.Material)",
+     "WardrobeHandler::SetUpNavigation(System.Collections.Generic.List<TFUIWardrobeElement>)"
+    ],
+    "methodsBodyChanged": [
+     "WardrobeHandler::.ctor()",
+     "WardrobeHandler::Awake()",
+     "WardrobeHandler::OnSelect()",
+     "WardrobeHandler::Refresh()",
+     "WardrobeHandler::TrySelectTFUIElement()"
+    ]
+   },
+   {
+    "type": "WardrobeHandler/WardrobeTab",
+    "fieldsAdded": [
+     "botMostElement",
+     "rightMostElement"
+    ],
+    "fieldsRemoved": [
+     "childContainer"
+    ],
+    "fieldsRetyped": [],
+    "methodsAdded": [
+     "WardrobeHandler.WardrobeTab::GetItemElementFromTab(WardrobeItem)",
+     "WardrobeHandler.WardrobeTab::GetMaterialElementFromTab(WardrobeMaterial)"
+    ],
+    "methodsRemoved": [],
+    "methodsBodyChanged": [
+     "WardrobeHandler.WardrobeTab::ComputeNavigationForSettingsTab()"
+    ]
+   },
+   {
+    "type": "WardrobeInfo",
+    "fieldsAdded": [
+     "LockedDesc",
+     "LockedName",
+     "crownCost",
+     "item",
+     "lockBG",
+     "mat",
+     "progressBar",
+     "selectedColorComboImage",
+     "selectedColorImage",
+     "selectedElement",
+     "selectedIcon"
+    ],
+    "fieldsRemoved": [],
+    "fieldsRetyped": [],
+    "methodsAdded": [
+     "WardrobeInfo::SetInfo(TFUIWardrobeItemElement,TFUIWardrobeMaterialElement,bool)",
+     "WardrobeInfo::UpdateProgressBar(WardrobeScriptableObject,bool)",
+     "WardrobeInfo::UpdateSelectedButton(TFUIWardrobeItemElement,TFUIWardrobeMaterialElement,bool)"
+    ],
+    "methodsRemoved": [
+     "WardrobeInfo::SetInfo(WardrobeItem)"
+    ],
+    "methodsBodyChanged": []
+   },
+   {
+    "type": "WardrobeInteractor",
+    "fieldsAdded": [
+     "focused",
+     "pipNew",
+     "showPip",
+     "wardrobeTentTransition"
+    ],
+    "fieldsRemoved": [],
+    "fieldsRetyped": [],
+    "methodsAdded": [
+     "WardrobeInteractor::RefreshPip()",
+     "WardrobeInteractor::Start()"
+    ],
+    "methodsRemoved": [],
+    "methodsBodyChanged": [
+     "WardrobeInteractor::Focus(PlayerInteraction)",
+     "WardrobeInteractor::InteractionBegin(PlayerInteraction)",
+     "WardrobeInteractor::Unfocus(PlayerInteraction)"
+    ]
+   },
+   {
+    "type": "WardrobeItem",
+    "fieldsAdded": [
+     "hasAccentMat",
+     "icon",
+     "texture"
+    ],
+    "fieldsRemoved": [
+     "crownRequirment",
+     "desc",
+     "image",
+     "itemName"
+    ],
+    "fieldsRetyped": [
+     "mesh: WardrobeItem.Mesh -> UnityEngine.Mesh"
+    ],
+    "methodsAdded": [
+     "WardrobeItem::GetPlayerPrefSelectedKey()"
+    ],
+    "methodsRemoved": [],
+    "methodsBodyChanged": []
+   },
+   {
+    "type": "WardrobeOptionsHelper",
+    "fieldsAdded": [
+     "tabType"
+    ],
+    "fieldsRemoved": [
+     "materials",
+     "wardrobeItems"
+    ],
+    "fieldsRetyped": [
+     "UIWardrobeElement: TFUIWardrobeElement -> TFUIWardrobeMaterialElement",
+     "matList: System.Collections.Generic.List<TFUIWardrobeElement> -> System.Collections.Generic.List<TFUIWardrobeMaterialElement>",
+     "selectedMat: TFUIWardrobeElement -> TFUIWardrobeMaterialElement"
+    ],
+    "methodsAdded": [
+     "WardrobeOptionsHelper::OverrideSelectedMat(TFUIWardrobeElement)",
+     "WardrobeOptionsHelper::SelectItemElement(WardrobeItem)",
+     "WardrobeOptionsHelper::SelectMatElements(WardrobeMaterial)",
+     "WardrobeOptionsHelper::SetupWardrobeItemOptions(System.Collections.Generic.List<WardrobeItem>)",
+     "WardrobeOptionsHelper::SetupWardrobeOptions(System.Collections.Generic.List<WardrobeMaterial>,System.Collections.Generic.List<WardrobeItem>,WardrobeMaterial,WardrobeItem)",
+     "WardrobeOptionsHelper::get_MaterialElementList()",
+     "WardrobeOptionsHelper::get_MeshElementList()",
+     "WardrobeOptionsHelper::get_TabType()"
+    ],
+    "methodsRemoved": [
+     "WardrobeOptionsHelper::SetupWardrobeOptions()"
+    ],
+    "methodsBodyChanged": [
+     "WardrobeOptionsHelper::RefreshElements()",
+     "WardrobeOptionsHelper::TrySelectTFUIElement(TFUIWardrobeElement)"
+    ]
+   }
+  ]
+ },
+ "trainerImpact": {
+  "typesReferencedBySrc": 57,
+  "typesWithDrift": 18,
+  "details": [
+   {
+    "type": "BuildSlot",
+    "status": "changed",
+    "fieldsRemoved": [
+     "energyCoreIncome"
+    ],
+    "methodsRemoved": [
+     "BuildSlot::get_EnergyCoreIncome()",
+     "BuildSlot::get_NextUpgradeOrBuildEnergyCoreCost()",
+     "BuildSlot::set_EnergyCoreIncome(int)",
+     "BuildSlot::set_NextUpgradeOrBuildEnergyCoreCost(int)"
+    ],
+    "methodsBodyChanged": [
+     "BuildSlot::ApplyLocalUpgradeChanges(BuildSlot.UpgradeBranch,bool)",
+     "BuildSlot::OnLoad(string)",
+     "BuildSlot::OnSave(string)"
+    ]
+   },
+   {
+    "type": "BuildingInteractor",
+    "status": "changed",
+    "fieldsRemoved": [
+     "energyCoreSpawner"
+    ],
+    "methodsBodyChanged": [
+     "BuildingInteractor::ActivateCostDisplay()",
+     "BuildingInteractor::Harvest(PlayerInteraction)",
+     "BuildingInteractor::InteractionHold(PlayerInteraction)",
+     "BuildingInteractor::get_canBeHarvested()",
+     "BuildingInteractor::get_harvestIsDenied()"
+    ]
+   },
+   {
+    "type": "CameraRig",
+    "status": "changed",
+    "fieldsAdded": [
+     "MinShadowDistance",
+     "defaultShadowDist",
+     "mainCamLocalPos",
+     "urpSettings"
+    ],
+    "methodsAdded": [
+     "CameraRig::OnDestroy()",
+     "CameraRig::SetCameraShadows()",
+     "CameraRig::get_TransitionSpeed()",
+     "CameraRig::set_TransitionSpeed(float)"
+    ],
+    "methodsBodyChanged": [
+     "CameraRig::.ctor()",
+     "CameraRig::Start()",
+     "CameraRig::UpdateZoom()"
+    ]
+   },
+   {
+    "type": "CommandUnits",
+    "status": "changed",
+    "fieldsAdded": [
+     "sceneTransitionManager"
+    ],
+    "methodsBodyChanged": [
+     "CommandUnits::Start()",
+     "CommandUnits::Update()"
+    ]
+   },
+   {
+    "type": "DayNightCycle",
+    "status": "changed",
+    "methodsBodyChanged": [
+     "DayNightCycle::DawnCallAfterSunrise()"
+    ]
+   },
+   {
+    "type": "Equippable",
+    "status": "changed",
+    "fieldsRemoved": [
+     "availableToContentPack"
+    ],
+    "methodsRemoved": [
+     "Equippable::GetCurrentContentPackFromLoadoutScene()",
+     "Equippable::IsAvailableInContentPack(Equippable.ContentPack)"
+    ],
+    "methodsBodyChanged": [
+     "Equippable::.ctor()"
+    ]
+   },
+   {
+    "type": "Hp",
+    "status": "changed",
+    "fieldsAdded": [
+     "OnReceiveDamageDetailed",
+     "boxCollider"
+    ],
+    "fieldsRetyped": [
+     "OnKillOrKnockoutDetailed: UnityEngine.Events.UnityEvent<TaggedObject> -> UnityEngine.Events.UnityEvent<TaggedObject, TaggedObject>"
+    ],
+    "methodsAdded": [
+     "Hp::AssignVeteranTitle()",
+     "Hp::UnassignVeteranTitle()"
+    ],
+    "methodsBodyChanged": [
+     "Hp::.ctor()",
+     "Hp::ActivateAndDeactivateChildrenAndCompements(bool)",
+     "Hp::Initialize()",
+     "Hp::MarkDestroyedBuildingsAsDontRevive(System.Collections.Generic.List<TagManager.ETag>,System.Collections.Generic.List<TagManager.ETag>,float)",
+     "Hp::TakeDamage(float,TaggedObject,bool,bool)"
+    ]
+   },
+   {
+    "type": "PlayerInteraction",
+    "status": "changed",
+    "fieldsRemoved": [
+     "energyCoreBalance",
+     "onEnergyCoreBalanceGain",
+     "onEnergyCoreBalanceSpend"
+    ],
+    "methodsRemoved": [
+     "PlayerInteraction::AddEnergyCores(int)",
+     "PlayerInteraction::SpendEnergyCores(int)",
+     "PlayerInteraction::get_EnergyCoreBalance()",
+     "PlayerInteraction::get_TrueEnergyCoreBalance()"
+    ],
+    "methodsBodyChanged": [
+     "PlayerInteraction::.ctor()",
+     "PlayerInteraction::OnLoad(string)",
+     "PlayerInteraction::OnSave(string)"
+    ]
+   },
+   {
+    "type": "PlayerMovement",
+    "status": "changed",
+    "methodsAdded": [
+     "PlayerMovement::SetRotationTo(float)",
+     "PlayerMovement::SetTransformTo(UnityEngine.Transform)"
+    ]
+   },
+   {
+    "type": "SaveLoadManager",
+    "status": "changed",
+    "methodsAdded": [
+     "SaveLoadManager::OnValidate()"
+    ]
+   },
+   {
+    "type": "SceneTransitionManager",
+    "status": "changed",
+    "fieldsAdded": [
+     "onSceneChangeMid",
+     "onSceneChangeStart"
+    ],
+    "fieldsRemoved": [
+     "levelSelectSceneCraaghelm",
+     "levelSelectSceneFangmore",
+     "onSceneChange"
+    ],
+    "methodsRemoved": [
+     "SceneTransitionManager::IsDLCLevelSelect()"
+    ],
+    "methodsBodyChanged": [
+     "SceneTransitionManager::.ctor()",
+     "SceneTransitionManager::IsInLevelSelect()",
+     "SceneTransitionManager::TransitionToScene(string)"
+    ]
+   },
+   {
+    "type": "Spawn",
+    "status": "changed",
+    "methodsBodyChanged": [
+     "Spawn::Update(float)"
+    ]
+   },
+   {
+    "type": "TagManager",
+    "status": "changed",
+    "fieldsRemoved": [
+     "energyCores",
+     "freeEnergyCores"
+    ],
+    "methodsBodyChanged": [
+     "TagManager::.ctor()"
+    ]
+   },
+   {
+    "type": "TaggedObject",
+    "status": "changed",
+    "methodsAdded": [
+     "TaggedObject::CreateBitfieldFromTags(System.Collections.Generic.List<TagManager.ETag>)",
+     "TaggedObject::GetOffsetFromOrigin(UnityEngine.Vector3)",
+     "TaggedObject::Match(long,long)",
+     "TaggedObject::Update()"
+    ],
+    "methodsBodyChanged": [
+     "TaggedObject::GetSqrDistance(UnityEngine.Vector3)"
+    ]
+   },
+   {
+    "type": "TargetPriority",
+    "status": "changed",
+    "methodsAdded": [
+     "TargetPriority::FindUnsortedTaggedObjectsInRange(UnityEngine.Vector3,float)"
+    ]
+   },
+   {
+    "type": "TitleScreenUIHelper",
+    "status": "changed",
+    "fieldsAdded": [
+     "loadoutUI"
+    ],
+    "methodsBodyChanged": [
+     "TitleScreenUIHelper::ClickPlay()"
+    ]
+   },
+   {
+    "type": "UIFrameManager",
+    "status": "changed",
+    "fieldsAdded": [
+     "dlcGateFrame"
+    ],
+    "methodsAdded": [
+     "UIFrameManager::InMatchPause()",
+     "UIFrameManager::OpenPlatformStoreUI()",
+     "UIFrameManager::TryOpenDLCGate(string,IDlcProvider.DlcId)"
+    ],
+    "methodsBodyChanged": [
+     "UIFrameManager::OpenMenu()"
+    ]
+   },
+   {
+    "type": "UnitRespawnerForBuildings",
+    "status": "changed",
+    "methodsAdded": [
+     "UnitRespawnerForBuildings::get_RespawnSpeedMult()"
+    ],
+    "methodsBodyChanged": [
+     "UnitRespawnerForBuildings::RespawnAKnockedOutUnit()",
+     "UnitRespawnerForBuildings::Update()"
+    ]
+   }
+  ]
+ },
+ "data": {
+  "scenesOnlyA": [],
+  "scenesOnlyB": [],
+  "sceneDiffs": [
+   {
+    "scene": "Wildbach MM3",
+    "enemiesTotal": [
+     1093,
+     1092
+    ],
+    "baseHpTotal": [
+     103480.0,
+     103430.0
+    ]
+   }
+  ],
+  "scenesCompared": 37,
+  "enemyStatDiffs": [],
+  "enemiesOnlyA": [],
+  "enemiesOnlyB": [],
+  "uiFramesOnlyA": [],
+  "uiFramesOnlyB": [
+   "DLC Gate Frame"
+  ],
+  "uiFrameFlagDiffs": [],
+  "inputActionsOnlyA": [],
+  "inputActionsOnlyB": [
+   "NextTab",
+   "PrevTab",
+   "Wardrobe Rotate Left",
+   "Wardrobe Rotate Right"
+  ],
+  "balanceEntries": [
+   3174,
+   3174
+  ],
+  "balanceChanged": 0,
+  "balanceOnlyA": 0,
+  "balanceOnlyB": 0
+ }
+}

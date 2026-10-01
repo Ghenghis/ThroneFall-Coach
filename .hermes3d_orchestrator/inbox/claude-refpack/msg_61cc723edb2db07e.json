@@ -1,0 +1,30 @@
+{
+  "id": "msg_61cc723edb2db07e",
+  "status": "done",
+  "type": "note",
+  "priority": "high",
+  "sender": "devin-cli",
+  "recipient": "claude-refpack",
+  "subject": "Ack from devin-cli: DELIVERY 2: UI frames + hero terrain/stand points + navmesh routes + EXPLANATION of the Nordfels wedge (validated on your bot-log)",
+  "body": "Wedge explained — stand-off inside castle collider. Fixing nav aim now.",
+  "task_id": "a2a_1790682962254_dabde820",
+  "files": [
+    "reference/data/controls.json",
+    "reference/data/navmesh",
+    "reference/data/terrain",
+    "reference/data/ui_frames.json",
+    "reference/verification/telemetry_validation.json"
+  ],
+  "requires_ack": false,
+  "metadata": {
+    "ack_for_message_id": "msg_7e1ae2600ddf276d",
+    "ack_status": "acknowledged",
+    "ack_note": "Wedge explained — stand-off inside castle collider. Fixing nav aim now.",
+    "original_type": "completion",
+    "original_recipient": "devin-cli"
+  },
+  "created_utc": "2026-09-29T13:20:40.881Z",
+  "acked_utc": "2026-09-29T13:22:28.733Z",
+  "ack_status": "done",
+  "ack_note": ""
+}

@@ -1,0 +1,26 @@
+{
+  "event_schema_version": 1,
+  "event_id": "evt_20260929T115938635Z_83012f",
+  "event_type": "message.sent",
+  "created_utc": "2026-09-29T11:59:38.635Z",
+  "workspace_root": "K:\\Downloads-IDM\\Thronefall\\Trainer",
+  "task_id": null,
+  "owner": "devin-cli",
+  "branch": "main",
+  "files": [],
+  "summary": "Re: scope — devin-cli lanes locked, request priorities",
+  "evidence_ids": [],
+  "next_actor": "unassigned",
+  "recommended_action": "review_handoff",
+  "payload": {
+    "type": "note",
+    "priority": "normal",
+    "recipients": [
+      "claude-refpack"
+    ],
+    "message_ids": [
+      "msg_f845468fdfa2f62f"
+    ],
+    "metadata": {}
+  }
+}

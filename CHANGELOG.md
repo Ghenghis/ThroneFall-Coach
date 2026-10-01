@@ -1,5 +1,20 @@
 # Changelog
 
+## Efficiency system (task ledger + MiniMax observer)
+
+- `src/Tasks.cs`: per-task ledger (every second of play belongs to a build or a mode span), 0-100 efficiency per task,
+  day/night reports, build verification (level sum must rise; miss -> `task-miss` + `Memory.ForgiveParks`), deferred
+  4 s outcome resolution so completed builds are not mislabelled `partial`, `Tasks.Watch()` LLM-free supervisor filter,
+  `coach-fx` scoring of MiniMax advice (score before vs 60 s after). Writes `agent/tasks.jsonl` (ts + build stamped) and
+  `agent/benchmarks.json`; exports ledger, coach heartbeat stats and reports in `audit.json`.
+- `src/Coach.cs`: latency, failure count, last trigger; system prompt now explains efficiency/useful_pct/weak_tasks.
+- `src/Efficiency.cs`: score is held (not decayed) at night, so a quiet night no longer reads 0.
+- `tools/eff_lib.py`, `efficiency-compare.py`, `tune-efficiency.py`, `check-efficiency.py`; dashboard `/efficiency` +
+  Audit-tab panels (live score, per-task table, 1h/16h/48h/all vs baseline vs goal, MiniMax heartbeat).
+- `STANDARD.md`: every constant labelled measured / sourced / estimate. Baseline 75.2 % useful (same classifier on 60
+  pre-change runs); the old 47.7 % used a different rule and is not comparable.
+- Finding: `useful%` vs max wave r=0.20, and run length vs max wave r=0.67, so wave count is confounded by survival time;
+  the tuning script emits hypotheses only and never applies weights.
 ## v3.0-dev round-7 audit pass (2026-06-30)
 
 Nine-agent audit fleet + live Neuland evidence; defects fixed:
@@ -186,3 +201,4 @@ AUTOPILOT §8–9 for the full list and next actions.
   `SpendEnergyCores`, `Coinslot.AddFill`, `Hp.Start`,
   `LocalGamestate.SetState`, `Weapon.Attack`.
 - `tools\build-and-deploy.ps1`, `tools\decompile.ps1`, ilspycmd reference dumps.
+

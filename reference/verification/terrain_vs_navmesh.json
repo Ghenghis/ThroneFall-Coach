@@ -1,0 +1,550 @@
+[
+ {
+  "scene": "Neuland(Tutorial)",
+  "buildIndex": 4,
+  "heroReachableM2": 8772.2,
+  "slots": 19,
+  "slotsWithoutStandPoint": 0,
+  "staticBlockedPct": 2.7,
+  "obstacles": 41,
+  "navmeshM2": 8818.1,
+  "coveragePct": 97.3,
+  "navUsedPct": 96.8,
+  "flags": []
+ },
+ {
+  "scene": "Nordfels",
+  "buildIndex": 5,
+  "heroReachableM2": 6621.8,
+  "slots": 69,
+  "slotsWithoutStandPoint": 0,
+  "staticBlockedPct": 4.14,
+  "obstacles": 74,
+  "navmeshM2": 8087.6,
+  "coveragePct": 100.0,
+  "navUsedPct": 81.9,
+  "flags": []
+ },
+ {
+  "scene": "Durststein",
+  "buildIndex": 6,
+  "heroReachableM2": 87606.0,
+  "slots": 94,
+  "slotsWithoutStandPoint": 0,
+  "staticBlockedPct": 2.49,
+  "obstacles": 99,
+  "navmeshM2": 15417.5,
+  "coveragePct": 17.4,
+  "navUsedPct": 98.8,
+  "flags": [
+   "hero area only partly inside navmesh"
+  ]
+ },
+ {
+  "scene": "Frostsee",
+  "buildIndex": 7,
+  "heroReachableM2": 14801.5,
+  "slots": 73,
+  "slotsWithoutStandPoint": 0,
+  "staticBlockedPct": 3.68,
+  "obstacles": 98,
+  "navmeshM2": 14265.8,
+  "coveragePct": 95.5,
+  "navUsedPct": 99.1,
+  "flags": []
+ },
+ {
+  "scene": "Uferwind",
+  "buildIndex": 8,
+  "heroReachableM2": 83231.7,
+  "slots": 117,
+  "slotsWithoutStandPoint": 0,
+  "staticBlockedPct": 0.0,
+  "obstacles": 128,
+  "navmeshM2": 16032.1,
+  "coveragePct": 19.3,
+  "navUsedPct": 100.0,
+  "flags": [
+   "almost no static blockers rasterised",
+   "hero area only partly inside navmesh"
+  ]
+ },
+ {
+  "scene": "Sturmklamm",
+  "buildIndex": 9,
+  "heroReachableM2": 65747.5,
+  "slots": 80,
+  "slotsWithoutStandPoint": 0,
+  "staticBlockedPct": 0.0,
+  "obstacles": 86,
+  "navmeshM2": 8447.1,
+  "coveragePct": 12.8,
+  "navUsedPct": 100.0,
+  "flags": [
+   "almost no static blockers rasterised",
+   "hero area only partly inside navmesh"
+  ]
+ },
+ {
+  "scene": "Nordfels Bow Micro",
+  "buildIndex": 10,
+  "heroReachableM2": 7409.2,
+  "slots": 13,
+  "slotsWithoutStandPoint": 0,
+  "staticBlockedPct": 4.14,
+  "obstacles": 28,
+  "navmeshM2": 8087.6,
+  "coveragePct": 100.0,
+  "navUsedPct": 91.6,
+  "flags": []
+ },
+ {
+  "scene": "Nordfels Siege",
+  "buildIndex": 11,
+  "heroReachableM2": 6930.8,
+  "slots": 51,
+  "slotsWithoutStandPoint": 0,
+  "staticBlockedPct": 4.14,
+  "obstacles": 59,
+  "navmeshM2": 8087.6,
+  "coveragePct": 100.0,
+  "navUsedPct": 85.7,
+  "flags": []
+ },
+ {
+  "scene": "Nordfels Commander",
+  "buildIndex": 12,
+  "heroReachableM2": 7103.6,
+  "slots": 23,
+  "slotsWithoutStandPoint": 0,
+  "staticBlockedPct": 4.14,
+  "obstacles": 47,
+  "navmeshM2": 8087.6,
+  "coveragePct": 100.0,
+  "navUsedPct": 87.8,
+  "flags": []
+ },
+ {
+  "scene": "Durststein Gold Puzzle",
+  "buildIndex": 13,
+  "heroReachableM2": 87606.0,
+  "slots": 57,
+  "slotsWithoutStandPoint": 0,
+  "staticBlockedPct": 2.49,
+  "obstacles": 60,
+  "navmeshM2": 15417.5,
+  "coveragePct": 17.4,
+  "navUsedPct": 98.8,
+  "flags": [
+   "hero area only partly inside navmesh"
+  ]
+ },
+ {
+  "scene": "Durststein Speedrun",
+  "buildIndex": 14,
+  "heroReachableM2": 87606.0,
+  "slots": 84,
+  "slotsWithoutStandPoint": 0,
+  "staticBlockedPct": 2.49,
+  "obstacles": 91,
+  "navmeshM2": 15417.5,
+  "coveragePct": 17.4,
+  "navUsedPct": 98.8,
+  "flags": [
+   "hero area only partly inside navmesh"
+  ]
+ },
+ {
+  "scene": "Durststein Tower Defense",
+  "buildIndex": 15,
+  "heroReachableM2": 87606.0,
+  "slots": 42,
+  "slotsWithoutStandPoint": 0,
+  "staticBlockedPct": 2.49,
+  "obstacles": 73,
+  "navmeshM2": 15417.5,
+  "coveragePct": 17.4,
+  "navUsedPct": 98.8,
+  "flags": [
+   "hero area only partly inside navmesh"
+  ]
+ },
+ {
+  "scene": "Frostsee Boss Rush",
+  "buildIndex": 16,
+  "heroReachableM2": 14801.5,
+  "slots": 61,
+  "slotsWithoutStandPoint": 0,
+  "staticBlockedPct": 3.68,
+  "obstacles": 86,
+  "navmeshM2": 14265.8,
+  "coveragePct": 95.5,
+  "navUsedPct": 99.1,
+  "flags": []
+ },
+ {
+  "scene": "Frostsee Bowling Challenge",
+  "buildIndex": 17,
+  "heroReachableM2": 14442.7,
+  "slots": 1,
+  "slotsWithoutStandPoint": 0,
+  "staticBlockedPct": 4.97,
+  "obstacles": 17,
+  "navmeshM2": 14265.8,
+  "coveragePct": 97.1,
+  "navUsedPct": 98.3,
+  "flags": []
+ },
+ {
+  "scene": "Frostsee The Great Wall",
+  "buildIndex": 18,
+  "heroReachableM2": 14801.5,
+  "slots": 62,
+  "slotsWithoutStandPoint": 0,
+  "staticBlockedPct": 3.68,
+  "obstacles": 90,
+  "navmeshM2": 14265.8,
+  "coveragePct": 95.5,
+  "navUsedPct": 99.1,
+  "flags": []
+ },
+ {
+  "scene": "Uferwind Defense Puzzle",
+  "buildIndex": 19,
+  "heroReachableM2": 83231.7,
+  "slots": 110,
+  "slotsWithoutStandPoint": 0,
+  "staticBlockedPct": 0.0,
+  "obstacles": 123,
+  "navmeshM2": 16032.1,
+  "coveragePct": 19.3,
+  "navUsedPct": 100.0,
+  "flags": [
+   "almost no static blockers rasterised",
+   "hero area only partly inside navmesh"
+  ]
+ },
+ {
+  "scene": "Uferwind Hero Commander",
+  "buildIndex": 20,
+  "heroReachableM2": 83231.7,
+  "slots": 45,
+  "slotsWithoutStandPoint": 0,
+  "staticBlockedPct": 0.0,
+  "obstacles": 90,
+  "navmeshM2": 16032.1,
+  "coveragePct": 19.3,
+  "navUsedPct": 100.0,
+  "flags": [
+   "almost no static blockers rasterised",
+   "hero area only partly inside navmesh"
+  ]
+ },
+ {
+  "scene": "Uferwind Lightning Staff Challenge",
+  "buildIndex": 21,
+  "heroReachableM2": 83231.7,
+  "slots": 32,
+  "slotsWithoutStandPoint": 0,
+  "staticBlockedPct": 0.0,
+  "obstacles": 65,
+  "navmeshM2": 16032.1,
+  "coveragePct": 19.3,
+  "navUsedPct": 100.0,
+  "flags": [
+   "almost no static blockers rasterised",
+   "hero area only partly inside navmesh"
+  ]
+ },
+ {
+  "scene": "Sturmklamm Just The Way They Are",
+  "buildIndex": 22,
+  "heroReachableM2": 65747.5,
+  "slots": 27,
+  "slotsWithoutStandPoint": 0,
+  "staticBlockedPct": 0.0,
+  "obstacles": 51,
+  "navmeshM2": 8447.1,
+  "coveragePct": 12.8,
+  "navUsedPct": 100.0,
+  "flags": [
+   "almost no static blockers rasterised",
+   "hero area only partly inside navmesh"
+  ]
+ },
+ {
+  "scene": "Sturmklamm One Man Army",
+  "buildIndex": 23,
+  "heroReachableM2": 65747.5,
+  "slots": 10,
+  "slotsWithoutStandPoint": 0,
+  "staticBlockedPct": 0.0,
+  "obstacles": 31,
+  "navmeshM2": 8447.1,
+  "coveragePct": 12.8,
+  "navUsedPct": 100.0,
+  "flags": [
+   "almost no static blockers rasterised",
+   "hero area only partly inside navmesh"
+  ]
+ },
+ {
+  "scene": "Sturmklamm Shrine Challenge",
+  "buildIndex": 24,
+  "heroReachableM2": 65747.5,
+  "slots": 26,
+  "slotsWithoutStandPoint": 0,
+  "staticBlockedPct": 0.0,
+  "obstacles": 47,
+  "navmeshM2": 8447.1,
+  "coveragePct": 12.8,
+  "navUsedPct": 100.0,
+  "flags": [
+   "almost no static blockers rasterised",
+   "hero area only partly inside navmesh"
+  ]
+ },
+ {
+  "scene": "Wildbach",
+  "buildIndex": 25,
+  "heroReachableM2": 51635.0,
+  "slots": 78,
+  "slotsWithoutStandPoint": 0,
+  "staticBlockedPct": 0.0,
+  "obstacles": 84,
+  "navmeshM2": 9165.6,
+  "coveragePct": 17.8,
+  "navUsedPct": 100.0,
+  "flags": [
+   "almost no static blockers rasterised",
+   "hero area only partly inside navmesh"
+  ]
+ },
+ {
+  "scene": "Moorweg",
+  "buildIndex": 26,
+  "heroReachableM2": 84270.2,
+  "slots": 82,
+  "slotsWithoutStandPoint": 0,
+  "staticBlockedPct": 2.41,
+  "obstacles": 107,
+  "navmeshM2": 18899.1,
+  "coveragePct": 22.4,
+  "navUsedPct": 100.0,
+  "flags": [
+   "hero area only partly inside navmesh"
+  ]
+ },
+ {
+  "scene": "Freifort",
+  "buildIndex": 27,
+  "heroReachableM2": 73745.6,
+  "slots": 113,
+  "slotsWithoutStandPoint": 0,
+  "staticBlockedPct": 5.29,
+  "obstacles": 131,
+  "navmeshM2": 25812.7,
+  "coveragePct": 34.2,
+  "navUsedPct": 97.6,
+  "flags": [
+   "hero area only partly inside navmesh"
+  ]
+ },
+ {
+  "scene": "Totend",
+  "buildIndex": 28,
+  "heroReachableM2": 16173.9,
+  "slots": 100,
+  "slotsWithoutStandPoint": 32,
+  "staticBlockedPct": 5.14,
+  "obstacles": 162,
+  "navmeshM2": 20291.0,
+  "coveragePct": 65.0,
+  "navUsedPct": 51.8,
+  "flags": [
+   "32 slots without stand point"
+  ]
+ },
+ {
+  "scene": "Freifort MM1",
+  "buildIndex": 29,
+  "heroReachableM2": 161318.9,
+  "slots": 7,
+  "slotsWithoutStandPoint": 0,
+  "staticBlockedPct": 2.53,
+  "obstacles": 42,
+  "navmeshM2": 25813.6,
+  "coveragePct": 15.9,
+  "navUsedPct": 99.1,
+  "flags": [
+   "hero area only partly inside navmesh"
+  ]
+ },
+ {
+  "scene": "Freifort MM2",
+  "buildIndex": 30,
+  "heroReachableM2": 73745.6,
+  "slots": 113,
+  "slotsWithoutStandPoint": 0,
+  "staticBlockedPct": 5.29,
+  "obstacles": 131,
+  "navmeshM2": 25812.7,
+  "coveragePct": 34.2,
+  "navUsedPct": 97.6,
+  "flags": [
+   "hero area only partly inside navmesh"
+  ]
+ },
+ {
+  "scene": "Freifort MM3",
+  "buildIndex": 31,
+  "heroReachableM2": 72059.2,
+  "slots": 144,
+  "slotsWithoutStandPoint": 0,
+  "staticBlockedPct": 5.43,
+  "obstacles": 107,
+  "navmeshM2": 25812.7,
+  "coveragePct": 35.3,
+  "navUsedPct": 98.6,
+  "flags": [
+   "hero area only partly inside navmesh"
+  ]
+ },
+ {
+  "scene": "Moorweg MM1",
+  "buildIndex": 32,
+  "heroReachableM2": 84270.2,
+  "slots": 78,
+  "slotsWithoutStandPoint": 0,
+  "staticBlockedPct": 2.41,
+  "obstacles": 89,
+  "navmeshM2": 18899.1,
+  "coveragePct": 22.4,
+  "navUsedPct": 100.0,
+  "flags": [
+   "hero area only partly inside navmesh"
+  ]
+ },
+ {
+  "scene": "Moorweg MM2",
+  "buildIndex": 33,
+  "heroReachableM2": 84270.2,
+  "slots": 74,
+  "slotsWithoutStandPoint": 0,
+  "staticBlockedPct": 2.41,
+  "obstacles": 103,
+  "navmeshM2": 18899.1,
+  "coveragePct": 22.4,
+  "navUsedPct": 100.0,
+  "flags": [
+   "hero area only partly inside navmesh"
+  ]
+ },
+ {
+  "scene": "Moorweg MM3",
+  "buildIndex": 34,
+  "heroReachableM2": 84270.2,
+  "slots": 82,
+  "slotsWithoutStandPoint": 0,
+  "staticBlockedPct": 2.41,
+  "obstacles": 107,
+  "navmeshM2": 18899.1,
+  "coveragePct": 22.4,
+  "navUsedPct": 100.0,
+  "flags": [
+   "hero area only partly inside navmesh"
+  ]
+ },
+ {
+  "scene": "Totend MM1",
+  "buildIndex": 35,
+  "heroReachableM2": 16173.9,
+  "slots": 99,
+  "slotsWithoutStandPoint": 31,
+  "staticBlockedPct": 5.14,
+  "obstacles": 164,
+  "navmeshM2": 20291.0,
+  "coveragePct": 65.0,
+  "navUsedPct": 51.8,
+  "flags": [
+   "31 slots without stand point"
+  ]
+ },
+ {
+  "scene": "Totend MM2",
+  "buildIndex": 36,
+  "heroReachableM2": 16173.9,
+  "slots": 7,
+  "slotsWithoutStandPoint": 0,
+  "staticBlockedPct": 5.14,
+  "obstacles": 68,
+  "navmeshM2": 20291.0,
+  "coveragePct": 65.0,
+  "navUsedPct": 51.8,
+  "flags": []
+ },
+ {
+  "scene": "Totend MM3",
+  "buildIndex": 37,
+  "heroReachableM2": 122909.9,
+  "slots": 118,
+  "slotsWithoutStandPoint": 52,
+  "staticBlockedPct": 5.14,
+  "obstacles": 145,
+  "navmeshM2": 20291.0,
+  "coveragePct": 6.5,
+  "navUsedPct": 39.3,
+  "flags": [
+   "hero area only partly inside navmesh",
+   "52 slots without stand point"
+  ]
+ },
+ {
+  "scene": "Wildbach MM1",
+  "buildIndex": 38,
+  "heroReachableM2": 51635.0,
+  "slots": 75,
+  "slotsWithoutStandPoint": 0,
+  "staticBlockedPct": 0.0,
+  "obstacles": 88,
+  "navmeshM2": 9165.6,
+  "coveragePct": 17.8,
+  "navUsedPct": 100.0,
+  "flags": [
+   "almost no static blockers rasterised",
+   "hero area only partly inside navmesh"
+  ]
+ },
+ {
+  "scene": "Wildbach MM2",
+  "buildIndex": 39,
+  "heroReachableM2": 51635.0,
+  "slots": 75,
+  "slotsWithoutStandPoint": 0,
+  "staticBlockedPct": 0.0,
+  "obstacles": 81,
+  "navmeshM2": 9165.6,
+  "coveragePct": 17.8,
+  "navUsedPct": 100.0,
+  "flags": [
+   "almost no static blockers rasterised",
+   "hero area only partly inside navmesh"
+  ]
+ },
+ {
+  "scene": "Wildbach MM3",
+  "buildIndex": 40,
+  "heroReachableM2": 51635.0,
+  "slots": 78,
+  "slotsWithoutStandPoint": 0,
+  "staticBlockedPct": 0.0,
+  "obstacles": 84,
+  "navmeshM2": 9165.6,
+  "coveragePct": 17.8,
+  "navUsedPct": 100.0,
+  "flags": [
+   "almost no static blockers rasterised",
+   "hero area only partly inside navmesh"
+  ]
+ }
+]

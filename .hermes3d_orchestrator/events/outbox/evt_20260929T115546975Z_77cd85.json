@@ -1,0 +1,23 @@
+{
+  "event_schema_version": 1,
+  "event_id": "evt_20260929T115546975Z_77cd85",
+  "event_type": "evidence.appended",
+  "created_utc": "2026-09-29T11:55:46.975Z",
+  "workspace_root": "K:\\Downloads-IDM\\Thronefall\\Trainer",
+  "task_id": null,
+  "owner": "claude-refpack",
+  "branch": "main",
+  "files": [],
+  "summary": "HermesProof project connected: K:\\Downloads-IDM\\Thronefall\\Trainer",
+  "evidence_ids": [],
+  "next_actor": "unassigned",
+  "recommended_action": "acknowledge",
+  "payload": {
+    "owner": "claude-refpack",
+    "task_id": null,
+    "evidence_id": "ev_48538228dc173c98",
+    "entry_hash": "ef766a4b975ca67ca30b1f05a4f6dca7e4503b7739e8ea01fd8e01bc00e6ed34",
+    "kind": "project.connect",
+    "summary": "HermesProof project connected: K:\\Downloads-IDM\\Thronefall\\Trainer"
+  }
+}

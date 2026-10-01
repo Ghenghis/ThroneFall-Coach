@@ -1,0 +1,23 @@
+{
+  "event_schema_version": 1,
+  "event_id": "evt_20260929T115501729Z_fa153f",
+  "event_type": "evidence.appended",
+  "created_utc": "2026-09-29T11:55:01.729Z",
+  "workspace_root": "K:\\Downloads-IDM\\Thronefall\\Trainer",
+  "task_id": null,
+  "owner": "devin-cli",
+  "branch": "main",
+  "files": [],
+  "summary": "HermesProof workspace switched: K:\\Downloads-IDM\\Thronefall\\Trainer",
+  "evidence_ids": [],
+  "next_actor": "unassigned",
+  "recommended_action": "acknowledge",
+  "payload": {
+    "owner": "devin-cli",
+    "task_id": null,
+    "evidence_id": "ev_cbd77a2121269cb9",
+    "entry_hash": "ac060c0faa058db213c8dd210d92eac51787b1a09458f77a83914afddc22b9ae",
+    "kind": "workspace.switch",
+    "summary": "HermesProof workspace switched: K:\\Downloads-IDM\\Thronefall\\Trainer"
+  }
+}

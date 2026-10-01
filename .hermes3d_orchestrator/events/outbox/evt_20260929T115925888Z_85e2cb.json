@@ -1,0 +1,37 @@
+{
+  "event_schema_version": 1,
+  "event_id": "evt_20260929T115925888Z_85e2cb",
+  "event_type": "lock.acquired",
+  "created_utc": "2026-09-29T11:59:25.888Z",
+  "workspace_root": "K:\\Downloads-IDM\\Thronefall\\Trainer",
+  "task_id": "thronefall-v2-agentic",
+  "owner": "devin-cli",
+  "branch": "main",
+  "files": [
+    "src/Bot.cs",
+    "src/BotPerception.cs",
+    "src/Plugin.cs",
+    "src/Recorder.cs",
+    "src/ThronefallTrainer.csproj"
+  ],
+  "summary": "Lock acquired: 5 file(s)",
+  "evidence_ids": [
+    "ev_7d629bdc0c01ec28",
+    "ev_a53f4388521fefab",
+    "ev_947f05b14a699218"
+  ],
+  "next_actor": "unassigned",
+  "recommended_action": "none",
+  "payload": {
+    "owner": "devin-cli",
+    "task_id": "thronefall-v2-agentic",
+    "files": [
+      "src/Bot.cs",
+      "src/BotPerception.cs",
+      "src/Plugin.cs",
+      "src/Recorder.cs",
+      "src/ThronefallTrainer.csproj"
+    ],
+    "reason": "v3 Phase 0-1 implementation: recorder, perception fields, pure-Decide refactor — live code lane"
+  }
+}

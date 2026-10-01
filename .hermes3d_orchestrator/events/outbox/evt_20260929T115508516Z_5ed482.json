@@ -1,0 +1,35 @@
+{
+  "event_schema_version": 1,
+  "event_id": "evt_20260929T115508516Z_5ed482",
+  "event_type": "agent.profile.updated",
+  "created_utc": "2026-09-29T11:55:08.516Z",
+  "workspace_root": "K:\\Downloads-IDM\\Thronefall\\Trainer",
+  "task_id": null,
+  "owner": "devin-cli",
+  "branch": "main",
+  "files": [],
+  "summary": "Agent profile registered: devin-cli",
+  "evidence_ids": [],
+  "next_actor": "unassigned",
+  "recommended_action": "acknowledge",
+  "payload": {
+    "host": "windows-local",
+    "model": "swe-2-max",
+    "mode": "coordinated-dev",
+    "skills": [
+      "bepinex",
+      "csharp",
+      "github-releases",
+      "harmony",
+      "pathfinding",
+      "powershell",
+      "unity"
+    ],
+    "task_types": [
+      "debugging",
+      "implementation",
+      "releases",
+      "verification"
+    ]
+  }
+}

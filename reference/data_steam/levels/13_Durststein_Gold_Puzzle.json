@@ -1,0 +1,8425 @@
+{
+ "scene": "Durststein Gold Puzzle",
+ "buildIndex": 13,
+ "file": "level13",
+ "kind": "minimode",
+ "objects": 15325,
+ "monobehaviourClasses": 179,
+ "spawners": [
+  {
+   "id": 15194,
+   "name": "ES Durststein Gold Puzzle",
+   "mode": "Classic",
+   "modeRaw": 0,
+   "goldBalanceAtStart": 7,
+   "endlessMode": false,
+   "pauseSpawningAtEnemyCount": 275,
+   "reduceSpawnWaitTimes": true,
+   "waveGenerator": "Season2 Wave Gen",
+   "endlessWaveGenerator": null,
+   "waveCount": 9,
+   "waves": [
+    {
+     "index": 0,
+     "night": 1,
+     "warningText": "Nobody",
+     "difficultyMulti": 1.0,
+     "spawns": [],
+     "totals": {
+      "enemies": 0,
+      "baseHp": 0.0,
+      "goldCoins": 0,
+      "eliteEnemies": 0,
+      "flying": 0,
+      "boss": 0,
+      "ranged": 0,
+      "spawnSpanSeconds": 0.0,
+      "byLine": {}
+     }
+    },
+    {
+     "index": 1,
+     "night": 2,
+     "warningText": "Nobody",
+     "difficultyMulti": 1.0,
+     "spawns": [],
+     "totals": {
+      "enemies": 0,
+      "baseHp": 0.0,
+      "goldCoins": 0,
+      "eliteEnemies": 0,
+      "flying": 0,
+      "boss": 0,
+      "ranged": 0,
+      "spawnSpanSeconds": 0.0,
+      "byLine": {}
+     }
+    },
+    {
+     "index": 2,
+     "night": 3,
+     "warningText": "Nobody",
+     "difficultyMulti": 1.0,
+     "spawns": [],
+     "totals": {
+      "enemies": 0,
+      "baseHp": 0.0,
+      "goldCoins": 0,
+      "eliteEnemies": 0,
+      "flying": 0,
+      "boss": 0,
+      "ranged": 0,
+      "spawnSpanSeconds": 0.0,
+      "byLine": {}
+     }
+    },
+    {
+     "index": 3,
+     "night": 4,
+     "warningText": "Nobody",
+     "difficultyMulti": 1.0,
+     "spawns": [],
+     "totals": {
+      "enemies": 0,
+      "baseHp": 0.0,
+      "goldCoins": 0,
+      "eliteEnemies": 0,
+      "flying": 0,
+      "boss": 0,
+      "ranged": 0,
+      "spawnSpanSeconds": 0.0,
+      "byLine": {}
+     }
+    },
+    {
+     "index": 4,
+     "night": 5,
+     "warningText": "Nobody",
+     "difficultyMulti": 1.0,
+     "spawns": [],
+     "totals": {
+      "enemies": 0,
+      "baseHp": 0.0,
+      "goldCoins": 0,
+      "eliteEnemies": 0,
+      "flying": 0,
+      "boss": 0,
+      "ranged": 0,
+      "spawnSpanSeconds": 0.0,
+      "byLine": {}
+     }
+    },
+    {
+     "index": 5,
+     "night": 6,
+     "warningText": "Nobody",
+     "difficultyMulti": 1.0,
+     "spawns": [],
+     "totals": {
+      "enemies": 0,
+      "baseHp": 0.0,
+      "goldCoins": 0,
+      "eliteEnemies": 0,
+      "flying": 0,
+      "boss": 0,
+      "ranged": 0,
+      "spawnSpanSeconds": 0.0,
+      "byLine": {}
+     }
+    },
+    {
+     "index": 6,
+     "night": 7,
+     "warningText": "Nobody",
+     "difficultyMulti": 1.0,
+     "spawns": [],
+     "totals": {
+      "enemies": 0,
+      "baseHp": 0.0,
+      "goldCoins": 0,
+      "eliteEnemies": 0,
+      "flying": 0,
+      "boss": 0,
+      "ranged": 0,
+      "spawnSpanSeconds": 0.0,
+      "byLine": {}
+     }
+    },
+    {
+     "index": 7,
+     "night": 8,
+     "warningText": "Nobody",
+     "difficultyMulti": 1.0,
+     "spawns": [],
+     "totals": {
+      "enemies": 0,
+      "baseHp": 0.0,
+      "goldCoins": 0,
+      "eliteEnemies": 0,
+      "flying": 0,
+      "boss": 0,
+      "ranged": 0,
+      "spawnSpanSeconds": 0.0,
+      "byLine": {}
+     }
+    },
+    {
+     "index": 8,
+     "night": 9,
+     "warningText": "Nobody",
+     "difficultyMulti": 1.0,
+     "spawns": [],
+     "totals": {
+      "enemies": 0,
+      "baseHp": 0.0,
+      "goldCoins": 0,
+      "eliteEnemies": 0,
+      "flying": 0,
+      "boss": 0,
+      "ranged": 0,
+      "spawnSpanSeconds": 0.0,
+      "byLine": {}
+     }
+    }
+   ]
+  }
+ ],
+ "spawnLines": [
+  {
+   "tf": 5447,
+   "name": "FarmFlyers",
+   "path": "ES Durststein Gold Puzzle/FarmFlyers",
+   "points": [
+    [
+     137.25,
+     32.39,
+     75.6
+    ],
+    [
+     147.57,
+     32.39,
+     63.35
+    ]
+   ],
+   "length": 16.018,
+   "center": [
+    142.41,
+    32.39,
+    69.475
+   ],
+   "difficulty": "Normal",
+   "canSpawnFlying": true,
+   "canSpawnSmallGround": false,
+   "canSpawnBigGround": false,
+   "sharedPaths": [],
+   "separatedPaths": [
+    "Left Front Road",
+    "Left Back Road"
+   ]
+  },
+  {
+   "tf": 4614,
+   "name": "High Back Road",
+   "path": "ES Durststein Gold Puzzle/High Back Road",
+   "points": [
+    [
+     -16.6,
+     29.3,
+     130.2
+    ],
+    [
+     -49.7,
+     29.4,
+     141.3
+    ]
+   ],
+   "length": 34.912,
+   "center": [
+    -33.15,
+    29.35,
+    135.75
+   ],
+   "difficulty": "Normal",
+   "canSpawnFlying": true,
+   "canSpawnSmallGround": true,
+   "canSpawnBigGround": false,
+   "sharedPaths": [],
+   "separatedPaths": [
+    "Left Front Road",
+    "Left Back Road"
+   ]
+  },
+  {
+   "tf": 5102,
+   "name": "FrontFlyersRight",
+   "path": "ES Durststein Gold Puzzle/FrontFlyersRight",
+   "points": [
+    [
+     42.02,
+     14.97,
+     -44.94
+    ],
+    [
+     71.18,
+     17.16,
+     -45.29
+    ]
+   ],
+   "length": 29.162,
+   "center": [
+    56.6,
+    16.065,
+    -45.115
+   ],
+   "difficulty": "Normal",
+   "canSpawnFlying": true,
+   "canSpawnSmallGround": false,
+   "canSpawnBigGround": false,
+   "sharedPaths": [
+    "FrontFlyersLeft"
+   ],
+   "separatedPaths": []
+  },
+  {
+   "tf": 4434,
+   "name": "Left Front Road",
+   "path": "ES Durststein Gold Puzzle/Left Front Road",
+   "points": [
+    [
+     -134.9,
+     1.5,
+     22.0
+    ],
+    [
+     -141.2,
+     1.47,
+     13.5
+    ]
+   ],
+   "length": 10.58,
+   "center": [
+    -138.05,
+    1.485,
+    17.75
+   ],
+   "difficulty": "EasierForPlayerToDealWith",
+   "canSpawnFlying": true,
+   "canSpawnSmallGround": true,
+   "canSpawnBigGround": true,
+   "sharedPaths": [
+    "Left Back Road"
+   ],
+   "separatedPaths": [
+    "High Back Road",
+    "Right Farm Road",
+    "Front Road"
+   ]
+  },
+  {
+   "tf": 4112,
+   "name": "Front Road",
+   "path": "ES Durststein Gold Puzzle/Front Road",
+   "points": [
+    [
+     -47.61,
+     4.0,
+     -43.76
+    ],
+    [
+     -24.51,
+     4.74,
+     -43.6
+    ]
+   ],
+   "length": 23.101,
+   "center": [
+    -36.06,
+    4.37,
+    -43.68
+   ],
+   "difficulty": "Normal",
+   "canSpawnFlying": true,
+   "canSpawnSmallGround": true,
+   "canSpawnBigGround": true,
+   "sharedPaths": [
+    "FrontFlyersLeft"
+   ],
+   "separatedPaths": [
+    "Left Front Road",
+    "Left Back Road"
+   ]
+  },
+  {
+   "tf": 5098,
+   "name": "FrontFlyersLeft",
+   "path": "ES Durststein Gold Puzzle/FrontFlyersLeft",
+   "points": [
+    [
+     -13.35,
+     11.75,
+     -37.79
+    ],
+    [
+     30.17,
+     13.2,
+     -45.11
+    ]
+   ],
+   "length": 44.131,
+   "center": [
+    8.41,
+    12.475,
+    -41.45
+   ],
+   "difficulty": "Normal",
+   "canSpawnFlying": true,
+   "canSpawnSmallGround": false,
+   "canSpawnBigGround": false,
+   "sharedPaths": [
+    "FrontFlyersRight",
+    "Front Road"
+   ],
+   "separatedPaths": []
+  },
+  {
+   "tf": 4470,
+   "name": "Left Back Road",
+   "path": "ES Durststein Gold Puzzle/Left Back Road",
+   "points": [
+    [
+     -87.6,
+     24.37,
+     72.1
+    ],
+    [
+     -128.98,
+     22.7,
+     40.66
+    ]
+   ],
+   "length": 51.969,
+   "center": [
+    -108.29,
+    23.535,
+    56.38
+   ],
+   "difficulty": "Normal",
+   "canSpawnFlying": true,
+   "canSpawnSmallGround": true,
+   "canSpawnBigGround": true,
+   "sharedPaths": [
+    "Left Front Road"
+   ],
+   "separatedPaths": [
+    "High Back Road",
+    "Right Farm Road",
+    "Front Road"
+   ]
+  },
+  {
+   "tf": 4525,
+   "name": "Right Farm Road",
+   "path": "ES Durststein Gold Puzzle/Right Farm Road",
+   "points": [
+    [
+     141.2,
+     0.9,
+     -9.4
+    ],
+    [
+     153.6,
+     1.27,
+     -15.8
+    ]
+   ],
+   "length": 13.954,
+   "center": [
+    147.4,
+    1.085,
+    -12.6
+   ],
+   "difficulty": "Normal",
+   "canSpawnFlying": true,
+   "canSpawnSmallGround": true,
+   "canSpawnBigGround": true,
+   "sharedPaths": [],
+   "separatedPaths": [
+    "Left Front Road",
+    "Left Back Road"
+   ]
+  }
+ ],
+ "enemies": {},
+ "buildSlots": [
+  {
+   "id": 12312,
+   "name": "Field Variant (4)",
+   "path": "BUILDINGS/Field Variant (4)",
+   "building": "Field",
+   "pos": [
+    93.09,
+    13.62,
+    34.01
+   ],
+   "yawDeg": 0.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": -100,
+   "activator": {
+    "slot": 14399,
+    "building": "Mill",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    93.09,
+    13.62,
+    34.01
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     93.09,
+     13.62,
+     34.01
+    ],
+    "size": [
+     2.369,
+     1.0,
+     2.334
+    ],
+    "center": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 1,
+     "coreCost": 0,
+     "tooltip": "Fragile, but generating good income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 1,
+   "totalCoreCost": 0,
+   "maxIncome": 1
+  },
+  {
+   "id": 12317,
+   "name": "Field Variant (6)",
+   "path": "BUILDINGS/Field Variant (6)",
+   "building": "Field",
+   "pos": [
+    87.73,
+    13.62,
+    33.79
+   ],
+   "yawDeg": 0.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": -100,
+   "activator": {
+    "slot": 14399,
+    "building": "Mill",
+    "level": 1,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    87.73,
+    13.62,
+    33.79
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     87.73,
+     13.62,
+     33.79
+    ],
+    "size": [
+     2.369,
+     1.0,
+     2.334
+    ],
+    "center": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 1,
+     "coreCost": 0,
+     "tooltip": "Fragile, but generating good income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 1,
+   "totalCoreCost": 0,
+   "maxIncome": 1
+  },
+  {
+   "id": 12319,
+   "name": "Field Variant (12)",
+   "path": "BUILDINGS/Field Variant (12)",
+   "building": "Field",
+   "pos": [
+    103.73,
+    13.62,
+    25.39
+   ],
+   "yawDeg": 0.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": -100,
+   "activator": {
+    "slot": 14403,
+    "building": "Mill",
+    "level": 1,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    103.73,
+    13.62,
+    25.39
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     103.73,
+     13.62,
+     25.39
+    ],
+    "size": [
+     2.369,
+     1.0,
+     2.334
+    ],
+    "center": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 1,
+     "coreCost": 0,
+     "tooltip": "Fragile, but generating good income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 1,
+   "totalCoreCost": 0,
+   "maxIncome": 1
+  },
+  {
+   "id": 12320,
+   "name": "Field Variant (8)",
+   "path": "BUILDINGS/Field Variant (8)",
+   "building": "Field",
+   "pos": [
+    76.26,
+    13.62,
+    10.62
+   ],
+   "yawDeg": 0.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": -100,
+   "activator": {
+    "slot": 14400,
+    "building": "Mill",
+    "level": 1,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    76.26,
+    13.62,
+    10.62
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     76.26,
+     13.62,
+     10.62
+    ],
+    "size": [
+     2.369,
+     1.0,
+     2.334
+    ],
+    "center": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 1,
+     "coreCost": 0,
+     "tooltip": "Fragile, but generating good income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 1,
+   "totalCoreCost": 0,
+   "maxIncome": 1
+  },
+  {
+   "id": 12322,
+   "name": "Field Variant (14)",
+   "path": "BUILDINGS/Field Variant (14)",
+   "building": "Field",
+   "pos": [
+    114.0,
+    13.62,
+    30.24
+   ],
+   "yawDeg": 0.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": -100,
+   "activator": {
+    "slot": 14403,
+    "building": "Mill",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    114.0,
+    13.62,
+    30.24
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     114.0,
+     13.62,
+     30.24
+    ],
+    "size": [
+     2.369,
+     1.0,
+     2.334
+    ],
+    "center": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 1,
+     "coreCost": 0,
+     "tooltip": "Fragile, but generating good income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 1,
+   "totalCoreCost": 0,
+   "maxIncome": 1
+  },
+  {
+   "id": 12323,
+   "name": "Field Variant (1)",
+   "path": "BUILDINGS/Field Variant (1)",
+   "building": "Field",
+   "pos": [
+    81.58,
+    13.62,
+    10.73
+   ],
+   "yawDeg": 0.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": -100,
+   "activator": {
+    "slot": 14400,
+    "building": "Mill",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    81.58,
+    13.62,
+    10.73
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     81.58,
+     13.62,
+     10.73
+    ],
+    "size": [
+     2.369,
+     1.0,
+     2.334
+    ],
+    "center": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 1,
+     "coreCost": 0,
+     "tooltip": "Fragile, but generating good income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 1,
+   "totalCoreCost": 0,
+   "maxIncome": 1
+  },
+  {
+   "id": 12325,
+   "name": "Field Variant (7)",
+   "path": "BUILDINGS/Field Variant (7)",
+   "building": "Field",
+   "pos": [
+    98.37,
+    13.62,
+    38.77
+   ],
+   "yawDeg": 0.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": -100,
+   "activator": {
+    "slot": 14399,
+    "building": "Mill",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    98.37,
+    13.62,
+    38.77
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     98.37,
+     13.62,
+     38.77
+    ],
+    "size": [
+     2.369,
+     1.0,
+     2.334
+    ],
+    "center": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 1,
+     "coreCost": 0,
+     "tooltip": "Fragile, but generating good income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 1,
+   "totalCoreCost": 0,
+   "maxIncome": 1
+  },
+  {
+   "id": 12327,
+   "name": "Field Variant (15)",
+   "path": "BUILDINGS/Field Variant (15)",
+   "building": "Field",
+   "pos": [
+    -51.63,
+    13.49,
+    24.23
+   ],
+   "yawDeg": 0.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": -100,
+   "activator": {
+    "slot": 14398,
+    "building": "Mill",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -51.63,
+    13.49,
+    24.23
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -51.63,
+     13.49,
+     24.23
+    ],
+    "size": [
+     2.369,
+     1.0,
+     2.334
+    ],
+    "center": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 1,
+     "coreCost": 0,
+     "tooltip": "Fragile, but generating good income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 1,
+   "totalCoreCost": 0,
+   "maxIncome": 1
+  },
+  {
+   "id": 12330,
+   "name": "Field Variant (11)",
+   "path": "BUILDINGS/Field Variant (11)",
+   "building": "Field",
+   "pos": [
+    106.09,
+    13.62,
+    20.04
+   ],
+   "yawDeg": 0.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": -100,
+   "activator": {
+    "slot": 14403,
+    "building": "Mill",
+    "level": 1,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    106.09,
+    13.62,
+    20.04
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     106.09,
+     13.62,
+     20.04
+    ],
+    "size": [
+     2.369,
+     1.0,
+     2.334
+    ],
+    "center": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 1,
+     "coreCost": 0,
+     "tooltip": "Fragile, but generating good income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 1,
+   "totalCoreCost": 0,
+   "maxIncome": 1
+  },
+  {
+   "id": 12332,
+   "name": "Field Variant (10)",
+   "path": "BUILDINGS/Field Variant (10)",
+   "building": "Field",
+   "pos": [
+    108.93,
+    13.62,
+    25.38
+   ],
+   "yawDeg": 0.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": -100,
+   "activator": {
+    "slot": 14403,
+    "building": "Mill",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    108.93,
+    13.62,
+    25.38
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     108.93,
+     13.62,
+     25.38
+    ],
+    "size": [
+     2.369,
+     1.0,
+     2.334
+    ],
+    "center": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 1,
+     "coreCost": 0,
+     "tooltip": "Fragile, but generating good income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 1,
+   "totalCoreCost": 0,
+   "maxIncome": 1
+  },
+  {
+   "id": 12333,
+   "name": "Field Variant (20)",
+   "path": "BUILDINGS/Field Variant (20)",
+   "building": "Field",
+   "pos": [
+    -40.76,
+    13.49,
+    23.9
+   ],
+   "yawDeg": -0.7,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": -100,
+   "activator": {
+    "slot": 14398,
+    "building": "Mill",
+    "level": 1,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -40.76,
+    13.49,
+    23.9
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -40.76,
+     13.49,
+     23.9
+    ],
+    "size": [
+     2.369,
+     1.0,
+     2.334
+    ],
+    "center": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 1,
+     "coreCost": 0,
+     "tooltip": "Fragile, but generating good income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 1,
+   "totalCoreCost": 0,
+   "maxIncome": 1
+  },
+  {
+   "id": 12336,
+   "name": "Field Variant (19)",
+   "path": "BUILDINGS/Field Variant (19)",
+   "building": "Field",
+   "pos": [
+    -43.13,
+    13.49,
+    18.9
+   ],
+   "yawDeg": 0.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": -100,
+   "activator": {
+    "slot": 14398,
+    "building": "Mill",
+    "level": 1,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -43.13,
+    13.49,
+    18.9
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -43.13,
+     13.49,
+     18.9
+    ],
+    "size": [
+     2.369,
+     1.0,
+     2.334
+    ],
+    "center": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 1,
+     "coreCost": 0,
+     "tooltip": "Fragile, but generating good income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 1,
+   "totalCoreCost": 0,
+   "maxIncome": 1
+  },
+  {
+   "id": 12338,
+   "name": "Field Variant",
+   "path": "BUILDINGS/Field Variant",
+   "building": "Field",
+   "pos": [
+    87.23,
+    13.62,
+    14.7
+   ],
+   "yawDeg": 0.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": -100,
+   "activator": {
+    "slot": 14400,
+    "building": "Mill",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    87.23,
+    13.62,
+    14.7
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     87.23,
+     13.62,
+     14.7
+    ],
+    "size": [
+     2.369,
+     1.0,
+     2.334
+    ],
+    "center": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 1,
+     "coreCost": 0,
+     "tooltip": "Fragile, but generating good income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 1,
+   "totalCoreCost": 0,
+   "maxIncome": 1
+  },
+  {
+   "id": 12342,
+   "name": "Field Variant (3)",
+   "path": "BUILDINGS/Field Variant (3)",
+   "building": "Field",
+   "pos": [
+    81.57,
+    13.62,
+    21.4
+   ],
+   "yawDeg": 0.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": -100,
+   "activator": {
+    "slot": 14400,
+    "building": "Mill",
+    "level": 1,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    81.57,
+    13.62,
+    21.4
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     81.57,
+     13.62,
+     21.4
+    ],
+    "size": [
+     2.369,
+     1.0,
+     2.334
+    ],
+    "center": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 1,
+     "coreCost": 0,
+     "tooltip": "Fragile, but generating good income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 1,
+   "totalCoreCost": 0,
+   "maxIncome": 1
+  },
+  {
+   "id": 12343,
+   "name": "Field Variant (9)",
+   "path": "BUILDINGS/Field Variant (9)",
+   "building": "Field",
+   "pos": [
+    83.26,
+    13.62,
+    39.1
+   ],
+   "yawDeg": 0.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": -100,
+   "activator": {
+    "slot": 14399,
+    "building": "Mill",
+    "level": 1,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    83.26,
+    13.62,
+    39.1
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     83.26,
+     13.62,
+     39.1
+    ],
+    "size": [
+     2.369,
+     1.0,
+     2.334
+    ],
+    "center": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 1,
+     "coreCost": 0,
+     "tooltip": "Fragile, but generating good income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 1,
+   "totalCoreCost": 0,
+   "maxIncome": 1
+  },
+  {
+   "id": 12344,
+   "name": "Field Variant (18)",
+   "path": "BUILDINGS/Field Variant (18)",
+   "building": "Field",
+   "pos": [
+    -49.17,
+    13.49,
+    29.61
+   ],
+   "yawDeg": 0.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": -100,
+   "activator": {
+    "slot": 14398,
+    "building": "Mill",
+    "level": 1,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -49.17,
+    13.49,
+    29.61
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -49.17,
+     13.49,
+     29.61
+    ],
+    "size": [
+     2.369,
+     1.0,
+     2.334
+    ],
+    "center": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 1,
+     "coreCost": 0,
+     "tooltip": "Fragile, but generating good income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 1,
+   "totalCoreCost": 0,
+   "maxIncome": 1
+  },
+  {
+   "id": 12346,
+   "name": "Field Variant (2)",
+   "path": "BUILDINGS/Field Variant (2)",
+   "building": "Field",
+   "pos": [
+    76.17,
+    13.62,
+    15.81
+   ],
+   "yawDeg": 0.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": -100,
+   "activator": {
+    "slot": 14400,
+    "building": "Mill",
+    "level": 1,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    76.17,
+    13.62,
+    15.81
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     76.17,
+     13.62,
+     15.81
+    ],
+    "size": [
+     2.369,
+     1.0,
+     2.334
+    ],
+    "center": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 1,
+     "coreCost": 0,
+     "tooltip": "Fragile, but generating good income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 1,
+   "totalCoreCost": 0,
+   "maxIncome": 1
+  },
+  {
+   "id": 12347,
+   "name": "Field Variant (5)",
+   "path": "BUILDINGS/Field Variant (5)",
+   "building": "Field",
+   "pos": [
+    88.54,
+    13.62,
+    39.04
+   ],
+   "yawDeg": 0.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": -100,
+   "activator": {
+    "slot": 14399,
+    "building": "Mill",
+    "level": 1,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    88.54,
+    13.62,
+    39.04
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     88.54,
+     13.62,
+     39.04
+    ],
+    "size": [
+     2.369,
+     1.0,
+     2.334
+    ],
+    "center": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 1,
+     "coreCost": 0,
+     "tooltip": "Fragile, but generating good income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 1,
+   "totalCoreCost": 0,
+   "maxIncome": 1
+  },
+  {
+   "id": 12348,
+   "name": "Field Variant (16)",
+   "path": "BUILDINGS/Field Variant (16)",
+   "building": "Field",
+   "pos": [
+    -46.95,
+    13.49,
+    19.14
+   ],
+   "yawDeg": 0.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": -100,
+   "activator": {
+    "slot": 14398,
+    "building": "Mill",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -46.95,
+    13.49,
+    19.14
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -46.95,
+     13.49,
+     19.14
+    ],
+    "size": [
+     2.369,
+     1.0,
+     2.334
+    ],
+    "center": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 1,
+     "coreCost": 0,
+     "tooltip": "Fragile, but generating good income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 1,
+   "totalCoreCost": 0,
+   "maxIncome": 1
+  },
+  {
+   "id": 12349,
+   "name": "Field Variant (13)",
+   "path": "BUILDINGS/Field Variant (13)",
+   "building": "Field",
+   "pos": [
+    108.97,
+    13.62,
+    35.29
+   ],
+   "yawDeg": 0.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": -100,
+   "activator": {
+    "slot": 14403,
+    "building": "Mill",
+    "level": 1,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    108.97,
+    13.62,
+    35.29
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     108.97,
+     13.62,
+     35.29
+    ],
+    "size": [
+     2.369,
+     1.0,
+     2.334
+    ],
+    "center": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 1,
+     "coreCost": 0,
+     "tooltip": "Fragile, but generating good income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 1,
+   "totalCoreCost": 0,
+   "maxIncome": 1
+  },
+  {
+   "id": 13163,
+   "name": "Castle Center Variant",
+   "path": "BUILDINGS/Castle Center Variant",
+   "building": "Castle Center",
+   "pos": [
+    -10.21,
+    13.49,
+    18.21
+   ],
+   "yawDeg": 0.0,
+   "active": true,
+   "startDeactivated": false,
+   "requiredRootLevelDifference": -100,
+   "activator": null,
+   "interactorPos": [
+    -10.21,
+    13.49,
+    18.21
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -10.21,
+     13.49,
+     18.21
+    ],
+    "size": [
+     8.785,
+     9.697,
+     8.905
+    ],
+    "center": [
+     -0.042,
+     4.847,
+     -0.008
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Start a new Kingdom!",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Lvl 1 Perks",
+         "components": [
+          "OutpostPerk",
+          "LastStandPerk"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 7,
+     "coreCost": 0,
+     "tooltip": "Unlock more build options and choose an upgrade. ",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": {
+        "name": "Royal Training",
+        "tooltip": "+ 75% HP for your character\n+ 75% Overall damage output for your character",
+        "disabledInMode": true
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 200,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Royal Training",
+         "components": [
+          "UpgradePlayerHp",
+          "UpgradePlayerDmg"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Level 2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 35.0,
+           "cooldown": 2.0,
+           "baseDamage": 4.5,
+           "dps": 2.25,
+           "weapon": "P Castle Center",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkCooldownModifyer",
+          "PerkRangeModifyer"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Royal Training Mesh",
+         "components": []
+        }
+       ],
+       "disables": [
+        "Auto Attack Level 1"
+       ],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Builder's Guild",
+        "tooltip": "+ Every morning a level 1 house is automatically upgraded to a level 2 house (if available)\n+ 50% HP for your character",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 200,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Builder's Guild",
+         "components": [
+          "UpgradePlayerHp",
+          "UpgradeBuildersGuild"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Level 2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 35.0,
+           "cooldown": 2.0,
+           "baseDamage": 4.5,
+           "dps": 2.25,
+           "weapon": "P Castle Center",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkCooldownModifyer",
+          "PerkRangeModifyer"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Builders Guild Mesh",
+         "components": []
+        }
+       ],
+       "disables": [
+        "Auto Attack Level 1"
+       ],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Magic Armor",
+        "tooltip": "+ Enemies that deal damage to you take a part of that damage themselves\n+ 150% HP for your character",
+        "disabledInMode": true
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 200,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Magic Armor",
+         "components": [
+          "UpgradePlayerHp",
+          "UpgradeMagicArmor"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Level 2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 35.0,
+           "cooldown": 2.0,
+           "baseDamage": 4.5,
+           "dps": 2.25,
+           "weapon": "P Castle Center",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkCooldownModifyer",
+          "PerkRangeModifyer"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Magic Armor Mesh",
+         "components": []
+        }
+       ],
+       "disables": [
+        "Auto Attack Level 1"
+       ],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Assassin's Training",
+        "tooltip": "+ If you manage to execute your weapon's special ability precisely when its last cooldown expires, the next cooldown is greatly reduced\n+ 100% Overall damage output for your character",
+        "disabledInMode": true
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 200,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Assassin's Training",
+         "components": [
+          "UpgradePlayerDmg",
+          "UpgradeAssassinsTraining"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Level 2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 35.0,
+           "cooldown": 2.0,
+           "baseDamage": 4.5,
+           "dps": 2.25,
+           "weapon": "P Castle Center",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkCooldownModifyer",
+          "PerkRangeModifyer"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Assassins Training Mesh",
+         "components": []
+        }
+       ],
+       "disables": [
+        "Auto Attack Level 1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 20,
+     "coreCost": 0,
+     "tooltip": "Unlock more build options and choose an upgrade. ",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": {
+        "name": "Royal Mastery",
+        "tooltip": "+ 75% HP for your character\n+ 75% Overall damage output for your character",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Auto Attack Level 3",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 35.0,
+           "cooldown": 1.0,
+           "baseDamage": 4.5,
+           "dps": 4.5,
+           "weapon": "P Castle Center",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkCooldownModifyer",
+          "PerkRangeModifyer"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Royal Mastery",
+         "components": [
+          "UpgradePlayerHp",
+          "UpgradePlayerDmg"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Royal Mastery Mesh",
+         "components": []
+        }
+       ],
+       "disables": [
+        "Auto Attack Level 2"
+       ],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Commander",
+        "tooltip": "+ Units move faster while you command them\n+ You have a healing aura that heals allied units nearby\n+ 30% Overall damage output for your character",
+        "disabledInMode": true
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Commander",
+         "components": [
+          "UpgradeCommander"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Level 3",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 35.0,
+           "cooldown": 1.0,
+           "baseDamage": 4.5,
+           "dps": 4.5,
+           "weapon": "P Castle Center",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkCooldownModifyer",
+          "PerkRangeModifyer"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Commander Mesh",
+         "components": []
+        }
+       ],
+       "disables": [
+        "Auto Attack Level 2"
+       ],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Castle Up",
+        "tooltip": "+ The upgrade costs of all walls and towers drop by 1 every night (but never lower than 1, initial build costs are unaffected)",
+        "disabledInMode": true
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Castle Up",
+         "components": [
+          "UpgradeCastleUp",
+          "UpgradePlayerHp"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Level 3",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 35.0,
+           "cooldown": 1.0,
+           "baseDamage": 4.5,
+           "dps": 4.5,
+           "weapon": "P Castle Center",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkCooldownModifyer",
+          "PerkRangeModifyer"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Castle Up Mesh",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer",
+          "BoxCollider"
+         ]
+        }
+       ],
+       "disables": [
+        "Auto Attack Level 2"
+       ],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Godly Curse",
+        "tooltip": "+ If you lock in a target, that target receives 50% more damage from all sources.\n+ 75% HP for your character",
+        "disabledInMode": true
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 400,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Godly Curse",
+         "components": [
+          "UpgradePlayerHp",
+          "UpgradeGodlyCurse"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Level 3",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 35.0,
+           "cooldown": 1.0,
+           "baseDamage": 4.5,
+           "dps": 4.5,
+           "weapon": "P Castle Center",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkCooldownModifyer",
+          "PerkRangeModifyer"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Godly Curse Mesh",
+         "components": []
+        }
+       ],
+       "disables": [
+        "Auto Attack Level 2"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 4,
+     "cost": 100,
+     "coreCost": 0,
+     "tooltip": "",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": {
+        "name": "Empire Towers",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 1000,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Empire Towers",
+         "components": [
+          "EmpireUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Empire Troups",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 1000,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Empire Troups",
+         "components": [
+          "EmpireUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Empire Armor",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 0,
+       "coreIncome": 0,
+       "hpChange": 1000,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Empire Armor",
+         "components": [
+          "EmpireUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Empire Growth",
+        "tooltip": "",
+        "disabledInMode": false
+       },
+       "goldIncome": 20,
+       "coreIncome": 0,
+       "hpChange": 1000,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Empire Growth",
+         "components": [
+          "EmpireUpgrade"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 130,
+   "totalCoreCost": 0,
+   "maxIncome": 20
+  },
+  {
+   "id": 14132,
+   "name": "House Variant (6)",
+   "path": "BUILDINGS/House Variant (6)",
+   "building": "House",
+   "pos": [
+    -28.57,
+    13.49,
+    5.41
+   ],
+   "yawDeg": -7.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 14170,
+    "building": "House",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -28.57,
+    13.49,
+    5.41
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -28.57,
+     13.49,
+     5.41
+    ],
+    "size": [
+     3.192,
+     2.884,
+     3.58
+    ],
+    "center": [
+     0.119,
+     1.439,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "A stable income source.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl1",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 5.0,
+           "baseDamage": 8.0,
+           "dps": 1.6,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 10,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 1.66,
+           "baseDamage": 8.0,
+           "dps": 4.819,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [
+        "AutoAttackPerk Lvl1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 20,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 2,
+       "coreIncome": 0,
+       "hpChange": 70,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 24,
+   "totalCoreCost": 0,
+   "maxIncome": 4
+  },
+  {
+   "id": 14139,
+   "name": "Mine Shaft (1)",
+   "path": "BUILDINGS/Mine Shaft (1)",
+   "building": "Gold Mine",
+   "pos": [
+    -21.54,
+    39.12,
+    64.63
+   ],
+   "yawDeg": 96.3,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 13163,
+    "building": "Castle Center",
+    "level": 1,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -21.54,
+    39.12,
+    64.63
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -21.54,
+     39.12,
+     64.63
+    ],
+    "size": [
+     5.146,
+     5.577,
+     4.154
+    ],
+    "center": [
+     -0.177,
+     1.459,
+     2.162
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 5,
+     "coreCost": 0,
+     "tooltip": "Great income at the beginning, but depletes over time (-1 / day). Movement bonus: Teleport to a different mine.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 6,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 5,
+   "totalCoreCost": 0,
+   "maxIncome": 6
+  },
+  {
+   "id": 14141,
+   "name": "House Variant (18)",
+   "path": "BUILDINGS/House Variant (18)",
+   "building": "House",
+   "pos": [
+    -56.4,
+    13.49,
+    35.4
+   ],
+   "yawDeg": 90.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 13163,
+    "building": "Castle Center",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -56.4,
+    13.49,
+    35.4
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -56.4,
+     13.49,
+     35.4
+    ],
+    "size": [
+     3.192,
+     2.884,
+     3.58
+    ],
+    "center": [
+     0.119,
+     1.439,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "A stable income source.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl1",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 5.0,
+           "baseDamage": 8.0,
+           "dps": 1.6,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 10,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 1.66,
+           "baseDamage": 8.0,
+           "dps": 4.819,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [
+        "AutoAttackPerk Lvl1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 20,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 2,
+       "coreIncome": 0,
+       "hpChange": 70,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 24,
+   "totalCoreCost": 0,
+   "maxIncome": 4
+  },
+  {
+   "id": 14145,
+   "name": "House Variant (20)",
+   "path": "BUILDINGS/House Variant (20)",
+   "building": "House",
+   "pos": [
+    -60.11,
+    13.49,
+    29.56
+   ],
+   "yawDeg": -7.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 14188,
+    "building": "House",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -60.11,
+    13.49,
+    29.56
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -60.11,
+     13.49,
+     29.56
+    ],
+    "size": [
+     3.192,
+     2.884,
+     3.58
+    ],
+    "center": [
+     0.119,
+     1.439,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "A stable income source.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl1",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 5.0,
+           "baseDamage": 8.0,
+           "dps": 1.6,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 10,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 1.66,
+           "baseDamage": 8.0,
+           "dps": 4.819,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [
+        "AutoAttackPerk Lvl1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 20,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 2,
+       "coreIncome": 0,
+       "hpChange": 70,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 24,
+   "totalCoreCost": 0,
+   "maxIncome": 4
+  },
+  {
+   "id": 14148,
+   "name": "House Variant (22)",
+   "path": "BUILDINGS/House Variant (22)",
+   "building": "House",
+   "pos": [
+    -58.053,
+    13.49,
+    3.247
+   ],
+   "yawDeg": 0.8,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 14189,
+    "building": "House",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -58.053,
+    13.49,
+    3.247
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -58.053,
+     13.49,
+     3.247
+    ],
+    "size": [
+     3.192,
+     2.884,
+     3.58
+    ],
+    "center": [
+     0.119,
+     1.439,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "A stable income source.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl1",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 5.0,
+           "baseDamage": 8.0,
+           "dps": 1.6,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 10,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 1.66,
+           "baseDamage": 8.0,
+           "dps": 4.819,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [
+        "AutoAttackPerk Lvl1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 20,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 2,
+       "coreIncome": 0,
+       "hpChange": 70,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 24,
+   "totalCoreCost": 0,
+   "maxIncome": 4
+  },
+  {
+   "id": 14154,
+   "name": "House Variant (8)",
+   "path": "BUILDINGS/House Variant (8)",
+   "building": "House",
+   "pos": [
+    -0.74,
+    13.49,
+    24.47
+   ],
+   "yawDeg": -93.1,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 13163,
+    "building": "Castle Center",
+    "level": 1,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -0.74,
+    13.49,
+    24.47
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -0.74,
+     13.49,
+     24.47
+    ],
+    "size": [
+     3.192,
+     2.884,
+     3.58
+    ],
+    "center": [
+     0.119,
+     1.439,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "A stable income source.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl1",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 5.0,
+           "baseDamage": 8.0,
+           "dps": 1.6,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 10,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 1.66,
+           "baseDamage": 8.0,
+           "dps": 4.819,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [
+        "AutoAttackPerk Lvl1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 20,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 2,
+       "coreIncome": 0,
+       "hpChange": 70,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 24,
+   "totalCoreCost": 0,
+   "maxIncome": 4
+  },
+  {
+   "id": 14158,
+   "name": "House Variant (16)",
+   "path": "BUILDINGS/House Variant (16)",
+   "building": "House",
+   "pos": [
+    -38.26,
+    39.12,
+    71.29
+   ],
+   "yawDeg": -59.8,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 14190,
+    "building": "House",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -38.26,
+    39.12,
+    71.29
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -38.26,
+     39.12,
+     71.29
+    ],
+    "size": [
+     3.192,
+     2.884,
+     3.58
+    ],
+    "center": [
+     0.119,
+     1.439,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "A stable income source.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl1",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 5.0,
+           "baseDamage": 8.0,
+           "dps": 1.6,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 10,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 1.66,
+           "baseDamage": 8.0,
+           "dps": 4.819,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [
+        "AutoAttackPerk Lvl1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 20,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 2,
+       "coreIncome": 0,
+       "hpChange": 70,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 24,
+   "totalCoreCost": 0,
+   "maxIncome": 4
+  },
+  {
+   "id": 14159,
+   "name": "House Variant (21)",
+   "path": "BUILDINGS/House Variant (21)",
+   "building": "House",
+   "pos": [
+    -62.363,
+    13.49,
+    16.071
+   ],
+   "yawDeg": 139.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 14173,
+    "building": "House",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -62.363,
+    13.49,
+    16.071
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -62.363,
+     13.49,
+     16.071
+    ],
+    "size": [
+     3.192,
+     2.884,
+     3.58
+    ],
+    "center": [
+     0.119,
+     1.439,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "A stable income source.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl1",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 5.0,
+           "baseDamage": 8.0,
+           "dps": 1.6,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 10,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 1.66,
+           "baseDamage": 8.0,
+           "dps": 4.819,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [
+        "AutoAttackPerk Lvl1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 20,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 2,
+       "coreIncome": 0,
+       "hpChange": 70,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 24,
+   "totalCoreCost": 0,
+   "maxIncome": 4
+  },
+  {
+   "id": 14163,
+   "name": "House Variant (3)",
+   "path": "BUILDINGS/House Variant (3)",
+   "building": "House",
+   "pos": [
+    -24.86,
+    13.49,
+    11.25
+   ],
+   "yawDeg": 90.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 13163,
+    "building": "Castle Center",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -24.86,
+    13.49,
+    11.25
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -24.86,
+     13.49,
+     11.25
+    ],
+    "size": [
+     3.192,
+     2.884,
+     3.58
+    ],
+    "center": [
+     0.119,
+     1.439,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "A stable income source.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl1",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 5.0,
+           "baseDamage": 8.0,
+           "dps": 1.6,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 10,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 1.66,
+           "baseDamage": 8.0,
+           "dps": 4.819,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [
+        "AutoAttackPerk Lvl1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 20,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 2,
+       "coreIncome": 0,
+       "hpChange": 70,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 24,
+   "totalCoreCost": 0,
+   "maxIncome": 4
+  },
+  {
+   "id": 14164,
+   "name": "House Variant (14)",
+   "path": "BUILDINGS/House Variant (14)",
+   "building": "House",
+   "pos": [
+    -3.54,
+    13.49,
+    3.35
+   ],
+   "yawDeg": -28.1,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 14169,
+    "building": "House",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -3.54,
+    13.49,
+    3.35
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -3.54,
+     13.49,
+     3.35
+    ],
+    "size": [
+     3.192,
+     2.884,
+     3.58
+    ],
+    "center": [
+     0.119,
+     1.439,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "A stable income source.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl1",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 5.0,
+           "baseDamage": 8.0,
+           "dps": 1.6,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 10,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 1.66,
+           "baseDamage": 8.0,
+           "dps": 4.819,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [
+        "AutoAttackPerk Lvl1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 20,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 2,
+       "coreIncome": 0,
+       "hpChange": 70,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 24,
+   "totalCoreCost": 0,
+   "maxIncome": 4
+  },
+  {
+   "id": 14165,
+   "name": "House Variant (10)",
+   "path": "BUILDINGS/House Variant (10)",
+   "building": "House",
+   "pos": [
+    -31.01,
+    39.12,
+    75.46
+   ],
+   "yawDeg": -71.8,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 14190,
+    "building": "House",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -31.01,
+    39.12,
+    75.46
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -31.01,
+     39.12,
+     75.46
+    ],
+    "size": [
+     3.192,
+     2.884,
+     3.58
+    ],
+    "center": [
+     0.119,
+     1.439,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "A stable income source.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl1",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 5.0,
+           "baseDamage": 8.0,
+           "dps": 1.6,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 10,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 1.66,
+           "baseDamage": 8.0,
+           "dps": 4.819,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [
+        "AutoAttackPerk Lvl1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 20,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 2,
+       "coreIncome": 0,
+       "hpChange": 70,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 24,
+   "totalCoreCost": 0,
+   "maxIncome": 4
+  },
+  {
+   "id": 14166,
+   "name": "House Variant (15)",
+   "path": "BUILDINGS/House Variant (15)",
+   "building": "House",
+   "pos": [
+    -10.66,
+    13.49,
+    2.5
+   ],
+   "yawDeg": 9.6,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 14164,
+    "building": "House",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -10.66,
+    13.49,
+    2.5
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -10.66,
+     13.49,
+     2.5
+    ],
+    "size": [
+     3.192,
+     2.884,
+     3.58
+    ],
+    "center": [
+     0.119,
+     1.439,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "A stable income source.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl1",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 5.0,
+           "baseDamage": 8.0,
+           "dps": 1.6,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 10,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 1.66,
+           "baseDamage": 8.0,
+           "dps": 4.819,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [
+        "AutoAttackPerk Lvl1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 20,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 2,
+       "coreIncome": 0,
+       "hpChange": 70,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 24,
+   "totalCoreCost": 0,
+   "maxIncome": 4
+  },
+  {
+   "id": 14169,
+   "name": "House Variant (13)",
+   "path": "BUILDINGS/House Variant (13)",
+   "building": "House",
+   "pos": [
+    2.87,
+    13.49,
+    8.05
+   ],
+   "yawDeg": 106.6,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 13163,
+    "building": "Castle Center",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    2.87,
+    13.49,
+    8.05
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     2.87,
+     13.49,
+     8.05
+    ],
+    "size": [
+     3.192,
+     2.884,
+     3.58
+    ],
+    "center": [
+     0.119,
+     1.439,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "A stable income source.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl1",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 5.0,
+           "baseDamage": 8.0,
+           "dps": 1.6,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 10,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 1.66,
+           "baseDamage": 8.0,
+           "dps": 4.819,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [
+        "AutoAttackPerk Lvl1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 20,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 2,
+       "coreIncome": 0,
+       "hpChange": 70,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 24,
+   "totalCoreCost": 0,
+   "maxIncome": 4
+  },
+  {
+   "id": 14170,
+   "name": "House Variant (5)",
+   "path": "BUILDINGS/House Variant (5)",
+   "building": "House",
+   "pos": [
+    -31.24,
+    13.49,
+    11.11
+   ],
+   "yawDeg": -90.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 14163,
+    "building": "House",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -31.24,
+    13.49,
+    11.11
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -31.24,
+     13.49,
+     11.11
+    ],
+    "size": [
+     3.192,
+     2.884,
+     3.58
+    ],
+    "center": [
+     0.119,
+     1.439,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "A stable income source.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl1",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 5.0,
+           "baseDamage": 8.0,
+           "dps": 1.6,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 10,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 1.66,
+           "baseDamage": 8.0,
+           "dps": 4.819,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [
+        "AutoAttackPerk Lvl1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 20,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 2,
+       "coreIncome": 0,
+       "hpChange": 70,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 24,
+   "totalCoreCost": 0,
+   "maxIncome": 4
+  },
+  {
+   "id": 14171,
+   "name": "House Variant (4)",
+   "path": "BUILDINGS/House Variant (4)",
+   "building": "House",
+   "pos": [
+    -17.82,
+    13.49,
+    36.091
+   ],
+   "yawDeg": -85.7,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 14187,
+    "building": "House",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -17.82,
+    13.49,
+    36.091
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -17.82,
+     13.49,
+     36.091
+    ],
+    "size": [
+     3.192,
+     2.884,
+     3.58
+    ],
+    "center": [
+     0.119,
+     1.439,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "A stable income source.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl1",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 5.0,
+           "baseDamage": 8.0,
+           "dps": 1.6,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 10,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 1.66,
+           "baseDamage": 8.0,
+           "dps": 4.819,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [
+        "AutoAttackPerk Lvl1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 20,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 2,
+       "coreIncome": 0,
+       "hpChange": 70,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 24,
+   "totalCoreCost": 0,
+   "maxIncome": 4
+  },
+  {
+   "id": 14173,
+   "name": "House Variant (24)",
+   "path": "BUILDINGS/House Variant (24)",
+   "building": "House",
+   "pos": [
+    -59.2,
+    13.49,
+    9.8
+   ],
+   "yawDeg": 173.6,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 14148,
+    "building": "House",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -59.2,
+    13.49,
+    9.8
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -59.2,
+     13.49,
+     9.8
+    ],
+    "size": [
+     3.192,
+     2.884,
+     3.58
+    ],
+    "center": [
+     0.119,
+     1.439,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "A stable income source.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl1",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 5.0,
+           "baseDamage": 8.0,
+           "dps": 1.6,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 10,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 1.66,
+           "baseDamage": 8.0,
+           "dps": 4.819,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [
+        "AutoAttackPerk Lvl1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 20,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 2,
+       "coreIncome": 0,
+       "hpChange": 70,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 24,
+   "totalCoreCost": 0,
+   "maxIncome": 4
+  },
+  {
+   "id": 14174,
+   "name": "Mine Shaft",
+   "path": "BUILDINGS/Mine Shaft",
+   "building": "Gold Mine",
+   "pos": [
+    -8.056,
+    13.49,
+    35.378
+   ],
+   "yawDeg": 7.8,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 13163,
+    "building": "Castle Center",
+    "level": 1,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -8.056,
+    13.49,
+    35.378
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -8.056,
+     13.49,
+     35.378
+    ],
+    "size": [
+     5.146,
+     5.577,
+     4.154
+    ],
+    "center": [
+     -0.177,
+     1.459,
+     2.162
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 5,
+     "coreCost": 0,
+     "tooltip": "Great income at the beginning, but depletes over time (-1 / day). Movement bonus: Teleport to a different mine.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 6,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 5,
+   "totalCoreCost": 0,
+   "maxIncome": 6
+  },
+  {
+   "id": 14175,
+   "name": "House Variant (25)",
+   "path": "BUILDINGS/House Variant (25)",
+   "building": "House",
+   "pos": [
+    -65.595,
+    13.49,
+    10.356
+   ],
+   "yawDeg": 89.6,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 13163,
+    "building": "Castle Center",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -65.595,
+    13.49,
+    10.356
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -65.595,
+     13.49,
+     10.356
+    ],
+    "size": [
+     3.192,
+     2.884,
+     3.58
+    ],
+    "center": [
+     0.119,
+     1.439,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "A stable income source.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl1",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 5.0,
+           "baseDamage": 8.0,
+           "dps": 1.6,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 10,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 1.66,
+           "baseDamage": 8.0,
+           "dps": 4.819,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [
+        "AutoAttackPerk Lvl1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 20,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 2,
+       "coreIncome": 0,
+       "hpChange": 70,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 24,
+   "totalCoreCost": 0,
+   "maxIncome": 4
+  },
+  {
+   "id": 14176,
+   "name": "House Variant (7)",
+   "path": "BUILDINGS/House Variant (7)",
+   "building": "House",
+   "pos": [
+    5.84,
+    13.49,
+    22.31
+   ],
+   "yawDeg": 0.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 14154,
+    "building": "House",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    5.84,
+    13.49,
+    22.31
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     5.84,
+     13.49,
+     22.31
+    ],
+    "size": [
+     3.192,
+     2.884,
+     3.58
+    ],
+    "center": [
+     0.119,
+     1.439,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "A stable income source.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl1",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 5.0,
+           "baseDamage": 8.0,
+           "dps": 1.6,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 10,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 1.66,
+           "baseDamage": 8.0,
+           "dps": 4.819,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [
+        "AutoAttackPerk Lvl1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 20,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 2,
+       "coreIncome": 0,
+       "hpChange": 70,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 24,
+   "totalCoreCost": 0,
+   "maxIncome": 4
+  },
+  {
+   "id": 14177,
+   "name": "Mine Shaft (2)",
+   "path": "BUILDINGS/Mine Shaft (2)",
+   "building": "Gold Mine",
+   "pos": [
+    16.97,
+    8.5,
+    -5.84
+   ],
+   "yawDeg": 7.8,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 13163,
+    "building": "Castle Center",
+    "level": 1,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    16.97,
+    8.5,
+    -5.84
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     16.97,
+     8.5,
+     -5.84
+    ],
+    "size": [
+     5.146,
+     5.577,
+     4.154
+    ],
+    "center": [
+     -0.177,
+     1.459,
+     2.162
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 5,
+     "coreCost": 0,
+     "tooltip": "Great income at the beginning, but depletes over time (-1 / day). Movement bonus: Teleport to a different mine.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 6,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 5,
+   "totalCoreCost": 0,
+   "maxIncome": 6
+  },
+  {
+   "id": 14179,
+   "name": "House Variant (2)",
+   "path": "BUILDINGS/House Variant (2)",
+   "building": "House",
+   "pos": [
+    -24.43,
+    13.49,
+    35.34
+   ],
+   "yawDeg": 87.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 14171,
+    "building": "House",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -24.43,
+    13.49,
+    35.34
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -24.43,
+     13.49,
+     35.34
+    ],
+    "size": [
+     3.192,
+     2.884,
+     3.58
+    ],
+    "center": [
+     0.119,
+     1.439,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "A stable income source.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl1",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 5.0,
+           "baseDamage": 8.0,
+           "dps": 1.6,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 10,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 1.66,
+           "baseDamage": 8.0,
+           "dps": 4.819,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [
+        "AutoAttackPerk Lvl1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 20,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 2,
+       "coreIncome": 0,
+       "hpChange": 70,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 24,
+   "totalCoreCost": 0,
+   "maxIncome": 4
+  },
+  {
+   "id": 14180,
+   "name": "Mine Shaft (5)",
+   "path": "BUILDINGS/Mine Shaft (5)",
+   "building": "Gold Mine",
+   "pos": [
+    -51.5,
+    13.49,
+    43.7
+   ],
+   "yawDeg": -16.6,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 13163,
+    "building": "Castle Center",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -51.5,
+    13.49,
+    43.7
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -51.5,
+     13.49,
+     43.7
+    ],
+    "size": [
+     5.146,
+     5.577,
+     4.154
+    ],
+    "center": [
+     -0.177,
+     1.459,
+     2.162
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 5,
+     "coreCost": 0,
+     "tooltip": "Great income at the beginning, but depletes over time (-1 / day). Movement bonus: Teleport to a different mine.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 6,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 5,
+   "totalCoreCost": 0,
+   "maxIncome": 6
+  },
+  {
+   "id": 14181,
+   "name": "House Variant (9)",
+   "path": "BUILDINGS/House Variant (9)",
+   "building": "House",
+   "pos": [
+    -25.37,
+    13.49,
+    28.99
+   ],
+   "yawDeg": 3.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 13163,
+    "building": "Castle Center",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -25.37,
+    13.49,
+    28.99
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -25.37,
+     13.49,
+     28.99
+    ],
+    "size": [
+     3.192,
+     2.884,
+     3.58
+    ],
+    "center": [
+     0.119,
+     1.439,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "A stable income source.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl1",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 5.0,
+           "baseDamage": 8.0,
+           "dps": 1.6,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 10,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 1.66,
+           "baseDamage": 8.0,
+           "dps": 4.819,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [
+        "AutoAttackPerk Lvl1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 20,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 2,
+       "coreIncome": 0,
+       "hpChange": 70,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 24,
+   "totalCoreCost": 0,
+   "maxIncome": 4
+  },
+  {
+   "id": 14183,
+   "name": "Mine Shaft (4)",
+   "path": "BUILDINGS/Mine Shaft (4)",
+   "building": "Gold Mine",
+   "pos": [
+    -32.6,
+    13.49,
+    40.7
+   ],
+   "yawDeg": 14.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 13163,
+    "building": "Castle Center",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -32.6,
+    13.49,
+    40.7
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -32.6,
+     13.49,
+     40.7
+    ],
+    "size": [
+     5.146,
+     5.577,
+     4.154
+    ],
+    "center": [
+     -0.177,
+     1.459,
+     2.162
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 5,
+     "coreCost": 0,
+     "tooltip": "Great income at the beginning, but depletes over time (-1 / day). Movement bonus: Teleport to a different mine.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 6,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 5,
+   "totalCoreCost": 0,
+   "maxIncome": 6
+  },
+  {
+   "id": 14184,
+   "name": "House Variant (11)",
+   "path": "BUILDINGS/House Variant (11)",
+   "building": "House",
+   "pos": [
+    -29.22,
+    39.12,
+    57.14
+   ],
+   "yawDeg": 52.8,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 14190,
+    "building": "House",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -29.22,
+    39.12,
+    57.14
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -29.22,
+     39.12,
+     57.14
+    ],
+    "size": [
+     3.192,
+     2.884,
+     3.58
+    ],
+    "center": [
+     0.119,
+     1.439,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "A stable income source.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl1",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 5.0,
+           "baseDamage": 8.0,
+           "dps": 1.6,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 10,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 1.66,
+           "baseDamage": 8.0,
+           "dps": 4.819,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [
+        "AutoAttackPerk Lvl1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 20,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 2,
+       "coreIncome": 0,
+       "hpChange": 70,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 24,
+   "totalCoreCost": 0,
+   "maxIncome": 4
+  },
+  {
+   "id": 14187,
+   "name": "House Variant",
+   "path": "BUILDINGS/House Variant",
+   "building": "House",
+   "pos": [
+    -18.82,
+    13.49,
+    29.08
+   ],
+   "yawDeg": -177.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 14181,
+    "building": "House",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -18.82,
+    13.49,
+    29.08
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -18.82,
+     13.49,
+     29.08
+    ],
+    "size": [
+     3.192,
+     2.884,
+     3.58
+    ],
+    "center": [
+     0.119,
+     1.439,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "A stable income source.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl1",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 5.0,
+           "baseDamage": 8.0,
+           "dps": 1.6,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 10,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 1.66,
+           "baseDamage": 8.0,
+           "dps": 4.819,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [
+        "AutoAttackPerk Lvl1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 20,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 2,
+       "coreIncome": 0,
+       "hpChange": 70,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 24,
+   "totalCoreCost": 0,
+   "maxIncome": 4
+  },
+  {
+   "id": 14188,
+   "name": "House Variant (19)",
+   "path": "BUILDINGS/House Variant (19)",
+   "building": "House",
+   "pos": [
+    -62.78,
+    13.49,
+    35.26
+   ],
+   "yawDeg": -90.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 14141,
+    "building": "House",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -62.78,
+    13.49,
+    35.26
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -62.78,
+     13.49,
+     35.26
+    ],
+    "size": [
+     3.192,
+     2.884,
+     3.58
+    ],
+    "center": [
+     0.119,
+     1.439,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "A stable income source.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl1",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 5.0,
+           "baseDamage": 8.0,
+           "dps": 1.6,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 10,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 1.66,
+           "baseDamage": 8.0,
+           "dps": 4.819,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [
+        "AutoAttackPerk Lvl1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 20,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 2,
+       "coreIncome": 0,
+       "hpChange": 70,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 24,
+   "totalCoreCost": 0,
+   "maxIncome": 4
+  },
+  {
+   "id": 14189,
+   "name": "House Variant (23)",
+   "path": "BUILDINGS/House Variant (23)",
+   "building": "House",
+   "pos": [
+    -65.111,
+    13.49,
+    3.824
+   ],
+   "yawDeg": -90.4,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 14175,
+    "building": "House",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -65.111,
+    13.49,
+    3.824
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -65.111,
+     13.49,
+     3.824
+    ],
+    "size": [
+     3.192,
+     2.884,
+     3.58
+    ],
+    "center": [
+     0.119,
+     1.439,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "A stable income source.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl1",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 5.0,
+           "baseDamage": 8.0,
+           "dps": 1.6,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 10,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 1.66,
+           "baseDamage": 8.0,
+           "dps": 4.819,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [
+        "AutoAttackPerk Lvl1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 20,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 2,
+       "coreIncome": 0,
+       "hpChange": 70,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 24,
+   "totalCoreCost": 0,
+   "maxIncome": 4
+  },
+  {
+   "id": 14190,
+   "name": "House Variant (12)",
+   "path": "BUILDINGS/House Variant (12)",
+   "building": "House",
+   "pos": [
+    -32.699,
+    39.12,
+    66.243
+   ],
+   "yawDeg": 84.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 13163,
+    "building": "Castle Center",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -32.699,
+    39.12,
+    66.243
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -32.699,
+     39.12,
+     66.243
+    ],
+    "size": [
+     3.192,
+     2.884,
+     3.58
+    ],
+    "center": [
+     0.119,
+     1.439,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "A stable income source.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl1",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 5.0,
+           "baseDamage": 8.0,
+           "dps": 1.6,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 10,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 1.66,
+           "baseDamage": 8.0,
+           "dps": 4.819,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [
+        "AutoAttackPerk Lvl1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 20,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 2,
+       "coreIncome": 0,
+       "hpChange": 70,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 24,
+   "totalCoreCost": 0,
+   "maxIncome": 4
+  },
+  {
+   "id": 14191,
+   "name": "House Variant (1)",
+   "path": "BUILDINGS/House Variant (1)",
+   "building": "House",
+   "pos": [
+    -30.88,
+    13.49,
+    32.56
+   ],
+   "yawDeg": 52.4,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 14179,
+    "building": "House",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -30.88,
+    13.49,
+    32.56
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -30.88,
+     13.49,
+     32.56
+    ],
+    "size": [
+     3.192,
+     2.884,
+     3.58
+    ],
+    "center": [
+     0.119,
+     1.439,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "A stable income source.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl1",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 5.0,
+           "baseDamage": 8.0,
+           "dps": 1.6,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 10,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 1.66,
+           "baseDamage": 8.0,
+           "dps": 4.819,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [
+        "AutoAttackPerk Lvl1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 20,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 2,
+       "coreIncome": 0,
+       "hpChange": 70,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 24,
+   "totalCoreCost": 0,
+   "maxIncome": 4
+  },
+  {
+   "id": 14192,
+   "name": "House Variant (17)",
+   "path": "BUILDINGS/House Variant (17)",
+   "building": "House",
+   "pos": [
+    -37.38,
+    39.12,
+    58.38
+   ],
+   "yawDeg": -126.7,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 14190,
+    "building": "House",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -37.38,
+    39.12,
+    58.38
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -37.38,
+     39.12,
+     58.38
+    ],
+    "size": [
+     3.192,
+     2.884,
+     3.58
+    ],
+    "center": [
+     0.119,
+     1.439,
+     -0.0
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "A stable income source.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl1",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 5.0,
+           "baseDamage": 8.0,
+           "dps": 1.6,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 2,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 10,
+       "activates": [
+        {
+         "count": 1,
+         "name": "AutoAttackPerk Lvl2",
+         "attacks": [
+          {
+           "component": "AutoAttack",
+           "range": 34.0,
+           "cooldown": 1.66,
+           "baseDamage": 8.0,
+           "dps": 4.819,
+           "weapon": "P FortifiedHouse",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttack",
+          "PerkDestroyGameObjectModifyer"
+         ]
+        }
+       ],
+       "disables": [
+        "AutoAttackPerk Lvl1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 20,
+     "coreCost": 0,
+     "tooltip": "Icreases daily income.",
+     "disabledInThisMode": true,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 2,
+       "coreIncome": 0,
+       "hpChange": 70,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 24,
+   "totalCoreCost": 0,
+   "maxIncome": 4
+  },
+  {
+   "id": 14194,
+   "name": "Mine Shaft (3)",
+   "path": "BUILDINGS/Mine Shaft (3)",
+   "building": "Gold Mine",
+   "pos": [
+    62.614,
+    13.62,
+    21.413
+   ],
+   "yawDeg": -25.2,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 13163,
+    "building": "Castle Center",
+    "level": 2,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    62.614,
+    13.62,
+    21.413
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     62.614,
+     13.62,
+     21.413
+    ],
+    "size": [
+     5.146,
+     5.577,
+     4.154
+    ],
+    "center": [
+     -0.177,
+     1.459,
+     2.162
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 5,
+     "coreCost": 0,
+     "tooltip": "Great income at the beginning, but depletes over time (-1 / day). Movement bonus: Teleport to a different mine.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 6,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [],
+       "disables": [],
+       "replacesMesh": false
+      }
+     ]
+    }
+   ],
+   "totalCost": 5,
+   "totalCoreCost": 0,
+   "maxIncome": 6
+  },
+  {
+   "id": 14398,
+   "name": "Mill Variant (3)",
+   "path": "BUILDINGS/Mill Variant (3)",
+   "building": "Mill",
+   "pos": [
+    -46.9,
+    13.49,
+    24.1
+   ],
+   "yawDeg": 0.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 13163,
+    "building": "Castle Center",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    -46.9,
+    13.49,
+    24.1
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     -46.9,
+     13.49,
+     24.1
+    ],
+    "size": [
+     3.336,
+     6.428,
+     3.676
+    ],
+    "center": [
+     0.0,
+     3.214,
+     -0.013
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Unlocks the option to build fields to increase income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": {
+        "name": "Improved Plow",
+        "tooltip": "Every future upgrade of the mill will increase its income even more (+1/Upgrade)",
+        "disabledInMode": false
+       },
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Auto Attack Lvl 1",
+         "attacks": [
+          {
+           "component": "AutoAttackRandom",
+           "range": 38.0,
+           "cooldown": 1.65,
+           "baseDamage": 2.0,
+           "dps": 1.212,
+           "weapon": "P Wind Spirits",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttackRandom"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Lvl 1 Rotor",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer",
+          "MillRotor",
+          "GPUInstanced"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Improved Plow",
+         "components": [
+          "Mill_ImprovedPlow"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Explosive Trap",
+        "tooltip": "The mill explodes when destroyed dealing massive damage around itself. The damage and radius increase every time you upgrade this mill.",
+        "disabledInMode": true
+       },
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Auto Attack Lvl 1",
+         "attacks": [
+          {
+           "component": "AutoAttackRandom",
+           "range": 38.0,
+           "cooldown": 1.65,
+           "baseDamage": 2.0,
+           "dps": 1.212,
+           "weapon": "P Wind Spirits",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttackRandom"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Lvl 1 Rotor",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer",
+          "MillRotor",
+          "GPUInstanced"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Explosive Trap",
+         "components": [
+          "Mill_ImprovementExplosiveTrap"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Scarecrows",
+        "tooltip": "Every field belonging to this mill receives a free scarecrow. Scarecrows have a strong anti-air attack.",
+        "disabledInMode": true
+       },
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Auto Attack Lvl 1",
+         "attacks": [
+          {
+           "component": "AutoAttackRandom",
+           "range": 38.0,
+           "cooldown": 1.65,
+           "baseDamage": 2.0,
+           "dps": 1.212,
+           "weapon": "P Wind Spirits",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttackRandom"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Lvl 1 Rotor",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer",
+          "MillRotor",
+          "GPUInstanced"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Scarecrows",
+         "components": [
+          "Mill_Improvement_Scarecrows"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Wind Spirits",
+        "tooltip": "Wind spirits magically intercept a portion of enemy arrows in the range of the mill. Every future upgrade of the mill improves this effect.",
+        "disabledInMode": true
+       },
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Auto Attack Lvl 1",
+         "attacks": [
+          {
+           "component": "AutoAttackRandom",
+           "range": 38.0,
+           "cooldown": 1.65,
+           "baseDamage": 2.0,
+           "dps": 1.212,
+           "weapon": "P Wind Spirits",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttackRandom"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Lvl 1 Rotor",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer",
+          "MillRotor",
+          "GPUInstanced"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Wind Spirits",
+         "components": [
+          "Mill_ImprovementWindSpirits"
+         ],
+         "children": [
+          {
+           "name": "Auto Attack Lvl 1",
+           "attacks": [
+            {
+             "component": "AutoAttackRandom",
+             "range": 38.0,
+             "cooldown": 1.65,
+             "baseDamage": 2.0,
+             "dps": 1.212,
+             "weapon": "P Wind Spirits",
+             "manual": false
+            }
+           ],
+           "components": [
+            "AutoAttackRandom"
+           ]
+          },
+          {
+           "name": "Auto Attack Lvl 2",
+           "attacks": [
+            {
+             "component": "AutoAttackRandom",
+             "range": 38.0,
+             "cooldown": 1.0,
+             "baseDamage": 2.0,
+             "dps": 2.0,
+             "weapon": "P Wind Spirits",
+             "manual": false
+            }
+           ],
+           "components": [
+            "AutoAttackRandom"
+           ]
+          },
+          {
+           "name": "Auto Attack Lvl 3",
+           "attacks": [
+            {
+             "component": "AutoAttackRandom",
+             "range": 38.0,
+             "cooldown": 0.5,
+             "baseDamage": 2.0,
+             "dps": 4.0,
+             "weapon": "P Wind Spirits",
+             "manual": false
+            }
+           ],
+           "components": [
+            "AutoAttackRandom"
+           ]
+          }
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 4,
+     "coreCost": 0,
+     "tooltip": "Increases income significantly.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 20,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Lvl 2 Rotor",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer",
+          "MillRotor",
+          "GPUInstanced"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Lvl 2",
+         "attacks": [
+          {
+           "component": "AutoAttackRandom",
+           "range": 38.0,
+           "cooldown": 1.0,
+           "baseDamage": 2.0,
+           "dps": 2.0,
+           "weapon": "P Wind Spirits",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttackRandom"
+         ]
+        }
+       ],
+       "disables": [
+        "Lvl 1 Rotor",
+        "Auto Attack Lvl 1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 6,
+     "coreCost": 0,
+     "tooltip": "Increases income significantly.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 4,
+       "coreIncome": 0,
+       "hpChange": 30,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Lvl 3 Rotor",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer",
+          "MillRotor",
+          "GPUInstanced"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Lvl 3",
+         "attacks": [
+          {
+           "component": "AutoAttackRandom",
+           "range": 38.0,
+           "cooldown": 0.5,
+           "baseDamage": 2.0,
+           "dps": 4.0,
+           "weapon": "P Wind Spirits",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttackRandom"
+         ]
+        }
+       ],
+       "disables": [
+        "Lvl 2 Rotor",
+        "Auto Attack Lvl 2"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 13,
+   "totalCoreCost": 0,
+   "maxIncome": 6
+  },
+  {
+   "id": 14399,
+   "name": "Mill Variant (2)",
+   "path": "BUILDINGS/Mill Variant (2)",
+   "building": "Mill",
+   "pos": [
+    92.979,
+    13.62,
+    38.157
+   ],
+   "yawDeg": 0.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 13163,
+    "building": "Castle Center",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    92.979,
+    13.62,
+    38.157
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     92.979,
+     13.62,
+     38.157
+    ],
+    "size": [
+     3.336,
+     6.428,
+     3.676
+    ],
+    "center": [
+     0.0,
+     3.214,
+     -0.013
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Unlocks the option to build fields to increase income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": {
+        "name": "Improved Plow",
+        "tooltip": "Every future upgrade of the mill will increase its income even more (+1/Upgrade)",
+        "disabledInMode": false
+       },
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Auto Attack Lvl 1",
+         "attacks": [
+          {
+           "component": "AutoAttackRandom",
+           "range": 38.0,
+           "cooldown": 1.65,
+           "baseDamage": 2.0,
+           "dps": 1.212,
+           "weapon": "P Wind Spirits",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttackRandom"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Lvl 1 Rotor",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer",
+          "MillRotor",
+          "GPUInstanced"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Improved Plow",
+         "components": [
+          "Mill_ImprovedPlow"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Explosive Trap",
+        "tooltip": "The mill explodes when destroyed dealing massive damage around itself. The damage and radius increase every time you upgrade this mill.",
+        "disabledInMode": true
+       },
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Auto Attack Lvl 1",
+         "attacks": [
+          {
+           "component": "AutoAttackRandom",
+           "range": 38.0,
+           "cooldown": 1.65,
+           "baseDamage": 2.0,
+           "dps": 1.212,
+           "weapon": "P Wind Spirits",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttackRandom"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Lvl 1 Rotor",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer",
+          "MillRotor",
+          "GPUInstanced"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Explosive Trap",
+         "components": [
+          "Mill_ImprovementExplosiveTrap"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Scarecrows",
+        "tooltip": "Every field belonging to this mill receives a free scarecrow. Scarecrows have a strong anti-air attack.",
+        "disabledInMode": true
+       },
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Auto Attack Lvl 1",
+         "attacks": [
+          {
+           "component": "AutoAttackRandom",
+           "range": 38.0,
+           "cooldown": 1.65,
+           "baseDamage": 2.0,
+           "dps": 1.212,
+           "weapon": "P Wind Spirits",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttackRandom"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Lvl 1 Rotor",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer",
+          "MillRotor",
+          "GPUInstanced"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Scarecrows",
+         "components": [
+          "Mill_Improvement_Scarecrows"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Wind Spirits",
+        "tooltip": "Wind spirits magically intercept a portion of enemy arrows in the range of the mill. Every future upgrade of the mill improves this effect.",
+        "disabledInMode": true
+       },
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Auto Attack Lvl 1",
+         "attacks": [
+          {
+           "component": "AutoAttackRandom",
+           "range": 38.0,
+           "cooldown": 1.65,
+           "baseDamage": 2.0,
+           "dps": 1.212,
+           "weapon": "P Wind Spirits",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttackRandom"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Lvl 1 Rotor",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer",
+          "MillRotor",
+          "GPUInstanced"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Wind Spirits",
+         "components": [
+          "Mill_ImprovementWindSpirits"
+         ],
+         "children": [
+          {
+           "name": "Auto Attack Lvl 1",
+           "attacks": [
+            {
+             "component": "AutoAttackRandom",
+             "range": 38.0,
+             "cooldown": 1.65,
+             "baseDamage": 2.0,
+             "dps": 1.212,
+             "weapon": "P Wind Spirits",
+             "manual": false
+            }
+           ],
+           "components": [
+            "AutoAttackRandom"
+           ]
+          },
+          {
+           "name": "Auto Attack Lvl 2",
+           "attacks": [
+            {
+             "component": "AutoAttackRandom",
+             "range": 38.0,
+             "cooldown": 1.0,
+             "baseDamage": 2.0,
+             "dps": 2.0,
+             "weapon": "P Wind Spirits",
+             "manual": false
+            }
+           ],
+           "components": [
+            "AutoAttackRandom"
+           ]
+          },
+          {
+           "name": "Auto Attack Lvl 3",
+           "attacks": [
+            {
+             "component": "AutoAttackRandom",
+             "range": 38.0,
+             "cooldown": 0.5,
+             "baseDamage": 2.0,
+             "dps": 4.0,
+             "weapon": "P Wind Spirits",
+             "manual": false
+            }
+           ],
+           "components": [
+            "AutoAttackRandom"
+           ]
+          }
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 4,
+     "coreCost": 0,
+     "tooltip": "Increases income significantly.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 20,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Lvl 2 Rotor",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer",
+          "MillRotor",
+          "GPUInstanced"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Lvl 2",
+         "attacks": [
+          {
+           "component": "AutoAttackRandom",
+           "range": 38.0,
+           "cooldown": 1.0,
+           "baseDamage": 2.0,
+           "dps": 2.0,
+           "weapon": "P Wind Spirits",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttackRandom"
+         ]
+        }
+       ],
+       "disables": [
+        "Lvl 1 Rotor",
+        "Auto Attack Lvl 1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 6,
+     "coreCost": 0,
+     "tooltip": "Increases income significantly.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 4,
+       "coreIncome": 0,
+       "hpChange": 30,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Lvl 3 Rotor",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer",
+          "MillRotor",
+          "GPUInstanced"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Lvl 3",
+         "attacks": [
+          {
+           "component": "AutoAttackRandom",
+           "range": 38.0,
+           "cooldown": 0.5,
+           "baseDamage": 2.0,
+           "dps": 4.0,
+           "weapon": "P Wind Spirits",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttackRandom"
+         ]
+        }
+       ],
+       "disables": [
+        "Lvl 2 Rotor",
+        "Auto Attack Lvl 2"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 13,
+   "totalCoreCost": 0,
+   "maxIncome": 6
+  },
+  {
+   "id": 14400,
+   "name": "Mill Variant",
+   "path": "BUILDINGS/Mill Variant",
+   "building": "Mill",
+   "pos": [
+    81.37,
+    13.62,
+    15.78
+   ],
+   "yawDeg": 0.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 13163,
+    "building": "Castle Center",
+    "level": 0,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    81.37,
+    13.62,
+    15.78
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     81.37,
+     13.62,
+     15.78
+    ],
+    "size": [
+     3.336,
+     6.428,
+     3.676
+    ],
+    "center": [
+     0.0,
+     3.214,
+     -0.013
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Unlocks the option to build fields to increase income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": {
+        "name": "Improved Plow",
+        "tooltip": "Every future upgrade of the mill will increase its income even more (+1/Upgrade)",
+        "disabledInMode": false
+       },
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Auto Attack Lvl 1",
+         "attacks": [
+          {
+           "component": "AutoAttackRandom",
+           "range": 38.0,
+           "cooldown": 1.65,
+           "baseDamage": 2.0,
+           "dps": 1.212,
+           "weapon": "P Wind Spirits",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttackRandom"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Lvl 1 Rotor",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer",
+          "MillRotor",
+          "GPUInstanced"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Improved Plow",
+         "components": [
+          "Mill_ImprovedPlow"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Explosive Trap",
+        "tooltip": "The mill explodes when destroyed dealing massive damage around itself. The damage and radius increase every time you upgrade this mill.",
+        "disabledInMode": true
+       },
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Auto Attack Lvl 1",
+         "attacks": [
+          {
+           "component": "AutoAttackRandom",
+           "range": 38.0,
+           "cooldown": 1.65,
+           "baseDamage": 2.0,
+           "dps": 1.212,
+           "weapon": "P Wind Spirits",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttackRandom"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Lvl 1 Rotor",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer",
+          "MillRotor",
+          "GPUInstanced"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Explosive Trap",
+         "components": [
+          "Mill_ImprovementExplosiveTrap"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Scarecrows",
+        "tooltip": "Every field belonging to this mill receives a free scarecrow. Scarecrows have a strong anti-air attack.",
+        "disabledInMode": true
+       },
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Auto Attack Lvl 1",
+         "attacks": [
+          {
+           "component": "AutoAttackRandom",
+           "range": 38.0,
+           "cooldown": 1.65,
+           "baseDamage": 2.0,
+           "dps": 1.212,
+           "weapon": "P Wind Spirits",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttackRandom"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Lvl 1 Rotor",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer",
+          "MillRotor",
+          "GPUInstanced"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Scarecrows",
+         "components": [
+          "Mill_Improvement_Scarecrows"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Wind Spirits",
+        "tooltip": "Wind spirits magically intercept a portion of enemy arrows in the range of the mill. Every future upgrade of the mill improves this effect.",
+        "disabledInMode": true
+       },
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Auto Attack Lvl 1",
+         "attacks": [
+          {
+           "component": "AutoAttackRandom",
+           "range": 38.0,
+           "cooldown": 1.65,
+           "baseDamage": 2.0,
+           "dps": 1.212,
+           "weapon": "P Wind Spirits",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttackRandom"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Lvl 1 Rotor",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer",
+          "MillRotor",
+          "GPUInstanced"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Wind Spirits",
+         "components": [
+          "Mill_ImprovementWindSpirits"
+         ],
+         "children": [
+          {
+           "name": "Auto Attack Lvl 1",
+           "attacks": [
+            {
+             "component": "AutoAttackRandom",
+             "range": 38.0,
+             "cooldown": 1.65,
+             "baseDamage": 2.0,
+             "dps": 1.212,
+             "weapon": "P Wind Spirits",
+             "manual": false
+            }
+           ],
+           "components": [
+            "AutoAttackRandom"
+           ]
+          },
+          {
+           "name": "Auto Attack Lvl 2",
+           "attacks": [
+            {
+             "component": "AutoAttackRandom",
+             "range": 38.0,
+             "cooldown": 1.0,
+             "baseDamage": 2.0,
+             "dps": 2.0,
+             "weapon": "P Wind Spirits",
+             "manual": false
+            }
+           ],
+           "components": [
+            "AutoAttackRandom"
+           ]
+          },
+          {
+           "name": "Auto Attack Lvl 3",
+           "attacks": [
+            {
+             "component": "AutoAttackRandom",
+             "range": 38.0,
+             "cooldown": 0.5,
+             "baseDamage": 2.0,
+             "dps": 4.0,
+             "weapon": "P Wind Spirits",
+             "manual": false
+            }
+           ],
+           "components": [
+            "AutoAttackRandom"
+           ]
+          }
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 4,
+     "coreCost": 0,
+     "tooltip": "Increases income significantly.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 20,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Lvl 2 Rotor",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer",
+          "MillRotor",
+          "GPUInstanced"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Lvl 2",
+         "attacks": [
+          {
+           "component": "AutoAttackRandom",
+           "range": 38.0,
+           "cooldown": 1.0,
+           "baseDamage": 2.0,
+           "dps": 2.0,
+           "weapon": "P Wind Spirits",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttackRandom"
+         ]
+        }
+       ],
+       "disables": [
+        "Lvl 1 Rotor",
+        "Auto Attack Lvl 1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 6,
+     "coreCost": 0,
+     "tooltip": "Increases income significantly.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 4,
+       "coreIncome": 0,
+       "hpChange": 30,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Lvl 3 Rotor",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer",
+          "MillRotor",
+          "GPUInstanced"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Lvl 3",
+         "attacks": [
+          {
+           "component": "AutoAttackRandom",
+           "range": 38.0,
+           "cooldown": 0.5,
+           "baseDamage": 2.0,
+           "dps": 4.0,
+           "weapon": "P Wind Spirits",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttackRandom"
+         ]
+        }
+       ],
+       "disables": [
+        "Lvl 2 Rotor",
+        "Auto Attack Lvl 2"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 13,
+   "totalCoreCost": 0,
+   "maxIncome": 6
+  },
+  {
+   "id": 14403,
+   "name": "Mill Variant (1)",
+   "path": "BUILDINGS/Mill Variant (1)",
+   "building": "Mill",
+   "pos": [
+    108.373,
+    13.62,
+    29.956
+   ],
+   "yawDeg": 0.0,
+   "active": true,
+   "startDeactivated": true,
+   "requiredRootLevelDifference": 0,
+   "activator": {
+    "slot": 13163,
+    "building": "Castle Center",
+    "level": 1,
+    "upgradesThis": false
+   },
+   "interactorPos": [
+    108.373,
+    13.62,
+    29.956
+   ],
+   "interactorCollider": {
+    "type": "BoxCollider",
+    "trigger": false,
+    "pos": [
+     108.373,
+     13.62,
+     29.956
+    ],
+    "size": [
+     3.336,
+     6.428,
+     3.676
+    ],
+    "center": [
+     0.0,
+     3.214,
+     -0.013
+    ]
+   },
+   "navmeshCutPadding": 1.0,
+   "levels": [
+    {
+     "level": 1,
+     "cost": 3,
+     "coreCost": 0,
+     "tooltip": "Unlocks the option to build fields to increase income.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": {
+        "name": "Improved Plow",
+        "tooltip": "Every future upgrade of the mill will increase its income even more (+1/Upgrade)",
+        "disabledInMode": false
+       },
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Auto Attack Lvl 1",
+         "attacks": [
+          {
+           "component": "AutoAttackRandom",
+           "range": 38.0,
+           "cooldown": 1.65,
+           "baseDamage": 2.0,
+           "dps": 1.212,
+           "weapon": "P Wind Spirits",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttackRandom"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Lvl 1 Rotor",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer",
+          "MillRotor",
+          "GPUInstanced"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Improved Plow",
+         "components": [
+          "Mill_ImprovedPlow"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Explosive Trap",
+        "tooltip": "The mill explodes when destroyed dealing massive damage around itself. The damage and radius increase every time you upgrade this mill.",
+        "disabledInMode": true
+       },
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Auto Attack Lvl 1",
+         "attacks": [
+          {
+           "component": "AutoAttackRandom",
+           "range": 38.0,
+           "cooldown": 1.65,
+           "baseDamage": 2.0,
+           "dps": 1.212,
+           "weapon": "P Wind Spirits",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttackRandom"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Lvl 1 Rotor",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer",
+          "MillRotor",
+          "GPUInstanced"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Explosive Trap",
+         "components": [
+          "Mill_ImprovementExplosiveTrap"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Scarecrows",
+        "tooltip": "Every field belonging to this mill receives a free scarecrow. Scarecrows have a strong anti-air attack.",
+        "disabledInMode": true
+       },
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Auto Attack Lvl 1",
+         "attacks": [
+          {
+           "component": "AutoAttackRandom",
+           "range": 38.0,
+           "cooldown": 1.65,
+           "baseDamage": 2.0,
+           "dps": 1.212,
+           "weapon": "P Wind Spirits",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttackRandom"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Lvl 1 Rotor",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer",
+          "MillRotor",
+          "GPUInstanced"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Scarecrows",
+         "components": [
+          "Mill_Improvement_Scarecrows"
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      },
+      {
+       "choice": {
+        "name": "Wind Spirits",
+        "tooltip": "Wind spirits magically intercept a portion of enemy arrows in the range of the mill. Every future upgrade of the mill improves this effect.",
+        "disabledInMode": true
+       },
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 0,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Auto Attack Lvl 1",
+         "attacks": [
+          {
+           "component": "AutoAttackRandom",
+           "range": 38.0,
+           "cooldown": 1.65,
+           "baseDamage": 2.0,
+           "dps": 1.212,
+           "weapon": "P Wind Spirits",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttackRandom"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Lvl 1 Rotor",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer",
+          "MillRotor",
+          "GPUInstanced"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Wind Spirits",
+         "components": [
+          "Mill_ImprovementWindSpirits"
+         ],
+         "children": [
+          {
+           "name": "Auto Attack Lvl 1",
+           "attacks": [
+            {
+             "component": "AutoAttackRandom",
+             "range": 38.0,
+             "cooldown": 1.65,
+             "baseDamage": 2.0,
+             "dps": 1.212,
+             "weapon": "P Wind Spirits",
+             "manual": false
+            }
+           ],
+           "components": [
+            "AutoAttackRandom"
+           ]
+          },
+          {
+           "name": "Auto Attack Lvl 2",
+           "attacks": [
+            {
+             "component": "AutoAttackRandom",
+             "range": 38.0,
+             "cooldown": 1.0,
+             "baseDamage": 2.0,
+             "dps": 2.0,
+             "weapon": "P Wind Spirits",
+             "manual": false
+            }
+           ],
+           "components": [
+            "AutoAttackRandom"
+           ]
+          },
+          {
+           "name": "Auto Attack Lvl 3",
+           "attacks": [
+            {
+             "component": "AutoAttackRandom",
+             "range": 38.0,
+             "cooldown": 0.5,
+             "baseDamage": 2.0,
+             "dps": 4.0,
+             "weapon": "P Wind Spirits",
+             "manual": false
+            }
+           ],
+           "components": [
+            "AutoAttackRandom"
+           ]
+          }
+         ]
+        }
+       ],
+       "disables": [],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 2,
+     "cost": 4,
+     "coreCost": 0,
+     "tooltip": "Increases income significantly.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 1,
+       "coreIncome": 0,
+       "hpChange": 20,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Lvl 2 Rotor",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer",
+          "MillRotor",
+          "GPUInstanced"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Lvl 2",
+         "attacks": [
+          {
+           "component": "AutoAttackRandom",
+           "range": 38.0,
+           "cooldown": 1.0,
+           "baseDamage": 2.0,
+           "dps": 2.0,
+           "weapon": "P Wind Spirits",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttackRandom"
+         ]
+        }
+       ],
+       "disables": [
+        "Lvl 1 Rotor",
+        "Auto Attack Lvl 1"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    },
+    {
+     "level": 3,
+     "cost": 6,
+     "coreCost": 0,
+     "tooltip": "Increases income significantly.",
+     "disabledInThisMode": false,
+     "branches": [
+      {
+       "choice": null,
+       "goldIncome": 4,
+       "coreIncome": 0,
+       "hpChange": 30,
+       "activates": [
+        {
+         "count": 1,
+         "name": "Lvl 3 Rotor",
+         "components": [
+          "MeshFilter",
+          "MeshRenderer",
+          "MillRotor",
+          "GPUInstanced"
+         ]
+        },
+        {
+         "count": 1,
+         "name": "Auto Attack Lvl 3",
+         "attacks": [
+          {
+           "component": "AutoAttackRandom",
+           "range": 38.0,
+           "cooldown": 0.5,
+           "baseDamage": 2.0,
+           "dps": 4.0,
+           "weapon": "P Wind Spirits",
+           "manual": false
+          }
+         ],
+         "components": [
+          "AutoAttackRandom"
+         ]
+        }
+       ],
+       "disables": [
+        "Lvl 2 Rotor",
+        "Auto Attack Lvl 2"
+       ],
+       "replacesMesh": true
+      }
+     ]
+    }
+   ],
+   "totalCost": 13,
+   "totalCoreCost": 0,
+   "maxIncome": 6
+  }
+ ],
+ "shrines": [],
+ "nighthorns": [],
+ "dayNight": [
+  {
+   "id": 14798,
+   "name": "Day Night Cycle",
+   "path": "LOCAL MANAGERS/Day Night Cycle",
+   "active": true,
+   "pos": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "sunriseTime": 3.0
+  }
+ ],
+ "autoDayNight": [],
+ "nightCall": [
+  {
+   "id": 12851,
+   "name": "UI Overlay Canvas",
+   "path": "LOCAL MANAGERS/UI Overlay Canvas",
+   "active": true,
+   "pos": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "nightCallTime": 2.0
+  }
+ ],
+ "castle": [
+  {
+   "id": 11576,
+   "name": "Building Parent",
+   "path": "BUILDINGS/Castle Center Variant/Building Parent",
+   "pos": [
+    -10.21,
+    13.49,
+    18.21
+   ],
+   "maxHp": 100.0,
+   "tags": [
+    "PlayerOwned",
+    "Building",
+    "InfrastructureEconomy",
+    "CastleCenter",
+    "PlayerOwnedPriorityTarget"
+   ]
+  }
+ ],
+ "heroes": [
+  {
+   "name": "Player Character",
+   "pos": [
+    -16.12,
+    13.0,
+    10.54
+   ],
+   "summary": {
+    "name": "Player Character",
+    "maxHp": 50.0,
+    "tags": [
+     "PlayerOwned",
+     "Player"
+    ],
+    "coinDrop": 0,
+    "components": [
+     "CharacterController",
+     "PlayerMovement",
+     "PlayerInteraction",
+     "RVOController",
+     "TaggedObject",
+     "Hp",
+     "PlayerHpRegen",
+     "AutoRevive",
+     "PlayerUpgradeManager",
+     "PlayerAttack",
+     "CommandUnits",
+     "PerkHpModifyer",
+     "PowerTowerPerk",
+     "SaveLoadEntity"
+    ]
+   },
+   "movement": {
+    "speed": 14.0,
+    "speedDuringDay": 18.2,
+    "sprintSpeed": 23.0,
+    "sprintSpeedDuringDay": 29.9,
+    "moveSpeedWhenDead": 6.0,
+    "gravity": -50.0,
+    "maxMeshRotationSpeed": 400.0,
+    "yFallThroughMapDetection": -30.0
+   },
+   "interaction": {
+    "coinMagnetRadius": 7.0,
+    "interactionRadius": 3.0
+   },
+   "command": {
+    "drowWaypointParticleCount": 100,
+    "attractRange": 6.0,
+    "graphNameOfPlayerUnits": "Player Units S",
+    "graphNameOfFlyingUnits": "Enemy Units Air",
+    "unitDistanceFromEachOther": 2.5,
+    "unitDistanceMoveStep": 0.5,
+    "maxPositioningRepeats": 50,
+    "holdToHoldPositionTime": 0.5,
+    "holdToSetUnitGroup": 1.0,
+    "commanderUnitMoveSpeedMulti": 1.6,
+    "commanderHoldHealthMulti": 1.2,
+    "commanderHoldDamageMulti": 1.2,
+    "groupHoldDelay": 0.2,
+    "commanding": false,
+    "canCommandUnitsInThisMode": true
+   }
+  }
+ ],
+ "units": {},
+ "summary": {
+  "nights": 9,
+  "enemiesTotal": 0,
+  "baseHpTotal": 0.0,
+  "goldCoinsTotal": 0,
+  "flyingEnemies": 0,
+  "bossEnemies": 0,
+  "spawnLines": 8,
+  "buildSlots": 57,
+  "slotsByBuilding": {
+   "Field": 20,
+   "Castle Center": 1,
+   "House": 26,
+   "Gold Mine": 6,
+   "Mill": 4
+  },
+  "hasHorn": false,
+  "shrines": 0,
+  "castleFound": true,
+  "enemyTypes": []
+ }
+}

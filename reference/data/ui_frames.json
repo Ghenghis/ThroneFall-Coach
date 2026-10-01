@@ -1,0 +1,3480 @@
+[
+ {
+  "id": 5426,
+  "name": "About Frame",
+  "nameRepr": "'About Frame'",
+  "path": "UI Canvas/About Frame",
+  "activeSelf": false,
+  "freezeTime": false,
+  "freezePlayer": true,
+  "canNotBeEscaped": false,
+  "storeLastSelected": true,
+  "events": {},
+  "componentCounts": {
+   "TextMeshProUGUI": 6,
+   "Localize": 2,
+   "UIFrame": 1,
+   "ContentSizeFitter": 1,
+   "VersionNumberDisplay": 1
+  },
+  "gameHelpers": [
+   "UIFrame",
+   "VersionNumberDisplay"
+  ],
+  "buttons": [],
+  "texts": [
+   "version 0.85",
+   "Felipe Herrador Valenzueal\nMarcus Rodrigues\nNolwenn Gaudin\nDmitry Usov\nSerda Soylu\nIva Krombholozova\nFederica Bianco\nMykola Khandoga\nMaeng Ju Hyung",
+   "Level Up Translation\n",
+   "Translated by",
+   "Jonas Tyroller & Paul Schnepf ",
+   "Created by"
+  ],
+  "subtreeObjects": 7
+ },
+ {
+  "id": 4981,
+  "name": "After Match Frame ",
+  "nameRepr": "'After Match Frame '",
+  "path": "UI Canvas/After Match Frame ",
+  "activeSelf": false,
+  "freezeTime": false,
+  "freezePlayer": true,
+  "canNotBeEscaped": true,
+  "storeLastSelected": true,
+  "events": {
+   "onActivate": [
+    {
+     "type": "EndOfMatchScoreUIHelper",
+     "method": "OnActivate",
+     "targetObject": "After Match Frame ",
+     "arg": "",
+     "objectArg": ""
+    }
+   ]
+  },
+  "componentCounts": {
+   "TextMeshProUGUI": 53,
+   "ContentSizeFitter": 37,
+   "Localize": 30,
+   "TFUITextButton": 12,
+   "TFUIAudioHelper": 12,
+   "MPImageBasic": 11,
+   "Image": 5,
+   "MPImage": 4,
+   "CanvasGroup": 4,
+   "UIFrame": 1,
+   "EndOfMatchScoreUIHelper": 1,
+   "AudioSource": 1,
+   "EternalTrialsDefeatUI": 1,
+   "EternalTrialsVictoryUI": 1,
+   "Mask": 1
+  },
+  "gameHelpers": [
+   "EndOfMatchScoreUIHelper",
+   "EternalTrialsDefeatUI",
+   "EternalTrialsVictoryUI",
+   "TFUIAudioHelper",
+   "TFUITextButton",
+   "UIFrame"
+  ],
+  "buttons": [
+   {
+    "go": "Try Again",
+    "path": "UI Canvas/After Match Frame /ET Defeat/Eternal Trials Defeat Background/Defeat Eternal Trials Buttons/Try Again",
+    "kind": "TFUITextButton",
+    "label": "Try Again",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "EndOfMatchScoreUIHelper",
+      "method": "OnTryAgainET",
+      "targetObject": "After Match Frame ",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   },
+   {
+    "go": "Back Button",
+    "path": "UI Canvas/After Match Frame /ET Defeat/Eternal Trials Defeat Background/Defeat Eternal Trials Buttons/Back Button",
+    "kind": "TFUITextButton",
+    "label": "Back to Map",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "EndOfMatchScoreUIHelper",
+      "method": "ToMenuET",
+      "targetObject": "After Match Frame ",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   },
+   {
+    "go": "Continue Button",
+    "path": "UI Canvas/After Match Frame /ET Victory/Eternal Trials Victory Background/Victory Eternal Trials Buttons/Continue Button",
+    "kind": "TFUITextButton",
+    "label": "Continue",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "EndOfMatchScoreUIHelper",
+      "method": "OnContinueET",
+      "targetObject": "After Match Frame ",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   },
+   {
+    "go": "To Menu",
+    "path": "UI Canvas/After Match Frame /ET Victory/Eternal Trials Victory Background/Victory Eternal Trials Buttons/To Menu",
+    "kind": "TFUITextButton",
+    "label": "Back to Map",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "EndOfMatchScoreUIHelper",
+      "method": "ToMenuET",
+      "targetObject": "After Match Frame ",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   },
+   {
+    "go": "Try Again",
+    "path": "UI Canvas/After Match Frame /Main Background/Defeat Eternal Trials Buttons/Try Again",
+    "kind": "TFUITextButton",
+    "label": "Try Again",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "EndOfMatchScoreUIHelper",
+      "method": "OnTryAgainET",
+      "targetObject": "After Match Frame ",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   },
+   {
+    "go": "Back Button",
+    "path": "UI Canvas/After Match Frame /Main Background/Defeat Eternal Trials Buttons/Back Button",
+    "kind": "TFUITextButton",
+    "label": "Back to Menu",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "EndOfMatchScoreUIHelper",
+      "method": "ToMenuET",
+      "targetObject": "After Match Frame ",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   },
+   {
+    "go": "Continue Button",
+    "path": "UI Canvas/After Match Frame /Main Background/Victory Eternal Trials Buttons/Continue Button",
+    "kind": "TFUITextButton",
+    "label": "Weiter",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "EndOfMatchScoreUIHelper",
+      "method": "OnContinueET",
+      "targetObject": "After Match Frame ",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   },
+   {
+    "go": "To Menu",
+    "path": "UI Canvas/After Match Frame /Main Background/Victory Eternal Trials Buttons/To Menu",
+    "kind": "TFUITextButton",
+    "label": "Back to Menu",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "EndOfMatchScoreUIHelper",
+      "method": "ToMenuET",
+      "targetObject": "After Match Frame ",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   },
+   {
+    "go": "Try Again",
+    "path": "UI Canvas/After Match Frame /Main Background/Defeat Classic Buttons/Try Again",
+    "kind": "TFUITextButton",
+    "label": "Try Again",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "UIFrameManager",
+      "method": "ChangeActiveFrame",
+      "targetObject": "UI Canvas",
+      "arg": "",
+      "objectArg": "Classic Retry Mode Select Pop Up "
+     }
+    ]
+   },
+   {
+    "go": "Back Button",
+    "path": "UI Canvas/After Match Frame /Main Background/Defeat Classic Buttons/Back Button",
+    "kind": "TFUITextButton",
+    "label": "Continue",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "EndOfMatchScoreUIHelper",
+      "method": "OnContinue",
+      "targetObject": "After Match Frame ",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   },
+   {
+    "go": "Continue Button",
+    "path": "UI Canvas/After Match Frame /Main Background/Victory Classic Buttons/Continue Button",
+    "kind": "TFUITextButton",
+    "label": "Continue",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "EndOfMatchScoreUIHelper",
+      "method": "OnContinue",
+      "targetObject": "After Match Frame ",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   },
+   {
+    "go": "Try Again",
+    "path": "UI Canvas/After Match Frame /Main Background/Victory Classic Buttons/Try Again",
+    "kind": "TFUITextButton",
+    "label": "Try Again",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "EndscreenRetryHelper",
+      "method": "FreshStart",
+      "targetObject": "Classic Retry Mode Select Pop Up ",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   }
+  ],
+  "texts": [
+   "Try Again",
+   "Back to Map",
+   "1000/3000",
+   "Maximum demo level reached.",
+   "Maximum level reached.",
+   "Level <style=\"Body Numerals\">X",
+   "Neuer Record!",
+   "Highscore:",
+   "XXXX",
+   "12349",
+   "+XX",
+   "Stufen-Bonus",
+   "XXX\n",
+   "Gesamtpunktzahl",
+   "stage <style=\"Body Numerals\">X",
+   "Defeat",
+   "Continue",
+   "Gold Bonus",
+   "Base Score",
+   "Victory."
+  ],
+  "subtreeObjects": 103
+ },
+ {
+  "id": 5509,
+  "name": "Before Quit",
+  "nameRepr": "'Before Quit'",
+  "path": "UI Canvas/Before Quit",
+  "activeSelf": false,
+  "freezeTime": false,
+  "freezePlayer": true,
+  "canNotBeEscaped": false,
+  "storeLastSelected": true,
+  "events": {},
+  "componentCounts": {
+   "MPImage": 6,
+   "TextMeshProUGUI": 3,
+   "ContentSizeFitter": 2,
+   "TFUITextButton": 2,
+   "TFUIAudioHelper": 2,
+   "Localize": 2,
+   "UIFrame": 1,
+   "VerticalLayoutGroup": 1,
+   "WishlistButton": 1,
+   "Image": 1
+  },
+  "gameHelpers": [
+   "TFUIAudioHelper",
+   "TFUITextButton",
+   "UIFrame",
+   "WishlistButton"
+  ],
+  "buttons": [
+   {
+    "go": "Quit",
+    "path": "UI Canvas/Before Quit/Menu Items/Quit",
+    "kind": "TFUITextButton",
+    "label": "Quit\n",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "UIFrameManager",
+      "method": "QuitToDesktop",
+      "targetObject": "UI Canvas",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   },
+   {
+    "go": "Wishlist",
+    "path": "UI Canvas/Before Quit/Menu Items/Wishlist",
+    "kind": "TFUITextButton",
+    "label": "Wishlist on Steam!",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "WishlistButton",
+      "method": "Wishlist",
+      "targetObject": "Wishlist",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   }
+  ],
+  "texts": [
+   "Quit\n",
+   "Wishlist on Steam!",
+   "Thronefall"
+  ],
+  "subtreeObjects": 13
+ },
+ {
+  "id": 4885,
+  "name": "Bonus Mode Select Frame",
+  "nameRepr": "'Bonus Mode Select Frame'",
+  "path": "UI Canvas/Bonus Mode Select Frame",
+  "activeSelf": false,
+  "freezeTime": false,
+  "freezePlayer": true,
+  "canNotBeEscaped": false,
+  "storeLastSelected": false,
+  "events": {
+   "onActivate": [
+    {
+     "type": "UIBonusLevelSelect",
+     "method": "OnShow",
+     "targetObject": "Bonus Mode Select Frame",
+     "arg": "",
+     "objectArg": ""
+    }
+   ],
+   "onApply": [
+    {
+     "type": "UIBonusLevelSelect",
+     "method": "OnSelectionApplied",
+     "targetObject": "Bonus Mode Select Frame",
+     "arg": "",
+     "objectArg": ""
+    }
+   ]
+  },
+  "componentCounts": {
+   "Image": 9,
+   "TextMeshProUGUI": 5,
+   "TFUITextButton": 4,
+   "TFUIAudioHelper": 4,
+   "UIFrame": 1,
+   "UIBonusLevelSelect": 1,
+   "TransitionToSelectedLevelHelper": 1,
+   "MPImage": 1,
+   "VerticalLayoutGroup": 1,
+   "ContentSizeFitter": 1
+  },
+  "gameHelpers": [
+   "TFUIAudioHelper",
+   "TFUITextButton",
+   "TransitionToSelectedLevelHelper",
+   "UIBonusLevelSelect",
+   "UIFrame"
+  ],
+  "buttons": [
+   {
+    "go": "Bonus Level Button (2)",
+    "path": "UI Canvas/Bonus Mode Select Frame/Background/Level Name Buttons/Bonus Level Button (2)",
+    "kind": "TFUITextButton",
+    "label": "Play",
+    "interactable": true,
+    "onClick": []
+   },
+   {
+    "go": "Bonus Level Button (1)",
+    "path": "UI Canvas/Bonus Mode Select Frame/Background/Level Name Buttons/Bonus Level Button (1)",
+    "kind": "TFUITextButton",
+    "label": "Play",
+    "interactable": true,
+    "onClick": []
+   },
+   {
+    "go": "Bonus Level Button",
+    "path": "UI Canvas/Bonus Mode Select Frame/Background/Level Name Buttons/Bonus Level Button",
+    "kind": "TFUITextButton",
+    "label": "Play",
+    "interactable": true,
+    "onClick": []
+   },
+   {
+    "go": "Cancel Button",
+    "path": "UI Canvas/Bonus Mode Select Frame/Background/Cancel Button",
+    "kind": "TFUITextButton",
+    "label": "X",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "UIFrameManager",
+      "method": "CloseActiveFrame",
+      "targetObject": "UI Canvas",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   }
+  ],
+  "texts": [
+   "Play",
+   "Durststein\n<style=subheader><size=20>Bonus Modes",
+   "X"
+  ],
+  "subtreeObjects": 20
+ },
+ {
+  "id": 5324,
+  "name": "Choice Frame",
+  "nameRepr": "'Choice Frame'",
+  "path": "UI Canvas/Choice Frame",
+  "activeSelf": false,
+  "freezeTime": false,
+  "freezePlayer": true,
+  "canNotBeEscaped": false,
+  "storeLastSelected": true,
+  "events": {
+   "onActivate": [
+    {
+     "type": "ChoiceUIFrameHelper",
+     "method": "OnShow",
+     "targetObject": "Choice Frame",
+     "arg": "",
+     "objectArg": ""
+    }
+   ],
+   "onNewFocus": [
+    {
+     "type": "ChoiceUIFrameHelper",
+     "method": "UpdateSelectedChoice",
+     "targetObject": "Choice Frame",
+     "arg": "",
+     "objectArg": ""
+    }
+   ],
+   "onNewSelection": [
+    {
+     "type": "ChoiceUIFrameHelper",
+     "method": "UpdateSelectedChoice",
+     "targetObject": "Choice Frame",
+     "arg": "",
+     "objectArg": ""
+    },
+    {
+     "type": "UIParentResizer",
+     "method": "Trigger",
+     "targetObject": "Background",
+     "arg": "",
+     "objectArg": ""
+    }
+   ],
+   "onApply": [
+    {
+     "type": "ChoiceUIFrameHelper",
+     "method": "OnApply",
+     "targetObject": "Choice Frame",
+     "arg": "",
+     "objectArg": ""
+    }
+   ]
+  },
+  "componentCounts": {
+   "TFUIAudioHelper": 5,
+   "MPImageBasic": 5,
+   "TextMeshProUGUI": 4,
+   "TFUIUpgradeChoice": 4,
+   "Image": 4,
+   "ContentSizeFitter": 2,
+   "UIFrame": 1,
+   "ChoiceUIFrameHelper": 1,
+   "MPImage": 1,
+   "UIParentResizer": 1,
+   "TFUITextButton": 1,
+   "GridLayoutGroup": 1,
+   "Localize": 1
+  },
+  "gameHelpers": [
+   "ChoiceUIFrameHelper",
+   "TFUIAudioHelper",
+   "TFUITextButton",
+   "TFUIUpgradeChoice",
+   "UIFrame",
+   "UIParentResizer"
+  ],
+  "buttons": [
+   {
+    "go": "Cancel Button",
+    "path": "UI Canvas/Choice Frame/Background/Cancel Button",
+    "kind": "TFUITextButton",
+    "label": "X",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "UIFrameManager",
+      "method": "CloseActiveFrame",
+      "targetObject": "UI Canvas",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   }
+  ],
+  "texts": [
+   "X",
+   "+ 50% more swag on your sword, it also spits flames \n+ 75% more HP for all your buildings \n+ your horse looks really cool",
+   "Flaming Towers",
+   "Upgrade"
+  ],
+  "subtreeObjects": 16
+ },
+ {
+  "id": 5042,
+  "name": "Classic Retry Mode Select Pop Up ",
+  "nameRepr": "'Classic Retry Mode Select Pop Up '",
+  "path": "UI Canvas/Classic Retry Mode Select Pop Up ",
+  "activeSelf": false,
+  "freezeTime": true,
+  "freezePlayer": true,
+  "canNotBeEscaped": false,
+  "storeLastSelected": true,
+  "events": {
+   "onActivate": [
+    {
+     "type": "EndscreenRetryHelper",
+     "method": "InstantRestartIfInSaveForbiddenMap",
+     "targetObject": "Classic Retry Mode Select Pop Up ",
+     "arg": "",
+     "objectArg": ""
+    }
+   ]
+  },
+  "componentCounts": {
+   "TextMeshProUGUI": 2,
+   "TFUITextButton": 2,
+   "TFUIAudioHelper": 2,
+   "Localize": 2,
+   "UIFrame": 1,
+   "EndscreenRetryHelper": 1,
+   "MPImage": 1,
+   "Image": 1
+  },
+  "gameHelpers": [
+   "EndscreenRetryHelper",
+   "TFUIAudioHelper",
+   "TFUITextButton",
+   "UIFrame"
+  ],
+  "buttons": [
+   {
+    "go": "Repeat Last Day",
+    "path": "UI Canvas/Classic Retry Mode Select Pop Up /Background/Repeat Last Day",
+    "kind": "TFUITextButton",
+    "label": "Repeat Last Day",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "EndscreenRetryHelper",
+      "method": "RestartLastDay",
+      "targetObject": "Classic Retry Mode Select Pop Up ",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   },
+   {
+    "go": "Fresh Start",
+    "path": "UI Canvas/Classic Retry Mode Select Pop Up /Background/Fresh Start",
+    "kind": "TFUITextButton",
+    "label": "A Fresh Start",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "EndscreenRetryHelper",
+      "method": "FreshStart",
+      "targetObject": "Classic Retry Mode Select Pop Up ",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   }
+  ],
+  "texts": [
+   "Repeat Last Day",
+   "A Fresh Start"
+  ],
+  "subtreeObjects": 5
+ },
+ {
+  "id": 6309,
+  "name": "ControlGroupsInstructions",
+  "nameRepr": "'ControlGroupsInstructions'",
+  "path": "UI Canvas/ControlGroupsInstructions",
+  "activeSelf": false,
+  "freezeTime": true,
+  "freezePlayer": true,
+  "canNotBeEscaped": false,
+  "storeLastSelected": true,
+  "events": {},
+  "componentCounts": {
+   "TextMeshProUGUI": 4,
+   "Localize": 4,
+   "ContentSizeFitter": 4,
+   "LayoutElement": 3,
+   "Image": 3,
+   "UIFrame": 1,
+   "ControlGroupPopUp": 1,
+   "MPImage": 1,
+   "VerticalLayoutGroup": 1,
+   "TFUITextButton": 1,
+   "TFUIAudioHelper": 1
+  },
+  "gameHelpers": [
+   "ControlGroupPopUp",
+   "TFUIAudioHelper",
+   "TFUITextButton",
+   "UIFrame"
+  ],
+  "buttons": [
+   {
+    "go": "Yes",
+    "path": "UI Canvas/ControlGroupsInstructions/Background/Yes",
+    "kind": "TFUITextButton",
+    "label": "Continue",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "UIFrameManager",
+      "method": "CloseActiveFrame",
+      "targetObject": "UI Canvas",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   }
+  ],
+  "texts": [
+   "Continue",
+   "With units selected, hold{ACTION.Select Group 1}, [B] or [C] to create a control group.\n\nPress the corresponding input of the group to select or deposit units.\n\nHold [D] to clear all active groups.",
+   "Create custom control groups of units.",
+   "Control Groups"
+  ],
+  "subtreeObjects": 10
+ },
+ {
+  "id": 5177,
+  "name": "Early Access Warning",
+  "nameRepr": "'Early Access Warning'",
+  "path": "UI Canvas/Early Access Warning",
+  "activeSelf": false,
+  "freezeTime": true,
+  "freezePlayer": true,
+  "canNotBeEscaped": false,
+  "storeLastSelected": true,
+  "events": {},
+  "componentCounts": {
+   "TextMeshProUGUI": 3,
+   "ContentSizeFitter": 3,
+   "Localize": 2,
+   "UIFrame": 1,
+   "Image": 1,
+   "TFUITextButton": 1,
+   "TFUIAudioHelper": 1
+  },
+  "gameHelpers": [
+   "TFUIAudioHelper",
+   "TFUITextButton",
+   "UIFrame"
+  ],
+  "buttons": [
+   {
+    "go": "Yes",
+    "path": "UI Canvas/Early Access Warning/Background/Early Access Warning/Yes",
+    "kind": "TFUITextButton",
+    "label": "Weiter",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "UIFrameManager",
+      "method": "CloseActiveFrame",
+      "targetObject": "UI Canvas",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   }
+  ],
+  "texts": [
+   "Liebe Könige und Königinnen, \neine kurze Anmerkung von uns, den Entwicklern des Spiels: Wir haben unser Bestes getan, um diese Version von Thronefall so gut wie möglich zu machen. Bitte bedenkt jedoch, dass Thronefall sich noch im Early Access befindet - es ist noch nicht perfekt und wir arbeiten hart daran, dass die Verteidigung eures kleinen Königreichs noch mehr Spaß macht. Euer Feedback ist ein unverzichtbarer Teil dieses Prozesses, deshalb würden wir uns freuen, eure Anregungen in unserem Discord zu lesen (den Link findet ihr auf der Steam-Seite). Dies ist auch der perfekte Ort, um Bugs zu melden, Strategien zu diskutieren und sich mit anderen Spielern auszutauschen. \n\nNoch eine Sache: Momentan ist Thronefall ein kurzes Spiel - aus diesem Grund auch der kleine Preis. Im Laufe des Early Access werden wir weitere Inhalte ergänzen, die mehr Spielzeit und neue Spielmöglichkeiten bieten. Schaut einfach hin und wieder mal vorbei, um zu sehen, was es Neues gibt!  \n\nAlles Gute \nJonas und Paul",
+   "Early Access",
+   "Weiter"
+  ],
+  "subtreeObjects": 5
+ },
+ {
+  "id": 5316,
+  "name": "Eternal Trials First Time Pop Up ",
+  "nameRepr": "'Eternal Trials First Time Pop Up '",
+  "path": "UI Canvas/Eternal Trials First Time Pop Up ",
+  "activeSelf": false,
+  "freezeTime": true,
+  "freezePlayer": true,
+  "canNotBeEscaped": false,
+  "storeLastSelected": true,
+  "events": {},
+  "componentCounts": {
+   "TextMeshProUGUI": 3,
+   "ContentSizeFitter": 3,
+   "Localize": 3,
+   "UIFrame": 1,
+   "MPImage": 1,
+   "TFUITextButton": 1,
+   "TFUIAudioHelper": 1
+  },
+  "gameHelpers": [
+   "TFUIAudioHelper",
+   "TFUITextButton",
+   "UIFrame"
+  ],
+  "buttons": [
+   {
+    "go": "Yes",
+    "path": "UI Canvas/Eternal Trials First Time Pop Up /Background/Early Access Warning/Yes",
+    "kind": "TFUITextButton",
+    "label": "Continue",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "UIFrameManager",
+      "method": "ChangeActiveFrame",
+      "targetObject": "UI Canvas",
+      "arg": "",
+      "objectArg": "Eternal Trials Select Frame"
+     }
+    ]
+   }
+  ],
+  "texts": [
+   "Bem-vindo ao modo infinito de Thronefall.\n\nEnfrente ondas de inimigos geradas proceduralmente em vários níveis que se tornam progressivamente mais e mais difíceis.\n\nVocê mantém todas as suas vantagens dos níveis anteriores, mas uma vez que você perde, é o fim e você tem que começar do zero. Até onde você pode chegar?\n\nAtenção! Este modo contém spoilers para a campanha principal (recomendamos que você jogue isso primeiro).",
+   "Continue",
+   "Eternal Trials"
+  ],
+  "subtreeObjects": 5
+ },
+ {
+  "id": 5041,
+  "name": "Eternal Trials Leave Pop Up ",
+  "nameRepr": "'Eternal Trials Leave Pop Up '",
+  "path": "UI Canvas/Eternal Trials Leave Pop Up ",
+  "activeSelf": false,
+  "freezeTime": true,
+  "freezePlayer": true,
+  "canNotBeEscaped": false,
+  "storeLastSelected": true,
+  "events": {},
+  "componentCounts": {
+   "TextMeshProUGUI": 4,
+   "Localize": 4,
+   "TFUITextButton": 2,
+   "TFUIAudioHelper": 2,
+   "UIFrame": 1,
+   "MPImage": 1,
+   "Image": 1
+  },
+  "gameHelpers": [
+   "TFUIAudioHelper",
+   "TFUITextButton",
+   "UIFrame"
+  ],
+  "buttons": [
+   {
+    "go": "No",
+    "path": "UI Canvas/Eternal Trials Leave Pop Up /Background/No",
+    "kind": "TFUITextButton",
+    "label": "No",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "UIFrameManager",
+      "method": "CloseActiveFrame",
+      "targetObject": "UI Canvas",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   },
+   {
+    "go": "Yes",
+    "path": "UI Canvas/Eternal Trials Leave Pop Up /Background/Yes",
+    "kind": "TFUITextButton",
+    "label": "Yes",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "InMatchResignHelper",
+      "method": "AppliedBackToMap",
+      "targetObject": "InMatch Pause Frame",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   }
+  ],
+  "texts": [
+   "No",
+   "Yes",
+   "If you leave an Eternal Trials match at night it is lost. ",
+   "Do you really want to return to the map?"
+  ],
+  "subtreeObjects": 7
+ },
+ {
+  "id": 5495,
+  "name": "Eternal Trials Resign Pop Up",
+  "nameRepr": "'Eternal Trials Resign Pop Up'",
+  "path": "UI Canvas/Eternal Trials Resign Pop Up",
+  "activeSelf": false,
+  "freezeTime": true,
+  "freezePlayer": true,
+  "canNotBeEscaped": false,
+  "storeLastSelected": true,
+  "events": {},
+  "componentCounts": {
+   "TextMeshProUGUI": 3,
+   "Localize": 3,
+   "TFUITextButton": 2,
+   "TFUIAudioHelper": 2,
+   "UIFrame": 1,
+   "MPImage": 1,
+   "Image": 1
+  },
+  "gameHelpers": [
+   "TFUIAudioHelper",
+   "TFUITextButton",
+   "UIFrame"
+  ],
+  "buttons": [
+   {
+    "go": "No",
+    "path": "UI Canvas/Eternal Trials Resign Pop Up/Background/No",
+    "kind": "TFUITextButton",
+    "label": "No",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "UIFrameManager",
+      "method": "CloseActiveFrame",
+      "targetObject": "UI Canvas",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   },
+   {
+    "go": "Yes",
+    "path": "UI Canvas/Eternal Trials Resign Pop Up/Background/Yes",
+    "kind": "TFUITextButton",
+    "label": "Yes",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "InMatchResignHelper",
+      "method": "ApplyResign",
+      "targetObject": "InMatch Pause Frame",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   }
+  ],
+  "texts": [
+   "No",
+   "Yes",
+   "Do you really want to resign?"
+  ],
+  "subtreeObjects": 6
+ },
+ {
+  "id": 5498,
+  "name": "Eternal Trials Season 04 Pop Up",
+  "nameRepr": "'Eternal Trials Season 04 Pop Up'",
+  "path": "UI Canvas/Eternal Trials Season 04 Pop Up",
+  "activeSelf": false,
+  "freezeTime": true,
+  "freezePlayer": true,
+  "canNotBeEscaped": false,
+  "storeLastSelected": true,
+  "events": {},
+  "componentCounts": {
+   "TextMeshProUGUI": 3,
+   "ContentSizeFitter": 3,
+   "Localize": 3,
+   "UIFrame": 1,
+   "MPImage": 1,
+   "TFUITextButton": 1,
+   "TFUIAudioHelper": 1
+  },
+  "gameHelpers": [
+   "TFUIAudioHelper",
+   "TFUITextButton",
+   "UIFrame"
+  ],
+  "buttons": [
+   {
+    "go": "Yes",
+    "path": "UI Canvas/Eternal Trials Season 04 Pop Up/Background/Early Access Warning/Yes",
+    "kind": "TFUITextButton",
+    "label": "Continue",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "UIFrameManager",
+      "method": "ChangeActiveFrame",
+      "targetObject": "UI Canvas",
+      "arg": "",
+      "objectArg": "Eternal Trials Select Frame"
+     }
+    ]
+   }
+  ],
+  "texts": [
+   "Dear Kings and Queens, \n\nYour hichscore and your ongoing save file for this mode have been archived!\n\nWhile we won't have recurring \"seasons\" in a traditional sense, we're adopting the model to allow for big balancing patches such as this one.\n\nThe difficulty ramps up faster now, but enemy waves should also feel much more consistent and predictable. We added an enemy preview and the possibility to disable unwanted perks before entering a level. For a full list of all changes, please check out the patch notes on Steam.\n\nAll the best \nJonas & Paul",
+   "Continue",
+   "Season 2"
+  ],
+  "subtreeObjects": 5
+ },
+ {
+  "id": 5342,
+  "name": "Eternal Trials Select Frame",
+  "nameRepr": "'Eternal Trials Select Frame'",
+  "path": "UI Canvas/Eternal Trials Select Frame",
+  "activeSelf": false,
+  "freezeTime": false,
+  "freezePlayer": true,
+  "canNotBeEscaped": false,
+  "storeLastSelected": false,
+  "events": {
+   "onActivate": [
+    {
+     "type": "EternalTrialsSelectScreen",
+     "method": "Refresh",
+     "targetObject": "Eternal Trials Select Frame",
+     "arg": "",
+     "objectArg": ""
+    }
+   ]
+  },
+  "componentCounts": {
+   "TextMeshProUGUI": 8,
+   "TFUITextButton": 5,
+   "TFUIAudioHelper": 5,
+   "Localize": 5,
+   "UIFrame": 1,
+   "EternalTrialsSelectScreen": 1,
+   "EternalTrialsHighscorePreview": 1,
+   "MPImage": 1
+  },
+  "gameHelpers": [
+   "EternalTrialsHighscorePreview",
+   "EternalTrialsSelectScreen",
+   "TFUIAudioHelper",
+   "TFUITextButton",
+   "UIFrame"
+  ],
+  "buttons": [
+   {
+    "go": "New Run Button",
+    "path": "UI Canvas/Eternal Trials Select Frame/Background/No Saved Run Buttons/New Run Button",
+    "kind": "TFUITextButton",
+    "label": "Neues Spiel",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "EternalTrialsSelectScreen",
+      "method": "NewRun",
+      "targetObject": "Eternal Trials Select Frame",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   },
+   {
+    "go": "Continue Run Button",
+    "path": "UI Canvas/Eternal Trials Select Frame/Background/Saved Run Existant Buttons/Continue Run Button",
+    "kind": "TFUITextButton",
+    "label": "Fortsetzen",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "EternalTrialsSelectScreen",
+      "method": "ContinueRun",
+      "targetObject": "Eternal Trials Select Frame",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   },
+   {
+    "go": "Abandon Old Run",
+    "path": "UI Canvas/Eternal Trials Select Frame/Background/Saved Run Existant Buttons/Abandon Old Run",
+    "kind": "TFUITextButton",
+    "label": "Neues Spiel",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "EternalTrialsSelectScreen",
+      "method": "NewRun",
+      "targetObject": "Eternal Trials Select Frame",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   },
+   {
+    "go": "Leaderboard Button",
+    "path": "UI Canvas/Eternal Trials Select Frame/Background/Leaderboard Button",
+    "kind": "TFUITextButton",
+    "label": "Show Leaderboard",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "UIFrameManager",
+      "method": "ChangeActiveFrame",
+      "targetObject": "UI Canvas",
+      "arg": "",
+      "objectArg": "Leaderboard Frame"
+     }
+    ]
+   },
+   {
+    "go": "Cancel Button",
+    "path": "UI Canvas/Eternal Trials Select Frame/Background/Cancel Button",
+    "kind": "TFUITextButton",
+    "label": "X",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "UIFrameManager",
+      "method": "CloseActiveFrame",
+      "targetObject": "UI Canvas",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   }
+  ],
+  "texts": [
+   "Neues Spiel",
+   "Fortsetzen",
+   "Show Leaderboard",
+   "<style=\"Body Bold>Friends Rank: <style=\"Body Light>#1\n",
+   "<style=\"Body Bold>Highscore: <style=\"Body Light>23948\n",
+   "Eternal Trials",
+   "X"
+  ],
+  "subtreeObjects": 12
+ },
+ {
+  "id": 5511,
+  "name": "InMatch Pause Frame",
+  "nameRepr": "'InMatch Pause Frame'",
+  "path": "UI Canvas/InMatch Pause Frame",
+  "activeSelf": false,
+  "freezeTime": true,
+  "freezePlayer": true,
+  "canNotBeEscaped": false,
+  "storeLastSelected": true,
+  "events": {
+   "onActivate": [
+    {
+     "type": "PauseUILoadoutHelper",
+     "method": "Refresh",
+     "targetObject": "InMatch Pause Frame",
+     "arg": "",
+     "objectArg": ""
+    }
+   ],
+   "onNewFocus": [
+    {
+     "type": "PerkSelectionTooltipHelper",
+     "method": "OnFocus",
+     "targetObject": "InMatch Pause Frame",
+     "arg": "",
+     "objectArg": ""
+    }
+   ],
+   "onNewSelection": [
+    {
+     "type": "PerkSelectionTooltipHelper",
+     "method": "OnSelection",
+     "targetObject": "InMatch Pause Frame",
+     "arg": "",
+     "objectArg": ""
+    },
+    {
+     "type": "PauseUILoadoutHelper",
+     "method": "OnFrameSelectionChange",
+     "targetObject": "InMatch Pause Frame",
+     "arg": "",
+     "objectArg": ""
+    }
+   ]
+  },
+  "componentCounts": {
+   "MPImage": 28,
+   "TextMeshProUGUI": 23,
+   "TFUIAudioHelper": 22,
+   "TFUIEquippable": 18,
+   "Image": 18,
+   "Localize": 13,
+   "ContentSizeFitter": 9,
+   "MPImageBasic": 7,
+   "HorizontalLayoutGroup": 7,
+   "TFUITextButton": 5,
+   "VerticalLayoutGroup": 4,
+   "LayoutElement": 4,
+   "GridLayoutGroup": 3,
+   "MMF_Player": 2,
+   "TFUIEnumSelectorButton": 2,
+   "UIFrame": 1,
+   "PauseUILoadoutHelper": 1,
+   "PerkSelectionTooltipHelper": 1,
+   "DisableButtonInWaveZero": 1,
+   "InMatchResignHelper": 1,
+   "PlayerUnitsInfo": 1,
+   "UnitStatsDisplayUI": 1,
+   "NightWavePreviewCycleButton": 1
+  },
+  "gameHelpers": [
+   "DisableButtonInWaveZero",
+   "InMatchResignHelper",
+   "NightWavePreviewCycleButton",
+   "PauseUILoadoutHelper",
+   "PerkSelectionTooltipHelper",
+   "PlayerUnitsInfo",
+   "TFUIAudioHelper",
+   "TFUIEnumSelectorButton",
+   "TFUIEquippable",
+   "TFUITextButton",
+   "UIFrame",
+   "UnitStatsDisplayUI"
+  ],
+  "buttons": [
+   {
+    "go": "Night",
+    "path": "UI Canvas/InMatch Pause Frame/Title /Night",
+    "kind": "TFUITextButton",
+    "label": "Ausrüstung:",
+    "interactable": true,
+    "onClick": []
+   },
+   {
+    "go": "Back To Menu",
+    "path": "UI Canvas/InMatch Pause Frame/Title /Menu Items/Back To Menu",
+    "kind": "TFUITextButton",
+    "label": "Back to Map",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "InMatchResignHelper",
+      "method": "TryBackToMap",
+      "targetObject": "InMatch Pause Frame",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   },
+   {
+    "go": "Restart",
+    "path": "UI Canvas/InMatch Pause Frame/Title /Menu Items/Restart",
+    "kind": "TFUITextButton",
+    "label": "Resign",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "InMatchResignHelper",
+      "method": "TryResign",
+      "targetObject": "InMatch Pause Frame",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   },
+   {
+    "go": "Settings",
+    "path": "UI Canvas/InMatch Pause Frame/Title /Menu Items/Settings",
+    "kind": "TFUITextButton",
+    "label": "Settings",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "UIFrameManager",
+      "method": "ChangeActiveFrame",
+      "targetObject": "UI Canvas",
+      "arg": "",
+      "objectArg": "Settings Frame"
+     }
+    ]
+   },
+   {
+    "go": "Continue",
+    "path": "UI Canvas/InMatch Pause Frame/Title /Menu Items/Continue",
+    "kind": "TFUITextButton",
+    "label": "Continue",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "UIFrameManager",
+      "method": "CloseActiveFrame",
+      "targetObject": "UI Canvas",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   }
+  ],
+  "texts": [
+   "Paused",
+   "25",
+   "Projectile Speed",
+   "Attack Cooldown",
+   "Attack Damage",
+   "Range",
+   "Speed",
+   "Max HP",
+   "333",
+   "A really long sword. Good for fighting enemies. Can also be used to pop balloons at a birthday party.",
+   "Long Sword",
+   "Units:",
+   "Loadout:",
+   "Ausrüstung:",
+   "Back to Map",
+   "Resign",
+   "Settings",
+   "Continue"
+  ],
+  "subtreeObjects": 84
+ },
+ {
+  "id": 4874,
+  "name": "InMatch Resign Frame",
+  "nameRepr": "'InMatch Resign Frame'",
+  "path": "UI Canvas/InMatch Resign Frame",
+  "activeSelf": false,
+  "freezeTime": true,
+  "freezePlayer": true,
+  "canNotBeEscaped": false,
+  "storeLastSelected": true,
+  "events": {},
+  "componentCounts": {
+   "TextMeshProUGUI": 3,
+   "Localize": 3,
+   "MPImage": 2,
+   "ContentSizeFitter": 2,
+   "TFUITextButton": 2,
+   "TFUIAudioHelper": 2,
+   "UIFrame": 1,
+   "InGameResignUIHelper": 1,
+   "HorizontalLayoutGroup": 1
+  },
+  "gameHelpers": [
+   "InGameResignUIHelper",
+   "TFUIAudioHelper",
+   "TFUITextButton",
+   "UIFrame"
+  ],
+  "buttons": [
+   {
+    "go": "No",
+    "path": "UI Canvas/InMatch Resign Frame/Background/Menu Items/No",
+    "kind": "TFUITextButton",
+    "label": "No",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "UIFrameManager",
+      "method": "CloseActiveFrame",
+      "targetObject": "UI Canvas",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   },
+   {
+    "go": "Yes",
+    "path": "UI Canvas/InMatch Resign Frame/Background/Menu Items/Yes",
+    "kind": "TFUITextButton",
+    "label": "Yes",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "InGameResignUIHelper",
+      "method": "Resign",
+      "targetObject": "InMatch Resign Frame",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   }
+  ],
+  "texts": [
+   "Do you really want to resign?",
+   "No",
+   "Yes"
+  ],
+  "subtreeObjects": 7
+ },
+ {
+  "id": 5050,
+  "name": "Leaderboard Frame",
+  "nameRepr": "'Leaderboard Frame'",
+  "path": "UI Canvas/Leaderboard Frame",
+  "activeSelf": false,
+  "freezeTime": false,
+  "freezePlayer": true,
+  "canNotBeEscaped": false,
+  "storeLastSelected": true,
+  "events": {
+   "onActivate": [
+    {
+     "type": "LevelNameDisplay",
+     "method": "OnShow",
+     "targetObject": "",
+     "arg": "",
+     "objectArg": ""
+    }
+   ]
+  },
+  "componentCounts": {
+   "TextMeshProUGUI": 67,
+   "ScoreTag": 20,
+   "Image": 20,
+   "Localize": 4,
+   "TFUITextButton": 2,
+   "TFUIAudioHelper": 2,
+   "ContentSizeFitter": 2,
+   "UIFrame": 1,
+   "HighscoreTable": 1,
+   "MPImage": 1,
+   "VerticalLayoutGroup": 1
+  },
+  "gameHelpers": [
+   "HighscoreTable",
+   "ScoreTag",
+   "TFUIAudioHelper",
+   "TFUITextButton",
+   "UIFrame"
+  ],
+  "buttons": [
+   {
+    "go": "Back Button",
+    "path": "UI Canvas/Leaderboard Frame/Background/Back Button",
+    "kind": "TFUITextButton",
+    "label": "Weiter",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "UIFrameManager",
+      "method": "CloseActiveFrame",
+      "targetObject": "UI Canvas",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   },
+   {
+    "go": "Cancel Button",
+    "path": "UI Canvas/Leaderboard Frame/Background/Cancel Button",
+    "kind": "TFUITextButton",
+    "label": "X",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "UIFrameManager",
+      "method": "CloseActiveFrame",
+      "targetObject": "UI Canvas",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   }
+  ],
+  "texts": [
+   "Weiter",
+   "23098",
+   "2.",
+   "Bertzerker",
+   "LOADING...",
+   "You haven't played this level yet.",
+   "None of your friends has played this level yet.",
+   "No Steam connection.",
+   "X",
+   "Durststein\n"
+  ],
+  "subtreeObjects": 110
+ },
+ {
+  "id": 5302,
+  "name": "Level Select Frame",
+  "nameRepr": "'Level Select Frame'",
+  "path": "UI Canvas/Level Select Frame",
+  "activeSelf": false,
+  "freezeTime": false,
+  "freezePlayer": true,
+  "canNotBeEscaped": false,
+  "storeLastSelected": true,
+  "events": {
+   "onActivate": [
+    {
+     "type": "LevelNameDisplay",
+     "method": "UpdateLevelTitle",
+     "targetObject": "Level Select Frame",
+     "arg": "",
+     "objectArg": ""
+    },
+    {
+     "type": "LevelSelectUIFrameHelper",
+     "method": "OnShow",
+     "targetObject": "Level Select Frame",
+     "arg": "",
+     "objectArg": ""
+    }
+   ]
+  },
+  "componentCounts": {
+   "TextMeshProUGUI": 8,
+   "TFUITextButton": 5,
+   "TFUIAudioHelper": 5,
+   "Localize": 4,
+   "UIFrame": 1,
+   "LevelSelectUIFrameHelper": 1,
+   "HighscorePreviewUI": 1,
+   "TransitionToSelectedLevelHelper": 1,
+   "LevelNameDisplay": 1,
+   "MPImage": 1
+  },
+  "gameHelpers": [
+   "HighscorePreviewUI",
+   "LevelNameDisplay",
+   "LevelSelectUIFrameHelper",
+   "TFUIAudioHelper",
+   "TFUITextButton",
+   "TransitionToSelectedLevelHelper",
+   "UIFrame"
+  ],
+  "buttons": [
+   {
+    "go": "Play Button",
+    "path": "UI Canvas/Level Select Frame/Background/No Savegame Button/Play Button",
+    "kind": "TFUITextButton",
+    "label": "Play",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "LevelSelectUIFrameHelper",
+      "method": "SetOverrideSave",
+      "targetObject": "Level Select Frame",
+      "arg": true,
+      "objectArg": ""
+     },
+     {
+      "type": "UIFrameManager",
+      "method": "ChangeActiveFrame",
+      "targetObject": "UI Canvas",
+      "arg": "",
+      "objectArg": "Perk Select Frame Classic"
+     }
+    ]
+   },
+   {
+    "go": "Continue Run",
+    "path": "UI Canvas/Level Select Frame/Background/Savegame Existant Buttons/Continue Run",
+    "kind": "TFUITextButton",
+    "label": "Continue Game",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "LevelSelectUIFrameHelper",
+      "method": "SetOverrideSave",
+      "targetObject": "Level Select Frame",
+      "arg": "",
+      "objectArg": ""
+     },
+     {
+      "type": "TransitionToSelectedLevelHelper",
+      "method": "TransitionToSelectedLevel",
+      "targetObject": "Level Select Frame",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   },
+   {
+    "go": "New Run",
+    "path": "UI Canvas/Level Select Frame/Background/Savegame Existant Buttons/New Run",
+    "kind": "TFUITextButton",
+    "label": "New Game",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "LevelSelectUIFrameHelper",
+      "method": "SetOverrideSave",
+      "targetObject": "Level Select Frame",
+      "arg": true,
+      "objectArg": ""
+     },
+     {
+      "type": "UIFrameManager",
+      "method": "ChangeActiveFrame",
+      "targetObject": "UI Canvas",
+      "arg": "",
+      "objectArg": "Perk Select Frame Classic"
+     }
+    ]
+   },
+   {
+    "go": "Leaderboard Button",
+    "path": "UI Canvas/Level Select Frame/Background/Leaderboard Button",
+    "kind": "TFUITextButton",
+    "label": "Show Leaderboard",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "UIFrameManager",
+      "method": "ChangeActiveFrame",
+      "targetObject": "UI Canvas",
+      "arg": "",
+      "objectArg": "Leaderboard Frame"
+     }
+    ]
+   },
+   {
+    "go": "Cancel Button",
+    "path": "UI Canvas/Level Select Frame/Background/Cancel Button",
+    "kind": "TFUITextButton",
+    "label": "X",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "UIFrameManager",
+      "method": "CloseActiveFrame",
+      "targetObject": "UI Canvas",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   }
+  ],
+  "texts": [
+   "Play",
+   "Continue Game",
+   "New Game",
+   "Show Leaderboard",
+   "<style=\"Body Bold>Friends Rank: <style=\"Body Light>#1\n",
+   "<style=\"Body Bold>Highscore: <style=\"Body Light>23948\n",
+   "Durststein",
+   "X"
+  ],
+  "subtreeObjects": 12
+ },
+ {
+  "id": 5025,
+  "name": "Level Up Frame",
+  "nameRepr": "'Level Up Frame'",
+  "path": "UI Canvas/Level Up Frame",
+  "activeSelf": false,
+  "freezeTime": true,
+  "freezePlayer": true,
+  "canNotBeEscaped": true,
+  "storeLastSelected": true,
+  "events": {
+   "onActivate": [
+    {
+     "type": "UIParentResizer",
+     "method": "Trigger",
+     "targetObject": "Main Background",
+     "arg": "",
+     "objectArg": ""
+    },
+    {
+     "type": "LevelUpScreenAnimation",
+     "method": "Trigger",
+     "targetObject": "Level Up Frame",
+     "arg": "",
+     "objectArg": ""
+    }
+   ]
+  },
+  "componentCounts": {
+   "MPImageBasic": 4,
+   "TextMeshProUGUI": 4,
+   "MPImage": 2,
+   "TFUITextButton": 2,
+   "TFUIAudioHelper": 2,
+   "ContentSizeFitter": 2,
+   "UIFrame": 1,
+   "LevelUpScreenAnimation": 1,
+   "UIParentResizer": 1,
+   "Localize": 1
+  },
+  "gameHelpers": [
+   "LevelUpScreenAnimation",
+   "TFUIAudioHelper",
+   "TFUITextButton",
+   "UIFrame",
+   "UIParentResizer"
+  ],
+  "buttons": [
+   {
+    "go": "Continue Reward Button",
+    "path": "UI Canvas/Level Up Frame/Main Background/Continue Reward Button",
+    "kind": "TFUITextButton",
+    "label": "Continue",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "UIFrameManager",
+      "method": "CloseActiveFrame",
+      "targetObject": "UI Canvas",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   },
+   {
+    "go": "Cancel Button",
+    "path": "UI Canvas/Level Up Frame/Main Background/Cancel Button",
+    "kind": "TFUITextButton",
+    "label": "X",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "UIFrameManager",
+      "method": "CloseActiveFrame",
+      "targetObject": "UI Canvas",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   }
+  ],
+  "texts": [
+   "Continue",
+   "<style=\"Header\"><size=35>Long Sword</style><size=25>\nA long sword useful to do pbb lbalba lbablabl ablaaaaaaaaaaaaaaaaaaasdas asd as das ads das ads dsa dadsads dsdsaddsaad sdas dsaasd  adsads a sd ads asdd as ads dsaa sd adsd s aa sads as as as s aa sas as sa a sa sas as a sa s as as as as asa s asas asas as sa sa sa as sa ",
+   "Level <style=\"Body Numerals\">3",
+   "X"
+  ],
+  "subtreeObjects": 12
+ },
+ {
+  "id": 5156,
+  "name": "Map Select Frame Eternal Trials",
+  "nameRepr": "'Map Select Frame Eternal Trials'",
+  "path": "UI Canvas/Map Select Frame Eternal Trials",
+  "activeSelf": false,
+  "freezeTime": true,
+  "freezePlayer": true,
+  "canNotBeEscaped": false,
+  "storeLastSelected": true,
+  "events": {
+   "onActivate": [
+    {
+     "type": "ETChoicePickScreen",
+     "method": "Activate",
+     "targetObject": "Map Select Frame Eternal Trials",
+     "arg": "",
+     "objectArg": ""
+    }
+   ],
+   "onNewFocus": [
+    {
+     "type": "PerkSelectionTooltipHelper",
+     "method": "OnFocus",
+     "targetObject": "Map Select Frame Eternal Trials",
+     "arg": "",
+     "objectArg": ""
+    }
+   ],
+   "onNewSelection": [
+    {
+     "type": "PerkSelectionTooltipHelper",
+     "method": "OnSelection",
+     "targetObject": "Map Select Frame Eternal Trials",
+     "arg": "",
+     "objectArg": ""
+    }
+   ],
+   "onApply": [
+    {
+     "type": "ETChoicePickScreen",
+     "method": "CheckForPerkDisable",
+     "targetObject": "Map Select Frame Eternal Trials",
+     "arg": "",
+     "objectArg": ""
+    },
+    {
+     "type": "PerkSelectionTooltipHelper",
+     "method": "UpdateTooltip",
+     "targetObject": "Map Select Frame Eternal Trials",
+     "arg": "",
+     "objectArg": ""
+    }
+   ]
+  },
+  "componentCounts": {
+   "MPImage": 25,
+   "TFUIAudioHelper": 15,
+   "Image": 13,
+   "TFUIEquippable": 12,
+   "TextMeshProUGUI": 11,
+   "ContentSizeFitter": 11,
+   "Localize": 6,
+   "VerticalLayoutGroup": 5,
+   "MPImageBasic": 4,
+   "AdjustSizeAndPositionBasedOnUIScale": 3,
+   "ETMapChoiceDisplay": 3,
+   "TFUIFocusCatcher": 3,
+   "TFUITextButton": 3,
+   "UIParentResizer": 2,
+   "UIFrame": 1,
+   "ETChoicePickScreen": 1,
+   "PerkSelectionTooltipHelper": 1,
+   "HorizontalLayoutGroup": 1,
+   "DynamicLayoutGroupSpacing": 1,
+   "EternalTrialsMapPreview": 1,
+   "AdjustLayoutGroupSpacingBasedOnUIScale": 1
+  },
+  "gameHelpers": [
+   "AdjustLayoutGroupSpacingBasedOnUIScale",
+   "AdjustSizeAndPositionBasedOnUIScale",
+   "DynamicLayoutGroupSpacing",
+   "ETChoicePickScreen",
+   "ETMapChoiceDisplay",
+   "EternalTrialsMapPreview",
+   "PerkSelectionTooltipHelper",
+   "TFUIAudioHelper",
+   "TFUIEquippable",
+   "TFUIFocusCatcher",
+   "TFUITextButton",
+   "UIFrame",
+   "UIParentResizer"
+  ],
+  "buttons": [
+   {
+    "go": "Play Button",
+    "path": "UI Canvas/Map Select Frame Eternal Trials/Map Preview Background/Layout Group/Eternal Trials Level Choice (2)/Play Button",
+    "kind": "TFUITextButton",
+    "label": "Spielen",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "UIFrameManager",
+      "method": "ChangeActiveFrame",
+      "targetObject": "",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   },
+   {
+    "go": "Play Button",
+    "path": "UI Canvas/Map Select Frame Eternal Trials/Map Preview Background/Layout Group/Eternal Trials Level Choice (1)/Play Button",
+    "kind": "TFUITextButton",
+    "label": "Spielen",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "UIFrameManager",
+      "method": "ChangeActiveFrame",
+      "targetObject": "",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   },
+   {
+    "go": "Play Button",
+    "path": "UI Canvas/Map Select Frame Eternal Trials/Map Preview Background/Layout Group/Eternal Trials Level Choice/Play Button",
+    "kind": "TFUITextButton",
+    "label": "Spielen",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "UIFrameManager",
+      "method": "ChangeActiveFrame",
+      "targetObject": "",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   }
+  ],
+  "texts": [
+   "-",
+   "Current Loadout",
+   "<style=\"Body Bold> Stage <style=\"Body Numerals>3\n",
+   "A really long sword. Good for fighting enemies. Can also be used to pop balloons at a birthday party.",
+   "Long Sword",
+   "Expected Enemies:",
+   "<sprite name=\"coin\">xx",
+   "Starting Gold:",
+   "Spielen"
+  ],
+  "subtreeObjects": 60
+ },
+ {
+  "id": 4939,
+  "name": "Mini Modes First Time Pop Up",
+  "nameRepr": "'Mini Modes First Time Pop Up'",
+  "path": "UI Canvas/Mini Modes First Time Pop Up",
+  "activeSelf": false,
+  "freezeTime": true,
+  "freezePlayer": true,
+  "canNotBeEscaped": false,
+  "storeLastSelected": true,
+  "events": {},
+  "componentCounts": {
+   "TextMeshProUGUI": 3,
+   "ContentSizeFitter": 3,
+   "Localize": 3,
+   "UIFrame": 1,
+   "MPImage": 1,
+   "TFUITextButton": 1,
+   "TFUIAudioHelper": 1
+  },
+  "gameHelpers": [
+   "TFUIAudioHelper",
+   "TFUITextButton",
+   "UIFrame"
+  ],
+  "buttons": [
+   {
+    "go": "Yes",
+    "path": "UI Canvas/Mini Modes First Time Pop Up/Background/Early Access Warning/Yes",
+    "kind": "TFUITextButton",
+    "label": "Continue",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "UIFrameManager",
+      "method": "CloseActiveFrame",
+      "targetObject": "UI Canvas",
+      "arg": "",
+      "objectArg": ""
+     },
+     {
+      "type": "UIFrameManager",
+      "method": "ChangeActiveFrame",
+      "targetObject": "UI Canvas",
+      "arg": "",
+      "objectArg": "Bonus Mode Select Frame"
+     }
+    ]
+   }
+  ],
+  "texts": [
+   "Mini-modes are very difficult, often almost puzzle-like, bonus challenges with modified rules that heavily mix up the gameplay.\n\n<bold>We highly recommended that you complete the main campaign before playing any mini-modes due to their high difficulty!</bold>\n\nEvery mini-mode is different and has unique rules to explore, requiring you to think outside the box and challenge your knowledge of the game. Completing mini-modes is entirely optional and does not grant any rewards or achievements. They’re just here for fun if you'd like to accept the challenge—but be warned, it's not for the faint of heart!",
+   "Continue",
+   "Mini-Modes"
+  ],
+  "subtreeObjects": 5
+ },
+ {
+  "id": 5207,
+  "name": "Perk Select Frame Classic",
+  "nameRepr": "'Perk Select Frame Classic'",
+  "path": "UI Canvas/Perk Select Frame Classic",
+  "activeSelf": false,
+  "freezeTime": false,
+  "freezePlayer": true,
+  "canNotBeEscaped": false,
+  "storeLastSelected": true,
+  "events": {
+   "onActivate": [
+    {
+     "type": "LevelNameDisplay",
+     "method": "UpdateLevelTitle",
+     "targetObject": "Perk Select Frame Classic",
+     "arg": "",
+     "objectArg": ""
+    },
+    {
+     "type": "LoadoutUIHelper",
+     "method": "OnShow",
+     "targetObject": "Perk Select Frame Classic",
+     "arg": "",
+     "objectArg": ""
+    },
+    {
+     "type": "ModeRulesDisplay",
+     "method": "Refresh",
+     "targetObject": "Perk Select Frame Classic",
+     "arg": "",
+     "objectArg": ""
+    }
+   ],
+   "onNewFocus": [
+    {
+     "type": "PerkSelectionTooltipHelper",
+     "method": "OnFocus",
+     "targetObject": "Perk Select Frame Classic",
+     "arg": "",
+     "objectArg": ""
+    }
+   ],
+   "onNewSelection": [
+    {
+     "type": "PerkSelectionTooltipHelper",
+     "method": "OnSelection",
+     "targetObject": "Perk Select Frame Classic",
+     "arg": "",
+     "objectArg": ""
+    }
+   ],
+   "onApply": [
+    {
+     "type": "LoadoutUIHelper",
+     "method": "TrySelectEquippableForLoadout",
+     "targetObject": "Perk Select Frame Classic",
+     "arg": "",
+     "objectArg": ""
+    },
+    {
+     "type": "PerkSelectionTooltipHelper",
+     "method": "UpdateTooltip",
+     "targetObject": "Perk Select Frame Classic",
+     "arg": "",
+     "objectArg": ""
+    }
+   ]
+  },
+  "componentCounts": {
+   "MPImage": 86,
+   "Image": 84,
+   "TFUIAudioHelper": 83,
+   "TFUIEquippable": 81,
+   "TextMeshProUGUI": 24,
+   "ContentSizeFitter": 18,
+   "QuestEntry": 6,
+   "CanvasGroup": 6,
+   "HorizontalLayoutGroup": 6,
+   "Localize": 5,
+   "GridLayoutGroup": 3,
+   "TFUITextButton": 2,
+   "UIParentResizer": 2,
+   "MPImageBasic": 2,
+   "UIFrame": 1,
+   "LoadoutUIHelper": 1,
+   "PerkSelectionTooltipHelper": 1,
+   "LevelNameDisplay": 1,
+   "TransitionToSelectedLevelHelper": 1,
+   "ModeRulesDisplay": 1,
+   "VerticalLayoutGroup": 1
+  },
+  "gameHelpers": [
+   "LevelNameDisplay",
+   "LoadoutUIHelper",
+   "ModeRulesDisplay",
+   "PerkSelectionTooltipHelper",
+   "QuestEntry",
+   "TFUIAudioHelper",
+   "TFUIEquippable",
+   "TFUITextButton",
+   "TransitionToSelectedLevelHelper",
+   "UIFrame",
+   "UIParentResizer"
+  ],
+  "buttons": [
+   {
+    "go": "Play Button",
+    "path": "UI Canvas/Perk Select Frame Classic/Main Background/Play Button",
+    "kind": "TFUITextButton",
+    "label": "Play",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "TransitionToSelectedLevelHelper",
+      "method": "TransitionToSelectedLevel",
+      "targetObject": "Perk Select Frame Classic",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   },
+   {
+    "go": "Cancel Button",
+    "path": "UI Canvas/Perk Select Frame Classic/Main Background/Cancel Button",
+    "kind": "TFUITextButton",
+    "label": "X",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "UIFrameManager",
+      "method": "CloseActiveFrame",
+      "targetObject": "UI Canvas",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   }
+  ],
+  "texts": [
+   "Play",
+   "Score Bonus: <style=Body Bold>40%",
+   "Mutadores",
+   "Perks (0/3)",
+   "Arma",
+   "Durststein",
+   "X",
+   "Este nível possui um equipamento fixo.",
+   "Defend your castle the best you can with limited time. The night sets in automatically after 15 seconds. Good luck!",
+   "Achieve a victory ",
+   "1230",
+   "Missões",
+   "A really long sword. Good for fighting enemies. Can also be used to pop balloons at a birthday party.",
+   "Long Sword"
+  ],
+  "subtreeObjects": 207
+ },
+ {
+  "id": 4905,
+  "name": "Perk Select Frame Classic InMap",
+  "nameRepr": "'Perk Select Frame Classic InMap'",
+  "path": "UI Canvas/Perk Select Frame Classic InMap",
+  "activeSelf": false,
+  "freezeTime": true,
+  "freezePlayer": true,
+  "canNotBeEscaped": false,
+  "storeLastSelected": true,
+  "events": {
+   "onActivate": [
+    {
+     "type": "LevelNameDisplay",
+     "method": "UpdateLevelTitle",
+     "targetObject": "Perk Select Frame Classic InMap",
+     "arg": "",
+     "objectArg": ""
+    },
+    {
+     "type": "LoadoutUIHelper",
+     "method": "OnShow",
+     "targetObject": "Perk Select Frame Classic InMap",
+     "arg": "",
+     "objectArg": ""
+    },
+    {
+     "type": "ModeRulesDisplay",
+     "method": "Refresh",
+     "targetObject": "Perk Select Frame Classic InMap",
+     "arg": "",
+     "objectArg": ""
+    },
+    {
+     "type": "ResetLoadoutOnCancel",
+     "method": "OnShow",
+     "targetObject": "Perk Select Frame Classic InMap",
+     "arg": "",
+     "objectArg": ""
+    }
+   ],
+   "onNewFocus": [
+    {
+     "type": "PerkSelectionTooltipHelper",
+     "method": "OnFocus",
+     "targetObject": "Perk Select Frame Classic InMap",
+     "arg": "",
+     "objectArg": ""
+    }
+   ],
+   "onNewSelection": [
+    {
+     "type": "PerkSelectionTooltipHelper",
+     "method": "OnSelection",
+     "targetObject": "Perk Select Frame Classic InMap",
+     "arg": "",
+     "objectArg": ""
+    }
+   ],
+   "onApply": [
+    {
+     "type": "LoadoutUIHelper",
+     "method": "TrySelectEquippableForLoadout",
+     "targetObject": "Perk Select Frame Classic InMap",
+     "arg": "",
+     "objectArg": ""
+    },
+    {
+     "type": "PerkSelectionTooltipHelper",
+     "method": "UpdateTooltip",
+     "targetObject": "Perk Select Frame Classic InMap",
+     "arg": "",
+     "objectArg": ""
+    }
+   ],
+   "onDeactivate": [
+    {
+     "type": "ResetLoadoutOnCancel",
+     "method": "OnDeactivate",
+     "targetObject": "Perk Select Frame Classic InMap",
+     "arg": "",
+     "objectArg": ""
+    }
+   ]
+  },
+  "componentCounts": {
+   "MPImage": 86,
+   "Image": 84,
+   "TFUIAudioHelper": 83,
+   "TFUIEquippable": 81,
+   "TextMeshProUGUI": 24,
+   "ContentSizeFitter": 18,
+   "QuestEntry": 6,
+   "CanvasGroup": 6,
+   "HorizontalLayoutGroup": 6,
+   "Localize": 5,
+   "GridLayoutGroup": 3,
+   "TFUITextButton": 2,
+   "UIParentResizer": 2,
+   "MPImageBasic": 2,
+   "UIFrame": 1,
+   "LoadoutUIHelper": 1,
+   "PerkSelectionTooltipHelper": 1,
+   "LevelNameDisplay": 1,
+   "TransitionToSelectedLevelHelper": 1,
+   "ModeRulesDisplay": 1,
+   "ResetLoadoutOnCancel": 1,
+   "VerticalLayoutGroup": 1
+  },
+  "gameHelpers": [
+   "LevelNameDisplay",
+   "LoadoutUIHelper",
+   "ModeRulesDisplay",
+   "PerkSelectionTooltipHelper",
+   "QuestEntry",
+   "ResetLoadoutOnCancel",
+   "TFUIAudioHelper",
+   "TFUIEquippable",
+   "TFUITextButton",
+   "TransitionToSelectedLevelHelper",
+   "UIFrame",
+   "UIParentResizer"
+  ],
+  "buttons": [
+   {
+    "go": "Play Button",
+    "path": "UI Canvas/Perk Select Frame Classic InMap/Main Background/Play Button",
+    "kind": "TFUITextButton",
+    "label": "Play",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "ResetLoadoutOnCancel",
+      "method": "LockInLoadout",
+      "targetObject": "Perk Select Frame Classic InMap",
+      "arg": "",
+      "objectArg": ""
+     },
+     {
+      "type": "TransitionToSelectedLevelHelper",
+      "method": "TransitionToSelectedLevel",
+      "targetObject": "Perk Select Frame Classic InMap",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   },
+   {
+    "go": "Cancel Button",
+    "path": "UI Canvas/Perk Select Frame Classic InMap/Main Background/Cancel Button",
+    "kind": "TFUITextButton",
+    "label": "X",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "UIFrameManager",
+      "method": "CloseActiveFrame",
+      "targetObject": "UI Canvas",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   }
+  ],
+  "texts": [
+   "Play",
+   "Score Bonus: <style=Body Bold>40%",
+   "Mutadores",
+   "Perks (0/3)",
+   "Arma",
+   "Durststein",
+   "X",
+   "Este nível possui um equipamento fixo.",
+   "Defend your castle the best you can with limited time. The night sets in automatically after 15 seconds. Good luck!",
+   "Achieve a victory ",
+   "1230",
+   "Missões",
+   "A really long sword. Good for fighting enemies. Can also be used to pop balloons at a birthday party.",
+   "Long Sword"
+  ],
+  "subtreeObjects": 207
+ },
+ {
+  "id": 5073,
+  "name": "Reset Audio Settings Frame",
+  "nameRepr": "'Reset Audio Settings Frame'",
+  "path": "UI Canvas/Reset Audio Settings Frame",
+  "activeSelf": false,
+  "freezeTime": true,
+  "freezePlayer": true,
+  "canNotBeEscaped": false,
+  "storeLastSelected": true,
+  "events": {},
+  "componentCounts": {
+   "TextMeshProUGUI": 3,
+   "Localize": 3,
+   "TFUITextButton": 2,
+   "TFUIAudioHelper": 2,
+   "UIFrame": 1,
+   "MPImage": 1,
+   "ContentSizeFitter": 1,
+   "Image": 1
+  },
+  "gameHelpers": [
+   "TFUIAudioHelper",
+   "TFUITextButton",
+   "UIFrame"
+  ],
+  "buttons": [
+   {
+    "go": "No",
+    "path": "UI Canvas/Reset Audio Settings Frame/Background/No",
+    "kind": "TFUITextButton",
+    "label": "Play",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "UIFrameManager",
+      "method": "CloseActiveFrame",
+      "targetObject": "UI Canvas",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   },
+   {
+    "go": "Yes",
+    "path": "UI Canvas/Reset Audio Settings Frame/Background/Yes",
+    "kind": "TFUITextButton",
+    "label": "Play",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "ResetAudioSettings",
+      "method": "Trigger",
+      "targetObject": "Reset Audio Settings",
+      "arg": "",
+      "objectArg": ""
+     },
+     {
+      "type": "UIFrameManager",
+      "method": "CloseActiveFrame",
+      "targetObject": "UI Canvas",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   }
+  ],
+  "texts": [
+   "Play",
+   "Audio Einstellungen zurücksetzen?"
+  ],
+  "subtreeObjects": 6
+ },
+ {
+  "id": 5220,
+  "name": "Reset Controls Settings Frame",
+  "nameRepr": "'Reset Controls Settings Frame'",
+  "path": "UI Canvas/Reset Controls Settings Frame",
+  "activeSelf": false,
+  "freezeTime": true,
+  "freezePlayer": true,
+  "canNotBeEscaped": false,
+  "storeLastSelected": true,
+  "events": {},
+  "componentCounts": {
+   "TextMeshProUGUI": 3,
+   "Localize": 3,
+   "TFUITextButton": 2,
+   "TFUIAudioHelper": 2,
+   "UIFrame": 1,
+   "MPImage": 1,
+   "Image": 1
+  },
+  "gameHelpers": [
+   "TFUIAudioHelper",
+   "TFUITextButton",
+   "UIFrame"
+  ],
+  "buttons": [
+   {
+    "go": "No",
+    "path": "UI Canvas/Reset Controls Settings Frame/Background/No",
+    "kind": "TFUITextButton",
+    "label": "Play",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "UIFrameManager",
+      "method": "CloseActiveFrame",
+      "targetObject": "UI Canvas",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   },
+   {
+    "go": "Yes",
+    "path": "UI Canvas/Reset Controls Settings Frame/Background/Yes",
+    "kind": "TFUITextButton",
+    "label": "Play",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "KeyRebinder",
+      "method": "TriggerControlsReset",
+      "targetObject": "Control Settings",
+      "arg": "",
+      "objectArg": ""
+     },
+     {
+      "type": "UIFrameManager",
+      "method": "CloseActiveFrame",
+      "targetObject": "UI Canvas",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   }
+  ],
+  "texts": [
+   "Play",
+   "Do you really want to restore the default input configuration?"
+  ],
+  "subtreeObjects": 6
+ },
+ {
+  "id": 5525,
+  "name": "Reset Game Progress Frame",
+  "nameRepr": "'Reset Game Progress Frame'",
+  "path": "UI Canvas/Reset Game Progress Frame",
+  "activeSelf": false,
+  "freezeTime": true,
+  "freezePlayer": true,
+  "canNotBeEscaped": false,
+  "storeLastSelected": true,
+  "events": {},
+  "componentCounts": {
+   "TextMeshProUGUI": 3,
+   "Localize": 3,
+   "TFUITextButton": 2,
+   "TFUIAudioHelper": 2,
+   "UIFrame": 1,
+   "MPImage": 1,
+   "ContentSizeFitter": 1,
+   "Image": 1
+  },
+  "gameHelpers": [
+   "TFUIAudioHelper",
+   "TFUITextButton",
+   "UIFrame"
+  ],
+  "buttons": [
+   {
+    "go": "No",
+    "path": "UI Canvas/Reset Game Progress Frame/Background/No",
+    "kind": "TFUITextButton",
+    "label": "Play",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "UIFrameManager",
+      "method": "CloseActiveFrame",
+      "targetObject": "UI Canvas",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   },
+   {
+    "go": "Yes",
+    "path": "UI Canvas/Reset Game Progress Frame/Background/Yes",
+    "kind": "TFUITextButton",
+    "label": "Play",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "SettingsResetGameProgress",
+      "method": "ResetGameProgress",
+      "targetObject": "Reset Game Progress",
+      "arg": "",
+      "objectArg": ""
+     },
+     {
+      "type": "UIFrameManager",
+      "method": "CloseActiveFrame",
+      "targetObject": "UI Canvas",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   }
+  ],
+  "texts": [
+   "Play",
+   "Do you really want to reset all game progress?"
+  ],
+  "subtreeObjects": 6
+ },
+ {
+  "id": 5431,
+  "name": "Reset Video Settings Frame",
+  "nameRepr": "'Reset Video Settings Frame'",
+  "path": "UI Canvas/Reset Video Settings Frame",
+  "activeSelf": false,
+  "freezeTime": true,
+  "freezePlayer": true,
+  "canNotBeEscaped": false,
+  "storeLastSelected": true,
+  "events": {},
+  "componentCounts": {
+   "TextMeshProUGUI": 3,
+   "Localize": 3,
+   "TFUITextButton": 2,
+   "TFUIAudioHelper": 2,
+   "UIFrame": 1,
+   "MPImage": 1,
+   "ContentSizeFitter": 1,
+   "Image": 1
+  },
+  "gameHelpers": [
+   "TFUIAudioHelper",
+   "TFUITextButton",
+   "UIFrame"
+  ],
+  "buttons": [
+   {
+    "go": "No",
+    "path": "UI Canvas/Reset Video Settings Frame/Background/No",
+    "kind": "TFUITextButton",
+    "label": "Play",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "UIFrameManager",
+      "method": "CloseActiveFrame",
+      "targetObject": "UI Canvas",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   },
+   {
+    "go": "Yes",
+    "path": "UI Canvas/Reset Video Settings Frame/Background/Yes",
+    "kind": "TFUITextButton",
+    "label": "Play",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "SettingsResetVideo",
+      "method": "ResetVideoSettings",
+      "targetObject": "Reset Video Settings",
+      "arg": "",
+      "objectArg": ""
+     },
+     {
+      "type": "UIFrameManager",
+      "method": "CloseActiveFrame",
+      "targetObject": "UI Canvas",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   }
+  ],
+  "texts": [
+   "Play",
+   "Video Einstellungen zurücksetzen?"
+  ],
+  "subtreeObjects": 6
+ },
+ {
+  "id": 5340,
+  "name": "Settings Frame",
+  "nameRepr": "'Settings Frame'",
+  "path": "UI Canvas/Settings Frame",
+  "activeSelf": false,
+  "freezeTime": true,
+  "freezePlayer": true,
+  "canNotBeEscaped": false,
+  "storeLastSelected": true,
+  "events": {
+   "onActivate": [
+    {
+     "type": "SettingsUIHelper",
+     "method": "OnShow",
+     "targetObject": "Settings Frame",
+     "arg": "",
+     "objectArg": ""
+    }
+   ],
+   "onNewSelection": [
+    {
+     "type": "SettingsUIHelper",
+     "method": "OnSelect",
+     "targetObject": "Settings Frame",
+     "arg": "",
+     "objectArg": ""
+    },
+    {
+     "type": "ScrollArea",
+     "method": "OnNewSelection",
+     "targetObject": "Scroll",
+     "arg": "",
+     "objectArg": ""
+    },
+    {
+     "type": "ScrollArea",
+     "method": "OnNewSelection",
+     "targetObject": "Scroll",
+     "arg": "",
+     "objectArg": ""
+    }
+   ]
+  },
+  "componentCounts": {
+   "TextMeshProUGUI": 76,
+   "Image": 48,
+   "MMF_Player": 46,
+   "TFUITextButton": 41,
+   "TFUIAudioHelper": 41,
+   "Localize": 37,
+   "MPImageBasic": 34,
+   "MPImage": 30,
+   "ContentSizeFitter": 20,
+   "ScrollElementID": 14,
+   "Checkbox": 13,
+   "TFUICheckboxMouseCatcher": 13,
+   "TFUIEnumSelectorButton": 12,
+   "VerticalLayoutGroup": 6,
+   "ControlMapButton": 6,
+   "EnumSelector": 6,
+   "EnumSelectorButtonAnimation": 6,
+   "TFUIEnumMouseCatcher": 6,
+   "TFUISlider": 6,
+   "TFUISliderDragArea": 6,
+   "SettingsAudioVolume": 4,
+   "ScrollArea": 2,
+   "Mask": 2,
+   "TFUIScrollBar": 2,
+   "SettingsEnableDamageStats": 2,
+   "UIFrame": 1,
+   "SettingsUIHelper": 1,
+   "KeyRebinder": 1,
+   "SettingsDisableScreenShake": 1,
+   "SettingsArachnophobiaMode": 1,
+   "SettingsColorBlind": 1,
+   "SettingsUIScale": 1,
+   "TFUISliderRelative": 1,
+   "TFUISliderRelativeDragArea": 1,
+   "SettingsLanguage": 1,
+   "SettingsResetGameProgress": 1,
+   "SettingsEnableUnitStats": 1,
+   "SettingsEnableControlGroups": 1,
+   "SettingsDisplayTowerRangesOnInteract": 1,
+   "SettingsResetUnitsMorning": 1,
+   "SettingsDisableExtraTips": 1,
+   "SettingsDisableTooltips": 1,
+   "ResetAudioSettings": 1,
+   "SettingsResetVideo": 1,
+   "SettingsBrightnessScale": 1,
+   "SettingsRenderScale": 1,
+   "SettingsAntiAliasing": 1,
+   "SettingsPostProcessing": 1,
+   "SettingsVsync": 1,
+   "SettingsFullscreen": 1,
+   "SettingsResolution": 1,
+   "HorizontalLayoutGroup": 1
+  },
+  "gameHelpers": [
+   "Checkbox",
+   "ControlMapButton",
+   "EnumSelector",
+   "EnumSelectorButtonAnimation",
+   "KeyRebinder",
+   "ResetAudioSettings",
+   "ScrollArea",
+   "ScrollElementID",
+   "SettingsAntiAliasing",
+   "SettingsArachnophobiaMode",
+   "SettingsAudioVolume",
+   "SettingsBrightnessScale",
+   "SettingsColorBlind",
+   "SettingsDisableExtraTips",
+   "SettingsDisableScreenShake",
+   "SettingsDisableTooltips",
+   "SettingsDisplayTowerRangesOnInteract",
+   "SettingsEnableControlGroups",
+   "SettingsEnableDamageStats",
+   "SettingsEnableUnitStats",
+   "SettingsFullscreen",
+   "SettingsLanguage",
+   "SettingsPostProcessing",
+   "SettingsRenderScale",
+   "SettingsResetGameProgress",
+   "SettingsResetUnitsMorning",
+   "SettingsResetVideo",
+   "SettingsResolution",
+   "SettingsUIHelper",
+   "SettingsUIScale",
+   "SettingsVsync",
+   "TFUIAudioHelper",
+   "TFUICheckboxMouseCatcher",
+   "TFUIEnumMouseCatcher",
+   "TFUIEnumSelectorButton",
+   "TFUIScrollBar",
+   "TFUISlider",
+   "TFUISliderDragArea",
+   "TFUISliderRelative",
+   "TFUISliderRelativeDragArea",
+   "TFUITextButton",
+   "UIFrame"
+  ],
+  "buttons": [
+   {
+    "go": "Control Map Button (5)",
+    "path": "UI Canvas/Settings Frame/Control Settings/Scroll/Mask/Layout Group /Control Map Button (5)",
+    "kind": "TFUITextButton",
+    "label": "Control A",
+    "interactable": true,
+    "onClick": []
+   },
+   {
+    "go": "Control Map Button (4)",
+    "path": "UI Canvas/Settings Frame/Control Settings/Scroll/Mask/Layout Group /Control Map Button (4)",
+    "kind": "TFUITextButton",
+    "label": "Control A",
+    "interactable": true,
+    "onClick": []
+   },
+   {
+    "go": "Control Map Button (3)",
+    "path": "UI Canvas/Settings Frame/Control Settings/Scroll/Mask/Layout Group /Control Map Button (3)",
+    "kind": "TFUITextButton",
+    "label": "Control A",
+    "interactable": true,
+    "onClick": []
+   },
+   {
+    "go": "Control Map Button (2)",
+    "path": "UI Canvas/Settings Frame/Control Settings/Scroll/Mask/Layout Group /Control Map Button (2)",
+    "kind": "TFUITextButton",
+    "label": "Control A",
+    "interactable": true,
+    "onClick": []
+   },
+   {
+    "go": "Control Map Button (1)",
+    "path": "UI Canvas/Settings Frame/Control Settings/Scroll/Mask/Layout Group /Control Map Button (1)",
+    "kind": "TFUITextButton",
+    "label": "Control A",
+    "interactable": true,
+    "onClick": []
+   },
+   {
+    "go": "Control Map Button",
+    "path": "UI Canvas/Settings Frame/Control Settings/Scroll/Mask/Layout Group /Control Map Button",
+    "kind": "TFUITextButton",
+    "label": "Control A",
+    "interactable": true,
+    "onClick": []
+   },
+   {
+    "go": "Controller Picker Button",
+    "path": "UI Canvas/Settings Frame/Control Settings/Scroll/Mask/Layout Group /Controller Picker Button",
+    "kind": "TFUITextButton",
+    "label": "Selected Controller",
+    "interactable": true,
+    "onClick": []
+   },
+   {
+    "go": "Disable Screen Shake",
+    "path": "UI Canvas/Settings Frame/Accessibility Settings/Disable Screen Shake",
+    "kind": "TFUITextButton",
+    "label": "Disable Screen Shake",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "Checkbox",
+      "method": "Toggle",
+      "targetObject": "Box",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   },
+   {
+    "go": "Arachnophobia Mode",
+    "path": "UI Canvas/Settings Frame/Accessibility Settings/Arachnophobia Mode",
+    "kind": "TFUITextButton",
+    "label": "",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "Checkbox",
+      "method": "Toggle",
+      "targetObject": "Box",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   },
+   {
+    "go": "Colorblind Mode",
+    "path": "UI Canvas/Settings Frame/Accessibility Settings/Colorblind Mode",
+    "kind": "TFUITextButton",
+    "label": "Colorblind Mode",
+    "interactable": true,
+    "onClick": []
+   },
+   {
+    "go": "UI Scale",
+    "path": "UI Canvas/Settings Frame/Accessibility Settings/UI Scale",
+    "kind": "TFUITextButton",
+    "label": "UI Scale",
+    "interactable": true,
+    "onClick": []
+   },
+   {
+    "go": "Enum Selector Button Variant",
+    "path": "UI Canvas/Settings Frame/Accessibility Settings/Enum Selector Button Variant",
+    "kind": "TFUITextButton",
+    "label": "Language",
+    "interactable": true,
+    "onClick": []
+   },
+   {
+    "go": "Reset Game Progress",
+    "path": "UI Canvas/Settings Frame/Gameplay Settings/Scroll/Mask/Layout Group /Reset Game Progress",
+    "kind": "TFUITextButton",
+    "label": "Reset Game Progress",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "UIFrameManager",
+      "method": "ChangeActiveFrameKeepOldVisible",
+      "targetObject": "UI Canvas",
+      "arg": "",
+      "objectArg": "Reset Game Progress Frame"
+     }
+    ]
+   },
+   {
+    "go": "Enable Enemy Unit Damage Visuals",
+    "path": "UI Canvas/Settings Frame/Gameplay Settings/Scroll/Mask/Layout Group /Enable Enemy Unit Damage Visuals",
+    "kind": "TFUITextButton",
+    "label": "Enable Enemy Unit Damage Visuals",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "Checkbox",
+      "method": "Toggle",
+      "targetObject": "Box",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   },
+   {
+    "go": "Enable Player Unit Damage Visuals",
+    "path": "UI Canvas/Settings Frame/Gameplay Settings/Scroll/Mask/Layout Group /Enable Player Unit Damage Visuals",
+    "kind": "TFUITextButton",
+    "label": "Enable Player Unit Damage Visuals",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "Checkbox",
+      "method": "Toggle",
+      "targetObject": "Box",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   },
+   {
+    "go": "Enable Unit Stats",
+    "path": "UI Canvas/Settings Frame/Gameplay Settings/Scroll/Mask/Layout Group /Enable Unit Stats",
+    "kind": "TFUITextButton",
+    "label": "Enable Unit Stats",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "Checkbox",
+      "method": "Toggle",
+      "targetObject": "Box",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   },
+   {
+    "go": "Enable Control Groups",
+    "path": "UI Canvas/Settings Frame/Gameplay Settings/Scroll/Mask/Layout Group /Enable Control Groups",
+    "kind": "TFUITextButton",
+    "label": "Enable Control Groups",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "Checkbox",
+      "method": "Toggle",
+      "targetObject": "Box",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   },
+   {
+    "go": "Display Tower Ranges On Interact",
+    "path": "UI Canvas/Settings Frame/Gameplay Settings/Scroll/Mask/Layout Group /Display Tower Ranges On Interact",
+    "kind": "TFUITextButton",
+    "label": "Display All Tower Ranges On Interact",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "Checkbox",
+      "method": "Toggle",
+      "targetObject": "Box",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   },
+   {
+    "go": "Units Return",
+    "path": "UI Canvas/Settings Frame/Gameplay Settings/Scroll/Mask/Layout Group /Units Return",
+    "kind": "TFUITextButton",
+    "label": "Reset Unit Formation Every Morning",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "Checkbox",
+      "method": "Toggle",
+      "targetObject": "Box",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   },
+   {
+    "go": "Disable Extra Tips",
+    "path": "UI Canvas/Settings Frame/Gameplay Settings/Scroll/Mask/Layout Group /Disable Extra Tips",
+    "kind": "TFUITextButton",
+    "label": "Disable Extra Tips",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "Checkbox",
+      "method": "Toggle",
+      "targetObject": "Box",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   },
+   {
+    "go": "Disable Tooltips",
+    "path": "UI Canvas/Settings Frame/Gameplay Settings/Scroll/Mask/Layout Group /Disable Tooltips",
+    "kind": "TFUITextButton",
+    "label": "Disable Tooltips",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "Checkbox",
+      "method": "Toggle",
+      "targetObject": "Box",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   },
+   {
+    "go": "Reset Audio Settings",
+    "path": "UI Canvas/Settings Frame/Audio Settings/Reset Audio Settings",
+    "kind": "TFUITextButton",
+    "label": "Reset Audio Settings",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "UIFrameManager",
+      "method": "ChangeActiveFrameKeepOldVisible",
+      "targetObject": "UI Canvas",
+      "arg": "",
+      "objectArg": "Reset Audio Settings Frame"
+     }
+    ]
+   },
+   {
+    "go": "Environment Volume",
+    "path": "UI Canvas/Settings Frame/Audio Settings/Environment Volume",
+    "kind": "TFUITextButton",
+    "label": "Environment",
+    "interactable": true,
+    "onClick": []
+   },
+   {
+    "go": "Music Volume",
+    "path": "UI Canvas/Settings Frame/Audio Settings/Music Volume",
+    "kind": "TFUITextButton",
+    "label": "Music",
+    "interactable": true,
+    "onClick": []
+   },
+   {
+    "go": "Gameplay Volume",
+    "path": "UI Canvas/Settings Frame/Audio Settings/Gameplay Volume",
+    "kind": "TFUITextButton",
+    "label": "Gameplay\n",
+    "interactable": true,
+    "onClick": []
+   },
+   {
+    "go": "Master Volume",
+    "path": "UI Canvas/Settings Frame/Audio Settings/Master Volume",
+    "kind": "TFUITextButton",
+    "label": "Master",
+    "interactable": true,
+    "onClick": []
+   },
+   {
+    "go": "Reset Video Settings",
+    "path": "UI Canvas/Settings Frame/Video Settings/Reset Video Settings",
+    "kind": "TFUITextButton",
+    "label": "Reset Video Settings",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "UIFrameManager",
+      "method": "ChangeActiveFrameKeepOldVisible",
+      "targetObject": "UI Canvas",
+      "arg": "",
+      "objectArg": "Reset Video Settings Frame"
+     }
+    ]
+   },
+   {
+    "go": "Brightness Scale",
+    "path": "UI Canvas/Settings Frame/Video Settings/Brightness Scale",
+    "kind": "TFUITextButton",
+    "label": "Brightness Scale",
+    "interactable": true,
+    "onClick": []
+   },
+   {
+    "go": "Render Scale",
+    "path": "UI Canvas/Settings Frame/Video Settings/Render Scale",
+    "kind": "TFUITextButton",
+    "label": "Render Scale",
+    "interactable": true,
+    "onClick": []
+   },
+   {
+    "go": "Shadow Resolution",
+    "path": "UI Canvas/Settings Frame/Video Settings/Shadow Resolution",
+    "kind": "TFUITextButton",
+    "label": "Shadow Resolution",
+    "interactable": true,
+    "onClick": []
+   },
+   {
+    "go": "Anti Aliasing",
+    "path": "UI Canvas/Settings Frame/Video Settings/Anti Aliasing",
+    "kind": "TFUITextButton",
+    "label": "Anti Aliasing",
+    "interactable": true,
+    "onClick": []
+   },
+   {
+    "go": "Post Processing",
+    "path": "UI Canvas/Settings Frame/Video Settings/Post Processing",
+    "kind": "TFUITextButton",
+    "label": "Post Processing",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "Checkbox",
+      "method": "Toggle",
+      "targetObject": "Box",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   },
+   {
+    "go": "V-Sync",
+    "path": "UI Canvas/Settings Frame/Video Settings/V-Sync",
+    "kind": "TFUITextButton",
+    "label": "V-Sync",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "Checkbox",
+      "method": "Toggle",
+      "targetObject": "Box",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   },
+   {
+    "go": "Full Screen",
+    "path": "UI Canvas/Settings Frame/Video Settings/Full Screen",
+    "kind": "TFUITextButton",
+    "label": "Fullscreen",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "Checkbox",
+      "method": "Toggle",
+      "targetObject": "Box",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   },
+   {
+    "go": "Resolution",
+    "path": "UI Canvas/Settings Frame/Video Settings/Resolution",
+    "kind": "TFUITextButton",
+    "label": "Resolution",
+    "interactable": true,
+    "onClick": []
+   },
+   {
+    "go": "Apply Button",
+    "path": "UI Canvas/Settings Frame/Video Settings/Resolution/Enum Label /Apply Button",
+    "kind": "TFUITextButton",
+    "label": "✓ ?",
+    "interactable": false,
+    "onClick": [
+     {
+      "type": "EnumSelector",
+      "method": "PropagateDelayedChange",
+      "targetObject": "Resolution",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   },
+   {
+    "go": "Controls",
+    "path": "UI Canvas/Settings Frame/Category Tabs/Controls",
+    "kind": "TFUITextButton",
+    "label": "Controls",
+    "interactable": true,
+    "onClick": []
+   },
+   {
+    "go": "Accessibility",
+    "path": "UI Canvas/Settings Frame/Category Tabs/Accessibility",
+    "kind": "TFUITextButton",
+    "label": "Accessibility",
+    "interactable": true,
+    "onClick": []
+   },
+   {
+    "go": "Gameplay",
+    "path": "UI Canvas/Settings Frame/Category Tabs/Gameplay",
+    "kind": "TFUITextButton",
+    "label": "Gameplay",
+    "interactable": true,
+    "onClick": []
+   },
+   {
+    "go": "Audio",
+    "path": "UI Canvas/Settings Frame/Category Tabs/Audio",
+    "kind": "TFUITextButton",
+    "label": "Audio",
+    "interactable": true,
+    "onClick": []
+   },
+   {
+    "go": "Video",
+    "path": "UI Canvas/Settings Frame/Category Tabs/Video",
+    "kind": "TFUITextButton",
+    "label": "Video",
+    "interactable": true,
+    "onClick": []
+   }
+  ],
+  "texts": [
+   "3",
+   "Waiting for Input...",
+   "Control A",
+   "Binding",
+   "Selected Controller",
+   "XXXXX",
+   "Disable Screen Shake",
+   "Colorblind Mode",
+   "New Text",
+   "UI Scale",
+   "1.4",
+   "Language",
+   "Reset Game Progress",
+   "Enable Enemy Unit Damage Visuals",
+   "Enable Player Unit Damage Visuals",
+   "Enable Unit Stats",
+   "Enable Control Groups",
+   "Display All Tower Ranges On Interact",
+   "Reset Unit Formation Every Morning",
+   "Disable Extra Tips"
+  ],
+  "subtreeObjects": 256
+ },
+ {
+  "id": 5391,
+  "name": "Title Frame",
+  "nameRepr": "'Title Frame'",
+  "path": "UI Canvas/Title Frame",
+  "activeSelf": false,
+  "freezeTime": false,
+  "freezePlayer": true,
+  "canNotBeEscaped": true,
+  "storeLastSelected": true,
+  "events": {
+   "onActivate": [
+    {
+     "type": "TitleScreenPopUpHelper",
+     "method": "PopNext",
+     "targetObject": "",
+     "arg": "",
+     "objectArg": ""
+    }
+   ]
+  },
+  "componentCounts": {
+   "TextMeshProUGUI": 5,
+   "TFUITextButton": 4,
+   "TFUIAudioHelper": 4,
+   "Localize": 4,
+   "ContentSizeFitter": 2,
+   "UIFrame": 1,
+   "TitleScreenUIHelper": 1,
+   "HorizontalLayoutGroup": 1,
+   "DemoQuitSwitch": 1,
+   "Image": 1,
+   "MPImage": 1,
+   "SetStateWhenMacOSX": 1
+  },
+  "gameHelpers": [
+   "DemoQuitSwitch",
+   "SetStateWhenMacOSX",
+   "TFUIAudioHelper",
+   "TFUITextButton",
+   "TitleScreenUIHelper",
+   "UIFrame"
+  ],
+  "buttons": [
+   {
+    "go": "Quit",
+    "path": "UI Canvas/Title Frame/Menu Items/Quit",
+    "kind": "TFUITextButton",
+    "label": "Quit",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "DemoQuitSwitch",
+      "method": "Trigger",
+      "targetObject": "Quit",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   },
+   {
+    "go": "About",
+    "path": "UI Canvas/Title Frame/Menu Items/About",
+    "kind": "TFUITextButton",
+    "label": "About",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "UIFrameManager",
+      "method": "ChangeActiveFrame",
+      "targetObject": "UI Canvas",
+      "arg": "",
+      "objectArg": "About Frame"
+     }
+    ]
+   },
+   {
+    "go": "Settings",
+    "path": "UI Canvas/Title Frame/Menu Items/Settings",
+    "kind": "TFUITextButton",
+    "label": "Settings",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "UIFrameManager",
+      "method": "ChangeActiveFrame",
+      "targetObject": "UI Canvas",
+      "arg": "",
+      "objectArg": "Settings Frame"
+     }
+    ]
+   },
+   {
+    "go": "Play",
+    "path": "UI Canvas/Title Frame/Menu Items/Play",
+    "kind": "TFUITextButton",
+    "label": "Play",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "TitleScreenUIHelper",
+      "method": "ClickPlay",
+      "targetObject": "Title Frame",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   }
+  ],
+  "texts": [
+   "Quit",
+   "About",
+   "Settings",
+   "Play",
+   "Thronefall"
+  ],
+  "subtreeObjects": 9
+ },
+ {
+  "id": 4970,
+  "name": "Update 1.1",
+  "nameRepr": "'Update 1.1'",
+  "path": "UI Canvas/Update 1.1",
+  "activeSelf": false,
+  "freezeTime": true,
+  "freezePlayer": true,
+  "canNotBeEscaped": false,
+  "storeLastSelected": true,
+  "events": {},
+  "componentCounts": {
+   "TextMeshProUGUI": 3,
+   "ContentSizeFitter": 3,
+   "Localize": 2,
+   "UIFrame": 1,
+   "Image": 1,
+   "TFUITextButton": 1,
+   "TFUIAudioHelper": 1
+  },
+  "gameHelpers": [
+   "TFUIAudioHelper",
+   "TFUITextButton",
+   "UIFrame"
+  ],
+  "buttons": [
+   {
+    "go": "Yes",
+    "path": "UI Canvas/Update 1.1/Background/Text/Yes",
+    "kind": "TFUITextButton",
+    "label": "Weiter",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "UIFrameManager",
+      "method": "CloseActiveFrame",
+      "targetObject": "UI Canvas",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   }
+  ],
+  "texts": [
+   "Dear Kings and Queens, \nWe just rolled out the first regular Update for Thronefall (Early Access Version 1.1). For a comprehensive list of changes please have a look at the full patch notes in the Steam Forums or our Discord. Here’s a quick summary of what has changed: \n\n• Key Rebinding: It is now possible to set up your own control configurations. By default everything should work like it used to, but due to technical reasons you might have to rebind movement to the W A S D keys if you were used to it. This is because there’s only one slot to bind per action per input device and the default binding for movement is the arrow keys. On the upside a lot more controllers should be supported now. \n\n• Upcoming Night Info: You can now see a summary of the enemies attacking during the next night in the pause menu. There you can also read a quick description of each enemy which should help figuring out what preparations to take against it. \n\n• Balancing Changes: A massive amount of balancing tweaks and changes based on your feedback. Impossible to list everything here, please have a look at the full patch notes for details. \n\nThat’s it for this update – now we’re off to work on new gameplay content. We’re excited to share the next level and maybe even a little surprise with you soon. \n\nAll the best\nJonas & Paul ",
+   "Update 1.1",
+   "Weiter"
+  ],
+  "subtreeObjects": 5
+ },
+ {
+  "id": 5989,
+  "name": "Wardrobe Frame",
+  "nameRepr": "'Wardrobe Frame'",
+  "path": "UI Canvas/Wardrobe Frame",
+  "activeSelf": false,
+  "freezeTime": false,
+  "freezePlayer": true,
+  "canNotBeEscaped": false,
+  "storeLastSelected": true,
+  "events": {
+   "onActivate": [
+    {
+     "type": "WardrobeHandler",
+     "method": "Refresh",
+     "targetObject": "Wardrobe Frame",
+     "arg": "",
+     "objectArg": ""
+    }
+   ],
+   "onApply": [
+    {
+     "type": "WardrobeHandler",
+     "method": "TrySelectTFUIElement",
+     "targetObject": "Wardrobe Frame",
+     "arg": "",
+     "objectArg": ""
+    },
+    {
+     "type": "WardrobeHandler",
+     "method": "OnSelect",
+     "targetObject": "Wardrobe Frame",
+     "arg": "",
+     "objectArg": ""
+    }
+   ]
+  },
+  "componentCounts": {
+   "MPImageBasic": 147,
+   "TFUIWardrobeElement": 98,
+   "LayoutElement": 98,
+   "TextMeshProUGUI": 58,
+   "AspectRatioFitter": 49,
+   "HorizontalLayoutGroup": 9,
+   "MPImage": 5,
+   "TFUITextButton": 5,
+   "TFUIAudioHelper": 5,
+   "WardrobeOptionsHelper": 4,
+   "UIFrame": 1,
+   "WardrobeHandler": 1,
+   "WardrobeInfo": 1,
+   "Image": 1,
+   "RawImage": 1
+  },
+  "gameHelpers": [
+   "TFUIAudioHelper",
+   "TFUITextButton",
+   "TFUIWardrobeElement",
+   "UIFrame",
+   "WardrobeHandler",
+   "WardrobeInfo",
+   "WardrobeOptionsHelper"
+  ],
+  "buttons": [
+   {
+    "go": "Mount",
+    "path": "UI Canvas/Wardrobe Frame/Panel_Menu/Menu/Mount",
+    "kind": "TFUITextButton",
+    "label": "Mount",
+    "interactable": true,
+    "onClick": []
+   },
+   {
+    "go": "Cape",
+    "path": "UI Canvas/Wardrobe Frame/Panel_Menu/Menu/Cape",
+    "kind": "TFUITextButton",
+    "label": "Cape",
+    "interactable": true,
+    "onClick": []
+   },
+   {
+    "go": "Armour",
+    "path": "UI Canvas/Wardrobe Frame/Panel_Menu/Menu/Armour",
+    "kind": "TFUITextButton",
+    "label": "Armour",
+    "interactable": true,
+    "onClick": []
+   },
+   {
+    "go": "Crown",
+    "path": "UI Canvas/Wardrobe Frame/Panel_Menu/Menu/Crown",
+    "kind": "TFUITextButton",
+    "label": "Crown",
+    "interactable": true,
+    "onClick": []
+   },
+   {
+    "go": "Cancel Button",
+    "path": "UI Canvas/Wardrobe Frame/Panel_Menu/Cancel Button",
+    "kind": "TFUITextButton",
+    "label": "X",
+    "interactable": true,
+    "onClick": [
+     {
+      "type": "UIFrameManager",
+      "method": "CloseActiveFrame",
+      "targetObject": "",
+      "arg": "",
+      "objectArg": ""
+     }
+    ]
+   }
+  ],
+  "texts": [
+   "!",
+   "999",
+   "This is an item desciption, it's a little bit long but who doesn't love some lore info or something? I don't know I am just writing this so that we can test the length of the strings here and see how well it works.",
+   "Item Name",
+   "Mount",
+   "Cape",
+   "Armour",
+   "Crown",
+   "Wardrobe",
+   "X"
+  ],
+  "subtreeObjects": 226
+ }
+]

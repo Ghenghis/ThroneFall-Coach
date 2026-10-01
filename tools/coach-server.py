@@ -731,6 +731,19 @@ class H(BaseHTTPRequestHandler):
                     self._send(500, json.dumps({"error": str(e)}), "application/json")
             else:
                 self._send(404, "{}")
+        elif self.path == "/efficiency":
+            try:
+                import sys as _s
+                import os as _os
+                _s.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+                import eff_lib
+                eff_lib.AGENT = AGENT
+                body = eff_lib.compare(eff_lib.load(AGENT))
+                bf = AGENT / "benchmarks.json"
+                body["bench"] = json.loads(bf.read_text()) if bf.exists() else {}
+                self._send(200, json.dumps(body), "application/json")
+            except Exception as e:
+                self._send(500, json.dumps({"error": str(e)}), "application/json")
         elif self.path == "/policy":
             pf = AGENT / "policy.json"
             mf = AGENT / "mishaps.json"
@@ -1287,6 +1300,10 @@ pre.book{background:#150e0a;border:1px solid var(--bord);border-radius:9px;
    <div class="card"><h4>Never-retry memory</h4><div id="mish" class="hint"></div></div>
   </div>
   <div class="pane" id="p-audit">
+   <div class="card"><h4>Efficiency (live)</h4><div id="effLive"></div></div>
+   <div class="card"><h4>Task efficiency (per task kind)</h4><div id="effTasks"></div></div>
+   <div class="card"><h4>Now vs last 1h / 16h / 48h vs baseline vs target</h4><div id="effCmp" class="hint">loading…</div></div>
+   <div class="card"><h4>MiniMax heartbeat</h4><div id="effCoach"></div></div>
    <div class="card"><h4>Playbook checklist</h4><div id="auCheck"></div></div>
    <div class="card"><h4>Door posts</h4><div id="auDoor"></div></div>
    <div class="card"><h4>Built so far</h4><div id="auCat"></div></div>
@@ -1365,6 +1382,32 @@ function paint(){
  else bar.className='';
 }
 setInterval(tick,1000);
+function effPaint(){const a=A;if(a.eff===undefined)return;
+ const col=v=>v>=80?'#7bc96f':v>=60?'#e5c07b':'#e5534b';
+ const kv=(k,v,c)=>`<div class="kv"><span>${k}</span><b${c?` style="color:${c}"`:''}>${v}</b></div>`;
+ document.getElementById('effLive').innerHTML=
+  kv('efficiency score (target 80)',a.eff,col(a.eff))+kv('useful time % (target 85)',(a.useful_pct??0)+'%',col(a.useful_pct||0))
+  +kv('maxed %',(a.maxed_pct??0)+'%')+kv('idle since progress',(a.since_prog??0)+'s',(a.since_prog>20?'#e5534b':''))
+  +kv('drain',esc(a.eff_drain||'none'))+kv('spend ratio',a.spend_r)+kv('hot cells',a.hot_cells)
+  +kv('tasks (verified / missed / micro)',`${a.task_total||0} (${a.task_verified||0} / ${a.task_misses||0} / ${a.task_micro||0})`,a.task_misses>0?'#e5c07b':'')
+  +kv('worst task kind',esc(a.worst_kind||'—'));
+ const ag=a.task_agg||{};
+ document.getElementById('effTasks').innerHTML=Object.entries(ag).sort((x,y)=>y[1].waste_s-x[1].waste_s).slice(0,14).map(([k,v])=>
+  `<div class="kv"><span>${esc(k)} <small>n=${v.n} ok=${v.ok} fail=${v.fail} ${v.avg_s}s</small></span><b style="color:${v.eff<0?'#888':col(v.eff)}">${v.eff<0?'n/a':v.eff}</b></div>`).join('')||'<div class="hint">no tasks yet</div>';
+ const c=a.coach||{};
+ document.getElementById('effCoach').innerHTML=kv('calls / failures',`${c.calls||0} / ${c.fail||0}`,c.fail>0?'#e5c07b':'')
+  +kv('last latency',(c.latency_ms||0)+' ms')+kv('last trigger',esc(c.last_trigger||'—'))+kv('last advice age',c.age_s<0?'never':c.age_s+'s',c.age_s>180||c.age_s<0?'#e5534b':'#7bc96f')
+  +kv('tokens',c.tokens||0)
+  +(a.coach_fx||[]).map(f=>kv('fx '+esc(f.trigger),`${f.eff_before} → ${f.eff_after}`,f.eff_after>=f.eff_before?'#7bc96f':'#e5534b')).join('');}
+async function effCmp(){try{const e=await j('/efficiency');const W=e.windows,names=['last_1h','last_16h','last_48h','all'];
+ const rows=[['useful %','useful_pct'],['build eff','build_eff'],['build ok %','build_ok_pct'],['gold/min','gold_per_min'],['builds/day','builds_per_day'],['ally gain/day','ally_gain_per_day'],['maxed gain/day','maxed_gain_per_day'],['task misses','task_misses'],['coach fx Δeff','coach_fx_avg_delta'],['coach latency ms','coach_latency_ms']];
+ let h='<table style="width:100%;font-size:11px"><tr><th></th>'+names.map(n=>`<th>${n.replace('last_','')}</th>`).join('')+'<th>base</th><th>goal</th></tr>';
+ for(const[l,k]of rows){h+=`<tr><td>${l}</td>`+names.map(n=>`<td>${W[n][k]??'—'}</td>`).join('')
+  +`<td>${k=='useful_pct'?e.baseline.useful_pct:''}</td><td>${k=='useful_pct'?e.target.useful_pct:k=='build_eff'?e.target.build_eff:''}</td></tr>`}
+ h+='</table><div class="hint" style="margin-top:4px">by bot build: '+(e.builds||[]).map(b=>`${new Date(b.build*1000).toLocaleString()} → useful ${b.useful_pct??'—'}% / build eff ${b.build_eff??'—'} (${b.tasks} tasks)`).join(' | ')+'</div>'
+ +'<div class="hint">worst wasters: '+((W.all.worst||[]).map(x=>x[0]+' '+x[1]+'s').join(', ')||'—')+'</div>';
+ document.getElementById('effCmp').innerHTML=h}catch(x){document.getElementById('effCmp').textContent='no efficiency data yet'}}
+setInterval(effPaint,1000);setInterval(effCmp,10000);effCmp();
 /* connectivity truth — red banner names exactly what is down */
 async function healthCheck(){try{const h=await j('/health');
  const bad=(h.checks||[]).filter(c=>!c.ok);

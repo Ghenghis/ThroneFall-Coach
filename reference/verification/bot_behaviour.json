@@ -1,0 +1,2884 @@
+{
+ "log": "K:\\Downloads-IDM\\Thronefall\\BepInEx\\plugins\\bot-log.jsonl",
+ "aggregate": {
+  "sessionsTotal": 38,
+  "sessionsAnalysed": 33,
+  "logRows": 73623,
+  "matchHours": 5.03,
+  "knockoutsNight": 172,
+  "knockoutsDay": 0,
+  "koNightDurationS": {
+   "n": 120,
+   "p10": 10.9,
+   "p50": 11.0,
+   "p90": 11.1
+  },
+  "shippedReviveAfterKnockedOutS": 11.0
+ },
+ "sessions": [
+  {
+   "session": 0,
+   "scene": "Nordfels",
+   "scenes": {
+    "Neuland(Tutorial)": 474,
+    "Nordfels": 1352
+   },
+   "matchSeconds": 475,
+   "tickSeconds": 0.26,
+   "nightShare": 0.919,
+   "nightModes": {
+    "Engage": 0.822,
+    "Idle": 0.178
+   },
+   "dayModes": {
+    "SpendGold": 0.721,
+    "StartNight": 0.102,
+    "CollectCoin": 0.095,
+    "Engage": 0.082
+   },
+   "nightDistCastle": {
+    "p50": 75.5,
+    "p90": 91.1,
+    "max": 161.1,
+    "shareOver30": 0.968,
+    "shareOver50": 0.855
+   },
+   "knockouts": {
+    "night": 5,
+    "day": 0,
+    "durationsNightS": [
+     44.9,
+     11.0,
+     10.9,
+     22.1,
+     21.8
+    ],
+    "distCastleAtKO": [
+     83,
+     71,
+     72,
+     72,
+     73
+    ],
+    "nearFoesBeforeKO": []
+   },
+   "stuckNotes": {
+    "stuck": 26,
+    "teleport-nudge": 8
+   },
+   "maxWaveReached": {
+    "Neuland(Tutorial)": 7,
+    "Nordfels": 7
+   },
+   "states": {
+    "no-gamestate": 24,
+    "InMatch": 1896,
+    "AfterMatchVictory": 162
+   },
+   "victoryTicks": 162,
+   "defeatTicks": 0,
+   "economy": {
+    "goldAtDusk": [
+     {
+      "wave": "1/8",
+      "gold": 6,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 6,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "2/8",
+      "gold": 11,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 9,
+      "impliedSpent": -2
+     },
+     {
+      "wave": "3/8",
+      "gold": 16,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 13,
+      "impliedSpent": -3
+     },
+     {
+      "wave": "4/8",
+      "gold": 22,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 19,
+      "impliedSpent": -3
+     },
+     {
+      "wave": "5/8",
+      "gold": 27,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 25,
+      "impliedSpent": -2
+     },
+     {
+      "wave": "6/8",
+      "gold": 36,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 33,
+      "impliedSpent": -3
+     },
+     {
+      "wave": "7/8",
+      "gold": 44,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 41,
+      "impliedSpent": -3
+     },
+     {
+      "wave": "0/13",
+      "gold": 8,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 8,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "1/13",
+      "gold": 11,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 13,
+      "impliedSpent": 2
+     },
+     {
+      "wave": "2/13",
+      "gold": 18,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 18,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "3/13",
+      "gold": 22,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 23,
+      "impliedSpent": 1
+     },
+     {
+      "wave": "4/13",
+      "gold": 30,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 31,
+      "impliedSpent": 1
+     },
+     {
+      "wave": "5/13",
+      "gold": 33,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 33,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "6/13",
+      "gold": 38,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 38,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "7/13",
+      "gold": 43,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 43,
+      "impliedSpent": 0
+     }
+    ],
+    "medianGoldAtDusk": 22,
+    "inferredGoldSpentByDay": 0,
+    "secondsToFirstNight": 48.3,
+    "impliedSpentAtLastDusk": 0,
+    "impliedSpentMax": 2
+   },
+   "allies": null
+  },
+  {
+   "session": 5,
+   "scene": "Nordfels",
+   "scenes": {
+    "Nordfels": 504
+   },
+   "matchSeconds": 136,
+   "tickSeconds": 0.27,
+   "nightShare": 0.0,
+   "nightModes": {},
+   "dayModes": {
+    "SpendGold": 1.0
+   },
+   "nightDistCastle": {
+    "p50": NaN,
+    "p90": NaN,
+    "max": null,
+    "shareOver30": 0.0,
+    "shareOver50": 0.0
+   },
+   "knockouts": {
+    "night": 0,
+    "day": 0,
+    "durationsNightS": [],
+    "distCastleAtKO": [],
+    "nearFoesBeforeKO": []
+   },
+   "stuckNotes": {
+    "stuck": 47,
+    "unstick": 13
+   },
+   "maxWaveReached": {
+    "Nordfels": 0
+   },
+   "states": {
+    "no-gamestate": 18,
+    "InMatch": 525
+   },
+   "victoryTicks": 0,
+   "defeatTicks": 0,
+   "economy": {
+    "goldAtDusk": [],
+    "medianGoldAtDusk": null,
+    "inferredGoldSpentByDay": 0,
+    "secondsToFirstNight": null,
+    "impliedSpentAtLastDusk": null,
+    "impliedSpentMax": null
+   },
+   "allies": null
+  },
+  {
+   "session": 6,
+   "scene": "Nordfels",
+   "scenes": {
+    "Nordfels": 540
+   },
+   "matchSeconds": 146,
+   "tickSeconds": 0.27,
+   "nightShare": 0.0,
+   "nightModes": {},
+   "dayModes": {
+    "SpendGold": 1.0
+   },
+   "nightDistCastle": {
+    "p50": NaN,
+    "p90": NaN,
+    "max": null,
+    "shareOver30": 0.0,
+    "shareOver50": 0.0
+   },
+   "knockouts": {
+    "night": 0,
+    "day": 0,
+    "durationsNightS": [],
+    "distCastleAtKO": [],
+    "nearFoesBeforeKO": []
+   },
+   "stuckNotes": {
+    "stuck": 48,
+    "snap": 15
+   },
+   "maxWaveReached": {
+    "Nordfels": 0
+   },
+   "states": {
+    "no-gamestate": 19,
+    "InMatch": 560
+   },
+   "victoryTicks": 0,
+   "defeatTicks": 0,
+   "economy": {
+    "goldAtDusk": [],
+    "medianGoldAtDusk": null,
+    "inferredGoldSpentByDay": 0,
+    "secondsToFirstNight": null,
+    "impliedSpentAtLastDusk": null,
+    "impliedSpentMax": null
+   },
+   "allies": null
+  },
+  {
+   "session": 7,
+   "scene": "Nordfels",
+   "scenes": {
+    "Nordfels": 402
+   },
+   "matchSeconds": 105,
+   "tickSeconds": 0.26,
+   "nightShare": 0.0,
+   "nightModes": {},
+   "dayModes": {
+    "SpendGold": 1.0
+   },
+   "nightDistCastle": {
+    "p50": NaN,
+    "p90": NaN,
+    "max": null,
+    "shareOver30": 0.0,
+    "shareOver50": 0.0
+   },
+   "knockouts": {
+    "night": 0,
+    "day": 0,
+    "durationsNightS": [],
+    "distCastleAtKO": [],
+    "nearFoesBeforeKO": []
+   },
+   "stuckNotes": {
+    "stuck": 41,
+    "snap": 12,
+    "unstick": 1
+   },
+   "maxWaveReached": {
+    "Nordfels": 0
+   },
+   "states": {
+    "no-gamestate": 19,
+    "InMatch": 428
+   },
+   "victoryTicks": 0,
+   "defeatTicks": 0,
+   "economy": {
+    "goldAtDusk": [],
+    "medianGoldAtDusk": null,
+    "inferredGoldSpentByDay": 0,
+    "secondsToFirstNight": null,
+    "impliedSpentAtLastDusk": null,
+    "impliedSpentMax": null
+   },
+   "allies": null
+  },
+  {
+   "session": 8,
+   "scene": "Nordfels",
+   "scenes": {
+    "Nordfels": 455
+   },
+   "matchSeconds": 123,
+   "tickSeconds": 0.27,
+   "nightShare": 0.0,
+   "nightModes": {},
+   "dayModes": {
+    "SpendGold": 1.0
+   },
+   "nightDistCastle": {
+    "p50": NaN,
+    "p90": NaN,
+    "max": null,
+    "shareOver30": 0.0,
+    "shareOver50": 0.0
+   },
+   "knockouts": {
+    "night": 0,
+    "day": 0,
+    "durationsNightS": [],
+    "distCastleAtKO": [],
+    "nearFoesBeforeKO": []
+   },
+   "stuckNotes": {
+    "stuck": 40,
+    "snap": 13
+   },
+   "maxWaveReached": {
+    "Nordfels": 0
+   },
+   "states": {
+    "no-gamestate": 19,
+    "InMatch": 475
+   },
+   "victoryTicks": 0,
+   "defeatTicks": 0,
+   "economy": {
+    "goldAtDusk": [],
+    "medianGoldAtDusk": null,
+    "inferredGoldSpentByDay": 0,
+    "secondsToFirstNight": null,
+    "impliedSpentAtLastDusk": null,
+    "impliedSpentMax": null
+   },
+   "allies": null
+  },
+  {
+   "session": 9,
+   "scene": "Nordfels",
+   "scenes": {
+    "Nordfels": 414
+   },
+   "matchSeconds": 112,
+   "tickSeconds": 0.27,
+   "nightShare": 0.0,
+   "nightModes": {},
+   "dayModes": {
+    "SpendGold": 1.0
+   },
+   "nightDistCastle": {
+    "p50": NaN,
+    "p90": NaN,
+    "max": null,
+    "shareOver30": 0.0,
+    "shareOver50": 0.0
+   },
+   "knockouts": {
+    "night": 0,
+    "day": 0,
+    "durationsNightS": [],
+    "distCastleAtKO": [],
+    "nearFoesBeforeKO": []
+   },
+   "stuckNotes": {
+    "stuck": 36,
+    "snap": 12
+   },
+   "maxWaveReached": {
+    "Nordfels": 0
+   },
+   "states": {
+    "no-gamestate": 18,
+    "InMatch": 440
+   },
+   "victoryTicks": 0,
+   "defeatTicks": 0,
+   "economy": {
+    "goldAtDusk": [],
+    "medianGoldAtDusk": null,
+    "inferredGoldSpentByDay": 0,
+    "secondsToFirstNight": null,
+    "impliedSpentAtLastDusk": null,
+    "impliedSpentMax": null
+   },
+   "allies": null
+  },
+  {
+   "session": 10,
+   "scene": "Nordfels",
+   "scenes": {
+    "Nordfels": 473
+   },
+   "matchSeconds": 123,
+   "tickSeconds": 0.26,
+   "nightShare": 0.0,
+   "nightModes": {},
+   "dayModes": {
+    "SpendGold": 1.0
+   },
+   "nightDistCastle": {
+    "p50": NaN,
+    "p90": NaN,
+    "max": null,
+    "shareOver30": 0.0,
+    "shareOver50": 0.0
+   },
+   "knockouts": {
+    "night": 0,
+    "day": 0,
+    "durationsNightS": [],
+    "distCastleAtKO": [],
+    "nearFoesBeforeKO": []
+   },
+   "stuckNotes": {
+    "stuck": 39,
+    "snap": 12
+   },
+   "maxWaveReached": {
+    "Nordfels": 0
+   },
+   "states": {
+    "no-gamestate": 19,
+    "InMatch": 492
+   },
+   "victoryTicks": 0,
+   "defeatTicks": 0,
+   "economy": {
+    "goldAtDusk": [],
+    "medianGoldAtDusk": null,
+    "inferredGoldSpentByDay": 0,
+    "secondsToFirstNight": null,
+    "impliedSpentAtLastDusk": null,
+    "impliedSpentMax": null
+   },
+   "allies": null
+  },
+  {
+   "session": 11,
+   "scene": "Nordfels",
+   "scenes": {
+    "Nordfels": 2838
+   },
+   "matchSeconds": 766,
+   "tickSeconds": 0.27,
+   "nightShare": 0.902,
+   "nightModes": {
+    "Engage": 0.869,
+    "Idle": 0.131
+   },
+   "dayModes": {
+    "SpendGold": 0.835,
+    "CollectCoin": 0.143,
+    "StartNight": 0.018,
+    "Engage": 0.004
+   },
+   "nightDistCastle": {
+    "p50": 3.2,
+    "p90": 6.5,
+    "max": 24.7,
+    "shareOver30": 0.0,
+    "shareOver50": 0.0
+   },
+   "knockouts": {
+    "night": 8,
+    "day": 0,
+    "durationsNightS": [
+     10.8,
+     11.1,
+     11.1,
+     10.9,
+     11.0,
+     11.1,
+     10.9,
+     10.9
+    ],
+    "distCastleAtKO": [
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3
+    ],
+    "nearFoesBeforeKO": []
+   },
+   "stuckNotes": {
+    "stuck": 2
+   },
+   "maxWaveReached": {
+    "Nordfels": 4
+   },
+   "states": {
+    "no-gamestate": 18,
+    "InMatch": 2857
+   },
+   "victoryTicks": 0,
+   "defeatTicks": 0,
+   "economy": {
+    "goldAtDusk": [
+     {
+      "wave": "0/13",
+      "gold": 8,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 8,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "1/13",
+      "gold": 8,
+      "coinsOnMap": 5,
+      "predictedNoSpend": 13,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "2/13",
+      "gold": 18,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 18,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "3/13",
+      "gold": 20,
+      "coinsOnMap": 3,
+      "predictedNoSpend": 23,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "4/13",
+      "gold": 31,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 31,
+      "impliedSpent": 0
+     }
+    ],
+    "medianGoldAtDusk": 18,
+    "inferredGoldSpentByDay": 1,
+    "secondsToFirstNight": 9.0,
+    "impliedSpentAtLastDusk": 0,
+    "impliedSpentMax": 0
+   },
+   "allies": null
+  },
+  {
+   "session": 12,
+   "scene": "Nordfels",
+   "scenes": {
+    "Nordfels": 2583
+   },
+   "matchSeconds": 697,
+   "tickSeconds": 0.27,
+   "nightShare": 0.924,
+   "nightModes": {
+    "Engage": 0.888,
+    "Idle": 0.112
+   },
+   "dayModes": {
+    "SpendGold": 0.822,
+    "CollectCoin": 0.147,
+    "StartNight": 0.025,
+    "Engage": 0.005
+   },
+   "nightDistCastle": {
+    "p50": 3.2,
+    "p90": 6.4,
+    "max": 24.7,
+    "shareOver30": 0.0,
+    "shareOver50": 0.0
+   },
+   "knockouts": {
+    "night": 6,
+    "day": 0,
+    "durationsNightS": [
+     10.8,
+     11.0,
+     10.9,
+     10.9,
+     11.2,
+     11.0
+    ],
+    "distCastleAtKO": [
+     3,
+     3,
+     3,
+     3,
+     3,
+     3
+    ],
+    "nearFoesBeforeKO": []
+   },
+   "stuckNotes": {
+    "stuck": 2
+   },
+   "maxWaveReached": {
+    "Nordfels": 4
+   },
+   "states": {
+    "no-gamestate": 19,
+    "InMatch": 2602
+   },
+   "victoryTicks": 0,
+   "defeatTicks": 0,
+   "economy": {
+    "goldAtDusk": [
+     {
+      "wave": "0/13",
+      "gold": 8,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 8,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "1/13",
+      "gold": 8,
+      "coinsOnMap": 5,
+      "predictedNoSpend": 13,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "2/13",
+      "gold": 18,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 18,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "3/13",
+      "gold": 20,
+      "coinsOnMap": 3,
+      "predictedNoSpend": 23,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "4/13",
+      "gold": 30,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 31,
+      "impliedSpent": 1
+     }
+    ],
+    "medianGoldAtDusk": 18,
+    "inferredGoldSpentByDay": 1,
+    "secondsToFirstNight": 8.8,
+    "impliedSpentAtLastDusk": 1,
+    "impliedSpentMax": 1
+   },
+   "allies": null
+  },
+  {
+   "session": 14,
+   "scene": "Nordfels",
+   "scenes": {
+    "Nordfels": 1287
+   },
+   "matchSeconds": 341,
+   "tickSeconds": 0.265,
+   "nightShare": 0.922,
+   "nightModes": {
+    "Engage": 0.929,
+    "Idle": 0.071
+   },
+   "dayModes": {
+    "SpendGold": 0.842,
+    "CollectCoin": 0.119,
+    "StartNight": 0.03,
+    "Engage": 0.01
+   },
+   "nightDistCastle": {
+    "p50": 3.2,
+    "p90": 3.2,
+    "max": 3.2,
+    "shareOver30": 0.0,
+    "shareOver50": 0.0
+   },
+   "knockouts": {
+    "night": 2,
+    "day": 0,
+    "durationsNightS": [
+     11.0,
+     10.9
+    ],
+    "distCastleAtKO": [
+     3,
+     3
+    ],
+    "nearFoesBeforeKO": []
+   },
+   "stuckNotes": {
+    "stuck": 1
+   },
+   "maxWaveReached": {
+    "Nordfels": 2
+   },
+   "states": {
+    "no-gamestate": 20,
+    "InMatch": 1305
+   },
+   "victoryTicks": 0,
+   "defeatTicks": 0,
+   "economy": {
+    "goldAtDusk": [
+     {
+      "wave": "0/13",
+      "gold": 8,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 8,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "1/13",
+      "gold": 8,
+      "coinsOnMap": 5,
+      "predictedNoSpend": 13,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "2/13",
+      "gold": 18,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 18,
+      "impliedSpent": 0
+     }
+    ],
+    "medianGoldAtDusk": 8,
+    "inferredGoldSpentByDay": 0,
+    "secondsToFirstNight": 8.9,
+    "impliedSpentAtLastDusk": 0,
+    "impliedSpentMax": 0
+   },
+   "allies": null
+  },
+  {
+   "session": 15,
+   "scene": "Nordfels",
+   "scenes": {
+    "Nordfels": 1187
+   },
+   "matchSeconds": 309,
+   "tickSeconds": 0.26,
+   "nightShare": 0.915,
+   "nightModes": {
+    "Engage": 0.922,
+    "Idle": 0.078
+   },
+   "dayModes": {
+    "SpendGold": 0.851,
+    "CollectCoin": 0.109,
+    "StartNight": 0.03,
+    "Engage": 0.01
+   },
+   "nightDistCastle": {
+    "p50": 3.2,
+    "p90": 3.2,
+    "max": 3.2,
+    "shareOver30": 0.0,
+    "shareOver50": 0.0
+   },
+   "knockouts": {
+    "night": 2,
+    "day": 0,
+    "durationsNightS": [
+     10.9,
+     11.1
+    ],
+    "distCastleAtKO": [
+     3,
+     3
+    ],
+    "nearFoesBeforeKO": []
+   },
+   "stuckNotes": {},
+   "maxWaveReached": {
+    "Nordfels": 2
+   },
+   "states": {
+    "no-gamestate": 20,
+    "InMatch": 1205
+   },
+   "victoryTicks": 0,
+   "defeatTicks": 0,
+   "economy": {
+    "goldAtDusk": [
+     {
+      "wave": "0/13",
+      "gold": 8,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 8,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "1/13",
+      "gold": 8,
+      "coinsOnMap": 5,
+      "predictedNoSpend": 13,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "2/13",
+      "gold": 18,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 18,
+      "impliedSpent": 0
+     }
+    ],
+    "medianGoldAtDusk": 8,
+    "inferredGoldSpentByDay": 0,
+    "secondsToFirstNight": 9.2,
+    "impliedSpentAtLastDusk": 0,
+    "impliedSpentMax": 0
+   },
+   "allies": null
+  },
+  {
+   "session": 16,
+   "scene": "Nordfels",
+   "scenes": {
+    "Nordfels": 17905,
+    "Durststein": 3223
+   },
+   "matchSeconds": 5493,
+   "tickSeconds": 0.26,
+   "nightShare": 0.962,
+   "nightModes": {
+    "Engage": 0.771,
+    "Idle": 0.229
+   },
+   "dayModes": {
+    "SpendGold": 0.798,
+    "CollectCoin": 0.175,
+    "StartNight": 0.022,
+    "Engage": 0.002,
+    "Idle": 0.002
+   },
+   "nightDistCastle": {
+    "p50": 3.1,
+    "p90": 19.0,
+    "max": 38.7,
+    "shareOver30": 0.0,
+    "shareOver50": 0.0
+   },
+   "knockouts": {
+    "night": 112,
+    "day": 0,
+    "durationsNightS": [
+     10.8,
+     11.2,
+     11.0,
+     11.1,
+     11.1,
+     11.0,
+     10.9,
+     11.0,
+     10.8,
+     11.0,
+     10.8,
+     11.0,
+     11.0,
+     11.1,
+     11.0,
+     11.0,
+     11.0,
+     10.8,
+     11.0,
+     10.9,
+     11.0,
+     11.1,
+     11.0,
+     11.0,
+     11.0,
+     11.0,
+     11.0,
+     11.1,
+     11.1,
+     11.0,
+     10.8,
+     10.8,
+     11.0,
+     11.0,
+     11.0,
+     11.0,
+     10.8,
+     11.0,
+     11.0,
+     11.0,
+     11.1,
+     0.3,
+     11.1,
+     11.2,
+     11.0,
+     11.0,
+     11.0,
+     11.1,
+     11.1,
+     11.0,
+     11.0,
+     11.1,
+     11.1,
+     11.2,
+     11.0,
+     10.8,
+     11.0,
+     11.0,
+     11.0,
+     11.0
+    ],
+    "distCastleAtKO": [
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3
+    ],
+    "nearFoesBeforeKO": []
+   },
+   "stuckNotes": {
+    "stuck": 7
+   },
+   "maxWaveReached": {
+    "Nordfels": 12,
+    "Durststein": 3
+   },
+   "states": {
+    "no-gamestate": 27,
+    "InMatch": 21161,
+    "AfterMatchVictory": 225
+   },
+   "victoryTicks": 225,
+   "defeatTicks": 0,
+   "economy": {
+    "goldAtDusk": [
+     {
+      "wave": "0/13",
+      "gold": 8,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 8,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "1/13",
+      "gold": 8,
+      "coinsOnMap": 5,
+      "predictedNoSpend": 13,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "2/13",
+      "gold": 18,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 18,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "3/13",
+      "gold": 20,
+      "coinsOnMap": 3,
+      "predictedNoSpend": 23,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "4/13",
+      "gold": 30,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 31,
+      "impliedSpent": 1
+     },
+     {
+      "wave": "5/13",
+      "gold": 32,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 33,
+      "impliedSpent": 1
+     },
+     {
+      "wave": "6/13",
+      "gold": 33,
+      "coinsOnMap": 5,
+      "predictedNoSpend": 38,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "7/13",
+      "gold": 43,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 43,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "8/13",
+      "gold": 52,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 52,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "9/13",
+      "gold": 64,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 65,
+      "impliedSpent": 1
+     },
+     {
+      "wave": "10/13",
+      "gold": 77,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 77,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "11/13",
+      "gold": 91,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 91,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "12/13",
+      "gold": 96,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 96,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "12/13",
+      "gold": 96,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 96,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "0/12",
+      "gold": 0,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 16,
+      "impliedSpent": 16
+     },
+     {
+      "wave": "1/12",
+      "gold": 0,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 19,
+      "impliedSpent": 19
+     },
+     {
+      "wave": "2/12",
+      "gold": 6,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 23,
+      "impliedSpent": 17
+     },
+     {
+      "wave": "3/12",
+      "gold": 9,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 26,
+      "impliedSpent": 17
+     }
+    ],
+    "medianGoldAtDusk": 31.0,
+    "inferredGoldSpentByDay": 4,
+    "secondsToFirstNight": 9.0,
+    "impliedSpentAtLastDusk": 17,
+    "impliedSpentMax": 19
+   },
+   "allies": null
+  },
+  {
+   "session": 17,
+   "scene": "Durststein",
+   "scenes": {
+    "Durststein": 2743
+   },
+   "matchSeconds": 741,
+   "tickSeconds": 0.27,
+   "nightShare": 0.927,
+   "nightModes": {
+    "Engage": 0.934,
+    "HeroDead": 0.066
+   },
+   "dayModes": {
+    "SpendGold": 0.815,
+    "CollectCoin": 0.165,
+    "StartNight": 0.02
+   },
+   "nightDistCastle": {
+    "p50": 19.1,
+    "p90": 20.4,
+    "max": 26.1,
+    "shareOver30": 0.0,
+    "shareOver50": 0.0
+   },
+   "knockouts": {
+    "night": 4,
+    "day": 0,
+    "durationsNightS": [
+     11.0,
+     11.0,
+     11.0,
+     10.9
+    ],
+    "distCastleAtKO": [
+     19,
+     19,
+     19,
+     19
+    ],
+    "nearFoesBeforeKO": [
+     7,
+     8,
+     8,
+     4
+    ]
+   },
+   "stuckNotes": {
+    "stuck": 1
+   },
+   "maxWaveReached": {
+    "Durststein": 3
+   },
+   "states": {
+    "no-gamestate": 19,
+    "InMatch": 2757
+   },
+   "victoryTicks": 0,
+   "defeatTicks": 0,
+   "economy": {
+    "goldAtDusk": [
+     {
+      "wave": "0/12",
+      "gold": 16,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 16,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "1/12",
+      "gold": 18,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 19,
+      "impliedSpent": 1
+     },
+     {
+      "wave": "2/12",
+      "gold": 23,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 23,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "3/12",
+      "gold": 23,
+      "coinsOnMap": 3,
+      "predictedNoSpend": 26,
+      "impliedSpent": 0
+     }
+    ],
+    "medianGoldAtDusk": 20.5,
+    "inferredGoldSpentByDay": 1,
+    "secondsToFirstNight": 8.5,
+    "impliedSpentAtLastDusk": 0,
+    "impliedSpentMax": 1
+   },
+   "allies": null
+  },
+  {
+   "session": 18,
+   "scene": "Durststein",
+   "scenes": {
+    "Durststein": 309
+   },
+   "matchSeconds": 80,
+   "tickSeconds": 0.26,
+   "nightShare": 0.88,
+   "nightModes": {
+    "Engage": 1.0
+   },
+   "dayModes": {
+    "SpendGold": 0.973,
+    "StartNight": 0.027
+   },
+   "nightDistCastle": {
+    "p50": 18.9,
+    "p90": 18.9,
+    "max": 18.9,
+    "shareOver30": 0.0,
+    "shareOver50": 0.0
+   },
+   "knockouts": {
+    "night": 0,
+    "day": 0,
+    "durationsNightS": [],
+    "distCastleAtKO": [],
+    "nearFoesBeforeKO": []
+   },
+   "stuckNotes": {},
+   "maxWaveReached": {
+    "Durststein": 0
+   },
+   "states": {
+    "no-gamestate": 20,
+    "InMatch": 323
+   },
+   "victoryTicks": 0,
+   "defeatTicks": 0,
+   "economy": {
+    "goldAtDusk": [
+     {
+      "wave": "0/12",
+      "gold": 16,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 16,
+      "impliedSpent": 0
+     }
+    ],
+    "medianGoldAtDusk": 16,
+    "inferredGoldSpentByDay": 0,
+    "secondsToFirstNight": 8.3,
+    "impliedSpentAtLastDusk": 0,
+    "impliedSpentMax": 0
+   },
+   "allies": null
+  },
+  {
+   "session": 19,
+   "scene": "Durststein",
+   "scenes": {
+    "Durststein": 1680
+   },
+   "matchSeconds": 437,
+   "tickSeconds": 0.26,
+   "nightShare": 0.924,
+   "nightModes": {
+    "Engage": 0.753,
+    "CollectCoin": 0.139,
+    "HeroDead": 0.108
+   },
+   "dayModes": {
+    "SpendGold": 0.883,
+    "CollectCoin": 0.086,
+    "StartNight": 0.023,
+    "Engage": 0.008
+   },
+   "nightDistCastle": {
+    "p50": 19.7,
+    "p90": 23.5,
+    "max": 25.2,
+    "shareOver30": 0.0,
+    "shareOver50": 0.0
+   },
+   "knockouts": {
+    "night": 4,
+    "day": 0,
+    "durationsNightS": [
+     11.1,
+     11.0,
+     11.0,
+     11.1
+    ],
+    "distCastleAtKO": [
+     19,
+     19,
+     19,
+     19
+    ],
+    "nearFoesBeforeKO": [
+     8,
+     8,
+     8,
+     4
+    ]
+   },
+   "stuckNotes": {
+    "stuck": 20,
+    "snap": 5
+   },
+   "maxWaveReached": {
+    "Durststein": 2
+   },
+   "states": {
+    "no-gamestate": 19,
+    "InMatch": 1694
+   },
+   "victoryTicks": 0,
+   "defeatTicks": 0,
+   "economy": {
+    "goldAtDusk": [
+     {
+      "wave": "0/12",
+      "gold": 16,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 16,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "1/12",
+      "gold": 18,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 19,
+      "impliedSpent": 1
+     },
+     {
+      "wave": "2/12",
+      "gold": 21,
+      "coinsOnMap": 2,
+      "predictedNoSpend": 23,
+      "impliedSpent": 0
+     }
+    ],
+    "medianGoldAtDusk": 18,
+    "inferredGoldSpentByDay": 1,
+    "secondsToFirstNight": 8.4,
+    "impliedSpentAtLastDusk": 0,
+    "impliedSpentMax": 1
+   },
+   "allies": null
+  },
+  {
+   "session": 20,
+   "scene": "Durststein",
+   "scenes": {
+    "Durststein": 1757
+   },
+   "matchSeconds": 457,
+   "tickSeconds": 0.26,
+   "nightShare": 0.973,
+   "nightModes": {
+    "Engage": 0.864,
+    "CollectCoin": 0.136
+   },
+   "dayModes": {
+    "SpendGold": 0.766,
+    "CollectCoin": 0.149,
+    "StartNight": 0.064,
+    "Engage": 0.021
+   },
+   "nightDistCastle": {
+    "p50": 21.6,
+    "p90": 25.6,
+    "max": 46.5,
+    "shareOver30": 0.098,
+    "shareOver50": 0.0
+   },
+   "knockouts": {
+    "night": 0,
+    "day": 0,
+    "durationsNightS": [],
+    "distCastleAtKO": [],
+    "nearFoesBeforeKO": []
+   },
+   "stuckNotes": {
+    "stuck": 4
+   },
+   "maxWaveReached": {
+    "Durststein": 2
+   },
+   "states": {
+    "no-gamestate": 19,
+    "InMatch": 1771
+   },
+   "victoryTicks": 0,
+   "defeatTicks": 0,
+   "economy": {
+    "goldAtDusk": [
+     {
+      "wave": "0/12",
+      "gold": 16,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 16,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "1/12",
+      "gold": 16,
+      "coinsOnMap": 3,
+      "predictedNoSpend": 19,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "2/12",
+      "gold": 21,
+      "coinsOnMap": 2,
+      "predictedNoSpend": 23,
+      "impliedSpent": 0
+     }
+    ],
+    "medianGoldAtDusk": 16,
+    "inferredGoldSpentByDay": 0,
+    "secondsToFirstNight": 8.4,
+    "impliedSpentAtLastDusk": 0,
+    "impliedSpentMax": 0
+   },
+   "allies": null
+  },
+  {
+   "session": 21,
+   "scene": "Durststein",
+   "scenes": {
+    "Durststein": 2901
+   },
+   "matchSeconds": 754,
+   "tickSeconds": 0.26,
+   "nightShare": 0.985,
+   "nightModes": {
+    "Engage": 0.97,
+    "HeroDead": 0.029,
+    "CollectCoin": 0.0
+   },
+   "dayModes": {
+    "SpendGold": 0.837,
+    "StartNight": 0.093,
+    "Engage": 0.07
+   },
+   "nightDistCastle": {
+    "p50": 44.1,
+    "p90": 65.6,
+    "max": 72.4,
+    "shareOver30": 0.98,
+    "shareOver50": 0.41
+   },
+   "knockouts": {
+    "night": 2,
+    "day": 0,
+    "durationsNightS": [
+     11.1,
+     11.0
+    ],
+    "distCastleAtKO": [
+     58,
+     66
+    ],
+    "nearFoesBeforeKO": [
+     1,
+     2
+    ]
+   },
+   "stuckNotes": {
+    "stuck": 136,
+    "snap": 39,
+    "unstick": 2
+   },
+   "maxWaveReached": {
+    "Durststein": 3
+   },
+   "states": {
+    "no-gamestate": 19,
+    "InMatch": 2915
+   },
+   "victoryTicks": 0,
+   "defeatTicks": 0,
+   "economy": {
+    "goldAtDusk": [
+     {
+      "wave": "0/12",
+      "gold": 16,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 16,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "1/12",
+      "gold": 17,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 19,
+      "impliedSpent": 2
+     },
+     {
+      "wave": "2/12",
+      "gold": 21,
+      "coinsOnMap": 2,
+      "predictedNoSpend": 23,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "3/12",
+      "gold": 25,
+      "coinsOnMap": 1,
+      "predictedNoSpend": 26,
+      "impliedSpent": 0
+     }
+    ],
+    "medianGoldAtDusk": 19.0,
+    "inferredGoldSpentByDay": 0,
+    "secondsToFirstNight": 8.4,
+    "impliedSpentAtLastDusk": 0,
+    "impliedSpentMax": 2
+   },
+   "allies": null
+  },
+  {
+   "session": 22,
+   "scene": "Durststein",
+   "scenes": {
+    "Durststein": 3214
+   },
+   "matchSeconds": 836,
+   "tickSeconds": 0.26,
+   "nightShare": 0.987,
+   "nightModes": {
+    "Engage": 0.949,
+    "CollectCoin": 0.051,
+    "Idle": 0.0
+   },
+   "dayModes": {
+    "SpendGold": 0.837,
+    "StartNight": 0.093,
+    "Engage": 0.047,
+    "Idle": 0.023
+   },
+   "nightDistCastle": {
+    "p50": 78.7,
+    "p90": 138.2,
+    "max": 138.2,
+    "shareOver30": 0.796,
+    "shareOver50": 0.616
+   },
+   "knockouts": {
+    "night": 0,
+    "day": 0,
+    "durationsNightS": [],
+    "distCastleAtKO": [],
+    "nearFoesBeforeKO": []
+   },
+   "stuckNotes": {
+    "stuck": 236,
+    "snap": 73
+   },
+   "maxWaveReached": {
+    "Durststein": 3
+   },
+   "states": {
+    "no-gamestate": 20,
+    "InMatch": 3229
+   },
+   "victoryTicks": 0,
+   "defeatTicks": 0,
+   "economy": {
+    "goldAtDusk": [
+     {
+      "wave": "0/12",
+      "gold": 16,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 16,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "1/12",
+      "gold": 16,
+      "coinsOnMap": 3,
+      "predictedNoSpend": 19,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "2/12",
+      "gold": 22,
+      "coinsOnMap": 1,
+      "predictedNoSpend": 23,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "3/12",
+      "gold": 25,
+      "coinsOnMap": 1,
+      "predictedNoSpend": 26,
+      "impliedSpent": 0
+     }
+    ],
+    "medianGoldAtDusk": 19.0,
+    "inferredGoldSpentByDay": 0,
+    "secondsToFirstNight": 8.4,
+    "impliedSpentAtLastDusk": 0,
+    "impliedSpentMax": 0
+   },
+   "allies": null
+  },
+  {
+   "session": 23,
+   "scene": "Durststein",
+   "scenes": {
+    "Durststein": 2256
+   },
+   "matchSeconds": 587,
+   "tickSeconds": 0.26,
+   "nightShare": 0.913,
+   "nightModes": {
+    "Engage": 0.807,
+    "HeroDead": 0.164,
+    "CollectCoin": 0.03
+   },
+   "dayModes": {
+    "SpendGold": 0.858,
+    "CollectCoin": 0.127,
+    "StartNight": 0.015
+   },
+   "nightDistCastle": {
+    "p50": 25.2,
+    "p90": 126.3,
+    "max": 132.9,
+    "shareOver30": 0.47,
+    "shareOver50": 0.461
+   },
+   "knockouts": {
+    "night": 8,
+    "day": 0,
+    "durationsNightS": [
+     11.2,
+     11.0,
+     11.0,
+     11.0,
+     10.9,
+     12.0,
+     11.0,
+     10.9
+    ],
+    "distCastleAtKO": [
+     98,
+     111,
+     96,
+     121,
+     122,
+     133,
+     133,
+     132
+    ],
+    "nearFoesBeforeKO": [
+     8,
+     8,
+     8,
+     8,
+     7,
+     5,
+     4,
+     1
+    ]
+   },
+   "stuckNotes": {
+    "stuck": 133,
+    "snap": 39
+   },
+   "maxWaveReached": {
+    "Durststein": 2
+   },
+   "states": {
+    "no-gamestate": 20,
+    "InMatch": 2270
+   },
+   "victoryTicks": 0,
+   "defeatTicks": 0,
+   "economy": {
+    "goldAtDusk": [
+     {
+      "wave": "0/12",
+      "gold": 16,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 16,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "1/12",
+      "gold": 18,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 19,
+      "impliedSpent": 1
+     },
+     {
+      "wave": "2/12",
+      "gold": 23,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 23,
+      "impliedSpent": 0
+     }
+    ],
+    "medianGoldAtDusk": 18,
+    "inferredGoldSpentByDay": 1,
+    "secondsToFirstNight": 8.4,
+    "impliedSpentAtLastDusk": 0,
+    "impliedSpentMax": 1
+   },
+   "allies": null
+  },
+  {
+   "session": 24,
+   "scene": "Durststein",
+   "scenes": {
+    "Durststein": 720
+   },
+   "matchSeconds": 187,
+   "tickSeconds": 0.26,
+   "nightShare": 0.864,
+   "nightModes": {
+    "Engage": 0.87,
+    "CollectCoin": 0.124,
+    "ReturnHome": 0.006
+   },
+   "dayModes": {
+    "SpendGold": 0.959,
+    "ResolveUI": 0.02,
+    "StartNight": 0.02
+   },
+   "nightDistCastle": {
+    "p50": 25.2,
+    "p90": 25.2,
+    "max": 35.4,
+    "shareOver30": 0.032,
+    "shareOver50": 0.0
+   },
+   "knockouts": {
+    "night": 0,
+    "day": 0,
+    "durationsNightS": [],
+    "distCastleAtKO": [],
+    "nearFoesBeforeKO": []
+   },
+   "stuckNotes": {
+    "stuck": 51,
+    "snap": 14
+   },
+   "maxWaveReached": {
+    "Durststein": 0
+   },
+   "states": {
+    "no-gamestate": 21,
+    "InMatch": 734,
+    "AfterMatchDefeat": 45
+   },
+   "victoryTicks": 0,
+   "defeatTicks": 45,
+   "economy": {
+    "goldAtDusk": [
+     {
+      "wave": "0/12",
+      "gold": 13,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 16,
+      "impliedSpent": 3
+     },
+     {
+      "wave": "0/12",
+      "gold": 16,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 16,
+      "impliedSpent": 0
+     }
+    ],
+    "medianGoldAtDusk": 14.5,
+    "inferredGoldSpentByDay": 3,
+    "secondsToFirstNight": 15.8,
+    "impliedSpentAtLastDusk": 0,
+    "impliedSpentMax": 3
+   },
+   "allies": null
+  },
+  {
+   "session": 25,
+   "scene": "Durststein",
+   "scenes": {
+    "Durststein": 1777
+   },
+   "matchSeconds": 462,
+   "tickSeconds": 0.26,
+   "nightShare": 0.942,
+   "nightModes": {
+    "Engage": 0.852,
+    "HeroDead": 0.125,
+    "CollectCoin": 0.023
+   },
+   "dayModes": {
+    "SpendGold": 0.816,
+    "CollectCoin": 0.126,
+    "StartNight": 0.058
+   },
+   "nightDistCastle": {
+    "p50": 54.0,
+    "p90": 67.8,
+    "max": 76.5,
+    "shareOver30": 0.898,
+    "shareOver50": 0.562
+   },
+   "knockouts": {
+    "night": 5,
+    "day": 0,
+    "durationsNightS": [
+     11.1,
+     11.0,
+     11.0,
+     11.0,
+     11.1
+    ],
+    "distCastleAtKO": [
+     62,
+     68,
+     62,
+     76,
+     65
+    ],
+    "nearFoesBeforeKO": [
+     2,
+     2,
+     2,
+     3,
+     1
+    ]
+   },
+   "stuckNotes": {
+    "stuck": 11
+   },
+   "maxWaveReached": {
+    "Durststein": 2
+   },
+   "states": {
+    "no-gamestate": 19,
+    "InMatch": 1792
+   },
+   "victoryTicks": 0,
+   "defeatTicks": 0,
+   "economy": {
+    "goldAtDusk": [
+     {
+      "wave": "0/12",
+      "gold": 16,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 16,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "1/12",
+      "gold": 19,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 19,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "2/12",
+      "gold": 23,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 23,
+      "impliedSpent": 0
+     }
+    ],
+    "medianGoldAtDusk": 19,
+    "inferredGoldSpentByDay": 0,
+    "secondsToFirstNight": 8.4,
+    "impliedSpentAtLastDusk": 0,
+    "impliedSpentMax": 0
+   },
+   "allies": null
+  },
+  {
+   "session": 26,
+   "scene": "Durststein",
+   "scenes": {
+    "Durststein": 1095
+   },
+   "matchSeconds": 285,
+   "tickSeconds": 0.26,
+   "nightShare": 0.963,
+   "nightModes": {
+    "Engage": 0.88,
+    "HeroDead": 0.12
+   },
+   "dayModes": {
+    "SpendGold": 0.854,
+    "StartNight": 0.146
+   },
+   "nightDistCastle": {
+    "p50": 56.0,
+    "p90": 98.1,
+    "max": 114.9,
+    "shareOver30": 0.892,
+    "shareOver50": 0.542
+   },
+   "knockouts": {
+    "night": 3,
+    "day": 0,
+    "durationsNightS": [
+     11.2,
+     11.0,
+     11.0
+    ],
+    "distCastleAtKO": [
+     62,
+     62,
+     68
+    ],
+    "nearFoesBeforeKO": [
+     2,
+     2,
+     2
+    ]
+   },
+   "stuckNotes": {
+    "stuck": 7,
+    "snap": 1
+   },
+   "maxWaveReached": {
+    "Durststein": 1
+   },
+   "states": {
+    "no-gamestate": 19,
+    "InMatch": 1110
+   },
+   "victoryTicks": 0,
+   "defeatTicks": 0,
+   "economy": {
+    "goldAtDusk": [
+     {
+      "wave": "0/12",
+      "gold": 16,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 16,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "1/12",
+      "gold": 19,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 19,
+      "impliedSpent": 0
+     }
+    ],
+    "medianGoldAtDusk": 17.5,
+    "inferredGoldSpentByDay": 0,
+    "secondsToFirstNight": 8.4,
+    "impliedSpentAtLastDusk": 0,
+    "impliedSpentMax": 0
+   },
+   "allies": null
+  },
+  {
+   "session": 27,
+   "scene": "Durststein",
+   "scenes": {
+    "Durststein": 1102
+   },
+   "matchSeconds": 298,
+   "tickSeconds": 0.27,
+   "nightShare": 0.965,
+   "nightModes": {
+    "Engage": 0.882,
+    "HeroDead": 0.118
+   },
+   "dayModes": {
+    "SpendGold": 0.897,
+    "StartNight": 0.103
+   },
+   "nightDistCastle": {
+    "p50": 40.0,
+    "p90": 63.0,
+    "max": 76.3,
+    "shareOver30": 0.966,
+    "shareOver50": 0.289
+   },
+   "knockouts": {
+    "night": 3,
+    "day": 0,
+    "durationsNightS": [
+     11.0,
+     11.0,
+     10.8
+    ],
+    "distCastleAtKO": [
+     76,
+     62,
+     63
+    ],
+    "nearFoesBeforeKO": [
+     1,
+     2,
+     2
+    ]
+   },
+   "stuckNotes": {
+    "stuck": 28,
+    "snap": 2,
+    "unstick": 4
+   },
+   "maxWaveReached": {
+    "Durststein": 1
+   },
+   "states": {
+    "no-gamestate": 20,
+    "InMatch": 1116
+   },
+   "victoryTicks": 0,
+   "defeatTicks": 0,
+   "economy": {
+    "goldAtDusk": [
+     {
+      "wave": "0/12",
+      "gold": 16,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 16,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "1/12",
+      "gold": 18,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 19,
+      "impliedSpent": 1
+     }
+    ],
+    "medianGoldAtDusk": 17.0,
+    "inferredGoldSpentByDay": 0,
+    "secondsToFirstNight": 8.4,
+    "impliedSpentAtLastDusk": 1,
+    "impliedSpentMax": 1
+   },
+   "allies": null
+  },
+  {
+   "session": 28,
+   "scene": "Durststein",
+   "scenes": {
+    "Durststein": 1066
+   },
+   "matchSeconds": 288,
+   "tickSeconds": 0.27,
+   "nightShare": 0.962,
+   "nightModes": {
+    "Engage": 0.918,
+    "HeroDead": 0.082
+   },
+   "dayModes": {
+    "SpendGold": 0.854,
+    "StartNight": 0.146
+   },
+   "nightDistCastle": {
+    "p50": 56.0,
+    "p90": 69.0,
+    "max": 76.5,
+    "shareOver30": 0.961,
+    "shareOver50": 0.537
+   },
+   "knockouts": {
+    "night": 2,
+    "day": 0,
+    "durationsNightS": [
+     11.1,
+     11.0
+    ],
+    "distCastleAtKO": [
+     63,
+     64
+    ],
+    "nearFoesBeforeKO": [
+     1,
+     2
+    ]
+   },
+   "stuckNotes": {
+    "stuck": 11,
+    "snap": 2
+   },
+   "maxWaveReached": {
+    "Durststein": 2
+   },
+   "states": {
+    "no-gamestate": 20,
+    "InMatch": 1080
+   },
+   "victoryTicks": 0,
+   "defeatTicks": 0,
+   "economy": {
+    "goldAtDusk": [
+     {
+      "wave": "0/12",
+      "gold": 16,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 16,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "1/12",
+      "gold": 19,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 19,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "2/12",
+      "gold": 21,
+      "coinsOnMap": 2,
+      "predictedNoSpend": 23,
+      "impliedSpent": 0
+     }
+    ],
+    "medianGoldAtDusk": 19,
+    "inferredGoldSpentByDay": 0,
+    "secondsToFirstNight": 8.3,
+    "impliedSpentAtLastDusk": 0,
+    "impliedSpentMax": 0
+   },
+   "allies": null
+  },
+  {
+   "session": 29,
+   "scene": "Durststein",
+   "scenes": {
+    "Durststein": 2062
+   },
+   "matchSeconds": 536,
+   "tickSeconds": 0.26,
+   "nightShare": 0.98,
+   "nightModes": {
+    "Engage": 0.747,
+    "CollectCoin": 0.253
+   },
+   "dayModes": {
+    "SpendGold": 0.854,
+    "StartNight": 0.146
+   },
+   "nightDistCastle": {
+    "p50": 13.1,
+    "p90": 39.8,
+    "max": 47.7,
+    "shareOver30": 0.222,
+    "shareOver50": 0.0
+   },
+   "knockouts": {
+    "night": 0,
+    "day": 0,
+    "durationsNightS": [],
+    "distCastleAtKO": [],
+    "nearFoesBeforeKO": []
+   },
+   "stuckNotes": {
+    "stuck": 7
+   },
+   "maxWaveReached": {
+    "Durststein": 2
+   },
+   "states": {
+    "no-gamestate": 20,
+    "InMatch": 2076
+   },
+   "victoryTicks": 0,
+   "defeatTicks": 0,
+   "economy": {
+    "goldAtDusk": [
+     {
+      "wave": "0/12",
+      "gold": 16,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 16,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "1/12",
+      "gold": 16,
+      "coinsOnMap": 3,
+      "predictedNoSpend": 19,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "2/12",
+      "gold": 21,
+      "coinsOnMap": 2,
+      "predictedNoSpend": 23,
+      "impliedSpent": 0
+     }
+    ],
+    "medianGoldAtDusk": 16,
+    "inferredGoldSpentByDay": 0,
+    "secondsToFirstNight": 8.3,
+    "impliedSpentAtLastDusk": 0,
+    "impliedSpentMax": 0
+   },
+   "allies": null
+  },
+  {
+   "session": 30,
+   "scene": "Durststein",
+   "scenes": {
+    "Durststein": 1097
+   },
+   "matchSeconds": 296,
+   "tickSeconds": 0.27,
+   "nightShare": 0.0,
+   "nightModes": {},
+   "dayModes": {
+    "SpendGold": 0.998,
+    "ResolveUI": 0.002
+   },
+   "nightDistCastle": {
+    "p50": NaN,
+    "p90": NaN,
+    "max": null,
+    "shareOver30": 0.0,
+    "shareOver50": 0.0
+   },
+   "knockouts": {
+    "night": 0,
+    "day": 0,
+    "durationsNightS": [],
+    "distCastleAtKO": [],
+    "nearFoesBeforeKO": []
+   },
+   "stuckNotes": {
+    "stuck": 84,
+    "snap": 27
+   },
+   "maxWaveReached": {
+    "Durststein": 0
+   },
+   "states": {
+    "no-gamestate": 22,
+    "InMatch": 1111
+   },
+   "victoryTicks": 0,
+   "defeatTicks": 0,
+   "economy": {
+    "goldAtDusk": [],
+    "medianGoldAtDusk": null,
+    "inferredGoldSpentByDay": 3,
+    "secondsToFirstNight": null,
+    "impliedSpentAtLastDusk": null,
+    "impliedSpentMax": null
+   },
+   "allies": null
+  },
+  {
+   "session": 31,
+   "scene": "Durststein",
+   "scenes": {
+    "Durststein": 652
+   },
+   "matchSeconds": 170,
+   "tickSeconds": 0.26,
+   "nightShare": 0.94,
+   "nightModes": {
+    "Engage": 0.746,
+    "CollectCoin": 0.254
+   },
+   "dayModes": {
+    "SpendGold": 0.897,
+    "StartNight": 0.103
+   },
+   "nightDistCastle": {
+    "p50": 13.2,
+    "p90": 25.2,
+    "max": 25.2,
+    "shareOver30": 0.0,
+    "shareOver50": 0.0
+   },
+   "knockouts": {
+    "night": 0,
+    "day": 0,
+    "durationsNightS": [],
+    "distCastleAtKO": [],
+    "nearFoesBeforeKO": []
+   },
+   "stuckNotes": {
+    "stuck": 6
+   },
+   "maxWaveReached": {
+    "Durststein": 1
+   },
+   "states": {
+    "no-gamestate": 20,
+    "InMatch": 667
+   },
+   "victoryTicks": 0,
+   "defeatTicks": 0,
+   "economy": {
+    "goldAtDusk": [
+     {
+      "wave": "0/12",
+      "gold": 16,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 16,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "1/12",
+      "gold": 16,
+      "coinsOnMap": 3,
+      "predictedNoSpend": 19,
+      "impliedSpent": 0
+     }
+    ],
+    "medianGoldAtDusk": 16.0,
+    "inferredGoldSpentByDay": 0,
+    "secondsToFirstNight": 8.4,
+    "impliedSpentAtLastDusk": 0,
+    "impliedSpentMax": 0
+   },
+   "allies": null
+  },
+  {
+   "session": 32,
+   "scene": "Durststein",
+   "scenes": {
+    "Durststein": 1504
+   },
+   "matchSeconds": 391,
+   "tickSeconds": 0.26,
+   "nightShare": 0.916,
+   "nightModes": {
+    "Engage": 0.794,
+    "CollectCoin": 0.103,
+    "HeroDead": 0.091,
+    "ReturnHome": 0.012
+   },
+   "dayModes": {
+    "SpendGold": 0.865,
+    "CollectCoin": 0.087,
+    "StartNight": 0.048
+   },
+   "nightDistCastle": {
+    "p50": 12.7,
+    "p90": 14.1,
+    "max": 52.8,
+    "shareOver30": 0.014,
+    "shareOver50": 0.001
+   },
+   "knockouts": {
+    "night": 3,
+    "day": 0,
+    "durationsNightS": [
+     11.1,
+     11.0,
+     11.1
+    ],
+    "distCastleAtKO": [
+     2,
+     3,
+     3
+    ],
+    "nearFoesBeforeKO": [
+     8,
+     8,
+     7
+    ]
+   },
+   "stuckNotes": {
+    "stuck": 6
+   },
+   "maxWaveReached": {
+    "Durststein": 2
+   },
+   "states": {
+    "no-gamestate": 21,
+    "InMatch": 1518
+   },
+   "victoryTicks": 0,
+   "defeatTicks": 0,
+   "economy": {
+    "goldAtDusk": [
+     {
+      "wave": "0/12",
+      "gold": 16,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 16,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "1/12",
+      "gold": 18,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 19,
+      "impliedSpent": 1
+     },
+     {
+      "wave": "2/12",
+      "gold": 21,
+      "coinsOnMap": 2,
+      "predictedNoSpend": 23,
+      "impliedSpent": 0
+     }
+    ],
+    "medianGoldAtDusk": 18,
+    "inferredGoldSpentByDay": 1,
+    "secondsToFirstNight": 8.4,
+    "impliedSpentAtLastDusk": 0,
+    "impliedSpentMax": 1
+   },
+   "allies": null
+  },
+  {
+   "session": 33,
+   "scene": "Durststein",
+   "scenes": {
+    "Durststein": 5300
+   },
+   "matchSeconds": 1378,
+   "tickSeconds": 0.26,
+   "nightShare": 0.974,
+   "nightModes": {
+    "Engage": 0.901,
+    "CollectCoin": 0.071,
+    "HeroDead": 0.025,
+    "ReturnHome": 0.003
+   },
+   "dayModes": {
+    "SpendGold": 0.809,
+    "StartNight": 0.103,
+    "CollectCoin": 0.088
+   },
+   "nightDistCastle": {
+    "p50": 13.3,
+    "p90": 16.6,
+    "max": 25.2,
+    "shareOver30": 0.0,
+    "shareOver50": 0.0
+   },
+   "knockouts": {
+    "night": 3,
+    "day": 0,
+    "durationsNightS": [
+     10.9,
+     11.2,
+     11.0
+    ],
+    "distCastleAtKO": [
+     2,
+     3,
+     2
+    ],
+    "nearFoesBeforeKO": [
+     8,
+     8,
+     8
+    ]
+   },
+   "stuckNotes": {
+    "stuck": 20
+   },
+   "maxWaveReached": {
+    "Durststein": 6
+   },
+   "states": {
+    "no-gamestate": 20,
+    "InMatch": 5314
+   },
+   "victoryTicks": 0,
+   "defeatTicks": 0,
+   "economy": {
+    "goldAtDusk": [
+     {
+      "wave": "0/12",
+      "gold": 16,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 16,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "1/12",
+      "gold": 18,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 19,
+      "impliedSpent": 1
+     },
+     {
+      "wave": "2/12",
+      "gold": 19,
+      "coinsOnMap": 4,
+      "predictedNoSpend": 23,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "3/12",
+      "gold": 23,
+      "coinsOnMap": 3,
+      "predictedNoSpend": 26,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "4/12",
+      "gold": 27,
+      "coinsOnMap": 2,
+      "predictedNoSpend": 29,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "5/12",
+      "gold": 29,
+      "coinsOnMap": 4,
+      "predictedNoSpend": 33,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "6/12",
+      "gold": 35,
+      "coinsOnMap": 2,
+      "predictedNoSpend": 37,
+      "impliedSpent": 0
+     }
+    ],
+    "medianGoldAtDusk": 23,
+    "inferredGoldSpentByDay": 1,
+    "secondsToFirstNight": 8.3,
+    "impliedSpentAtLastDusk": 0,
+    "impliedSpentMax": 1
+   },
+   "allies": null
+  },
+  {
+   "session": 34,
+   "scene": "Durststein",
+   "scenes": {
+    "Durststein": 367
+   },
+   "matchSeconds": 95,
+   "tickSeconds": 0.26,
+   "nightShare": 0.899,
+   "nightModes": {
+    "Engage": 0.885,
+    "CollectCoin": 0.115
+   },
+   "dayModes": {
+    "SpendGold": 0.946,
+    "StartNight": 0.054
+   },
+   "nightDistCastle": {
+    "p50": 13.1,
+    "p90": 14.1,
+    "max": 25.2,
+    "shareOver30": 0.0,
+    "shareOver50": 0.0
+   },
+   "knockouts": {
+    "night": 0,
+    "day": 0,
+    "durationsNightS": [],
+    "distCastleAtKO": [],
+    "nearFoesBeforeKO": []
+   },
+   "stuckNotes": {
+    "stuck": 2
+   },
+   "maxWaveReached": {
+    "Durststein": 0
+   },
+   "states": {
+    "no-gamestate": 20,
+    "InMatch": 381
+   },
+   "victoryTicks": 0,
+   "defeatTicks": 0,
+   "economy": {
+    "goldAtDusk": [
+     {
+      "wave": "0/12",
+      "gold": 16,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 16,
+      "impliedSpent": 0
+     }
+    ],
+    "medianGoldAtDusk": 16,
+    "inferredGoldSpentByDay": 0,
+    "secondsToFirstNight": 8.3,
+    "impliedSpentAtLastDusk": 0,
+    "impliedSpentMax": 0
+   },
+   "allies": null
+  },
+  {
+   "session": 35,
+   "scene": "Durststein",
+   "scenes": {
+    "Durststein": 294
+   },
+   "matchSeconds": 76,
+   "tickSeconds": 0.26,
+   "nightShare": 0.874,
+   "nightModes": {
+    "Engage": 1.0
+   },
+   "dayModes": {
+    "SpendGold": 0.946,
+    "StartNight": 0.054
+   },
+   "nightDistCastle": {
+    "p50": 13.1,
+    "p90": 14.0,
+    "max": 14.1,
+    "shareOver30": 0.0,
+    "shareOver50": 0.0
+   },
+   "knockouts": {
+    "night": 0,
+    "day": 0,
+    "durationsNightS": [],
+    "distCastleAtKO": [],
+    "nearFoesBeforeKO": []
+   },
+   "stuckNotes": {},
+   "maxWaveReached": {
+    "Durststein": 0
+   },
+   "states": {
+    "no-gamestate": 21,
+    "InMatch": 308
+   },
+   "victoryTicks": 0,
+   "defeatTicks": 0,
+   "economy": {
+    "goldAtDusk": [
+     {
+      "wave": "0/12",
+      "gold": 16,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 16,
+      "impliedSpent": 0
+     }
+    ],
+    "medianGoldAtDusk": 16,
+    "inferredGoldSpentByDay": 0,
+    "secondsToFirstNight": 8.3,
+    "impliedSpentAtLastDusk": 0,
+    "impliedSpentMax": 0
+   },
+   "allies": null
+  },
+  {
+   "session": 36,
+   "scene": "Durststein",
+   "scenes": {
+    "Durststein": 1096
+   },
+   "matchSeconds": 285,
+   "tickSeconds": 0.26,
+   "nightShare": 0.964,
+   "nightModes": {
+    "Engage": 0.868,
+    "CollectCoin": 0.132
+   },
+   "dayModes": {
+    "SpendGold": 0.897,
+    "StartNight": 0.103
+   },
+   "nightDistCastle": {
+    "p50": 11.3,
+    "p90": 24.9,
+    "max": 25.2,
+    "shareOver30": 0.0,
+    "shareOver50": 0.0
+   },
+   "knockouts": {
+    "night": 0,
+    "day": 0,
+    "durationsNightS": [],
+    "distCastleAtKO": [],
+    "nearFoesBeforeKO": []
+   },
+   "stuckNotes": {
+    "stuck": 9
+   },
+   "maxWaveReached": {
+    "Durststein": 1
+   },
+   "states": {
+    "no-gamestate": 20,
+    "InMatch": 1110
+   },
+   "victoryTicks": 0,
+   "defeatTicks": 0,
+   "economy": {
+    "goldAtDusk": [
+     {
+      "wave": "0/12",
+      "gold": 16,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 16,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "1/12",
+      "gold": 16,
+      "coinsOnMap": 3,
+      "predictedNoSpend": 19,
+      "impliedSpent": 0
+     }
+    ],
+    "medianGoldAtDusk": 16.0,
+    "inferredGoldSpentByDay": 0,
+    "secondsToFirstNight": 8.4,
+    "impliedSpentAtLastDusk": 0,
+    "impliedSpentMax": 0
+   },
+   "allies": null
+  },
+  {
+   "session": 37,
+   "scene": "Durststein",
+   "scenes": {
+    "Durststein": 2530
+   },
+   "matchSeconds": 658,
+   "tickSeconds": 0.26,
+   "nightShare": 0.981,
+   "nightModes": {
+    "Engage": 0.938,
+    "CollectCoin": 0.062
+   },
+   "dayModes": {
+    "SpendGold": 0.714,
+    "StartNight": 0.163,
+    "CollectCoin": 0.122
+   },
+   "nightDistCastle": {
+    "p50": 12.5,
+    "p90": 14.0,
+    "max": 40.9,
+    "shareOver30": 0.011,
+    "shareOver50": 0.0
+   },
+   "knockouts": {
+    "night": 0,
+    "day": 0,
+    "durationsNightS": [],
+    "distCastleAtKO": [],
+    "nearFoesBeforeKO": []
+   },
+   "stuckNotes": {
+    "stuck": 7
+   },
+   "maxWaveReached": {
+    "Durststein": 3
+   },
+   "states": {
+    "no-gamestate": 21,
+    "InMatch": 2545
+   },
+   "victoryTicks": 0,
+   "defeatTicks": 0,
+   "economy": {
+    "goldAtDusk": [
+     {
+      "wave": "0/12",
+      "gold": 16,
+      "coinsOnMap": 0,
+      "predictedNoSpend": 16,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "1/12",
+      "gold": 16,
+      "coinsOnMap": 3,
+      "predictedNoSpend": 19,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "2/12",
+      "gold": 21,
+      "coinsOnMap": 2,
+      "predictedNoSpend": 23,
+      "impliedSpent": 0
+     },
+     {
+      "wave": "3/12",
+      "gold": 23,
+      "coinsOnMap": 3,
+      "predictedNoSpend": 26,
+      "impliedSpent": 0
+     }
+    ],
+    "medianGoldAtDusk": 18.5,
+    "inferredGoldSpentByDay": 0,
+    "secondsToFirstNight": 8.4,
+    "impliedSpentAtLastDusk": 0,
+    "impliedSpentMax": 0
+   },
+   "allies": null
+  }
+ ]
+}

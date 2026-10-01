@@ -159,6 +159,10 @@ namespace ThronefallTrainer
 
             // P4 shrines (unactivated only — activated ones are inert)
             public int ShrineCount;
+        public int GateCount;               // interactable path-toggle pads
+        public float GateDist;
+        public Vector3 GatePos;
+        public CutOpenPathInteractor NearestGate;
             public Vector3 ShrinePos;
             public float ShrineDist;
 
@@ -196,6 +200,9 @@ namespace ThronefallTrainer
                 UncoveredDoorTarget = s.UncoveredDoorTarget,
                 UncoveredDoorHot = s.UncoveredDoorHot,
                 UncoveredDoorIdx = s.UncoveredDoorIdx,
+                GateCount = s.GateCount,
+                GatePos = V(s.GatePos),
+                GateDist = s.GateDist,
                 ArmyTarget = s.ArmyTarget,
                 SelfDefendRange = s.SelfDefendRange,
                 DayBudget = s.DayBudget,
@@ -241,6 +248,11 @@ namespace ThronefallTrainer
         private static float weScanAt;
         private static Shrine[] shrineCache;
         private static float shrineScanAt;
+        private static CutOpenPathInteractor[] gateCache;
+        private static float gateScanAt;
+        private static List<BuildingInteractor> gateBuilds =
+            new List<BuildingInteractor>();   // Gate slots NOT on TagManager's
+                                              // list (Gate Wide Variant etc.)
         private static bool castleHpLogged;
 
         // ---- extracted terrain pack (claude-refpack): per-scene slot
@@ -377,8 +389,11 @@ namespace ThronefallTrainer
         public static string BuildCat(string name)
         {
             string n = (name ?? "").ToLowerInvariant();
-            if (n.Contains("wall") || n.Contains("palisade") || n.Contains("fortify")) return "wall";
+            // Gate-first: "Gate Wide Variant" walls carry buildingName="Wall"
+            // — the door-checklist items mean THESE slots. If the object is a
+            // gate it must classify as gate, not wall.
             if (n.Contains("gate")) return "gate";
+            if (n.Contains("wall") || n.Contains("palisade") || n.Contains("fortify")) return "wall";
             if (n.Contains("tower") || n.Contains("ballista") || n.Contains("cannon") ||
                 n.Contains("watchtower")) return "tower";
             if (n.Contains("barrack") || n.Contains("archery") || n.Contains("militia") ||
@@ -413,6 +428,14 @@ namespace ThronefallTrainer
                 milFirstAt = -1f;
             }
             string cat = BuildCat(buildingName);
+            nonDefenseStreak = (cat == "wall" || cat == "gate" || cat == "tower") ? 0 : nonDefenseStreak + 1;
+            // "Gate Wide Variant" objects report buildingName "Wall" — the
+            // playbook's gate checklist items mean the gate slots, so a
+            // completed wall-slot that carried a GateOpener has to count as
+            // gate. Marked by a name suffix from the caller.
+            if (cat == "wall" && buildingName != null &&
+                buildingName.IndexOf("|gate", System.StringComparison.OrdinalIgnoreCase) >= 0)
+                cat = "gate";
             if (cat == "military" && milFirstAt < 0f)
                 milFirstAt = Time.unscaledTime;
             CatBuilt[cat] = (CatBuilt.TryGetValue(cat, out int c) ? c : 0) + 1;
@@ -491,6 +514,13 @@ namespace ThronefallTrainer
               .Append(",\"red\":").Append(s.RedAlert ? "true" : "false")
               .Append(",\"breaches\":").Append(BreachCount)
               .Append(",\"bld\":").Append(s.BuildCount)
+              .Append(",\"gates\":").Append(s.GateCount)
+              .Append(',').Append(Efficiency.Json())
+              .Append(',').Append(Tasks.Json())
+              .Append(",\"hot_cells\":").Append(SpatialMemory.HotCount(s.SceneName))
+              .Append(",\"maxed_pct\":").Append(MaxLevelTotal > 0 ? Mathf.RoundToInt(100f * MaxLevelSum / MaxLevelTotal) : 0)
+              .Append(",\"slots_built\":").Append(SlotsBuilt)
+              .Append(",\"slots_total\":").Append(SlotsTotal)
               .Append(",\"cur_build\":").Append(JsonStr(s.NearestBuildName))
               .Append(",\"open_order\":[");
             var open = OpenBuildOrder();
@@ -1097,6 +1127,15 @@ namespace ThronefallTrainer
         public static BuildingInteractor HeldBuildRef;
         public static BuildingInteractor CommittedBuildRef;
         public static float CommittedBuildAt;
+        private static string firstOpenPresent;
+        private static int nonDefenseStreak;
+        public static int MaxLevelSum, MaxLevelTotal, SlotsBuilt, SlotsTotal;
+        private static System.Reflection.FieldInfo fiRequiredRoot;
+        private static System.Collections.Generic.HashSet<BuildSlot> enablersNow =
+            new System.Collections.Generic.HashSet<BuildSlot>();
+        private static System.Collections.Generic.HashSet<BuildSlot> enablersPrev =
+            new System.Collections.Generic.HashSet<BuildSlot>();
+        private static System.Collections.Generic.HashSet<string> catsPresent;
 
         // TagManager list-flicker grace — see the carry-forward below.
         private static BuildingInteractor lastBuildPick;
@@ -1207,6 +1246,63 @@ namespace ThronefallTrainer
                 }
                 if (s.ShrineCount == 0) s.ShrineDist = 0f;
                 else s.ShrineDist = Mathf.Sqrt(s.ShrineDist);
+            }
+
+            // Gate/unlock pads: CutOpenPathInteractor = the pay-to-open path
+            // toggles (the "doors" the bot never unlocked — they aren't in
+            // playerBuildingInteractors so the scan never saw them). 1 Hz.
+            if (Time.unscaledTime >= gateScanAt)
+            {
+                gateScanAt = Time.unscaledTime + 1f;
+                gateCache = Object.FindObjectsOfType<CutOpenPathInteractor>(true);
+                // Gate building slots live outside playerBuildingInteractors
+                // (Gate Wide Variant on Durststein never appeared in the
+                // scan) — find them by their building name so the playbook's
+                // "gate" items can actually be built.
+                // Max-everything progress meter: sum(level)/sum(maxLevel) over
+                // every build slot in the scene — the proof number for
+                // "everything built and upgraded to the max".
+                int lvSum = 0, lvMax = 0, built = 0, total = 0;
+                foreach (var sl in Object.FindObjectsOfType<BuildSlot>(true))
+                {
+                    if (sl == null || sl.Upgrades == null) continue;
+                    total++; lvMax += sl.Upgrades.Count; lvSum += Mathf.Min(sl.Level, sl.Upgrades.Count);
+                    if (sl.Level > 0) built++;
+                }
+                MaxLevelSum = lvSum; MaxLevelTotal = lvMax; SlotsBuilt = built; SlotsTotal = total;
+                gateBuilds.Clear();
+                foreach (var gb in Object.FindObjectsOfType<BuildingInteractor>(true))
+                {
+                    if (gb == null) continue;
+                    string gn = gb.targetBuilding != null ? gb.targetBuilding.name : gb.name;
+                    if (gn != null && gn.IndexOf("gate", System.StringComparison.OrdinalIgnoreCase) >= 0)
+                    {
+                        gateBuilds.Add(gb);
+                        if (gateBuilds.Count <= 8)
+                            Plugin.Log?.LogInfo($"[bot] gate-slot '{gn}' cat={BuildCat(gb.targetBuilding != null ? gb.targetBuilding.buildingName : gn)} bn='{(gb.targetBuilding != null ? gb.targetBuilding.buildingName : "?")}' can={gb.CanBeInteractedWith}");
+                    }
+                }
+            }
+            s.GateCount = 0; s.GateDist = float.MaxValue; s.NearestGate = null;
+            if (gateCache != null)
+            {
+                foreach (var gp in gateCache)
+                {
+                    if (gp == null || !gp.CanBeInteractedWith) continue;
+                    s.GateCount++;
+                    float gd = (gp.transform.position - s.HeroPos).sqrMagnitude;
+                    if (gd < s.GateDist)
+                    {
+                        s.GateDist = gd;
+                        s.NearestGate = gp;
+                    }
+                }
+                if (s.NearestGate != null)
+                {
+                    s.GatePos = s.NearestGate.transform.position;
+                    s.GateDist = Mathf.Sqrt(s.GateDist);
+                }
+                else s.GateDist = 0f;
             }
 
             var spawner = EnemySpawner.instance;
@@ -1781,7 +1877,19 @@ namespace ThronefallTrainer
             int commitCandScore = int.MinValue;   // committed slot's score
             float commitCandDist = 0f;            // this pass (if it survived
             float nowT = Time.unscaledTime;       // the filters)
+            if (catsPresent == null)
+                catsPresent = new System.Collections.Generic.HashSet<string>();
+            catsPresent.Clear();
+            { var tmpE = enablersPrev; enablersPrev = enablersNow; enablersNow = tmpE; enablersNow.Clear(); }
+            int effTier = Efficiency.Tier;
             var builds = tm.playerBuildingInteractors;
+            if (gateBuilds.Count > 0)
+            {
+                // Merge gate slots into the candidate list (deduped).
+                builds = new List<BuildingInteractor>(tm.playerBuildingInteractors);
+                foreach (var gb in gateBuilds)
+                    if (gb != null && !builds.Contains(gb)) builds.Add(gb);
+            }
             // Held-hold identity pin: a mid-fill interactor LEAVES the
             // builds list while its fill runs (pads deactivate) — the
             // preferBuildKey match then misses every tick and the brain
@@ -1858,7 +1966,26 @@ namespace ThronefallTrainer
                         continue;
                     }
                 }
-                if (!bi.CanBeInteractedWith) continue;
+                if (!bi.CanBeInteractedWith)
+                {
+                    // Max-everything (A3): a built slot that cannot upgrade
+                    // because its ROOT (usually Castle Center) is too low is
+                    // waiting on the root — promote the root as an enabler.
+                    try
+                    {
+                        var wbs = bi.targetBuilding;
+                        if (wbs != null && wbs.Level > 0 && wbs.Upgrades != null && wbs.Level < wbs.Upgrades.Count)
+                        {
+                            if (fiRequiredRoot == null)
+                                fiRequiredRoot = typeof(BuildSlot).GetField("requiredRoot",
+                                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                            var root = fiRequiredRoot?.GetValue(wbs) as BuildSlot;
+                            if (root != null && root != wbs && root.CanBeUpgraded) enablersNow.Add(root);
+                        }
+                    }
+                    catch { }
+                    continue;
+                }
                 // "Complete" or choice-wedged interactors still report
                 // CanBeInteractedWith — their InteractionHold early-returns
                 // forever (diag: state=Upgrade complete=True on the Castle
@@ -1888,7 +2015,14 @@ namespace ThronefallTrainer
                     if (!bs.gameObject.activeInHierarchy && bs.StartDeactivated &&
                         (bs.ActivatorBuilding == null ||
                          bs.ActivatorBuilding.Level <= bs.ActivatorLevel))
+                    {
+                        // Build the ENABLER first (A2/A5): a gated slot is
+                        // un-buildable until its activator (Castle Center
+                        // etc.) levels up — remember it so the activator's
+                        // own interactor gets a large score next scan.
+                        if (bs.ActivatorBuilding != null) enablersNow.Add(bs.ActivatorBuilding);
                         continue;
+                    }
                     if (bs.NextUpgradeOrBuildEnergyCoreCost > s.CoreBalance)
                         continue;                              // can't afford cores — skip outright
                     if (!bi.canBeHarvested && s.Balance <= 0 &&
@@ -1925,7 +2059,16 @@ namespace ThronefallTrainer
                     if (broke && incomeDelta > 0) score += Mathf.Min(incomeDelta, 15) * 40;
                     if (military > 0 && (s.FinalWaveNext || s.NextWaveCount >= 30))
                         score += military * 100;
-                    if (incomeDelta > 0) score += 30 + Mathf.Min(incomeDelta, 10) * 3;
+                    if (incomeDelta > 0)
+                    {
+                        score += 30 + Mathf.Min(incomeDelta, 10) * 3;
+                        // ROI (A11): income per gold spent — a 1 g Field (+1)
+                        // must beat a 20 g House L3 (+2): payback, not raw delta.
+                        float cst = Mathf.Max(1f, bs.NextUpgradeOrBuildCost);
+                        score += Mathf.Min(600, (int)(300f * incomeDelta / cst));
+                    }
+                    if (armyShort && military > 0) score += 6500;
+                    if (enablersPrev.Contains(bs)) score += 7000;
                     // PLAYBOOK ORDER: the M3 plan's literal build sequence —
                     // the next unsatisfied category gets a heavy bonus so
                     // walls/gates/barracks go up in the playbook's order,
@@ -1934,15 +2077,28 @@ namespace ThronefallTrainer
                     if (open.Length > 0)
                     {
                         string scat = BuildCat(bs.buildingName);
-                        int oi = System.Array.IndexOf(open, scat);
-                        if (oi >= 0)
-                            // HARD build order (user mandate): the next
-                            // playbook category is not a hint — it's a pin.
-                            // open[0] outbids everything except an active
-                            // hold (100000) — walls/gates/military/upgrades
-                            // can no longer lose to tower-spam or a broke
-                            // wallet. open[1..2] stay strong suggestions.
-                            score += oi == 0 ? 8000 : (600 - oi * 150);
+                        // Gate wall-variants classify by their object name —
+                        // buildingName is literally "Wall" for them.
+                        if (scat == "wall" && bs.name != null &&
+                            bs.name.IndexOf("gate", System.StringComparison.OrdinalIgnoreCase) >= 0)
+                            scat = "gate";
+                        if (catsPresent != null) catsPresent.Add(scat);
+                        // HARD build order: pin the FIRST open category that
+                        // actually has live candidates — open[0] can name a
+                        // category this map has no slots for ("gate" on
+                        // Durststein = the CutOpenPath pads, not building
+                        // slots), which starved every real task behind it.
+                        // Tiering (A5/A2): enabler 7000 > army-short military
+                        // 6500 > playbook pin 5000 — but after 2 straight
+                        // non-defense builds the pin jumps to 7500 so walls /
+                        // gates / towers can never starve behind troops.
+                        if (scat == firstOpenPresent)
+                            score += nonDefenseStreak >= 2 ? 7500 : 5000;
+                        else
+                        {
+                            int oi = System.Array.IndexOf(open, scat);
+                            if (oi >= 0) score += 600 - oi * 150;
+                        }
                     }
                 }
                 s.BuildCount++;
@@ -1950,7 +2106,14 @@ namespace ThronefallTrainer
                 // Efficiency: closer work wins ties AND beats slightly better
                 // far work — walking 60 m to a marginally-better slot is how
                 // the bot used to spend the whole day traveling.
-                score += Mathf.Max(0, 40 - (int)Mathf.Sqrt(d)) * 3;
+                // Nearest-first within a tier (A2: 32% of waste was serial
+                // cross-map travel): 60 m falloff, 8 pts/m.
+                score += Mathf.Max(0, 60 - (int)Mathf.Sqrt(d)) * 8;
+                // A1: ~55% of day waste was cross-map walking. Beyond 20 m
+                // each metre costs 25 pts (cap 3000): priority tiers still
+                // win, but the NEAREST member of a tier wins decisively and a
+                // far low-tier slot can never beat a near one.
+                score -= Mathf.Min(3000, Mathf.Max(0, (int)Mathf.Sqrt(d) - 20) * 25);
                 // Held-hold stickiness: the slot we're mid-pay on wins
                 // outright while it's still interactable and near — prevents
                 // per-tick pick flips that refund the partial fill.
@@ -2021,6 +2184,8 @@ namespace ThronefallTrainer
                                  : "-")) : "")
                         .Append(");");
                 }
+                // Prove the gate merge is (or isn't) finding slots.
+                skip.Append($"[[gateBuilds={gateBuilds.Count}]]");
                 if (skip.Length > 0)
                     Plugin.Log?.LogInfo($"[bot] mil/wall slot state: {skip}");
             }
@@ -2034,7 +2199,14 @@ namespace ThronefallTrainer
             {
                 CommittedBuildRef = null;      // a live hold supersedes
             }
-            else if (s.NearestBuild != null && CommittedBuildRef != null &&
+            // Effective order pin for the NEXT tick: first open category that
+            // had at least one live candidate this scan.
+            var oo = OpenBuildOrder();
+            firstOpenPresent = null;
+            for (int oi = 0; oi < oo.Length; oi++)
+                if (catsPresent.Contains(oo[oi])) { firstOpenPresent = oo[oi]; break; }
+            if (s.NearestBuild != null && CommittedBuildRef != null &&
+                effTier < 2 &&
                 !ReferenceEquals(s.NearestBuild, CommittedBuildRef) &&
                 commitCandScore > int.MinValue &&
                 nowT - CommittedBuildAt < 25f &&
@@ -2313,7 +2485,7 @@ namespace ThronefallTrainer
                 baseSz = int.TryParse(pick, out int v) ? v : 4;
             }
             if (doorBreach == null || d >= doorBreach.Length) return baseSz;
-            return doorBreach[d] ? baseSz * 2 : baseSz;
+            return doorBreach[d] ? Mathf.Max(baseSz, Mathf.Min(baseSz * 2, 6)) : baseSz;
         }
 
         /// <summary>The building ring: farthest owned structure's distance
@@ -2411,6 +2583,7 @@ namespace ThronefallTrainer
         }
     }
 }
+
 
 
 

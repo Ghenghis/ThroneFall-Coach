@@ -65,6 +65,7 @@ namespace ThronefallTrainer
         RecallToBreach,   // red alert — all units converge on the threat
         ClearCoinPark,    // drop the parked-coin set (day edge)
         ParkDoor,         // mark a door anchor unwalkable (Index = anchor idx)
+        GateHold,         // hold-interact the nearest path-toggle pad
     }
 
     internal struct Intent
@@ -132,6 +133,9 @@ namespace ThronefallTrainer
         public int UncoveredDoorTarget;
         public bool UncoveredDoorHot;
         public int UncoveredDoorIdx;
+        public int GateCount;             // interactable path-unlock pads
+        public Vec2 GatePos;
+        public float GateDist;
         public int ArmyTarget;
         public float SelfDefendRange;   // hero self-defense radius (posture)
         public float DayBudget;         // learned day length before horn
@@ -331,6 +335,8 @@ namespace ThronefallTrainer
         public float IdleSince;         // continuous-idle timer (-1 = working)
         public string LastDoorLine;     // last lane a squad was posted to
         public int DoorPostStreak;      // consecutive posts to the same lane
+        public float GateWalkSince;     // start of the current gate-pad approach
+        public float GateIgnoreUntil;   // backoff after an approach that never opened
         public int SpendWatchGold;
         public int SpendWatchCores;
         public float SpendWatchAt;
@@ -949,17 +955,23 @@ namespace ThronefallTrainer
                             : s.CastlePos;
                         r.Notes.Add("late-wave-hold");
                     }
-                    float hdt = m.LastOrbitAt > 0f
-                        ? Math.Min(now - m.LastOrbitAt, 0.5f) : 0.25f;
-                    m.LastOrbitAt = now;
-                    m.OrbitAngle += pol.K("orbit_spin") * m.OrbitDir * hdt;
-                    if (m.OrbitAngle > 1.2f) m.OrbitDir = -1f;
-                    else if (m.OrbitAngle < -1.2f) m.OrbitDir = 1f;
-                    Vec2 fwd0 = axisDir.SqrMag > 0.01f ? axisDir.Norm : new Vec2(0f, 1f);
-                    Vec2 hring = holdPos + Vec2.Perp(fwd0) *
-                        (float)Math.Sin(m.OrbitAngle) * 3f;
-                    Aim(ref r, hring, 0.8f);
-                    r.ProjectToNav = true;
+                    // Patrol only while foes are actually on the field —
+                    // orbiting an empty corridor just reads as pacing.
+                    if (s.EnemyCount > 0 || s.NearFoeCount > 0)
+                    {
+                        float hdt = m.LastOrbitAt > 0f
+                            ? Math.Min(now - m.LastOrbitAt, 0.5f) : 0.25f;
+                        m.LastOrbitAt = now;
+                        m.OrbitAngle += pol.K("orbit_spin") * m.OrbitDir * hdt;
+                        if (m.OrbitAngle > 1.2f) m.OrbitDir = -1f;
+                        else if (m.OrbitAngle < -1.2f) m.OrbitDir = 1f;
+                        Vec2 fwd0 = axisDir.SqrMag > 0.01f ? axisDir.Norm : new Vec2(0f, 1f);
+                        Vec2 hring = holdPos + Vec2.Perp(fwd0) *
+                            (float)Math.Sin(m.OrbitAngle) * 3f;
+                        Aim(ref r, hring, 0.8f);
+                        r.ProjectToNav = true;
+                    }
+                    else Aim(ref r, holdPos, ArriveHold);
                     // Escort follows him between fights — free units only,
                     // posted squads stay at their doors.
                     if (s.FreeUnits > 0 && s.CanCommand && now - m.LastEscortAt > 20f)
@@ -1077,6 +1089,43 @@ namespace ThronefallTrainer
             {
                 m.Mode = BotMode.CollectCoin; r.Mode = m.Mode;
                 Aim(ref r, s.CoinPos, ArriveCoin);
+                return r;
+            }
+
+            // ---- day: gate/path unlocks ----
+            // CutOpenPathInteractor pads are the literal "unlock the doors"
+            // mechanic — hold-to-fill, costs toggleCost. Hard rule: when the
+            // playbook wants a gate (or no build work is left), walk to the
+            // nearest pad and hold it until the path opens.
+            var openOrder = BotPerception.OpenBuildOrder();
+            bool wantGate = s.GateCount > 0 && now >= m.GateIgnoreUntil &&
+                (System.Array.IndexOf(openOrder, "gate") >= 0 || !s.HasBuild);
+            if (!wantGate) m.GateWalkSince = 0f;
+            else
+            {
+                if (m.GateWalkSince <= 0f) m.GateWalkSince = now;
+                else if (now - m.GateWalkSince > 30f)
+                {
+                    // 30 s of approach with no open — back off 90 s so builds
+                    // and coins aren't starved by an unreachable pad (A12).
+                    m.GateIgnoreUntil = now + 90f; m.GateWalkSince = 0f; wantGate = false;
+                    r.Notes.Add("gate-backoff");
+                }
+            }
+            if (!s.IsNight && wantGate && m.HeldBuild < 0)
+            {
+                m.Mode = BotMode.SpendGold; r.Mode = m.Mode;
+                Vec2 gStand = s.GatePos;
+                if (s.HasCastle)
+                {
+                    var gp = s.CastlePos - s.GatePos;
+                    if (gp.Mag > 2f) gStand = s.GatePos + gp.Norm * 2.5f;
+                }
+                Aim(ref r, gStand, 1.0f);
+                if (s.GateDist <= 4f)
+                    r.Intents.Add(Intent.Of(IntentKind.GateHold));
+                else
+                    r.Notes.Add("gate-walk d=" + s.GateDist.ToString("0"));
                 return r;
             }
 
@@ -1323,7 +1372,7 @@ namespace ThronefallTrainer
             // time per wave.
             if (m.IdleSince < 0f) m.IdleSince = now;
             if (!s.IsNight && m.DayStartAt > 0f && !dayTooYoung &&
-                s.CanSwitch && now - m.IdleSince > 30f &&
+                s.CanSwitch && now - m.IdleSince > 12f &&
                 now >= m.NightRequestAt)
             {
                 m.NightRequestAt = now + 15f;
@@ -1352,6 +1401,7 @@ namespace ThronefallTrainer
     /// </summary>
     internal enum BotMode { Idle, CollectCoin, ReturnHome, HoldCastle, Engage, EnterLevel, StartNight, SpendGold, ResolveUI, PositionArmy, HeroDead }
 }
+
 
 
 
