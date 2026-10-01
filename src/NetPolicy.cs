@@ -107,6 +107,11 @@ namespace ThronefallTrainer
                 Mathf.Clamp01(s.HeroHpPct),
                 Mathf.Clamp01(s.CastleHpPct >= 0 ? s.CastleHpPct : 0.5f),
                 s.Wave / 60f,
+                // Mirror episodes.py feats() — day progress + incoming wave
+                // pressure (fixes constant StartNight votes during day).
+                s.DayTimeLeft / 600f,
+                s.NextWaveCount / 60f,
+                s.ArmyTarget > 0 ? Mathf.Clamp01((float)s.AllyCount / s.ArmyTarget) : 0f,
             };
         }
 

@@ -45,6 +45,12 @@ def feats(t, s):
         (t.get("hp") or 0),
         (t.get("chp") or 0) / 100.0 if t.get("chp") else 0.5,
         (s or {}).get("wave_idx", 0) / 60.0,
+        # v2 features: day progress + incoming pressure — the net kept voting
+        # StartNight during early SpendGold because it had no day-progress
+        # signal (t=1 s and t=570 s of the day looked identical).
+        (t.get("dtl") or 0) / 600.0,                      # day-time-left
+        (t.get("nwc") or 0) / 60.0,                       # next wave size
+        (t.get("ally") or 0) / max(1, t.get("at") or 1),  # army floor ratio
     ]
 
 def reward(prev, t, outcome_done, hp_delta):

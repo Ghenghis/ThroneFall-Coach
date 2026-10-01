@@ -444,3 +444,11 @@ AUTOPILOT §8–9 for the full list and next actions.
   fallbacks x3, unstick-pressure focus), 4 rejected (verified false premises: checklist done-flags ARE written
   live; peacetime door posting is by user design), 31 open. proposal_set fixed: tail-40 indexing (was writing
   status onto absolute file rows - marks landed on wrong proposals).
+- **Proposal sweep -> shipped:** night-build (foe-free night + funded + buildable + no door duty -> SpendGold
+  inside the HoldCastle branch, 'night-build' note - hero builds while squads fight, per the standing
+  directive). 11 shipped / 12 rejected / 17 open after a code-verified pass (rejects = verified false
+  premises: checklist done-flags, build_focus application, playbook ordering, walk-distance penalty, generic
+  frame escape for popups).
+- **Net v2 (15 feats):** added day-progress (dtl/600), next-wave size (nwc/60), army-floor ratio
+  (ally/army_target). Dataset regen 284,192 rows; acc ~0.53. The shadow's StartNight spam during early day
+  should drop - it could not see day progress before.

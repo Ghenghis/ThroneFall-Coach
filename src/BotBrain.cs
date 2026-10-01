@@ -987,6 +987,36 @@ namespace ThronefallTrainer
                 }
                 else if (s.HasCastle)
                 {
+                    // NIGHT BUILD (proposal [16]): foe-free night + funded +
+                    // buildable slot + no door duty -> work instead of holding.
+                    // "He should be building while they're fighting." Squad
+                    // posting already ran above; door duty still wins when a
+                    // corridor is uncovered.
+                    bool nightBuild = s.NearFoeCount == 0 && !s.HasUncoveredDoor &&
+                        (!s.HasNearEnemy || s.NearEnemyDist > 12f) &&
+                        s.HasBuild && (s.Balance > 0 || s.BuildHarvest);
+                    if (nightBuild)
+                    {
+                        m.Mode = BotMode.SpendGold; r.Mode = m.Mode;
+                        string nb = s.BuildName ?? "";
+                        bool bigB = nb.IndexOf("castle",
+                            System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+                            nb.IndexOf("hall",
+                            System.StringComparison.OrdinalIgnoreCase) >= 0;
+                        bool inG = s.BuildDist <= (bigB ? 10f : 4f) ||
+                            (s.HasBuildStand && s.BuildStandDist <= 1.2f);
+                        if (inG)
+                        {
+                            Aim(ref r, s.HeroPos, 1.0f);
+                            if (m.HeldBuild < 0)
+                                r.Intents.Add(Intent.Of(IntentKind.BeginHold));
+                        }
+                        else if (s.HasBuildStand) Aim(ref r, s.BuildStandPos, 0.8f);
+                        else Aim(ref r, Vec2.StandOff(s.BuildPos, s.HeroPos,
+                            bigB ? 6.0f : 3.0f), 1.0f);
+                        r.Notes.Add("night-build");
+                        return r;
+                    }
                     m.Mode = BotMode.HoldCastle; r.Mode = m.Mode;
                     // Safe night: patrol the hold post instead of freezing —
                     // a small orbit keeps him visibly working (and sweeps up
