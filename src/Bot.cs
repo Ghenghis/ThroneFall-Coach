@@ -224,6 +224,7 @@ internal static class Bot
 
 	public static bool Enabled { get; private set; }
 
+	public static bool SprintWanted;
 	public static Vector3 DesiredDir
 	{
 		[CompilerGenerated]
@@ -465,6 +466,7 @@ internal static class Bot
 		}
 		float num = 1f - Mathf.Exp(-10f * Time.unscaledDeltaTime);
 		DesiredDir = Vector3.Lerp(DesiredDir, val, num);
+		SprintWanted = hasTarget && (UnityEngine.Object)(object)instance != (UnityEngine.Object)null && (UnityEngine.Object)(object)heldBuild == (UnityEngine.Object)null && val.sqrMagnitude > 0.25f && (Mode == BotMode.SpendGold || Mode == BotMode.CollectCoin || Mode == BotMode.PositionArmy || Mode == BotMode.ReturnHome || Mode == BotMode.StartNight) && Vector3.Distance(((Component)instance).transform.position, AimPos) > 8f;
 		Vector3 desiredDir = DesiredDir;
 		if (desiredDir.sqrMagnitude < 0.0001f)
 		{

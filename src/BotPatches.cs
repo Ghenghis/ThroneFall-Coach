@@ -13,6 +13,24 @@ namespace ThronefallTrainer
     /// </summary>
     internal static class BotPatches
     {
+        private static readonly System.Reflection.FieldInfo FSprint = AccessTools.Field(typeof(PlayerMovement), "sprinting");
+        private static readonly System.Reflection.FieldInfo FHp = AccessTools.Field(typeof(PlayerMovement), "hp");
+        private static readonly System.Reflection.FieldInfo FAlways = AccessTools.Field(typeof(PlayerMovement), "canAlwaysSprintEquipped");
+
+        // Sprint is a normal player action (needs full HP unless the perk is equipped): used only on long
+        // non-combat legs so walking time between build slots drops.
+        private static void Sprint(PlayerMovement pm)
+        {
+            if (pm == null || !Bot.SprintWanted || FSprint == null || FHp == null) return;
+            try
+            {
+                var hp = FHp.GetValue(pm) as Hp;
+                bool always = FAlways != null && (bool)FAlways.GetValue(pm);
+                if (hp != null && (hp.HpPercentage >= 1f || always)) FSprint.SetValue(pm, true);
+            }
+            catch { }
+        }
+
         private static void Rewrite(ref Vector2 inputVector)
         {
             if (!Bot.Enabled) return;
@@ -30,7 +48,7 @@ namespace ThronefallTrainer
         private static class PlayerMovePatch
         {
             [HarmonyPrefix]
-            private static void Prefix(ref Vector2 inputVector) => Rewrite(ref inputVector);
+            private static void Prefix(PlayerMovement __instance, ref Vector2 inputVector) { Rewrite(ref inputVector); Sprint(__instance); }
         }
 
         [HarmonyPatch(typeof(PlayerBallMovement), nameof(PlayerBallMovement.MoveScript))]
