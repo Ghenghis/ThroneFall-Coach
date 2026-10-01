@@ -148,6 +148,8 @@ def mm_cfg():
         c = {}
     c.setdefault("mode", "auto")
     c.setdefault("interval_s", WATCH_EVERY)
+    c.setdefault("speedrun", False)   # pace-first steering hint
+    c.setdefault("vision_model", "")  # force a VL model; "" = auto-pick
     return c
 
 def mm_cfg_write(c):
@@ -614,6 +616,10 @@ def mm_watch_loop():
                 json.dumps(eng_digest()) +
                 "\nEFFECT OF YOUR LAST PATCH: " + json.dumps(mm_watch_loop.last_outcome) +
                 "\nRECENT PROPOSALS (do not repeat): " + json.dumps(recent_proposals()) +
+                ("\nSPEEDRUN MODE ACTIVE — pace first: call night as soon as "
+                 "the perimeter is defensible, keep army_target lean, prefer "
+                 "income that pays off this wave, no idle hero seconds." if
+                 mm_cfg().get("speedrun") else "") +
                 "\nCorrect the FAILED checklist items. Respond JSON only.")
             reply, usage = mm_chat(
                 [{"role": "system", "content": MM_SYS},
@@ -1374,6 +1380,10 @@ class H(BaseHTTPRequestHandler):
                 c["mode"] = data["mode"]
             if isinstance(data.get("interval_s"), (int, float)):
                 c["interval_s"] = max(15, min(10800, data["interval_s"]))
+            if isinstance(data.get("speedrun"), bool):
+                c["speedrun"] = data["speedrun"]
+            if isinstance(data.get("vision_model"), str):
+                c["vision_model"] = data["vision_model"][:80]
             mm_cfg_write(c)
             append_log("c", f"[MM CONFIG] mode={c['mode']} every {c['interval_s']}s")
             self._send(200, json.dumps({"ok": True, **c}), "application/json")
@@ -1947,6 +1957,7 @@ pre.book{background:#150e0a;border:1px solid var(--bord);border-radius:9px;
 .pb button{flex:1;background:#332617;border:1px solid var(--bord);border-radius:8px;
  padding:7px;font-size:11px;color:var(--txt)}
 .pb button:hover{border-color:var(--acc);color:var(--acc)}
+.pb button.live{background:rgba(123,201,111,.15);color:var(--ok);border-color:rgba(123,201,111,.45)}
 .door{display:inline-block;background:#150e0a;border:1px solid var(--bord);
  border-radius:7px;padding:4px 8px;margin:2px 3px 0 0;font-size:10.5px}
 .door.cov{border-color:rgba(123,201,111,.5);color:#a5d977}
@@ -2070,7 +2081,8 @@ pre.book{background:#150e0a;border:1px solid var(--bord);border-radius:9px;
      <label>army floor <input id="kAt" type="number" min="0" max="60" style="width:100%"></label></div>
     <label style="font-size:11px;color:var(--dim)"><input id="kNc" type="checkbox"> call night</label>
     <div class="pb" style="margin-top:5px"><button onclick="orderKnobs()">Apply knobs</button>
-     <button onclick="orderClear()" title="release every override to bot defaults">Release all</button></div></div>
+     <button onclick="orderClear()" title="release every override to bot defaults">Release all</button>
+     <button id="btnSpeedrun" onclick="speedrunToggle()" title="MiniMax steers for fast clears">⚡ Speedrun</button></div></div>
    <div class="card"><h4>MiniMax schedule (cron — it programs itself)</h4><div id="mmSched"></div></div>
    <div class="card"><h4>Last patch outcome (measured, not assumed)</h4><div id="mmOut"></div></div>
    <div class="card"><h4>Heartbeat</h4><div id="mmHb" class="hint"></div></div>
@@ -2298,6 +2310,8 @@ async function mmCfg(){try{const c=await j('/mmconfig');
   b.classList.toggle('on',MM_MODES[i]==c.mode));
  const r=document.getElementById('mmRange');if(document.activeElement!=r)r.value=c.interval_s;
  mmIntShow(c.interval_s);
+ const sb=document.getElementById('btnSpeedrun');
+ if(sb)sb.classList.toggle('live',!!c.speedrun);
  document.getElementById('mmPend').innerHTML=(c.pending&&c.pending.length?
   c.pending.map((x,i)=>`<div class="wk" style="border-color:var(--acc)">
    <b>${esc(JSON.stringify(x.patch))}</b><div>${esc(x.note||'')}</div>
@@ -2335,6 +2349,9 @@ async function orderKnobs(){const cmd={note:'ui-knobs'};
  if(document.getElementById('kNc').checked)cmd.night_call=true;
  order(cmd);mmCfg()}
 async function orderClear(){order({clear:true,note:'ui-release-all'})}
+async function speedrunToggle(){const on=!document.getElementById('btnSpeedrun').classList.contains('live');
+ await j('/mmconfig',{method:'POST',body:JSON.stringify({speedrun:on})});
+ document.getElementById('btnSpeedrun').classList.toggle('live',on);mmCfg()}
 setInterval(()=>{if(document.getElementById('p-mm').classList.contains('on'))mmCfg()},5000);
 /* metrics */
 function gc(v){return v>=80?'gA':v>=60?'gB':v>=40?'gC':v>=20?'gD':'gF'}

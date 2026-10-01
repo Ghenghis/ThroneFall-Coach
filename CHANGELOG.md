@@ -395,3 +395,13 @@ AUTOPILOT §8–9 for the full list and next actions.
   Ctrl+F8..11 = MiniMax off/semi/auto/aggressive; Shift+F1..3 profile presets; Alt+F5 hard reload.
 - **AI-active border glow:** blue halo while MiniMax heartbeat is fresh in an active mode, amber when the
   semi queue has items awaiting you, none when offline — the computer-use cue.
+- **Multi-keep maps:** castleBuf now counts every CastleCenter-tagged keep (audit.json "castles" field); with
+  >1 keeps the nearest living keep anchors home instead of .instance's arbitrary pick.
+- **Night-call unblock:** SwitchNight blocked by a focussed interactor now sidesteps the hero 6 m off the slot
+  (night-unfocus-step) so the game's own Unfocus clears — previously the 15 s window burned standing still.
+- **Speedrun mode:** mm-config "speedrun":true flips MiniMax to pace-first steering (lean army floors, night
+  as soon as defensible, no idle seconds). UI toggle in the knobs card.
+- **Vision model picker:** preference order (qwen3-vl-4b first) + try-up-to-3 fallback — qwen2-vl-2b 400s on
+  image parts; a bad pick no longer kills the eyes channel.
+- **tools/package-desktop.ps1:** dist/ThronefallCommand.zip release artifact (0.6 MB) + INSTALL.txt.
+  Inno Setup absent on this machine; swap Compress-Archive for iscc when it lands.

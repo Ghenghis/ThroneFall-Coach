@@ -65,6 +65,7 @@ namespace ThronefallTrainer
             public string SceneName;      // active scene for diagnostics
             public int InteractorCount;   // all InteractorBase in scene
             public int LevelCount;        // playable level nodes found
+        public int CastleCount;       // keeps tagged CastleCenter (multi-keep maps)
             public LevelInteractor NearestLevel;   // nearest playable level node
             public Vector3 NearestLevelPos;        // its interaction stand point
             public float NearestLevelDist;
@@ -218,6 +219,8 @@ namespace ThronefallTrainer
                 RedAlert = s.RedAlert, RedAlertRadius = s.RedAlertRadius,
                 OnLevelSelect = s.OnLevelSelect, InteractorCount = s.InteractorCount,
                 LevelCount = s.LevelCount, HasLevel = s.NearestLevel != null,
+                CastleCount = s.CastleCount,
+
                 LevelPos = V(s.NearestLevelPos), LevelDist = s.NearestLevelDist,
                 SceneBusy = s.SceneBusy,
                 HasHorn = s.HasHorn, HornPos = V(s.HornPos), HornDist = s.HornDist,
@@ -1259,9 +1262,22 @@ namespace ThronefallTrainer
             // scan is the last resort (the tag isn't on every level's keep).
             var cc = CastleCenter.instance;
             Vector3 castlePos = cc != null ? cc.transform.position : CastleCenter.CastleCenterPosition;
-            if (cc == null && castlePos == Vector3.zero)
+            tm.FindAllTaggedObjectsWithTag(castleBuf, TagManager.ETag.CastleCenter);
+            s.CastleCount = castleBuf.Count;
+            if (castleBuf.Count > 1)
             {
-                tm.FindAllTaggedObjectsWithTag(castleBuf, TagManager.ETag.CastleCenter);
+                // Multi-keep map: .instance / first-tag may point at a keep we
+                // aren't actually defending — nearest living keep anchors home.
+                float bd = float.MaxValue;
+                foreach (var t in castleBuf)
+                {
+                    if (t == null || !t.gameObject.activeInHierarchy) continue;
+                    float dd = (t.transform.position - s.HeroPos).sqrMagnitude;
+                    if (dd < bd) { bd = dd; castlePos = t.transform.position; }
+                }
+            }
+            else if (cc == null && castlePos == Vector3.zero)
+            {
                 if (castleBuf.Count > 0 && castleBuf[0] != null)
                     castlePos = castleBuf[0].transform.position;
             }

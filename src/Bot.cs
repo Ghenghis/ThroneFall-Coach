@@ -1861,7 +1861,26 @@ internal static class Bot
 			var pi = PlayerInteraction.instance;
 			if ((UnityEngine.Object)(object)pi != (UnityEngine.Object)null && !pi.IsFreeToCallNight)
 			{
-				LogLine(in s, "night-blocked");
+				// Blocked usually = a focussed interactor. Step off it so the
+				// game's own Unfocus clears and the next tick can call night —
+				// previously the 15 s window just burned standing on the slot.
+				var fi = pi.FocussedInteractor;
+				if ((UnityEngine.Object)(object)fi != (UnityEngine.Object)null)
+				{
+					Vector3 away = s.HeroPos - ((Component)fi).transform.position;
+					away.y = 0f;
+					if (away.sqrMagnitude < 0.01f)
+					{
+						away = new Vector3(5f, 0f, 0f);
+					}
+					away = away.normalized * 6f;
+					SetTarget(s.HeroPos + away, 1.5f, projectToNav: true);
+					LogLine(in s, "night-unfocus-step");
+				}
+				else
+				{
+					LogLine(in s, "night-blocked");
+				}
 				break;
 			}
 			Policy.Commit("night", ((int)s.DayBudget).ToString(), s.PolicyKey ?? "", new string[3] { "150", "240", "330" });

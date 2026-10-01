@@ -151,6 +151,7 @@ namespace ThronefallTrainer
         public bool OnLevelSelect;
         public int InteractorCount;
         public int LevelCount;
+        public int CastleCount;     // multi-keep maps: >1 keeps tagged
         public bool HasLevel;
         public Vec2 LevelPos;
         public float LevelDist;
@@ -253,6 +254,7 @@ namespace ThronefallTrainer
             Append(sb, ",\"ls\":", OnLevelSelect);
             Append(sb, ",\"inter\":", InteractorCount);
             Append(sb, ",\"lvln\":", LevelCount);
+            if (CastleCount > 1) Append(sb, ",\"castles\":", CastleCount);
             Append(sb, ",\"lvlp\":", LevelPos, HasLevel, ci);
             Append(sb, ",\"lvld\":", LevelDist, ci);
             Append(sb, ",\"busy\":", SceneBusy);
