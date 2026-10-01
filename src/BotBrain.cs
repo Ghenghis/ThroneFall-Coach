@@ -379,6 +379,7 @@ namespace ThronefallTrainer
         public int HeroDoorIdx; public float HeroDoorSince; public float HeroDoorIgnUntil;
         public int[] DoorPostCounts;    // per-door consecutive PlaceSquad posts
         public float[] DoorPostAts;     // per-door last PlaceSquad time
+        public bool WasDead;            // revive edge: re-arm coverage on respawn
 
         // level-select transition hang detector
         public float BusySince;
@@ -467,6 +468,7 @@ namespace ThronefallTrainer
                     ["pull_foe_pad"] = 1f,       // or inside its attack range + this
                     ["pull_swarm"] = 2f,         // or this many foes within 8 m
                     ["retreat_hp"] = 0.5f,       // hurt-hero retreat threshold
+                    ["elite_stall_hp"] = 0.62f,  // never solo-duel an elite below this hp
                     ["orbit_spin"] = 0.7f,
                     ["orbit_arc"] = 1.9f,
                     ["home_radius"] = 14f,
@@ -741,6 +743,7 @@ namespace ThronefallTrainer
             if (s.HeroDead || s.HeroHpPct <= 0f)
             {
                 m.Mode = BotMode.HeroDead; r.Mode = m.Mode;
+                m.WasDead = true;
                 if (m.HeldBuild >= 0) { r.Intents.Add(Intent.Of(IntentKind.ReleaseHold)); m.HeldBuild = -1; m.SlotVisitKey = -1; }
                 // Drift to the keep's extracted stand-point (a proven free
                 // cell); CastlePos itself is inside the keep collider.
@@ -748,6 +751,20 @@ namespace ThronefallTrainer
                 else if (s.HasCastle) Aim(ref r, Vec2.StandOff(s.CastlePos, s.HeroPos, 4f), ArriveHold);
                 else r.HasAim = false;
                 return r;
+            }
+            // Revive edge: squads died/post-states went stale while he was
+            // down. Re-arm the door posts (parked anchors keep their
+            // Memory.Park — only the retry counters reset), restart the army
+            // phase, and drop any stale approach/held-build clocks.
+            if (m.WasDead)
+            {
+                m.WasDead = false;
+                m.ArmyPhase = 0;
+                m.HeroDoorIdx = -1; m.HeroDoorSince = 0f; m.HeroDoorIgnUntil = 0f;
+                if (m.DoorPostCounts != null) System.Array.Clear(m.DoorPostCounts, 0, m.DoorPostCounts.Length);
+                if (m.DoorPostAts != null) System.Array.Clear(m.DoorPostAts, 0, m.DoorPostAts.Length);
+                m.ApprKeyP1 = 0; m.ApprSince = 0f; m.SlotVisitKey = -1;
+                r.Notes.Add("revived-reset");
             }
 
             // ---- safe night coin-run (wider range at night — foes are held
@@ -866,7 +883,14 @@ namespace ThronefallTrainer
                 if (mustFight)
                 {
                     // Legit retreat: badly hurt hero pulls behind the castle.
-                    if (legit && s.HeroHpPct < pol.K("retreat_hp") && s.HasCastle)
+                    // Elite/boss rule (strategy packs: "stall, don't duel the
+                    // Ram") — an elite on top of him with troops alive is the
+                    // squad's fight, not his. Same retreat lane, higher hp
+                    // threshold so he disengages before the burst lands.
+                    bool eliteStall = s.NearEnemyElite && s.AllyCount > 0 &&
+                        s.HeroHpPct < pol.K("elite_stall_hp");
+                    if (legit && s.HasCastle &&
+                        (s.HeroHpPct < pol.K("retreat_hp") || eliteStall))
                     {
                         m.Mode = BotMode.ReturnHome; r.Mode = m.Mode;
                         m.Pursue = r.Pursue = s.HasCastleThreat ? 1 : 2;
