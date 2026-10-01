@@ -197,10 +197,10 @@ if ($badNet) {
 } else {
     Report 'PASS' 'shadow-gate: neural net is shadow/advisory only' $null $null
 }
-# Overlay: F1 toggle present
-if ((Get-Content (Join-Path $src 'Overlay.cs') -Raw) -match 'KeyCode\.F1') {
-    Report 'PASS' 'overlay: F1 toggle present' $null $null
-} else { Report 'WARN' 'overlay: F1 toggle missing' '' 'Overlay.Update should toggle Visible on F1' }
+# Overlay: F1 or F8 toggle present (F1 collided with Plugin.ToggleMenu, F8 is the audit fix)
+if ((Get-Content (Join-Path $src 'Overlay.cs') -Raw) -match 'KeyCode\.(F1|F8)') {
+    Report 'PASS' 'overlay: toggle present' $null $null
+} else { Report 'WARN' 'overlay: toggle missing' '' 'Overlay.Update should toggle Visible on F1 or F8' }
 # Coach must never block the frame: UnityWebRequest banned (we use
 # HttpWebRequest on a background thread).
 $coa = Get-Content (Join-Path $src 'Coach.cs') -Raw
