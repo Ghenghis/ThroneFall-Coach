@@ -379,6 +379,7 @@ namespace ThronefallTrainer
         public float SlotVisitSince;
         public int ApprKeyP1; public float ApprSince; public int ApprGold;
         public Vec2 ApprPos;            // target pos at the last retarget (cluster hysteresis)
+        public int HeroDoorIdx; public float HeroDoorSince; public float HeroDoorIgnUntil;
 
         // level-select transition hang detector
         public float BusySince;
@@ -690,6 +691,8 @@ namespace ThronefallTrainer
                 m.NightRequestAt = 0f;
                 m.ArmyPhase = 0;   // same-scene retry at night carried phase 2
                                    // forward and skipped day placement forever
+                // Per-door hero guard timer: a new match means new geometry.
+                m.HeroDoorIdx = -1; m.HeroDoorSince = 0f; m.HeroDoorIgnUntil = 0f;
             }
             m.PrevWave = s.Wave;
             // Absolute floor: nothing may call the night inside the first
@@ -955,7 +958,12 @@ namespace ThronefallTrainer
                     // Safe night: patrol the hold post instead of freezing —
                     // a small orbit keeps him visibly working (and sweeps up
                     // adjacent coins) while squads hold the corridors.
-                    Vec2 holdPos = (s.HasUncoveredDoor && s.UncoveredDoorHot)
+                    // If the hot door has been held >12 s without relief, the
+                    // hold point is unreachable — fall back to the castle before
+                    // the hero turns into a 40 s pin.
+                    bool nightDoorOk = !s.HasUncoveredDoor || s.UncoveredDoorIdx != m.HeroDoorIdx
+                        || (now >= m.HeroDoorIgnUntil && now - m.HeroDoorSince <= 12f);
+                    Vec2 holdPos = (s.HasUncoveredDoor && s.UncoveredDoorHot && nightDoorOk)
                         ? s.UncoveredDoorPos
                         : (s.HasThreatAnchor ? s.ThreatAnchor : s.CastlePos);
                     // Late-wave escalation: last third of the night with a
@@ -985,7 +993,7 @@ namespace ThronefallTrainer
                         Aim(ref r, hring, 0.8f);
                         r.ProjectToNav = true;
                     }
-                    else Aim(ref r, holdPos, ArriveHold);
+                    else { Aim(ref r, holdPos, ArriveHold); r.ProjectToNav = true; }
                     // Escort follows him between fights — free units only,
                     // posted squads stay at their doors.
                     if (s.FreeUnits > 0 && s.CanCommand && now - m.LastEscortAt > 20f)
@@ -1393,8 +1401,14 @@ namespace ThronefallTrainer
             // 17 m off a paying slot (rel:dist=17.9 in the live log),
             // refunding the fill every cycle. Door-posting is for IDLE
             // heroes, not working ones.
-            if (s.HasUncoveredDoor && m.HeldBuild < 0)
+            // Hero-door timeout: if the same door has been the uncovered pick for
+            // >12 s the guard point is unreachable. Stop re-aiming and let the
+            // idle-night/return-home fallback take over instead of standing.
+            bool canGuardDoor = s.UncoveredDoorIdx != m.HeroDoorIdx
+                || (now >= m.HeroDoorIgnUntil && now - m.HeroDoorSince <= 12f);
+            if (s.HasUncoveredDoor && m.HeldBuild < 0 && canGuardDoor)
             {
+                if (s.UncoveredDoorIdx != m.HeroDoorIdx) { m.HeroDoorIdx = s.UncoveredDoorIdx; m.HeroDoorSince = now; }
                 m.Mode = BotMode.PositionArmy; r.Mode = m.Mode;
                 // Vec2 layer — pull the hero post 14 m toward the castle.
                 Vec2 guard = s.UncoveredDoorPos;
@@ -1404,8 +1418,17 @@ namespace ThronefallTrainer
                     if (pull2.Mag > 2f) guard = s.UncoveredDoorPos + pull2.Norm * 14f;
                 }
                 Aim(ref r, guard, ArriveHold);
+                r.ProjectToNav = true;              // unreachable target -> snap to nearest walkable node
                 r.Notes.Add("hero-door:" + (s.UncoveredDoorLine ?? ""));
                 return r;
+            }
+            // Same door stuck for >12 s and not ignored: lock it for 45 s so we
+            // don't re-pick the same unreachable post next tick.
+            if (s.HasUncoveredDoor && m.HeldBuild < 0 &&
+                s.UncoveredDoorIdx == m.HeroDoorIdx && now >= m.HeroDoorIgnUntil)
+            {
+                m.HeroDoorIgnUntil = now + 45f;
+                m.HeroDoorSince = now;
             }
             if (s.HasCastle && s.CastleDist > pol.K("home_radius"))
             {

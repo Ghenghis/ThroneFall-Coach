@@ -1,14 +1,14 @@
-Replay purity fix + tick fields; Frostsee victory verified live
+Hero-door timeout + ProjectToNav; match-end popup hardening
 
-BotBrain no longer references BotPerception (DoorUnitAt -> UncoveredDoorUnits,
-OpenBuildOrder -> OpenOrder on SnapshotData) so tests/Replay compiles again;
-tick JSON gains drp/drcl/udu/bldb/mwa keys and the parser reads them.
+PositionArmy/HoldCastle hold points now project to the nearest walkable
+node (NearestNodeConstraint.Walkable) and give up an unreachable door
+after 12 s, ignoring it for 45 s before retry. This eliminates the 17-42 s
+hero pins at off-mesh guard points.
 
-Live evidence on this build: Frostsee run 20261001T111053Z won all waves
-(0 hero deaths, castle 87% at wave 12), 9 gps-cross in 1-4.1 s each,
-rescan-slots firing on cooldown, pin share 18.6% vs 37.5% baseline.
-The durststein-dto fixture needs re-capture under this build (idle-night
-is intentionally slower while gold and blocked slots remain).
+Match-end/victory frames now count close attempts and force
+TransitionToLevelSelect() after 10 s of Apply() failing, or after 5 generic
+frame-close attempts, preventing the victory popup from hanging and the
+empty-match vacuum that follows.
 
 Generated with [Devin](https://devin.ai)
 

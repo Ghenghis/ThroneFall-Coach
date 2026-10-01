@@ -1606,7 +1606,7 @@ internal static class Bot
 		//IL_0025: Unknown result type (might be due to invalid IL or missing references)
 		if (projectToNav && (UnityEngine.Object)(object)AstarPath.active != (UnityEngine.Object)null)
 		{
-			pos = AstarPath.active.GetNearest(pos, new NNConstraint()).position;
+			pos = AstarPath.active.GetNearest(pos, NearestNodeConstraint.Walkable).position;
 		}
 		if (FlatDist(pos, targetPos) > 6f)
 		{
@@ -2381,6 +2381,7 @@ internal static class Bot
 		}
 		if ((UnityEngine.Object)(object)((Component)val).GetComponentInChildren<BackToLevelSelectHelper>(true) != (UnityEngine.Object)null && (val.canNotBeEscaped || (frameSeen >= 2 && (s.GameState.StartsWith("AfterMatch") || ((UnityEngine.Object)val).name.IndexOf("After Match") >= 0))))
 		{
+			frameSeen++;
 			if (Time.unscaledTime >= frameActionAt)
 			{
 				frameActionAt = Time.unscaledTime + 2f;
@@ -2391,6 +2392,17 @@ internal static class Bot
 				}
 				LogLine(in s, "match-end");
 				val.Apply();
+			}
+			// Victory/defeat popups sometimes ignore Apply() and stay open
+			// (observed: 40+ s stuck). Force a level-select transition after
+			// the frame has been seen 5 times (~10 s of attempts).
+			if (s.GameState != "InMatch" && frameSeen >= 5 &&
+			    (UnityEngine.Object)(object)SceneTransitionManager.instance != (UnityEngine.Object)null)
+			{
+				frameSeen = 0; frameCloseStreak = 0;
+				Plugin.Log?.LogWarning("[bot] match-end frame stuck -> forcing TransitionToLevelSelect()");
+				LogLine(in s, "match-escape");
+				SceneTransitionManager.instance.TransitionToLevelSelect();
 			}
 			return true;
 		}
@@ -2476,9 +2488,9 @@ internal static class Bot
 			}
 			// Ping-pong breaker: after-match + level-up frames re-open each
 			// other forever (observed: 40+ s of alternating closes). If we're
-			// still closing frames 10+ times in a row while OUT of a match,
+			// still closing frames 5+ times in a row while OUT of a match,
 			// skip the frame stack entirely and hard-transition to the map.
-			if (s.GameState != "InMatch" && ++frameCloseStreak >= 10 &&
+			if (s.GameState != "InMatch" && ++frameCloseStreak >= 5 &&
 			    (UnityEngine.Object)(object)SceneTransitionManager.instance != (UnityEngine.Object)null)
 			{
 				frameCloseStreak = 0;

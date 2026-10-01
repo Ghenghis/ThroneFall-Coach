@@ -36,6 +36,12 @@
   twice), refuses to deploy while the exe still lives, and the plugin-load check scans from byte 0 when BepInEx rotated
   the log. NOTE: the file must keep a UTF-8 BOM or ASCII-only — PS 5.1 reads BOM-less files as ANSI and em-dashes decode
   to `"` and break the parse.
+- **Hero-door timeout + project-to-nav:** day/night idle `PositionArmy`/`HoldCastle` now snap their hold point to the
+  nearest walkable node (`r.ProjectToNav`, `NearestNodeConstraint.Walkable`) and give up an unreachable door after 12 s,
+  ignore it for 45 s, then try again. Previously the hero stood 17-42 s at off-mesh guard points in `PositionArmy`.
+- **Match-end popup hardening:** the back-to-map frame now counts its own close attempts and forces
+  `TransitionToLevelSelect()` after 10 s (5 generic frame closes also force it). This prevents the victory popup from
+  sitting open indefinitely and the empty-match vacuum it causes.
 - **Result:** fresh-run Frostsee **victory** (run 20261001T111053Z, all 12/13 waves, 0 hero deaths, castle 87 % at the
   143-foe wave, 2601 s). Live in that run: 9 gps-cross (1.0-4.1 s each, incl. a 2-hop chain), 5 rescan-slots on the 30 s
   cooldown, pin share 18.6 % vs the 37.5 % baseline. Second Frostsee win; first under GPS + night-readiness.
