@@ -375,3 +375,8 @@ AUTOPILOT §8–9 for the full list and next actions.
 - **MiniMax self-scheduling (cron) + relaunch power:** reply key "schedule":[{every_s,patch,note}] programs
   recurring actions (clamped 30 s - 6 h, semi mode queues them); patch field "relaunch":true restarts the game
   session in auto/aggressive. UI: schedule card with delete buttons; MM_SYS documents the powers.
+- **Audit residuals closed:** F1 — the level-select map can have no usable LocalGamestate, which died the whole
+  transition path silently. `BotPerception.BestLevelNode()` (same unbeaten-first + LevelScore scoring) now runs
+  in the !s.Valid path and calls `TransitionFromLevelSelectToLevel` directly — the node map needs no walking.
+  DoorPostAts/DoorPostCounts indexing is bounds-guarded at all 5 sites (a >63-door map would have thrown inside
+  Decide). F5/F3 covered by the horn-first preference + the earlier IsFreeToCallNight executor gate.

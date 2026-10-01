@@ -1189,6 +1189,36 @@ namespace ThronefallTrainer
         private static BuildingInteractor lastBuildPick;
         private static float lastBuildPickAt;
 
+        /// <summary>Best playable level node — same scoring as the in-match
+        /// scan (unbeaten first, LevelScore hook, nearest tiebreak) but usable
+        /// when the map scene has no LocalGamestate/InMatch and the normal
+        /// snapshot path is dead (audit F1).</summary>
+        public static LevelInteractor BestLevelNode()
+        {
+            try
+            {
+                var cache = Object.FindObjectsOfType<LevelInteractor>(false);
+                if (cache == null || cache.Length == 0) return null;
+                var lpm = LevelProgressManager.instance;
+                Vector3 hp = (UnityEngine.Object)(object)PlayerMovement.instance != (UnityEngine.Object)null
+                    ? PlayerMovement.instance.transform.position : Vector3.zero;
+                float bestScore = float.NegativeInfinity, bestD = float.MaxValue;
+                LevelInteractor best = null;
+                foreach (var li in cache)
+                {
+                    if (li == null || !li.isActiveAndEnabled || !li.CanBePlayed) continue;
+                    bool beaten = lpm != null && li.levelInfo != null &&
+                        lpm.GetLevelDataForScene(li.levelInfo.sceneName).beatenBest;
+                    float sc = LevelScore != null ? LevelScore(li, beaten) : (beaten ? 0f : 1f);
+                    float d = (li.PlayerTeleportPosition - hp).sqrMagnitude;
+                    if (sc > bestScore || (sc == bestScore && d < bestD))
+                    { bestScore = sc; bestD = d; best = li; }
+                }
+                return best;
+            }
+            catch { return null; }
+        }
+
         public static Snapshot Capture(int preferBuildKey = -1)
         {
             var s = new Snapshot { GameState = "unknown", UncoveredDoorIdx = -1 };

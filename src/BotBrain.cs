@@ -837,7 +837,7 @@ namespace ThronefallTrainer
                 // Per-index counts: alternating uncovered doors used to reset
                 // the streak, so unwalkable pairs were spammed forever.
                 if (legit && s.HasUncoveredDoor && s.UncoveredDoorHot &&
-                    s.UncoveredDoorIdx >= 0 && s.FreeUnits >= 2 &&
+                    s.UncoveredDoorIdx >= 0 && s.UncoveredDoorIdx < m.DoorPostAts.Length && s.FreeUnits >= 2 &&
                     now - m.DoorPostAts[s.UncoveredDoorIdx] > 6f + 4f * m.DoorPostCounts[s.UncoveredDoorIdx])
                 {
                     m.DoorPostCounts[s.UncoveredDoorIdx]++;
@@ -849,7 +849,7 @@ namespace ThronefallTrainer
                 // is unwalkable (behind a wall / off-navmesh). Park it: the
                 // coverage loop counts parked doors covered, so the spam
                 // ends and the units go to a lane they can actually reach.
-                if (s.HasUncoveredDoor && s.UncoveredDoorIdx >= 0 &&
+                if (s.HasUncoveredDoor && s.UncoveredDoorIdx >= 0 && s.UncoveredDoorIdx < m.DoorPostAts.Length &&
                     m.DoorPostCounts[s.UncoveredDoorIdx] >= 4 &&
                     s.UncoveredDoorUnits == 0)
                 {
@@ -860,7 +860,7 @@ namespace ThronefallTrainer
                 // Proactive night posting: quiet corridors still get manned —
                 // squads stand at their posts BEFORE the next wave leaks.
                 else if (legit && s.HasUncoveredDoor && !s.RedAlert &&
-                         s.UncoveredDoorIdx >= 0 &&
+                         s.UncoveredDoorIdx >= 0 && s.UncoveredDoorIdx < m.DoorPostAts.Length &&
                          s.FreeUnits >= s.UncoveredDoorTarget &&
                          now - m.DoorPostAts[s.UncoveredDoorIdx] > 4f)
                 {
@@ -1147,7 +1147,7 @@ namespace ThronefallTrainer
             // first, so squads only ever posted at night).
             if (legit && !s.IsNight)
             {
-                if (s.HasUncoveredDoor && s.UncoveredDoorIdx >= 0 &&
+                if (s.HasUncoveredDoor && s.UncoveredDoorIdx >= 0 && s.UncoveredDoorIdx < m.DoorPostAts.Length &&
                     s.FreeUnits >= (s.UncoveredDoorHot ? 2 : Math.Max(4, s.UncoveredDoorTarget))
                     && now - m.DoorPostAts[s.UncoveredDoorIdx] > 6f + 4f * m.DoorPostCounts[s.UncoveredDoorIdx])
                 {
@@ -1158,7 +1158,7 @@ namespace ThronefallTrainer
                 }
                 // Same-day version: posts to a door whose units never arrive
                 // (doorUnit==0 after 4 tries) = unwalkable anchor — park it.
-                if (s.HasUncoveredDoor && s.UncoveredDoorIdx >= 0 &&
+                if (s.HasUncoveredDoor && s.UncoveredDoorIdx >= 0 && s.UncoveredDoorIdx < m.DoorPostAts.Length &&
                     m.DoorPostCounts[s.UncoveredDoorIdx] >= 4 &&
                     s.UncoveredDoorUnits == 0)
                 {

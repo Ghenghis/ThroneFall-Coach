@@ -651,6 +651,27 @@ internal static class Bot
 				}
 				SceneTransitionManager.instance.TransitionFromNullToLevelSelect();
 			}
+			// Level-select map without a usable gamestate (audit F1): the
+			// snapshot dies before the level scan runs when LocalGamestate is
+			// absent or not InMatch — drive the transition directly; the node
+			// map needs no walking.
+			else if (!s.SceneName.StartsWith("_") &&
+			         (UnityEngine.Object)(object)SceneTransitionManager.instance != (UnityEngine.Object)null &&
+			         Time.unscaledTime >= menuAdvanceAt)
+			{
+				var lnode = BotPerception.BestLevelNode();
+				if ((UnityEngine.Object)(object)lnode != (UnityEngine.Object)null &&
+				    (UnityEngine.Object)(object)lnode.levelInfo != (UnityEngine.Object)null)
+				{
+					menuAdvanceAt = Time.unscaledTime + 8f;
+					ManualLogSource log9 = Plugin.Log;
+					if (log9 != null)
+					{
+						log9.LogInfo((object)("[bot] map node -> '" + lnode.levelInfo.sceneName + "' (no-gamestate path)"));
+					}
+					SceneTransitionManager.instance.TransitionFromLevelSelectToLevel(lnode.levelInfo.sceneName);
+				}
+			}
 			HandleBlockingFrame(in s);
 			WriteAuditStub(in s, "menu");
 			return;
