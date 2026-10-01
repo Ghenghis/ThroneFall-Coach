@@ -1286,6 +1286,12 @@ internal static class Bot
 				return;
 			}
 			Gates.NotePin();
+			// Stuck but "reachable": the pathfinder returned a path and the
+			// hero still can't move (mesh lies — gate leg, pocket, door seam).
+			// Feed it to the GPS as a nav failure so Redirect can try a gate
+			// plan instead of burning sidesteps (proposal: stuck detector
+			// fired repeatedly while gps-plan never engaged).
+			if (StuckStrikes >= 1 && !Gates.Active) Gates.NoteNavFail(AimPos);
 			StuckStrikes++; SpatialMemory.Bump(s.SceneName, s.HeroPos);
 			stuckStrikeTotal++;
 			if (stuckStrikeTotal == 60)

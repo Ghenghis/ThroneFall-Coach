@@ -2158,6 +2158,14 @@ namespace ThronefallTrainer
                     bool armyShort = s.ArmyTarget > 0 && s.AllyCount < s.ArmyTarget;
                     bool defenseFirst = !broke && (s.RedAlert || s.DoorsCovered < s.DoorCount);
                     score += military * (armyShort ? 600 : defenseFirst ? 400 : 100 + Mathf.Min(s.NextWaveCount * 15, 300));
+                    // Upgrade urgency ("pens"): an already-Built slot offering
+                    // an upgrade used to fight raw score against the open[0]
+                    // playbook pin and starved for minutes — the hero walked
+                    // past pens it could upgrade. Upgrades now scale with idle
+                    // gold and dominate once the playbook is satisfied.
+                    if (bs.State == BuildSlot.BuildingState.Built && bs.CanBeUpgraded)
+                        score += (s.Balance > 60 ? 2200 : 900) +
+                                 (OpenBuildOrder().Length == 0 ? 1500 : 0);
                     // Coach/playbook/RL focus bias on top of the situation bias.
                     string focus = !string.IsNullOrEmpty(Coach.BuildFocus) ? Coach.BuildFocus
                         : (!string.IsNullOrEmpty(Strat.Focus) ? Strat.Focus

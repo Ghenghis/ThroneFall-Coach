@@ -302,6 +302,8 @@ def mm_watch_loop():
     """Continuously: observe -> MiniMax -> validate -> command -> proof."""
     mm_watch_loop.last_patch = ""
     mm_watch_loop.last_raw = ""
+    mm_watch_loop.pending_outcome = None
+    mm_watch_loop.last_outcome = None
     last_sig = ""
     last_run = None
     while True:
@@ -351,6 +353,24 @@ def mm_watch_loop():
             # digest clipped doors/checklist/alerts to 5 items and blinded
             # it to per-door detail. Feed everything real instead.
             track_activity(audit.get("mode"), audit.get("t"))
+            # Closed loop: measure what the LAST applied patch actually did
+            # and feed it into this prompt — MiniMax steered blind before,
+            # never learning whether its own command helped or hurt.
+            po = mm_watch_loop.pending_outcome
+            if po and time.time() - po["t"] > 45:
+                after = {"ally": st.get("ally"), "gold": st.get("gold"),
+                         "doors_cov": st.get("doors_cov"), "wave": st.get("wave"),
+                         "red": st.get("red"), "mode": st.get("mode")}
+                deltas = {k: after[k] - po["before"].get(k, 0)
+                          for k in ("ally", "gold", "doors_cov")
+                          if isinstance(after.get(k), (int, float))
+                          and isinstance(po["before"].get(k), (int, float))}
+                mm_watch_loop.last_outcome = {"patch": po["patch"], "d": deltas,
+                                              "after": after,
+                                              "s": int(time.time() - po["t"])}
+                _watch_log({"t": round(time.time(), 1), "kind": "outcome",
+                            **mm_watch_loop.last_outcome})
+                mm_watch_loop.pending_outcome = None
             door_detail = [{"line": l, "units": u}
                            for l, u in zip(audit.get("door_lines", []),
                                            audit.get("door_units", []))]
@@ -373,6 +393,7 @@ def mm_watch_loop():
                 "\nNET vs BOT: " + json.dumps(m.get("learning", {}).get("net", {})) +
                 "\nENGINEERING DIGEST (pins/stuck/gps/rescan/waste - knobs cannot fix these, propose code fixes): " +
                 json.dumps(eng_digest()) +
+                "\nEFFECT OF YOUR LAST PATCH: " + json.dumps(mm_watch_loop.last_outcome) +
                 "\nRECENT PROPOSALS (do not repeat): " + json.dumps(recent_proposals()) +
                 "\nCorrect the FAILED checklist items. Respond JSON only.")
             reply, usage = mm_chat(
@@ -453,6 +474,15 @@ def mm_watch_loop():
                         hb(**({"applied": _hb["applied"] + 1} if applied
                               else {"not_applied": _hb["not_applied"] + 1}))
                         entry["applied"] = applied
+                        if applied:
+                            mm_watch_loop.pending_outcome = {
+                                "t": time.time(), "patch": dict(patch),
+                                "before": {"ally": st.get("ally"),
+                                           "gold": st.get("gold"),
+                                           "doors_cov": st.get("doors_cov"),
+                                           "wave": st.get("wave"),
+                                           "red": st.get("red"),
+                                           "mode": st.get("mode")}}
                         _watch_log({"t": round(time.time(), 1),
                                     "kind": "proof", **entry})
                         if not applied:

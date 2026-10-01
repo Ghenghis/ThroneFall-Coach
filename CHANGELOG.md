@@ -323,3 +323,11 @@ AUTOPILOT §8–9 for the full list and next actions.
   inventory, plus hero/breach/economy rules and objective kind. `LoadStrategy` falls back to the `.auto.json`
   when no hand-tuned pack exists — never-seen maps get a competent playbook instead of blind defaults.
   bot-lint guards the fallback; 37 drafts on disk.
+- **Closed loop for MiniMax:** every applied patch now records a metric snapshot; the next watch cycle (>45 s)
+  computes deltas (ally/gold/door-coverage/wave) and feeds "EFFECT OF YOUR LAST PATCH" back into the prompt +
+  `outcome` entries in mmwatch.jsonl. MiniMax was steering blind; now it sees cause -> effect.
+- **Stuck -> GPS escalation:** a pin while travelling to a "reachable" goal (pathfinder returned a path but the
+  hero can't move — mesh lies at gate seams/pockets) now calls `Gates.NoteNavFail(AimPos)` after the first
+  strike, so gate planning engages instead of burning sidestep strikes. MiniMax proposal #8.
+- **Upgrade urgency ("pens"):** an already-Built slot that CanBeUpgraded scores +(900/2200 by idle gold) +
+  +1500 when the playbook is fully satisfied — upgrades starved for minutes against the open[0] +5000 pin.
