@@ -314,3 +314,35 @@ pre-existing NNConstraint-obsolete warnings).
 - Durststein completion -> next node.
 - Defeat -> retry cycle.
 - gate cat_built > 0 (pin queued; needs live slot).
+
+## Round 9 (2026-10-01): GPS wall-gate escape + readiness/night fixes — VERIFIED LIVE
+
+Context: handoff from Claude (`docs/GPS.md`). Audited, extended, deployed, and verified in
+fresh-run play. Commits `df48620`, `90bbc3a`.
+
+| Change | Evidence |
+|---|---|
+| `Gates.cs`/`GatePlanner.cs` — nav-fail-triggered gate-chain planner (BFS over per-frame area labels + label-free heuristic fallback), approach/push-through legs, 90 s fail cool-down, strike suppression on gate legs | `[gps] plan`/`gps-cross` live: 9 crossings in run 111053Z (1.0-4.1 s each, incl. one 2-hop chain). GatePlanner tests 19/19. |
+| `Memory.ForgiveParksSince` — parks made inside an enclosure are forgiven after crossing | called on `gps-cross` (uses `episodeStart`) |
+| `DoorsParked`/`DoorsClaimed` split out of `DoorsCovered`; `realDoors` gates BOTH night paths | parked anchors no longer read as "manned" |
+| `BlockedBuilds` counter + rescan-slots trigger fixed (BuildCount only counted unignored slots, so all-parked could never rescan) | `rescan-slots` fired 5x on the 30 s cooldown in run 111053Z |
+| Approach-timeout cluster hysteresis (sub-20 m retargets with no payment keep the 18 s clock) | deployed |
+| `MaxWaveAhead` (GetWaveInfoByNumber, next 2 nights) drives ArmyTarget, big-wave coin gate, military score bump | `at` rose 40->55 mid-run; mwa live in ticks |
+| Ranked `ChoiceRank`/`WeaponRank`/`PerkRank`; mutations never equipped; one weapon per group; top-4 perks | deployed; ranks logged on each pick |
+| `nav` field in ticks.jsonl; drp/drcl/udu/bldb/mwa keys; Replay parser updated | fields flowing in 111053Z ticks |
+| `tests/Replay` compiles again (BotBrain no longer touches BotPerception) | 0 errors; durststein-dto fixture drifts 1/163 ticks (intended idle-night slowdown) — needs re-capture under this build |
+| `build-and-deploy.ps1` taskkill /F + log-rotation-aware load check; file requires UTF-8 BOM (PS 5.1 ANSI read decodes em-dash as `"`) | deploy verified working |
+
+**Live proof, run 20261001T111053Z-Frostsee:** fresh run, all 12 waves, VICTORY, 0 hero deaths,
+castle 87 % during wave 12 (143 foes), pin share 18.6 % vs 37.5 % baseline, no pin episode > 12 s.
+Followed by a second Frostsee victory (policy reward backed over 185 decisions), then the bot
+detected a corrupt empty re-entry scene (`interactor vacuum`), quarantined Frostsee, returned to
+level select and entered the next unbeaten node (Neuland) unaided.
+
+Open:
+- Durststein Blacksmith wall-line pins: measured as targets ACROSS the wall (Def Tower at
+  (-42,66), House at (-33,66) pinned from ~(-39,43)) — GPS should cover if a gate links the areas;
+  if the pocket has NO gate it needs "build a gate from inside" (not implemented).
+- Defence Tower task ledger: 206 abandoned + 92 fail + 83 partial vs 157 ok — cluster hysteresis +
+  GPS should cut this; re-measure after a few Durststein runs.
+- Re-capture replay fixtures under this build (durststein-dto drifts 1/163 by design).
