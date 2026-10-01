@@ -16,3 +16,5 @@ decompiled_fog/
 # Release packaging
 dist/
 
+
+.tmp_*
