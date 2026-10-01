@@ -86,20 +86,149 @@ def mm_chat(messages, max_tokens=3000):
     except (KeyError, IndexError, TypeError):
         raise RuntimeError(f"MiniMax bad response: {str(out)[:200]}")
 
-MM_SYS = """You are MiniMax Watch — a strict live steering advisor for a
-Thronefall autopilot. You see real telemetry and may adjust the bot's
+MM_SYS = """You are MiniMax Watch — the live steering advisor AND bug reporter
+for a Thronefall autopilot. You see real telemetry and may adjust the bot's
 STRATEGY KNOBS ONLY (never cheats, never code). Reply with ONLY a JSON
 object, no prose outside it:
 {"squad_size":0,"reserve_size":0,"escort_size":0,"army_target":0,
  "build_focus":"military|income|defense|balanced",
  "hero_posture":"builder|fighter","night_call":false,
- "note":"<one sentence: what you changed and why>"}
+ "note":"<one sentence: what you changed and why>",
+ "proposal":{"bug":"<short title>","evidence":"<numbers from the digest>",
+             "fix":"<concrete code-level fix: file/function/threshold>"}}
 Rules: use 0/false for "no change"; squad 1-8, reserve 0-10, escort 0-6,
-army_target 0-60; build_focus must be one of the listed words; only change
-what the telemetry justifies. If nothing needs changing return {}.
+army_target is a FLOOR 0-60 (the bot's own target never goes below it, and
+changes under 10 are ignored); build_focus must be one of the listed words;
+only change what the telemetry justifies. If nothing needs changing return {}.
+hero_posture: keep "builder" — the army fights, the hero builds. "fighter"
+is only honoured during a RED ALERT and is otherwise forced back to builder.
 To RELEASE a previously-set override back to the bot's built-in defaults,
 send {"clear":true} — do NOT send zeros to mean "back to default".
+EVENT GLOSSARY (read these correctly): stuck / quick-sidestep = the HERO'S
+MOVEMENT pin detector (he stopped making progress walking - NOT combat strikes);
+pin-park = a build slot abandoned because the hero was pinned walking to it;
+approach-timeout = same build target 18 s without payment; door-park = a squad
+door anchor proven unreachable; gps-plan/gps-cross/gps-fail = the wall-gate
+escape navigator (cross = success); rescan-slots = forgiving parked slots;
+slot-abandon = stood at a slot 10 s without paying; anomaly = log-spam guard.
+KNOBS CANNOT FIX CODE BUGS. When the ENGINEERING DIGEST shows a pattern that
+no knob can fix (hero pinned at walls, repeated stuck strikes, a build that
+is retried and abandoned, a popup that never closes, gps-fail, idle with gold),
+add a "proposal" with the evidence and the code-level fix you recommend. The
+engineer reads proposals.jsonl every pass and ships the fixes; do not repeat
+a proposal that is already in RECENT PROPOSALS.
 """
+
+MMHB = AGENT / "mm-heartbeat.json"
+PROPOSALS = AGENT / "proposals.jsonl"
+_hb = {"cycles": 0, "ok": 0, "errors": 0, "applied": 0, "not_applied": 0,
+       "proposals": 0, "last_ok": 0, "last_error": "", "live": False}
+
+def hb(**kw):
+    """Heartbeat the engineer + /health can read: loop alive, last good call,
+    last error, apply proof counts. Written every cycle, even when idle."""
+    _hb.update(kw)
+    _hb["t"] = round(time.time(), 1)
+    try:
+        tmp = MMHB.with_suffix(".tmp")
+        tmp.write_text(json.dumps(_hb))
+        os.replace(tmp, MMHB)
+    except OSError:
+        pass
+
+_eng_cache = {"t": 0, "v": {}}
+def eng_digest():
+    """What the knob-only prompt was blind to: pin/stuck/gps/rescan/door-park
+    event counts of the live run, the nav status, task waste ratio and the
+    game log's warning counts. Cached 45 s (it reads several tails)."""
+    if time.time() - _eng_cache["t"] < 45 and _eng_cache["v"]:
+        return _eng_cache["v"]
+    d = {}
+    try:
+        run = latest_run()
+        if run:
+            ev = tail_lines(run / "events.jsonl", 600, cap=200000)
+            cnt = {}
+            for ln in ev:
+                try: n = json.loads(ln).get("note", "")
+                except Exception: continue
+                n = n.split(":")[0]
+                cnt[n] = cnt.get(n, 0) + 1
+            keep = ("stuck", "quick-sidestep", "pin-park", "approach-timeout", "door-park",
+                    "gps-plan", "gps-cross", "gps-fail", "rescan-slots", "slot-abandon",
+                    "task-miss", "frame-escape", "match-escape", "choice-cancel",
+                    "choice-coroutine-wedge", "breach-response", "inter-vacuum",
+                    "aim-flap-blocked", "anomaly", "switch-night", "idle-night-call")
+            d["events_last600"] = {k: v for k, v in cnt.items() if k in keep}
+            tl = tail_lines(run / "ticks.jsonl", 1)
+            if tl:
+                t = json.loads(tl[-1])
+                d["tick"] = {k: t.get(k) for k in ("nav", "bld", "bldb", "bn", "bd", "at", "mwa",
+                             "drc", "drn", "drp", "drcl", "udu", "free", "ally", "gold", "dtl")}
+    except Exception as ex:
+        d["events_err"] = str(ex)[:80]
+    try:
+        use = waste = n = 0
+        for ln in tail_lines(AGENT / "tasks.jsonl", 150, cap=120000):
+            try: t = json.loads(ln)
+            except Exception: continue
+            use += t.get("use_s", 0) or 0; waste += t.get("waste_s", 0) or 0; n += 1
+        d["tasks_last150"] = {"n": n, "useful_s": round(use), "waste_s": round(waste),
+                              "useful_pct": round(100 * use / max(1, use + waste))}
+    except Exception:
+        pass
+    try:
+        lg = tail_bytes(pathlib.Path(r"K:\Downloads-IDM\Thronefall\BepInEx\LogOutput.log"), 80000)
+        d["gamelog_last80KB"] = {k: lg.count(k) for k in
+            ("stuck strike", "anomaly", "[gps] failed", "[gps] crossed", "Exception", "match-escape")}
+    except Exception:
+        pass
+    _eng_cache.update(t=time.time(), v=d)
+    return d
+
+def recent_proposals(n=6):
+    out = []
+    for ln in tail_lines(PROPOSALS, n, cap=40000):
+        try: out.append(json.loads(ln).get("bug", ""))
+        except Exception: pass
+    return out
+
+def record_proposal(p, st):
+    """Append a MiniMax bug proposal for the engineer; dedupe by title."""
+    if not isinstance(p, dict) or not str(p.get("bug", "")).strip():
+        return False
+    bug = str(p["bug"])[:120]
+    if bug.lower() in [x.lower() for x in recent_proposals(30)]:
+        return False
+    rec = {"t": round(time.time(), 1), "run": st.get("run"), "bug": bug,
+           "evidence": str(p.get("evidence", ""))[:600], "fix": str(p.get("fix", ""))[:600],
+           "status": "open"}
+    try:
+        with open(PROPOSALS, "a", encoding="utf-8") as f:
+            f.write(json.dumps(rec) + "\n")
+    except OSError:
+        return False
+    hhmm = time.strftime("%H:%M")
+    append_log("mm", f"[{hhmm} mm-proposal] {bug} :: {rec['fix'][:200]}")
+    _hb["proposals"] += 1
+    return True
+
+_last_at = {"v": 0}
+def guard_patch(patch, st):
+    """Server-side guards the model can't talk its way around: the hero stays
+    a builder outside red alert, and army_target only moves in steps >= 10
+    (it flip-flopped 15->35->15->20->25 every cycle, dragging the bot's own
+    lookahead target around)."""
+    if not patch:
+        return patch
+    if patch.get("hero_posture") == "fighter" and not st.get("red"):
+        patch["hero_posture"] = "builder"
+    if "army_target" in patch:
+        if _last_at["v"] and abs(patch["army_target"] - _last_at["v"]) < 10:
+            patch.pop("army_target")
+        else:
+            _last_at["v"] = patch["army_target"]
+    return patch if any(k != "note" for k in patch) else None
 
 # Strict validation — only these keys, clamped ranges, enum values only.
 MM_FIELDS = {
@@ -146,6 +275,8 @@ def validate_patch(obj):
 
 def _watch_log(entry):
     try:
+        if MMWATCH.exists() and MMWATCH.stat().st_size > 8_000_000:
+            os.replace(MMWATCH, MMWATCH.with_suffix(".old"))   # rolling cap
         with open(MMWATCH, "a", encoding="utf-8") as f:
             f.write(json.dumps(entry) + "\n")
     except Exception:
@@ -177,7 +308,9 @@ def mm_watch_loop():
         try:
             st = live_state()
             if not st.get("live"):
+                hb(live=False)
                 time.sleep(8); continue
+            _hb["live"] = True
             # New run => the plugin-side ResetRun() cleared all overrides —
             # re-issue steering instead of deduping it away forever.
             if st.get("run") != last_run:
@@ -238,6 +371,9 @@ def mm_watch_loop():
                 "\nWEAKNESSES: " + json.dumps(m.get("weaknesses", [])[:5]) +
                 "\nBREACH-PRONE DOORS: " + json.dumps(m.get("breach_doors", [])) +
                 "\nNET vs BOT: " + json.dumps(m.get("learning", {}).get("net", {})) +
+                "\nENGINEERING DIGEST (pins/stuck/gps/rescan/waste - knobs cannot fix these, propose code fixes): " +
+                json.dumps(eng_digest()) +
+                "\nRECENT PROPOSALS (do not repeat): " + json.dumps(recent_proposals()) +
                 "\nCorrect the FAILED checklist items. Respond JSON only.")
             reply, usage = mm_chat(
                 [{"role": "system", "content": MM_SYS},
@@ -245,9 +381,12 @@ def mm_watch_loop():
             # extract first {...} block — parse failure must NOT commit
             # last_sig (a malformed reply would dedupe future calls forever)
             i0, i1 = reply.find("{"), reply.rfind("}")
-            patch = validate_patch(
-                json.loads(reply[i0:i1 + 1])) if 0 <= i0 < i1 else None
+            robj = json.loads(reply[i0:i1 + 1]) if 0 <= i0 < i1 else None
+            if isinstance(robj, dict):
+                record_proposal(robj.get("proposal"), st)
+            patch = guard_patch(validate_patch(robj), st)
             last_sig = sig   # commit ONLY after call+parse both succeed
+            hb(ok=_hb["ok"] + 1, cycles=_hb["cycles"] + 1, last_ok=round(time.time(), 1))
             entry = {"t": round(time.time(), 1), "state": st, "usage": usage,
                      "raw": reply[:300], "patch": patch, "note": ""}
             if patch:
@@ -268,8 +407,7 @@ def mm_watch_loop():
                         glog = pathlib.Path(
                             r"K:\Downloads-IDM\Thronefall\BepInEx\LogOutput.log")
                         try:
-                            before = tail_bytes(glog, 40000).count(
-                                "[coach] user-cmd ->")
+                            before = glog.stat().st_size
                         except Exception:
                             before = -1
                         try:
@@ -296,11 +434,20 @@ def mm_watch_loop():
                         time.sleep(6)
                         applied = False
                         try:
-                            tail = tail_bytes(glog, 40000)
-                            applied = before >= 0 and \
-                                tail.count("[coach] user-cmd ->") > before
+                            # Offset proof: read only bytes appended since the
+                            # write (the old 40 KB tail-count slid past the
+                            # marker on a chatty log -> ~8 % false NOT APPLIED).
+                            # A log that rotated/truncated reads from 0.
+                            size = glog.stat().st_size
+                            start = before if 0 <= before <= size else 0
+                            with open(glog, "rb") as fh:
+                                fh.seek(start)
+                                chunk = fh.read().decode("utf-8", errors="replace")
+                            applied = "[coach] user-cmd ->" in chunk
                         except Exception:
                             pass
+                        hb(**({"applied": _hb["applied"] + 1} if applied
+                              else {"not_applied": _hb["not_applied"] + 1}))
                         entry["applied"] = applied
                         _watch_log({"t": round(time.time(), 1),
                                     "kind": "proof", **entry})
@@ -323,10 +470,13 @@ def mm_watch_loop():
                     # instead of blank '[rejected]' spam.
                     _watch_log({**entry, "raw": "(empty reply)"})
         except urllib.error.HTTPError as ex:
+            hb(errors=_hb["errors"] + 1, last_error=f"HTTP {ex.code}")
             _watch_log({"t": round(time.time(), 1),
                         "error": f"MiniMax HTTP {ex.code}: {ex.read()[:160]!r}"})
         except Exception as ex:
+            hb(errors=_hb["errors"] + 1, last_error=str(ex)[:120])
             _watch_log({"t": round(time.time(), 1), "error": str(ex)})
+        hb()
         time.sleep(WATCH_EVERY)
 
 
@@ -491,6 +641,16 @@ def health():
     except Exception:
         pass
     h["checks"].append({"name": "MiniMax", "ok": mm_ok, "detail": mm_det})
+    # 5. MiniMax loop heartbeat — the loop itself alive (not just "last call ok")
+    try:
+        hbj = json.loads(MMHB.read_text())
+        age = time.time() - hbj.get("t", 0)
+        h["checks"].append({"name": "MiniMax heartbeat", "ok": age < 240,
+            "detail": f"{age:.0f}s ago, ok={hbj.get('ok')} err={hbj.get('errors')} "
+                      f"applied={hbj.get('applied')}/{hbj.get('not_applied')} props={hbj.get('proposals')}"})
+    except Exception:
+        h["checks"].append({"name": "MiniMax heartbeat", "ok": False,
+                            "detail": "no mm-heartbeat.json (loop not running?)"})
     h["ok"] = all(c["ok"] for c in h["checks"])
     # Edge detector: post link transitions INTO the chat log so a dead
     # link is a red error line, not a silent banner. Locked — /health calls
@@ -522,8 +682,11 @@ def audit_alerts(a):
         out.append({"sev": "crit", "msg": "RED ALERT — enemies inside the building ring"})
     if a.get("ally", 0) < (a.get("army_target") or 20) * 0.3 and a.get("t", 0) > 300:
         out.append({"sev": "warn", "msg": f"army {a.get('ally')} far below target — production stalled"})
-    if ms > 90 and a.get("mode") in ("SpendGold", "Idle", "HoldCastle"):
-        out.append({"sev": "warn", "msg": f"stuck in {a.get('mode')} for {ms:.0f}s"})
+    # SpendGold is the normal day build mode and HoldCastle the normal night
+    # mode — flagging them as "stuck" fed MiniMax a false diagnosis every
+    # cycle ("Bot stuck 104s in SpendGold"). Only a daytime Idle is idle.
+    if ms > 90 and a.get("mode") == "Idle" and not a.get("night"):
+        out.append({"sev": "warn", "msg": f"idle by day for {ms:.0f}s"})
     cats = a.get("cat_built", {})
     if a.get("t", 0) > 400 and cats.get("wall", 0) == 0:
         out.append({"sev": "warn", "msg": "no walls built yet"})

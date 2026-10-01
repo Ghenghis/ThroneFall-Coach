@@ -1,17 +1,18 @@
-Subagent audit fixes: CastleThreat, per-door squad counts, choice wedge
+MiniMax orchestration: heartbeat, engineering digest, proposal channel, guards
 
-CastleThreat no longer falls back to the nearest enemy to hero - it is now
-strictly the nearest foe to the castle, so HasCastleThreat correctly gates
-night coin scavenging and red-alert checks.
+Diagnosis: the MiniMax watch loop was alive (3790 cycles) but blind (13-field
+digest, no pin/stuck/gps/waste data) and knob-only. Its steering was also
+harmful: hero_posture fighter 220x vs builder 150x, army_target changed on
+160/360 patches, and the plugin treated army_target as a SET that overwrote the
+bot's lookahead target. 8% of applies were false NOT APPLIED (sliding 40 KB
+log-tail count).
 
-Squad posting uses per-door DoorPostCounts/DoorPostAts arrays instead of a
-global consecutive-line streak. Two alternating uncovered unwalkable doors
-used to reset the count forever; now each anchor accumulates its own posts
-and ParkDoor fires after 4 failures.
-
-Choice coroutine wedge: if ChoiceCoroutine is running >20 s, the bot now
-calls CancelChoice() once and resets the watchdog instead of bouncing
-CloseActiveFrame() on a frozen frame.
+coach-server.py: eng_digest + event glossary in the prompt, proposal channel
+(proposals.jsonl), guard_patch (fighter only in red alert, army_target step
+>= 10), offset-based apply proof, mm-heartbeat.json + /health check, 8 MB
+mmwatch rollover, no false stuck-in-SpendGold alert.
+BotPerception: Coach.ArmyTargetFloor is now a floor (Mathf.Max).
+bot-lint: regression locks for the above. docs/ORCHESTRATION.md added.
 
 Generated with [Devin](https://devin.ai)
 

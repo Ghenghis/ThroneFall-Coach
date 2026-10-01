@@ -1,5 +1,20 @@
 # Changelog
 
+## MiniMax orchestration pass (diagnosis: alive but blind and knob-only)
+
+- **Finding:** MiniMax was NOT down - `mm_watch_loop` had 3790 cycles, ~60-90 s cadence, 160 applied / 32 NOT applied in the last 400.
+  It was ineffective for four measured reasons: (1) it saw a 13-field digest with no pin/stuck/gps/waste data; (2) its only output
+  was 7 strategy knobs, so every code-level problem it noticed ("bot stuck 104 s") had no outlet; (3) its steering was harmful:
+  `hero_posture:"fighter"` 220x vs builder 150x (contradicts army-fights/hero-builds) and `army_target` changed on 160 of 360 patches
+  (15->35->15->20->25), and the plugin treated it as a SET so it overwrote the bot's lookahead target; (4) 8 % of applies were
+  false "NOT APPLIED" (40 KB log-tail count slid past the marker) and a false "stuck in SpendGold" alert fed it bad diagnoses.
+- **Fixes:** `eng_digest` (events/nav/waste/log warnings) + event glossary in the prompt; `proposal` channel -> `proposals.jsonl`
+  (deduped, `[mm-proposal]` in chat); `guard_patch` (fighter only in red alert, army_target step >= 10); plugin `army_target` is now a
+  floor (`Mathf.Max`); offset-based apply proof; `mm-heartbeat.json` + `/health` "MiniMax heartbeat"; `mmwatch.jsonl` 8 MB rollover;
+  SpendGold/HoldCastle no longer flagged "stuck". See `docs/ORCHESTRATION.md`.
+- **Live proof:** heartbeat ok after restart, first proposal recorded (real evidence: 115 stuck events, 46 % waste; its fix text
+  misread stuck events as combat - glossary added).
+
 ## GPS wall-gate escape + night-readiness fix (Claude handoff + verification pass)
 
 - **GPS (Claude's work, audited + deployed here):** `src/Gates.cs`/`src/GatePlanner.cs` — when the pathfinder fails for a goal

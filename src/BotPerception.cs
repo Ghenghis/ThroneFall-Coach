@@ -1588,7 +1588,9 @@ namespace ThronefallTrainer
                 }
                 if (s.MaxWaveAhead > 0) at = Mathf.Max(at, (int)(s.MaxWaveAhead * 1.1f));
                 if (Strat.ArmyTarget > at) at = Strat.ArmyTarget;          // M3 playbook floor
-                if (Coach.ArmyTargetFloor > 0) at = Coach.ArmyTargetFloor; // live advisor SET (floor semantics broke "reduce army" orders)
+                // Advisor value is a true FLOOR: as a SET it overwrote the lookahead/playbook
+                // target (live ticks showed at=15/20/25 on Frostsee with a 17-foe wave ahead).
+                if (Coach.ArmyTargetFloor > 0) at = Mathf.Max(at, Coach.ArmyTargetFloor);
                 s.ArmyTarget = at;
             }
             // Coach posture: "fighter" widens the hero's self-defense bubble.

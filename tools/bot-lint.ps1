@@ -201,6 +201,19 @@ if ($badNet) {
 if ((Get-Content (Join-Path $src 'Overlay.cs') -Raw) -match 'KeyCode\.(F1|F8)') {
     Report 'PASS' 'overlay: toggle present' $null $null
 } else { Report 'WARN' 'overlay: toggle missing' '' 'Overlay.Update should toggle Visible on F1 or F8' }
+# MiniMax orchestration guards must stay in place (regression lock).
+$cs = Get-Content (Join-Path $PSScriptRoot 'coach-server.py') -Raw
+$bp = Get-Content (Join-Path $src 'BotPerception.cs') -Raw
+foreach ($pair in @(
+    @('guard_patch', 'coach-server: guard_patch (fighter/army_target guard)'),
+    @('mm-heartbeat\.json', 'coach-server: MiniMax heartbeat file'),
+    @('proposals\.jsonl', 'coach-server: proposal channel'),
+    @('def eng_digest', 'coach-server: engineering digest'))) {
+    if ($cs -match $pair[0]) { Report 'PASS' $pair[1] $null $null }
+    else { Report 'FAIL' ($pair[1] + ' missing') '' 'see docs/ORCHESTRATION.md' }
+}
+if ($bp -match 'Mathf\.Max\(at, Coach\.ArmyTargetFloor\)') { Report 'PASS' 'coach: army_target is a floor' $null $null }
+else { Report 'FAIL' 'coach: army_target overwrites the bot target' '' 'use Mathf.Max(at, Coach.ArmyTargetFloor)' }
 # Coach must never block the frame: UnityWebRequest banned (we use
 # HttpWebRequest on a background thread).
 $coa = Get-Content (Join-Path $src 'Coach.cs') -Raw
