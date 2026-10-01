@@ -458,3 +458,6 @@ AUTOPILOT §8–9 for the full list and next actions.
 - **Army-target cap (proposal 19):** MaxWaveAhead*1.1 had no ceiling - a 143-foe wave asked for a 157-unit
   army vs ~48 achievable -> armyShort fired forever, every build score skewed to military. Capped at
   postable door-need + 24 headroom.
+- **Fast live feed:** plugin now writes live.jpg (JPEG q55) every 0.4 s alongside the 2 s live.png (vision +
+  snapshots keep PNG). /live.jpg endpoint + /live.json returns {ts, fast} - UI polls 300 ms and swaps to the
+  jpeg feed automatically. ~2.5 fps up from ~0.5 fps.

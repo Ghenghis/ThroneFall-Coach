@@ -42,6 +42,8 @@ namespace ThronefallTrainer
         public static volatile bool Busy;   // written by the worker thread
         public static bool LiveShot;             // dump agent/live.png for the chat UI
         public static float LiveShotEvery = 2f;
+        public static float LiveShotFastEvery = 0.4f;
+        private static float nextLiveShotFast;
         private static float nextLiveShot;
 
         private static float lastCallAt = -999f;
@@ -82,6 +84,26 @@ namespace ThronefallTrainer
                         File.WriteAllBytes(tmp, tex.EncodeToPNG());
                         if (File.Exists(lp)) File.Delete(lp);
                         File.Move(tmp, lp);   // atomic — server polls live.png
+                        UnityEngine.Object.Destroy(tex);
+                    }
+                }
+                catch (Exception) { }
+            }
+            // Fast feed: JPEG at ~2.5 fps for the Live pane — PNG encode is
+            // ~4x slower and the file is ~5x heavier; vision keeps live.png.
+            if (LiveShot && Time.unscaledTime >= nextLiveShotFast)
+            {
+                nextLiveShotFast = Time.unscaledTime + LiveShotFastEvery;
+                try
+                {
+                    var tex = ScreenCapture.CaptureScreenshotAsTexture();
+                    if (tex != null)
+                    {
+                        var lj = Path.Combine(Recorder.AgentDir, "live.jpg");
+                        var tmp = lj + ".tmp";
+                        File.WriteAllBytes(tmp, tex.EncodeToJPG(55));
+                        if (File.Exists(lj)) File.Delete(lj);
+                        File.Move(tmp, lj);
                         UnityEngine.Object.Destroy(tex);
                     }
                 }

@@ -1083,6 +1083,15 @@ class H(BaseHTTPRequestHandler):
             self._send(200, PAGE, "text/html; charset=utf-8")
         elif self.path == "/state":
             self._send(200, json.dumps(live_state()), "application/json")
+        elif self.path.startswith("/live.jpg"):   # fast UI feed (~2.5 fps)
+            p = AGENT / "live.jpg"
+            try:
+                if p.exists():
+                    self._send(200, p.read_bytes(), "image/jpeg")
+                else:
+                    self._send(404, "no frame yet")
+            except (PermissionError, OSError):
+                self._send(404, "mid-write")
         elif self.path.startswith("/live.png"):   # UI polls /live.png?x=<ts>
             p = AGENT / "live.png"
             try:
@@ -1102,9 +1111,12 @@ class H(BaseHTTPRequestHandler):
                 else:
                     self._send(404, "no frame yet")
         elif self.path.startswith("/live.json"):
-            p = AGENT / "live.png"
-            ts = p.stat().st_mtime if p.exists() else 0
-            self._send(200, json.dumps({"ts": ts}), "application/json")
+            pj = AGENT / "live.jpg"
+            pp = AGENT / "live.png"
+            ts = pj.stat().st_mtime if pj.exists() else \
+                (pp.stat().st_mtime if pp.exists() else 0)
+            self._send(200, json.dumps({"ts": ts,
+                "fast": pj.exists()}), "application/json")
         elif self.path.startswith("/run?"):
             # run detail: last 12 ticks of one run — powers the sidebar
             # expandable rows (truth, not summaries).
@@ -2309,10 +2321,11 @@ function tool(t){
 /* live frame — swap only on real new frame */
 let lastTs=0,frameCt=0,lastFpsT=Date.now();
 setInterval(async()=>{try{const l=await j('/live.json');
- if(l.ts&&l.ts!=lastTs){lastTs=l.ts;shot.src='/live.png?x='+l.ts;frameCt++;
+ if(l.ts&&l.ts!=lastTs){lastTs=l.ts;
+  shot.src=(l.fast?'/live.jpg?x=':'/live.png?x=')+l.ts;frameCt++;
   document.getElementById('lvAge').textContent='frame '+new Date(l.ts*1000).toLocaleTimeString()}
  const now=Date.now();if(now-lastFpsT>4000){document.getElementById('lvFps').textContent=
-  (frameCt/((now-lastFpsT)/1000)).toFixed(1)+' fps';frameCt=0;lastFpsT=now}}catch(e){}},800);
+  (frameCt/((now-lastFpsT)/1000)).toFixed(1)+' fps';frameCt=0;lastFpsT=now}}catch(e){}},300);
 /* history — last 30 only, mm entries get their time */
 (async()=>{const h=await j('/history');h.slice(-30).forEach(x=>{
  const r=x.role=='user'?'u':x.role=='assistant'?'a':x.role=='mm'?'mm':x.role=='err'?'err':'c';
