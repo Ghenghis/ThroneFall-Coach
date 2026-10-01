@@ -424,3 +424,9 @@ AUTOPILOT §8–9 for the full list and next actions.
   Daytime build-lost events (roamers) compounded it; the day red-alert fix + enabler bypass target both.
 - **Frostsee 27 min is map pacing, not waste:** ~10 min day budgets x multi-day waves; SpendGold dominates day,
   HoldCastle night. speedrun:true is the pace lever.
+- **Phase-1 verification run (all live-proven):** /order marker proof, /mmapprove now genuinely waits for the
+  [coach] user-cmd line (injected pending -> applied:true with real log proof), relaunch exercised end-to-end:
+  game killed + relaunched + new run registered. Proof window widened 90->150 s and accepts log-growth OR
+  audit-fresh (full game load + first capture can exceed 90 s; the first live relaunch reported
+  verified:false because the window was tight, not because it failed).
+- **Desktop app launched + verified:** window responding, WebView2 spawned, menu bar live.

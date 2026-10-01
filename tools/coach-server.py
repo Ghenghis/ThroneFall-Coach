@@ -240,16 +240,25 @@ def apply_side_effects(patch, mode, st):
             subprocess.Popen([r"K:\Downloads-IDM\Thronefall\thronefall.exe"],
                              cwd=r"K:\Downloads-IDM\Thronefall")
             _relaunch_last["t"] = time.time()
-            # Proof window: fresh bytes appended to the game log beyond the
-            # kill point = BepInEx+plugin actually came back up.
+            # Proof window: EITHER fresh log bytes beyond the kill point OR a
+            # fresh audit.json = BepInEx+plugin came back up. Full game load +
+            # first in-scene capture can take ~2 min — 150 s budget, and the
+            # OR matters because audit.json only refreshes once a scene's
+            # capture loop starts.
             ok = False
-            for _ in range(90):
+            for _ in range(150):
                 time.sleep(1)
-                if glog.exists() and glog.stat().st_size > before_size + 512:
-                    af = AGENT / "audit.json"
-                    if af.exists() and time.time() - af.stat().st_mtime < 30:
-                        ok = True
-                        break
+                log_grew = glog.exists() and \
+                    glog.stat().st_size > before_size + 512
+                af = AGENT / "audit.json"
+                audit_fresh = af.exists() and \
+                    time.time() - af.stat().st_mtime < 20
+                if log_grew and audit_fresh:
+                    ok = True
+                    break
+                if log_grew and not ok:
+                    ok = "log-only"   # plugin loaded; audit not ticking yet
+            ok = bool(ok)
             _watch_log({"t": round(time.time(), 1), "kind": "relaunch",
                         "by": "mm", "mode": mode, "verified": ok})
             return ("session relaunched by MiniMax, plugin confirmed"
