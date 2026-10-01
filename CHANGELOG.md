@@ -435,3 +435,12 @@ AUTOPILOT §8–9 for the full list and next actions.
     the guard was the spammiest log source (28 events/600s at max global rate).
   - Pin-probe skip list widened: "parent|container|holder|group|root" container transforms misclassified as
     blockers ("obj:Alive Parent") - they can never pin, don't mask the real blocker.
+- **Nav-goal off-mesh pre-check:** GetNearest(Walkable) snap >4 m skips the path request entirely and logs
+  'nav-goal off-mesh' once per coarse cell per 60 s (was: nav-path error spam on every repath to an
+  unreachable edge target). Gates.NoteNavFail still records the unreachable pin.
+- **Policy net retrained:** train_policy.py over 23,878 logged rows, acc 0.01 -> 0.52 -> netpolicy.json.
+  The shadow's EnterLevel spam during in-level play should drop with real accuracy.
+- **Proposal triage first pass:** 40 recent MiniMax proposals graded - 5 shipped (ChoiceFrame wedge, door-park
+  fallbacks x3, unstick-pressure focus), 4 rejected (verified false premises: checklist done-flags ARE written
+  live; peacetime door posting is by user design), 31 open. proposal_set fixed: tail-40 indexing (was writing
+  status onto absolute file rows - marks landed on wrong proposals).

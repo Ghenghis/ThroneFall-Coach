@@ -117,6 +117,8 @@ internal static class Bot
 
 	private static Pathfinding.Path navPath;
 
+	private static readonly Dictionary<long, float> navNoPathLogAt = new Dictionary<long, float>();
+
 	private static int navIndex;
 
 	private static Vector3 navGoal;
@@ -3114,6 +3116,22 @@ internal static class Bot
 			return;
 		}
 		navRepathAt = Time.unscaledTime + 1.1f;
+		// Pre-check: if the goal snaps far off the walkable graph (map-edge
+		// pins, trigger colliders) the path will error and spam the log —
+		// skip it and log once per coarse goal instead.
+		var nn = AstarPath.active.GetNearest(goal, NNConstraint.Walkable);
+		if ((UnityEngine.Object)(object)nn.node == (UnityEngine.Object)null ||
+		    FlatDist(goal, nn.position) > 4f)
+		{
+			Gates.NoteNavFail(goal);
+			int gx = (int)(goal.x / 8f), gz = (int)(goal.z / 8f);
+			long gkey = ((long)gx << 20) | (uint)(gz & 0xFFFFF);
+			if (navNoPathLogAt.TryGetValue(gkey, out float lp) && Time.unscaledTime - lp < 60f)
+				return;
+			navNoPathLogAt[gkey] = Time.unscaledTime;
+			Plugin.Log?.LogWarning($"[bot] nav-goal off-mesh -> {goal} (skipped path request)");
+			return;
+		}
 		navGoal = goal;
 		navInFlight = true;
 		int reqId = ++navRequestId;

@@ -1716,13 +1716,16 @@ def proposal_set(idx, status):
     for ln in PROPOSALS.read_text(encoding="utf-8", errors="replace").splitlines():
         try: rows.append(json.loads(ln))
         except Exception: pass
-    if not (0 <= idx < len(rows)):
+    # idx is relative to the last-40 view the GET endpoint serves
+    start = max(0, len(rows) - 40)
+    real = start + idx
+    if not (0 <= real < len(rows)):
         return False
-    rows[idx]["status"] = status
+    rows[real]["status"] = status
     if status == "shipped":
         # baseline snapshot — the next run's useful_pct will be compared
-        rows[idx]["shipped_at"] = round(time.time(), 1)
-        rows[idx]["eff_at_ship"] = (live_state().get("eff") or {})
+        rows[real]["shipped_at"] = round(time.time(), 1)
+        rows[real]["eff_at_ship"] = (live_state().get("eff") or {})
     PROPOSALS.write_text("\n".join(json.dumps(r) for r in rows) + "\n",
                          encoding="utf-8")
     return True
