@@ -1,5 +1,21 @@
 # Changelog
 
+## Overnight pass (sprint, busy-day, approach-timeout, strict metric)
+
+- Strict **ACTIVE %** headline metric (share of time within 2 s of a pay/build-done); measured baseline 7.3 % (85 runs, 17.9 h).
+  Early live days: 25.8 % (day 1, 169 s), 12.6 % (514 s day) - small sample, not a proven improvement.
+- **Sprint** on long (>8 m) non-combat legs via `PlayerMovement.sprinting` in the MoveScript prefix (full HP only, like the game):
+  measured hero speed p90 16.3 -> 23.7 m/s, p99 29.5 (game daySprint 29.9).
+- **Busy-day veto**: the early night call is blocked while buildable slots exist, gold >= 20 and progress was made in the last 25 s
+  (60 s when under 70 % of the army target); forced-night budget x3.75 (busy) / x2.5 (under-armed).
+- **War prep** scoring (+14000 troop buildings, +14500 enablers when under 70 % of army target).
+- **Approach-timeout**: same build target 18 s with no payment -> park + rotate (`approach-timeout` event; fired 6 times in the first runs).
+- Removed: night building (impossible: `BuildingInteractor.UpdateInteractionState` forces state None at night).
+- `tools/monitor.py` samples audit.json every 15 s into `agent/monitor.csv`.
+
+Open (evidence): troop count stays at 8 against targets of 20-28 after 2 military buildings; day 1 of the 514 s run built 27 slots
+(maxed 7 -> 18 %) but still entered night with 8 troops. Next lever: military upgrade tiers (Barracks/Archery lvl 2+), Castle lvl 3 choice,
+and why ~47 buildable slots remain unbuilt (gated or unreachable). `tests/Replay` does not compile (pre-existing BotPerception references in BotBrain).
 ## Efficiency system (task ledger + MiniMax observer)
 
 - `src/Tasks.cs`: per-task ledger (every second of play belongs to a build or a mode span), 0-100 efficiency per task,
