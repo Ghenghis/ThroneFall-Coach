@@ -1084,6 +1084,32 @@ class H(BaseHTTPRequestHandler):
                 "playbook": readj(pb, None),
                 "raw": pb.read_text(errors="replace") if pb.exists() else ""}),
                 "application/json")
+        elif self.path == "/mmapi":
+            # API discovery for MiniMax-as-pilot (and the desktop host):
+            # every control reachable over HTTP — same verbs the UI calls.
+            self._send(200, json.dumps({
+                "endpoints": {
+                    "GET /state": "live bot snapshot (mode/gold/ally/wave)",
+                    "GET /audit": "full audit (checklist, doors, alerts)",
+                    "GET /metrics": "grades, learning curve, weaknesses",
+                    "GET /efficiency": "live useful/waste %, per-task",
+                    "GET /health": "5-part health check",
+                    "GET /live.png": "current game frame (PNG)",
+                    "GET /mmwatch": "MiniMax watch feed",
+                    "GET /mmconfig": "mode, interval, pending, outcome, hb",
+                    "GET /playbook?scene=X": "loaded strategy for scene",
+                    "GET /history": "chat feed tail",
+                    "POST /order {patch}": "direct command, apply-proved",
+                    "POST /chat {message,image?}": "talk to Grandmaster",
+                    "POST /mmconfig {mode,interval_s}":
+                        "off|semi|auto|aggressive + 15..10800 s scheduler",
+                    "POST /mmapprove {idx}": "apply a semi-mode queued patch",
+                    "POST /mmreject {idx}": "discard a queued patch",
+                    "POST /regen {scene}": "MiniMax rewrites a playbook"},
+                "modes": {"off": "heartbeat only", "semi": "propose->approve",
+                          "auto": "apply validated patches",
+                          "aggressive": "auto + no dedupe, every cycle"},
+                "patch_fields": sorted(MM_FIELDS.keys())}), "application/json")
         elif self.path.startswith("/mmconfig"):
             # Command-center state: mode, scheduler interval, pending
             # approvals (semi mode) and the last measured patch outcome.

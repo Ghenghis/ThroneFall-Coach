@@ -343,3 +343,10 @@ AUTOPILOT §8–9 for the full list and next actions.
   Playwright-verified: mode buttons POST and the loop honors them; config changes land in the chat feed.
 - **Closed loop on display:** first measured outcome already live — MiniMax's `squad 5/army 60/military` patch
   produced ally 20 -> 40, gold -153 in 150 s.
+- **Desktop app (Thronefall Command):** native WPF + WebView2 host for the command center —
+  `desktop/ThronefallCommand`, `tools/build-desktop.ps1` -> `dist\desktop\ThronefallCommand.exe`.
+  Free-port picker (+ "auto"), auto-launches coach-server.py, zoom slider rescales ALL UI (fonts/panels/buttons),
+  fullscreen/windowed/compact-40%-screen modes, window lock, always-on-top, settings gear with
+  saveable profiles (port+zoom+geometry+lock). User-data folder persists web panel state.
+- **`/mmapi` discovery endpoint:** MiniMax-as-pilot — enumerates every UI-reachable control
+  (all GET/POST verbs, modes, patch fields) so the model can drive the whole app over HTTP.

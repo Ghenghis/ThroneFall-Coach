@@ -1,0 +1,19 @@
+<Application xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+  <Application.Resources>
+    <Style TargetType="Button">
+      <Setter Property="Background" Value="#2c2118"/>
+      <Setter Property="Foreground" Value="#e8dcc4"/>
+      <Setter Property="BorderBrush" Value="#4a3826"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="Padding" Value="8,4"/>
+      <Setter Property="Margin" Value="2"/>
+      <Setter Property="Cursor" Value="Hand"/>
+    </Style>
+    <Style TargetType="ComboBox">
+      <Setter Property="Background" Value="#1a120c"/>
+      <Setter Property="Foreground" Value="#e8dcc4"/>
+      <Setter Property="Padding" Value="6,3"/>
+      <Setter Property="Margin" Value="2"/>
+    </Style>
+  </Application.Resources>
+</Application>
