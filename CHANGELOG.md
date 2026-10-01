@@ -14,6 +14,14 @@
   SpendGold/HoldCastle no longer flagged "stuck". See `docs/ORCHESTRATION.md`.
 - **Live proof:** heartbeat ok after restart, first proposal recorded (real evidence: 115 stuck events, 46 % waste; its fix text
   misread stuck events as combat - glossary added).
+- **Two writers stomping the overrides (the real "MiniMax isn't steering" bug):** the plugin's LOCAL Grandmaster advisor
+  (`Coach.Advise`: day-start/defeat/eff-collapse/coach-beat triggers) applied its replies through the same `Apply()` with no
+  server-side clamps (squad=12 seen) and **zero-as-release semantics** — every advisory reply rewrote or cleared MiniMax's pins
+  mid-run (army 60 -> 40 observed). Now: a fresh `user-cmd` pins the override set for 240 s (`userCmdPinUntil`), advisory replies
+  update `LastAdvice` only while pinned, and advisory zeros are ignored (0 = no change per the schema). Verified live: a
+  `coach-beat`/`eff-collapse` reply landed between MiniMax writes and `army>=` stayed pinned. `/order` now runs through
+  `validate_patch` (was unfiltered). `mm_chat` watch calls use max_tokens 8000 — 3000 made every call die at
+  finish_reason=length (empty body).
 
 ## GPS wall-gate escape + night-readiness fix (Claude handoff + verification pass)
 

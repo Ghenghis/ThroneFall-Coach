@@ -377,7 +377,11 @@ def mm_watch_loop():
                 "\nCorrect the FAILED checklist items. Respond JSON only.")
             reply, usage = mm_chat(
                 [{"role": "system", "content": MM_SYS},
-                 {"role": "user", "content": prompt}])
+                 {"role": "user", "content": prompt}],
+                # The digest prompt makes M3 reason long — 3000 ended every
+                # call as finish_reason=length with EMPTY content (a wasted
+                # cycle). 8000 leaves room for reasoning + the JSON patch.
+                max_tokens=8000)
             # extract first {...} block — parse failure must NOT commit
             # last_sig (a malformed reply would dedupe future calls forever)
             i0, i1 = reply.find("{"), reply.rfind("}")
@@ -981,9 +985,7 @@ class H(BaseHTTPRequestHandler):
                 data = json.loads(self.rfile.read(n) or b"{}")
             except Exception:
                 self._send(400, "bad json"); return
-            allowed = {"squad_size", "reserve_size", "escort_size",
-                       "army_target", "build_focus", "hero_posture", "note"}
-            cmd = {k: v for k, v in data.items() if k in allowed}
+            cmd = validate_patch(data) or {}   # same clamps as MiniMax patches
             if not cmd:
                 self._send(400, "no allowed fields"); return
             # Timestamp nonce: two identical orders used to produce identical

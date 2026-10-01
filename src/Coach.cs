@@ -190,6 +190,12 @@ namespace ThronefallTrainer
             Busy = false;
         }
 
+        /// <summary>A fresh user-cmd (MiniMax watch / UI order) pins the override
+        /// set for this long; while pinned, advisory replies (Grandmaster,
+        /// day-start/eff-collapse/coach-beat) update LastAdvice only — they were
+        /// stomping MiniMax's steering mid-run (army 60 -> 40, squad 12).</summary>
+        private static float userCmdPinUntil;
+
         /// <summary>Parse the JSON patch and apply overrides (clamped sane).</summary>
         private static void Apply(string content, string trigger, float callNow)
         {
@@ -201,15 +207,25 @@ namespace ThronefallTrainer
             // every other override to 0 — the silent "commands apply but the
             // army plan vanishes" bug. Only a key that's actually present
             // changes its field.
-            if (TryNum(j, "squad_size", out int v1)) SquadSize = ClampInt(v1, 0, 12);
-            if (TryNum(j, "reserve_size", out int v2)) ReserveSize = ClampInt(v2, 0, 16);
-            if (TryNum(j, "escort_size", out int v3)) EscortSize = ClampInt(v3, 0, 8);
-            if (TryNum(j, "army_target", out int v4)) ArmyTargetFloor = ClampInt(v4, 0, 120);
-            if (TryStr(j, "build_focus", out string f)) BuildFocus = f;
-            if (TryStr(j, "hero_posture", out string hp)) HeroPosture = hp;
-            if (TryStr(j, "note", out string note)) LastAdvice = note;
-            if (TryBool(j, "night_call", out bool nc) && nc)
-                NightCallRequested = true;            // advisory flag — brain still gates
+            bool fromFile = trigger == "user-cmd";
+            if (fromFile) userCmdPinUntil = Time.unscaledTime + 240f;
+            // Advisory replies send 0 = "no change" per the schema; Apply used
+            // to store the 0 and CLEAR the override. Zeros only mean "release"
+            // on the user-cmd path (the server's clear:true expands to zeros).
+            bool locked = !fromFile && Time.unscaledTime < userCmdPinUntil;
+            bool AdNum(string jx, string k, out int v) => TryNum(jx, k, out v) && (fromFile || v != 0);
+            if (!locked)
+            {
+                if (AdNum(j, "squad_size", out int v1)) SquadSize = ClampInt(v1, 0, 12);
+                if (AdNum(j, "reserve_size", out int v2)) ReserveSize = ClampInt(v2, 0, 16);
+                if (AdNum(j, "escort_size", out int v3)) EscortSize = ClampInt(v3, 0, 8);
+                if (AdNum(j, "army_target", out int v4)) ArmyTargetFloor = ClampInt(v4, 0, 120);
+                if (TryStr(j, "build_focus", out string f) && (fromFile || !string.IsNullOrEmpty(f))) BuildFocus = f;
+                if (TryStr(j, "hero_posture", out string hp) && (fromFile || !string.IsNullOrEmpty(hp))) HeroPosture = hp;
+                if (TryBool(j, "night_call", out bool nc) && nc)
+                    NightCallRequested = true;            // advisory flag — brain still gates
+            }
+            if (TryStr(j, "note", out string note) && !string.IsNullOrEmpty(note)) LastAdvice = note;
             var rest = new System.Collections.Generic.List<string>();
             foreach (System.Text.RegularExpressions.Match xm in
                 new System.Text.RegularExpressions.Regex("\"(\\w+)\"\\s*:").Matches(j))
@@ -280,6 +296,7 @@ namespace ThronefallTrainer
             SquadSize = 0; ReserveSize = 0; EscortSize = 0;
             ArmyTargetFloor = 0; BuildFocus = ""; HeroPosture = "";
             NightCallRequested = false;
+            userCmdPinUntil = 0f;       // new run: advisory regains steering until the next user-cmd
             runGen++;                      // in-flight Apply() sees a stale gen
             // Clear the command dedupe — a new run MUST accept the same
             // patch bytes: the server rewrites last_patch on every run and

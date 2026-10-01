@@ -8,6 +8,21 @@ Three loops, each with a heartbeat, cooperating through files in `BepInEx/plugin
 | MiniMax watch | `tools/coach-server.py` `mm_watch_loop` | ~30-90 s | `mm-heartbeat.json`, `/health` check "MiniMax heartbeat", `mmwatch.jsonl` |
 | Engineer (code agent) | reads `proposals.jsonl`, ships code, redeploys | every pass | git log, `AUDIT.md` |
 
+## Who writes what (priority)
+
+Two callers write into the same override set in the plugin (`Coach.Apply`):
+
+1. **`user-cmd`** — the MiniMax watch loop and the UI `/order` buttons (both clamped by `validate_patch`).
+   A fresh `user-cmd` sets `userCmdPinUntil = now + 240 s`.
+2. **Advisory replies** — the plugin's local Grandmaster (`Coach.Advise` on day-start / defeat / eff-collapse /
+   coach-beat triggers). While a user-cmd pin is fresh they update `LastAdvice` ONLY — they cannot change
+   squad/reserve/escort/army/focus/posture. Advisory `0` values are always ignored (the schema's "0 = no change"
+   used to clear the override on the plugin side). `ResetRun` clears the pin at match start.
+
+So while MiniMax heartbeats, it is the single steering writer; if it dies for >240 s the Grandmaster regains
+steering until the next user-cmd. This fixed the observed stomps (`eff-collapse` overwrote `army>=60` with
+`army>=40`, `squad=12` from advisory replies that out-clamped the server validation).
+
 ## What MiniMax can and cannot do
 
 MiniMax is a **steering advisor + bug reporter**, not a code editor:
