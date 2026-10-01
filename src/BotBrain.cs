@@ -963,7 +963,14 @@ namespace ThronefallTrainer
                     // the hero turns into a 40 s pin.
                     bool nightDoorOk = !s.HasUncoveredDoor || s.UncoveredDoorIdx != m.HeroDoorIdx
                         || (now >= m.HeroDoorIgnUntil && now - m.HeroDoorSince <= 12f);
-                    Vec2 holdPos = (s.HasUncoveredDoor && s.UncoveredDoorHot && nightDoorOk)
+                    bool holdAtDoor = s.HasUncoveredDoor && s.UncoveredDoorHot && nightDoorOk;
+                    if (holdAtDoor)
+                    {
+                        // Start/refresh the timer so a stuck hot hold falls
+                        // back to the castle after 12 s.
+                        if (s.UncoveredDoorIdx != m.HeroDoorIdx) { m.HeroDoorIdx = s.UncoveredDoorIdx; m.HeroDoorSince = now; }
+                    }
+                    Vec2 holdPos = holdAtDoor
                         ? s.UncoveredDoorPos
                         : (s.HasThreatAnchor ? s.ThreatAnchor : s.CastlePos);
                     // Late-wave escalation: last third of the night with a
@@ -1423,12 +1430,14 @@ namespace ThronefallTrainer
                 return r;
             }
             // Same door stuck for >12 s and not ignored: lock it for 45 s so we
-            // don't re-pick the same unreachable post next tick.
+            // don't re-pick the same unreachable post next tick. HeroDoorSince is
+            // set to the end of the ignore window so the re-try clock starts at
+            // zero when the lock expires (not 45 s in the past).
             if (s.HasUncoveredDoor && m.HeldBuild < 0 &&
                 s.UncoveredDoorIdx == m.HeroDoorIdx && now >= m.HeroDoorIgnUntil)
             {
                 m.HeroDoorIgnUntil = now + 45f;
-                m.HeroDoorSince = now;
+                m.HeroDoorSince = now + 45f;
             }
             if (s.HasCastle && s.CastleDist > pol.K("home_radius"))
             {

@@ -42,6 +42,10 @@
 - **Match-end popup hardening:** the back-to-map frame now counts its own close attempts and forces
   `TransitionToLevelSelect()` after 10 s (5 generic frame closes also force it). This prevents the victory popup from
   sitting open indefinitely and the empty-match vacuum it causes.
+- **Hero-door timer now works at night too:** `HoldCastle` sets/updates `HeroDoorSince`/`HeroDoorIdx` when it holds a
+  hot door, so a 12 s timeout falls back to the castle. The re-try clock now starts at the end of the 45 s ignore
+  window instead of 45 s in the past (the old `HeroDoorSince = now` made the door ignore-locked forever after one
+  timeout).
 - **Result:** fresh-run Frostsee **victory** (run 20261001T111053Z, all 12/13 waves, 0 hero deaths, castle 87 % at the
   143-foe wave, 2601 s). Live in that run: 9 gps-cross (1.0-4.1 s each, incl. a 2-hop chain), 5 rescan-slots on the 30 s
   cooldown, pin share 18.6 % vs the 37.5 % baseline. Second Frostsee win; first under GPS + night-readiness.

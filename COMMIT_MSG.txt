@@ -1,14 +1,13 @@
-Hero-door timeout + ProjectToNav; match-end popup hardening
+Hero-door timeout fixes: night HoldCastle + re-try clock
 
-PositionArmy/HoldCastle hold points now project to the nearest walkable
-node (NearestNodeConstraint.Walkable) and give up an unreachable door
-after 12 s, ignoring it for 45 s before retry. This eliminates the 17-42 s
-hero pins at off-mesh guard points.
+HoldCastle now starts/updates HeroDoorSince when it holds a hot door, so
+a 12 s timeout falls back to the castle. The same-door re-try clock now
+starts at the end of the 45 s ignore window (HeroDoorSince = now + 45)
+instead of the old 'now' which let the 12 s timer expire during the
+ignore and never re-try.
 
-Match-end/victory frames now count close attempts and force
-TransitionToLevelSelect() after 10 s of Apply() failing, or after 5 generic
-frame-close attempts, preventing the victory popup from hanging and the
-empty-match vacuum that follows.
+Also: bot-lint now accepts F8 as the overlay toggle (F1 collides with
+Plugin.ToggleMenu).
 
 Generated with [Devin](https://devin.ai)
 
