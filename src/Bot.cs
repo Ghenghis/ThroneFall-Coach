@@ -1291,7 +1291,11 @@ internal static class Bot
 			// Feed it to the GPS as a nav failure so Redirect can try a gate
 			// plan instead of burning sidesteps (proposal: stuck detector
 			// fired repeatedly while gps-plan never engaged).
-			if (StuckStrikes >= 1 && !Gates.Active) Gates.NoteNavFail(AimPos);
+			// Threshold 2nd strike (~4.5 s pinned): a first-strike wiggle is
+			// usually a unit bump, not a wall — feeding it to the GPS on every
+			// strike marked interior goals nav-failed and sent the hero on
+			// spurious gate detours ("spin in circles").
+			if (StuckStrikes >= 2 && !Gates.Active) Gates.NoteNavFail(AimPos);
 			StuckStrikes++; SpatialMemory.Bump(s.SceneName, s.HeroPos);
 			// Awareness probe: WHAT is the hero pinned on? Classifies the
 			// collider ahead — pen (buildable/upgradeable), gate, wall,
@@ -1743,9 +1747,18 @@ internal static class Bot
 			{
 				break;
 			}
-			if (!IsInterLatchedComplete(s.NearestBuild))
+			// Only burn a memory cell when the hero ARRIVED and the hold still
+			// wouldn't start (a genuine wedge). Far stalls (36–147 m) are
+			// approach timeouts — the slot may become reachable after a gate
+			// opens, and permanent parking was deleting real upgrade targets
+			// forever ("pens never get upgraded").
+			if (!IsInterLatchedComplete(s.NearestBuild) && s.NearestBuildDist <= 14f)
 			{
 				Memory.Park(s.SceneName, ((Component)s.NearestBuild).transform.position, "build-stall");
+			}
+			else if (!IsInterLatchedComplete(s.NearestBuild))
+			{
+				Plugin.Log?.LogInfo($"[bot] build-stall at {s.NearestBuildDist:0.#} m — approach stall, cell kept");
 			}
 			else
 			{
@@ -1755,7 +1768,11 @@ internal static class Bot
 					log7.LogWarning((object)"[bot] build-stall is a complete-latch wedge — cell NOT parked");
 				}
 			}
-			BotPerception.NoteBuildFail(BotPerception.BuildCat(s.NearestBuildName));
+			// catStuck only counts real wedges — approach stalls were retiring
+			// whole categories (4 'tower' fails -> no towers for the rest of
+			// the run).
+			if (s.NearestBuildDist <= 14f)
+				BotPerception.NoteBuildFail(BotPerception.BuildCat(s.NearestBuildName));
 			break;
 		case IntentKind.PumpAttack:
 			PumpAttack();
@@ -2563,6 +2580,7 @@ internal static class Bot
 			{
 				if ((UnityEngine.Object)(object)c == (UnityEngine.Object)null) continue;
 				var go = c.gameObject;
+				if (c.isTrigger) continue;   // cosmetic/trigger volumes can't pin
 				var tg = go.GetComponentInParent<TaggedObject>();
 				if (tg != null && tg.Contains(TagManager.ETag.Player)) continue;
 				var bi = go.GetComponentInParent<BuildingInteractor>();
@@ -2580,6 +2598,9 @@ internal static class Bot
 					         n.Contains("mountain") || n.Contains("cliff") || n.Contains("ore")) cls = "terrain:" + go.name;
 					else if (n.Contains("tree") || n.Contains("stump") || n.Contains("bush")) cls = "terrain:" + go.name;
 					else if (n.Contains("water") || n.Contains("river") || n.Contains("lake")) cls = "terrain:" + go.name;
+					else if (n.Contains("path") || n.Contains("decal") || n.Contains("road") ||
+					         n.Contains("grass") || n.Contains("fx") || n.Contains("particle"))
+						continue;   // decorative ground art can't pin — don't mask the real blocker
 					else cls = "obj:" + go.name;
 				}
 				float d = (go.transform.position - hero).sqrMagnitude;

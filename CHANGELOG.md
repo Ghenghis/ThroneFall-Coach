@@ -350,3 +350,12 @@ AUTOPILOT §8–9 for the full list and next actions.
   saveable profiles (port+zoom+geometry+lock). User-data folder persists web panel state.
 - **`/mmapi` discovery endpoint:** MiniMax-as-pilot — enumerates every UI-reachable control
   (all GET/POST verbs, modes, patch fields) so the model can drive the whole app over HTTP.
+- **Build-stall fairness fix (the "pens" bug's real teeth):** Memory.Park now only fires when the hero
+  actually ARRIVED (dist <= 14 m) and the hold still wedged. Approach stalls (36-147 m — unreachable-behind-
+  walls slots) keep their cell and retry after the 600 s ignore window instead of deleting upgrade targets
+  permanently. NoteBuildFail (catStuck) is distance-gated the same way — 4 far stalls used to retire an entire
+  category (towers starved -> leaks -> more KOs -> churn loop; Defense Tower was 178 attempts/25 ok).
+- **Pin probe hygiene:** trigger colliders + decorative ground art (Path/decal/road/grass/fx) skipped —
+  pins were mislabeled "obj:Path" while the real blocker was a wall.
+- **Stuck->GPS escalation threshold:** strike 1 -> strike 2 — single-strike unit bumps were marking interior
+  goals nav-failed and sending the hero on spurious gate detours.
