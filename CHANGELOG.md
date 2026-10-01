@@ -1,5 +1,10 @@
 # Changelog
 
+## Pin-park pass (live evidence)
+
+- `pin-park`: pinned ~4 s en route to a build slot (SpendGold, nothing held) -> park the slot (was 18 s approach-timeout). Frostsee data showed the hero standing 13-20 s at a wall 27-67 m short of towers beyond it.
+- Live Frostsee match after the change: day 1 ended with every buildable slot built (bld 39 -> 0), ally 8 -> 28 -> 36, maxed 11 -> 57-60 %, strict active 29-37 % (earlier day 1: ally 8-12, maxed 9-11 %). One match only.
+- Slot dump at wave 5: all military slots at max (Barracks lvl 3, Archery lvl 3, Castle lvl 3 canUp=False) -> army cap ~36-48. Final Frostsee waves (night 12 = 143 foes, 5670 hp) beat 31-42 troops twice, with 9.7k gold unspendable. Remaining levers are not spending: choice/perk selection, tower/wall mix, hero role vs the boss, army positioning.
 ## Overnight pass (sprint, busy-day, approach-timeout, strict metric)
 
 - Strict **ACTIVE %** headline metric (share of time within 2 s of a pay/build-done); measured baseline 7.3 % (85 runs, 17.9 h).
