@@ -44,7 +44,11 @@ namespace ThronefallTrainer
         public static float LiveShotEvery = 2f;
         public static float LiveShotFastEvery = 0.25f;
         public static float LiveMarkersEvery = 0.1f;       // markers.json at 10 Hz: the overlay draws from it, it does not need a screenshot
-        public static float LiveShotLinkedEvery = 30f;     // live.png cadence while the in-game stream (LiveLink) is up
+        // While the in-game stream is up the live.png write is pure stall
+        // (200-490 ms PNG encode on the game thread every 30 s — the single
+        // biggest stall class, ~21% of stalled time). <=0 = never write it;
+        // the link-drop logic below re-arms the 2 s fallback automatically.
+        public static float LiveShotLinkedEvery = 0f;
         private static float nextLiveShotFast;
         private static float nextMarkers;
         private static float nextLiveShot;
@@ -173,7 +177,8 @@ namespace ThronefallTrainer
             bool linked = LiveLink.Connected;
             if (!linked && nextLiveShot > Time.unscaledTime + LiveShotEvery)
                 nextLiveShot = Time.unscaledTime + LiveShotEvery;   // the link dropped: back to the 2 s cadence now, not after the leftover 30 s
-            if (LiveShot && Time.unscaledTime >= nextLiveShot)
+            if (LiveShot && Time.unscaledTime >= nextLiveShot &&
+                !(linked && LiveShotLinkedEvery <= 0f))     // 0 = linked means NO live.png at all
             {
                 nextLiveShot = Time.unscaledTime + (linked ? LiveShotLinkedEvery : LiveShotEvery);
                 try

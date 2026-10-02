@@ -1715,9 +1715,12 @@ namespace ThronefallTrainer
                 if (Coach.ArmyTargetFloor > 0) at = Mathf.Max(at, Coach.ArmyTargetFloor);
                 // Proposal [19]: an unreachable target (157 vs 48 actual
                 // allies) fires armyShort FOREVER and skews every build
-                // score toward military. Cap at postable capacity + 24
-                // headroom for escorts/respawns in the pipe.
-                int cap = doorNeed > 0 ? doorNeed + 24 : 60;
+                // score toward military. Cap at postable capacity +
+                // headroom for escorts/respawns in the pipe — +48, not +24:
+                // wave-lookahead targets were being clipped below what the
+                // night's wave actually demanded, starving reinforcement
+                // depth (user: "should have 100s of troops, not a few").
+                int cap = doorNeed > 0 ? doorNeed + 48 : 96;
                 if (at > cap) at = cap;
                 s.ArmyTarget = at;
             }

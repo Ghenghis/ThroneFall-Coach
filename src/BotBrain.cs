@@ -863,7 +863,7 @@ namespace ThronefallTrainer
                 // squads stand at their posts BEFORE the next wave leaks.
                 else if (legit && s.HasUncoveredDoor && !s.RedAlert &&
                          s.UncoveredDoorIdx >= 0 && s.UncoveredDoorIdx < m.DoorPostAts.Length &&
-                         s.FreeUnits >= s.UncoveredDoorTarget &&
+                         s.FreeUnits >= Math.Max(2, Math.Min(s.UncoveredDoorTarget, 8)) &&
                          now - m.DoorPostAts[s.UncoveredDoorIdx] > 4f)
                 {
                     m.DoorPostAts[s.UncoveredDoorIdx] = now;
@@ -1180,7 +1180,10 @@ namespace ThronefallTrainer
             if (legit && !s.IsNight)
             {
                 if (s.HasUncoveredDoor && s.UncoveredDoorIdx >= 0 && s.UncoveredDoorIdx < m.DoorPostAts.Length &&
-                    s.FreeUnits >= (s.UncoveredDoorHot ? 2 : Math.Max(4, s.UncoveredDoorTarget))
+                    // Partial posts allowed: a door asking 14 units sat
+                    // UNCOVERED while 13 free units waited for a full squad.
+                    // Post what's there (2+) — thin cover beats an open lane.
+                    s.FreeUnits >= (s.UncoveredDoorHot ? 2 : Math.Max(2, Math.Min(s.UncoveredDoorTarget, 8)))
                     && now - m.DoorPostAts[s.UncoveredDoorIdx] > 6f + 4f * m.DoorPostCounts[s.UncoveredDoorIdx])
                 {
                     m.DoorPostCounts[s.UncoveredDoorIdx]++;
@@ -1198,7 +1201,9 @@ namespace ThronefallTrainer
                     r.Notes.Add("door-park:" + s.UncoveredDoorLine);
                     m.DoorPostCounts[s.UncoveredDoorIdx] = 0;
                 }
-                if (s.FreeUnits > 0 && now - m.LastEscortAt > 20f)
+                // Escort waits while ANY door stands uncovered — the bodyguard
+                // used to strip the reserve before the open lanes got theirs.
+                if (s.FreeUnits > 0 && !s.HasUncoveredDoor && now - m.LastEscortAt > 40f)
                 {
                     m.LastEscortAt = now;
                     r.Intents.Add(Intent.Of(IntentKind.EscortHero));

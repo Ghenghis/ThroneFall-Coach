@@ -542,3 +542,8 @@ AUTOPILOT §8–9 for the full list and next actions.
   action buttons. 40 tasks already queued. Deploy still needs confirm=true (game restart).
 - **Supervisor installed:** ThronefallCoachSupervisor scheduled task (every minute) - already restarted
   the server twice when /alive refused. Live View supervisor cell shows it watching.
+- **Troop push:** army cap doorNeed+24 -> +48 (wave-lookahead was clipping the target below the night's real
+  need - "should have 100s, not a few"); day+night door posting accepts PARTIAL squads (2+) instead of
+  waiting for the full door target (13 free units sat while a 14-unit door stayed uncovered); escort refresh
+  yields while any door is uncovered; live.png write SKIPPED while the in-game link is up (the 30s 200-490ms
+  stall class, ~21% of stalled time - handoff item 1). Deployed, 45.6fps stream, 0 stalls.
