@@ -1398,11 +1398,20 @@ internal static class Bot
 				// fix that — retreat to the last spot he actually moved at
 				// (lastFreePos), navmesh-snapped, before anything else runs.
 				if (StuckStrikes >= 4 && Legit && Mode != BotMode.Engage &&
-				    Mode != BotMode.HeroDead && lastFreePos != Vector3.zero)
+				    Mode != BotMode.HeroDead)
 				{
-					navPath = null; navIndex = 0; navWrongLayer = false; detourUntil = 0f;
-					SetTarget(lastFreePos, 2.5f, projectToNav: true);
-					LogLine(in s, "trap-retreat");
+					// Castle first — it sits center-map on open ground; the
+					// pocket mouth (lastFreePos) was still inside the trap
+					// (74 retreats, zero escapes). Only fall back to
+					// lastFreePos when no castle exists.
+					Vector3 home = s.HasCastle ? s.CastlePos : lastFreePos;
+					if (home == Vector3.zero) { /* nothing to retreat to */ }
+					else
+					{
+						navPath = null; navIndex = 0; navWrongLayer = false; detourUntil = 0f;
+						SetTarget(home, 2.5f, projectToNav: true);
+						LogLine(in s, "trap-retreat");
+					}
 					return;
 				}
 				// ORDER MATTERS: "obj:Boundaries*" must be checked BEFORE the
