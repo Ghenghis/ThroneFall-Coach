@@ -18,8 +18,48 @@ Endpoints:
 Usage: python tools/coach-server.py [--port 8099]
 Env:  COACH_LLM_URL, COACH_LLM_MODEL, COACH_VISION_MODEL, COACH_LLM_KEY
 """
-import base64, json, os, shutil, sys, time, urllib.request, urllib.error, urllib.parse, pathlib, glob
+import base64, io, json, os, shutil, sys, threading, time, urllib.request, urllib.error, urllib.parse, pathlib, glob
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+
+# ── Windows window-grabber (fast live feed) ─────────────────────────────
+# The plugin's ScreenCapture path tops out ~5 fps because the JPEG encode
+# runs on the game thread. BitBlt grabs the game's window DC from THIS
+# process — zero game cost — and hits ~11 fps at 1280p. live.json prefers
+# this feed; plugin frames remain the fallback (window closed/minimized).
+WIN_FRAME = {"b": None, "ts": 0.0, "src": ""}   # latest grabbed JPEG bytes
+def _grabber():
+    try:
+        import win32gui, win32ui, win32con
+        from PIL import Image
+    except Exception:
+        return                                   # pywin32/PIL missing → plugin feed
+    while True:
+        try:
+            h = win32gui.FindWindow(None, "Thronefall")
+            if not h:
+                WIN_FRAME["src"] = ""; time.sleep(2); continue
+            l, t, r, b = win32gui.GetWindowRect(h)
+            w, hh = r - l, b - t
+            if w < 100 or hh < 100:
+                WIN_FRAME["src"] = ""; time.sleep(1); continue
+            hdc = win32gui.GetWindowDC(h)
+            mfc = win32ui.CreateDCFromHandle(hdc)
+            sdc = mfc.CreateCompatibleDC()
+            bmp = win32ui.CreateBitmap()
+            bmp.CreateCompatibleBitmap(mfc, w, hh)
+            sdc.SelectObject(bmp)
+            sdc.BitBlt((0, 0), (w, hh), mfc, (0, 0), win32con.SRCCOPY)
+            raw = bmp.GetBitmapBits(True)
+            win32gui.DeleteObject(bmp.GetHandle())
+            sdc.DeleteDC(); mfc.DeleteDC(); win32gui.ReleaseDC(h, hdc)
+            im = Image.frombuffer("RGB", (w, hh), raw, "raw", "BGRX", 0, 1)
+            out = io.BytesIO(); im.save(out, "JPEG", quality=45)
+            WIN_FRAME["b"] = out.getvalue(); WIN_FRAME["ts"] = time.time()
+            WIN_FRAME["src"] = "win"
+            time.sleep(0.06)                       # ~16 fps cap (encode-bound)
+        except Exception:
+            WIN_FRAME["src"] = ""; time.sleep(2)
+threading.Thread(target=_grabber, daemon=True).start()
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 AGENT = pathlib.Path(os.environ.get(
@@ -388,6 +428,7 @@ MM_FIELDS = {
     "army_target":  (int,  (0, 60)),
     "build_focus":  (str,  {"military", "income", "defense", "balanced"}),
     "hero_posture": (str,  {"builder", "fighter"}),
+    "focus":        (str,  40),    # live-view click: doorN / bld:<name> / castle / threat
     "night_call":   (bool, None),
     "relaunch":     (bool, None),   # true = restart the game session
     "clear":        (bool, None),   # true = release all overrides to defaults
@@ -1090,7 +1131,7 @@ class H(BaseHTTPRequestHandler):
             self._send(200, PAGE, "text/html; charset=utf-8")
         elif self.path == "/state":
             self._send(200, json.dumps(live_state()), "application/json")
-        elif self.path.startswith("/live.mjpeg"):  # push stream (~4 fps)
+        elif self.path.startswith("/live.mjpeg"):  # push stream (~11 fps)
             self.send_response(200)
             self.send_header("Content-Type",
                              "multipart/x-mixed-replace; boundary=tf")
@@ -1100,20 +1141,26 @@ class H(BaseHTTPRequestHandler):
             p = AGENT / "live.jpg"
             try:
                 while True:
-                    ts = p.stat().st_mtime if p.exists() else 0
-                    if ts > last:
-                        try:
-                            data = p.read_bytes()
+                    # Prefer the Windows window-grabber (~11 fps, zero game
+                    # cost); fall back to the plugin's file frames (~4 fps)
+                    # when the game window is gone/minimized.
+                    if WIN_FRAME["b"] and WIN_FRAME["ts"] > last and \
+                            time.time() - WIN_FRAME["ts"] < 1.5:
+                        data, ts = WIN_FRAME["b"], WIN_FRAME["ts"]
+                    else:
+                        ts = p.stat().st_mtime if p.exists() else 0
+                        if ts <= last:
+                            time.sleep(0.03); continue
+                        try: data = p.read_bytes()
                         except OSError:
-                            time.sleep(0.05); continue
-                        self.wfile.write(
-                            b"--tf\r\nContent-Type: image/jpeg\r\n"
-                            b"Content-Length: " +
-                            str(len(data)).encode() + b"\r\n\r\n" +
-                            data + b"\r\n")
-                        self.wfile.flush()
-                        last = ts
-                    time.sleep(0.12)
+                            time.sleep(0.03); continue
+                    self.wfile.write(
+                        b"--tf\r\nContent-Type: image/jpeg\r\n"
+                        b"Content-Length: " +
+                        str(len(data)).encode() + b"\r\n\r\n" +
+                        data + b"\r\n")
+                    self.wfile.flush()
+                    last = ts
             except (BrokenPipeError, ConnectionResetError, OSError):
                 pass
             return
@@ -1149,7 +1196,11 @@ class H(BaseHTTPRequestHandler):
             pp = AGENT / "live.png"
             ts = pj.stat().st_mtime if pj.exists() else \
                 (pp.stat().st_mtime if pp.exists() else 0)
-            out = {"ts": ts, "fast": pj.exists()}
+            out = {"ts": ts, "fast": pj.exists(),
+                   "win": WIN_FRAME["src"] == "win"
+                        and time.time() - WIN_FRAME["ts"] < 1.5}
+            if out["win"]:
+                out["ts"] = WIN_FRAME["ts"]
             # intent markers for the overlay (hero/aim/doors/castle/threat)
             mp = AGENT / "markers.json"
             try:
@@ -2284,7 +2335,8 @@ pre.book{background:#150e0a;border:1px solid var(--bord);border-radius:9px;
     <button class="cb mkt on" data-mk="bld" onclick="mkTog(this)">builds</button>
     <button class="cb mkt on" data-mk="aim" onclick="mkTog(this)">aim</button>
     <button class="cb mkt on" data-mk="foe" onclick="mkTog(this)">foes</button>
-    <button class="cb mkt on" data-mk="path" onclick="mkTog(this)">path</button></div>
+    <button class="cb mkt on" data-mk="path" onclick="mkTog(this)">path</button>
+    <button class="cb mkt" data-mk="cmd" onclick="cmdMode=this.classList.toggle('on');cv.style.cursor=cmdMode?'pointer':'crosshair'" title="click markers on the frame to command the hero">cmd</button></div>
   </div>
   <div class="pane" id="p-tok">
    <div class="card"><h4>MiniMax tokens — live ledger</h4><div id="tokTop"></div></div>
@@ -2361,7 +2413,8 @@ const shot=document.getElementById('shot'),cv=document.getElementById('draw'),
 const mkOn={door:1,castle:1,bld:1,aim:1,foe:1,path:1,hero:1,THREAT:1};
 function mkTog(b){mkOn[b.dataset.mk]=b.classList.toggle('on')?1:0}
 function mkKind(t){return t.startsWith('door')?'door':t.startsWith('bld')?'bld':t}
-function drawMarkers(mk){mkcv.width=shot.clientWidth;mkcv.height=shot.clientHeight;
+let cmdMode=false,lastMk=null;
+function drawMarkers(mk){lastMk=mk;mkcv.width=shot.clientWidth;mkcv.height=shot.clientHeight;
  mkx.clearRect(0,0,mkcv.width,mkcv.height);if(!mk)return;
  if(mkOn.path&&mk.ln&&mk.ln.length>1){
   mkx.beginPath();mkx.strokeStyle='#fd4';mkx.lineWidth=2;mkx.setLineDash([5,4]);
@@ -2765,7 +2818,18 @@ async function regen(){document.getElementById('book').textContent='MiniMax is w
 /* annotate */
 function fit(){cv.width=shot.clientWidth;cv.height=shot.clientHeight;redraw()}
 shot.onload=fit;window.onresize=fit;
-cv.onmousedown=e=>{cur={x1:e.offsetX,y1:e.offsetY,x2:e.offsetX,y2:e.offsetY}};
+cv.onmousedown=e=>{
+ if(cmdMode){  /* click-to-command: hit-test the intent markers */
+  if(lastMk&&lastMk.pts){
+   let best=null,bd=24;
+   lastMk.pts.forEach(p=>{const px=p.x/p.w*cv.width,py=p.y/p.h*cv.height,
+    d=Math.hypot(px-e.offsetX,py-e.offsetY);if(d<bd){bd=d;best=p}});
+   if(best){const t=best.t.startsWith('door')?'door'+best.t.slice(4).split('·')[0]
+     :best.t=='THREAT'?'threat':best.t;
+    order({focus:t,note:'click:'+t});
+    document.getElementById('lvAge').textContent='cmd→'+t}}}
+  return}
+ cur={x1:e.offsetX,y1:e.offsetY,x2:e.offsetX,y2:e.offsetY}};
 cv.onmousemove=e=>{if(cur){cur.x2=e.offsetX;cur.y2=e.offsetY;redraw()}};
 cv.onmouseup=()=>{if(cur){strokes.push(cur);cur=null;redraw()}};
 function redraw(){const c=cv.getContext('2d');c.clearRect(0,0,cv.width,cv.height);

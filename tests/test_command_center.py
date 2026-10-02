@@ -7,6 +7,8 @@ import tempfile
 import threading
 import time
 
+os.environ["CC_SKIP_PID_CHECK"] = "1"                   # caps.json in these tests belongs to a fake plugin, not a running game
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(HERE, "..", "tools"))
 sys.path.insert(0, HERE)
@@ -88,17 +90,60 @@ class FakeCtx:
         return [p["bug"] for p in self.proposals][-n:]
 
 
+class FakePlugin:
+    """Emulates the plugin side of act.v1/probe.v1 (Act.cs): polls agent/act-commands.json, 'executes', answers with act-ack.json (and
+    probe.json for probes). mode="log": no ack file, only the game-log line (the server's second witness)."""
+
+    def __init__(self, agent, hits=None, ok=True, delay=0.0, mode="ack", gamelog=None):
+        self.agent, self.ok, self.delay, self.mode, self.gamelog = str(agent), ok, delay, mode, gamelog
+        self.hits = hits if hits is not None else [
+            {"name": "Boundaries 3", "cls": "obj:Boundaries 3", "decor": False, "path": "Map/Boundaries 3", "lay": "Boundaries", "tag": "Untagged", "stat": True, "trig": False,
+             "c": [4, 0, 12], "size": [30, 4, 2], "dist": 0.8},
+            {"name": "Grass patch", "cls": "decor:Grass patch", "decor": True, "path": "Map/Grass patch", "lay": "Default", "stat": True, "c": [4, 0, 12.5], "size": [3, 1, 3], "dist": 1.2}]
+        self.seen = []
+        self.stop = threading.Event()
+        self.th = threading.Thread(target=self._run, daemon=True)
+        self.th.start()
+
+    def close(self):
+        self.stop.set()
+        self.th.join(2)
+
+    def _run(self):
+        last = None
+        while not self.stop.is_set():
+            try:
+                d = json.load(open(os.path.join(self.agent, "act-commands.json"), encoding="utf-8"))
+            except Exception:
+                d = None
+            if d and d.get("note") and d["note"] != last:
+                last = d["note"]
+                self.seen.append(d)
+                time.sleep(self.delay)
+                detail = "ok" if self.ok else "no retreat point (empty trail, no hint, no castle)"
+                if d.get("act") == "probe" and self.ok:
+                    with open(os.path.join(self.agent, "probe.json"), "w", encoding="utf-8") as f:
+                        json.dump({"id": d.get("id"), "t": time.time(), "mode": "world" if "wx" in d else "screen", "world": [d.get("wx", 0), 0, d.get("wz", 0)], "hits": self.hits}, f)
+                    detail = "probe: %d collider(s)" % len(self.hits)
+                if self.mode == "ack":
+                    with open(os.path.join(self.agent, "act-ack.json"), "w", encoding="utf-8") as f:
+                        json.dump({"t": time.time(), "act": d.get("act"), "note": d["note"], "ok": self.ok, "detail": detail, "n": len(self.seen)}, f)
+                elif self.gamelog:
+                    with open(self.gamelog, "a", encoding="utf-8") as f:
+                        f.write("[Info   :ThronefallTrainer] [coach] act %s %s :: %s (note %s)\n" % (d.get("act"), "OK" if self.ok else "FAILED", detail, d["note"]))
+            time.sleep(0.02)
+
+
 def make(tmp, **cfg_over):
     clock = Clock()
     ctx = FakeCtx(tmp)
+    ccm.GAMELOG = os.path.join(tmp, "LogOutput.log")         # hermetic: never read the real game log
     sim = Sim()
     sim.clock = clock
     sim.eng = IncidentEngine(sim.src, clock=clock)
     cc = ccm.CommandCenter(ctx, engine=sim.eng, clock=clock)
     cc.cfg["wake"].update(coalesce_s=0, **cfg_over)
     sim.poller = cc.engine_tick                       # the command center polls the engine and routes its alerts
-    cc._wait_log = lambda marker, before, timeout: True
-    cc._log_size = lambda: 0
     return cc, ctx, sim, clock
 
 
@@ -124,8 +169,10 @@ def tick(cc, sim, secs=1.0, **kw):
     cc.maybe_wake()
 
 
-def set_caps(ctx, caps):
-    (ctx.AGENT / "audit.json").write_text(json.dumps({"scene": "Frostsee", "caps": caps, "mode": "SpendGold", "gold": 100}))
+def set_caps(ctx, caps, clock=None, pid=4242, build="act-1"):
+    """What Act.cs publishes every 30 s: agent/caps.json (+ the plain audit.json the server reads for the scene)."""
+    (ctx.AGENT / "audit.json").write_text(json.dumps({"scene": "Frostsee", "mode": "SpendGold", "gold": 100}))
+    (ctx.AGENT / "caps.json").write_text(json.dumps({"t": clock.t if clock else time.time(), "pid": pid, "build": build, "caps": caps, "view_ok": True}))
 
 
 def test_extract_and_validate():
@@ -165,26 +212,181 @@ def test_incident_wakes_minimax_and_unsupported_plugin_is_reported():
         results = {a["action"]["type"]: a["result"] for a in inc["actions"]}
         check("unstick on a plugin without act.v1 is reported as UNSUPPORTED", results.get("unstick", "").startswith("UNSUPPORTED"), results)
         check("... and queued once as an urgent engineer task", any("act.v1" in p["bug"] for p in ctx.proposals) and os.path.exists(os.path.join(tmp, "engineer-queue.jsonl")))
-        check("the knob command was validated, nonce-stamped and written", ctx.writes and ctx.writes[-1].get("build_focus") == "military" and "bogus" not in ctx.writes[-1] and "#" in ctx.writes[-1]["note"], ctx.writes)
+        check("a knob command is DROPPED for a stuck incident (knobs cannot move a pinned hero)", not ctx.writes and any("dropped" in a["result"] for a in inc["actions"] if a["action"].get("type") == "command"), (ctx.writes, inc["actions"]))
         rows = [json.loads(l) for l in open(os.path.join(tmp, "mm-actions.jsonl"))]
         check("mm-actions.jsonl records reason, diagnosis, actions and latency", rows and rows[-1]["diagnosis"].startswith("Hero keeps") and len(rows[-1]["actions"]) == 2 and "latency_s" in rows[-1], rows[-1:])
         check("the chat feed got an mm-incident line", any("mm-incident" in t for _, t in ctx.logs))
 
 
+def test_knob_command_for_idle_incident_is_written():
+    with tempfile.TemporaryDirectory() as tmp:
+        cc, ctx, sim, clock = make(tmp)
+        ctx.replies = [{"diagnosis": "picker stuck", "actions": [{"type": "command", "patch": {"build_focus": "military", "bogus": 1}}]}]
+        sim.run(5, audit={"scene": "Frostsee", "gold": 4748, "mode": "SpendGold", "since_prog": 20})
+        for _ in range(4):
+            tick(cc, sim, audit={"scene": "Frostsee", "gold": 4748, "mode": "SpendGold", "since_prog": 90, "cur_build": "Barracks"})
+        drain(cc)
+        check("idle incident: the knob command was validated, nonce-stamped and written", ctx.writes and ctx.writes[-1].get("build_focus") == "military" and "bogus" not in ctx.writes[-1] and "#" in ctx.writes[-1]["note"], ctx.writes)
+
+
 def test_unstick_executes_when_plugin_supports_it():
     with tempfile.TemporaryDirectory() as tmp:
         cc, ctx, sim, clock = make(tmp)
-        set_caps(ctx, ["act.v1"])
-        ctx.replies = [{"diagnosis": "boundary", "cause": "immovable-boundary", "actions": [{"type": "unstick", "how": "avoid", "x": 4, "z": 12, "r": 14, "ttl_s": 600}]}]
+        set_caps(ctx, ["act.v1", "probe.v1", "view.v1"], clock)
+        pl = FakePlugin(ctx.AGENT)
+        try:
+            ctx.replies = [{"diagnosis": "boundary", "cause": "immovable-boundary", "actions": [{"type": "unstick", "how": "avoid", "x": 4, "z": 12, "r": 14, "ttl_s": 600}]}]
+            make_stuck(sim)
+            for _ in range(3):
+                tick(cc, sim, pos=sim.pos)
+            drain(cc)
+            w = [x for x in pl.seen if x.get("act") == "avoid"]
+            check("the plugin received an act command with clamped parameters and a nonce", w and w[0]["x"] == 4 and w[0]["z"] == 12 and w[0]["r"] == 14 and w[0]["ttl_s"] == 600 and "#" in w[0]["note"], pl.seen)
+            check("the act went through act-commands.json, not through the strategy-knob file", not any("act" in x for x in ctx.writes), ctx.writes)
+            inc = sim.eng.open_list()[0]
+            check("the incident records the plugin's confirmation", any(a["result"].startswith("executed by the bot") for a in inc["actions"]), inc["actions"])
+            check("no engineer task is raised when the plugin supports it", not any("act.v1" in p["bug"] for p in ctx.proposals))
+        finally:
+            pl.close()
+
+
+def test_unstick_failure_modes_are_reported_honestly():
+    with tempfile.TemporaryDirectory() as tmp:
+        cc, ctx, sim, clock = make(tmp)
+        set_caps(ctx, ["act.v1"], clock)
+        cc.act_timeout = 0.3
         make_stuck(sim)
         for _ in range(3):
-            tick(cc, sim, pos=sim.pos)
-        drain(cc)
-        w = [x for x in ctx.writes if "act" in x]
-        check("act command written for the plugin with clamped parameters", w and w[0]["act"] == "avoid" and w[0]["x"] == 4 and w[0]["r"] == 14 and w[0]["ttl_s"] == 600, ctx.writes)
-        inc = sim.eng.open_list()[0]
-        check("the incident records the confirmed result", any("executed by the bot" in a["result"] for a in inc["actions"]), inc["actions"])
-        check("no engineer task is raised when the plugin supports it", not any("act.v1" in p["bug"] for p in ctx.proposals))
+            sim.step(1.0, pos=sim.pos)
+        ids = [sim.eng.open_list()[0]["id"]]
+        pl = FakePlugin(ctx.AGENT, ok=False)
+        try:
+            r = cc.send_unstick({"how": "retreat"}, ids)
+            check("the plugin refuses (nowhere to retreat to): its reason is relayed, never 'executed'", r.startswith("plugin could not execute") and "no retreat point" in r, r)
+        finally:
+            pl.close()
+        r = cc.send_unstick({"how": "retreat"}, ids)
+        check("nobody answers (no ack file, nothing in the game log): reported as NOT confirmed", r.startswith("sent, NOT confirmed"), r)
+
+
+def test_act_protocol_roundtrip():
+    with tempfile.TemporaryDirectory() as tmp:
+        cc, ctx, sim, clock = make(tmp)
+        set_caps(ctx, ["act.v1", "probe.v1"], clock)
+        pl = FakePlugin(ctx.AGENT)
+        try:
+            ack = cc.send_act({"act": "retreat"}, tag="t1")
+            check("send_act: the plugin ack is matched by note", ack and ack["ok"] and ack["note"].startswith("t1#") and ack["detail"] == "ok", ack)
+            check("send_act: the command reached the plugin with the nonce", pl.seen and pl.seen[0]["act"] == "retreat" and pl.seen[0]["note"] == ack["note"], pl.seen)
+            out = []
+            ths = [threading.Thread(target=lambda i=i: out.append(cc.send_act({"act": "avoid", "x": i, "z": i, "r": 5}, tag="p")), daemon=True) for i in range(3)]
+            for t in ths:
+                t.start()
+            for t in ths:
+                t.join(15)
+            check("three concurrent senders (frozen clock!) each get their own ack - notes are unique", len(out) == 3 and all(o and o["ok"] for o in out) and len({o["note"] for o in out}) == 3, out)
+            check("... and the plugin saw all of them (none overwritten before it read it)", len(pl.seen) == 4, [x["act"] for x in pl.seen])
+        finally:
+            pl.close()
+        # the game log is the second witness when the ack file never appears
+        pl2 = FakePlugin(ctx.AGENT, mode="log", gamelog=ccm.GAMELOG)
+        try:
+            ack = cc.send_act({"act": "forgive"}, tag="t2", timeout=0.4)
+            check("no ack file but the game log carries our note: executed, confirmed via the log", ack and ack["ok"] and ack.get("via") == "gamelog", ack)
+        finally:
+            pl2.close()
+        pl3 = FakePlugin(ctx.AGENT, mode="log", gamelog=ccm.GAMELOG, ok=False)
+        try:
+            ack = cc.send_act({"act": "retreat"}, tag="t3", timeout=0.4)
+            check("a FAILED line in the game log is reported as a failure", ack and ack["ok"] is False and ack.get("via") == "gamelog", ack)
+        finally:
+            pl3.close()
+        t0 = time.time()
+        ack = cc.send_act({"act": "forgive"}, tag="t4", timeout=0.3)
+        check("nobody answering returns None after the timeout plus the log grace period", ack is None and time.time() - t0 < 4, ack)
+
+
+def test_plugin_info_and_caps():
+    with tempfile.TemporaryDirectory() as tmp:
+        cc, ctx, sim, clock = make(tmp)
+        check("no caps.json: no capabilities", cc._caps() == set() and cc.plugin_info()["build"] is None)
+        set_caps(ctx, ["act.v1", "probe.v1", "view.v1"], clock, build="act-1")
+        pi = cc.plugin_info()
+        check("a fresh caps.json is read (caps, build, view_ok)", set(pi["caps"]) == {"act.v1", "probe.v1", "view.v1"} and pi["build"] == "act-1" and pi["view_ok"] is True, pi)
+        clock.t += 200
+        check("a caps.json older than 120 s is ignored (the plugin has stopped or been replaced)", cc._caps() == set(), cc.plugin_info())
+        set_caps(ctx, ["act.v1"], clock, pid=999999)
+        os.environ.pop("CC_SKIP_PID_CHECK", None)
+        try:
+            cc._pid_cache = (0.0, None)
+            check("caps written by a game process that is no longer running are ignored", cc._caps() == set(), cc.plugin_info())
+        finally:
+            os.environ["CC_SKIP_PID_CHECK"] = "1"
+
+
+def test_incident_probe_in_prompt():
+    with tempfile.TemporaryDirectory() as tmp:
+        cc, ctx, sim, clock = make(tmp)
+        set_caps(ctx, ["act.v1", "probe.v1"], clock)
+        pl = FakePlugin(ctx.AGENT)
+        try:
+            ctx.replies = [{"diagnosis": "d", "actions": [{"type": "unstick", "how": "avoid", "x": 4, "z": 12, "r": 14, "ttl_s": 600}]}]
+            make_stuck(sim)
+            for _ in range(3):
+                tick(cc, sim, pos=sim.pos)
+            drain(cc)
+            prompt = ctx.calls[0][1]["content"]
+            check("the incident package carries the probe: what the game says is at the pin", '"probe_at_spot"' in prompt and "Boundaries 3" in prompt and '"static":true' in prompt, prompt[-1200:])
+            check("decorative colliders (grass, decals) are filtered out", "Grass patch" not in prompt)
+            probes = [x for x in pl.seen if x["act"] == "probe"]
+            check("exactly one probe was sent for the incident", len(probes) == 1 and "wx" in probes[0] and "wz" in probes[0], pl.seen)
+            iid = sim.eng.open_list()[0]["id"]
+            cc.build_incident_prompt([iid], "again")
+            check("a second prompt for the same incident reuses the cached probe", len([x for x in pl.seen if x["act"] == "probe"]) == 1)
+            check("order on the wire: probe first, then the unstick", [x["act"] for x in pl.seen] == ["probe", "avoid"], [x["act"] for x in pl.seen])
+        finally:
+            pl.close()
+    with tempfile.TemporaryDirectory() as tmp:
+        cc, ctx, sim, clock = make(tmp)
+        set_caps(ctx, ["act.v1"], clock)                      # act.v1 but no probe.v1
+        pl = FakePlugin(ctx.AGENT)
+        try:
+            ctx.replies = [{"actions": []}]
+            make_stuck(sim)
+            for _ in range(3):
+                tick(cc, sim, pos=sim.pos)
+            drain(cc)
+            prompt = ctx.calls[0][1]["content"]
+            check("a plugin without probe.v1: probe_at_spot is null and nothing was sent", '"probe_at_spot":null' in prompt and not pl.seen, (prompt[-300:], pl.seen))
+        finally:
+            pl.close()
+
+
+def test_http_probe():
+    with tempfile.TemporaryDirectory() as tmp:
+        cc, ctx, sim, clock = make(tmp)
+        body = json.dumps({"wx": 4, "wz": 12, "wr": 3}).encode()
+        h = FakeHandler(body)
+        cc.http_post(h, "/probe", len(body))
+        d = json.loads(h.sent[1])
+        check("POST /probe without a probe.v1 plugin says so", d["ok"] is False and "probe.v1" in d["why"], d)
+        set_caps(ctx, ["act.v1", "probe.v1"], clock)
+        pl = FakePlugin(ctx.AGENT)
+        try:
+            h = FakeHandler(body)
+            cc.http_post(h, "/probe", len(body))
+            d = json.loads(h.sent[1])
+            check("POST /probe (world point) returns the colliders with decor filtered", d["ok"] and [x["name"] for x in d["probe"]["hits"]] == ["Boundaries 3"] and d["probe"]["hits"][0]["static"] is True, d)
+            b2 = json.dumps({"sx": 400, "sy": 300}).encode()
+            h = FakeHandler(b2)
+            cc.http_post(h, "/probe", len(b2))
+            check("POST /probe (screen point) is forwarded as sx/sy", json.loads(h.sent[1])["ok"] and pl.seen[-1].get("sx") == 400 and pl.seen[-1].get("sy") == 300, pl.seen[-1])
+            b3 = json.dumps({"foo": 1}).encode()
+            h = FakeHandler(b3)
+            cc.http_post(h, "/probe", len(b3))
+            check("POST /probe with no point is rejected", json.loads(h.sent[1])["ok"] is False)
+        finally:
+            pl.close()
 
 
 def test_code_task_ack_relaunch_and_dedupe():
@@ -218,15 +420,22 @@ def test_semi_mode_queues_instead_of_acting():
     with tempfile.TemporaryDirectory() as tmp:
         cc, ctx, sim, clock = make(tmp)
         ctx.cfg["mode"] = "semi"
-        set_caps(ctx, ["act.v1"])
+        set_caps(ctx, ["act.v1"], clock)
         ctx.replies = [{"diagnosis": "d", "actions": [{"type": "unstick", "how": "retreat"}, {"type": "command", "patch": {"army_target": 40}}, {"type": "relaunch"}]}]
         make_stuck(sim)
         for _ in range(3):
             tick(cc, sim, pos=sim.pos)
         drain(cc)
         check("semi: nothing written to the plugin", ctx.writes == [], ctx.writes)
-        check("semi: unstick, command and relaunch wait for approval with ready-to-write patches",
-              len(ctx.pend) == 3 and ctx.pend[0]["patch"].get("act") == "retreat" and ctx.pend[1]["patch"].get("army_target") == 40 and ctx.pend[2]["patch"].get("relaunch"), ctx.pend)
+        check("semi: the unstick waits for approval as a ready-to-write act patch", len(ctx.pend) >= 1 and ctx.pend[0]["patch"].get("act") == "retreat", ctx.pend)
+        check("semi: the knob command was dropped (pin incident) and the relaunch refused - neither is even proposed", len(ctx.pend) == 1, ctx.pend)
+        # an idle incident's knob command and a >=60 s wedge's relaunch DO get queued
+        w = cc.engine._open("wedge", "crit", cc.clock(), detail="frame stuck", dur_s=90)
+        i2 = cc.engine._open("idle", "warn", cc.clock(), detail="gold idle", dur_s=70)
+        r1 = cc._run_action({"type": "relaunch"}, [w["id"]], "semi", False)
+        r2 = cc._run_action({"type": "command", "patch": {"army_target": 40}}, [i2["id"]], "semi", False)
+        check("semi: a wedge relaunch and an idle knob command are queued with ready patches",
+              "queued" in r1 and "queued" in r2 and ctx.pend[-2]["patch"].get("relaunch") and ctx.pend[-1]["patch"].get("army_target") == 40, (r1, r2, ctx.pend))
 
 
 def test_off_mode_suppresses_calls_and_logs_it():
@@ -294,15 +503,17 @@ def test_coalescing_two_incidents_one_call():
     with tempfile.TemporaryDirectory() as tmp:
         cc, ctx, sim, clock = make(tmp)
         ctx.replies = [{"actions": []}]
-        cc.cfg["wake"]["coalesce_s"] = 0
-        make_stuck(sim)                                                     # STUCK warn
-        sim.step(1.0, pos=sim.pos, audit={"scene": "Frostsee", "gold": 4000, "mode": "SpendGold", "since_prog": 90})   # + IDLE
-        sim.step(1.0, pos=sim.pos, audit={"scene": "Frostsee", "gold": 4000, "mode": "SpendGold", "since_prog": 91})
-        cc.maybe_wake()
+        cc.cfg["wake"]["coalesce_s"] = 15                                  # alerts raised within 15 s of each other share a call
+        make_stuck(sim)                                                     # STUCK warn: first alert, then the 15 s window runs
+        for _ in range(2):
+            sim.step(1.0, pos=sim.pos, audit={"scene": "Frostsee", "gold": 4000, "mode": "SpendGold", "since_prog": 90})   # + IDLE
+        check("coalescing: nothing was sent yet", len(ctx.calls) == 0 and "idle" in sim.kinds(), (len(ctx.calls), sim.kinds()))
+        for _ in range(15):
+            sim.step(1.0, pos=sim.pos, audit={"scene": "Frostsee", "gold": 4000, "mode": "SpendGold", "since_prog": 92})
         drain(cc)
-        check("two incidents raised in the same minute share ONE MiniMax call", len(ctx.calls) == 1, len(ctx.calls))
+        check("two incidents raised in the same few seconds share ONE MiniMax call", len(ctx.calls) == 1, len(ctx.calls))
         p = ctx.calls[0][1]["content"]
-        check("... and the call lists both", '"kind":"stuck"' in p and '"kind":"idle"' in p, p[:400])
+        check("... and the call lists both", '"kind":"stuck"' in p and '"kind":"idle"' in p, p[:300])
 
 
 def test_minimax_error_is_visible_and_not_fatal():
@@ -447,7 +658,8 @@ def test_http():
 
 
 def main():
-    for fn in (test_extract_and_validate, test_incident_wakes_minimax_and_unsupported_plugin_is_reported, test_unstick_executes_when_plugin_supports_it,
+    for fn in (test_extract_and_validate, test_incident_wakes_minimax_and_unsupported_plugin_is_reported, test_knob_command_for_idle_incident_is_written, test_unstick_executes_when_plugin_supports_it,
+               test_unstick_failure_modes_are_reported_honestly, test_act_protocol_roundtrip, test_plugin_info_and_caps, test_incident_probe_in_prompt, test_http_probe,
                test_code_task_ack_relaunch_and_dedupe, test_semi_mode_queues_instead_of_acting, test_off_mode_suppresses_calls_and_logs_it, test_rate_limits,
                test_coalescing_two_incidents_one_call, test_minimax_error_is_visible_and_not_fatal, test_history_at_spot_is_fed_back, test_scheduler_jobs,
                test_review_job, test_pulse_wakes_on_bad_health, test_http):

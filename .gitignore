@@ -18,3 +18,6 @@ dist/
 
 
 .tmp_*
+
+fftest.mjpeg
+grab-test.jpg

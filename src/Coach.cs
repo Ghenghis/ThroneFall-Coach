@@ -107,6 +107,7 @@ namespace ThronefallTrainer
                         if ((UnityEngine.Object)(object)s.NearestBuild != (UnityEngine.Object)null)
                             pt("bld:" + (s.NearestBuildName ?? "?"), s.NearestBuildPos, "#00ff7f");
                         if (s.RedAlert && s.HasThreatAnchor) pt("THREAT", s.ThreatAnchor, "#ff2d2d");
+                        if (Bot.FocusActive) pt("GO", Bot.FocusPos, "#ffffff");
                         if (s.DoorAnchors != null)
                             for (int di = 0; di < s.DoorAnchors.Length; di++)
                             {
@@ -201,13 +202,42 @@ namespace ThronefallTrainer
             }
             if (Time.unscaledTime >= nextCmdPoll)
             {
-                nextCmdPoll = Time.unscaledTime + 4f;
+                nextCmdPoll = Time.unscaledTime + 1f;   // was 4 s — click-to-command needs near-live latency
                 PollCommands();
             }
+            ApplyPendingFocus();
         }
 
         private static float nextCmdPoll;
         private static string lastCmdText = "";   // content-level dedupe
+        private static string pendingFocus;        // ui click → aim target name
+
+        /// <summary>Resolve a pending "focus" order into a world point the
+        /// hero walks to (doors, castle, threat anchor or named build slot).</summary>
+        private static void ApplyPendingFocus()
+        {
+            if (pendingFocus == null) return;
+            var s = BotPerception.Last;
+            if (!BotPerception.LastValid) { pendingFocus = null; return; }
+            var f = pendingFocus; pendingFocus = null;
+            Vector3 pos; bool found = true;
+            var dm = System.Text.RegularExpressions.Regex.Match(f, "^door(\\d+)");
+            if (dm.Success)
+            {
+                int di = int.Parse(dm.Groups[1].Value);
+                if (s.DoorAnchors != null && di >= 0 && di < s.DoorAnchors.Length)
+                    pos = s.DoorAnchors[di];
+                else { found = false; pos = s.HeroPos; }
+            }
+            else if (f == "castle") pos = s.CastlePos;
+            else if (f == "threat") pos = s.ThreatAnchor;
+            else if (f.StartsWith("bld:") && (UnityEngine.Object)(object)s.NearestBuild != (UnityEngine.Object)null
+                     && s.NearestBuildName == f.Substring(4)) pos = s.NearestBuildPos;
+            else { found = false; pos = s.HeroPos; }
+            if (!found) { Plugin.Log?.LogInfo("[coach] focus ignored: " + f); return; }
+            Bot.SetFocus(pos, 20f);
+            Plugin.Log?.LogInfo($"[coach] focus -> {f} @({pos.x:0},{pos.z:0}) for 20s");
+        }
 
         /// <summary>tools/coach-server.py writes agent/coach-commands.json
         /// whenever the user (via chat) issues a strategy override. Same
@@ -337,6 +367,11 @@ namespace ThronefallTrainer
                 if (TryBool(j, "night_call", out bool nc) && nc)
                     NightCallRequested = true;            // advisory flag — brain still gates
             }
+            // Live-view click-to-command: {"focus":"door2"|"castle"|"threat"|"bld:<name>"}
+            // Resolved on the main thread next PerFrame (worker thread can't
+            // touch Unity objects).
+            if (TryStr(j, "focus", out string fo) && !string.IsNullOrEmpty(fo))
+                pendingFocus = fo;
             if (TryStr(j, "note", out string note) && !string.IsNullOrEmpty(note)) LastAdvice = note;
             var rest = new System.Collections.Generic.List<string>();
             foreach (System.Text.RegularExpressions.Match xm in
@@ -370,7 +405,7 @@ namespace ThronefallTrainer
         private static readonly System.Collections.Generic.HashSet<string> KnownKeys =
             new System.Collections.Generic.HashSet<string>
             { "squad_size", "reserve_size", "escort_size", "army_target",
-              "build_focus", "hero_posture", "night_call", "note" };
+              "build_focus", "hero_posture", "night_call", "note", "focus" };
 
         private static bool TryBool(string j, string key, out bool v)
         {

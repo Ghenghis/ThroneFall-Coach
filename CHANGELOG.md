@@ -494,3 +494,10 @@ AUTOPILOT §8–9 for the full list and next actions.
   tasks, use/waste/eff/abandoned - first data: 1511s useful vs 3078s wasted), Audit pane 'Recovery events'
   counters (pin-park/sidestep/timeout/rescan/gps/door-park/breach per run via /events?cnt).
 - **Marker color pass 2:** door labels now 'doorN · units'; foe dots; halo + stroked labels everywhere.
+- **Window-grab live feed:** server-side BitBlt of the Thronefall window (~5-11 fps real pixels, ZERO game
+  cost - the plugin's ScreenCapture was the game-thread bottleneck and the 'laggy then freezes' failure
+  mode). /live.mjpeg prefers it; plugin JPEG remains the fallback. live.json exposes 'win':true.
+- **Click-to-command:** 'cmd' chip in the live overlay toggles marker hit-testing - click a door/build/
+  castle/threat marker and the hero walks there ({focus:"door2"} order -> SetFocus 20 s, shown as a GO
+  ring). Command poll 4 s -> 1 s so clicks feel live.
+- Buttons/doorN·unit labels, banner, ticker, toggles, token pane - all one consolidated Live pane.

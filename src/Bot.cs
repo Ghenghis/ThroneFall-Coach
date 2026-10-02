@@ -297,6 +297,15 @@ internal static class Bot
 
 	public static int StuckStrikes { get; private set; }
 
+	private static Vector3 focusPos;
+	private static float focusUntil;
+	/// <summary>UI click-to-command ("send hero here"). Seconds-capped so a
+	/// stale click can never trap the hero; brain resumes after expiry.</summary>
+	internal static void SetFocus(Vector3 pos, float seconds)
+	{ focusPos = pos; focusUntil = Time.unscaledTime + seconds; }
+	internal static Vector3 FocusPos => focusPos;
+	internal static bool FocusActive => Time.unscaledTime < focusUntil;
+
 	/// <summary>Live-view overlay: the nav path the hero is walking.</summary>
 	internal static List<Vector3> NavPathPoints =>
 		(navPath != null && navPath.vectorPath != null && navPath.vectorPath.Count > 1)
@@ -551,6 +560,7 @@ internal static class Bot
 			}
 		}
 		Coach.PerFrame(in BotPerception.Last, hasTarget ? targetPos : Vector3.zero, hasTarget);
+		Act.PerFrame(in BotPerception.Last, hasTarget ? targetPos : Vector3.zero, hasTarget);   // act.v1 / view.v1 / probe.v1 (src/Act.cs)
 		decisionClock += Time.unscaledDeltaTime;
 		if (!(decisionClock < 0.25f))
 		{
@@ -854,6 +864,13 @@ internal static class Bot
 		Mode = decideResult.Mode;
 		NetPolicy.Shadow(in s, decideResult.Mode.ToString());
 		engageTarget = ((decideResult.Pursue == 2) ? s.NearestEnemy : ((decideResult.Pursue != 1) ? null : (((UnityEngine.Object)(object)s.CastleThreat != (UnityEngine.Object)null) ? s.CastleThreat : s.NearestEnemy)));
+		// UI click-to-command: a "send hero here" focus beats the brain's aim
+		// for a short window (safe: expires fast, outranked by nothing).
+		if (Time.unscaledTime < focusUntil)
+		{
+			decideResult.AimPos = new Vec2(focusPos.x, focusPos.z);
+			decideResult.HasAim = true;
+		}
 		if (decideResult.HasAim)
 		{
 			Vector3 val3 = new Vector3(decideResult.AimPos.X, 0f, decideResult.AimPos.Z);
@@ -1370,7 +1387,7 @@ internal static class Bot
 			if (pinCls != null)
 			{
 				LogLine(in s, "pin:" + pinCls);
-				Recorder.Event("pin-type", "\"what\":\"" + pinCls + "\"");
+				Recorder.Event("pin-type", "\"what\":\"" + pinCls + "\"" + Act.PinExtraJson(s.HeroPos));   // + the blocker's name/layer/bounds/static flag
 			}
 			stuckStrikeTotal++;
 			if (stuckStrikeTotal == 60)
@@ -2290,6 +2307,9 @@ internal static class Bot
 		}
 	}
 
+	/// <summary>act.v1 (src/Act.cs): drop the current target so the brain re-picks (retreat/avoid/forgive).</summary>
+	internal static void ActClearTarget() { ClearTarget(); }
+
 	private static void ClearTarget()
 	{
 		hasTarget = false;
@@ -2711,7 +2731,7 @@ internal static class Bot
 					else cls = "obj:" + go.name;
 				}
 				float d = (go.transform.position - hero).sqrMagnitude;
-				if (d < bd) { bd = d; best = cls; }
+				if (d < bd) { bd = d; best = cls; Act.LastPinCol = c; }
 			}
 			return best;
 		}

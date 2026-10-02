@@ -2,7 +2,7 @@
 """End-to-end simulation of the command center - no game needed, nothing in the real agent dir is touched.
 
     python tools/cc-sim.py                       # replay the first long pin streak of the newest Frostsee run, mock MiniMax, plugin WITHOUT act.v1
-    python tools/cc-sim.py --caps act.v1         # same, but the emulated plugin supports movement commands (act)
+    python tools/cc-sim.py --caps act.v1,probe.v1,view.v1   # same, but the emulated plugin speaks act.v1 + probe.v1 (caps.json, act-commands.json -> act-ack.json, probe.json)
     python tools/cc-sim.py --real-minimax --mode semi   # one pass through the REAL MiniMax API (semi = actions queued, never executed)
 
 What happens: a scratch agent dir is created; a recorded run is replayed into it in (accelerated) real time; the REAL coach-server.py
@@ -75,8 +75,10 @@ def mock_plan(prompt):
         pos = i.get("pos") or [0, 0]
         hist = i.get("history_at_spot") or []
         tried_avoid = any("avoid" in json.dumps(h.get("actions")) for h in hist)
+        probe = i.get("probe_at_spot") or {}
+        probed_fixed = any(h.get("static") and ("Boundaries" in str(h.get("cls")) or str(h.get("cls")).startswith("terrain")) for h in probe.get("hits", []))
         if i["kind"] in ("stuck", "hotspot"):
-            if ob.get("immovable"):
+            if ob.get("immovable") or probed_fixed:
                 cause = "immovable-boundary"
                 big = tried_avoid or i["kind"] == "hotspot"
                 actions.append({"type": "unstick", "how": "avoid", "x": pos[0], "z": pos[1], "r": 24 if big else 14, "ttl_s": 1200 if big else 600, "why": "pinned on an immovable %s" % ob.get("class")})
@@ -145,12 +147,16 @@ class Feeder(threading.Thread):
         self.log = os.path.join(scratch, "LogOutput.log")
         self.src_ticks, self.src_events = jl(os.path.join(src_run, "ticks.jsonl")), jl(os.path.join(src_run, "events.jsonl"))
         self.t_from, self.t_to, self.speed, self.caps = t_from, t_to, speed, caps
-        self.run_dir = os.path.join(self.agent, "runs", os.path.basename(src_run))
-        os.makedirs(self.run_dir, exist_ok=True)
+        self.src_name = src_run
+        self.looping = False
+        self.run_dir = None
         self.done = False
         self.sim_t = t_from
         self.first_pin_wall = None
         self.cmd_seen = ""
+        self.act_seen = ""
+        self.exec_n = 0
+        self.next_caps = 0.0
         self.base_audit = {}
         try:
             self.base_audit = json.load(open(os.path.join(REAL_AGENT, "audit.json"), encoding="utf-8"))
@@ -163,30 +169,90 @@ class Feeder(threading.Thread):
 
     def audit(self):
         a = dict(self.base_audit)
-        a.update(t=self.sim_t, scene="Frostsee", since_prog=15, frame="", caps=self.caps, stuck=0, gold=1200, mode="SpendGold")
+        a.pop("caps", None)                                   # the real audit.json carries no caps; the plugin publishes caps.json
+        a.update(t=self.sim_t, scene="Frostsee", since_prog=15, frame="", stuck=0, gold=1200, mode="SpendGold")
         tmp = os.path.join(self.agent, "audit.json.tmp")
         json.dump(a, open(tmp, "w"))
-        os.replace(tmp, os.path.join(self.agent, "audit.json"))
+        for _ in range(20):                                   # Windows: the server may hold audit.json open for a moment
+            try:
+                os.replace(tmp, os.path.join(self.agent, "audit.json"))
+                return
+            except PermissionError:
+                time.sleep(0.05)
+
+    def _write_json(self, name, obj):
+        tmp = os.path.join(self.agent, name + ".tmp")
+        json.dump(obj, open(tmp, "w"))
+        for _ in range(20):                                   # Windows: the server may hold the file open for a moment
+            try:
+                os.replace(tmp, os.path.join(self.agent, name))
+                return
+            except PermissionError:
+                time.sleep(0.05)
+
+    def write_caps(self):
+        """What Act.cs does every 30 s (here every 5 s): advertise what this build can do. No caps -> an old build, no file."""
+        if not self.caps or time.time() < self.next_caps:
+            return
+        self.next_caps = time.time() + 5
+        self._write_json("caps.json", {"t": round(time.time(), 1), "pid": os.getpid(), "build": "sim-1", "caps": self.caps,
+                                       "acts": ["retreat", "avoid", "goto", "clear_ignores", "forgive", "probe"], "view_ok": True})
+
+    def _exec_act(self, d):
+        """What Act.cs does with one act.v1 command: execute, log '[coach] act ...', answer with act-ack.json (and probe.json for probes)."""
+        how = d.get("act")
+        self.exec_n += 1
+        detail = "emulated %s" % how
+        if how == "probe":
+            hits = [{"name": "Boundaries 3", "cls": "obj:Boundaries 3", "decor": False, "path": "Map/Boundaries 3", "lay": "Boundaries", "tag": "Untagged", "stat": True, "trig": False,
+                     "c": [d.get("wx", 0), 0, d.get("wz", 0)], "size": [30, 4, 2], "dist": 0.8},
+                    {"name": "Grass patch", "cls": "decor:Grass patch", "decor": True, "path": "Map/Grass patch", "lay": "Default", "tag": "Untagged", "stat": True, "trig": False,
+                     "c": [d.get("wx", 0), 0, d.get("wz", 0)], "size": [3, 1, 3], "dist": 1.2}]
+            self._write_json("probe.json", {"id": d.get("id") or d.get("note"), "t": round(time.time(), 1), "mode": "world" if "wx" in d else "screen",
+                                            "world": [d.get("wx", 0), 0, d.get("wz", 0)], "hits": hits})
+            detail = "probe: %d collider(s)" % len(hits)
+        with open(self.log, "a") as f:
+            f.write("[Info   :ThronefallTrainer] [coach] act %s OK :: %s (note %s)\n" % (how, detail, d.get("note")))
+        self._write_json("act-ack.json", {"t": round(time.time(), 1), "act": how, "note": d.get("note"), "ok": True, "detail": detail, "n": self.exec_n})
 
     def emulated_plugin(self):
-        p = os.path.join(self.agent, "coach-commands.json")
-        try:
-            txt = open(p, encoding="utf-8").read()
-        except OSError:
-            return
-        if txt and txt != self.cmd_seen:
-            self.cmd_seen = txt
+        self.write_caps()
+        for name in ("act-commands.json", "coach-commands.json"):
+            p = os.path.join(self.agent, name)
+            try:
+                txt = open(p, encoding="utf-8").read()
+            except OSError:
+                continue
+            seen = self.act_seen if name == "act-commands.json" else self.cmd_seen
+            if not txt or txt == seen:
+                continue
+            if name == "act-commands.json":
+                self.act_seen = txt
+            else:
+                self.cmd_seen = txt
             try:
                 d = json.loads(txt)
             except Exception:
-                return
-            with open(self.log, "a") as f:
-                if "act" in d:
-                    f.write("[Info   :ThronefallTrainer] [coach] act %s %s\n" % (d["act"], json.dumps(d)))
-                else:
+                continue
+            if "act" in d:
+                if "act.v1" in self.caps:                      # an old plugin build ignores commands it does not know
+                    self._exec_act(d)
+            else:
+                with open(self.log, "a") as f:
                     f.write("[Info   :ThronefallTrainer] [coach] user-cmd -> %s\n" % json.dumps(d))
 
     def run(self):
+        loop = 0
+        while True:
+            self.play(loop)
+            if not self.looping:
+                return
+            loop += 1
+            self.done = False
+
+    def play(self, loop):
+        self.run_dir = os.path.join(self.agent, "runs", os.path.basename(self.src_name) + ("-L%d" % loop if loop else ""))
+        os.makedirs(self.run_dir, exist_ok=True)
         tp, ep = os.path.join(self.run_dir, "ticks.jsonl"), os.path.join(self.run_dir, "events.jsonl")
         hist = [t for t in self.src_ticks if self.t_from - 90 <= t["t"] < self.t_from]
         with open(tp, "w") as f:
@@ -217,7 +283,7 @@ class Feeder(threading.Thread):
             if self.sim_t >= self.t_to:
                 self.done = True
             time.sleep(0.4)
-            if self.done and time.time() - start > (self.t_to - self.t_from) / self.speed + 60:
+            if self.done and (self.looping or time.time() - start > (self.t_to - self.t_from) / self.speed + 60):
                 return
 
 
@@ -229,6 +295,7 @@ def main():
     ap.add_argument("--mode", default="auto")
     ap.add_argument("--real-minimax", action="store_true")
     ap.add_argument("--keep", action="store_true")
+    ap.add_argument("--hold", type=int, default=0, help="after the checks keep the server up (and loop the replay) for this many seconds so the UI can be inspected")
     a = ap.parse_args()
 
     src = a.run and os.path.join(REAL_AGENT, "runs", a.run) or pick_run()
@@ -249,12 +316,13 @@ def main():
           (win[0], win[1], a.speed, caps, a.mode, "REAL" if a.real_minimax else "mock"))
 
     mock = None
-    env = dict(os.environ, THRONEFALL_AGENT=agent, THRONEFALL_GAMELOG=os.path.join(scratch, "LogOutput.log"), MM_WATCH="0", CC_ENABLED="1", PYTHONUNBUFFERED="1")
+    env = dict(os.environ, THRONEFALL_AGENT=agent, THRONEFALL_GAMELOG=os.path.join(scratch, "LogOutput.log"), MM_WATCH="0", CC_ENABLED="1", CC_SKIP_PID_CHECK="1", PYTHONUNBUFFERED="1")
     if not a.real_minimax:
         mock = http.server.ThreadingHTTPServer(("127.0.0.1", MOCK_PORT), Mock)
         threading.Thread(target=mock.serve_forever, daemon=True).start()
         env.update(MM_URL="http://127.0.0.1:%d/v1/chat/completions" % MOCK_PORT, MM_KEY_OVERRIDE="mock-key")
     feeder = Feeder(scratch, src, win[0], win[1], a.speed, caps)
+    feeder.looping = a.hold > 0
     feeder.start()
     time.sleep(1.0)
     outp = open(os.path.join(scratch, "server.out"), "w")
@@ -313,17 +381,32 @@ def main():
         flat = [x for r in acts for x in (r.get("actions") or [])]
         print("  actions:", [(x["type"], x.get("how"), x["result"][:60]) for x in flat][:10])
         if mock:
-            if "act.v1" in caps:
-                cmds = open(os.path.join(agent, "coach-commands.json")).read() if os.path.exists(os.path.join(agent, "coach-commands.json")) else ""
-                check("unstick executed: the act command reached the plugin and the game log confirmed it",
-                      any(x["type"] == "unstick" and "executed by the bot" in x["result"] for x in flat) and '"act"' in cmds, cmds[:200])
-            elif a.mode == "semi":
-                check("semi mode: unstick queued for approval, nothing executed",
-                      any(x["type"] == "unstick" and "queued for approval" in x["result"] for x in flat) and not os.path.exists(os.path.join(agent, "coach-commands.json")))
+            if a.mode == "semi":
+                check("semi mode: unstick queued for approval, nothing written to the plugin",
+                      any(x["type"] == "unstick" and "queued for approval" in x["result"] for x in flat) and not os.path.exists(os.path.join(agent, "coach-commands.json"))
+                      and not os.path.exists(os.path.join(agent, "act-commands.json")))
+            elif "act.v1" in caps:
+                cmds = open(os.path.join(agent, "act-commands.json")).read() if os.path.exists(os.path.join(agent, "act-commands.json")) else ""
+                ack = json.load(open(os.path.join(agent, "act-ack.json"))) if os.path.exists(os.path.join(agent, "act-ack.json")) else {}
+                check("unstick executed: act-commands.json reached the plugin, act-ack.json confirmed it, the incident shows 'executed by the bot'",
+                      any(x["type"] == "unstick" and x["result"].startswith("executed by the bot") for x in flat) and '"act"' in cmds and ack.get("ok") is True, (cmds[:200], ack))
+                check("the game log has the matching '[coach] act ... OK' line with the same note",
+                      ack.get("note") and any("[coach] act" in ln and "(note %s)" % ack["note"] in ln for ln in open(os.path.join(scratch, "LogOutput.log")).read().splitlines()), ack)
+                if "probe.v1" in caps:
+                    check("the incident package MiniMax received carried the probe (what is at the pin)",
+                          any("probe_at_spot" in m["prompt"] and "Boundaries 3" in m["prompt"] and "Grass patch" not in m["prompt"] for m in MOCK_LOG), "no probe in %d prompts" % len(MOCK_LOG))
+                    pr = http_json("/probe", data={"wx": 10.5, "wz": 20.5})
+                    check("POST /probe returns the colliders at a point (click-to-probe backend)", pr.get("ok") and pr["probe"]["hits"][0]["name"] == "Boundaries 3" and pr["probe"]["hits"][0]["static"] is True, pr)
+                check("/botpulse reports what the plugin can do (caps.json read by the server)",
+                      sorted(pulse["plugin"]["caps"]) == sorted(caps) and pulse["plugin"]["build"] == "sim-1", pulse.get("plugin"))
             else:
                 check("plugin without act.v1: unstick reported UNSUPPORTED and an urgent engineer task was queued",
                       any(x["type"] == "unstick" and x["result"].startswith("UNSUPPORTED") for x in flat) and any("act.v1" in q.get("title", "") for q in queue), queue[:2])
-            check("code_task from an escalated response reached the engineer queue", any("boundary" in q.get("title", "").lower() or "act.v1" in q.get("title", "") for q in queue), queue[:3])
+            planned = [x for r in acts for x in (r.get("actions") or []) if x["type"] == "code_task"]
+            if planned:
+                check("every code_task MiniMax planned reached the engineer queue", all(any(q.get("title", "").lower().startswith(str(x["params"].get("title", ""))[:30].lower()) for q in queue) for x in planned), queue[:3])
+            else:
+                print("  (no code_task was planned in this window - escalation path not exercised)")
         if inc_all:
             iid = [i for i in inc_all if i["kind"] in ("stuck", "hotspot")][0]["id"] if any(i["kind"] in ("stuck", "hotspot") for i in inc_all) else inc_all[0]["id"]
             check("the actions are recorded on the incident itself", any(i.get("actions") for i in inc_all), [(i["id"], len(i.get("actions", []))) for i in inc_all][:6])
@@ -341,6 +424,9 @@ def main():
         check("cc-heartbeat.json is fresh (supervisor reads it)", os.path.exists(os.path.join(agent, "cc-heartbeat.json")) and time.time() - os.path.getmtime(os.path.join(agent, "cc-heartbeat.json")) < 60)
         errs = os.path.join(agent, "cc-errors.log")
         check("no command-center errors logged", not os.path.exists(errs) or os.path.getsize(errs) == 0, open(errs).read()[:300] if os.path.exists(errs) else "")
+        if a.hold:
+            print("HOLD: UI at http://127.0.0.1:%d/ for %d s (replay loops; Ctrl+C to stop)" % (PORT, a.hold))
+            time.sleep(a.hold)
     finally:
         srv.terminate()
         try:

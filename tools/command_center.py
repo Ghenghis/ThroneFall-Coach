@@ -27,7 +27,7 @@ GAMELOG = os.environ.get("THRONEFALL_GAMELOG", r"K:\Downloads-IDM\Thronefall\Bep
 
 DEFAULT_CFG = {
     "enabled": True,
-    "wake": {"enabled": True, "min_gap_crit_s": 20, "min_gap_warn_s": 45, "max_per_10min": 6, "coalesce_s": 4},
+    "wake": {"enabled": True, "min_gap_crit_s": 30, "min_gap_warn_s": 60, "max_per_10min": 5, "coalesce_s": 6},
     "jobs": {"pulse_s": 60, "review_s": 300, "report_s": 3600, "selfcheck_s": 30},
 }
 
@@ -44,7 +44,8 @@ Action objects (type + fields):
  {"type":"unstick","how":"retreat|avoid|goto|clear_ignores|forgive","x":<world x>,"z":<world z>,"r":<metres>,"ttl_s":<seconds>,"why":"..."}
      movement correction the bot executes within ~1 s. retreat = walk back along the trail and drop the current target; avoid = ban a
      circle (x,z,r) from targeting for ttl_s; goto = walk to (x,z); clear_ignores / forgive = reset the bot's parked/ignored targets.
- {"type":"command","patch":{"build_focus":"...","hero_posture":"builder","army_target":N,"clear":true}}   strategy knobs only
+ {"type":"command","patch":{"build_focus":"...","hero_posture":"builder","army_target":N}}   strategy knobs - ONLY for idle/loop incidents;
+     knobs cannot move a pinned hero and are dropped for stuck/hotspot/wedge/feed/code incidents. Never send "clear" (it wipes the user's overrides).
  {"type":"code_task","title":"...","file":"src/Bot.cs","function":"...","evidence":"<numbers from the incident>","fix":"<concrete change>"}
      a defect that retreat/avoid/knobs cannot cure. It goes to the engineer queue as URGENT - give file, function, threshold.
  {"type":"relaunch","why":"..."}   only when the session is wedged or dead (feed incident with the game running, wedge > 60 s)
@@ -54,7 +55,8 @@ ever open them - the target behind them is unreachable, so avoid a circle of >= 
 player building / gate can be walked around or opened: retreat first, avoid for 120-300 s if it repeats. A HOTSPOT (the same spot pinned
 again and again) means the first remedy did not hold: escalate (bigger avoid radius, longer ttl) or file a code_task for the target
 selector. IDLE with gold waiting = the build picker is stuck: clear_ignores/forgive, then a command that changes build_focus, then a
-code_task. Never repeat an action that PREVIOUS ACTIONS shows already failed at this spot - change the approach. Coordinates are the
+code_task. Never repeat an action that PREVIOUS ACTIONS shows already failed at this spot - change the approach. probe_at_spot (when present) is what the game itself reports at the pin:
+collider class, name, size, static flag - trust it over the guessed obstacle class. Coordinates are the
 world (x, z) used in the incident pos and the TRAIL. Keep answers short; prefer one decisive unstick over four timid ones."""
 
 REVIEW_SYS = """You are MiniMax Watch doing a scheduled REVIEW of a Thronefall autopilot (the watchdog found nothing urgent or you were
@@ -98,6 +100,12 @@ class CommandCenter:
         self.jobs = self._load_jobs()
         self.engine_hb = 0.0
         self.last_error = ""
+        self.act_lock = threading.Lock()                        # one command in the act-commands.json slot at a time
+        self.act_seq = 0
+        self.act_timeout = 8.0                                  # how long an unstick waits for the plugin to confirm it
+        self.probes_left = 0                                    # probes still allowed while building the current incident prompt
+        self.probe_cache = {}                                   # incident id -> (t, hits)
+        self._pid_cache = (0.0, None)
         if autostart_threads:
             self.start()
 
@@ -119,13 +127,18 @@ class CommandCenter:
         self._atomic(self.cfg_path, self.cfg)
 
     def _atomic(self, path, obj):
+        """Write JSON via a temp file + rename. Windows refuses the rename while a reader (the plugin, the UI) has the target open,
+        so retry briefly. Returns False when the file could not be replaced."""
         tmp = path + ".tmp"
-        try:
-            with open(tmp, "w", encoding="utf-8") as f:
-                json.dump(obj, f, default=str)
-            os.replace(tmp, path)
-        except OSError:
-            pass
+        for attempt in range(6):
+            try:
+                with open(tmp, "w", encoding="utf-8") as f:
+                    json.dump(obj, f, default=str)
+                os.replace(tmp, path)
+                return True
+            except OSError:
+                time.sleep(0.03 * (attempt + 1))
+        return False
 
     def _load_jobs(self):
         j = self.cfg["jobs"]
@@ -314,9 +327,31 @@ class CommandCenter:
         return {"id": i["id"], "kind": i["kind"], "sev": i["sev"], "age_s": round(now - i["t_open"]), "dur_s": i.get("dur_s"), "pos": [round(x, 1) for x in pos] if pos else None,
                 "scene": i.get("scene"), "mode": i.get("mode"), "obstacle": i.get("obstacle"), "count": i.get("count"), "pins": i.get("pins"), "target": i.get("target"),
                 "detail": i.get("detail"), "near": near, "previous_actions": [{"by": a["by"], "action": a.get("action"), "result": a.get("result")} for a in i.get("actions", [])][-5:],
-                "history_at_spot": self._history_at(i)}
+                "history_at_spot": self._history_at(i), "probe_at_spot": self._probe_for(i)}
+
+    def _probe_for(self, i):
+        """What the plugin says is at the incident's spot (colliders: class/name/size/static). Cached 60 s per incident."""
+        if i.get("kind") not in ("stuck", "hotspot") or not i.get("pos"):
+            return None
+        hit = self.probe_cache.get(i["id"])
+        if hit and self.clock() - hit[0] < 60:
+            return hit[1]
+        if self.probes_left <= 0 or "probe.v1" not in self._caps():
+            return None
+        self.probes_left -= 1                                   # each probe can take a few seconds - bound the prompt latency
+        res = None
+        try:
+            res = self.probe_world(i["pos"], 4.0, tag="inc-" + i["id"])
+        except Exception:
+            res = None
+        self.probe_cache[i["id"]] = (self.clock(), res)
+        if len(self.probe_cache) > 200:
+            for k in sorted(self.probe_cache, key=lambda k: self.probe_cache[k][0])[:100]:
+                del self.probe_cache[k]
+        return res
 
     def build_incident_prompt(self, ids, reason):
+        self.probes_left = 3
         trail, last_tick = self._trail()
         with self.lock:
             opens = [self.engine.get(i) for i in ids]
@@ -369,7 +404,7 @@ class CommandCenter:
                 return rec
             self.calls.append(t0)
             prompt = prompt or self.build_incident_prompt(ids or [i["id"] for i in self.engine.open_list()], reason)
-            reply, usage = self.ctx.mm_chat([{"role": "system", "content": system or INCIDENT_SYS}, {"role": "user", "content": prompt}], max_tokens=6000)
+            reply, usage = self.ctx.mm_chat([{"role": "system", "content": system or INCIDENT_SYS}, {"role": "user", "content": prompt}], max_tokens=8000)
             rec["usage"] = usage
             plan = extract_json(reply) or {}
             rec.update(diagnosis=str(plan.get("diagnosis", ""))[:400], cause=str(plan.get("cause", ""))[:40], confidence=plan.get("confidence"), raw=reply[:300] if not plan else "")
@@ -394,8 +429,82 @@ class CommandCenter:
         return rec
 
     # ------------------------------------------------------------------ plan validation + execution
+    def _pid_alive(self, pid):
+        """Is `pid` the running game? Cached 10 s. CC_SKIP_PID_CHECK=1 (simulations) trusts caps.json."""
+        if os.environ.get("CC_SKIP_PID_CHECK") == "1":
+            return True
+        t, v = self._pid_cache
+        if time.time() - t < 10 and v is not None:
+            return v
+        ok = False
+        try:
+            import subprocess
+            out = subprocess.run(["tasklist", "/FI", "PID eq %d" % int(pid), "/FO", "CSV", "/NH"], capture_output=True, text=True, timeout=5).stdout.lower()
+            ok = "thronefall" in out
+        except Exception:
+            ok = False
+        self._pid_cache = (time.time(), ok)
+        return ok
+
+    def plugin_info(self):
+        """What the running plugin build can do: caps.json (written by Act.cs every 30 s, tied to the game's pid) plus audit.json's own list."""
+        info = {"caps": sorted(self._audit().get("caps") or []), "build": None, "view_ok": None, "age_s": None}
+        try:
+            c = json.loads((self.agent / "caps.json").read_text(errors="replace"))
+            age = self.clock() - float(c.get("t", 0))
+            if age < 120 and self._pid_alive(c.get("pid")):
+                info.update(caps=sorted(set(info["caps"]) | set(c.get("caps") or [])), build=c.get("build"), view_ok=c.get("view_ok"), age_s=round(age, 1))
+        except Exception:
+            pass
+        return info
+
     def _caps(self):
-        return set(self._audit().get("caps") or [])
+        return set(self.plugin_info()["caps"])
+
+    def send_act(self, cmd, tag="cc", timeout=8.0):
+        """Write one command into act-commands.json (the plugin polls it every 0.4 s) and wait for the plugin's act-ack.json with our note.
+        Serialised: a second command waits for the first so the single slot is never overwritten before it was read. Returns the ack dict or None."""
+        with self.act_lock:
+            self.act_seq += 1
+            note = "%s#%d-%d" % (tag, int(self.clock() * 1000), self.act_seq)    # unique even if two commands share a millisecond: the plugin dedupes by note
+            before = self._log_size()
+            if not self._atomic(os.path.join(self.agent, "act-commands.json"), dict(cmd, note=note)):
+                return {"note": note, "ok": False, "detail": "could not write act-commands.json (file locked?)", "via": "server"}
+            end = time.time() + timeout
+            while time.time() < end:
+                time.sleep(0.1)
+                try:
+                    ack = json.load(open(os.path.join(self.agent, "act-ack.json"), encoding="utf-8"))
+                    if ack.get("note") == note:
+                        return ack
+                except Exception:
+                    pass
+            # no ack file: the game log is an independent witness (Act.cs logs every executed command together with its note)
+            line = self._find_in_log("(note %s)" % note, before, 2.0)
+            if line:
+                return {"note": note, "ok": " OK ::" in line, "detail": line.split("::", 1)[-1].strip()[:140], "via": "gamelog"}
+            return None
+
+    def probe_world(self, pos, r=4.0, tag="probe", timeout=4.0):
+        """Ask the plugin what is at a world position (colliders within r m): returns a trimmed hit list, or None when unsupported/unanswered."""
+        if "probe.v1" not in self._caps():
+            return None
+        pid = "%s-%d" % (tag, int(self.clock() * 1000))
+        ack = self.send_act({"act": "probe", "wx": round(pos[0], 1), "wz": round(pos[1], 1), "wr": r, "id": pid}, tag="probe", timeout=timeout)
+        if not ack or not ack.get("ok"):
+            return None
+        return self._read_probe(pid)
+
+    def _read_probe(self, pid):
+        try:
+            d = json.load(open(os.path.join(self.agent, "probe.json"), encoding="utf-8"))
+        except Exception:
+            return None
+        if d.get("id") != pid:
+            return None
+        hits = [h for h in d.get("hits", []) if not h.get("decor")]
+        return {"world": d.get("world"), "mode": d.get("mode"),
+                "hits": [{"cls": h.get("cls"), "name": h.get("name"), "path": h.get("path"), "layer": h.get("lay"), "static": h.get("stat"), "size": h.get("size"), "centre": h.get("c"), "dist_m": h.get("dist")} for h in hits[:6]]}
 
     def validate_action(self, a):
         """Return a cleaned action dict or None. Strict whitelist + clamps - the model never reaches the plugin or the OS directly."""
@@ -459,6 +568,15 @@ class CommandCenter:
             return "acked"
         if t == "code_task":
             return self.enqueue_code_task(a, ids)
+        if t == "command" and ids:
+            kinds = {(self.engine.get(i) or {}).get("kind") for i in ids} - {None}
+            if kinds and kinds <= {"stuck", "hotspot", "wedge", "feed", "code"}:
+                # strategy knobs cannot move a pinned hero; a blanket "clear" would also wipe the army/focus the user set
+                return "dropped: strategy knobs cannot fix a %s incident (use unstick or code_task)" % "/".join(sorted(kinds))
+        if t == "relaunch":
+            worst = [self.engine.get(i) or {} for i in ids]
+            if not any(w.get("kind") in ("feed", "wedge") and (w.get("sev") == "crit" or (w.get("dur_s") or 0) >= 60) for w in worst):
+                return "refused: a relaunch needs a feed/wedge incident that has lasted >= 60 s (a pin or idle incident never justifies killing the game)"
         if mode == "semi" and t in ("unstick", "command", "relaunch") and not manual:
             # the stored patch is exactly what /mmapprove will write for the plugin (or hand to apply_side_effects)
             if t == "command":
@@ -482,9 +600,6 @@ class CommandCenter:
         if t == "relaunch":
             if mode not in ("auto", "aggressive"):
                 return "needs auto/aggressive mode"
-            worst = [self.engine.get(i) or {} for i in ids]
-            if not any(w.get("kind") in ("feed", "wedge") and (w.get("sev") == "crit" or (w.get("dur_s") or 0) >= 60) for w in worst):
-                return "refused: a relaunch needs a feed/wedge incident that has lasted >= 60 s (a pin or idle incident never justifies killing the game)"
             se = self.ctx.apply_side_effects({"relaunch": True}, mode, self.ctx.live_state())
             return se or "relaunch requested"
         if t == "unstick":
@@ -496,17 +611,19 @@ class CommandCenter:
         if "act.v1" not in caps:
             # the deployed plugin build cannot execute movement commands yet - say so, and make sure the engineer hears about it once
             self.enqueue_code_task({"type": "code_task", "title": "Plugin lacks act.v1 - incident responder cannot unstick the hero",
-                                    "file": "src/Coach.cs", "function": "PollCommands/Apply", "evidence": "audit.caps=%s; MiniMax requested unstick/%s" % (sorted(caps), a.get("how")),
-                                    "fix": "implement the 'act' command (retreat/avoid/goto/clear_ignores/forgive) and publish caps ['act.v1'] in audit.json"}, ids, dedupe=True)
+                                    "file": "src/Act.cs", "function": "Act.PerFrame", "evidence": "plugin caps=%s; MiniMax requested unstick/%s" % (sorted(caps), a.get("how")),
+                                    "fix": "deploy the build that contains src/Act.cs (act.v1: retreat/avoid/goto/clear_ignores/forgive, probe.v1, view.v1)"}, ids, dedupe=True)
             return "UNSUPPORTED: deployed plugin has no act.v1 (queued as engineer task)"
-        cmd = {"act": a["how"], "note": "incident-%s#%d" % ((ids or ["x"])[0], int(self.clock()))}
+        cmd = {"act": a["how"]}
         for k in ("x", "z", "r", "ttl_s"):
             if k in a:
                 cmd[k] = a[k]
-        before = self._log_size()
-        self.ctx.write_cmd(cmd)
-        ok = self._wait_log("[coach] act", before, 8.0)
-        return "executed by the bot (confirmed in game log)" if ok else "written, NOT confirmed by the game log within 8 s"
+        ack = self.send_act(cmd, tag="incident-%s" % ((ids or ["x"])[0]), timeout=self.act_timeout)
+        if ack is None:
+            return "sent, NOT confirmed by the plugin within 8 s (no act-ack.json, nothing in the game log)"
+        if ack.get("via") == "server":
+            return "NOT sent: " + str(ack.get("detail", ""))[:140]
+        return ("executed by the bot: " if ack.get("ok") else "plugin could not execute: ") + str(ack.get("detail", ""))[:140]
 
     def _log_size(self):
         try:
@@ -514,20 +631,23 @@ class CommandCenter:
         except OSError:
             return -1
 
-    def _wait_log(self, marker, before, timeout):
+    def _find_in_log(self, marker, before, timeout):
+        """The first game-log line (written after offset `before`) that contains `marker`, or None after `timeout` s."""
         p = GAMELOG
         end = time.time() + timeout
-        while time.time() < end:
-            time.sleep(0.5)
+        while True:
             try:
                 size = os.path.getsize(p)
                 with open(p, "rb") as f:
                     f.seek(before if 0 <= before <= size else 0)
-                    if marker in f.read().decode("utf-8", "replace"):
-                        return True
+                    for line in f.read().decode("utf-8", "replace").splitlines():
+                        if marker in line:
+                            return line
             except OSError:
                 pass
-        return False
+            if time.time() >= end:
+                return None
+            time.sleep(0.3)
 
     def enqueue_code_task(self, a, ids, dedupe=False):
         path = os.path.join(self.agent, "engineer-queue.jsonl")
@@ -645,10 +765,32 @@ class CommandCenter:
                             "pending_alerts": len(self.pending), "stats": self.stats},
                 "watchdog": {"alive": self.threads.get("watchdog").is_alive() if self.threads.get("watchdog") else False, "age_s": round(now - self.engine_hb, 1) if self.engine_hb else None,
                              "uptime_s": round(now - self.started)},
-                "scheduler": self.api_scheduler()["jobs"], "next_wake_in_s": round(min(nxt) - now) if nxt else None, "supervisor": sup}
+                "scheduler": self.api_scheduler()["jobs"], "next_wake_in_s": round(min(nxt) - now) if nxt else None, "supervisor": sup,
+                "pending": self.ctx.pending_list(), "plugin": self.plugin_info()}
 
     def api_scheduler(self):
         return {"t": self.clock(), "jobs": [{k: v for k, v in jb.items() if k != "fn"} for jb in self.jobs.values()]}
+
+    def api_probe(self, data):
+        """UI click-to-probe: {sx,sy} (game-screen pixels) or {wx,wz,wr} (world) -> what is there."""
+        if "probe.v1" not in self._caps():
+            return {"ok": False, "why": "the running plugin build has no probe.v1 - deploy the new build (src/Act.cs)"}
+        pid = "ui-%d" % int(self.clock() * 1000)
+        cmd = {"act": "probe", "id": pid}
+        try:
+            if "sx" in data and "sy" in data:
+                cmd.update(sx=float(data["sx"]), sy=float(data["sy"]))
+            else:
+                cmd.update(wx=float(data["wx"]), wz=float(data["wz"]), wr=float(data.get("wr", 3)))
+        except Exception:
+            return {"ok": False, "why": "need sx,sy or wx,wz"}
+        ack = self.send_act(cmd, tag="ui-probe", timeout=6.0)
+        if not ack:
+            return {"ok": False, "why": "no answer from the plugin within 6 s"}
+        if not ack.get("ok"):
+            return {"ok": False, "why": ack.get("detail", "probe failed")}
+        res = self._read_probe(pid)
+        return {"ok": bool(res), "probe": res, "why": "" if res else "probe.json did not match"}
 
     def api_incidents(self, n=60):
         with self.lock:
@@ -676,6 +818,11 @@ class CommandCenter:
             except OSError:
                 pass
             h._send(200, _jdump(rows[::-1]), "application/json")
+        elif base == "/view.json":                      # camera matrix + zones published by the plugin (UI overlay); {} until then
+            try:
+                h._send(200, open(os.path.join(self.agent, "view.json"), "rb").read(), "application/json")
+            except OSError:
+                h._send(200, "{}", "application/json")
         elif base == "/alive":
             h._send(200, _jdump({"ok": True, "t": self.clock(), "uptime_s": round(self.clock() - self.started), "watchdog": bool(self.threads.get("watchdog") and self.threads["watchdog"].is_alive())}), "application/json")
         elif base == "/incident/frame":
@@ -695,7 +842,7 @@ class CommandCenter:
         return True
 
     def http_post(self, h, path, n):
-        if path not in ("/incident/ack", "/incident/wake", "/scheduler"):
+        if path not in ("/incident/ack", "/incident/wake", "/scheduler", "/probe"):
             return False
         try:
             data = json.loads(h.rfile.read(n) or b"{}")
@@ -709,8 +856,13 @@ class CommandCenter:
             ids = [str(data["id"])] if data.get("id") else [i["id"] for i in self.engine.open_list()]
             threading.Thread(target=self.wake, args=("manual wake from the Live View", ids, True), daemon=True).start()
             h._send(200, _jdump({"ok": True, "ids": ids}), "application/json")
+        elif path == "/probe":
+            h._send(200, _jdump(self.api_probe(data)), "application/json")
         elif path == "/scheduler":
-            ok = self.set_job(str(data.get("job", "")), data.get("enabled"), data.get("every_s"))
+            jid = str(data.get("job", ""))
+            ok = self.set_job(jid, data.get("enabled"), data.get("every_s"))
+            if ok and data.get("run"):
+                threading.Thread(target=self.run_job, args=(jid,), daemon=True).start()
             h._send(200, _jdump({"ok": ok, "jobs": self.api_scheduler()["jobs"]}), "application/json")
         return True
 
