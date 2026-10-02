@@ -45,12 +45,14 @@ if "--port" in sys.argv:
 # MiniMax observes telemetry every MM_WATCH_SECS, proposes ONE bounded
 # steering patch, we validate+clamp it, write coach-commands.json, and the
 # plugin applies within ~4 s. Everything is logged with proof.
-MM_URL = "https://api.minimax.io/v1/chat/completions"
+MM_URL = os.environ.get("MM_URL", "https://api.minimax.io/v1/chat/completions")   # env override: tests point it at a local mock
 MM_MODEL = os.environ.get("MINIMAX_MODEL", "MiniMax-M3")
 WATCH_EVERY = float(os.environ.get("MM_WATCH_SECS", "30"))
 MM_ENABLED = os.environ.get("MM_WATCH", "1") != "0"
 
 def mm_key():
+    if os.environ.get("MM_KEY_OVERRIDE"):          # tests: never send the real key to a mock
+        return os.environ["MM_KEY_OVERRIDE"]
     for p in (r"K:\private\.env", r"K:\private\minimax-m3-ultra.env"):
         try:
             for ln in pathlib.Path(p).read_text().splitlines():
@@ -1047,6 +1049,9 @@ def extract_cmd(reply):
     except Exception:
         return None, reply
 
+CC = None   # command center (tools/command_center.py): incident watchdog + MiniMax wake + scheduler; set in __main__
+
+
 class H(BaseHTTPRequestHandler):
     def log_message(self, *a): pass
 
@@ -1079,6 +1084,8 @@ class H(BaseHTTPRequestHandler):
             except Exception: pass
 
     def _do_GET(self):
+        if CC is not None and CC.http_get(self, self.path):
+            return
         if self.path == "/" or self.path.startswith("/index"):
             self._send(200, PAGE, "text/html; charset=utf-8")
         elif self.path == "/state":
@@ -1164,6 +1171,35 @@ class H(BaseHTTPRequestHandler):
             except Exception:
                 pass
             self._send(200, json.dumps(out), "application/json")
+        elif self.path.startswith("/taskstats"):
+            # per-kind task ledger: count / useful / waste / avg eff / walk
+            try:
+                agg = {}
+                tot_u = tot_w = 0
+                for ln in tail_lines(AGENT / "tasks.jsonl", 300, cap=200000):
+                    try: t = json.loads(ln)
+                    except Exception: continue
+                    k = t.get("kind") or "?"
+                    a = agg.setdefault(k, {"n":0,"use":0,"waste":0,"walk":0,
+                                           "eff":0,"aban":0})
+                    u = t.get("use_s") or 0; w = t.get("waste_s") or 0
+                    a["n"] += 1; a["use"] += u; a["waste"] += w
+                    a["walk"] += t.get("walk") or 0
+                    a["eff"] += t.get("eff") or 0
+                    if t.get("out") in ("abandoned","parked"): a["aban"] += 1
+                    tot_u += u; tot_w += w
+                rows = [{"kind": k, "n": v["n"], "use": round(v["use"]),
+                         "waste": round(v["waste"]), "walk": round(v["walk"]),
+                         "eff": round(v["eff"] / max(1, v["n"])),
+                         "aband": v["aban"]}
+                        for k, v in sorted(agg.items(),
+                                           key=lambda kv: -kv[1]["waste"])]
+                self._send(200, json.dumps({"rows": rows,
+                    "tot_use": round(tot_u), "tot_waste": round(tot_w)}),
+                    "application/json")
+            except Exception as ex:
+                self._send(200, json.dumps({"error": str(ex)[:120]}),
+                           "application/json")
         elif self.path.startswith("/tokens"):
             # token-usage ledger from mmwatch.jsonl — totals, rate, per-call
             try:
@@ -1206,23 +1242,29 @@ class H(BaseHTTPRequestHandler):
                 self._send(200, json.dumps({"error": str(ex)[:120]}),
                            "application/json")
         elif self.path.startswith("/events"):
-            # last N events of the newest run — the frame ticker
+            # last events of the newest run — ticker + audit counters
             try:
                 runs = sorted([d for d in (AGENT / "runs").iterdir()
                                if d.is_dir()],
                               key=lambda d: d.name)
-                ev = []
+                ev, cnt = [], {}
                 if runs:
                     ep = runs[-1] / "events.jsonl"
                     if ep.exists():
                         for ln in ep.read_text(
                                 encoding="utf-8",
-                                errors="replace").splitlines()[-12:]:
-                            try: ev.append(json.loads(ln))
+                                errors="replace").splitlines()[-400:]:
+                            try:
+                                e = json.loads(ln)
+                                ev.append(e)
+                                k = (e.get("note") or "?").split(":")[0]
+                                cnt[k] = cnt.get(k, 0) + 1
                             except Exception: pass
-                self._send(200, json.dumps(ev), "application/json")
+                self._send(200, json.dumps(
+                    {"ev": ev[-12:], "cnt": cnt, "n": len(ev)}),
+                    "application/json")
             except Exception:
-                self._send(200, "[]", "application/json")
+                self._send(200, '{"ev":[],"cnt":{}}', "application/json")
         elif self.path.startswith("/run?"):
             # run detail: last 12 ticks of one run — powers the sidebar
             # expandable rows (truth, not summaries).
@@ -1470,6 +1512,8 @@ class H(BaseHTTPRequestHandler):
             _n = 0
         if _n > 8 * 1024 * 1024:
             self._send(413, "too large"); return
+        if CC is not None and CC.http_post(self, self.path, _n):
+            return
         if self.path == "/order":
             # Direct command — writes the coach file, waits for the plugin's
             # own apply line in the game log. Proof, not assumption.
@@ -2239,6 +2283,7 @@ pre.book{background:#150e0a;border:1px solid var(--bord);border-radius:9px;
     <button class="cb mkt on" data-mk="castle" onclick="mkTog(this)">castle</button>
     <button class="cb mkt on" data-mk="bld" onclick="mkTog(this)">builds</button>
     <button class="cb mkt on" data-mk="aim" onclick="mkTog(this)">aim</button>
+    <button class="cb mkt on" data-mk="foe" onclick="mkTog(this)">foes</button>
     <button class="cb mkt on" data-mk="path" onclick="mkTog(this)">path</button></div>
   </div>
   <div class="pane" id="p-tok">
@@ -2248,6 +2293,7 @@ pre.book{background:#150e0a;border:1px solid var(--bord);border-radius:9px;
    <div class="card"><h4>Last 25 calls</h4><div id="tokRecent"></div></div>
   </div>
   <div class="pane" id="p-stats">
+   <div class="card"><h4>Where time goes (last 300 tasks)</h4><div id="taskStats"></div></div>
    <div class="card"><h4>Grades (how computed below)</h4><div id="gradeCards"></div></div>
    <div class="card"><h4>Learning</h4><div id="learnKV"></div></div>
    <div class="card"><h4>Reward curve</h4><canvas id="curve" style="width:100%;height:130px"></canvas>
@@ -2271,6 +2317,7 @@ pre.book{background:#150e0a;border:1px solid var(--bord);border-radius:9px;
    <div class="card"><h4>Now vs last 1h / 16h / 48h vs baseline vs target</h4><div id="effCmp" class="hint">loading…</div></div>
    <div class="card"><h4>MiniMax heartbeat</h4><div id="effCoach"></div></div>
    <div class="card"><h4>Playbook checklist</h4><div id="auCheck"></div></div>
+   <div class="card"><h4>Recovery events (this run)</h4><div id="auEvts"></div></div>
    <div class="card"><h4>Door posts</h4><div id="auDoor"></div></div>
    <div class="card"><h4>Built so far</h4><div id="auCat"></div></div>
    <div class="card"><h4>Action timeline</h4><div id="auAct"></div></div>
@@ -2311,7 +2358,7 @@ let sideHidden=false,voiceTimer=null,voiceBuf="",A={};   // A = live audit state
 const feed=document.getElementById('feed'),txt=document.getElementById('txt');
 const shot=document.getElementById('shot'),cv=document.getElementById('draw'),
  mkcv=document.getElementById('mk'),mkx=mkcv.getContext('2d');
-const mkOn={door:1,castle:1,bld:1,aim:1,path:1,hero:1,THREAT:1};
+const mkOn={door:1,castle:1,bld:1,aim:1,foe:1,path:1,hero:1,THREAT:1};
 function mkTog(b){mkOn[b.dataset.mk]=b.classList.toggle('on')?1:0}
 function mkKind(t){return t.startsWith('door')?'door':t.startsWith('bld')?'bld':t}
 function drawMarkers(mk){mkcv.width=shot.clientWidth;mkcv.height=shot.clientHeight;
@@ -2324,6 +2371,9 @@ function drawMarkers(mk){mkcv.width=shot.clientWidth;mkcv.height=shot.clientHeig
  mk.pts.forEach(p=>{if(!mkOn[mkKind(p.t)])return;
   const sx=mkcv.width/p.w,sy=mkcv.height/p.h,px=p.x*sx,py=p.y*sx;
   if(px<0||py<0||px>mkcv.width||py>mkcv.height)return;
+  if(p.t=='foe'){ /* small filled dot - up to 40 of these per frame */
+   mkx.beginPath();mkx.arc(px,py,3.5,0,7);
+   mkx.fillStyle=p.c;mkx.fill();return}
   /* dark halo behind every marker — pink/grey on snow was unreadable */
   mkx.beginPath();mkx.arc(px,py,(p.t=='THREAT'?12:p.t=='castle'?9:p.t.startsWith('door')?7:5)+2.5,0,7);
   mkx.strokeStyle='rgba(0,0,0,.8)';mkx.lineWidth=4;mkx.stroke();
@@ -2341,9 +2391,17 @@ function banner(st){const b=document.getElementById('banner');
  else if(st.night){b.textContent='NIGHT — wave '+(st.wave||0)+'/'+(st.wave_total||'?')+
   ' · doors '+(st.doors_cov||0)+'/'+(st.doors||0)+' · foes '+(st.foes||0);b.className='on night'}
  else{b.className='';b.textContent=''}}
-async function tick(){try{const ev=await j('/events');const tk=document.getElementById('ticker');
- if(tk&&ev.length)tk.innerHTML=ev.slice(-6).map(e=>
-  `<span class="tk">${Math.round(e.t||0)}s ${esc(e.note||'')}</span>`).join(' · ')}catch(e){}}
+async function tick(){try{const d=await j('/events');const tk=document.getElementById('ticker');
+ if(tk&&d.ev&&d.ev.length)tk.innerHTML=d.ev.slice(-6).map(e=>
+  `<span class="tk">${Math.round(e.t||0)}s ${esc(e.note||'')}</span>`).join(' · ');
+ /* audit-pane counters — recovery/GPS counts for the current run */
+ const au=document.getElementById('auEvts');
+ if(au&&d.cnt){const show=['pin-park','stuck','quick-sidestep','approach-timeout',
+  'rescan-slots','gps-plan','gps-cross','gps-fail','door-park','switch-night',
+  'build-lost','breach-response','anomaly','slot-abandon','nav'];
+  au.innerHTML=show.filter(k=>d.cnt[k]).map(k=>
+   `<div class="kv"><span>${esc(k)}</span><b>${d.cnt[k]}</b></div>`).join('')||'<div class="hint">none yet</div>'}
+}catch(e){}}
 setInterval(tick,4000);
 function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
 function add(role,text,who,tm){
@@ -2659,7 +2717,17 @@ async function speedrunToggle(){const on=!document.getElementById('btnSpeedrun')
 setInterval(()=>{if(document.getElementById('p-mm').classList.contains('on'))mmCfg()},5000);
 /* metrics */
 function gc(v){return v>=80?'gA':v>=60?'gB':v>=40?'gC':v>=20?'gD':'gF'}
-async function refresh(){try{const m=await j('/metrics');
+async function taskStats(){try{
+ const d=await j('/taskstats');const el=document.getElementById('taskStats');if(!el)return;
+ if(d.error||!(d.rows||[]).length){el.innerHTML='<div class="hint">no tasks yet</div>';return}
+ const mx=Math.max(...d.rows.map(r=>r.use+r.waste),1);
+ el.innerHTML=`<div class="kv"><span>total</span><b>${d.tot_use}s useful / ${d.tot_waste}s wasted</b></div>`+
+  d.rows.map(r=>`<div class="kv"><span>${esc(r.kind)} ×${r.n}${r.aband?` <b style="color:var(--bad)">${r.aband} aband</b>`:''}</span>
+  <b>${r.eff}% · ${r.use}s/${r.waste}s</b></div>
+  <div class="bar-mini"><div class="ok" style="width:${Math.min(100,(r.use/mx)*100)}%"></div>
+  <div class="bad" style="width:${Math.min(100,(r.waste/mx)*100)}%;margin-top:2px"></div></div>`).join('');
+}catch(e){}}
+async function refresh(){taskStats();try{const m=await j('/metrics');
  const names={econ:'Economy',def:'Defense',army:'Army',hero:'Hero safety',surv:'Progression'};
  const src=m.grade_src||{};
  document.getElementById('gradeCards').innerHTML=Object.entries(names).map(([k,n])=>{
@@ -2760,6 +2828,8 @@ runs();refresh();tick();
 
 
 
+PAGE = PAGE.replace("</body>", '<link rel="stylesheet" href="/cc.css"><script src="/cc.js"></script></body>')
+
 if __name__ == "__main__":
     import threading
     print(f"[coach-server] agent dir: {AGENT}")
@@ -2770,4 +2840,11 @@ if __name__ == "__main__":
         threading.Thread(target=mm_watch_loop, daemon=True).start()
         print(f"[coach-server] MiniMax watch loop ON every {WATCH_EVERY}s")
     threading.Thread(target=health_watch_loop, daemon=True).start()
+    if os.environ.get("CC_ENABLED", "1") != "0":
+        try:
+            import command_center as _ccm
+            CC = _ccm.start(globals())
+            print("[coach-server] command center ON: incident watchdog + MiniMax wake + scheduler (agent/incidents*.json, /incidents, /botpulse)")
+        except Exception as _ex:
+            print(f"[coach-server] command center FAILED to start: {_ex}")
     ThreadingHTTPServer(("127.0.0.1", PORT), H).serve_forever()

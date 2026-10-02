@@ -110,13 +110,28 @@ namespace ThronefallTrainer
                         if (s.DoorAnchors != null)
                             for (int di = 0; di < s.DoorAnchors.Length; di++)
                             {
-                                // state colour: covered=pink, parked=grey,
-                                // open=red ring
+                                // state colour: covered=orange, parked=grey,
+                                // open=red ring — label carries unit count
                                 int du = BotPerception.DoorUnitAt(di);
                                 string dc = BotPerception.DoorParkedAt(di) >= 0f
                                     ? "#777" : (du > 0 ? "#ff9e00" : "#ff2d2d");
-                                pt("door" + di, s.DoorAnchors[di], dc);
+                                pt("door" + di + "·" + du, s.DoorAnchors[di], dc);
                             }
+                        // live foes (cheap: TagManager already tracks them)
+                        try
+                        {
+                            var tm2 = TagManager.instance;
+                            if (tm2 != null && tm2.EnemyUnits != null)
+                            {
+                                int foeN = 0;
+                                foreach (var e in tm2.EnemyUnits)
+                                {
+                                    if (e == null || ++foeN > 40) continue;
+                                    pt("foe", e.transform.position, "#ff4d4d");
+                                }
+                            }
+                        }
+                        catch (Exception) { }
                         sb.Append("]");
                         // nav polyline — the actual path the hero is walking
                         var wps = Bot.NavPathPoints;

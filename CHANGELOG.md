@@ -489,3 +489,8 @@ AUTOPILOT §8–9 for the full list and next actions.
 - **Quick-order chips** in the composer: +20 troops, call night, bigger squads, escort hero, release all -
   labeled buttons instead of cryptic icons.
 - **Boundary hard-park** shipped (rescan-immune ignores for boundary/terrain pockets).
+- **All four pane upgrades live:** foe markers (TagManager.EnemyUnits projected - small red dots, ~4 fps),
+  door labels carry posted-unit counts, Stats pane 'where time goes' bars per task kind (/taskstats: last 300
+  tasks, use/waste/eff/abandoned - first data: 1511s useful vs 3078s wasted), Audit pane 'Recovery events'
+  counters (pin-park/sidestep/timeout/rescan/gps/door-park/breach per run via /events?cnt).
+- **Marker color pass 2:** door labels now 'doorN · units'; foe dots; halo + stroked labels everywhere.
