@@ -224,6 +224,7 @@
   }
   function drawOverlay() {
     const cv = $('#ccmk'), img = $('#shot'); if (!cv || !img) return;
+    if (window.LV && window.LV.active) { if (cv.width) cv.getContext('2d').clearRect(0, 0, cv.width, cv.height); return; }   // live.js draws zones + incident rings itself, world-locked
     const w = img.clientWidth, h = img.clientHeight; if (cv.width !== w) cv.width = w; if (cv.height !== h) cv.height = h;
     const g = cv.getContext('2d'); g.clearRect(0, 0, w, h);
     const v = S.view; if (!v || !v.vp || !S.inc) return;
@@ -272,10 +273,11 @@
     try {
       const [p, i] = await Promise.all([jget('/botpulse'), jget('/incidents?n=40')]);
       S.pulse = p; S.inc = i; S.err = 0;
+      if (window.LV && window.LV.setIncidents) window.LV.setIncidents((i && i.open) || []);
       if (force || n % 3 === 1) { try { S.audit = await jget('/audit'); } catch (e) { /* audit is optional */ } }
       if (force || n % 4 === 1) { try { S.acts = await jget('/mmactions?n=10'); } catch (e) { /* ignore */ } }
       if (force || n % 8 === 1) { try { S.queue = await jget('/engineer-queue'); } catch (e) { /* ignore */ } }
-      try { const v = await jget('/view.json', 2500); S.view = v && v.vp ? v : null; } catch (e) { S.view = null; }
+      if (!(window.LV && window.LV.active)) { try { const v = await jget('/view.json', 2500); S.view = v && v.vp ? v : null; } catch (e) { S.view = null; } }   // live.js gets the camera over its own socket
     } catch (e) { S.err++; S.errMsg = String(e && e.message || e); }
     busy = false; render();
   }

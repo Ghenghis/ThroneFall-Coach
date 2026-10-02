@@ -95,6 +95,10 @@ namespace ThronefallTrainer
             cfgOpacity;
         private ConfigEntry<int> cfgTheme;
         private ConfigEntry<int> cfgGoldGrant;
+        private ConfigEntry<bool> cfgLiveEnabled;
+        private ConfigEntry<int> cfgLivePort, cfgLiveWidth, cfgLiveFps;
+        private ConfigEntry<string> cfgLiveFlip;
+        private ConfigEntry<bool> cfgPerfEnabled;
         internal static int GoldGrant;   // cfg mirrored at apply
 
         // ---- reflection handles ----
@@ -260,6 +264,12 @@ namespace ThronefallTrainer
             cfgBotCheats        = Config.Bind("Bot",      "BotSurvivalCheats", false);
             cfgOpacity          = Config.Bind("Overlay",  "Opacity",          1f);
             cfgTheme            = Config.Bind("Overlay",  "ThemeIndex",       0);
+            cfgLiveEnabled      = Config.Bind("Live",     "Enabled",          true,   "Stream the game's own rendered frames to livecap (tools/livecap.py) over 127.0.0.1 (live.v1). Costs next to nothing while livecap is not running.");
+            cfgLivePort         = Config.Bind("Live",     "Port",             8095,   "livecap's ingest port (TCP, loopback only).");
+            cfgLiveWidth        = Config.Bind("Live",     "Width",            1280,   "Width in pixels of the streamed frames, 320-1920 (the height follows the window's aspect). livecap can override this at runtime.");
+            cfgLiveFps          = Config.Bind("Live",     "Fps",              30,     "Frames per second to capture, 5-60. livecap can override this at runtime.");
+            cfgLiveFlip         = Config.Bind("Live",     "FlipY",            "auto", "auto = detect once whether the capture comes out upside down and correct it; on / off = force a vertical flip.");
+            cfgPerfEnabled      = Config.Bind("Perf",     "Enabled",          true,   "Frame-time instrumentation (perf.v1): agent/perf.json once a second, agent/perf-stalls.jsonl for frames over 100 ms. Costs a few microseconds per frame.");
 
             cfgMoveEnabled    = Config.Bind("Movement",   "MoveSpeedEnabled", false);
             cfgMoveMult       = Config.Bind("Movement",   "MoveSpeedMult",    2f);
@@ -277,6 +287,10 @@ namespace ThronefallTrainer
         Coach.VisionEnabled = cfgCoachVision.Value; Coach.VisionModel = cfgCoachVModel.Value;
         Coach.LiveShot = cfgCoachLive.Value;
         Coach.Init(this);
+        LiveLink.Enabled = cfgLiveEnabled.Value; LiveLink.Port = cfgLivePort.Value;
+        LiveLink.CfgWidth = cfgLiveWidth.Value; LiveLink.CfgFps = cfgLiveFps.Value; LiveLink.FlipMode = cfgLiveFlip.Value;
+        LiveLink.Init(this);                         // in-game frame stream to livecap (live.v1); does nothing when [Live] Enabled=false
+        FramePerf.Init(cfgPerfEnabled.Value);        // frame-time instrumentation (perf.v1)
         gameObject.AddComponent<Overlay>();          // F1 in-game panel
         Cheats.InstantBuild = cfgInstantBuild.Value;
             Cheats.CoinMagnet = cfgMagnet.Value;           Cheats.MagnetRadius = cfgMagnetRadius.Value;
@@ -327,6 +341,7 @@ namespace ThronefallTrainer
         // =====================================================================
         private void Update()
         {
+            FramePerf.BeginFrame();
             // Re-read every frame: a runtime edit of BotSurvivalCheats via the
             // config manager used to leave Bot.Legit stale — true→false kept
             // F2–F5 armed in what had become legit mode.
@@ -629,9 +644,12 @@ namespace ThronefallTrainer
 
             // ---- Autopilot: decides + steers at 4 Hz; movement is injected
             // via the MoveScript prefix in BotPatches.cs.
+            long fpBot = FramePerf.Now();
             try { Bot.Tick(); }
             catch (System.Exception ex)
             { Log?.LogWarning($"[bot] Tick threw: {ex.Message}"); }
+            FramePerf.Mark(FramePerf.SecBot, fpBot);
+            FramePerf.EndFrame();
         }
 
         /// <summary>Scale cooldownDuration on every PlayerOwned AutoAttack (troops + towers).</summary>
@@ -840,6 +858,7 @@ namespace ThronefallTrainer
         private void OnDestroy()
         {
             Bot.Shutdown();
+            LiveLink.Shutdown();
             if (playerFrozenByUs && LocalGamestate.Instance != null)
                 LocalGamestate.Instance.SetPlayerFreezeState(false);
             if (gameSpeedWasOn)

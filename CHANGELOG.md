@@ -501,3 +501,18 @@ AUTOPILOT §8–9 for the full list and next actions.
   castle/threat marker and the hero walks there ({focus:"door2"} order -> SetFocus 20 s, shown as a GO
   ring). Command poll 4 s -> 1 s so clicks feel live.
 - Buttons/doorN·unit labels, banner, ticker, toggles, token pane - all one consolidated Live pane.
+
+## Live View video rebuild (livecap) - 2026-10-01
+- **Root causes found (measured):** the BitBlt grabber captured whatever was ON SCREEN over the game (the Coach page inside itself when it
+  covered the game) and nothing while the game was minimised; the UI fps readout counted 300 ms polls (max ~3.3); MJPEG over one HTTP
+  connection piled up seconds of backlog; the plugin's own synchronous screenshots stall the GAME (8-36 fps average, 100-500 ms hitches).
+- **tools/livecap.py (new, separate process, port 8097):** Windows Graphics Capture via ffmpeg `gfxcapture` (occlusion-proof, GPU scaling,
+  native MJPEG, ~4% CPU), in-game frame ingest for the plugin (TCP 8095), plugin live.jpg fallback, ack-based flow control (latest frame
+  wins, never a backlog), view/markers push with world coordinates, /stats, /frame.jpg|png, standalone viewer, Origin/Sec-Fetch-Site checks.
+- **tools/live.js (new):** Web Worker + OffscreenCanvas player (55 fps drawn, ~15 ms, still >30 fps with the main thread jammed), world-locked
+  overlay (markers, nav path, avoid zones with countdown, incident rings), honest HUD, automatic fallback to the legacy feed and back.
+- **coach-server:** in-process grabber OFF by default (it also made startups hang: 2/8 -> 12/12 clean), command-center job `livecap`
+  supervises/starts the video process, /live.png + vision model + health check use livecap.
+- **Fixed a page-killing JS SyntaxError** (stray `}` in the click-to-command handler: no chat/runs/controls at all); `tests/test_page_js.py`
+  guards the served page in a headless browser.
+- Tests: test_livecap.py (88), test_wgc_real.py (real WGC, covered window), test_live_page_e2e.py, test_page_js.py. Docs: docs/LIVE-VIEW.md.

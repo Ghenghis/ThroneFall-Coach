@@ -9,6 +9,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\..\src\ActLogic.cs" />
+    <Compile Include="..\..\src\LiveLinkLogic.cs" />
+    <Compile Include="..\..\src\LiveLinkNet.cs" />
+    <Compile Include="..\..\src\FramePerfLogic.cs" />
+    <Compile Include="..\..\src\AsyncWriter.cs" />
     <Compile Include="Program.cs" />
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>$(GameDir)\Thronefall_Data\Managed\UnityEngine.CoreModule.dll</HintPath>

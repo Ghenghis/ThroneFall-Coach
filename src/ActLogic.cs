@@ -74,12 +74,26 @@ namespace ThronefallTrainer
 
         public static bool InZone(Vector3 p, Vector3 center, float r) { return Flat(p, center) <= r; }
 
+        public const float ExtendedMaxAway = 45f, MinUsefulAway = 3f;
+
         /// <summary>Where to walk to get off a pin: the most recent trail point that is at least `minAway` m from the hero
         /// (and not just a second old), else the farthest one; then the server's hint, then towards the castle. `ageS[i]` is how
-        /// old trail[i] is (seconds); the trail is ordered oldest first. Null = nothing sensible.</summary>
+        /// old trail[i] is (seconds); the trail is ordered oldest first. Null = nothing sensible.
+        /// Zones (optional `zoneC`/`zoneR`, parallel lists): an avoid zone is created around the very spot the hero is pinned at, so
+        /// the plain "8-30 m back" point is almost always inside it. Zones only ever forbid TARGETING, never walking, so here they
+        /// merely steer the choice, they never veto it: (1) the most recent trail point >= minAway that is outside EVERY zone,
+        /// (2) the same with maxAway stretched to 45 m, (3) the trail point with the most clearance (Clearance: distance to a zone
+        /// centre minus its radius, worst zone) = out of the zone(s) the fastest, even if that point is still inside one.
+        /// Only "no candidate at all" falls through to the hint / castle rules below. Without zones nothing changes.</summary>
         public static Vector3? ChooseRetreat(IList<Vector3> trail, IList<float> ageS, Vector3 hero, Vector3? hint, Vector3? castle,
-                                             float minAway = 8f, float maxAway = 30f, float minAge = 3f, float maxAge = 40f)
+                                             float minAway = 8f, float maxAway = 30f, float minAge = 3f, float maxAge = 40f,
+                                             IList<Vector3> zoneC = null, IList<float> zoneR = null)
         {
+            if (zoneC != null && zoneR != null && zoneC.Count > 0 && zoneR.Count > 0)
+            {
+                var z = ChooseOutsideZones(trail, ageS, hero, zoneC, zoneR, minAway, maxAway, minAge, maxAge);
+                if (z.HasValue) return z;
+            }
             Vector3? far = null; float farD = 0f;
             for (int i = trail.Count - 1; i >= 0; i--)
             {
@@ -107,11 +121,50 @@ namespace ThronefallTrainer
             return null;
         }
 
-        /// <summary>Is a (x,z) point free of every active zone? Used to veto a retreat target inside an avoid zone.</summary>
+        /// <summary>Is a (x,z) point free of every active zone? (Retreat no longer vetoes on this: zones forbid targeting, not walking.)</summary>
         public static bool FreeOfZones(Vector3 p, IList<Vector3> centers, IList<float> radii)
         {
             for (int i = 0; i < centers.Count; i++) if (InZone(p, centers[i], radii[i])) return false;
             return true;
+        }
+
+        /// <summary>How far outside the worst zone a point is: min over zones of (distance to the centre - radius). &gt; 0 = outside every
+        /// zone, &lt;= 0 = inside one (the value is how deep). +Infinity when there are no zones.</summary>
+        public static float Clearance(Vector3 p, IList<Vector3> zoneC, IList<float> zoneR)
+        {
+            float best = float.PositiveInfinity;
+            int n = (zoneC == null || zoneR == null) ? 0 : Math.Min(zoneC.Count, zoneR.Count);
+            for (int i = 0; i < n; i++) best = Math.Min(best, Flat(p, zoneC[i]) - zoneR[i]);
+            return best;
+        }
+
+        /// <summary>The zone-aware part of ChooseRetreat, trail points only (see there). Null = no trail candidate at all.</summary>
+        static Vector3? ChooseOutsideZones(IList<Vector3> trail, IList<float> ageS, Vector3 hero, IList<Vector3> zc, IList<float> zr,
+                                           float minAway, float maxAway, float minAge, float maxAge)
+        {
+            float ext = Math.Max(maxAway, ExtendedMaxAway);
+            for (int pass = 0; pass < 2; pass++)                              // 1) normal window, 2) stretched to 45 m
+            {
+                float hi = pass == 0 ? maxAway : ext;
+                if (pass == 1 && ext <= maxAway) break;
+                for (int i = trail.Count - 1; i >= 0; i--)
+                {
+                    if (ageS[i] < minAge || ageS[i] > maxAge) continue;
+                    float d = Flat(trail[i], hero);
+                    if (d < minAway || d > hi) continue;
+                    if (Clearance(trail[i], zc, zr) > 0f) return trail[i];
+                }
+            }
+            Vector3? best = null; float bestC = float.NegativeInfinity;       // 3) nothing outside: leave the zone(s) the fastest
+            for (int i = trail.Count - 1; i >= 0; i--)
+            {
+                if (ageS[i] < minAge || ageS[i] > maxAge) continue;
+                float d = Flat(trail[i], hero);
+                if (d < MinUsefulAway || d > ext) continue;
+                float c = Clearance(trail[i], zc, zr);
+                if (c > bestC) { bestC = c; best = trail[i]; }                // strict: on a tie the more recent point (visited first) wins
+            }
+            return best;
         }
 
         public static string F(float v) { return v.ToString("0.##", Inv); }

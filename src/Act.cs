@@ -15,13 +15,17 @@ namespace ThronefallTrainer
     ///   probe.v1 "what is that?": a screen ray or a world sphere is cast and every collider hit is described (class, name, layer,
     ///            bounds, static?) into agent/probe.json; pin strikes also carry the blocker's geometry in the pin-type event
     ///   view.v1  agent/view.json: the camera's view-projection matrix + active avoid zones, so the Live View can draw any world
-    ///            position (incident spots, zones) on the game frame
+    ///            position (incident spots, zones) on the game frame; written at 20 Hz with "seq" + "tms" (unix ms). SampleView is also
+    ///            what LiveLink (live.v1, src/LiveLink.cs) puts into the meta of every streamed frame
     /// caps.json advertises exactly what this build can do (the server never sends what the plugin cannot execute).
     /// Everything runs on the main thread from Bot's per-frame Update; commands are clamped in ActLogic (pure, unit-tested).
     /// </summary>
     internal static class Act
     {
-        public const string BuildId = "act-1";
+        public const string BuildId = "act-2";
+
+        /// <summary>view.json cadence: 20 Hz (was 4 Hz) so the overlay keeps up with the in-game stream; the file stays atomic.</summary>
+        private const float ViewEvery = 0.05f;
 
         private sealed class Zone { public Vector3 C; public float R; public float Until; public string Note; }
         private static readonly List<Zone> zones = new List<Zone>();
@@ -31,7 +35,8 @@ namespace ThronefallTrainer
         private static string lastNote = "", lastCoachNote = "";
         private static string runKey = "";
         private static bool primed, matrixChecked, matrixOk = true;
-        private static int execCount;
+        private static int execCount, viewSeq;
+        private static readonly float[] vpTmp = new float[16];
 
         /// <summary>The collider that won Bot.PinProbe's classification on the last pin strike (read by PinExtraJson).</summary>
         public static Collider LastPinCol;
@@ -43,6 +48,7 @@ namespace ThronefallTrainer
         // ------------------------------------------------------------------------------------------------ per-frame entry
         public static void PerFrame(in BotPerception.Snapshot s, Vector3 aim, bool hasAim)
         {
+            long perfT = FramePerf.Now();
             try
             {
                 if (!primed) Prime();
@@ -58,10 +64,11 @@ namespace ThronefallTrainer
                 }
                 if (now >= nextPoll) { nextPoll = now + 0.4f; Poll(in s); }
                 if (now >= nextEnforce) { nextEnforce = now + 0.5f; Enforce(in s, aim, hasAim, now); }
-                if (now >= nextView) { nextView = now + 0.25f; WriteView(in s, now); }
+                if (now >= nextView) { nextView = now + ViewEvery; WriteView(in s, now); }
                 if (now >= nextCaps) { nextCaps = now + 30f; WriteCaps(); }
             }
             catch (Exception ex) { Plugin.Log?.LogWarning("[act] per-frame: " + ex.Message); }
+            finally { FramePerf.Mark(FramePerf.SecAct, perfT); }
         }
 
         private static void Prime()
@@ -69,7 +76,7 @@ namespace ThronefallTrainer
             primed = true;
             try { lastNote = NoteOf(P("act-commands.json")); lastCoachNote = NoteOf(P("coach-commands.json")); } catch (Exception) { }
             WriteCaps();
-            Plugin.Log?.LogInfo("[act] " + BuildId + " ready: retreat/avoid/goto/clear_ignores/forgive/probe, view.json, caps.json");
+            Plugin.Log?.LogInfo("[act] " + BuildId + " ready: retreat/avoid/goto/clear_ignores/forgive/probe, view.json (20 Hz), caps.json" + (LiveLink.Enabled ? ", live.v1 (in-game frame stream)" : ""));
         }
 
         private static string NoteOf(string path)
@@ -148,14 +155,19 @@ namespace ThronefallTrainer
             for (int i = 0; i < trailT.Count; i++) ages.Add(now - trailT[i]);
             Vector3? hint = c.HasXZ ? new Vector3(c.X, s.HeroPos.y, c.Z) : (Vector3?)null;
             Vector3? castle = s.HasCastle ? s.CastlePos : (Vector3?)null;
-            var tgt = ActLogic.ChooseRetreat(trail, ages, s.HeroPos, hint, castle);
+            // Zones only forbid TARGETING, never walking. The avoid zone is made around the very spot the hero is pinned at, so the plain
+            // "8-30 m back along the trail" point is nearly always inside it: the zones steer the choice (a point outside every zone, else the one
+            // that leaves them the fastest) but never veto it. Only "no candidate at all" fails.
+            var zc = new List<Vector3>(zones.Count); var zr = new List<float>(zones.Count);
+            for (int i = 0; i < zones.Count; i++) { zc.Add(zones[i].C); zr.Add(zones[i].R); }
+            var tgt = ActLogic.ChooseRetreat(trail, ages, s.HeroPos, hint, castle, zoneC: zc, zoneR: zr);
             if (!tgt.HasValue) { detail = "no retreat point (empty trail, no hint, no castle)"; return false; }
             var p = Snap(tgt.Value);
-            for (int i = 0; i < zones.Count; i++)
-                if (ActLogic.InZone(p, zones[i].C, zones[i].R)) { detail = "retreat point lies inside an avoid zone"; return false; }
             Bot.ActClearTarget();
             Bot.SetFocus(p, 6f);
-            detail = "walking to (" + ActLogic.F(p.x) + "," + ActLogic.F(p.z) + ") for 6 s, target dropped";
+            float clr = ActLogic.Clearance(p, zc, zr);
+            detail = "walking to (" + ActLogic.F(p.x) + "," + ActLogic.F(p.z) + ") for 6 s, target dropped" +
+                     (zc.Count == 0 ? "" : clr > 0f ? ", outside the avoid zone(s)" : ", still " + ActLogic.F(-clr) + " m inside an avoid zone (walking is allowed, only targeting is banned)");
             return true;
         }
 
@@ -309,16 +321,26 @@ namespace ThronefallTrainer
         }
 
         // ------------------------------------------------------------------------------------------------ view.v1 + caps
-        private static void WriteView(in BotPerception.Snapshot s, float now)
+        /// <summary>The overlay may trust "vp": the matrix self-test passed (true before it has run).</summary>
+        internal static bool ViewOk { get { return matrixOk; } }
+
+        /// <summary>Camera view-projection (row-major, 16 floats = view.json's "vp") + the hero, for view.json AND for the per-frame meta of the
+        /// in-game stream (LiveLink): one place, one matrix self-test. The hero is read live from PlayerMovement: the 4 Hz perception snapshot
+        /// lags up to 0.25 s, which would show as a marker trailing the sprite now that both feeds run at 20 Hz / per frame; `fallbackHero` is
+        /// used when there is no hero object. False = no camera (vp16 untouched).</summary>
+        internal static bool SampleView(Vector3 fallbackHero, float[] vp16, out Vector3 hero)
         {
+            hero = fallbackHero;
             var cam = Camera.main;
-            if (cam == null) return;
+            if (cam == null) return false;
+            var pm = PlayerMovement.instance;
+            if (pm != null) hero = pm.transform.position;
             Matrix4x4 m = cam.projectionMatrix * cam.worldToCameraMatrix;
             if (!matrixChecked)
             {
                 matrixChecked = true;                                        // self-test once: our projection must equal Unity's WorldToScreenPoint
-                var sp = cam.WorldToScreenPoint(s.HeroPos);
-                var clip = m * new Vector4(s.HeroPos.x, s.HeroPos.y, s.HeroPos.z, 1f);
+                var sp = cam.WorldToScreenPoint(hero);
+                var clip = m * new Vector4(hero.x, hero.y, hero.z, 1f);
                 if (clip.w > 0.0001f)
                 {
                     float px = (clip.x / clip.w * 0.5f + 0.5f) * Screen.width, py = (1f - (clip.y / clip.w * 0.5f + 0.5f)) * Screen.height;
@@ -326,17 +348,26 @@ namespace ThronefallTrainer
                     Plugin.Log?.LogInfo("[act] view matrix self-test " + (matrixOk ? "OK" : "MISMATCH") + " (mine " + px.ToString("0") + "," + py.ToString("0") + " vs unity " + sp.x.ToString("0") + "," + (Screen.height - sp.y).ToString("0") + ")");
                 }
             }
+            for (int r = 0; r < 4; r++)
+                for (int c = 0; c < 4; c++) vp16[r * 4 + c] = m[r, c];
+            return true;
+        }
+
+        /// <summary>LiveLink's connection to livecap came up or went down: refresh caps.json now (live_connected) instead of at the next 30 s tick.
+        /// Only once Act itself is running, so a disabled autopilot does not suddenly look alive to the command center.</summary>
+        internal static void OnLiveLinkChanged() { if (primed) WriteCaps(); }
+
+        private static void WriteView(in BotPerception.Snapshot s, float now)
+        {
+            Vector3 hero;
+            if (!SampleView(s.HeroPos, vpTmp, out hero)) return;
             var inv = System.Globalization.CultureInfo.InvariantCulture;
             var sb = new StringBuilder(700);
-            sb.Append("{\"t\":").Append(Epoch().ToString(inv)).Append(",\"ok\":").Append(matrixOk ? "true" : "false").Append(",\"pw\":").Append(Screen.width).Append(",\"ph\":").Append(Screen.height)
-              .Append(",\"gy\":").Append(ActLogic.F(s.HeroPos.y)).Append(",\"hero\":[").Append(ActLogic.F(s.HeroPos.x)).Append(',').Append(ActLogic.F(s.HeroPos.z)).Append("],\"vp\":[");
-            for (int r = 0; r < 4; r++)
-                for (int c = 0; c < 4; c++)
-                {
-                    if (r + c > 0) sb.Append(',');
-                    sb.Append(m[r, c].ToString("0.#####", inv));
-                }
-            sb.Append("],\"zones\":[");
+            sb.Append("{\"t\":").Append(Epoch().ToString(inv)).Append(",\"tms\":").Append(DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()).Append(",\"seq\":").Append(++viewSeq)
+              .Append(",\"ok\":").Append(matrixOk ? "true" : "false").Append(",\"pw\":").Append(Screen.width).Append(",\"ph\":").Append(Screen.height)
+              .Append(",\"gy\":").Append(ActLogic.F(hero.y)).Append(",\"hero\":[").Append(ActLogic.F(hero.x)).Append(',').Append(ActLogic.F(hero.z)).Append("],\"vp\":");
+            LiveLinkLogic.AppendVp(sb, vpTmp);
+            sb.Append(",\"zones\":[");
             for (int i = 0; i < zones.Count; i++)
             {
                 if (i > 0) sb.Append(',');
@@ -355,21 +386,17 @@ namespace ThronefallTrainer
                 string asm = System.Reflection.Assembly.GetExecutingAssembly().Location;
                 string built = File.Exists(asm) ? File.GetLastWriteTimeUtc(asm).ToString("yyyy-MM-ddTHH:mm:ssZ") : "?";
                 AtomicWrite(P("caps.json"), "{\"t\":" + Epoch().ToString(System.Globalization.CultureInfo.InvariantCulture) + ",\"pid\":" + pid + ",\"build\":" + ActLogic.Js(BuildId) + ",\"dll_time\":" + ActLogic.Js(built) +
-                                            ",\"caps\":[\"act.v1\",\"view.v1\",\"probe.v1\"],\"acts\":[\"retreat\",\"avoid\",\"goto\",\"clear_ignores\",\"forgive\",\"probe\"],\"view_ok\":" + (matrixOk ? "true" : "false") + "}");
+                                            ",\"caps\":[\"act.v1\",\"view.v1\",\"probe.v1\"" + (LiveLink.Enabled ? ",\"live.v1\"" : "") + (FramePerf.Enabled ? ",\"perf.v1\"" : "") + "],\"acts\":[\"retreat\",\"avoid\",\"goto\",\"clear_ignores\",\"forgive\",\"probe\"],\"view_ok\":" + (matrixOk ? "true" : "false") +
+                                            ",\"live_connected\":" + (LiveLink.Connected ? "true" : "false") + "}");
             }
             catch (Exception ex) { Plugin.Log?.LogWarning("[act] caps: " + ex.Message); }
         }
 
-        private static void AtomicWrite(string path, string text)
+        /// <summary>Atomic replace of a status file (tmp + delete + move). Runs on AsyncWriter's background thread (latest text wins per path): at 20 Hz
+        /// the synchronous version cost the game thread 0.2-0.5 ms per frame that wrote, and 5-20 ms whenever an antivirus scanner or the disk hiccupped.</summary>
+        internal static void AtomicWrite(string path, string text)
         {
-            try
-            {
-                string tmp = path + ".tmp";
-                File.WriteAllText(tmp, text);
-                if (File.Exists(path)) File.Delete(path);
-                File.Move(tmp, path);
-            }
-            catch (Exception) { }
+            AsyncWriter.Write(path, text);
         }
     }
 }

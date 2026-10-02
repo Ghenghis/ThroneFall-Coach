@@ -43,6 +43,8 @@ namespace ThronefallTrainer
         public static bool LiveShot;             // dump agent/live.png for the chat UI
         public static float LiveShotEvery = 2f;
         public static float LiveShotFastEvery = 0.25f;
+        public static float LiveMarkersEvery = 0.1f;       // markers.json at 10 Hz: the overlay draws from it, it does not need a screenshot
+        public static float LiveShotLinkedEvery = 30f;     // live.png cadence while the in-game stream (LiveLink) is up
         private static float nextLiveShotFast;
         private static float nextMarkers;
         private static float nextLiveShot;
@@ -72,11 +74,12 @@ namespace ThronefallTrainer
         /// the chat UI + poll the user command file the chat server writes.</summary>
         public static void PerFrame(in BotPerception.Snapshot s, Vector3 aim, bool hasAim)
         {
+            long perfT = FramePerf.Now();
             // Screen-projected intent markers for the Live pane overlay —
             // the canvas draws where the bot WANTS to be, not just pixels.
             if (LiveShot && Time.unscaledTime >= nextMarkers)
             {
-                nextMarkers = Time.unscaledTime + LiveShotFastEvery;
+                nextMarkers = Time.unscaledTime + LiveMarkersEvery;
                 try
                 {
                     var cam = Camera.main;
@@ -97,6 +100,8 @@ namespace ThronefallTrainer
                               .Append("{\"t\":\"").Append(tag)
                               .Append("\",\"x\":").Append(Mathf.RoundToInt(sp.x))
                               .Append(",\"y\":").Append(Mathf.RoundToInt(Screen.height - sp.y))
+                              .Append(",\"wx\":").Append(ActLogic.F(pos.x))      // world x,z next to the screen x,y: the overlay no longer
+                              .Append(",\"wz\":").Append(ActLogic.F(pos.z))      // has to un-project pixels to find where a point is
                               .Append(",\"w\":").Append(Screen.width)
                               .Append(",\"h\":").Append(Screen.height)
                               .Append(",\"c\":\"").Append(col).Append("\"}");
@@ -162,14 +167,21 @@ namespace ThronefallTrainer
                 }
                 catch (Exception) { }
             }
+            // While the in-game stream (LiveLink, src/LiveLink.cs) is up, the synchronous screenshots below would only stutter the game
+            // (full-resolution grab + encode on the game thread = 100-500 ms hitches): live.jpg stops entirely, live.png drops to
+            // LiveShotLinkedEvery. With no link they behave exactly as before - that is the fallback.
+            bool linked = LiveLink.Connected;
+            if (!linked && nextLiveShot > Time.unscaledTime + LiveShotEvery)
+                nextLiveShot = Time.unscaledTime + LiveShotEvery;   // the link dropped: back to the 2 s cadence now, not after the leftover 30 s
             if (LiveShot && Time.unscaledTime >= nextLiveShot)
             {
-                nextLiveShot = Time.unscaledTime + LiveShotEvery;
+                nextLiveShot = Time.unscaledTime + (linked ? LiveShotLinkedEvery : LiveShotEvery);
                 try
                 {
                     var tex = ScreenCapture.CaptureScreenshotAsTexture();
                     if (tex != null)
                     {
+                        FramePerf.Shot(2);
                         var lp = Path.Combine(Recorder.AgentDir, "live.png");
                         var tmp = lp + ".tmp";
                         File.WriteAllBytes(tmp, tex.EncodeToPNG());
@@ -182,7 +194,7 @@ namespace ThronefallTrainer
             }
             // Fast feed: JPEG at ~2.5 fps for the Live pane — PNG encode is
             // ~4x slower and the file is ~5x heavier; vision keeps live.png.
-            if (LiveShot && Time.unscaledTime >= nextLiveShotFast)
+            if (LiveShot && !linked && Time.unscaledTime >= nextLiveShotFast)
             {
                 nextLiveShotFast = Time.unscaledTime + LiveShotFastEvery;
                 try
@@ -190,6 +202,7 @@ namespace ThronefallTrainer
                     var tex = ScreenCapture.CaptureScreenshotAsTexture();
                     if (tex != null)
                     {
+                        FramePerf.Shot(1);
                         var lj = Path.Combine(Recorder.AgentDir, "live.jpg");
                         var tmp = lj + ".tmp";
                         File.WriteAllBytes(tmp, tex.EncodeToJPG(55));
@@ -206,6 +219,7 @@ namespace ThronefallTrainer
                 PollCommands();
             }
             ApplyPendingFocus();
+            FramePerf.Mark(FramePerf.SecCoach, perfT);
         }
 
         private static float nextCmdPoll;

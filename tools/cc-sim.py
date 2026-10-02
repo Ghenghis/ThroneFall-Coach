@@ -316,7 +316,8 @@ def main():
           (win[0], win[1], a.speed, caps, a.mode, "REAL" if a.real_minimax else "mock"))
 
     mock = None
-    env = dict(os.environ, THRONEFALL_AGENT=agent, THRONEFALL_GAMELOG=os.path.join(scratch, "LogOutput.log"), MM_WATCH="0", CC_ENABLED="1", CC_SKIP_PID_CHECK="1", PYTHONUNBUFFERED="1")
+    env = dict(os.environ, THRONEFALL_AGENT=agent, THRONEFALL_GAMELOG=os.path.join(scratch, "LogOutput.log"), MM_WATCH="0", CC_ENABLED="1", CC_SKIP_PID_CHECK="1", PYTHONUNBUFFERED="1",
+               LIVECAP_PORT=os.environ.get("SIM_LIVECAP_PORT", "8196"), LIVECAP_ARGS=os.environ.get("SIM_LIVECAP_ARGS", "--source synthetic --ingest-port -1 --fps 60"))
     if not a.real_minimax:
         mock = http.server.ThreadingHTTPServer(("127.0.0.1", MOCK_PORT), Mock)
         threading.Thread(target=mock.serve_forever, daemon=True).start()

@@ -15,9 +15,12 @@ Everything the server owns (mm_chat, write_cmd, validate_patch, ...) is injected
 import json
 import os
 import re
+import subprocess
+import sys
 import threading
 import time
 import traceback
+import urllib.request
 from collections import deque
 
 import incidents as inc_mod
@@ -29,6 +32,7 @@ DEFAULT_CFG = {
     "enabled": True,
     "wake": {"enabled": True, "min_gap_crit_s": 30, "min_gap_warn_s": 60, "max_per_10min": 5, "coalesce_s": 6},
     "jobs": {"pulse_s": 60, "review_s": 300, "report_s": 3600, "selfcheck_s": 30},
+    "livecap": {"enabled": True, "port": 8097, "check_s": 10},
 }
 
 PLUGIN_ACTIONS = {"retreat", "avoid", "goto", "clear_ignores", "forgive"}          # how= values the plugin command 'act' understands
@@ -100,6 +104,8 @@ class CommandCenter:
         self.jobs = self._load_jobs()
         self.engine_hb = 0.0
         self.last_error = ""
+        self.livecap = {}                                       # last /stats summary of the live video process
+        self._livecap_spawn_t = 0.0
         self.act_lock = threading.Lock()                        # one command in the act-commands.json slot at a time
         self.act_seq = 0
         self.act_timeout = 8.0                                  # how long an unstick waits for the plugin to confirm it
@@ -147,6 +153,7 @@ class CommandCenter:
             "pulse": {"every_s": j["pulse_s"], "desc": "heartbeat: refresh ratings, write botpulse.json, wake MiniMax when something is wrong", "fn": self._job_pulse},
             "review": {"every_s": j["review_s"], "desc": "MiniMax reviews incidents, ratings and the effect of its earlier actions", "fn": self._job_review},
             "selfcheck": {"every_s": j["selfcheck_s"], "desc": "verify the watchdog thread is alive, restart it if not; write cc-heartbeat.json", "fn": self._job_selfcheck},
+            "livecap": {"every_s": self.cfg["livecap"]["check_s"], "desc": "keeps the live video process (tools/livecap.py) running - it is a separate process, restarted within seconds of a crash", "fn": self._job_livecap},
             "report": {"every_s": j["report_s"], "desc": "hourly summary of incidents, time lost and actions taken, posted to the chat feed", "fn": self._job_report},
         }
         saved = {}
@@ -158,7 +165,7 @@ class CommandCenter:
             s = saved.get(jid, {})
             jb.update(id=jid, enabled=s.get("enabled", True), last=s.get("last", 0.0), last_ok=s.get("last_ok"), runs=s.get("runs", 0), last_note=s.get("last_note", ""),
                       every_s=max(10, float(s.get("every_s", jb["every_s"]))))
-            jb["next"] = now + min(jb["every_s"], 5 if jid in ("pulse", "selfcheck") else jb["every_s"])
+            jb["next"] = now + min(jb["every_s"], 5 if jid in ("pulse", "selfcheck") else 2 if jid == "livecap" else jb["every_s"])
         return jobs
 
     def _save_jobs(self):
@@ -719,6 +726,37 @@ class CommandCenter:
         rec = self.wake("review", [], prompt=self.build_review_prompt(), system=REVIEW_SYS)
         return "review: %s" % (rec.get("diagnosis") or rec.get("error") or "no diagnosis")[:100]
 
+    def livecap_port(self):
+        return int(os.environ.get("LIVECAP_PORT") or self.cfg.get("livecap", {}).get("port", 8097))
+
+    def _job_livecap(self):
+        """Is the live video process up? If not, start it detached (it must outlive this server). Returns a one-line note for the scheduler table."""
+        lc = self.cfg.get("livecap", {})
+        if not lc.get("enabled", True) or os.environ.get("CC_LIVECAP") == "0":
+            return "disabled"
+        port = self.livecap_port()
+        try:
+            with urllib.request.urlopen("http://127.0.0.1:%d/stats" % port, timeout=1.5) as r:
+                d = json.loads(r.read())
+            cap = d.get("capture", {})
+            self.livecap = {"ok": True, "state": d.get("state"), "source": d.get("source"), "fps": cap.get("fps"), "clients": len(d.get("clients", [])), "out": d.get("cfg", {}).get("out"),
+                            "frame_age_s": d.get("frame_age_s"), "restarts": cap.get("restarts"), "version": d.get("version"), "detail": d.get("detail"), "game": (d.get("game") or {}).get("connected")}
+            return "up: %s %s fps, %d viewer(s)" % (d.get("state"), cap.get("fps"), len(d.get("clients", [])))
+        except Exception:
+            self.livecap = {"ok": False}
+        if self.clock() - self._livecap_spawn_t < 20:
+            return "starting"
+        self._livecap_spawn_t = self.clock()
+        cmd = [sys.executable, os.path.join(HERE, "livecap.py"), "--port", str(port), "--agent", str(self.agent)] + (os.environ.get("LIVECAP_ARGS", "").split() if os.environ.get("LIVECAP_ARGS") else [])
+        flags = (0x00000008 | 0x00000200 | 0x08000000) if sys.platform == "win32" else 0         # DETACHED_PROCESS | CREATE_NEW_PROCESS_GROUP | CREATE_NO_WINDOW
+        try:
+            out = open(os.path.join(self.agent, "livecap.out"), "ab")
+            subprocess.Popen(cmd, stdin=subprocess.DEVNULL, stdout=out, stderr=out, creationflags=flags, close_fds=True, cwd=os.path.dirname(HERE))
+        except OSError as ex:
+            return "could not start livecap: %s" % ex
+        self.ctx.append_log("mm", "[%s live-video] livecap was not running - started it (port %d)" % (time.strftime("%H:%M"), port))
+        return "started livecap (port %d)" % port
+
     def _job_selfcheck(self):
         out = []
         for name, fn in (("watchdog", self._watch_loop),):
@@ -766,7 +804,7 @@ class CommandCenter:
                 "watchdog": {"alive": self.threads.get("watchdog").is_alive() if self.threads.get("watchdog") else False, "age_s": round(now - self.engine_hb, 1) if self.engine_hb else None,
                              "uptime_s": round(now - self.started)},
                 "scheduler": self.api_scheduler()["jobs"], "next_wake_in_s": round(min(nxt) - now) if nxt else None, "supervisor": sup,
-                "pending": self.ctx.pending_list(), "plugin": self.plugin_info()}
+                "pending": self.ctx.pending_list(), "plugin": self.plugin_info(), "livecap": self.livecap}
 
     def api_scheduler(self):
         return {"t": self.clock(), "jobs": [{k: v for k, v in jb.items() if k != "fn"} for jb in self.jobs.values()]}
@@ -831,7 +869,7 @@ class CommandCenter:
                 h._send(200, open(p, "rb").read(), "image/jpeg")
             else:
                 h._send(404, "no frame")
-        elif base in ("/cc.js", "/cc.css"):
+        elif base in ("/cc.js", "/cc.css", "/live.js"):
             p = os.path.join(HERE, base[1:])
             if os.path.exists(p):
                 h._send(200, open(p, "rb").read(), "text/javascript; charset=utf-8" if base.endswith(".js") else "text/css; charset=utf-8")
@@ -841,8 +879,25 @@ class CommandCenter:
             return False
         return True
 
+    def api_act(self, data):
+        """UI -> bot: the same movement actions MiniMax can send (retreat / avoid / goto / forgive / clear_ignores / probe), validated and clamped by
+        the same whitelist, executed through the act.v1 channel with the plugin's acknowledgement."""
+        how = str(data.get("act") or data.get("how") or "")
+        if how == "probe":
+            return self.api_probe(data)
+        a = self.validate_action({"type": "unstick", "how": how, **{k: data[k] for k in ("x", "z", "r", "ttl_s") if k in data}})
+        if a is None:
+            return {"ok": False, "why": "invalid action (retreat | avoid x,z | goto x,z | forgive | clear_ignores | probe)"}
+        if "act.v1" not in self._caps():
+            return {"ok": False, "why": "the running plugin build has no act.v1 - deploy the build that contains src/Act.cs"}
+        res = self.send_unstick(a, ["ui"])
+        ok = res.startswith("executed")
+        self.stats["actions"] += 1
+        self.ctx.append_log("c", "[%s ui-act] %s %s -> %s" % (time.strftime("%H:%M"), how, {k: a[k] for k in ("x", "z", "r", "ttl_s") if k in a}, res[:140]))
+        return {"ok": ok, "result": res, "act": a}
+
     def http_post(self, h, path, n):
-        if path not in ("/incident/ack", "/incident/wake", "/scheduler", "/probe"):
+        if path not in ("/incident/ack", "/incident/wake", "/scheduler", "/probe", "/act"):
             return False
         try:
             data = json.loads(h.rfile.read(n) or b"{}")
@@ -858,6 +913,8 @@ class CommandCenter:
             h._send(200, _jdump({"ok": True, "ids": ids}), "application/json")
         elif path == "/probe":
             h._send(200, _jdump(self.api_probe(data)), "application/json")
+        elif path == "/act":
+            h._send(200, _jdump(self.api_act(data)), "application/json")
         elif path == "/scheduler":
             jid = str(data.get("job", ""))
             ok = self.set_job(jid, data.get("enabled"), data.get("every_s"))

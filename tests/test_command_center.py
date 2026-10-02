@@ -8,6 +8,7 @@ import threading
 import time
 
 os.environ["CC_SKIP_PID_CHECK"] = "1"                   # caps.json in these tests belongs to a fake plugin, not a running game
+os.environ["CC_LIVECAP"] = "0"                          # the livecap supervisor job must never spawn a real process from a unit test
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(HERE, "..", "tools"))
@@ -389,6 +390,36 @@ def test_http_probe():
             pl.close()
 
 
+def test_http_act_from_the_ui():
+    with tempfile.TemporaryDirectory() as tmp:
+        cc, ctx, sim, clock = make(tmp)
+
+        def post(obj):
+            body = json.dumps(obj).encode()
+            h = FakeHandler(body)
+            cc.http_post(h, "/act", len(body))
+            return json.loads(h.sent[1])
+        r = post({"act": "goto", "x": 10, "z": 20})
+        check("UI act without an act.v1 plugin says so (and sends nothing)", r["ok"] is False and "act.v1" in r["why"], r)
+        set_caps(ctx, ["act.v1", "probe.v1"], clock)
+        pl = FakePlugin(ctx.AGENT)
+        try:
+            r = post({"act": "goto", "x": 10.5, "z": -20, "ttl_s": 9999})
+            check("goto from the UI is executed by the plugin and confirmed", r["ok"] and r["result"].startswith("executed by the bot"), r)
+            w = [x for x in pl.seen if x.get("act") == "goto"]
+            check("the command reached the plugin clamped by the same whitelist (ttl <= 1800, coordinates kept)", w and w[0]["x"] == 10.5 and w[0]["z"] == -20 and w[0]["ttl_s"] <= 1800, pl.seen)
+            r = post({"act": "avoid", "x": 1, "z": 2, "r": 999})
+            check("avoid radius is clamped to 40 m", r["ok"] and r["act"]["r"] == 40, r)
+            check("retreat needs no coordinates", post({"act": "retreat"})["ok"])
+            check("unknown act is rejected, nothing sent", post({"act": "teleport", "x": 1, "z": 1})["ok"] is False and not [x for x in pl.seen if x.get("act") == "teleport"])
+            check("goto without x,z is rejected", post({"act": "goto"})["ok"] is False)
+            r = post({"act": "probe", "wx": 4, "wz": 12})
+            check("probe goes through the same endpoint", r["ok"] and r["probe"]["hits"], r)
+            check("every UI action is written to the chat feed", sum(1 for _, t in ctx.logs if "ui-act" in t) >= 3, [t for _, t in ctx.logs][-3:])
+        finally:
+            pl.close()
+
+
 def test_code_task_ack_relaunch_and_dedupe():
     with tempfile.TemporaryDirectory() as tmp:
         cc, ctx, sim, clock = make(tmp)
@@ -660,6 +691,7 @@ def test_http():
 def main():
     for fn in (test_extract_and_validate, test_incident_wakes_minimax_and_unsupported_plugin_is_reported, test_knob_command_for_idle_incident_is_written, test_unstick_executes_when_plugin_supports_it,
                test_unstick_failure_modes_are_reported_honestly, test_act_protocol_roundtrip, test_plugin_info_and_caps, test_incident_probe_in_prompt, test_http_probe,
+               test_http_act_from_the_ui,
                test_code_task_ack_relaunch_and_dedupe, test_semi_mode_queues_instead_of_acting, test_off_mode_suppresses_calls_and_logs_it, test_rate_limits,
                test_coalescing_two_incidents_one_call, test_minimax_error_is_visible_and_not_fatal, test_history_at_spot_is_fed_back, test_scheduler_jobs,
                test_review_job, test_pulse_wakes_on_bad_health, test_http):

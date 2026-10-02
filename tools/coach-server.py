@@ -59,7 +59,15 @@ def _grabber():
             time.sleep(0.06)                       # ~16 fps cap (encode-bound)
         except Exception:
             WIN_FRAME["src"] = ""; time.sleep(2)
-threading.Thread(target=_grabber, daemon=True).start()
+try:        # import the command center BEFORE the grabber thread starts: with the game window open, that thread's pywin32/PIL imports and
+    import command_center as _ccm_preload   # a main-thread import stalled each other for minutes and the server never came up
+except Exception:
+    _ccm_preload = None                     # __main__ imports it again and reports the real error
+# The in-process BitBlt grabber is OFF by default: BitBlt of a window DC returns whatever is ON SCREEN there, so a browser covering the game
+# showed the Coach page inside itself, it captures nothing while the game is minimised, and its GDI/PIL work shared this process's GIL.
+# Live video now comes from tools/livecap.py (separate process: Windows Graphics Capture + in-game capture). COACH_INPROC_GRAB=1 re-enables it.
+if os.environ.get("COACH_INPROC_GRAB") == "1":
+    threading.Thread(target=_grabber, daemon=True).start()
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 AGENT = pathlib.Path(os.environ.get(
@@ -942,6 +950,33 @@ def live_state():
             st["notes"] = out
     return st
 
+LIVECAP_PORT = int(os.environ.get("LIVECAP_PORT", "8097"))
+
+def livecap_status():
+    """Heartbeat of tools/livecap.py (the live-video process), or None when it is not running / stale."""
+    try:
+        hb = json.loads((AGENT / "livecap.json").read_text(encoding="utf-8"))
+    except Exception:
+        return None
+    return hb if time.time() - float(hb.get("t", 0)) < 5 else None
+
+def fetch_live_png(max_age=20):
+    """Newest game frame as PNG bytes: from livecap when it has one (WGC / in-game capture), else the plugin's live.png file if fresh enough."""
+    hb = livecap_status()
+    if hb and hb.get("state") in ("game", "wgc", "plugin", "static", "synthetic", "idle"):
+        try:      # an idle livecap (nobody watching) wakes its capture for this request: allow a few seconds
+            with urllib.request.urlopen(f"http://127.0.0.1:{hb.get('port', LIVECAP_PORT)}/frame.png", timeout=8) as r:
+                return r.read()
+        except Exception:
+            pass
+    p = AGENT / "live.png"
+    try:
+        if p.exists() and time.time() - p.stat().st_mtime <= max_age:
+            return p.read_bytes()
+    except OSError:
+        pass
+    return None
+
 def health():
     """Connectivity truth — every probe returns its real status, no mocks."""
     h = {"checks": []}
@@ -956,7 +991,12 @@ def health():
                             "detail": "audit.json missing — plugin DLL not deployed?"})
     # 2. Live frame feed
     lf = AGENT / "live.png"
-    if lf.exists():
+    lcs = livecap_status()
+    if lcs:
+        good = lcs.get("state") in ("game", "wgc", "static", "synthetic", "idle")      # idle = nobody is watching, capture paused on purpose
+        h["checks"].append({"name": "live frames", "ok": good,
+                            "detail": f"livecap {lcs.get('state')} {lcs.get('fps', 0)} fps, {lcs.get('clients', 0)} viewer(s)" + ("" if good else " - fallback, not live video")})
+    elif lf.exists():
         age = time.time() - lf.stat().st_mtime
         h["checks"].append({"name": "live frames", "ok": age < 15,
                             "detail": f"live.png {age:.0f}s old"})
@@ -1176,7 +1216,11 @@ class H(BaseHTTPRequestHandler):
         elif self.path.startswith("/live.png"):   # UI polls /live.png?x=<ts>
             p = AGENT / "live.png"
             try:
-                if p.exists():
+                lb = fetch_live_png(10**9) if livecap_status() else None
+                if lb:                                  # livecap has the freshest frame (the plugin may not write live.png at all any more)
+                    _live_cache["b"] = lb
+                    self._send(200, lb, "image/png")
+                elif p.exists():
                     b = p.read_bytes()
                     _live_cache["b"] = b
                     _live_cache["ts"] = p.stat().st_mtime
@@ -1869,15 +1913,15 @@ def vision_look(question=""):
     models = vision_models()
     if not models:
         return None
-    img = AGENT / "live.png"
-    if not img.exists() or time.time() - img.stat().st_mtime > 20:
+    png = fetch_live_png(20)
+    if not png:
         return None
     try:
         SNAPDIR.mkdir(exist_ok=True)
         stamp = time.strftime("%Y%m%d-%H%M%S")
         dest = SNAPDIR / f"snap-{stamp}.png"
-        shutil.copy2(img, dest)
-        b64 = base64.b64encode(dest.read_bytes()).decode()
+        dest.write_bytes(png)
+        b64 = base64.b64encode(png).decode()
         want = mm_cfg().get("vision_model")
         order = ([want] if want else []) + [m for m in models if m != want]
         q = question or ("One line each: what is on screen? Any UI popup/"
@@ -2261,7 +2305,7 @@ pre.book{background:#150e0a;border:1px solid var(--bord);border-radius:9px;
  <button class="ri" id="r3" onclick="tool('book')" title="Playbook">&#128218;</button>
  <button class="ri" id="r4" onclick="tool('weak')" title="Weaknesses">&#9888;</button>
  <button class="ri" id="r5" onclick="tool('audit')" title="Audit">&#9878;</button>
- <button class="ri" id="r6" onclick="tool('mm')" title="MiniMax control">&#129504;</button>
+ <button class="ri" id="r6" onclick="tool('mm')" title="MiniMax control">&#9881;</button>
  <button class="ri" id="r7" onclick="tool('tok')" title="MiniMax token usage">&#128176;</button>
 </div>
 <div id="side">
@@ -2414,7 +2458,8 @@ const mkOn={door:1,castle:1,bld:1,aim:1,foe:1,path:1,hero:1,THREAT:1};
 function mkTog(b){mkOn[b.dataset.mk]=b.classList.toggle('on')?1:0}
 function mkKind(t){return t.startsWith('door')?'door':t.startsWith('bld')?'bld':t}
 let cmdMode=false,lastMk=null;
-function drawMarkers(mk){lastMk=mk;mkcv.width=shot.clientWidth;mkcv.height=shot.clientHeight;
+function drawMarkers(mk){if(window.LV&&LV.active)return; /* live.js draws the overlay itself, in sync with the video */
+ lastMk=mk;mkcv.width=shot.clientWidth;mkcv.height=shot.clientHeight;
  mkx.clearRect(0,0,mkcv.width,mkcv.height);if(!mk)return;
  if(mkOn.path&&mk.ln&&mk.ln.length>1){
   mkx.beginPath();mkx.strokeStyle='#fd4';mkx.lineWidth=2;mkx.setLineDash([5,4]);
@@ -2435,8 +2480,8 @@ function drawMarkers(mk){lastMk=mk;mkcv.width=shot.clientWidth;mkcv.height=shot.
   mkx.font='bold 10px monospace';
   mkx.strokeStyle='rgba(0,0,0,.9)';mkx.lineWidth=3;mkx.strokeText(p.t,px+7,py-6);
   mkx.fillStyle=p.c;mkx.fillText(p.t,px+7,py-6)});}
-function reconnectStream(){useStream=true;streamSince=Date.now();shot.src='/live.mjpeg?x='+Date.now()}
-async function saveShot(){const a=document.createElement('a');a.href='/live.png?x='+Date.now();
+function reconnectStream(){if(window.LV&&LV.active){LV.reconnect();return}useStream=true;streamSince=Date.now();shot.src='/live.mjpeg?x='+Date.now()}
+async function saveShot(){const a=document.createElement('a');a.href=(window.LV&&LV.active?LV.base+'/frame.png':'/live.png')+'?x='+Date.now();
  a.download='thronefall-'+Date.now()+'.png';a.click()}
 function banner(st){const b=document.getElementById('banner');
  if(st.red){b.textContent='⚠ RED ALERT — breach inside the perimeter';b.className='on red'}
@@ -2636,6 +2681,7 @@ const streamErrT={v:0};
 shot.onerror=()=>{if(useStream&&Date.now()-streamErrT.v>8000){streamErrT.v=Date.now();useStream=false;shot.src='/live.png'}};
 shot.onload=()=>{if(useStream){frameCt++;document.getElementById('lvAge').textContent='stream '+new Date().toLocaleTimeString()}};
 setInterval(async()=>{try{const l=await j('/live.json');
+ if(window.LV&&LV.active){if(l.st)banner(l.st);return} /* live.js owns the picture, markers and fps readout while it is connected */
  if(l.mk&&(l.mk.pts||l.mk.ln)){drawMarkers(l.mk);
   if(l.ts!=lastMkTs){lastMkTs=l.ts;frameCt++}}
  if(l.st)banner(l.st);
@@ -2827,7 +2873,7 @@ cv.onmousedown=e=>{
    if(best){const t=best.t.startsWith('door')?'door'+best.t.slice(4).split('·')[0]
      :best.t=='THREAT'?'threat':best.t;
     order({focus:t,note:'click:'+t});
-    document.getElementById('lvAge').textContent='cmd→'+t}}}
+    document.getElementById('lvAge').textContent='cmd→'+t}}
   return}
  cur={x1:e.offsetX,y1:e.offsetY,x2:e.offsetX,y2:e.offsetY}};
 cv.onmousemove=e=>{if(cur){cur.x2=e.offsetX;cur.y2=e.offsetY;redraw()}};
@@ -2839,9 +2885,12 @@ function redraw(){const c=cv.getContext('2d');c.clearRect(0,0,cv.width,cv.height
  c.lineTo(s.x2-14*Math.cos(a-.5),s.y2-14*Math.sin(a-.5));c.moveTo(s.x2,s.y2);
  c.lineTo(s.x2-14*Math.cos(a+.5),s.y2-14*Math.sin(a+.5));c.stroke()})}
 function clearInk(){strokes=[];redraw()}
-function sendShot(){const c=document.createElement('canvas');
- c.width=shot.naturalWidth;c.height=shot.naturalHeight;const x=c.getContext('2d');
- x.drawImage(shot,0,0,c.width,c.height);x.strokeStyle='#f0b35e';x.lineWidth=5;x.lineCap='round';
+async function sendShot(){const c=document.createElement('canvas');let src=shot;
+ if(window.LV&&LV.active){try{src=await createImageBitmap(await LV.snapshot());c.width=src.width;c.height=src.height}catch(e){src=null}}
+ if(src===shot){c.width=shot.naturalWidth;c.height=shot.naturalHeight}
+ if(!src){add('err','no frame to attach yet','attach');return}
+ const x=c.getContext('2d');
+ x.drawImage(src,0,0,c.width,c.height);x.strokeStyle='#f0b35e';x.lineWidth=5;x.lineCap='round';
  const sx=c.width/cv.width,sy=c.height/cv.height;
  strokes.forEach(s=>{x.beginPath();x.moveTo(s.x1*sx,s.y1*sy);x.lineTo(s.x2*sx,s.y2*sy);x.stroke();
  const a=Math.atan2((s.y2-s.y1)*sy,(s.x2-s.x1)*sx);x.beginPath();x.moveTo(s.x2*sx,s.y2*sy);
@@ -2892,7 +2941,8 @@ runs();refresh();tick();
 
 
 
-PAGE = PAGE.replace("</body>", '<link rel="stylesheet" href="/cc.css"><script src="/cc.js"></script></body>')
+PAGE = PAGE.replace("</body>", '<link rel="stylesheet" href="/cc.css"><script src="/cc.js"></script>'
+                    f'<script>window.LV_CFG={{port:{LIVECAP_PORT}}}</script><script src="/live.js"></script></body>')
 
 if __name__ == "__main__":
     import threading
