@@ -119,6 +119,8 @@ namespace ThronefallTrainer
         private Rect windowRect = new Rect(20f, 20f, 380f, 620f);
         private const float MinW = 300f, MinH = 200f, CollapsedH = 48f;
         private float expandedHeight = 620f;
+        private static int tickThrowCount;
+        private static float tickThrowLogAt;
         private Vector2 scroll;
         private GUIStyle sectionStyle;
         private bool settingsOpen;
@@ -647,7 +649,18 @@ namespace ThronefallTrainer
             long fpBot = FramePerf.Now();
             try { Bot.Tick(); }
             catch (System.Exception ex)
-            { Log?.LogWarning($"[bot] Tick threw: {ex.Message}"); }
+            {
+                // Full ToString() — a message-only log hid a recurring
+                // InvalidCastException for ~2000 ticks before the game died.
+                // Throttle the stack to once per 30 s but keep counting.
+                tickThrowCount++;
+                if (Time.unscaledTime >= tickThrowLogAt)
+                {
+                    tickThrowLogAt = Time.unscaledTime + 30f;
+                    Log?.LogWarning($"[bot] Tick threw x{tickThrowCount}: {ex}");
+                    tickThrowCount = 0;
+                }
+            }
             FramePerf.Mark(FramePerf.SecBot, fpBot);
             FramePerf.EndFrame();
         }

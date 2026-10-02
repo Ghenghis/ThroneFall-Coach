@@ -566,3 +566,11 @@ AUTOPILOT §8–9 for the full list and next actions.
 - **Trap-retreat latch:** the 4 Hz decide loop re-overrode the retreat aim every ~1.6 s - each escape died
   before he moved a metre (97 retreats, 0 escapes). StuckStrikes>=4 now LATCHES the castle aim for 15 s
   (mode forced to HoldCastle) so he actually walks out of the pocket. Deployed.
+- **ROOT CAUSE: nav layer was dead.** MaybeRequestPath pre-check cast nn.node (an A* GraphNode, a plain
+  class) to UnityEngine.Object - InvalidCastException EVERY call, ~2000 ticks/run. Every path request died;
+  the hero steered straight-line into rocks/buildings/boundaries all day ("stuck 90%"). All the pin-park,
+  pocket-ignore and retreat machinery was fighting a dead navigation system's symptoms. Fix: nn.node == null
+  (plain null check, GraphNode is not a Unity object). Deployed: nav-path ok with 19-waypoint routes,
+  useful=86.9% at t=154 (was 15-30%), ally=24.
+- **Crash diagnosis:** repeated InvalidCastException in Bot.Tick (swallowed, message-only log) preceded the
+  game exit. Plugin.cs catch now logs full stack traces, throttled to once/30s with a running count.

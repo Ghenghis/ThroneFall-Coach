@@ -3270,8 +3270,11 @@ internal static class Bot
 		// pins, trigger colliders) the path will error and spam the log —
 		// skip it and log once per coarse goal instead.
 		var nn = AstarPath.active.GetNearest(goal, NNConstraint.Walkable);
-		if ((UnityEngine.Object)(object)nn.node == (UnityEngine.Object)null ||
-		    FlatDist(goal, nn.position) > 4f)
+		// nn.node is an A* GraphNode (plain class, NOT UnityEngine.Object) —
+		// the (UnityEngine.Object)(object) cast threw InvalidCastException on
+		// EVERY call, killing every nav request: the hero steered blind and
+		// pinned on geometry all day. Plain null check fixes the whole nav layer.
+		if (nn.node == null || FlatDist(goal, nn.position) > 4f)
 		{
 			Gates.NoteNavFail(goal);
 			int gx = (int)(goal.x / 8f), gz = (int)(goal.z / 8f);
