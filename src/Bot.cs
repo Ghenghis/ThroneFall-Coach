@@ -1388,6 +1388,20 @@ internal static class Bot
 			{
 				LogLine(in s, "pin:" + pinCls);
 				Recorder.Event("pin-type", "\"what\":\"" + pinCls + "\"" + Act.PinExtraJson(s.HeroPos));   // + the blocker's name/layer/bounds/static flag
+				// Building-collider pin while building = the baked stand
+				// point sits inside a pocket that walls/towers created AFTER
+				// the map scan. Blacklist it on the FIRST strike — the next
+				// capture falls back to the hero-side standoff instead of
+				// 30-60 s of detours into the same pocket.
+				if (Mode == BotMode.SpendGold &&
+				    (UnityEngine.Object)(object)s.NearestBuild != (UnityEngine.Object)null &&
+				    (pinCls.StartsWith("pen:") || pinCls.StartsWith("wall") || pinCls.StartsWith("obj:")))
+				{
+					BotPerception.IgnoreStand(s.NearestBuildPos);
+					ClearTarget();
+					LogLine(in s, "stand-pocket");
+					return;
+				}
 			}
 			stuckStrikeTotal++;
 			if (stuckStrikeTotal == 60)

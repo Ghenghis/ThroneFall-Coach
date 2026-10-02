@@ -551,3 +551,7 @@ AUTOPILOT §8–9 for the full list and next actions.
   building colliders ("runs into map rocks 90% of the time"). Aim() now snaps every target to the nearest
   walkable node by default - the hero walks to the reachable edge instead of pushing into geometry forever.
   Deployed (act-3 behavior, 234 checks green).
+- **Stand-pocket kill (first-strike):** a pin classified pen:/wall:/obj: while SpendGold is heading at a build
+  slot = the baked stand-point sits inside a pocket created by walls/towers built after the map scan. The
+  stand set is blacklisted on the FIRST strike (was: 3 strikes + 3 detours + approach-timeout before giving
+  up - 30-60 s per wedge) and the aim re-falls-back to the hero-side standoff. Deployed.
