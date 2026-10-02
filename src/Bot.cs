@@ -299,6 +299,8 @@ internal static class Bot
 
 	private static Vector3 focusPos;
 	private static float focusUntil;
+	private static Vector3 retreatPos;              // trap-retreat latch target (castle)
+	private static float retreatUntil;              // suppress all other aims until this expires
 	/// <summary>UI click-to-command ("send hero here"). Seconds-capped so a
 	/// stale click can never trap the hero; brain resumes after expiry.</summary>
 	internal static void SetFocus(Vector3 pos, float seconds)
@@ -871,6 +873,16 @@ internal static class Bot
 			decideResult.AimPos = new Vec2(focusPos.x, focusPos.z);
 			decideResult.HasAim = true;
 		}
+		// Trap-retreat latch: a wedge pins him INSIDE geometry where every
+		// re-aim flip flops between castle and the pocket target — he never
+		// walks far enough to exit. Hold the retreat aim until it expires so
+		// he actually travels out of the pocket (was: 97 retreats, 0 escapes).
+		if (Time.unscaledTime < retreatUntil)
+		{
+			decideResult.AimPos = new Vec2(retreatPos.x, retreatPos.z);
+			decideResult.HasAim = true;
+			decideResult.Mode = BotMode.HoldCastle;
+		}
 		if (decideResult.HasAim)
 		{
 			Vector3 val3 = new Vector3(decideResult.AimPos.X, 0f, decideResult.AimPos.Z);
@@ -1405,10 +1417,15 @@ internal static class Bot
 					// (74 retreats, zero escapes). Only fall back to
 					// lastFreePos when no castle exists.
 					Vector3 home = s.HasCastle ? s.CastlePos : lastFreePos;
-					if (home == Vector3.zero) { /* nothing to retreat to */ }
-					else
+					if (home != Vector3.zero)
 					{
+						// Latch the retreat: the 4 Hz decide loop re-overrode
+						// the aim every ~1.6 s, so each retreat died before he
+						// moved a metre. Now the castle aim holds for 15 s
+						// regardless of what the brain wants next.
 						navPath = null; navIndex = 0; navWrongLayer = false; detourUntil = 0f;
+						retreatPos = home;
+						retreatUntil = Time.unscaledTime + 15f;
 						SetTarget(home, 2.5f, projectToNav: true);
 						LogLine(in s, "trap-retreat");
 					}

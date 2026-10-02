@@ -563,3 +563,6 @@ AUTOPILOT §8–9 for the full list and next actions.
   to the NEXT slot in the same dead pocket (28 re-parks / 200 s). Boundary pins now IgnorePocket(r=16m,
   600 s, HARD) so the whole fenced area stays parked for the run; interior building pockets park soft
   (12 m, 120 s - walls can die and reopen them).
+- **Trap-retreat latch:** the 4 Hz decide loop re-overrode the retreat aim every ~1.6 s - each escape died
+  before he moved a metre (97 retreats, 0 escapes). StuckStrikes>=4 now LATCHES the castle aim for 15 s
+  (mode forced to HoldCastle) so he actually walks out of the pocket. Deployed.
