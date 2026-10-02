@@ -1393,6 +1393,29 @@ internal static class Bot
 				// the map scan. Blacklist it on the FIRST strike — the next
 				// capture falls back to the hero-side standoff instead of
 				// 30-60 s of detours into the same pocket.
+				// ORDER MATTERS: "obj:Boundaries*" must be checked BEFORE the
+				// stand-pocket branch (whose "obj:" prefix would swallow it).
+				// A boundary pin means the CURRENT GOAL — coin, slot, anchor —
+				// is past the world edge: park that goal kind, not whatever
+				// building happens to be nearest.
+				if (pinCls.StartsWith("obj:Boundaries"))
+				{
+					if (Mode == BotMode.CollectCoin && (UnityEngine.Object)(object)s.NearestCoin != (UnityEngine.Object)null)
+					{
+						coinIgnore.Add(s.NearestCoin);   // the edge coin stays reachable=false forever
+						LogLine(in s, "boundary-coin-park");
+					}
+					else if (Mode == BotMode.SpendGold && (UnityEngine.Object)(object)s.NearestBuild != (UnityEngine.Object)null)
+					{
+						BotPerception.IgnoreStand(s.NearestBuildPos);
+						BotPerception.IgnoreBuild(s.NearestBuild, 60f);
+						BotPerception.NoteBuildFail(BotPerception.BuildCat(s.NearestBuildName));
+						LogLine(in s, "boundary-slot-park");
+					}
+					else LogLine(in s, "boundary-pin-drop");
+					ClearTarget();
+					return;
+				}
 				if (Mode == BotMode.SpendGold &&
 				    (UnityEngine.Object)(object)s.NearestBuild != (UnityEngine.Object)null &&
 				    (pinCls.StartsWith("pen:") || pinCls.StartsWith("wall") || pinCls.StartsWith("obj:")))
@@ -1407,15 +1430,6 @@ internal static class Bot
 					BotPerception.NoteBuildFail(BotPerception.BuildCat(s.NearestBuildName));
 					ClearTarget();
 					LogLine(in s, "stand-pocket");
-					return;
-				}
-				// Pinned on the map's outer boundary in ANY mode: the aim is
-				// beyond the world edge — it can never be reached, so drop it
-				// immediately instead of grinding sidesteps into the wall.
-				if (pinCls.StartsWith("obj:Boundaries"))
-				{
-					ClearTarget();
-					LogLine(in s, "boundary-pin-drop");
 					return;
 				}
 			}

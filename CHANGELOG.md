@@ -555,3 +555,7 @@ AUTOPILOT §8–9 for the full list and next actions.
   slot = the baked stand-point sits inside a pocket created by walls/towers built after the map scan. The
   stand set is blacklisted on the FIRST strike (was: 3 strikes + 3 detours + approach-timeout before giving
   up - 30-60 s per wedge) and the aim re-falls-back to the hero-side standoff. Deployed.
+- **Boundary-pin ordering fix (the real churn):** obj:Boundaries pins were swallowed by the stand-pocket
+  branch (obj: prefix) so the wrong thing got parked; boundary aims (edge coins, edge slots) now PARK THE
+  GOAL KIND first: CollectCoin -> coinIgnore (never re-picked), SpendGold -> IgnoreStand+IgnoreBuild(60s),
+  anything else -> ClearTarget. Previous fix made the repick loop FASTER, not rarer - live events showed it.
