@@ -1397,9 +1397,25 @@ internal static class Bot
 				    (UnityEngine.Object)(object)s.NearestBuild != (UnityEngine.Object)null &&
 				    (pinCls.StartsWith("pen:") || pinCls.StartsWith("wall") || pinCls.StartsWith("obj:")))
 				{
+					// Not just the stand set — the whole slot is wedged in
+					// collider geometry right now. Stand-blacklist + a short
+					// slot ignore (60 s) so he goes build something else and
+					// comes back when the pocket context changed. Without the
+					// ignore he re-picked this slot every ~1.6 s forever.
 					BotPerception.IgnoreStand(s.NearestBuildPos);
+					BotPerception.IgnoreBuild(s.NearestBuild, 60f);
+					BotPerception.NoteBuildFail(BotPerception.BuildCat(s.NearestBuildName));
 					ClearTarget();
 					LogLine(in s, "stand-pocket");
+					return;
+				}
+				// Pinned on the map's outer boundary in ANY mode: the aim is
+				// beyond the world edge — it can never be reached, so drop it
+				// immediately instead of grinding sidesteps into the wall.
+				if (pinCls.StartsWith("obj:Boundaries"))
+				{
+					ClearTarget();
+					LogLine(in s, "boundary-pin-drop");
 					return;
 				}
 			}
