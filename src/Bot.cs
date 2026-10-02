@@ -1393,6 +1393,18 @@ internal static class Bot
 				// the map scan. Blacklist it on the FIRST strike — the next
 				// capture falls back to the hero-side standoff instead of
 				// 30-60 s of detours into the same pocket.
+				// Physical trap: 4+ pins while immobile = he's wedged INTO
+				// geometry (boundary pocket, building crevice). No goal can
+				// fix that — retreat to the last spot he actually moved at
+				// (lastFreePos), navmesh-snapped, before anything else runs.
+				if (StuckStrikes >= 4 && Legit && Mode != BotMode.Engage &&
+				    Mode != BotMode.HeroDead && lastFreePos != Vector3.zero)
+				{
+					navPath = null; navIndex = 0; navWrongLayer = false; detourUntil = 0f;
+					SetTarget(lastFreePos, 2.5f, projectToNav: true);
+					LogLine(in s, "trap-retreat");
+					return;
+				}
 				// ORDER MATTERS: "obj:Boundaries*" must be checked BEFORE the
 				// stand-pocket branch (whose "obj:" prefix would swallow it).
 				// A boundary pin means the CURRENT GOAL — coin, slot, anchor —
