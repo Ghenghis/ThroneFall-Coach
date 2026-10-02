@@ -1083,6 +1083,33 @@ class H(BaseHTTPRequestHandler):
             self._send(200, PAGE, "text/html; charset=utf-8")
         elif self.path == "/state":
             self._send(200, json.dumps(live_state()), "application/json")
+        elif self.path.startswith("/live.mjpeg"):  # push stream (~4 fps)
+            self.send_response(200)
+            self.send_header("Content-Type",
+                             "multipart/x-mixed-replace; boundary=tf")
+            self.send_header("Cache-Control", "no-cache, no-store")
+            self.end_headers()
+            last = 0.0
+            p = AGENT / "live.jpg"
+            try:
+                while True:
+                    ts = p.stat().st_mtime if p.exists() else 0
+                    if ts > last:
+                        try:
+                            data = p.read_bytes()
+                        except OSError:
+                            time.sleep(0.05); continue
+                        self.wfile.write(
+                            b"--tf\r\nContent-Type: image/jpeg\r\n"
+                            b"Content-Length: " +
+                            str(len(data)).encode() + b"\r\n\r\n" +
+                            data + b"\r\n")
+                        self.wfile.flush()
+                        last = ts
+                    time.sleep(0.12)
+            except (BrokenPipeError, ConnectionResetError, OSError):
+                pass
+            return
         elif self.path.startswith("/live.jpg"):   # fast UI feed (~2.5 fps)
             p = AGENT / "live.jpg"
             try:
@@ -2105,7 +2132,7 @@ pre.book{background:#150e0a;border:1px solid var(--bord);border-radius:9px;
  <button onclick="tool('chat')" style="color:var(--dim)">&#10005;</button></div>
  <div id="pbody">
   <div class="pane" id="p-live">
-   <div id="view"><img id="shot" src="/live.png"><canvas id="draw"></canvas></div>
+   <div id="view"><img id="shot" src="/live.mjpeg"><canvas id="draw"></canvas></div>
    <div id="livemeta"><span id="lvAge">—</span><span id="lvFps"></span></div>
    <div class="pb" style="margin-top:7px"><button onclick="clearInk()">Clear ink</button>
     <button onclick="sendShot()">Send annotated</button></div>
@@ -2318,10 +2345,15 @@ function tool(t){
  document.querySelectorAll('#rail .ri').forEach((b,i)=>b.classList.toggle('on',
    ['chat','live','stats','book','weak','audit','mm'][i]==t));
  if(t=='book')book();else if(t=='stats'||t=='weak')refresh();else if(t=='mm')mmCfg();}
-/* live frame — swap only on real new frame */
-let lastTs=0,frameCt=0,lastFpsT=Date.now();
+/* live frame — MJPEG stream when available, poll-fallback otherwise */
+let lastTs=0,frameCt=0,lastFpsT=Date.now(),useStream=true;
+const streamErrT={v:0};
+shot.onerror=()=>{if(useStream&&Date.now()-streamErrT.v>8000){streamErrT.v=Date.now();useStream=false;shot.src='/live.png'}};
+shot.onload=()=>{if(useStream){frameCt++;document.getElementById('lvAge').textContent='stream '+new Date().toLocaleTimeString()}};
 setInterval(async()=>{try{const l=await j('/live.json');
- if(l.ts&&l.ts!=lastTs){lastTs=l.ts;
+ if(useStream&&!l.fast){useStream=false;shot.src='/live.png?x='+l.ts}
+ if(!useStream&&l.fast){useStream=true;shot.src='/live.mjpeg?x='+l.ts}
+ if(!useStream&&l.ts&&l.ts!=lastTs){lastTs=l.ts;
   shot.src=(l.fast?'/live.jpg?x=':'/live.png?x=')+l.ts;frameCt++;
   document.getElementById('lvAge').textContent='frame '+new Date(l.ts*1000).toLocaleTimeString()}
  const now=Date.now();if(now-lastFpsT>4000){document.getElementById('lvFps').textContent=

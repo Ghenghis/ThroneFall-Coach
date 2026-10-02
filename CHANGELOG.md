@@ -461,3 +461,6 @@ AUTOPILOT §8–9 for the full list and next actions.
 - **Fast live feed:** plugin now writes live.jpg (JPEG q55) every 0.4 s alongside the 2 s live.png (vision +
   snapshots keep PNG). /live.jpg endpoint + /live.json returns {ts, fast} - UI polls 300 ms and swaps to the
   jpeg feed automatically. ~2.5 fps up from ~0.5 fps.
+- **MJPEG live stream:** /live.mjpeg pushes multipart frames as live.jpg changes - measured 4.4 fps live
+  (was ~0.5). Live pane uses the stream when fast feed exists, falls back to polled png/jpg otherwise.
+  Plugin fast feed now 0.25 s. 0 errors / 0 lint.

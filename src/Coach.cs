@@ -42,7 +42,7 @@ namespace ThronefallTrainer
         public static volatile bool Busy;   // written by the worker thread
         public static bool LiveShot;             // dump agent/live.png for the chat UI
         public static float LiveShotEvery = 2f;
-        public static float LiveShotFastEvery = 0.4f;
+        public static float LiveShotFastEvery = 0.25f;
         private static float nextLiveShotFast;
         private static float nextLiveShot;
 
