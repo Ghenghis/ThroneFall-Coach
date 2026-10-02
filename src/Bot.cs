@@ -1391,6 +1391,16 @@ internal static class Bot
 			// spurious gate detours ("spin in circles").
 			if (StuckStrikes >= 2 && !Gates.Active) Gates.NoteNavFail(AimPos);
 			StuckStrikes++; SpatialMemory.Bump(s.SceneName, s.HeroPos);
+			// A build/pay HOLD is immobile by design — slow pays (Barracks
+			// 40 g) stand still for seconds while coins land. Do NOT let the
+			// pin probe park the very slot he's paying: the Firepot churn
+			// (94 pins) was his own in-progress interactable re-parked
+			// mid-hold, aborting real work.
+			if ((UnityEngine.Object)(object)heldBuild != (UnityEngine.Object)null)
+			{
+				StuckStrikes = 0;
+				return;
+			}
 			// Awareness probe: WHAT is the hero pinned on? Classifies the
 			// collider ahead — pen (buildable/upgradeable), gate, wall,
 			// terrain rock/tree, enemy, other object — so pins learn the
