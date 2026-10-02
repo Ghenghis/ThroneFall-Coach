@@ -481,3 +481,11 @@ AUTOPILOT §8–9 for the full list and next actions.
   stroked labels for snow-scene contrast, palette: hero cyan, aim yellow, castle white, build green,
   threat red, door covered orange / open red / parked grey. Header strip gains useful% + waste cells so
   idle-time is visible without opening Audit.
+- **Token Usage pane (new window):** /tokens aggregates mmwatch.jsonl - totals (in/out/total), avg/call,
+  last-hour rate, per-kind breakdown (watch/proof/pending), tokens-per-minute sparkline, last 25 calls.
+  Rail button added. First data: 1,400 calls / 5.43M tokens / 273k last hour.
+- **Stuck stats in the strip:** audit.json now carries stuck-strike count; header strip shows
+  useful% + waste_s/drain + pins so stuckness is visible without opening Audit.
+- **Quick-order chips** in the composer: +20 troops, call night, bigger squads, escort hero, release all -
+  labeled buttons instead of cryptic icons.
+- **Boundary hard-park** shipped (rescan-immune ignores for boundary/terrain pockets).

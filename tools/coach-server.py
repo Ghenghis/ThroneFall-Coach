@@ -1164,6 +1164,47 @@ class H(BaseHTTPRequestHandler):
             except Exception:
                 pass
             self._send(200, json.dumps(out), "application/json")
+        elif self.path.startswith("/tokens"):
+            # token-usage ledger from mmwatch.jsonl — totals, rate, per-call
+            try:
+                rows = []
+                for ln in tail_lines(MMWATCH, 4000, cap=2_000_000):
+                    try: rows.append(json.loads(ln))
+                    except Exception: pass
+                calls = [r for r in rows if r.get("usage")]
+                now = time.time()
+                tot_in = tot_out = tot = 0
+                per_kind = {}
+                per_min = {}
+                for c in calls:
+                    u = c["usage"] or {}
+                    ti = u.get("prompt_tokens") or 0
+                    to = u.get("completion_tokens") or 0
+                    tt = u.get("total_tokens") or (ti + to)
+                    k = c.get("kind") or "watch"
+                    tot_in += ti; tot_out += to; tot += tt
+                    pk = per_kind.setdefault(k, {"n": 0, "in": 0, "out": 0, "tot": 0})
+                    pk["n"] += 1; pk["in"] += ti; pk["out"] += to; pk["tot"] += tt
+                    mk = int((c.get("t") or 0) // 60) * 60
+                    pm = per_min.setdefault(mk, 0); per_min[mk] = pm + tt
+                recent = [ {"t": c.get("t"), "kind": c.get("kind") or "watch",
+                            "in": (c.get("usage") or {}).get("prompt_tokens") or 0,
+                            "out": (c.get("usage") or {}).get("completion_tokens") or 0,
+                            "tot": (c.get("usage") or {}).get("total_tokens") or 0}
+                          for c in calls[-25:][::-1] ]
+                last_hr = sum(v for k, v in per_min.items() if k > now - 3600)
+                self._send(200, json.dumps({
+                    "total": tot, "in": tot_in, "out": tot_out,
+                    "calls": len(calls),
+                    "avg": round(tot / max(1, len(calls))),
+                    "last_hour": last_hr,
+                    "per_kind": per_kind,
+                    "per_min": [{"t": k, "tok": v} for k, v in
+                                sorted(per_min.items()) if k > now - 3600],
+                    "recent": recent}), "application/json")
+            except Exception as ex:
+                self._send(200, json.dumps({"error": str(ex)[:120]}),
+                           "application/json")
         elif self.path.startswith("/events"):
             # last N events of the newest run — the frame ticker
             try:
@@ -2126,6 +2167,7 @@ pre.book{background:#150e0a;border:1px solid var(--bord);border-radius:9px;
  <button class="ri" id="r4" onclick="tool('weak')" title="Weaknesses">&#9888;</button>
  <button class="ri" id="r5" onclick="tool('audit')" title="Audit">&#9878;</button>
  <button class="ri" id="r6" onclick="tool('mm')" title="MiniMax control">&#129504;</button>
+ <button class="ri" id="r7" onclick="tool('tok')" title="MiniMax token usage">&#128176;</button>
 </div>
 <div id="side">
  <div class="sh"><input id="rq" placeholder="Search runs" oninput="runs()">
@@ -2171,6 +2213,13 @@ pre.book{background:#150e0a;border:1px solid var(--bord);border-radius:9px;
    <span id="vst"></span>
    <button id="send" onclick="send()">Send</button>
   </div>
+  <div class="bar" style="margin-top:4px;flex-wrap:wrap">
+   <button class="cb" style="font-size:10px;padding:2px 8px" onclick="order({army_target:(A.army_target||0)+20,note:'ui-more-troops'})">+20 troops</button>
+   <button class="cb" style="font-size:10px;padding:2px 8px" onclick="order({night_call:true,note:'ui-night-call'})">call night</button>
+   <button class="cb" style="font-size:10px;padding:2px 8px" onclick="order({squad_size:6,note:'ui-squads'})">bigger squads</button>
+   <button class="cb" style="font-size:10px;padding:2px 8px" onclick="order({escort_size:4,note:'ui-escort'})">escort hero</button>
+   <button class="cb" style="font-size:10px;padding:2px 8px" onclick="orderClear()">release all</button>
+  </div>
  </div>
 </div>
 <div id="panel"><div id="pgrab"></div><div id="pin">
@@ -2191,6 +2240,12 @@ pre.book{background:#150e0a;border:1px solid var(--bord);border-radius:9px;
     <button class="cb mkt on" data-mk="bld" onclick="mkTog(this)">builds</button>
     <button class="cb mkt on" data-mk="aim" onclick="mkTog(this)">aim</button>
     <button class="cb mkt on" data-mk="path" onclick="mkTog(this)">path</button></div>
+  </div>
+  <div class="pane" id="p-tok">
+   <div class="card"><h4>MiniMax tokens — live ledger</h4><div id="tokTop"></div></div>
+   <div class="card"><h4>Tokens per minute (last hour)</h4><canvas id="tokCurve" style="width:100%;height:110px"></canvas></div>
+   <div class="card"><h4>By call kind</h4><div id="tokKind"></div></div>
+   <div class="card"><h4>Last 25 calls</h4><div id="tokRecent"></div></div>
   </div>
   <div class="pane" id="p-stats">
    <div class="card"><h4>Grades (how computed below)</h4><div id="gradeCards"></div></div>
@@ -2334,6 +2389,7 @@ function paint(){
    <div class="bar-mini"><div class="${(a.useful_pct||0)>=70?'ok':(a.useful_pct||0)>=45?'':'bad'}"
    style="width:${a.useful_pct||0}%"></div></div></div>`
   +cell('waste',(a.waste_s||0)+'s '+esc(a.eff_drain||''),(a.eff_drain||'')?'bad':'ok')
+  +cell('pins',a.stuck||0,(a.stuck||0)>30?'bad':(a.stuck||0)>10?'':'ok')
   +cell('status',a.red?'RED':(a.alerts&&a.alerts.length?a.alerts.length+' alerts':'—'),a.red?'red':'ok');
  // door chips in audit pane
  const du=a.door_units||[],dl=a.door_lines||[];
@@ -2431,14 +2487,38 @@ grab.onmousedown=e=>{e.preventDefault();
  const up=()=>{document.removeEventListener('mousemove',mv);document.removeEventListener('mouseup',up)};
  document.addEventListener('mousemove',mv);document.addEventListener('mouseup',up)};
 function tool(t){
- const names={chat:'',live:'Live View',stats:'Stats',book:'Playbook',weak:'Weaknesses',audit:'Audit',mm:'MiniMax Control'};
+ const names={chat:'',live:'Live View',stats:'Stats',book:'Playbook',weak:'Weaknesses',audit:'Audit',mm:'MiniMax Control',tok:'Token Usage'};
  if(t=='chat'){panel.classList.remove('open');return}
  panel.classList.add('open');document.getElementById('pttl').textContent=names[t];
  document.querySelectorAll('.pane').forEach(x=>x.classList.remove('on'));
  document.getElementById('p-'+t).classList.add('on');
  document.querySelectorAll('#rail .ri').forEach((b,i)=>b.classList.toggle('on',
-   ['chat','live','stats','book','weak','audit','mm'][i]==t));
- if(t=='book')book();else if(t=='stats'||t=='weak')refresh();else if(t=='mm')mmCfg();}
+   ['chat','live','stats','book','weak','audit','mm','tok'][i]==t));
+ if(t=='book')book();else if(t=='stats'||t=='weak')refresh();else if(t=='mm')mmCfg();else if(t=='tok')tokens();}
+/* token usage pane */
+async function tokens(){try{
+ const d=await j('/tokens');if(d.error){document.getElementById('tokTop').textContent=d.error;return}
+ const fmt=n=>n>=1e6?(n/1e6).toFixed(2)+'M':n>=1e3?(n/1e3).toFixed(1)+'k':n;
+ const cell=(k,v)=>`<div class="st"><div class="k">${k}</div><div class="v">${v}</div></div>`;
+ document.getElementById('tokTop').innerHTML=
+  '<div style="display:flex;gap:8px;flex-wrap:wrap">'
+  +cell('calls',d.calls)+cell('total',fmt(d.total))
+  +cell('prompt',fmt(d.in))+cell('completion',fmt(d.out))
+  +cell('avg/call',fmt(d.avg))+cell('last hour',fmt(d.last_hour))+'</div>';
+ document.getElementById('tokKind').innerHTML=
+  Object.entries(d.per_kind||{}).map(([k,v])=>
+   `<div class="kv"><span>${esc(k)} ×${v.n}</span><b>${fmt(v.tot)} (in ${fmt(v.in)} / out ${fmt(v.out)})</b></div>`).join('')||'<div class="hint">none</div>';
+ document.getElementById('tokRecent').innerHTML=
+  (d.recent||[]).map(r=>`<div class="kv"><span>${new Date(r.t*1000).toLocaleTimeString()} · ${esc(r.kind)}</span><b>${r.tot.toLocaleString()} tok</b></div>`).join('')||'<div class="hint">none</div>';
+ const c=document.getElementById('tokCurve'),x=c.getContext('2d');
+ const W=c.width=c.clientWidth,H=c.height=110;x.clearRect(0,0,W,H);
+ const pm=d.per_min||[];if(!pm.length)return;
+ const max=Math.max(...pm.map(p=>p.tok),1);
+ x.strokeStyle='#3d2c1b';for(let g=0;g<=3;g++){x.beginPath();x.moveTo(10,8+g*(H-24)/3);x.lineTo(W-10,8+g*(H-24)/3);x.stroke()}
+ x.fillStyle='#f0b35e';
+ pm.forEach((p,i)=>{const bh=Math.max(2,(p.tok/max)*(H-30));
+  x.fillRect(12+i*(W-24)/pm.length,H-16-bh,(W-24)/pm.length-3,bh)});
+}catch(e){}}
 /* live frame — MJPEG stream when available, poll-fallback otherwise */
 let lastTs=0,frameCt=0,lastFpsT=Date.now(),useStream=true,streamSince=Date.now(),lastMkTs=0;
 const streamErrT={v:0};

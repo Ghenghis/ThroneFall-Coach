@@ -568,6 +568,7 @@ namespace ThronefallTrainer
               // open UI frame (victory/defeat/perk/choice popups) — the coach
               // and MiniMax were blind to wedged frames without this
               .Append(",\"frame\":").Append(JsonStr(Bot.UiFrame ?? ""))
+              .Append(",\"stuck\":").Append(Bot.StuckStrikes)
               .Append(",\"open_order\":[");
             var open = OpenBuildOrder();
             for (int i = 0; i < open.Length; i++)
