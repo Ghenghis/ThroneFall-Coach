@@ -1604,6 +1604,12 @@ namespace ThronefallTrainer
         static void Aim(ref DecideResult r, Vec2 pos, float arrive)
         {
             r.AimPos = pos; r.Arrive = arrive; r.HasAim = true;
+            // Every aim lands on walkable ground: door anchors, build slots and
+            // patrol points can sit INSIDE rocks / boundary / building geometry
+            // (the "90% pinned on map-rocks" complaint). GetNearest is a cheap
+            // snap — the hero walks to the nearest reachable node instead of
+            // pushing forever into a collider he can never enter.
+            r.ProjectToNav = true;
         }
 
         static float Clamp(float v, float lo, float hi)

@@ -547,3 +547,7 @@ AUTOPILOT §8–9 for the full list and next actions.
   waiting for the full door target (13 free units sat while a 14-unit door stayed uncovered); escort refresh
   yields while any door is uncovered; live.png write SKIPPED while the in-game link is up (the 30s 200-490ms
   stall class, ~21% of stalled time - handoff item 1). Deployed, 45.6fps stream, 0 stalls.
+- **ProjectToNav on EVERY aim:** door anchors / build slots / patrol points sit inside rock, boundary and
+  building colliders ("runs into map rocks 90% of the time"). Aim() now snaps every target to the nearest
+  walkable node by default - the hero walks to the reachable edge instead of pushing into geometry forever.
+  Deployed (act-3 behavior, 234 checks green).
