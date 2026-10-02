@@ -559,3 +559,7 @@ AUTOPILOT §8–9 for the full list and next actions.
   branch (obj: prefix) so the wrong thing got parked; boundary aims (edge coins, edge slots) now PARK THE
   GOAL KIND first: CollectCoin -> coinIgnore (never re-picked), SpendGold -> IgnoreStand+IgnoreBuild(60s),
   anything else -> ClearTarget. Previous fix made the repick loop FASTER, not rarer - live events showed it.
+- **Pocket parking (was: per-slot churn):** edge slots cluster - a single 60 s IgnoreBuild just sent the hero
+  to the NEXT slot in the same dead pocket (28 re-parks / 200 s). Boundary pins now IgnorePocket(r=16m,
+  600 s, HARD) so the whole fenced area stays parked for the run; interior building pockets park soft
+  (12 m, 120 s - walls can die and reopen them).

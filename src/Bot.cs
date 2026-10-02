@@ -1407,10 +1407,14 @@ internal static class Bot
 					}
 					else if (Mode == BotMode.SpendGold && (UnityEngine.Object)(object)s.NearestBuild != (UnityEngine.Object)null)
 					{
+						// Edge slots cluster: parking ONE slot for 60 s just
+						// sent him to the next slot in the same dead pocket
+						// (28 re-parks in 200 s). Park the whole pocket HARD —
+						// it never becomes reachable for the rest of the run.
 						BotPerception.IgnoreStand(s.NearestBuildPos);
-						BotPerception.IgnoreBuild(s.NearestBuild, 60f);
+						int pk = BotPerception.IgnorePocket(s.NearestBuildPos, 16f, 600f, hard: true);
 						BotPerception.NoteBuildFail(BotPerception.BuildCat(s.NearestBuildName));
-						LogLine(in s, "boundary-slot-park");
+						LogLine(in s, "boundary-slot-park:" + pk);
 					}
 					else LogLine(in s, "boundary-pin-drop");
 					ClearTarget();
@@ -1421,12 +1425,10 @@ internal static class Bot
 				    (pinCls.StartsWith("pen:") || pinCls.StartsWith("wall") || pinCls.StartsWith("obj:")))
 				{
 					// Not just the stand set — the whole slot is wedged in
-					// collider geometry right now. Stand-blacklist + a short
-					// slot ignore (60 s) so he goes build something else and
-					// comes back when the pocket context changed. Without the
-					// ignore he re-picked this slot every ~1.6 s forever.
+					// collider geometry right now. Stand-blacklist + park the
+					// pocket (soft: interior pockets can open as walls die).
 					BotPerception.IgnoreStand(s.NearestBuildPos);
-					BotPerception.IgnoreBuild(s.NearestBuild, 60f);
+					BotPerception.IgnorePocket(s.NearestBuildPos, 12f, 120f);
 					BotPerception.NoteBuildFail(BotPerception.BuildCat(s.NearestBuildName));
 					ClearTarget();
 					LogLine(in s, "stand-pocket");
