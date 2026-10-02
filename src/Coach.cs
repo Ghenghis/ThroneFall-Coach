@@ -101,12 +101,12 @@ namespace ThronefallTrainer
                               .Append(",\"h\":").Append(Screen.height)
                               .Append(",\"c\":\"").Append(col).Append("\"}");
                         };
-                        pt("hero", s.HeroPos, "#4af");
-                        if (hasAim) pt("aim", aim, "#fd4");
+                        pt("hero", s.HeroPos, "#00e5ff");
+                        if (hasAim) pt("aim", aim, "#ffd400");
                         if (s.HasCastle) pt("castle", s.CastlePos, "#fff");
                         if ((UnityEngine.Object)(object)s.NearestBuild != (UnityEngine.Object)null)
-                            pt("bld:" + (s.NearestBuildName ?? "?"), s.NearestBuildPos, "#0f5");
-                        if (s.RedAlert && s.HasThreatAnchor) pt("THREAT", s.ThreatAnchor, "#f33");
+                            pt("bld:" + (s.NearestBuildName ?? "?"), s.NearestBuildPos, "#00ff7f");
+                        if (s.RedAlert && s.HasThreatAnchor) pt("THREAT", s.ThreatAnchor, "#ff2d2d");
                         if (s.DoorAnchors != null)
                             for (int di = 0; di < s.DoorAnchors.Length; di++)
                             {
@@ -114,7 +114,7 @@ namespace ThronefallTrainer
                                 // open=red ring
                                 int du = BotPerception.DoorUnitAt(di);
                                 string dc = BotPerception.DoorParkedAt(di) >= 0f
-                                    ? "#777" : (du > 0 ? "#f8a" : "#f44");
+                                    ? "#777" : (du > 0 ? "#ff9e00" : "#ff2d2d");
                                 pt("door" + di, s.DoorAnchors[di], dc);
                             }
                         sb.Append("]");
@@ -512,3 +512,4 @@ namespace ThronefallTrainer
         }
     }
 }
+

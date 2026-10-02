@@ -1154,10 +1154,45 @@ namespace ThronefallTrainer
         private static readonly Dictionary<BuildingInteractor, float> buildIgnore =
             new Dictionary<BuildingInteractor, float>();
 
-        public static void ClearIgnores() { buildIgnore.Clear(); }
+        /// <summary>Rescan-proof parks: slots pinned against map-boundary
+        /// geometry get re-picked every rescan otherwise (the hero idles with
+        /// gold forever). Gates.ClearIgnores only fires on real gate opens —
+        /// the boundary never opens, so these stay parked for the level.</summary>
+        public static readonly HashSet<BuildingInteractor> hardIgnore =
+            new HashSet<BuildingInteractor>();
+
+        public static void ClearIgnores()
+        {
+            // Forgive the soft parks; hard (boundary-proven) ignores survive
+            // — they were the stuck-loop on Frostsee's fenced pocket.
+            var toKeep = new Dictionary<BuildingInteractor, float>();
+            foreach (var kv in buildIgnore)
+                if (hardIgnore.Contains(kv.Key)) toKeep[kv.Key] = kv.Value;
+            buildIgnore.Clear();
+            foreach (var kv in toKeep) buildIgnore[kv.Key] = kv.Value;
+        }
         public static void IgnoreBuild(BuildingInteractor bi, float seconds)
         {
             if (bi != null) buildIgnore[bi] = Time.unscaledTime + seconds;
+        }
+
+        /// <summary>Pin loop fix: a hero pinned on the map boundary while
+        /// walking to slot X will re-pin on the NEXT slot in the same fenced
+        /// pocket (observed: Boundaries-3 pin every ~5 s). Park every
+        /// spendable interactor within the pocket radius, not just the pick.
+        /// hard=true survives rescan forgiveness.</summary>
+        public static int IgnorePocket(Vector3 pos, float radius, float seconds, bool hard = false)
+        {
+            int n = 0;
+            foreach (var gb in Object.FindObjectsOfType<BuildingInteractor>(true))
+            {
+                if (gb == null || !gb.CanBeInteractedWith) continue;
+                var pp = ((Component)gb).transform.position;
+                pp.y = 0f; var q = pos; q.y = 0f;
+                if ((pp - q).sqrMagnitude <= radius * radius)
+                { buildIgnore[gb] = Time.unscaledTime + seconds; if (hard) hardIgnore.Add(gb); n++; }
+            }
+            return n;
         }
 
         /// <summary>

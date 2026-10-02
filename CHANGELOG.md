@@ -473,3 +473,11 @@ AUTOPILOT §8–9 for the full list and next actions.
   Reconnect buttons, nav-path polyline from the live pathfinder, door state colours (covered pink /
   open red / parked grey), fps counter counts real marker frames. markers.json now carries pw/ph +
   door state + nav waypoints; /live.json relays mk+st; /events tails the newest run.
+- **Boundary-pin hard park (the gold-idle loop):** pins on map boundary/terrain/ground geometry now mark the
+  pocket as HARD-ignored - rescan forgiveness can no longer resurrect them (it was the Frostsee Boundaries-3
+  loop: park -> rescan -> re-pick -> pin, forever). Gates still clear ignores on real opens; boundary never
+  opens. Live cause of useful_pct=42/waste=540s.
+- **UI usability pass:** proposal ship/reject become real buttons (SHIPPED ✓ / REJECT ✗), marker halo +
+  stroked labels for snow-scene contrast, palette: hero cyan, aim yellow, castle white, build green,
+  threat red, door covered orange / open red / parked grey. Header strip gains useful% + waste cells so
+  idle-time is visible without opening Audit.

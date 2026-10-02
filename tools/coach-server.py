@@ -2269,9 +2269,14 @@ function drawMarkers(mk){mkcv.width=shot.clientWidth;mkcv.height=shot.clientHeig
  mk.pts.forEach(p=>{if(!mkOn[mkKind(p.t)])return;
   const sx=mkcv.width/p.w,sy=mkcv.height/p.h,px=p.x*sx,py=p.y*sx;
   if(px<0||py<0||px>mkcv.width||py>mkcv.height)return;
+  /* dark halo behind every marker — pink/grey on snow was unreadable */
+  mkx.beginPath();mkx.arc(px,py,(p.t=='THREAT'?12:p.t=='castle'?9:p.t.startsWith('door')?7:5)+2.5,0,7);
+  mkx.strokeStyle='rgba(0,0,0,.8)';mkx.lineWidth=4;mkx.stroke();
   mkx.beginPath();mkx.arc(px,py,p.t=='THREAT'?12:p.t=='castle'?9:p.t.startsWith('door')?7:5,0,7);
   mkx.strokeStyle=p.c;mkx.lineWidth=2;mkx.stroke();
-  mkx.fillStyle=p.c;mkx.font='10px monospace';mkx.fillText(p.t,px+7,py-6)});}
+  mkx.font='bold 10px monospace';
+  mkx.strokeStyle='rgba(0,0,0,.9)';mkx.lineWidth=3;mkx.strokeText(p.t,px+7,py-6);
+  mkx.fillStyle=p.c;mkx.fillText(p.t,px+7,py-6)});}
 function reconnectStream(){useStream=true;streamSince=Date.now();shot.src='/live.mjpeg?x='+Date.now()}
 async function saveShot(){const a=document.createElement('a');a.href='/live.png?x='+Date.now();
  a.download='thronefall-'+Date.now()+'.png';a.click()}
@@ -2325,6 +2330,10 @@ function paint(){
   +cell('foes',a.foes)
   +cell('breach',a.breaches,a.breaches>0?'red':'')
   +cell('night',a.night?'YES':'no',a.night?'red':'')
+  +`<div class="st"><div class="k">useful</div><div class="v ${(a.useful_pct||0)>=70?'ok':(a.useful_pct||0)>=45?'':'bad'}">${a.useful_pct||0}%</div>
+   <div class="bar-mini"><div class="${(a.useful_pct||0)>=70?'ok':(a.useful_pct||0)>=45?'':'bad'}"
+   style="width:${a.useful_pct||0}%"></div></div></div>`
+  +cell('waste',(a.waste_s||0)+'s '+esc(a.eff_drain||''),(a.eff_drain||'')?'bad':'ok')
   +cell('status',a.red?'RED':(a.alerts&&a.alerts.length?a.alerts.length+' alerts':'—'),a.red?'red':'ok');
  // door chips in audit pane
  const du=a.door_units||[],dl=a.door_lines||[];
@@ -2538,7 +2547,9 @@ async function mmCfg(){try{const c=await j('/mmconfig');
   el.innerHTML=ps.length?ps.map((p,i)=>{
    const vd=p.verdict==null?'':(p.verdict>=0?` <b style="color:var(--ok)">+${p.verdict}pts eff</b>`:` <b style="color:var(--bad)">${p.verdict}pts eff</b>`);
    const st=p.status||'open';
-   const act=st=='open'?` <a style="cursor:pointer;color:var(--ok)" onclick="propSet(${i},'shipped')">ship</a> <a style="cursor:pointer;color:var(--bad)" onclick="propSet(${i},'rejected')">reject</a>`:'';
+   const act=st=='open'?`<div style="margin-top:3px;display:flex;gap:6px">
+    <button style="flex:1;background:#1d4020;color:#6f6;border:1px solid #2a5a2e;border-radius:6px;padding:3px 0;font-size:10px;cursor:pointer" onclick="propSet(${i},'shipped')">SHIPPED ✓</button>
+    <button style="flex:1;background:#402020;color:#f77;border:1px solid #5a2a2a;border-radius:6px;padding:3px 0;font-size:10px;cursor:pointer" onclick="propSet(${i},'rejected')">REJECT ✗</button></div>`:'';
    return `<div class="wk"><b>[${st}]</b> ${esc(p.bug||'')}${vd}<div>${esc((p.fix||'').slice(0,140))}</div>${act}</div>`}).join('')
    :'<div class="hint">none</div>'}).catch(()=>{});
  const h=c.hb||{};

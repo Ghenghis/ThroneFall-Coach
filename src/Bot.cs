@@ -1395,6 +1395,17 @@ internal static class Bot
 			if (StuckStrikes >= 2 && Mode == BotMode.SpendGold && (UnityEngine.Object)(object)heldBuild == (UnityEngine.Object)null && (UnityEngine.Object)(object)s.NearestBuild != (UnityEngine.Object)null)
 			{
 				BotPerception.IgnoreBuild(s.NearestBuild, 300f);
+				// Park the fenced pocket too — sibling slots in the same
+				// unreachable gap re-pin on the next pick (Boundaries loop).
+				// Immovable geometry (boundary/terrain/ground) hard-parks:
+				// no gate will ever open it, so rescan must not forgive it.
+				bool hardPin = pinCls != null && (
+					pinCls.IndexOf("boundar", StringComparison.OrdinalIgnoreCase) >= 0 ||
+					pinCls.IndexOf("terrain", StringComparison.OrdinalIgnoreCase) >= 0 ||
+					pinCls.IndexOf("ground", StringComparison.OrdinalIgnoreCase) >= 0);
+				BotPerception.IgnorePocket(
+					((Component)s.NearestBuild).transform.position,
+					12f, hardPin ? 600f : 300f, hardPin);
 				ClearTarget();
 				StuckStrikes = 0;
 				LogLine(in s, "pin-park");
