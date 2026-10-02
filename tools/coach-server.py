@@ -2346,13 +2346,17 @@ function tool(t){
    ['chat','live','stats','book','weak','audit','mm'][i]==t));
  if(t=='book')book();else if(t=='stats'||t=='weak')refresh();else if(t=='mm')mmCfg();}
 /* live frame — MJPEG stream when available, poll-fallback otherwise */
-let lastTs=0,frameCt=0,lastFpsT=Date.now(),useStream=true;
+let lastTs=0,frameCt=0,lastFpsT=Date.now(),useStream=true,streamSince=Date.now();
 const streamErrT={v:0};
 shot.onerror=()=>{if(useStream&&Date.now()-streamErrT.v>8000){streamErrT.v=Date.now();useStream=false;shot.src='/live.png'}};
 shot.onload=()=>{if(useStream){frameCt++;document.getElementById('lvAge').textContent='stream '+new Date().toLocaleTimeString()}};
 setInterval(async()=>{try{const l=await j('/live.json');
  if(useStream&&!l.fast){useStream=false;shot.src='/live.png?x='+l.ts}
- if(!useStream&&l.fast){useStream=true;shot.src='/live.mjpeg?x='+l.ts}
+ if(!useStream&&l.fast){useStream=true;streamSince=Date.now();shot.src='/live.mjpeg?x='+l.ts}
+ if(useStream&&l.ts&&l.ts!=lastTs){lastTs=l.ts;
+  /* Browsers keep the LAST multipart frame without firing onerror when the
+     server restarted mid-stream — reconnect on a 30 s watchdog. */
+  if(Date.now()-streamSince>30000){streamSince=Date.now();shot.src='/live.mjpeg?x='+l.ts}}
  if(!useStream&&l.ts&&l.ts!=lastTs){lastTs=l.ts;
   shot.src=(l.fast?'/live.jpg?x=':'/live.png?x=')+l.ts;frameCt++;
   document.getElementById('lvAge').textContent='frame '+new Date(l.ts*1000).toLocaleTimeString()}
