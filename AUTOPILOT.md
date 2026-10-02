@@ -449,6 +449,9 @@ spawn geometry for the threat anchor) ·
 - `inter`/`lvld`/`hd`/`bld` stay ≤4 chars per the log-field convention.
 
 ### Next actions (priority order)
+0. **Live View / game-stall work (2026-10-02) - read `docs/HANDOFF-LIVE-VIEW.md` first.** The video path is done; two thirds of the game's stalled time is our own
+   plugin (bot scene scans every 1.0 s = 43%, the 30 s `live.png` write = 21%) plus FramePerf logging every stall twice. The fixes need a plugin rebuild +
+   game restart: **ask the user first**. Evidence + proof tools: `docs/LIVE-VIEW.md` section 7, `tools/perf-watch.py --history 10`, `tools/frame-cadence.py`.
 1. Extended legit validation — full Nordfels clear + defeat-rotation proof
    (`defeat` notes → different node) + second-map campaign progression.
 2. `invalid` log suppression + per-run metrics.

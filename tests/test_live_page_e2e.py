@@ -19,7 +19,8 @@ FAILS = []
 
 
 def check(name, cond, detail=""):
-    print("[%s] %s%s" % ("PASS" if cond else "FAIL", name, ("  " + str(detail)[:400]) if detail and not cond else ""))
+    shown = ("  " + str(detail)[:400]) if detail and not cond else ""
+    print(("[%s] %s%s" % ("PASS" if cond else "FAIL", name, shown)).encode("ascii", "replace").decode("ascii"))       # the HUD text has a bullet: a cp1252 console must not crash the report of a failure
     if not cond:
         FAILS.append(name)
 
@@ -45,11 +46,146 @@ def kill_livecap(port):
         return None
 
 
+IRREGULAR = (1.0, 2.4, 5.1, 6.0, 9.3, 12.2, 13.7, 17.9, 21.1, 24.4, 28.8, 31.0)      # seconds ago: twelve unrelated stalls (a perfectly regular train would itself be a periodic source)
+
+
+def hud_vram_check(Browser):
+    """The GPU-memory readout and the 'who is slow' sentence in the standalone viewer, fed by an in-process livecap (synthetic 8 fps = a picture with something to explain)."""
+    import threading
+    from test_livecap import Harness
+    import livecap as lcm
+    h = Harness("synthetic", fps=8, width=640)
+    try:
+        def feed_perf():                                                    # the plugin writes perf.json once a second; the page treats a reading older than 6 s as gone
+            json.dump({"t": time.time(), "seq": 1, "fps": 21, "frame_ms": {"p50": 30, "p99": 400}, "stalls_100": 7, "plugin_ms": {"avg": 6.0}}, open(os.path.join(h.agent, "perf.json"), "w"))
+        with open(os.path.join(h.agent, "perf-stalls.jsonl"), "w") as f:
+            f.write("\n".join(json.dumps({"t": time.time() - i, "frame_ms": 300.0, "cause": "engine"}) for i in IRREGULAR) + "\n")
+        feed_perf()
+        full = {"t": time.time(), "used_mb": 21285, "committed_mb": 23681, "shared_mb": 317, "total_mb": 24564, "pressure": 0.964,
+                "top": [{"name": "llama-server.exe", "pid": 1, "mb": 18038, "shared_mb": 180}, {"name": "dwm.exe", "pid": 2, "mb": 13474, "shared_mb": 7},
+                        {"name": "thronefall.exe", "pid": 3, "mb": 1044, "shared_mb": 21}]}
+        gpu = lcm.types_ns(latest=full, version=1, state="ok", stop_ev=threading.Event())
+        h.hub.gpu = gpu
+        with Browser(1280, 800) as b:
+            page = b.open("http://127.0.0.1:%d/" % h.port)
+            time.sleep(3.5)
+            feed_perf()
+            time.sleep(1.2)
+            st = json.loads(page.js("JSON.stringify({v: LV.stats.vram, r: LV.stats.reason, level: LV.stats.level})"))
+            v = st["v"] or {}
+            check("HUD/VRAM: the page receives the GPU reading and reduces it to GB, a pressure and the holders",
+                  bool(v) and abs(v["totalGB"] - 24564 / 1024) < 0.01 and abs(v["pressure"] - 0.964) < 1e-6 and [t["name"] for t in v["top"]] == ["llama-server", "dwm", "thronefall"], st)
+            check("HUD/VRAM: the game itself is not listed as one of the 'others' that hog the card", [t["name"] for t in v.get("others", [])] == ["llama-server", "dwm"], v.get("others"))
+            r = st["r"]
+            check("HUD/VRAM: when the game stalls outside the plugin's code AND the card is full the sentence states VRAM and its holders as facts",
+                  "the game itself stalls" in r and "not the video" in r and "VRAM 96% full" in r and "llama-server 17.6 GB" in r and "dwm 13.2 GB" in r, r)
+            check("HUD/VRAM: ...and it does not claim a cause it has not measured (no 'because', no 'not the plugin')", "because" not in r and "not the plugin" not in r and "INSIDE" not in r, r)
+            page.screenshot(os.path.join(tempfile.gettempdir(), "live_hud_vram.png"))
+            gpu.latest, gpu.version = dict(full, pressure=0.4, used_mb=9000, committed_mb=9500, top=[{"name": "thronefall.exe", "pid": 3, "mb": 1044, "shared_mb": 21}]), 2
+            feed_perf()
+            time.sleep(1.5)
+            r2 = page.js("LV.stats.reason")
+            check("HUD/VRAM: with plenty of VRAM left the sentence does not mention it", "the game itself stalls" in r2 and "VRAM" not in r2, r2)
+            check("HUD/VRAM: no script errors while drawing the extra HUD line", not [c for c in page.console if c[0] == "exception"], page.console[:3])
+            r3 = page.js("LV.stats.reason")
+            check("HUD/period: nothing is said about a timer while the stalls are not periodic", "(a timer)" not in r3, r3)
+            now = time.time()
+            rows = [{"t": now - i, "frame_ms": 300.0, "cause": "engine"} for i in IRREGULAR] + [{"t": now - 20 - 30 * k, "frame_ms": 240.0, "cause": "engine"} for k in range(12)]
+            with open(os.path.join(h.agent, "perf-stalls.jsonl"), "w") as f:
+                f.write("\n".join(json.dumps(r) for r in sorted(rows, key=lambda r: r["t"])) + "\n")
+            h.hub._causes_t = 0.0
+            feed_perf()
+            time.sleep(1.5)
+            r4 = page.js("LV.stats.reason")
+            check("HUD/period: a stall that recurs every 30 s is named in the sentence (a timer, not load)", "a stall >200 ms every 30 s (a timer)" in r4, r4)
+            page.screenshot(os.path.join(tempfile.gettempdir(), "live_hud_period.png"))
+            now = time.time()                                               # our own sections cause the stalls (each logged twice: real line + echo): the sentence names them
+            rows = []
+            for i in range(8):
+                t = now - 3 - 5 * i
+                rows += [{"t": t, "frame_ms": 17.0, "wall_ms": 110.0, "plugin_ms": 104.0, "cause": "plugin", "top": "bot", "top_ms": 104.0},
+                         {"t": t + 0.1, "frame_ms": 117.0, "wall_ms": 16.0, "plugin_ms": 0.0, "cause": "engine", "top": "bot", "top_ms": 0.0}]
+            for j in range(4):
+                t = now - 2.5 - 9 * j
+                rows += [{"t": t, "frame_ms": 17.0, "wall_ms": 250.0, "plugin_ms": 240.0, "cause": "plugin", "top": "coach", "top_ms": 240.0, "shot": "png"},
+                         {"t": t + 0.3, "frame_ms": 267.0, "wall_ms": 16.0, "plugin_ms": 0.0, "cause": "engine", "top": "bot", "top_ms": 0.0}]
+            with open(os.path.join(h.agent, "perf-stalls.jsonl"), "w") as f:
+                f.write("\n".join(json.dumps(r) for r in sorted(rows, key=lambda r: r["t"])) + "\n")
+            h.hub._causes_t = 0.0
+            feed_perf()
+            time.sleep(1.5)
+            r5 = page.js("LV.stats.reason")
+            check("HUD/plugin: when our own sections cause the stalls the sentence says so and names them (each stall counted once, not as 'engine')",
+                  "plugin code is stalling the game (100% of stalled time: coach 53%, bot 47%)" in r5 and "the game itself" not in r5, r5)
+            time.sleep(21)                                                 # the watcher is silent now: a reading older than 20 s must disappear, not stay on screen as if live
+            gone = page.js("LV.stats.vram === null")
+            check("HUD/VRAM: a reading that stops updating (watcher dead / nobody sampling) vanishes after 20 s instead of staying on screen", gone, page.js("JSON.stringify(LV.stats.vram)"))
+    finally:
+        h.close()
+
+
+def hud_narrow_check(Browser):
+    """The HUD must fit its pane. The Coach page's Live pane is only ~320 px wide: every HUD line is fitted to the canvas (least important parts dropped first), the amber
+    timer line is kept whole, and in a very short pane the lines are dropped from the top (VRAM first)."""
+    import threading
+    from test_livecap import Harness
+    import livecap as lcm
+    h = Harness("synthetic", fps=8, width=640)
+    try:
+        now = time.time()
+        rows = [{"t": now - i, "frame_ms": 300.0, "cause": "engine"} for i in IRREGULAR] + [{"t": now - 20 - 30 * k, "frame_ms": 240.0, "cause": "engine"} for k in range(12)]
+        with open(os.path.join(h.agent, "perf-stalls.jsonl"), "w") as f:
+            f.write("\n".join(json.dumps(r) for r in sorted(rows, key=lambda r: r["t"])) + "\n")
+
+        def feed_perf():
+            json.dump({"t": time.time(), "seq": 1, "fps": 21, "frame_ms": {"p50": 30, "p99": 400}, "stalls_100": 7, "plugin_ms": {"avg": 6.0}}, open(os.path.join(h.agent, "perf.json"), "w"))
+        feed_perf()
+        h.hub.gpu = lcm.types_ns(latest={"t": time.time(), "used_mb": 21285, "committed_mb": 23681, "shared_mb": 317, "total_mb": 24564, "pressure": 0.964,
+                                         "top": [{"name": "llama-server.exe", "pid": 1, "mb": 18038, "shared_mb": 180}, {"name": "dwm.exe", "pid": 2, "mb": 13474, "shared_mb": 7},
+                                                 {"name": "thronefall.exe", "pid": 3, "mb": 1044, "shared_mb": 21}]}, version=1, state="ok", stop_ev=threading.Event())
+        for width, height, name in ((1280, 800, "wide"), (320, 400, "narrow (the Coach page's Live pane)"), (300, 70, "narrow and very short")):
+            with Browser(width, height) as b:
+                page = b.open("http://127.0.0.1:%d/" % h.port)
+                time.sleep(3.5)
+                feed_perf()
+                time.sleep(1.2)
+                hud = json.loads(page.js("JSON.stringify(LV.stats.hud)"))
+                if not hud:
+                    check("HUD/fit [%s]: the HUD was drawn" % name, False, hud)
+                    continue
+                texts = [t for t, w in hud["lines"]]
+                widest = max(w for t, w in hud["lines"])
+                check("HUD/fit [%s]: every line fits the canvas (widest %d px of %d available)" % (name, widest, hud["cw"] - hud["x"]), widest <= hud["cw"] - hud["x"], hud)
+                check("HUD/fit [%s]: the main label is always there" % name, texts[0].startswith("●"), texts)
+                has_timer = "a stall >200 ms every 30 s (a timer)" in texts
+                has_vram = any(t.startswith("VRAM ") for t in texts)
+                if height >= 200:
+                    check("HUD/fit [%s]: the game line, the amber timer line and the VRAM line are all shown" % name, has_timer and has_vram and any(t.startswith("game ") for t in texts), texts)
+                    if width < 400:
+                        vram = [t for t in texts if t.startswith("VRAM ")][0]
+                        check("HUD/fit [%s]: the VRAM holders are dropped from the end until the line fits" % name, 1 <= len(vram.split(" · ")) < 4 and vram.startswith("VRAM 23.1/24.0 GB (96%)"), vram)
+                        game = [t for t in texts if t.startswith("game ")][0]
+                        check("HUD/fit [%s]: the game line keeps its first parts when it has to be shortened" % name, game.startswith("game 21 fps · stalls>100ms 7/5s") and "ms/frame" not in game, game)
+                else:
+                    check("HUD/fit [%s]: with room for two lines only, VRAM goes first and the timer line stays" % name, has_timer and not has_vram and len(texts) == 3, texts)
+                page.screenshot(os.path.join(tempfile.gettempdir(), "live_hud_%d.png" % width))
+                check("HUD/fit [%s]: no script errors" % name, not [c for c in page.console if c[0] == "exception"], page.console[:3])
+    finally:
+        h.close()
+
+
 def main():
     from cdp_browser import Browser, find_browser
     if not find_browser():
         print("SKIP: no Edge/Chrome found")
         return 0
+    for fn in (hud_vram_check, hud_narrow_check):
+        try:
+            fn(Browser)
+        except Exception:
+            import traceback
+            traceback.print_exc()
+            FAILS.append("%s raised" % fn.__name__)
     agent = tempfile.mkdtemp(prefix="liveE2E_")
     port, lport = free_port(), free_port()
     env = dict(os.environ, THRONEFALL_AGENT=agent, MM_WATCH="0", CC_ENABLED="1", CC_SKIP_PID_CHECK="1", PYTHONUNBUFFERED="1", LIVECAP_PORT=str(lport),

@@ -516,6 +516,23 @@ AUTOPILOT §8–9 for the full list and next actions.
 - **Fixed a page-killing JS SyntaxError** (stray `}` in the click-to-command handler: no chat/runs/controls at all); `tests/test_page_js.py`
   guards the served page in a headless browser.
 - Tests: test_livecap.py (88), test_wgc_real.py (real WGC, covered window), test_live_page_e2e.py, test_page_js.py. Docs: docs/LIVE-VIEW.md.
+- **Why the picture still stops - measured 2026-10-02 (docs/LIVE-VIEW.md section 7):** the game window itself freezes (confirmed from outside with WGC
+  timestamps: all plugin stall lines >= 250 ms matched real gaps). About two thirds of the stalled time is OUR plugin and not yet fixed (needs a rebuild +
+  game restart, awaiting the user's go-ahead): the bot's scene scans (`BotPerception`, six `FindObjectsOfType(..., true)` phase-locked on one 1 Hz tick:
+  ~115 ms every 1.0 s, 43% of the stalled time) and a 200-490 ms freeze every 30.0 s (`Coach.cs` writes `live.png` while the in-game link is up, 21%).
+  Ruled out with numbers: the local LLM's GPU activity (r = -0.01), GPU-bound game, copy-engine/RAM paging, CPU scheduling starvation. Unattributed
+  (~1/3, incl. rare multi-second freezes): not explained.
+- **Measurement artefact found on the way:** `FramePerf` reads Unity's delta time one frame late, so every stall is logged twice - the real line and an
+  "engine"-labelled echo. The first analysis ("engine 87%") was wrong for that reason. Corrected in the tooling (`stallstat.real_events`: each stall once);
+  the plugin itself still needs the fix (classify by `wall_ms`, one line per stall, rotate the log) - listed in section 7.6.
+- **Live View HUD tells where the stall is, from measurements:** the game's own telemetry line (`game 51 fps · stalls>100ms 3/5s · engine 35% plugin 64%`),
+  a sentence naming the plugin sections ("plugin code is stalling the game (64% of stalled time: bot 43%, coach 21%)"), a VRAM line (`GpuWatch`: Windows
+  GPU counters, per process, sampled every 5 s only while somebody watches; `--gpu auto|on|off`; shown as fact, never as a diagnosis), and an amber note
+  when stalls >= 200 ms recur at a fixed interval (`stallstat.find_period`, support-based with a chance test: "a stall >200 ms every 30 s (a timer)").
+- **New tools:** `tools/perf-watch.py` (`--secs`, `--history MIN`: causes, plugin sections, periodic timers), `tools/frame-cadence.py` (the window's real
+  presentation gaps joined with the plugin's stall lines), `tools/stallstat.py` (shared: real_events / shares / find_period). The HUD lines are fitted
+  to the pane (the Coach page's Live pane is ~320 px). Tests: test_livecap.py (113), test_live_page_e2e.py, test_perfwatch.py, test_stallstat.py (16),
+  test_frame_cadence.py (10) - exact counts in docs/LIVE-VIEW.md section 6.
 - **Cockpit layout live:** icon rails ride the frame edges - left rail toggles overlay layers
   (doors/castle/builds/aim/foes/path), right rail actions (cmd mode / clear ink / annotate / save /
   reconnect); mini-chat input under the feed posts to /chat. The Live pane is now a command console.

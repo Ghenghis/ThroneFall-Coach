@@ -317,6 +317,218 @@ def test_overlay():
         h.close()
 
 
+def test_perf_relay():
+    h = Harness("synthetic", fps=20, width=320)
+    try:
+        now = time.time()
+        rows = [{"t": now - 5, "frame_ms": 300.0, "cause": "engine"}, {"t": now - 4, "frame_ms": 500.0, "cause": "engine"}, {"t": now - 3, "frame_ms": 150.0, "cause": "plugin"},
+                {"t": now - 2, "frame_ms": 50.0, "cause": "mixed"}, {"t": now - 400, "frame_ms": 9999.0, "cause": "plugin"}]       # the last one is older than the 60 s window
+        with open(os.path.join(h.agent, "perf-stalls.jsonl"), "w") as f:
+            f.write("\n".join(json.dumps(r) for r in rows) + "\n")
+        with h.ws() as ws:
+            collect(ws, 2, timeout=3)
+            json.dump({"t": now, "seq": 7, "fps": 39, "frame_ms": {"p50": 16.6, "p99": 380}, "stalls_100": 6, "plugin_ms": {"avg": 9.6}}, open(os.path.join(h.agent, "perf.json"), "w"))
+            got = None
+            end = time.time() + 5
+            while time.time() < end and got is None:
+                m = ws.recv(timeout=2)
+                if isinstance(m, str) and json.loads(m).get("type") == "perf":
+                    got = json.loads(m)
+                elif not isinstance(m, str):
+                    ws.send(json.dumps({"ack": parse_frame(m)["seq"]}))
+        check("perf.json (the game's own frame-time telemetry) is relayed to the viewers", got and got["fps"] == 39 and got["stalls_100"] == 6, got)
+        c = (got or {}).get("causes", {})
+        check("stall causes: shares of stalled time over the last 60 s (old records ignored)", c.get("n") == 4 and abs(c.get("engine", 0) - 800 / 1000) < 0.01 and abs(c.get("plugin", 0) - 0.15) < 0.01, c)
+        with h.ws() as ws2:
+            _, texts = collect(ws2, 1, timeout=3)
+        check("a late joiner gets the latest perf message right away", "perf" in {t.get("type") for t in texts}, [t.get("type") for t in texts])
+        check("no period is invented from a handful of unrelated stalls", "period_s" not in c, c)
+        # a timer: a >= 200 ms stall every 30 s for 6 minutes (plus bursts of the same stall logged twice, plus a few stray ones)
+        rows = []
+        for k in range(12):
+            t = now - 20 - 30 * k
+            rows += [{"t": t, "frame_ms": 250.0, "cause": "engine"}, {"t": t + 0.2, "frame_ms": 130.0, "cause": "engine"}]
+        rows += [{"t": now - 133, "frame_ms": 220.0, "cause": "plugin"}, {"t": now - 251, "frame_ms": 205.0, "cause": "mixed"}, {"t": now - 99, "frame_ms": 90.0, "cause": "engine"}]
+        with open(os.path.join(h.agent, "perf-stalls.jsonl"), "w") as f:
+            f.write("\n".join(json.dumps(r) for r in sorted(rows, key=lambda r: r["t"])) + "\n")
+        h.hub._causes_t = 0.0                                                    # skip the 5 s cache
+        c = h.hub.stall_causes()
+        check("stall_causes: stalls >= 200 ms that recur every 30 s are reported as a period (a timer, not load) although stray events are mixed in (11 of 13 repeat 30 s later)",
+              c.get("period_s") == 30.0 and c.get("period_hits") == 11 and c.get("period_gaps") == 13, c)
+        # the plugin's log pairs Unity's delta time with the wrong frame: one bot stall is logged TWICE (the real line, then an "engine" echo one frame later)
+        rows = []
+        for i in range(6):
+            t = now - 5 - 7 * i
+            rows += [{"t": t, "frame_ms": 17.0, "wall_ms": 110.0, "plugin_ms": 104.0, "cause": "plugin", "top": "bot", "top_ms": 104.0},
+                     {"t": t + 0.1, "frame_ms": 117.0, "wall_ms": 16.5, "plugin_ms": 0.0, "cause": "engine", "top": "bot", "top_ms": 0.0}]
+        with open(os.path.join(h.agent, "perf-stalls.jsonl"), "w") as f:
+            f.write("\n".join(json.dumps(r) for r in sorted(rows, key=lambda r: r["t"])) + "\n")
+        h.hub._causes_t = 0.0
+        c = h.hub.stall_causes()
+        check("stall_causes: a stall logged twice counts once, and it is the plugin's (the echo is not an 'engine' stall)",
+              c.get("n") == 6 and c.get("plugin") == 1.0 and c.get("engine") == 0.0 and c.get("sections") == {"bot": 1.0} and c.get("stalled_ms") == 660, c)
+        old = [{"t": now - 650 - 30 * k, "frame_ms": 300.0, "cause": "engine"} for k in range(12)]               # a timer that stopped more than 10 minutes ago
+        with open(os.path.join(h.agent, "perf-stalls.jsonl"), "w") as f:
+            f.write("\n".join(json.dumps(r) for r in sorted(old, key=lambda r: r["t"])) + "\n")
+        h.hub._causes_t = 0.0
+        check("stall_causes: ...and forgotten again once it has been silent for 10 minutes", "period_s" not in h.hub.stall_causes())
+    finally:
+        h.close()
+
+
+MB = 1048576
+GPU_L1, GPU_L2 = "luid_0x00000000_0x0000A1B2_phys_0", "luid_0x00000000_0x0000C3D4_phys_0"       # a discrete card and an integrated one
+
+
+class FakePdh:
+    """Stands in for win32pdh: serves a canned counter table (path -> bytes) so GpuWatch can be tested without a GPU."""
+    PDH_FMT_LARGE = 1
+
+    def __init__(self, table):
+        self.table = table
+        self.collects = 0
+
+    def OpenQuery(self):
+        return object()
+
+    def CloseQuery(self, q):
+        pass
+
+    def ExpandCounterPath(self, pattern):
+        obj, ctr = pattern.split("(*)")
+        return [p for p in self.table if p.startswith(obj + "(") and p.endswith(ctr)]
+
+    def AddCounter(self, q, path):
+        return path
+
+    def CollectQueryData(self, q):
+        self.collects += 1
+
+    def GetFormattedCounterValue(self, h, fmt):
+        if h not in self.table:
+            raise OSError("the instance is gone")
+        return 0, self.table[h]
+
+
+def gpu_table():
+    def proc(pid, luid, ctr):
+        return "\\GPU Process Memory(pid_%d_%s)\\%s" % (pid, luid, ctr)
+
+    def adapter(luid, ctr):
+        return "\\GPU Adapter Memory(%s)\\%s" % (luid, ctr)
+    return {adapter(GPU_L1, "Dedicated Usage"): 21285 * MB, adapter(GPU_L1, "Shared Usage"): 317 * MB, adapter(GPU_L1, "Total Committed"): 23681 * MB,
+            adapter(GPU_L2, "Dedicated Usage"): 128 * MB, adapter(GPU_L2, "Shared Usage"): 900 * MB, adapter(GPU_L2, "Total Committed"): 130 * MB,
+            proc(100, GPU_L1, "Dedicated Usage"): 18038 * MB, proc(100, GPU_L1, "Shared Usage"): 180 * MB,
+            proc(200, GPU_L1, "Dedicated Usage"): 13474 * MB, proc(200, GPU_L1, "Shared Usage"): 7 * MB,
+            proc(300, GPU_L1, "Dedicated Usage"): 1044 * MB, proc(300, GPU_L1, "Shared Usage"): 21 * MB,
+            proc(400, GPU_L1, "Dedicated Usage"): 50 * MB,                       # under the 100 MB floor: not worth a name on the HUD
+            proc(500, GPU_L2, "Dedicated Usage"): 5000 * MB}, proc                # on the OTHER adapter: not the game's card
+
+
+def test_gpu_watch():
+    names = {100: "llama-server.exe", 200: "dwm.exe", 300: "thronefall.exe"}
+    orig_exe, orig_mod = lc.exe_by_pid, sys.modules.get("win32pdh")
+    lc.exe_by_pid = lambda pid: names.get(pid, "")
+    try:
+        table, proc = gpu_table()
+        g = lc.GpuWatch(total_mb=24564)
+        g._pdh = FakePdh(table)
+        r = g.sample()
+        check("gpu watch: adapter figures come from the card that holds the memory (the integrated GPU is ignored)",
+              (r["used_mb"], r["committed_mb"], r["shared_mb"], r["total_mb"]) == (21285, 23681, 317, 24564), r)
+        check("gpu watch: pressure = max(resident, committed) / physical", abs(r["pressure"] - 23681 / 24564) < 0.001, r.get("pressure"))
+        check("gpu watch: holders are named, biggest first, only on that card and only above 100 MB",
+              [(t["name"], t["mb"]) for t in r["top"]] == [("llama-server.exe", 18038), ("dwm.exe", 13474), ("thronefall.exe", 1044)], r["top"])
+        table["\\GPU Adapter Memory(%s)\\Total Committed" % GPU_L1] = 26000 * MB
+        check("gpu watch: committed above the physical size reads as pressure > 1 (over-committed: the OS is paging)", g.sample()["pressure"] > 1.05)
+        del table[proc(200, GPU_L1, "Dedicated Usage")], table[proc(200, GPU_L1, "Shared Usage")]
+        r = g.sample()                                                           # same handles: the counters of the exited process now fail to read
+        check("gpu watch: a process that exits between two samples does not break the sample", [t["name"] for t in r["top"]] == ["llama-server.exe", "thronefall.exe"], r["top"])
+        g0 = lc.GpuWatch(total_mb=None)
+        g0._pdh = FakePdh(gpu_table()[0])
+        r0 = g0.sample()
+        check("gpu watch: without a known physical size there is no pressure figure (nothing invented)", "pressure" not in r0 and r0["total_mb"] is None and r0["used_mb"] == 21285, r0)
+
+        # the thread: samples while somebody watches, sleeps when nobody does, gives up quietly when the machine has no such counters
+        sys.modules["win32pdh"] = FakePdh(gpu_table()[0])
+        watching = [False]
+        g2 = lc.GpuWatch(interval=0.2, active=lambda: watching[0], total_mb=24564)
+        g2.start()
+        time.sleep(1.2)
+        check("gpu watch: no sampling at all while nobody watches", g2.version == 0 and not g2.latest, g2.version)
+        watching[0] = True
+        check("gpu watch: the first reading arrives right after somebody connects (no 5 s wait)", wait_for(lambda: g2.version >= 1, 3.0, 0.05) and g2.state == "ok", (g2.version, g2.state))
+        v = g2.version
+        check("gpu watch: and then it keeps sampling at the interval", wait_for(lambda: g2.version >= v + 2, 3.0, 0.05))
+        g2.stop_ev.set()
+        sys.modules["win32pdh"] = FakePdh({})
+        g3 = lc.GpuWatch(interval=0.05)
+        g3.start()
+        g3.join(5)
+        check("gpu watch: no GPU counters -> three failed tries, then it switches itself off with a reason (no log spam, no crash)", not g3.is_alive() and g3.state.startswith("off") and not g3.latest, g3.state)
+    finally:
+        lc.exe_by_pid = orig_exe
+        if orig_mod is not None:
+            sys.modules["win32pdh"] = orig_mod
+        else:
+            sys.modules.pop("win32pdh", None)
+
+    # the relay: a fake watcher on the hub, real WebSockets
+    h = Harness("synthetic", fps=20, width=320)
+    try:
+        base = {"t": time.time(), "used_mb": 20000, "committed_mb": 23000, "shared_mb": 100, "total_mb": 24564, "pressure": 0.936,
+                "top": [{"name": "llama-server.exe", "pid": 1, "mb": 18000, "shared_mb": 10}]}
+        fake = lc.types_ns(latest=dict(base), version=1, state="ok", stop_ev=threading.Event())
+        h.hub.gpu = fake
+
+        def next_gpu(ws, timeout=6.0):
+            end = time.time() + timeout
+            while time.time() < end:
+                try:
+                    m = ws.recv(timeout=max(0.05, end - time.time()))
+                except TimeoutError:
+                    return None
+                if isinstance(m, str):
+                    d = json.loads(m)
+                    if d.get("type") == "gpu":
+                        return d
+                else:
+                    ws.send(json.dumps({"ack": parse_frame(m)["seq"]}))
+            return None
+        with h.ws() as ws:
+            got = next_gpu(ws)
+            check("gpu relay: the VRAM reading reaches the viewers as a 'gpu' message", got and got["pressure"] == 0.936 and got["top"][0]["name"] == "llama-server.exe" and "t_srv" in got, got)
+            fake.latest, fake.version = dict(base, pressure=0.5, used_mb=12000), 2
+            got = next_gpu(ws)
+            check("gpu relay: a new sample (version bump) is pushed to a connected viewer", got and got["pressure"] == 0.5, got)
+            check("gpu relay: nothing is re-sent while the version stays the same", next_gpu(ws, 0.8) is None)
+        with h.ws() as ws2:
+            got = next_gpu(ws2, 3.0)
+        check("gpu relay: a viewer that connects later gets the latest reading immediately", got and got["pressure"] == 0.5, got)
+        h.hub.gpu_t = time.time() - 120
+        with h.ws() as ws3:
+            got = next_gpu(ws3, 1.5)
+        check("gpu relay: ...but not one that is older than 30 s (a reading from before the last viewer left must not pass for live)", got is None, got)
+        st = state_of(h)
+        check("/stats shows the GPU reading and the watcher state", st.get("gpu", {}).get("state") == "ok" and st["gpu"].get("used_mb") == 12000, st.get("gpu"))
+    finally:
+        h.close()
+    # the real counters of THIS machine (skipped where Windows has none): the numbers must be plausible, and a warm sample must be cheap
+    g = lc.GpuWatch(interval=0.3)
+    g.start()
+    wait_for(lambda: g.latest or g.state.startswith("off"), 15.0, 0.1)
+    if g.state.startswith("off"):
+        print("   (no GPU performance counters on this machine: %s - real-counter check skipped)" % g.state)
+    else:
+        r = g.latest
+        check("real GPU counters: plausible reading (resident <= ~total, names resolved, a pressure figure)", r["used_mb"] > 0 and (not r["total_mb"] or r["used_mb"] <= r["total_mb"] * 1.1)
+              and all(t["name"] and t["mb"] >= 100 for t in r["top"]) and ("pressure" in r) == bool(r["total_mb"]), r)
+        t0 = time.time()
+        g.sample()
+        check("real GPU counters: a warm sample costs well under 250 ms", time.time() - t0 < 0.25, round((time.time() - t0) * 1000))
+    g.stop_ev.set()
+
+
 # ------------------------------------------------------------------------------------------------------------------------ sources
 def jpeg_file(path, color=(10, 120, 200), size=(1920, 1440)):
     img = np.full((size[1], size[0], 3), color, np.uint8)
@@ -627,8 +839,8 @@ def test_idle_pause():
 
 
 def main():
-    for fn in (test_helpers, test_stream_basics, test_flow_control, test_http_and_security, test_settings, test_overlay, test_plugin_file_fallback, test_wgc_manager,
-               test_game_ingest, test_game_beats_wgc, test_idle_pause):
+    for fn in (test_helpers, test_stream_basics, test_flow_control, test_http_and_security, test_settings, test_overlay, test_perf_relay, test_gpu_watch, test_plugin_file_fallback,
+               test_wgc_manager, test_game_ingest, test_game_beats_wgc, test_idle_pause):
         t0 = time.time()
         try:
             fn()

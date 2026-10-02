@@ -41,7 +41,7 @@
     let ws = null, gen = 0, retry = 250, retryT = 0, url = '';
     let canvas = null, ctx = null, cw = 0, ch = 0, dpr = 1;
     let bmp = null, info = null, pending = null, decoding = false, dirty = true;
-    let view = null, mk = null, incidents = [], marks = [];
+    let view = null, mk = null, incidents = [], marks = [], perf = null, perfAt = 0, gpu = null, gpuAt = 0, lastHud = null;      // perf = the GAME's own frame-time telemetry (plugin FramePerf) relayed by livecap; gpu = VRAM pressure (Windows counters)
     let flags = { door: 1, castle: 1, bld: 1, aim: 1, foe: 1, path: 1, hero: 1, THREAT: 1, GO: 1, zones: 1, inc: 1, hud: 1 };
     let state = 'connecting', detail = '', serverV = '', cfgInfo = {};
     let lastFrameT = 0, lastMsgT = 0, sw = 0, sh = 0, openT = 0, announce = true, hidden = false;
@@ -72,6 +72,8 @@
         let m; try { m = JSON.parse(d); } catch (err) { return; }
         if (m.type === 'view') { view = m; dirty = true; }
         else if (m.type === 'mk') { mk = m; dirty = true; }
+        else if (m.type === 'perf') { perf = m; perfAt = performance.now(); }
+        else if (m.type === 'gpu') { gpu = m; gpuAt = performance.now(); }
         else if (m.type === 'state') { state = m.state; detail = m.detail || ''; dirty = true; }
         else if (m.type === 'hello') { cfgInfo = m; serverV = m.v; if (m.state) state = m.state; }
         return;
@@ -184,6 +186,11 @@
     }
     function fmt(s) { s = Math.max(0, Math.round(s)); return s < 60 ? s + 's' : Math.floor(s / 60) + 'm' + ('0' + (s % 60)).slice(-2) + 's'; }
 
+    function vramInfo(g) {                              // GB figures + the biggest holders other than the game itself; pressure = max(resident, committed) / physical
+      const gb = mb => mb / 1024, nm = n => String(n || '?').replace(/\.exe$/i, '');
+      const top = (g.top || []).map(t => ({ name: nm(t.name), gb: gb(t.mb) }));
+      return { usedGB: gb(g.used_mb), commitGB: gb(g.committed_mb), totalGB: gb(g.total_mb), pressure: g.pressure != null ? g.pressure : Math.max(g.used_mb, g.committed_mb) / g.total_mb, top, others: top.filter(t => !/^thronefall/i.test(t.name)) };
+    }
     function summary() {
       const now = performance.now(), idle = lastFrameT ? now - lastFrameT : 1e9;
       const fps = rate(drawT), net = rate(recvT), lat = st.lat.length ? q(st.lat, .5) : 0;
@@ -194,16 +201,56 @@
       else if (idle > 1500) { level = state === 'static' ? 'warn' : 'bad'; text = (state === 'static' ? 'STATIC SCENE' : 'NO NEW FRAMES') + ' · ' + (idle / 1000).toFixed(1) + 's'; }
       else { level = fps >= 24 && lat < 150 ? 'ok' : fps >= 12 ? 'warn' : 'bad'; text = fps.toFixed(1) + ' fps · ' + Math.round(lat) + ' ms'; }
       // say WHO is slow: frames arriving slowly = the game / capture; frames arriving fast but drawn slowly = this browser
-      const reason = level === 'ok' || !ws ? '' : net < 20 ? 'the game is presenting only ' + net.toFixed(0) + ' fps - not a video problem' : fps < net * 0.7 ? 'this browser is dropping frames' : lat >= 150 ? 'high latency' : '';
-      return { reason, fps, net, lat, latP95: q(st.lat, .95), dec: q(st.decMs, .5), decP95: q(st.decMs, .95), dropped: st.dropped, recv: st.recv, drawn: st.drawn, err: st.err, idle, level, text, state, detail,
+      let reason = level === 'ok' || !ws ? '' : net < 20 ? 'the game is presenting only ' + net.toFixed(0) + ' fps - not a video problem' : fps < net * 0.7 ? 'this browser is dropping frames' : lat >= 150 ? 'high latency' : '';
+      const pf = perf && now - perfAt < 6000 ? perf : null;                      // ground truth from inside the game: who is stalling it
+      const gp = gpu && now - gpuAt < 20000 ? gpu : null;                        // VRAM, sampled every 5 s while somebody watches
+      const vram = gp && gp.total_mb ? vramInfo(gp) : null;
+      if (reason && pf && pf.causes && pf.causes.n >= 10) {
+        const c = pf.causes;
+        // Each real stall is counted once (livecap drops the log's delta-time echoes). "engine" = time not inside one of the plugin's measured sections: the game's own work, GPU / driver / OS,
+        // plugin work outside Update, and stalls just under the logging threshold. So this says WHERE the stall is, never WHY; the VRAM figure is shown as a fact next to it, not as the cause.
+        const secs = c.sections ? Object.keys(c.sections).slice(0, 2).map(k => k + ' ' + Math.round(c.sections[k] * 100) + '%').join(', ') : '';
+        if (c.plugin > 0.4) reason = 'plugin code is stalling the game (' + Math.round(c.plugin * 100) + '% of stalled time' + (secs ? ': ' + secs : '') + ')';
+        else if (c.engine > 0.7) reason = 'the game itself stalls (' + c.n + ' stalls >100 ms in the last minute) - not the video; ' + Math.round(c.engine * 100) + '% of that time is outside the plugin\'s measured code' + (vram && vram.pressure >= 0.9 ? ' · VRAM ' + Math.round(vram.pressure * 100) + '% full' + (vram.others.length ? ' (' + vram.others.slice(0, 2).map(o => o.name + ' ' + o.gb.toFixed(1) + ' GB').join(', ') + ')' : '') : '');
+      }
+      if (reason && pf && pf.causes && pf.causes.period_s) reason += ' · a stall >200 ms every ' + pf.causes.period_s.toFixed(0) + ' s (a timer)';
+      return { vram, hud: lastHud, perf: pf ? { fps: pf.fps, p99: pf.frame_ms && pf.frame_ms.p99, stalls100: pf.stalls_100, pluginMs: pf.plugin_ms && pf.plugin_ms.avg, causes: pf.causes } : null, reason, fps, net, lat, latP95: q(st.lat, .95), dec: q(st.decMs, .5), decP95: q(st.decMs, .95), dropped: st.dropped, recv: st.recv, drawn: st.drawn, err: st.err, idle, level, text, state, detail,
                src: info ? ((info.flags & 4) ? 'game' : (info.flags & 1) ? 'plugin' : state === 'synthetic' ? 'test' : 'wgc') : '', w: sw, h: sh, kbps: Math.round(st.bytes / 1024 / Math.max(1, (now - st.t0) / 1000)), serverV, cfg: cfgInfo };
     }
     function drawHud() {
       if (!flags.hud) return;
       const s = summary(), k = Math.max(1, dpr), col = { ok: '#7bc96f', warn: '#e8a33d', bad: '#e0604f' }[s.level];
-      ctx.font = 'bold ' + (11 * k) + 'px sans-serif'; const label = '● ' + s.text + (s.src ? ' · ' + s.src : '') + (s.w ? ' ' + s.w + '×' + s.h : '');
-      const tw = ctx.measureText(label).width, x = 14 * k, y = ch - 28 * k;      // bottom-left: the page banner owns the top edge, the gold chest the bottom-right
+      const x = 14 * k, y = ch - 28 * k, maxW = Math.max(80 * k, cw - x - 10 * k);      // bottom-left: the page banner owns the top edge, the gold chest the bottom-right
+      const mainFont = 'bold ' + (11 * k) + 'px sans-serif', dimFont = (10 * k) + 'px sans-serif';
+      // The pane can be narrow (the Coach page's Live pane is ~320 px wide): every line is fitted to it, least important parts dropped first.
+      const fit = (parts, font) => {
+        ctx.font = font;
+        for (let n = parts.length; n > 1; n--) { const t = parts.slice(0, n).join(' · '); if (ctx.measureText(t).width <= maxW) return t; }
+        let t = parts[0]; while (t.length > 4 && ctx.measureText(t + '…').width > maxW) t = t.slice(0, -1);
+        return t === parts[0] ? t : t + '…';
+      };
+      const label = fit(['● ' + s.text, (s.src || '') + (s.w ? ' ' + s.w + '×' + s.h : '')].filter(t => t.trim()), mainFont);
+      ctx.font = mainFont; const tw = ctx.measureText(label).width;
       ctx.fillStyle = 'rgba(10,6,3,.62)'; ctx.fillRect(x - 6 * k, y, tw + 12 * k, 20 * k); ctx.fillStyle = col; ctx.fillText(label, x, y + 14 * k);
+      const lines = [];                                                               // [text, colour], bottom to top; the last ones are dropped when the pane is too short
+      if (s.perf) {                                                                   // the game's own numbers: fps it renders, 100 ms+ stalls per 5 s, who stalls it
+        const c = s.perf.causes;
+        lines.push([fit(['game ' + s.perf.fps + ' fps', 'stalls>100ms ' + s.perf.stalls100 + '/5s', c && c.n >= 5 ? 'engine ' + Math.round((c.engine || 0) * 100) + '% plugin ' + Math.round((c.plugin || 0) * 100) + '%' : '',
+                          s.perf.pluginMs != null ? 'plugin ' + s.perf.pluginMs.toFixed(1) + ' ms/frame' : ''].filter(Boolean), dimFont), '#b9a98a']);
+        if (c && c.period_s) lines.push(['a stall >200 ms every ' + c.period_s.toFixed(0) + ' s (a timer)', '#e8a33d']);        // recurring freezes are a timer, not load: say so in amber
+      }
+      if (s.vram) {                                                                   // GPU memory as a fact, with who holds it (no claim that it is the cause)
+        const v = s.vram;
+        lines.push([fit(['VRAM ' + Math.max(v.usedGB, v.commitGB).toFixed(1) + '/' + v.totalGB.toFixed(1) + ' GB (' + Math.round(v.pressure * 100) + '%)'].concat(v.top.slice(0, 3).map(t => t.name + ' ' + t.gb.toFixed(1))), dimFont),
+                     v.pressure >= 1 ? '#e0604f' : v.pressure >= 0.9 ? '#e8a33d' : '#b9a98a']);
+      }
+      const shown = [[label, Math.round(tw)]];
+      lines.slice(0, Math.max(0, Math.floor((y - 2 * k) / (16 * k)))).forEach((l, i) => {
+        const top = y - 16 * k * (i + 1);
+        ctx.font = dimFont; const w = ctx.measureText(l[0]).width; shown.push([l[0], Math.round(w)]);
+        ctx.fillStyle = 'rgba(10,6,3,.55)'; ctx.fillRect(x - 6 * k, top, w + 12 * k, 15 * k); ctx.fillStyle = l[1]; ctx.fillText(l[0], x, top + 11 * k);
+      });
+      lastHud = { cw: Math.round(cw), x: Math.round(x), lines: shown };                 // what was drawn and how wide: the narrow-pane test reads it through LV.stats.hud
     }
 
     function layout() {                                  // contain-fit the frame into the canvas (identical rectangles when the page container already has the frame's aspect)

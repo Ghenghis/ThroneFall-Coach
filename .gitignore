@@ -21,3 +21,6 @@ dist/
 
 fftest.mjpeg
 grab-test.jpg
+
+__pycache__/
+*.pyc

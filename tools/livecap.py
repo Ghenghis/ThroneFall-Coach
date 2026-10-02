@@ -36,6 +36,9 @@ import threading
 import time
 import traceback
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from stallstat import find_period, real_events, shares  # noqa: E402
+
 VERSION = "livecap-1.0"
 HERE = os.path.dirname(os.path.abspath(__file__))
 DEFAULT_AGENT = os.environ.get("THRONEFALL_AGENT", r"K:\Downloads-IDM\Thronefall\BepInEx\plugins\agent")
@@ -737,6 +740,127 @@ class Client:
         self.info = {}
 
 
+def exe_by_pid(pid):
+    """Process name of a pid, '' when unknown (no psutil needed)."""
+    if sys.platform != "win32":
+        return ""
+    h = kernel32.OpenProcess(0x1000, False, int(pid))
+    if not h:
+        return ""
+    try:
+        buf = ctypes.create_unicode_buffer(520)
+        n = wt.DWORD(520)
+        return os.path.basename(buf.value) if kernel32.QueryFullProcessImageNameW(h, 0, buf, ctypes.byref(n)) else ""
+    finally:
+        kernel32.CloseHandle(h)
+
+
+class GpuWatch(threading.Thread):
+    """GPU memory pressure from the Windows performance counters (\\GPU Process Memory, \\GPU Adapter Memory), sampled every few seconds while somebody watches.
+    On this machine it is the biggest cause of the game's engine-side stalls: a local LLM resident in VRAM plus the compositor leave the game almost nothing, Windows
+    over-commits the card (committed ~ physical) and pages the game's resources over PCIe. `latest` = {t, used_mb, committed_mb, shared_mb, total_mb, pressure,
+    top: [{name, pid, mb, shared_mb}]} (empty until the first sample)."""
+
+    COUNTERS = (("ded", r"\GPU Process Memory(*)\Dedicated Usage"), ("shr", r"\GPU Process Memory(*)\Shared Usage"),
+                ("a_ded", r"\GPU Adapter Memory(*)\Dedicated Usage"), ("a_shr", r"\GPU Adapter Memory(*)\Shared Usage"),
+                ("a_com", r"\GPU Adapter Memory(*)\Total Committed"))
+
+    def __init__(self, interval=5.0, active=None, total_mb=None):
+        super().__init__(daemon=True, name="gpu-watch")
+        self.interval, self.active = interval, active
+        self.stop_ev = threading.Event()
+        self.latest = {}
+        self.version = 0
+        self.total_mb = total_mb                        # physical VRAM; looked up through nvidia-smi once when not given
+        self.state = "starting"                         # starting | ok | off: <why>
+        self._pdh = self._query = None
+        self._handles, self._expanded_at = {}, 0.0
+
+    @staticmethod
+    def _smi_total():
+        try:
+            out = subprocess.run(["nvidia-smi", "--query-gpu=memory.total", "--format=csv,noheader,nounits"], capture_output=True, text=True, timeout=6,
+                                 creationflags=0x08000000 if sys.platform == "win32" else 0).stdout.strip().splitlines()
+            return float(out[0]) if out else None
+        except Exception:
+            return None
+
+    def _open(self):
+        """(Re)build the query. The wildcard paths are expanded once per ~2 min (0.7 s): processes come and go, a sample must stay cheap (~50 ms)."""
+        pdh = self._pdh
+        if self._query is not None:
+            pdh.CloseQuery(self._query)
+        self._query, self._handles = pdh.OpenQuery(), {}
+        for kind, counter in self.COUNTERS:
+            for p in pdh.ExpandCounterPath(counter):
+                self._handles[(kind, p)] = pdh.AddCounter(self._query, p)
+        if not self._handles:
+            raise RuntimeError("no GPU performance counters on this machine")
+        self._expanded_at = time.time()
+
+    def sample(self):
+        """One reading -> the dict that goes into `latest`. Raises when the counters are unavailable."""
+        pdh = self._pdh
+        if self._query is None or time.time() - self._expanded_at > 120:
+            self._open()
+        pdh.CollectQueryData(self._query)
+        procs, adapters = {}, {}
+        for (kind, path), h in self._handles.items():
+            try:
+                _, v = pdh.GetFormattedCounterValue(h, pdh.PDH_FMT_LARGE)
+            except Exception:
+                continue                                                    # a process that exited since the expansion: its counter is gone
+            inst = re.search(r"\(([^)]*)\)", path).group(1)
+            m = re.match(r"pid_(\d+)_(.*)", inst)
+            if m:
+                d = procs.setdefault((int(m.group(1)), m.group(2)), {"ded": 0.0, "shr": 0.0})
+                d["ded" if kind == "ded" else "shr"] += v / 1048576.0
+            else:
+                adapters.setdefault(inst, {})[kind] = v / 1048576.0
+        luid = max(adapters, key=lambda k: adapters[k].get("a_ded", 0.0), default=None)       # the adapter that actually holds memory = the discrete GPU
+        main = adapters.get(luid, {})
+        top = sorted(((pid, d) for (pid, a), d in procs.items() if a == luid and d["ded"] >= 100), key=lambda kv: -kv[1]["ded"])[:5]
+        used, com = main.get("a_ded", 0.0), main.get("a_com", 0.0)
+        res = {"t": round(time.time(), 1), "used_mb": round(used), "committed_mb": round(com), "shared_mb": round(main.get("a_shr", 0.0)),
+               "total_mb": round(self.total_mb) if self.total_mb else None,
+               "top": [{"name": exe_by_pid(pid) or ("pid%d" % pid), "pid": pid, "mb": round(d["ded"]), "shared_mb": round(d["shr"])} for pid, d in top]}
+        if self.total_mb:
+            res["pressure"] = round(max(used, com) / self.total_mb, 3)       # >= ~0.97 = full; committed above the physical size = over-committed (the OS pages)
+        return res
+
+    def run(self):
+        try:
+            import win32pdh
+        except ImportError:
+            self.state = "off: pywin32 (win32pdh) not installed"
+            log("gpu watch off:", self.state)
+            return
+        self._pdh = win32pdh
+        if self.total_mb is None:
+            self.total_mb = self._smi_total()
+        fails, idle, last = 0, True, 0.0
+        while not self.stop_ev.is_set():
+            if self.active and not self.active():                           # nobody is watching: no sampling at all
+                idle = True
+                self.stop_ev.wait(0.5)
+                continue
+            if idle or time.time() - last >= self.interval:
+                idle = False
+                try:
+                    self.latest = self.sample()
+                    self.version += 1
+                    self.state, fails = "ok", 0
+                except Exception as ex:
+                    self._query = None
+                    fails += 1
+                    if fails >= 3:                                          # no counters (non-NVIDIA / old Windows): say so once and stop trying
+                        self.state = "off: %s" % ex
+                        log("gpu watch off:", ex)
+                        return
+                last = time.time()
+            self.stop_ev.wait(0.5)
+
+
 class Hub:
     def __init__(self, cfg, loop):
         self.cfg, self.loop = cfg, loop
@@ -758,7 +882,10 @@ class Hub:
         self.out_wh = (0, 0)
         self.lock = threading.Lock()
         self.game = None                                # GameIngest (plugin's in-game capture), when enabled
+        self.gpu = None                                 # GpuWatch (VRAM pressure), when enabled
+        self._gpu_sent, self.gpu_t = -1, 0.0
         self.activity_t = time.time()                   # last time someone watched (a viewer connected / a frame was requested)
+        self._causes_t, self._causes = 0.0, {}
 
     def watched(self, grace=None):
         """Is anybody (or anything: vision snapshot, /frame.png) interested in frames right now? Capture only costs something while this is True."""
@@ -854,6 +981,7 @@ class Hub:
             "clients": [{"id": c.id, "since_s": round(now - c.since), "sent": c.sent, "skipped": c.skipped, "sent_fps": round(c.sent_gaps.fps(), 1), "inflight": len(c.pending),
                          "no_ack": c.no_ack, "report": c.report, "info": c.info} for c in self.clients],
             "overlay": {"view_age_s": round(now - self.view_t, 2) if self.view_t else None, "mk_age_s": round(now - self.mk_t, 2) if self.mk_t else None},
+            "gpu": dict(self.gpu.latest, state=self.gpu.state) if self.gpu else None,
         }
 
     def heartbeat_data(self):
@@ -916,11 +1044,46 @@ class Hub:
             mk["lw"] = lw
         return mk
 
+    def stall_causes(self, window_s=60.0):
+        """Who stalls the game? Over the last minute of the plugin's perf-stalls.jsonl, each REAL stall counted once (stallstat.real_events: the log's delta-time echoes
+        are dropped): `n`, `stalled_ms`, shares by cause (plugin / mixed = a measured plugin section; engine = not in the plugin's measured code) and `sections` (which
+        measured section, as a share of all stalled time); plus `period_s` when the stalls >= 200 ms of the last 10 minutes recur at a fixed interval (a timer). Cached 5 s."""
+        now = time.time()
+        if now - self._causes_t < 5.0:
+            return self._causes
+        self._causes_t = now
+        res = {"n": 0, "window_s": window_s}
+        p = os.path.join(self.cfg.agent, "perf-stalls.jsonl")
+        try:
+            size = os.path.getsize(p)
+            with open(p, "rb") as f:
+                f.seek(max(0, size - 131072))
+                lines = f.read().decode("utf-8", "replace").splitlines()
+            if size > 131072:
+                lines = lines[1:]                                   # the first line of a tail read is cut
+            rows = []
+            for ln in lines:
+                try:
+                    r = json.loads(ln)
+                except ValueError:
+                    continue
+                if now - r.get("t", 0) <= 600.0:
+                    rows.append(r)
+            ev = real_events(rows)
+            per = find_period([e["t"] for e in ev if e["ms"] >= 200.0])
+            if per:
+                res["period_s"], res["period_hits"], res["period_gaps"] = per
+            res.update(shares([e for e in ev if now - e["t"] <= window_s]))
+        except OSError:
+            pass
+        self._causes = res
+        return res
+
     async def overlay_loop(self):
         agent = self.cfg.agent
         while not self.stop_ev.is_set():
             await asyncio.sleep(0.025)
-            for kind, name in (("view", "view.json"), ("mk", "markers.json")):
+            for kind, name in (("view", "view.json"), ("mk", "markers.json"), ("perf", "perf.json")):
                 p = os.path.join(agent, name)
                 try:
                     st = os.stat(p)
@@ -936,12 +1099,20 @@ class Hub:
                 self.mtimes[kind] = st.st_mtime_ns
                 if kind == "view":
                     self.view, self.view_t = data, time.time()
+                elif kind == "perf":                              # the GAME's own frame-time telemetry (plugin FramePerf) + who is stalling it
+                    data["causes"] = await asyncio.to_thread(self.stall_causes)
                 else:
                     data = self.decorate_markers(data)
                     self.mk_t = time.time()
                 data["type"], data["t_srv"] = kind, now_ms()
                 text = json.dumps(data, separators=(",", ":"))
                 self.last_msg[kind] = text
+                await self.broadcast(text)
+            g = self.gpu                                         # GPU memory pressure (not a file: GpuWatch samples the Windows counters); same relay shape
+            if g is not None and g.latest and g.version != self._gpu_sent:
+                self._gpu_sent = g.version
+                text = json.dumps(dict(g.latest, type="gpu", t_srv=now_ms()), separators=(",", ":"))
+                self.last_msg["gpu"], self.gpu_t = text, time.time()
                 await self.broadcast(text)
 
     # --- HTTP + WebSocket
@@ -1010,8 +1181,8 @@ class Hub:
         try:
             await ws.send(self.hello_msg())
             await ws.send(self.state_msg())
-            for k in ("view", "mk"):
-                if self.last_msg.get(k):
+            for k in ("view", "mk", "perf", "gpu"):
+                if self.last_msg.get(k) and (k != "gpu" or time.time() - self.gpu_t < 30):         # a VRAM reading from before the last viewer left must not look live
                     await ws.send(self.last_msg[k])
             sender = asyncio.ensure_future(self.sender(c))
             c.event.set()
@@ -1127,6 +1298,12 @@ class LiveCap:
             except OSError as ex:
                 hub.game = None
                 log("plugin ingest unavailable (port %s busy?): %s" % (self.cfg.ingest_port, ex))
+        want_gpu = getattr(self.cfg, "gpu", "off")
+        if want_gpu == "auto":
+            want_gpu = "off" if self.cfg.source == "synthetic" else "on"
+        if want_gpu == "on":
+            hub.gpu = GpuWatch(active=hub.watched)
+            hub.gpu.start()
         async with wss.serve(hub.handle_ws, "127.0.0.1", self.cfg.port, process_request=hub.process_request, compression=None, max_size=1 << 16,
                              ping_interval=10, ping_timeout=25, max_queue=8) as server:
             self.cfg.bound_port = server.sockets[0].getsockname()[1]
@@ -1140,6 +1317,8 @@ class LiveCap:
             hub.sources.stop_ev.set()
             if hub.game:
                 hub.game.stop_ev.set()
+            if hub.gpu:
+                hub.gpu.stop_ev.set()
 
 
 def types_ns(**kw):
@@ -1158,6 +1337,7 @@ def parse_args(argv=None):
     ap.add_argument("--ffmpeg", default="")
     ap.add_argument("--idle-s", type=float, default=20.0, help="stop capturing when nobody has watched for this many seconds (0 = always capture)")
     ap.add_argument("--ingest-port", type=int, default=8095, help="TCP port the plugin pushes in-game frames to (0 = any free port, -1 = disabled)")
+    ap.add_argument("--gpu", choices=("auto", "on", "off"), default="auto", help="watch GPU memory pressure (who holds the VRAM) while somebody watches; auto = on, except for the synthetic test source")
     ap.add_argument("--status", action="store_true", help="print /stats of the running instance and exit")
     ap.add_argument("--stop", action="store_true", help="stop the running instance (pid from agent/livecap.json) and exit")
     a = ap.parse_args(argv)
