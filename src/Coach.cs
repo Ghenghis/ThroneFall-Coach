@@ -44,6 +44,7 @@ namespace ThronefallTrainer
         public static float LiveShotEvery = 2f;
         public static float LiveShotFastEvery = 0.25f;
         private static float nextLiveShotFast;
+        private static float nextMarkers;
         private static float nextLiveShot;
 
         private static float lastCallAt = -999f;
@@ -69,8 +70,52 @@ namespace ThronefallTrainer
 
         /// <summary>Called from Bot's per-frame Update: periodic live.png for
         /// the chat UI + poll the user command file the chat server writes.</summary>
-        public static void PerFrame()
+        public static void PerFrame(in BotPerception.Snapshot s, Vector3 aim, bool hasAim)
         {
+            // Screen-projected intent markers for the Live pane overlay —
+            // the canvas draws where the bot WANTS to be, not just pixels.
+            if (LiveShot && Time.unscaledTime >= nextMarkers)
+            {
+                nextMarkers = Time.unscaledTime + LiveShotFastEvery;
+                try
+                {
+                    var cam = Camera.main;
+                    if (cam != null)
+                    {
+                        var mk = Path.Combine(Recorder.AgentDir, "markers.json");
+                        var tmp = mk + ".tmp";
+                        var sb = new StringBuilder(400);
+                        sb.Append("{\"pts\":[");
+                        int n = 0;
+                        Action<string, Vector3, string> pt = (tag, pos, col) =>
+                        {
+                            var sp = cam.WorldToScreenPoint(pos);
+                            if (sp.z <= 0f) return;   // behind camera
+                            sb.Append(n++ > 0 ? "," : "")
+                              .Append("{\"t\":\"").Append(tag)
+                              .Append("\",\"x\":").Append(Mathf.RoundToInt(sp.x))
+                              .Append(",\"y\":").Append(Mathf.RoundToInt(Screen.height - sp.y))
+                              .Append(",\"w\":").Append(Screen.width)
+                              .Append(",\"h\":").Append(Screen.height)
+                              .Append(",\"c\":\"").Append(col).Append("\"}");
+                        };
+                        pt("hero", s.HeroPos, "#4af");
+                        if (hasAim) pt("aim", aim, "#fd4");
+                        if (s.HasCastle) pt("castle", s.CastlePos, "#fff");
+                        if ((UnityEngine.Object)(object)s.NearestBuild != (UnityEngine.Object)null)
+                            pt("bld:" + (s.NearestBuildName ?? "?"), s.NearestBuildPos, "#0f5");
+                        if (s.RedAlert && s.HasThreatAnchor) pt("THREAT", s.ThreatAnchor, "#f33");
+                        if (s.DoorAnchors != null)
+                            for (int di = 0; di < s.DoorAnchors.Length; di++)
+                                pt("door" + di, s.DoorAnchors[di], "#f8a");
+                        sb.Append("]}");
+                        File.WriteAllText(tmp, sb.ToString());
+                        if (File.Exists(mk)) File.Delete(mk);
+                        File.Move(tmp, mk);
+                    }
+                }
+                catch (Exception) { }
+            }
             if (LiveShot && Time.unscaledTime >= nextLiveShot)
             {
                 nextLiveShot = Time.unscaledTime + LiveShotEvery;

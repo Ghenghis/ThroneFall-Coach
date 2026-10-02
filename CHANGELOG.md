@@ -464,3 +464,7 @@ AUTOPILOT §8–9 for the full list and next actions.
 - **MJPEG live stream:** /live.mjpeg pushes multipart frames as live.jpg changes - measured 4.4 fps live
   (was ~0.5). Live pane uses the stream when fast feed exists, falls back to polled png/jpg otherwise.
   Plugin fast feed now 0.25 s. 0 errors / 0 lint.
+- **Live-view intent overlay:** plugin emits markers.json each fast frame - hero/aim/castle/build/door/threat
+  positions projected through Camera.main.WorldToScreenPoint. /live.json relays them; a non-interactive
+  canvas draws labeled dots over the MJPEG stream. You can now SEE what the bot is aiming at, which door
+  lines it is posting, and where the current build target sits.

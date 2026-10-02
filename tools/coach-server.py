@@ -1142,8 +1142,16 @@ class H(BaseHTTPRequestHandler):
             pp = AGENT / "live.png"
             ts = pj.stat().st_mtime if pj.exists() else \
                 (pp.stat().st_mtime if pp.exists() else 0)
-            self._send(200, json.dumps({"ts": ts,
-                "fast": pj.exists()}), "application/json")
+            out = {"ts": ts, "fast": pj.exists()}
+            # intent markers for the overlay (hero/aim/doors/castle/threat)
+            mp = AGENT / "markers.json"
+            try:
+                if mp.exists():
+                    out["mk"] = json.loads(mp.read_text(
+                        encoding="utf-8", errors="replace"))
+            except Exception:
+                pass
+            self._send(200, json.dumps(out), "application/json")
         elif self.path.startswith("/run?"):
             # run detail: last 12 ticks of one run — powers the sidebar
             # expandable rows (truth, not summaries).
@@ -2132,7 +2140,7 @@ pre.book{background:#150e0a;border:1px solid var(--bord);border-radius:9px;
  <button onclick="tool('chat')" style="color:var(--dim)">&#10005;</button></div>
  <div id="pbody">
   <div class="pane" id="p-live">
-   <div id="view"><img id="shot" src="/live.mjpeg"><canvas id="draw"></canvas></div>
+   <div id="view"><img id="shot" src="/live.mjpeg"><canvas id="mk" style="position:absolute;inset:0;pointer-events:none"></canvas><canvas id="draw"></canvas></div>
    <div id="livemeta"><span id="lvAge">—</span><span id="lvFps"></span></div>
    <div class="pb" style="margin-top:7px"><button onclick="clearInk()">Clear ink</button>
     <button onclick="sendShot()">Send annotated</button></div>
@@ -2199,7 +2207,15 @@ pre.book{background:#150e0a;border:1px solid var(--bord);border-radius:9px;
 let ttsOn=false,strokes=[],pending=null,cur=null,runRows=[],lockBox=false;
 let sideHidden=false,voiceTimer=null,voiceBuf="",A={};   // A = live audit state
 const feed=document.getElementById('feed'),txt=document.getElementById('txt');
-const shot=document.getElementById('shot'),cv=document.getElementById('draw');
+const shot=document.getElementById('shot'),cv=document.getElementById('draw'),
+ mkcv=document.getElementById('mk'),mkx=mkcv.getContext('2d');
+function drawMarkers(pts){mkcv.width=shot.clientWidth;mkcv.height=shot.clientHeight;
+ mkx.clearRect(0,0,mkcv.width,mkcv.height);if(!pts)return;
+ pts.forEach(p=>{const px=p.x/p.w*mkcv.width,py=p.y/p.h*mkcv.height;
+  if(px<0||py<0||px>mkcv.width||py>mkcv.height)return;
+  mkx.beginPath();mkx.arc(px,py,p.t=='THREAT'?11:p.t=='castle'?9:p.t.startsWith('door')?7:5,0,7);
+  mkx.strokeStyle=p.c;mkx.lineWidth=2;mkx.stroke();
+  mkx.fillStyle=p.c;mkx.font='10px monospace';mkx.fillText(p.t,px+7,py-6)});}
 function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
 function add(role,text,who,tm){
  const d=document.createElement('div');d.className='m '+(role=='mm'?'mm':role=='err'?'err':role);
@@ -2351,6 +2367,7 @@ const streamErrT={v:0};
 shot.onerror=()=>{if(useStream&&Date.now()-streamErrT.v>8000){streamErrT.v=Date.now();useStream=false;shot.src='/live.png'}};
 shot.onload=()=>{if(useStream){frameCt++;document.getElementById('lvAge').textContent='stream '+new Date().toLocaleTimeString()}};
 setInterval(async()=>{try{const l=await j('/live.json');
+ if(l.mk&&l.mk.pts){drawMarkers(l.mk.pts);frameCt++}
  if(useStream&&!l.fast){useStream=false;shot.src='/live.png?x='+l.ts}
  if(!useStream&&l.fast){useStream=true;streamSince=Date.now();shot.src='/live.mjpeg?x='+l.ts}
  if(useStream&&l.ts&&l.ts!=lastTs){lastTs=l.ts;

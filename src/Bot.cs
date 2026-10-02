@@ -545,7 +545,7 @@ internal static class Bot
 				BotPerception.BuildDone(bdn0, ((Component)heldBuild).transform.position);
 			}
 		}
-		Coach.PerFrame();
+		Coach.PerFrame(in BotPerception.Last, hasTarget ? targetPos : Vector3.zero, hasTarget);
 		decisionClock += Time.unscaledDeltaTime;
 		if (!(decisionClock < 0.25f))
 		{
