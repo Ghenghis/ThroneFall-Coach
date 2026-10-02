@@ -1151,7 +1151,37 @@ class H(BaseHTTPRequestHandler):
                         encoding="utf-8", errors="replace"))
             except Exception:
                 pass
+            # live audit state for the banner (red/night/mode/wave)
+            ap = AGENT / "audit.json"
+            try:
+                if ap.exists():
+                    a = json.loads(ap.read_text(
+                        encoding="utf-8", errors="replace"))
+                    out["st"] = {k: a.get(k) for k in
+                        ("mode", "night", "red", "wave", "wave_total",
+                         "ally", "doors_cov", "doors", "foes", "breaches",
+                         "frame", "gold", "blost")}
+            except Exception:
+                pass
             self._send(200, json.dumps(out), "application/json")
+        elif self.path.startswith("/events"):
+            # last N events of the newest run — the frame ticker
+            try:
+                runs = sorted([d for d in (AGENT / "runs").iterdir()
+                               if d.is_dir()],
+                              key=lambda d: d.name)
+                ev = []
+                if runs:
+                    ep = runs[-1] / "events.jsonl"
+                    if ep.exists():
+                        for ln in ep.read_text(
+                                encoding="utf-8",
+                                errors="replace").splitlines()[-12:]:
+                            try: ev.append(json.loads(ln))
+                            except Exception: pass
+                self._send(200, json.dumps(ev), "application/json")
+            except Exception:
+                self._send(200, "[]", "application/json")
         elif self.path.startswith("/run?"):
             # run detail: last 12 ticks of one run — powers the sidebar
             # expandable rows (truth, not summaries).
@@ -2066,6 +2096,14 @@ pre.book{background:#150e0a;border:1px solid var(--bord);border-radius:9px;
  background:#0d0906;min-height:140px}
 #draw{position:absolute;left:0;top:0;cursor:crosshair}
 #livemeta{font-size:10px;color:var(--dim);display:flex;justify-content:space-between;margin-top:3px}
+#banner{position:absolute;left:0;top:0;right:0;display:none;padding:4px 8px;
+ font:600 11px monospace;border-radius:9px 9px 0 0;z-index:3}
+#banner.on{display:block}
+#banner.red{background:rgba(200,30,30,.85);color:#fff}
+#banner.amber{background:rgba(180,130,20,.85);color:#fff}
+#banner.night{background:rgba(30,50,110,.8);color:#cfe0ff}
+.tk{display:inline-block;margin-right:6px;color:var(--dim)}
+.cb.mkt:not(.on){opacity:.35}
 .pb{display:flex;gap:6px}
 .pb button{flex:1;background:#332617;border:1px solid var(--bord);border-radius:8px;
  padding:7px;font-size:11px;color:var(--txt)}
@@ -2140,10 +2178,19 @@ pre.book{background:#150e0a;border:1px solid var(--bord);border-radius:9px;
  <button onclick="tool('chat')" style="color:var(--dim)">&#10005;</button></div>
  <div id="pbody">
   <div class="pane" id="p-live">
-   <div id="view"><img id="shot" src="/live.mjpeg"><canvas id="mk" style="position:absolute;inset:0;pointer-events:none"></canvas><canvas id="draw"></canvas></div>
+   <div id="view"><div id="banner"></div><img id="shot" src="/live.mjpeg"><canvas id="mk" style="position:absolute;inset:0;pointer-events:none"></canvas><canvas id="draw"></canvas></div>
    <div id="livemeta"><span id="lvAge">—</span><span id="lvFps"></span></div>
+   <div id="ticker" class="hint" style="font-size:10px;line-height:1.5;max-height:60px;overflow:hidden;margin:3px 0"></div>
    <div class="pb" style="margin-top:7px"><button onclick="clearInk()">Clear ink</button>
-    <button onclick="sendShot()">Send annotated</button></div>
+    <button onclick="sendShot()">Send annotated</button>
+    <button onclick="saveShot()" title="download the current frame">Save frame</button>
+    <button onclick="reconnectStream()" title="force the stream to reconnect">Reconnect</button></div>
+   <div class="pb" style="margin-top:4px">
+    <button class="cb mkt on" data-mk="door" onclick="mkTog(this)">doors</button>
+    <button class="cb mkt on" data-mk="castle" onclick="mkTog(this)">castle</button>
+    <button class="cb mkt on" data-mk="bld" onclick="mkTog(this)">builds</button>
+    <button class="cb mkt on" data-mk="aim" onclick="mkTog(this)">aim</button>
+    <button class="cb mkt on" data-mk="path" onclick="mkTog(this)">path</button></div>
   </div>
   <div class="pane" id="p-stats">
    <div class="card"><h4>Grades (how computed below)</h4><div id="gradeCards"></div></div>
@@ -2209,13 +2256,35 @@ let sideHidden=false,voiceTimer=null,voiceBuf="",A={};   // A = live audit state
 const feed=document.getElementById('feed'),txt=document.getElementById('txt');
 const shot=document.getElementById('shot'),cv=document.getElementById('draw'),
  mkcv=document.getElementById('mk'),mkx=mkcv.getContext('2d');
-function drawMarkers(pts){mkcv.width=shot.clientWidth;mkcv.height=shot.clientHeight;
- mkx.clearRect(0,0,mkcv.width,mkcv.height);if(!pts)return;
- pts.forEach(p=>{const px=p.x/p.w*mkcv.width,py=p.y/p.h*mkcv.height;
+const mkOn={door:1,castle:1,bld:1,aim:1,path:1,hero:1,THREAT:1};
+function mkTog(b){mkOn[b.dataset.mk]=b.classList.toggle('on')?1:0}
+function mkKind(t){return t.startsWith('door')?'door':t.startsWith('bld')?'bld':t}
+function drawMarkers(mk){mkcv.width=shot.clientWidth;mkcv.height=shot.clientHeight;
+ mkx.clearRect(0,0,mkcv.width,mkcv.height);if(!mk)return;
+ if(mkOn.path&&mk.ln&&mk.ln.length>1){
+  mkx.beginPath();mkx.strokeStyle='#fd4';mkx.lineWidth=2;mkx.setLineDash([5,4]);
+  mk.ln.forEach((w,i)=>{const px=w[0]/mk.pw*mkcv.width,py=w[1]/mk.ph*mkcv.height;
+   i?mkx.lineTo(px,py):mkx.moveTo(px,py)});mkx.stroke();mkx.setLineDash([])}
+ if(!mk.pts)return;
+ mk.pts.forEach(p=>{if(!mkOn[mkKind(p.t)])return;
+  const sx=mkcv.width/p.w,sy=mkcv.height/p.h,px=p.x*sx,py=p.y*sx;
   if(px<0||py<0||px>mkcv.width||py>mkcv.height)return;
-  mkx.beginPath();mkx.arc(px,py,p.t=='THREAT'?11:p.t=='castle'?9:p.t.startsWith('door')?7:5,0,7);
+  mkx.beginPath();mkx.arc(px,py,p.t=='THREAT'?12:p.t=='castle'?9:p.t.startsWith('door')?7:5,0,7);
   mkx.strokeStyle=p.c;mkx.lineWidth=2;mkx.stroke();
   mkx.fillStyle=p.c;mkx.font='10px monospace';mkx.fillText(p.t,px+7,py-6)});}
+function reconnectStream(){useStream=true;streamSince=Date.now();shot.src='/live.mjpeg?x='+Date.now()}
+async function saveShot(){const a=document.createElement('a');a.href='/live.png?x='+Date.now();
+ a.download='thronefall-'+Date.now()+'.png';a.click()}
+function banner(st){const b=document.getElementById('banner');
+ if(st.red){b.textContent='⚠ RED ALERT — breach inside the perimeter';b.className='on red'}
+ else if(st.frame){b.textContent='ui: '+st.frame;b.className='on amber'}
+ else if(st.night){b.textContent='NIGHT — wave '+(st.wave||0)+'/'+(st.wave_total||'?')+
+  ' · doors '+(st.doors_cov||0)+'/'+(st.doors||0)+' · foes '+(st.foes||0);b.className='on night'}
+ else{b.className='';b.textContent=''}}
+async function tick(){try{const ev=await j('/events');const tk=document.getElementById('ticker');
+ if(tk&&ev.length)tk.innerHTML=ev.slice(-6).map(e=>
+  `<span class="tk">${Math.round(e.t||0)}s ${esc(e.note||'')}</span>`).join(' · ')}catch(e){}}
+setInterval(tick,4000);
 function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
 function add(role,text,who,tm){
  const d=document.createElement('div');d.className='m '+(role=='mm'?'mm':role=='err'?'err':role);
@@ -2362,12 +2431,14 @@ function tool(t){
    ['chat','live','stats','book','weak','audit','mm'][i]==t));
  if(t=='book')book();else if(t=='stats'||t=='weak')refresh();else if(t=='mm')mmCfg();}
 /* live frame — MJPEG stream when available, poll-fallback otherwise */
-let lastTs=0,frameCt=0,lastFpsT=Date.now(),useStream=true,streamSince=Date.now();
+let lastTs=0,frameCt=0,lastFpsT=Date.now(),useStream=true,streamSince=Date.now(),lastMkTs=0;
 const streamErrT={v:0};
 shot.onerror=()=>{if(useStream&&Date.now()-streamErrT.v>8000){streamErrT.v=Date.now();useStream=false;shot.src='/live.png'}};
 shot.onload=()=>{if(useStream){frameCt++;document.getElementById('lvAge').textContent='stream '+new Date().toLocaleTimeString()}};
 setInterval(async()=>{try{const l=await j('/live.json');
- if(l.mk&&l.mk.pts){drawMarkers(l.mk.pts);frameCt++}
+ if(l.mk&&(l.mk.pts||l.mk.ln)){drawMarkers(l.mk);
+  if(l.ts!=lastMkTs){lastMkTs=l.ts;frameCt++}}
+ if(l.st)banner(l.st);
  if(useStream&&!l.fast){useStream=false;shot.src='/live.png?x='+l.ts}
  if(!useStream&&l.fast){useStream=true;streamSince=Date.now();shot.src='/live.mjpeg?x='+l.ts}
  if(useStream&&l.ts&&l.ts!=lastTs){lastTs=l.ts;

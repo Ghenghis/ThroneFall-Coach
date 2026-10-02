@@ -85,7 +85,9 @@ namespace ThronefallTrainer
                         var mk = Path.Combine(Recorder.AgentDir, "markers.json");
                         var tmp = mk + ".tmp";
                         var sb = new StringBuilder(400);
-                        sb.Append("{\"pts\":[");
+                        sb.Append("{\"pw\":").Append(Screen.width)
+                          .Append(",\"ph\":").Append(Screen.height)
+                          .Append(",\"pts\":[");
                         int n = 0;
                         Action<string, Vector3, string> pt = (tag, pos, col) =>
                         {
@@ -107,8 +109,36 @@ namespace ThronefallTrainer
                         if (s.RedAlert && s.HasThreatAnchor) pt("THREAT", s.ThreatAnchor, "#f33");
                         if (s.DoorAnchors != null)
                             for (int di = 0; di < s.DoorAnchors.Length; di++)
-                                pt("door" + di, s.DoorAnchors[di], "#f8a");
-                        sb.Append("]}");
+                            {
+                                // state colour: covered=pink, parked=grey,
+                                // open=red ring
+                                int du = BotPerception.DoorUnitAt(di);
+                                string dc = BotPerception.DoorParkedAt(di) >= 0f
+                                    ? "#777" : (du > 0 ? "#f8a" : "#f44");
+                                pt("door" + di, s.DoorAnchors[di], dc);
+                            }
+                        sb.Append("]");
+                        // nav polyline — the actual path the hero is walking
+                        var wps = Bot.NavPathPoints;
+                        if (wps != null)
+                        {
+                            sb.Append(",\"ln\":[");
+                            bool firstPt = true;
+                            foreach (var wp in wps)
+                            {
+                                var sp = cam.WorldToScreenPoint(wp);
+                                if (sp.z <= 0f) continue;
+                                sb.Append(firstPt ? "" : ",")
+                                  .Append("[")
+                                  .Append(Mathf.RoundToInt(sp.x))
+                                  .Append(",")
+                                  .Append(Mathf.RoundToInt(Screen.height - sp.y))
+                                  .Append("]");
+                                firstPt = false;
+                            }
+                            sb.Append("]");
+                        }
+                        sb.Append("}");
                         File.WriteAllText(tmp, sb.ToString());
                         if (File.Exists(mk)) File.Delete(mk);
                         File.Move(tmp, mk);

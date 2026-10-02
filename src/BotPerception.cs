@@ -317,6 +317,11 @@ namespace ThronefallTrainer
         public static int DoorUnitAt(int i) =>
             (doorUnit != null && i >= 0 && i < doorUnit.Length) ? doorUnit[i] : 0;
 
+        /// <summary>Live-view overlay: is this door anchor parked as
+        /// unreachable? (-1 = never parked, else Time of park)</summary>
+        public static float DoorParkedAt(int i) =>
+            (doorParked != null && i >= 0 && i < doorParked.Length) ? doorParked[i] : -1f;
+
         private static float[] doorParked;   // aim-stall proved unwalkable
 
         /// <summary>Park a door anchor for 5 min — the hero-door aim proved

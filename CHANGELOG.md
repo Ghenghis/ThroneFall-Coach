@@ -468,3 +468,8 @@ AUTOPILOT §8–9 for the full list and next actions.
   positions projected through Camera.main.WorldToScreenPoint. /live.json relays them; a non-interactive
   canvas draws labeled dots over the MJPEG stream. You can now SEE what the bot is aiming at, which door
   lines it is posting, and where the current build target sits.
+- **Live pane e2e pass:** state banner (RED ALERT / ui-frame / NIGHT with wave+doors+foes), event ticker
+  (last 6 run events under the frame), overlay toggles (doors/castle/builds/aim/path), Save frame +
+  Reconnect buttons, nav-path polyline from the live pathfinder, door state colours (covered pink /
+  open red / parked grey), fps counter counts real marker frames. markers.json now carries pw/ph +
+  door state + nav waypoints; /live.json relays mk+st; /events tails the newest run.

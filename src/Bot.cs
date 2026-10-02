@@ -297,6 +297,11 @@ internal static class Bot
 
 	public static int StuckStrikes { get; private set; }
 
+	/// <summary>Live-view overlay: the nav path the hero is walking.</summary>
+	internal static List<Vector3> NavPathPoints =>
+		(navPath != null && navPath.vectorPath != null && navPath.vectorPath.Count > 1)
+			? navPath.vectorPath : null;
+
 	private static Vector3 AimPos
 	{
 		get
