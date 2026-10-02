@@ -204,7 +204,16 @@
   function renderEng() {
     const el = $('#ccp-eng'); if (!el) return;
     const q = S.queue || [];
-    const html = q.length ? q.map(e => '<div class="cc-card"><h5>' + esc(e.id) + ' · ' + esc(e.status) + ' · ' + esc(e.priority || '') + ' · ' + hhmm(e.t) + '</h5><div class="diag"><b>' + esc(e.title) + '</b></div><div class="cc-dim">' + esc(e.file || '') + ' ' + esc(e.function || '') + (e.incidents && e.incidents.length ? ' · from ' + esc(e.incidents.join(', ')) : '') + '</div>' + (e.evidence ? '<div class="cc-dim">evidence: ' + esc(e.evidence) + '</div>' : '') + (e.fix ? '<div class="cc-dim">fix: ' + esc(e.fix) + '</div>' : '') + '</div>').join('') : '<div class="cc-empty">No code tasks queued. When an incident needs a code change that no command can make, MiniMax files an URGENT task here (and in proposals.jsonl) with file, function and evidence.</div>';
+    /* status → action buttons (semi mode: every gate is a user click) */
+    const ACTS = { queued: ['run', 'reject'], patched: ['diff', 'apply', 'reject'],
+      applied: ['diff', 'deploy', 'revert'], 'apply-failed': ['diff', 'requeue', 'reject'],
+      failed: ['requeue', 'reject'], 'no-change': ['requeue', 'reject'],
+      rejected: ['requeue'], deployed: ['diff'], 'rolled-back': ['diff', 'requeue'] };
+    const html = q.length ? q.map(e => {
+      const btns = (ACTS[e.status] || []).map(a =>
+        '<button class="cc-btn" data-cc="engact" data-id="' + esc(e.id) + '" data-act="' + a + '">' + a + '</button>').join('');
+      return '<div class="cc-card"><h5>' + esc(e.id) + ' · ' + esc(e.status) + ' · ' + esc(e.priority || '') + ' · ' + hhmm(e.t) + (btns ? ' <span style="float:right">' + btns + '</span>' : '') + '</h5><div class="diag"><b>' + esc(e.title) + '</b></div><div class="cc-dim">' + esc(e.file || '') + ' ' + esc(e.function || '') + (e.incidents && e.incidents.length ? ' · from ' + esc(e.incidents.join(', ')) : '') + '</div>' + (e.evidence ? '<div class="cc-dim">evidence: ' + esc(e.evidence) + '</div>' : '') + (e.fix ? '<div class="cc-dim">fix: ' + esc(e.fix) + '</div>' : '') + '</div>';
+    }).join('') : '<div class="cc-empty">No code tasks queued. When an incident needs a code change that no command can make, MiniMax files an URGENT task here (and in proposals.jsonl) with file, function and evidence.</div>';
     setIf(el, 'eng', html);
   }
 
@@ -259,6 +268,11 @@
       else if (k === 'job-toggle') { await jpost('/scheduler', { job: b.getAttribute('data-job'), enabled: b.getAttribute('data-on') !== '1' }); poll(true); }
       else if (k === 'job-run') { await jpost('/scheduler', { job: b.getAttribute('data-job'), run: true }); toast('job started: ' + b.getAttribute('data-job')); setTimeout(() => poll(true), 2000); }
       else if (k === 'approve' || k === 'reject') { const r = await jpost(k === 'approve' ? '/mmapprove' : '/mmreject', { idx: +b.getAttribute('data-idx') }); toast(k + 'd' + (r.applied ? ' (applied)' : '')); S.cache.incSig = null; poll(true); }
+      else if (k === 'engact') { const act = b.getAttribute('data-act'), id = b.getAttribute('data-id');
+        if (act === 'deploy' && !confirm('Deploy restarts the game. Proceed?')) return;
+        if (act === 'diff') { const d = await jget('/engineer/diff?id=' + id); const w = window.open('', '_blank'); w.document.write('<pre style="background:#1a120a;color:#e8dfc8;padding:12px">' + esc(d.diff || 'no diff') + '</pre>'); return; }
+        const r = await jpost('/engineer', { id, action: act, confirm: act === 'deploy' });
+        toast((r.ok ? act + ' started' : (r.why || 'refused')) + ' — ' + id); S.cache.incSig = null; setTimeout(() => poll(true), 3000); }
     } catch (err) { toast('action failed: ' + err); }
   }
   async function onChange(e) {

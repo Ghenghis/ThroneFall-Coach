@@ -852,10 +852,22 @@ class CommandCenter:
         elif base == "/engineer-queue":
             rows = []
             try:
-                rows = [json.loads(l) for l in open(os.path.join(self.agent, "engineer-queue.jsonl"), encoding="utf-8").read().splitlines() if l.strip()][-40:]
-            except OSError:
+                # merged view: queue rows + per-task status sidecar
+                eng = self._engineer()
+                if eng:
+                    rows = eng.queue()[-40:]
+                else:
+                    rows = [json.loads(l) for l in open(os.path.join(self.agent, "engineer-queue.jsonl"), encoding="utf-8").read().splitlines() if l.strip()][-40:]
+            except Exception:
                 pass
             h._send(200, _jdump(rows[::-1]), "application/json")
+        elif base == "/engineer/diff":
+            try:
+                eng = self._engineer()
+                d = eng.diff_text(str(args.get("id", ""))) if eng else None
+            except Exception as ex:
+                d = "diff error: %s" % ex
+            h._send(200, _jdump({"diff": d}), "application/json")
         elif base == "/view.json":                      # camera matrix + zones published by the plugin (UI overlay); {} until then
             try:
                 h._send(200, open(os.path.join(self.agent, "view.json"), "rb").read(), "application/json")
@@ -896,13 +908,52 @@ class CommandCenter:
         self.ctx.append_log("c", "[%s ui-act] %s %s -> %s" % (time.strftime("%H:%M"), how, {k: a[k] for k in ("x", "z", "r", "ttl_s") if k in a}, res[:140]))
         return {"ok": ok, "result": res, "act": a}
 
+    def _engineer(self):
+        """Lazy mm_engineer handle — the import pulls in the whole safety
+        model, so it only happens when the queue endpoint is touched."""
+        if getattr(self, "_eng", None) is None:
+            try:
+                sys.path.insert(0, HERE) if HERE not in sys.path else None
+                import mm_engineer
+                repo = os.path.dirname(HERE)
+                self._eng = mm_engineer.Engineer(
+                    repo, self.agent, mm_engineer.make_minimax_chat(),
+                    log=lambda m: self.ctx.append_log("eng", str(m)[:200]))
+            except Exception as ex:
+                self.ctx.append_log("err", "engineer init: %s" % ex)
+                self._eng = False
+        return self._eng or None
+
     def http_post(self, h, path, n):
-        if path not in ("/incident/ack", "/incident/wake", "/scheduler", "/probe", "/act"):
+        if path not in ("/incident/ack", "/incident/wake", "/scheduler", "/probe", "/act", "/engineer"):
             return False
         try:
             data = json.loads(h.rfile.read(n) or b"{}")
         except Exception:
             h._send(400, "bad json")
+            return True
+        if path == "/engineer":
+            eng = self._engineer()
+            if not eng:
+                h._send(200, _jdump({"ok": False, "why": "engineer module unavailable"}), "application/json")
+                return True
+            tid = str(data.get("id", ""))
+            act = str(data.get("action", ""))
+            confirm = data.get("confirm") is True
+            def _do():
+                try:
+                    if act == "run":    res = eng.run_task(tid)
+                    elif act == "apply":  res = eng.apply_patch(tid)
+                    elif act == "deploy": res = eng.deploy(tid, confirm=confirm)
+                    elif act == "reject": res = eng.reject(tid, str(data.get("reason", "ui")))
+                    elif act == "requeue": res = eng.requeue(tid)
+                    elif act == "revert": res = eng.revert(tid)
+                    else: res = {"ok": False, "why": "bad action"}
+                    self.ctx.append_log("eng", "[engineer %s %s] %s" % (act, tid, res.get("ok", False)))
+                except Exception as ex:
+                    self.ctx.append_log("err", "engineer %s %s failed: %s" % (act, tid, ex))
+            threading.Thread(target=_do, daemon=True).start()
+            h._send(200, _jdump({"ok": True, "started": act, "id": tid}), "application/json")
             return True
         if path == "/incident/ack":
             ok = self.engine.ack(str(data.get("id", "")), "user", str(data.get("note", "")))

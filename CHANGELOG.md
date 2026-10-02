@@ -516,3 +516,12 @@ AUTOPILOT §8–9 for the full list and next actions.
 - **Fixed a page-killing JS SyntaxError** (stray `}` in the click-to-command handler: no chat/runs/controls at all); `tests/test_page_js.py`
   guards the served page in a headless browser.
 - Tests: test_livecap.py (88), test_wgc_real.py (real WGC, covered window), test_live_page_e2e.py, test_page_js.py. Docs: docs/LIVE-VIEW.md.
+- **Cockpit layout live:** icon rails ride the frame edges - left rail toggles overlay layers
+  (doors/castle/builds/aim/foes/path), right rail actions (cmd mode / clear ink / annotate / save /
+  reconnect); mini-chat input under the feed posts to /chat. The Live pane is now a command console.
+- **Engineer pipeline wired:** POST /engineer {id,action:run|apply|deploy|reject|requeue|revert} ->
+  mm_engineer.Engineer (gated: build+test+lint vs base, size limits, auto-rollback). /engineer-queue
+  merges queue+status sidecar; /engineer/diff previews patches. Engineer tab gets status-appropriate
+  action buttons. 40 tasks already queued. Deploy still needs confirm=true (game restart).
+- **Supervisor installed:** ThronefallCoachSupervisor scheduled task (every minute) - already restarted
+  the server twice when /alive refused. Live View supervisor cell shows it watching.

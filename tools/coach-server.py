@@ -2284,6 +2284,24 @@ pre.book{background:#150e0a;border:1px solid var(--bord);border-radius:9px;
 #banner.night{background:rgba(30,50,110,.8);color:#cfe0ff}
 .tk{display:inline-block;margin-right:6px;color:var(--dim)}
 .cb.mkt:not(.on){opacity:.35}
+/* cockpit: icon rails ride the frame edges; nothing takes space below */
+.vrail{position:absolute;top:14px;display:flex;flex-direction:column;gap:4px;z-index:4}
+.vrail.vl{left:6px}.vrail.vr{right:6px}
+.vb{width:26px;height:26px;border-radius:7px;border:1px solid rgba(255,255,255,.14);
+ background:rgba(12,8,6,.72);color:#d9c9a8;font-size:13px;cursor:pointer;padding:0;
+ transition:background .15s}
+.vb:hover{background:#3a2c1a}
+.vb.on{border-color:#6f7;color:#9fb}
+.vb:not(.on){opacity:.55}
+/* mini-chat under the live pane — talk while watching */
+#minichat{display:flex;gap:5px;margin-top:5px;align-items:stretch}
+#mcLog{position:absolute;margin-top:-26px;left:4px;right:4px;max-height:24px;overflow:hidden;
+ font-size:10px;color:#cfe0a8;text-shadow:0 1px 2px #000;pointer-events:none;white-space:nowrap}
+#mcIn{flex:1;background:#1a120a;border:1px solid var(--bord);border-radius:7px;color:var(--fg);
+ padding:4px 8px;font-size:11px;outline:none}
+#mcIn:focus{border-color:#8a6d3b}
+#minichat button{background:#332617;border:1px solid var(--bord);border-radius:7px;color:var(--fg);
+ padding:4px 12px;font-size:11px;cursor:pointer}
 .pb{display:flex;gap:6px}
 .pb button{flex:1;background:#332617;border:1px solid var(--bord);border-radius:8px;
  padding:7px;font-size:11px;color:var(--txt)}
@@ -2366,21 +2384,29 @@ pre.book{background:#150e0a;border:1px solid var(--bord);border-radius:9px;
  <button onclick="tool('chat')" style="color:var(--dim)">&#10005;</button></div>
  <div id="pbody">
   <div class="pane" id="p-live">
-   <div id="view"><div id="banner"></div><img id="shot" src="/live.mjpeg"><canvas id="mk" style="position:absolute;inset:0;pointer-events:none"></canvas><canvas id="draw"></canvas></div>
+   <div id="view"><div id="banner"></div><img id="shot" src="/live.mjpeg"><canvas id="mk" style="position:absolute;inset:0;pointer-events:none"></canvas><canvas id="draw"></canvas>
+    <!-- cockpit rails: layer toggles on the left edge, actions on the right -->
+    <div class="vrail vl">
+     <button class="vb on" data-mk="door" onclick="mkTog(this)" title="door posts">&#128737;</button>
+     <button class="vb on" data-mk="castle" onclick="mkTog(this)" title="castle">&#127984;</button>
+     <button class="vb on" data-mk="bld" onclick="mkTog(this)" title="build targets">&#128296;</button>
+     <button class="vb on" data-mk="aim" onclick="mkTog(this)" title="aim/hero">&#127919;</button>
+     <button class="vb on" data-mk="foe" onclick="mkTog(this)" title="enemies">&#128128;</button>
+     <button class="vb on" data-mk="path" onclick="mkTog(this)" title="nav path">&#128064;</button>
+    </div>
+    <div class="vrail vr">
+     <button class="vb" data-mk="cmd" onclick="cmdMode=this.classList.toggle('on');cv.style.cursor=cmdMode?'pointer':'crosshair'" title="cmd mode — click a door/build/threat marker to send the hero">&#9876;</button>
+     <button class="vb" onclick="clearInk()" title="clear ink">&#9003;</button>
+     <button class="vb" onclick="sendShot()" title="annotate + send to MiniMax">&#128398;</button>
+     <button class="vb" onclick="saveShot()" title="save frame">&#128247;</button>
+     <button class="vb" onclick="reconnectStream()" title="reconnect stream">&#10227;</button>
+    </div>
+   </div>
    <div id="livemeta"><span id="lvAge">—</span><span id="lvFps"></span></div>
    <div id="ticker" class="hint" style="font-size:10px;line-height:1.5;max-height:60px;overflow:hidden;margin:3px 0"></div>
-   <div class="pb" style="margin-top:7px"><button onclick="clearInk()">Clear ink</button>
-    <button onclick="sendShot()">Send annotated</button>
-    <button onclick="saveShot()" title="download the current frame">Save frame</button>
-    <button onclick="reconnectStream()" title="force the stream to reconnect">Reconnect</button></div>
-   <div class="pb" style="margin-top:4px">
-    <button class="cb mkt on" data-mk="door" onclick="mkTog(this)">doors</button>
-    <button class="cb mkt on" data-mk="castle" onclick="mkTog(this)">castle</button>
-    <button class="cb mkt on" data-mk="bld" onclick="mkTog(this)">builds</button>
-    <button class="cb mkt on" data-mk="aim" onclick="mkTog(this)">aim</button>
-    <button class="cb mkt on" data-mk="foe" onclick="mkTog(this)">foes</button>
-    <button class="cb mkt on" data-mk="path" onclick="mkTog(this)">path</button>
-    <button class="cb mkt" data-mk="cmd" onclick="cmdMode=this.classList.toggle('on');cv.style.cursor=cmdMode?'pointer':'crosshair'" title="click markers on the frame to command the hero">cmd</button></div>
+   <div id="minichat"><div id="mcLog"></div>
+    <input id="mcIn" placeholder="order the bot / ask MiniMax… (Enter sends)" onkeydown="if(event.key==='Enter')miniChat()">
+    <button onclick="miniChat()">send</button></div>
   </div>
   <div class="pane" id="p-tok">
    <div class="card"><h4>MiniMax tokens — live ledger</h4><div id="tokTop"></div></div>
@@ -2885,6 +2911,12 @@ function redraw(){const c=cv.getContext('2d');c.clearRect(0,0,cv.width,cv.height
  c.lineTo(s.x2-14*Math.cos(a-.5),s.y2-14*Math.sin(a-.5));c.moveTo(s.x2,s.y2);
  c.lineTo(s.x2-14*Math.cos(a+.5),s.y2-14*Math.sin(a+.5));c.stroke()})}
 function clearInk(){strokes=[];redraw()}
+/* mini-chat inside the live pane — same /chat pipe as the big composer */
+async function miniChat(){const inp=document.getElementById('mcIn'),lg=document.getElementById('mcLog');
+ const t=(inp.value||'').trim();if(!t)return;inp.value='';
+ lg.textContent='you: '+t;
+ try{const r=await j('/chat',{method:'POST',body:JSON.stringify({message:t})});
+  lg.textContent=(r.reply||r.error||'sent').slice(0,140)}catch(e){lg.textContent='send failed'}}
 async function sendShot(){const c=document.createElement('canvas');let src=shot;
  if(window.LV&&LV.active){try{src=await createImageBitmap(await LV.snapshot());c.width=src.width;c.height=src.height}catch(e){src=null}}
  if(src===shot){c.width=shot.naturalWidth;c.height=shot.naturalHeight}
