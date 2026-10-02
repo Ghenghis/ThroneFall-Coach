@@ -1420,7 +1420,7 @@ internal static class Bot
 				// fix that — retreat to the last spot he actually moved at
 				// (lastFreePos), navmesh-snapped, before anything else runs.
 				if (StuckStrikes >= 4 && Legit && Mode != BotMode.Engage &&
-				    Mode != BotMode.HeroDead)
+				    Mode != BotMode.HeroDead && Time.unscaledTime >= retreatUntil)
 				{
 					// Castle first — it sits center-map on open ground; the
 					// pocket mouth (lastFreePos) was still inside the trap
@@ -1433,10 +1433,21 @@ internal static class Bot
 						// the aim every ~1.6 s, so each retreat died before he
 						// moved a metre. Now the castle aim holds for 15 s
 						// regardless of what the brain wants next.
-						navPath = null; navIndex = 0; navWrongLayer = false; detourUntil = 0f;
+						navPath = null; navIndex = 0; navWrongLayer = false;
 						retreatPos = home;
 						retreatUntil = Time.unscaledTime + 15f;
 						SetTarget(home, 2.5f, projectToNav: true);
+						// PHYSICAL escape drive: aims alone don't move him out
+						// of a collider pocket — steer backwards off the pin
+						// (away from where the aim was pointing) for 4 s so
+						// the CharacterController actually walks free.
+						Vector3 back = s.HeroPos - AimPos; back.y = 0f;
+						detourPos = back.sqrMagnitude > 0.01f
+						    ? s.HeroPos + back.normalized * 7f
+						    : s.HeroPos + Vector3.Cross(Vector3.up, Vector3.forward) * 7f;
+						if ((UnityEngine.Object)(object)AstarPath.active != (UnityEngine.Object)null)
+						    detourPos = AstarPath.active.GetNearest(detourPos, new NNConstraint()).position;
+						detourUntil = Time.unscaledTime + 4f;
 						LogLine(in s, "trap-retreat");
 					}
 					return;
