@@ -1703,10 +1703,16 @@ namespace ThronefallTrainer
                 // until met.
                 int at = 16;
                 int doorNeed = 0;
+                // Production capacity: each military building respawns ~12
+                // units (level asset unitProducer.unitCount=12). bmil=10 on
+                // Frostsee → ~120 supported — the old hard 60 kept the army
+                // at half of what the map feeds ("100s of troops").
+                int prodCap = s.BuildMil > 0 ? s.BuildMil * 12 : 0;
+                int ceiling = prodCap > 0 ? prodCap : 60;
                 if (s.DoorAnchors != null)
                 {
                     for (int d = 0; d < s.DoorAnchors.Length; d++) doorNeed += DoorTarget(d, pk);
-                    at = Mathf.Min(Mathf.Max(doorNeed, 16), 60);
+                    at = Mathf.Min(Mathf.Max(doorNeed, 16), ceiling);
                 }
                 if (s.MaxWaveAhead > 0) at = Mathf.Max(at, (int)(s.MaxWaveAhead * 1.1f));
                 if (Strat.ArmyTarget > at) at = Strat.ArmyTarget;          // M3 playbook floor
@@ -1715,12 +1721,12 @@ namespace ThronefallTrainer
                 if (Coach.ArmyTargetFloor > 0) at = Mathf.Max(at, Coach.ArmyTargetFloor);
                 // Proposal [19]: an unreachable target (157 vs 48 actual
                 // allies) fires armyShort FOREVER and skews every build
-                // score toward military. Cap at postable capacity +
-                // headroom for escorts/respawns in the pipe — +48, not +24:
-                // wave-lookahead targets were being clipped below what the
-                // night's wave actually demanded, starving reinforcement
-                // depth (user: "should have 100s of troops, not a few").
-                int cap = doorNeed > 0 ? doorNeed + 48 : 96;
+                // score toward military. Cap at production capacity +
+                // respawn headroom: wave-lookahead targets were being
+                // clipped below what the night's wave actually demanded,
+                // starving reinforcement depth (user: "should have 100s of
+                // troops, not a few").
+                int cap = Mathf.Max(doorNeed + 48, ceiling + 16);
                 if (at > cap) at = cap;
                 s.ArmyTarget = at;
             }

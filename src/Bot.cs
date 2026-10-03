@@ -514,6 +514,15 @@ internal static class Bot
 		if (hasTarget && (UnityEngine.Object)(object)instance != (UnityEngine.Object)null)
 		{
 			val = ((!Legit) ? DirTo(((Component)instance).transform.position, AimPos, arriveDist) : DirTo(((Component)instance).transform.position, NavSteerPoint(((Component)instance).transform.position, AimPos), navSteerArrive));
+			// Steering repulsion: nav waypoints sit flush on collider faces, so
+			// following them corner-hugs into walls/buildings (the "stuck on
+			// Main Collider" class). Push the desired dir off anything inside
+			// ~0.7 m — prevention, not just pin recovery. Skipped while paying
+			// a hold (he must touch the slot) and during gate push-through.
+			if (Legit && val.sqrMagnitude > 0.01f &&
+			    (UnityEngine.Object)(object)heldBuild == (UnityEngine.Object)null &&
+			    Time.unscaledTime >= navDirectUntil)
+				val = ObstacleRepulse(((Component)instance).transform.position, val);
 		}
 		float num = 1f - Mathf.Exp(-10f * Time.unscaledDeltaTime);
 		DesiredDir = Vector3.Lerp(DesiredDir, val, num);
@@ -910,9 +919,12 @@ internal static class Bot
 					// commit window so the hero actually walks somewhere.
 					if (++aimFlapStreak > 3) flapHold = Mathf.Min(8f, flapHold * 1.5f);
 				}
-				else { aimBlockedSince = 0f; aimFlapStreak = 0; }
+				else { aimBlockedSince = 0f; aimFlapStreak = 0;
+				       // Decay the hysteresis — it ratcheted to 8 s and never
+				       // recovered, delaying every legitimate retarget.
+				       flapHold = Mathf.Max(2.5f, flapHold * 0.9f); }
 			}
-			else if (!urgent) aimFlapStreak = 0;
+			else if (!urgent) { aimFlapStreak = 0; flapHold = Mathf.Max(2.5f, flapHold * 0.9f); }
 			// A reused (blocked) aim must NOT refresh the window, otherwise a
 			// stable opposite target is "a reversal" forever (A12 finding).
 			if (aimBlockedSince <= 0f || Time.unscaledTime - aimBlockedSince > flapHold)
@@ -950,7 +962,7 @@ internal static class Bot
 			{
 				nextRescan = Time.unscaledTime + 30f;
 				BotPerception.ClearIgnores();
-				Memory.ForgiveParks(s.SceneName);
+				Memory.ForgiveParksSoft(s.SceneName);   // keep stall/unreachable parks — they were proven bad, not transient
 				LogLine(in s, "rescan-slots");
 			}
 		}
@@ -1401,6 +1413,42 @@ internal static class Bot
 				StuckStrikes = 0;
 				return;
 			}
+			// Physical trap FIRST (was nested inside `if (pinCls != null)`):
+			// wedged BETWEEN two colliders the 1.6 m probe finds nothing —
+			// pinCls==null and the retreat never fired (audit finding A).
+			if (StuckStrikes >= 4 && Legit && Mode != BotMode.Engage &&
+			    Mode != BotMode.HeroDead && Time.unscaledTime >= retreatUntil)
+			{
+				// Castle first — it sits center-map on open ground; the
+				// pocket mouth (lastFreePos) was still inside the trap
+				// (74 retreats, zero escapes). Only fall back to
+				// lastFreePos when no castle exists.
+				Vector3 home = s.HasCastle ? s.CastlePos : lastFreePos;
+				if (home != Vector3.zero)
+				{
+					// Latch the retreat: the 4 Hz decide loop re-overrode
+					// the aim every ~1.6 s, so each retreat died before he
+					// moved a metre. Now the castle aim holds for 15 s
+					// regardless of what the brain wants next.
+					navPath = null; navIndex = 0; navWrongLayer = false;
+					retreatPos = home;
+					retreatUntil = Time.unscaledTime + 15f;
+					SetTarget(home, 2.5f, projectToNav: true);
+					// PHYSICAL escape drive: aims alone don't move him out
+					// of a collider pocket — steer backwards off the pin
+					// (away from where the aim was pointing) for 4 s so
+					// the CharacterController actually walks free.
+					Vector3 back = s.HeroPos - AimPos; back.y = 0f;
+					detourPos = back.sqrMagnitude > 0.01f
+					    ? s.HeroPos + back.normalized * 7f
+					    : s.HeroPos + Vector3.Cross(Vector3.up, Vector3.forward) * 7f;
+					if ((UnityEngine.Object)(object)AstarPath.active != (UnityEngine.Object)null)
+					    detourPos = AstarPath.active.GetNearest(detourPos, new NNConstraint()).position;
+					detourUntil = Time.unscaledTime + 4f;
+					LogLine(in s, "trap-retreat");
+				}
+				return;
+			}
 			// Awareness probe: WHAT is the hero pinned on? Classifies the
 			// collider ahead — pen (buildable/upgradeable), gate, wall,
 			// terrain rock/tree, enemy, other object — so pins learn the
@@ -1410,48 +1458,6 @@ internal static class Bot
 			{
 				LogLine(in s, "pin:" + pinCls);
 				Recorder.Event("pin-type", "\"what\":\"" + pinCls + "\"" + Act.PinExtraJson(s.HeroPos));   // + the blocker's name/layer/bounds/static flag
-				// Building-collider pin while building = the baked stand
-				// point sits inside a pocket that walls/towers created AFTER
-				// the map scan. Blacklist it on the FIRST strike — the next
-				// capture falls back to the hero-side standoff instead of
-				// 30-60 s of detours into the same pocket.
-				// Physical trap: 4+ pins while immobile = he's wedged INTO
-				// geometry (boundary pocket, building crevice). No goal can
-				// fix that — retreat to the last spot he actually moved at
-				// (lastFreePos), navmesh-snapped, before anything else runs.
-				if (StuckStrikes >= 4 && Legit && Mode != BotMode.Engage &&
-				    Mode != BotMode.HeroDead && Time.unscaledTime >= retreatUntil)
-				{
-					// Castle first — it sits center-map on open ground; the
-					// pocket mouth (lastFreePos) was still inside the trap
-					// (74 retreats, zero escapes). Only fall back to
-					// lastFreePos when no castle exists.
-					Vector3 home = s.HasCastle ? s.CastlePos : lastFreePos;
-					if (home != Vector3.zero)
-					{
-						// Latch the retreat: the 4 Hz decide loop re-overrode
-						// the aim every ~1.6 s, so each retreat died before he
-						// moved a metre. Now the castle aim holds for 15 s
-						// regardless of what the brain wants next.
-						navPath = null; navIndex = 0; navWrongLayer = false;
-						retreatPos = home;
-						retreatUntil = Time.unscaledTime + 15f;
-						SetTarget(home, 2.5f, projectToNav: true);
-						// PHYSICAL escape drive: aims alone don't move him out
-						// of a collider pocket — steer backwards off the pin
-						// (away from where the aim was pointing) for 4 s so
-						// the CharacterController actually walks free.
-						Vector3 back = s.HeroPos - AimPos; back.y = 0f;
-						detourPos = back.sqrMagnitude > 0.01f
-						    ? s.HeroPos + back.normalized * 7f
-						    : s.HeroPos + Vector3.Cross(Vector3.up, Vector3.forward) * 7f;
-						if ((UnityEngine.Object)(object)AstarPath.active != (UnityEngine.Object)null)
-						    detourPos = AstarPath.active.GetNearest(detourPos, new NNConstraint()).position;
-						detourUntil = Time.unscaledTime + 4f;
-						LogLine(in s, "trap-retreat");
-					}
-					return;
-				}
 				// ORDER MATTERS: "obj:Boundaries*" must be checked BEFORE the
 				// stand-pocket branch (whose "obj:" prefix would swallow it).
 				// A boundary pin means the CURRENT GOAL — coin, slot, anchor —
@@ -1479,7 +1485,11 @@ internal static class Bot
 					ClearTarget();
 					return;
 				}
-				if (Mode == BotMode.SpendGold &&
+				// Strike >= 2 only: a first-strike bump is usually a friendly
+				// unit, not a wall — parking the slot on that evidence
+				// aborted real work (audit finding B). "unit"/"enemy"/"gate"
+				// classes are excluded: a body bump is not a building pocket.
+				if (StuckStrikes >= 2 && Mode == BotMode.SpendGold &&
 				    (UnityEngine.Object)(object)s.NearestBuild != (UnityEngine.Object)null &&
 				    (pinCls.StartsWith("pen:") || pinCls.StartsWith("wall") || pinCls.StartsWith("obj:")))
 				{
@@ -2235,6 +2245,22 @@ internal static class Bot
 				PathfindMovementPlayerunit component = ((Component)val).GetComponent<PathfindMovementPlayerunit>();
 				if (!((UnityEngine.Object)(object)component == (UnityEngine.Object)null))
 				{
+					// Don't strip squads posted at doors FAR from the breach:
+					// re-homing every unit vacated the other lanes and the
+					// leak cascaded (Frostsee wave-12/13 defeats).
+					if (component.HoldPosition && s.DoorAnchors != null)
+					{
+						Vector3 hp = component.HomePosition;
+						bool farPosted = false;
+						for (int d = 0; d < s.DoorAnchors.Length; d++)
+						{
+							Vector3 a = s.DoorAnchors[d]; a.y = hp.y;
+							if ((a - hp).sqrMagnitude <= 64f &&
+							    (s.ThreatAnchor - a).sqrMagnitude > 625f)
+								farPosted = true;
+						}
+						if (farPosted) continue;
+					}
 					float num2 = (float)num * 0.785f;
 					Vector3 val2 = new Vector3(Mathf.Cos(num2), 0f, Mathf.Sin(num2)) * (1.5f + 0.3f * (float)num);
 					component.FollowPlayer(false);
@@ -2796,6 +2822,45 @@ internal static class Bot
 	/// ahead toward the aim. Returns a short tag ("pen:Barracks", "gate",
 	/// "wall", "terrain:Rock", "enemy", "obj:<name>") or null if nothing
 	/// recognizable — runs only on stuck strikes so the sphere is cheap.</summary>
+	private static readonly Collider[] repBuf = new Collider[16];
+
+	/// <summary>Steering-time obstacle repulsion: one overlap probe per tick
+	/// pushes the desired direction off any collider inside heroRadius+clearance.
+	/// Excludes the hero himself, the held build (must touch to pay) and the
+	/// engage target (must close). Ally units count — they wedge him too —
+	/// the push lets him slide around them.</summary>
+	private static Vector3 ObstacleRepulse(Vector3 hero, Vector3 dir)
+	{
+		try
+		{
+			int n = Physics.OverlapSphereNonAlloc(hero + Vector3.up * 0.5f, 1.0f, repBuf,
+				~0, QueryTriggerInteraction.Ignore);
+			Vector3 push = Vector3.zero;
+			for (int i = 0; i < n; i++)
+			{
+				var c = repBuf[i];
+				if ((UnityEngine.Object)(object)c == (UnityEngine.Object)null) continue;
+				var go = c.gameObject;
+				var tg = go.GetComponentInParent<TaggedObject>();
+				if (tg != null && tg.Contains(TagManager.ETag.Player)) continue;      // self
+				if ((UnityEngine.Object)(object)heldBuild != (UnityEngine.Object)null &&
+				    c.transform.IsChildOf(((Component)heldBuild).transform)) continue;
+				if (Mode == BotMode.Engage && (UnityEngine.Object)(object)engageTarget != (UnityEngine.Object)null &&
+				    c.transform.IsChildOf(((Component)engageTarget).transform)) continue;
+				Vector3 cp = c.ClosestPoint(hero); cp.y = hero.y;
+				Vector3 away = hero - cp; float d = away.magnitude;
+				const float margin = 0.7f;
+				if (d < margin && d > 0.001f)
+					push += away.normalized * ((margin - d) / margin);
+			}
+			if (push.sqrMagnitude < 0.001f) return dir;
+			Vector3 r = dir + push * 1.5f;
+			r.y = 0f;
+			return r.sqrMagnitude > 0.01f ? r.normalized : dir;
+		}
+		catch { return dir; }
+	}
+
 	private static string PinProbe(Vector3 hero, Vector3 aim)
 	{
 		try
@@ -2818,6 +2883,10 @@ internal static class Bot
 					      (bi.CanBeInteractedWith ? "(upgradeable)" : "");
 				else if ((UnityEngine.Object)(object)go.GetComponentInParent<GateOpener>() != (UnityEngine.Object)null) cls = "gate";
 				else if (tg != null && tg.Contains(TagManager.ETag.EnemyOwned)) cls = "enemy";
+				// Friendly unit: ALLY wedges classified as obj:<unit> and the
+				// stand-pocket branch parked the build SLOT for it — a unit
+				// bump aborting real work (audit finding C).
+				else if (tg != null && tg.Contains(TagManager.ETag.PlayerOwned)) cls = "unit";
 				else
 				{
 					string n = (go.name ?? "").ToLowerInvariant();

@@ -574,3 +574,15 @@ AUTOPILOT §8–9 for the full list and next actions.
   useful=86.9% at t=154 (was 15-30%), ally=24.
 - **Crash diagnosis:** repeated InvalidCastException in Bot.Tick (swallowed, message-only log) preceded the
   game exit. Plugin.cs catch now logs full stack traces, throttled to once/30s with a running count.
+- **4-agent audit batch (95% contract):** (1) busyDay dropped BlockedBuilds + 90s->30s Balance window -
+  parked slots counted as "work left" and latched the day ~21 min (the wave-4 sit). (2) aim-flap-blocked
+  flapHold now decays back to 2.5s (was ratcheted to 8s forever). (3) trap-retreat hoisted above pinCls -
+  null-probe wedges between colliders never retreated. (4) PinProbe classifies PlayerOwned as "unit" and
+  stand-pocket requires strike>=2 - ally bumps no longer park build slots. (5) rescan uses
+  ForgiveParksSoft - stall/unreachable parks survive the 30s forgive loop. (6) steering-time ObstacleRepulse
+  (1.0m probe, 0.7m margin) - wedges prevented, not just recovered. (7) surplus posting: doors full +
+  free>8 -> PlaceArmy at next-wave anchor (18 idle units get orders). (8) CastleHpPct<0.4 -> hero
+  consolidates inside the wall (the wave-12 defeat cause). (9) RecallToBreach skips squads posted >25m
+  from the breach. (10) pay-watchdog resets on STRICT balance decrease only (refund churn killed).
+- **Army capacity:** ArmyTarget ceiling now BuildMil*12 (unitProducer.unitCount) instead of hard 60 -
+  bmil=10 -> ~120 target on a map that supports it.

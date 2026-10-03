@@ -805,6 +805,19 @@ namespace ThronefallTrainer
                     r.Intents.Add(Intent.Of(IntentKind.RecallToBreach));
                     r.Notes.Add("breach-response");
                 }
+                // CASTLE-LOW defense (the Frostsee wave-12 loss): the hero
+                // held a wall 37 m OUT while the keep burned at hp<10%.
+                // Below 40% castle HP the hero consolidates between the
+                // breach and the keep, inside the wall — matching the pack's
+                // own breach rule ("castle <30% → squads retreat inside").
+                if (s.HasCastle && s.CastleHpPct < 0.4f)
+                {
+                    m.Mode = BotMode.HoldCastle; r.Mode = m.Mode;
+                    Vec2 inDef = s.CastlePos + (s.ThreatAnchor - s.CastlePos).Norm * 6f;
+                    Aim(ref r, inDef, ArriveHold);
+                    r.Notes.Add("castle-low-hold");
+                    return r;
+                }
                 bool heroMust0 = (s.HasNearEnemy && s.NearEnemyDist <=
                         (s.SelfDefendRange > 0f ? s.SelfDefendRange : 7f))
                     || s.NearFoeCount >= 2;
@@ -1108,8 +1121,11 @@ namespace ThronefallTrainer
             // BUSY DAY: buildable slots exist, gold is in hand and the bot is still making progress -> the day
             // is not over. Calling night with a full wallet and open slots wastes the only time the hero can build.
             // Under-armed (<70 % of target) with buildable work and recent progress also blocks the early call.
-            bool busyDay = (s.HasBuild || s.BuildCount > 0 || s.BlockedBuilds > 0) && s.Balance >= 20 &&
-                (s.SinceProg < 25f || (s.Balance >= 500 && s.SinceProg < 90f) || (s.ArmyTarget > 0 && s.AllyCount * 10 < s.ArmyTarget * 7 && s.SinceProg < 60f));
+            // BlockedBuilds are PARKED slots = proven non-work; counting them
+            // kept busyDay latched ~21 min/day (wave-4 sit). The Balance>=500
+            // window also stretched to 90 s on any pay/refund flicker.
+            bool busyDay = (s.HasBuild || s.BuildCount > 0) && s.Balance >= 20 &&
+                (s.SinceProg < 25f || (s.Balance >= 500 && s.SinceProg < 30f) || (s.ArmyTarget > 0 && s.AllyCount * 10 < s.ArmyTarget * 7 && s.SinceProg < 60f));
             // Doors actually manned RIGHT NOW: DoorsCovered also counts parked
             // (unwalkable) anchors and en-route claims — neither is a defender,
             // and counting them called the night early with the walls unmanned.
@@ -1208,6 +1224,16 @@ namespace ThronefallTrainer
                     m.LastEscortAt = now;
                     r.Intents.Add(Intent.Of(IntentKind.EscortHero));
                     r.Notes.Add("escort-refresh");
+                }
+                // Surplus posting: doors full + units still free = they stand
+                // at spawn with NO HomePosition (free=18 idle observed). Push
+                // the excess to the next-wave anchor — every unit mans a post.
+                if (!s.HasUncoveredDoor && s.HasArmyAnchor &&
+                    s.FreeUnits > 8 && now - m.DoorPostAts[0] > 15f)
+                {
+                    m.DoorPostAts[0] = now;   // reuse the slot-0 timer for the surplus cadence
+                    r.Intents.Add(Intent.Of(IntentKind.PlaceArmy));
+                    r.Notes.Add("surplus-anchor");
                 }
             }
 
@@ -1399,8 +1425,14 @@ namespace ThronefallTrainer
                         m.SpendWatchCores = s.CoreBalance;
                         m.SpendWatchAt = now + 7f;
                     }
-                    else if (s.Balance != m.SpendWatchGold || s.CoreBalance != m.SpendWatchCores)
+                    else if (s.Balance < m.SpendWatchGold || s.CoreBalance < m.SpendWatchCores)
                     {
+                        // STRICT decrease only — a REFUND (ReleaseHold /
+                        // CancelFill paying back) also changes the balance and
+                        // used to reset the 7 s stall watchdog + count as
+                        // "pay" progress, feeding the pay-churn loop
+                        // (114 pays vs 40 build-dones — partial fills paid,
+                        // released, refunded, re-picked).
                         // Real spend progress — mark it so events prove
                         // coins actually land (the analyzer counts these).
                         // ALSO resets the slot-abandon timer: a slow fill

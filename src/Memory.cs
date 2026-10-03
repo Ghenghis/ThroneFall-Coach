@@ -178,6 +178,37 @@ namespace ThronefallTrainer
             }
         }
 
+        /// <summary>Rescan-forgive: drop only TRANSIENT parks. Reasons proven
+        /// unreachable ("build-stall", "unreachable", "pocket") survive — the
+        /// 30 s rescue rescan otherwise resurrected the same wedged slots and
+        /// re-picked them forever (pick→walk→stall→park→forgive→re-pick).
+        /// </summary>
+        public static void ForgiveParksSoft(string scene)
+        {
+            EnsureInit();
+            scene = Sanitize(scene);
+            int n = 0;
+            foreach (var p in parkOrder.ToArray())
+            {
+                if (!p.StartsWith(scene + "|") || !parked.Contains(p)) continue;
+                string why = null;
+                foreach (var w in parkedWhy)
+                    if (w.StartsWith(p + "|")) { why = w; break; }
+                string r = why != null ? why.Substring(p.Length + 1) : "";
+                if (r.IndexOf("stall", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    r.IndexOf("unreachable", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    r.IndexOf("pocket", StringComparison.OrdinalIgnoreCase) >= 0) continue;
+                parked.Remove(p); parkOrder.Remove(p); parkedAt.Remove(p);
+                if (why != null) parkedWhy.Remove(why);
+                n++;
+            }
+            if (n > 0)
+            {
+                Save();
+                Plugin.Log?.LogInfo($"[memory] soft-forgave {n} parked cells for '{scene}' (rescan; stall/unreachable kept)");
+            }
+        }
+
         /// <summary>Forgive the parks made since <paramref name="sinceT"/> (Time.unscaledTime) - used after the hero got out of an enclosure:
         /// everything parked while it could not leave was parked for the wrong reason (unreachable FROM THERE, not unreachable).</summary>
         public static void ForgiveParksSince(string scene, float sinceT)
