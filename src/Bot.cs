@@ -768,7 +768,12 @@ internal static class Bot
 		{
 			sawInteractables = true;
 		}
-		if (s.GameState == "InMatch" && !s.IsNight && !sawInteractables && (UnityEngine.Object)(object)s.NearestBuild == (UnityEngine.Object)null && s.InteractorCount == 0)
+		// The level-select map reports GameState InMatch but has no build
+		// interactables by design — the vacuum watchdog quarantined the
+		// scene and fired Apply()/TransitionToLevelSelect mid-navigation.
+		if (s.GameState == "InMatch" && !s.IsNight &&
+		    s.SceneName != null && !s.SceneName.StartsWith("_") &&
+		    !sawInteractables && (UnityEngine.Object)(object)s.NearestBuild == (UnityEngine.Object)null && s.InteractorCount == 0)
 		{
 			nonVacSince = -1f;
 			if (interZeroSince < 0f)
@@ -2790,6 +2795,21 @@ internal static class Bot
 				{
 					val.Apply();
 				}
+			}
+			return true;
+		}
+		// The Level Select frame is the CORRECT frame during EnterLevel —
+		// busyHung opened it precisely so its Start button gets clicked.
+		// Apply() IS that button; the generic closer used to shut it before
+		// Start ever fired -> open/close loop, level never entered.
+		if (Mode == BotMode.EnterLevel && (UnityEngine.Object)(object)val != (UnityEngine.Object)null &&
+		    ((UnityEngine.Object)val).name.IndexOf("Level Select", StringComparison.OrdinalIgnoreCase) >= 0)
+		{
+			if (Time.unscaledTime >= frameActionAt)
+			{
+				frameActionAt = Time.unscaledTime + 2f;
+				val.Apply();
+				LogLine(in s, "level-start-click");
 			}
 			return true;
 		}

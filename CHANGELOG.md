@@ -591,3 +591,9 @@ AUTOPILOT §8–9 for the full list and next actions.
   trigger the sidestep machinery; ObstacleRepulse skips FOLLOWING units (they trail by design - pushing
   off them was the new jitter source); night-unfocus-step throttled to 3s (was every tick - the in/out
   doorway dance, 687 events).
+- **Level-select open/close loop + false quarantine:** InteractLevel opened the Level Select frame but the
+  generic blocker closed it before Start (open/close forever, never entered a level). Fix: Apply() clicks
+  Start when the Level Select frame is open during EnterLevel. The interactor-vacuum watchdog also
+  treated _LevelSelect (GameState=InMatch, zero interactables) as a corrupt match - quarantined the scene
+  AND every real map in badscenes.json (IsBadScene = -1000 pick score). Vacuum now skips _* scenes and
+  badscenes.json was reset.
