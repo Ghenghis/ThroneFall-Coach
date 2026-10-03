@@ -301,6 +301,7 @@ internal static class Bot
 	private static float focusUntil;
 	private static Vector3 retreatPos;              // trap-retreat latch target (castle)
 	private static float retreatUntil;              // suppress all other aims until this expires
+	private static float unfocusStepAt;             // throttle for the night-call unfocus step
 	/// <summary>UI click-to-command ("send hero here"). Seconds-capped so a
 	/// stale click can never trap the hero; brain resumes after expiry.</summary>
 	internal static void SetFocus(Vector3 pos, float seconds)
@@ -1544,7 +1545,12 @@ internal static class Bot
 				return;
 			}
 			// First strike (~1.5 s pinned): immediate sidestep along the learned-cool side instead of waiting 3 strikes.
-			if (StuckStrikes == 1 && Legit && Mode != BotMode.Engage)
+			// Unit/enemy bumps are transient — the sidestep+detour machinery
+			// on a follower collision is the visible "wiggle" churn (361
+			// sidesteps this run were escorts bumping him). Only geometry
+			// classes deserve the detour.
+			if (StuckStrikes == 1 && Legit && Mode != BotMode.Engage &&
+			    pinCls != "unit" && pinCls != "enemy")
 			{
 				Vector3 qv = AimPos - s.HeroPos;
 				qv.y = 0f;
@@ -2054,15 +2060,21 @@ internal static class Bot
 				var fi = pi.FocussedInteractor;
 				if ((UnityEngine.Object)(object)fi != (UnityEngine.Object)null)
 				{
-					Vector3 away = s.HeroPos - ((Component)fi).transform.position;
-					away.y = 0f;
-					if (away.sqrMagnitude < 0.01f)
+					// Throttled: this fired EVERY tick while the call stayed
+					// blocked — 687 micro-steps = the in-out doorway dance.
+					if (Time.unscaledTime >= unfocusStepAt)
 					{
-						away = new Vector3(5f, 0f, 0f);
+						unfocusStepAt = Time.unscaledTime + 3f;
+						Vector3 away = s.HeroPos - ((Component)fi).transform.position;
+						away.y = 0f;
+						if (away.sqrMagnitude < 0.01f)
+						{
+							away = new Vector3(5f, 0f, 0f);
+						}
+						away = away.normalized * 6f;
+						SetTarget(s.HeroPos + away, 1.5f, projectToNav: true);
+						LogLine(in s, "night-unfocus-step");
 					}
-					away = away.normalized * 6f;
-					SetTarget(s.HeroPos + away, 1.5f, projectToNav: true);
-					LogLine(in s, "night-unfocus-step");
 				}
 				else
 				{
@@ -2843,6 +2855,14 @@ internal static class Bot
 				var go = c.gameObject;
 				var tg = go.GetComponentInParent<TaggedObject>();
 				if (tg != null && tg.Contains(TagManager.ETag.Player)) continue;      // self
+				// Followers trail by design — repulsing off them was the
+				// visible "jitter" (hero wobbles while his escort crowds him).
+				if (tg != null && tg.Contains(TagManager.ETag.PlayerOwned))
+				{
+					var pu = go.GetComponentInParent<PathfindMovementPlayerunit>();
+					if ((UnityEngine.Object)(object)pu != (UnityEngine.Object)null && pu.FollowingPlayer)
+						continue;
+				}
 				if ((UnityEngine.Object)(object)heldBuild != (UnityEngine.Object)null &&
 				    c.transform.IsChildOf(((Component)heldBuild).transform)) continue;
 				if (Mode == BotMode.Engage && (UnityEngine.Object)(object)engageTarget != (UnityEngine.Object)null &&

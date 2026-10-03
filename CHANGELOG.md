@@ -586,3 +586,8 @@ AUTOPILOT §8–9 for the full list and next actions.
   from the breach. (10) pay-watchdog resets on STRICT balance decrease only (refund churn killed).
 - **Army capacity:** ArmyTarget ceiling now BuildMil*12 (unitProducer.unitCount) instead of hard 60 -
   bmil=10 -> ~120 target on a map that supports it.
+- **Jitter batch (live Nordfels evidence):** pin:unit was the #1 pin class (271) - escort followers bumping
+  him fired sidestep+detour per bump (361 sidesteps = the visible wiggle). Fix: unit/enemy bumps no longer
+  trigger the sidestep machinery; ObstacleRepulse skips FOLLOWING units (they trail by design - pushing
+  off them was the new jitter source); night-unfocus-step throttled to 3s (was every tick - the in/out
+  doorway dance, 687 events).
