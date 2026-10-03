@@ -2033,7 +2033,8 @@ RULES
 5. Never edit generated/decompiled code, bin/obj, decompiled*/, reference/, dist/, .git/, any script (.ps1 .bat .sh), the lint script, the deploy tooling or the engineer tooling: such edits are refused. tools/coach-server.py and tools/command_center.py may be edited but then need a server restart: do it only when the task is about them.
 6. Always run build and then test before finish. At finish the system re-runs build, tests, lint, a size check (max @FILES@ files and @LINES@ changed lines, added+removed) and a safety scan. If a gate fails you get the failure text and keep working.
 7. Budget: @STEPS@ steps in total. Observations are cut at about 6 KB, so read windows of at most @READ@ and prefer grep to locate code. The header of each OBSERVATION shows the steps left.
-8. The strings in your JSON must be valid JSON (escape quotes, newlines as \\n, tabs as \\t). Output ONLY the JSON object."""
+8. THE 95% CONTRACT (strict): the hero must be BUSY at least 95% of play time - building, producing troops, posting squads at every approach/door, upgrading, collecting. Idle, blocked, or pinned time may never exceed 5% (audit.json fields useful_pct / waste_s / eff_drain measure it). Prefer fixes that eliminate idle classes (unreachable aims, full-squad waits, reserve hoarding, pocket approaches, aim flapping) over cosmetic changes; a fix that lowers useful_pct is a regression.
+9. The strings in your JSON must be valid JSON (escape quotes, newlines as \\n, tabs as \\t). Output ONLY the JSON object."""
 
 PROTOCOL_REMINDER = 'Reply with exactly ONE JSON object, for example {"action":"read","path":"src/Bot.cs","start":1,"end":80} - no prose, no code fences. Actions: ls, read, grep, edit, create, build, test, finish.'
 
