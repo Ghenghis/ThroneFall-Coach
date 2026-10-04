@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Pathfinding;
 using UnityEngine;
 
 namespace ThronefallTrainer
@@ -368,6 +369,22 @@ namespace ThronefallTrainer
             if (doorParked == null || i >= doorParked.Length) return false;
             return UnityEngine.Time.unscaledTime - doorParked[i] < 300f;
         }
+        /// <summary>Door anchors come from corridor polylines — drawn paths,
+        /// not mesh. An anchor off the navmesh means posted squads NEVER
+        /// arrive: the door reads uncovered, posts re-fire, and after 4
+        /// tries it's parked unreachable (Frostsee doors=1/5 at night).
+        /// Snap every anchor onto the nav graph at build time.</summary>
+        private static Vector3 DoorAnchorNav(Vector3 p)
+        {
+            try
+            {
+                if ((UnityEngine.Object)(object)AstarPath.active != (UnityEngine.Object)null)
+                    return AstarPath.active.GetNearest(p, new NNConstraint()).position;
+            }
+            catch { }
+            return p;
+        }
+
         private static Vector3[] sceneDoorAnchors;
         private static string[] sceneDoorLines;
         private static string doorScene = "";
@@ -2782,7 +2799,7 @@ namespace ThronefallTrainer
                             float dx = r.wp[i][0] - last[0], dz = r.wp[i][1] - last[1];
                             if (dx * dx + dz * dz >= dd)
                             {
-                                A.Add(new Vector3(r.wp[i][0], s.CastlePos.y, r.wp[i][1]));
+                                A.Add(DoorAnchorNav(new Vector3(r.wp[i][0], s.CastlePos.y, r.wp[i][1])));
                                 L.Add(key ?? "");
                                 added = true;
                                 break;
@@ -2791,7 +2808,7 @@ namespace ThronefallTrainer
                         if (!added)   // corridor <40 m: midpoint post instead
                         {
                             var mid = r.wp[r.wp.Length / 2];
-                            A.Add(new Vector3(mid[0], s.CastlePos.y, mid[1]));
+                            A.Add(DoorAnchorNav(new Vector3(mid[0], s.CastlePos.y, mid[1])));
                             L.Add(key ?? "");
                         }
                     }

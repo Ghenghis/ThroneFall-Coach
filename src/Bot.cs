@@ -1408,7 +1408,7 @@ internal static class Bot
 			// strike marked interior goals nav-failed and sent the hero on
 			// spurious gate detours ("spin in circles").
 			if (StuckStrikes >= 2 && !Gates.Active) Gates.NoteNavFail(AimPos);
-			StuckStrikes++; SpatialMemory.Bump(s.SceneName, s.HeroPos);
+			StuckStrikes++;
 			// A build/pay HOLD is immobile by design — slow pays (Barracks
 			// 40 g) stand still for seconds while coins land. Do NOT let the
 			// pin probe park the very slot he's paying: the Firepot churn
@@ -1460,6 +1460,11 @@ internal static class Bot
 			// terrain rock/tree, enemy, other object — so pins learn the
 			// structure instead of an anonymous "stuck".
 			string pinCls = PinProbe(s.HeroPos, AimPos);
+			// Cell-heat only for REAL geometry — unit/enemy bumps marked the
+			// cell hot and the planner repicked + fired stuck-spam on what
+			// was just a follower crowding him (pin:unit = top class).
+			if (pinCls != "unit" && pinCls != "enemy")
+				SpatialMemory.Bump(s.SceneName, s.HeroPos);
 			if (pinCls != null)
 			{
 				LogLine(in s, "pin:" + pinCls);

@@ -597,3 +597,8 @@ AUTOPILOT §8–9 for the full list and next actions.
   treated _LevelSelect (GameState=InMatch, zero interactables) as a corrupt match - quarantined the scene
   AND every real map in badscenes.json (IsBadScene = -1000 pick score). Vacuum now skips _* scenes and
   badscenes.json was reset.
+- **Door anchors nav-snapped (doors=1/5 root cause):** anchors were raw corridor-polyline waypoints - off
+  the navmesh, squads posted there NEVER arrive -> re-post loop -> door-park after 4 tries (night with
+  4/5 doors uncovered). DoorAnchorNav() snaps every anchor via AstarPath.GetNearest at build time.
+- **Unit bumps no longer poison SpatialMemory:** pin:unit/pin:enemy strikes still count toward the
+  trap-retreat, but a follower collision no longer marks the cell hot (repicks + stuck-spam fuel).
